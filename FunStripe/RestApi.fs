@@ -1,0 +1,40 @@
+namespace FunStripe
+
+open FSharp.Data
+
+module RestApi =
+
+    type RestApiClient(?baseUrl: string, ?apiKey: string) =
+
+        let BaseUrl = defaultArg baseUrl "https://api.stripe.com"
+
+        let ApiKey = defaultArg apiKey "<enter stripe secret key here>"
+
+        let AuthHeader = HttpRequestHeaders.BasicAuth ApiKey ""
+
+        member _.GetAsync<'a> (url: string) =
+            async {
+                let! json =
+                    Http.AsyncRequestString ($"{BaseUrl}{url}", headers = [ AuthHeader ])
+                return
+                    json
+                    |> JsonUtil.deserialise<'a>
+            }
+
+        member _.GetWithAsync<'a, 'b> (data: 'a) (url: string) =
+            async {
+                let! json =
+                    Http.AsyncRequestString ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = TextRequest (data |> string))
+                return
+                    json
+                    |> JsonUtil.deserialise<'b>
+            }
+
+        member _.PostAsync<'a, 'b> (data: 'a) (url: string) = 
+            async {
+                let! json =
+                    Http.AsyncRequestString ( $"{BaseUrl}{url}", headers = [ AuthHeader ], body = TextRequest (data |> string))
+                return
+                    json
+                    |> JsonUtil.deserialise<'b>
+            }
