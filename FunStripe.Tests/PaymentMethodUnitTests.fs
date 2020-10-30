@@ -17,17 +17,19 @@ type PaymentMethodUnitTests () =
                 "card[exp_year]", "2021"
                 "card[cvc]", "314"
             }
+            |> Seq.sortBy fst
         let actual = 
             { Type = Card; BillingDetails = None; Metadata = None; Card = Some { ExpMonth = 10; ExpYear = 2021; Number = 4242424242424242L; Cvc = 314 } }
             |> FormUtil.serialise
+            |> Seq.sortBy fst
         Assert.AreEqual (expected, actual)
 
-    [<Test>][<Ignore("Temporarily disabled")>]
+    [<Test>]
     member _.``create test PaymentMethod returns PaymentMethod object``() =
         async {
             let expected = {
-                Id = "pm_1EUmyr2x6R10KRrhlYS3l97f"
-                Object = PaymentMethod
+                Id = "pm_1Hi0ZmGXSUku3vEhZqOXTv2k"
+                Object = "payment_method"
                 BillingDetails = {
                     Address = {
                         City = None
@@ -46,12 +48,12 @@ type PaymentMethodUnitTests () =
                     Checks = {
                         AddressLine1Check = None
                         AddressPostalCodeCheck = None
-                        CvcCheck = None
+                        CvcCheck = Some Unchecked
                     }
                     Country = "US"
-                    ExpMonth = 8
-                    ExpYear = 2020
-                    Fingerprint = "0Kibh5yAgbiiwPEL"
+                    ExpMonth = 10
+                    ExpYear = 2021
+                    Fingerprint = "YfQddCBRsntX6npu"
                     Funding = Funding.Credit
                     GeneratedFrom = None
                     Last4 = "4242"
@@ -64,7 +66,7 @@ type PaymentMethodUnitTests () =
                     }
                     Wallet = None
                 }
-                Created = 1556596209
+                Created = 1604075742
                 Customer = None
                 Livemode = false
                 Metadata = [] |> Map.ofList
@@ -78,6 +80,9 @@ type PaymentMethodUnitTests () =
                 { Type = Card; BillingDetails = None; Metadata = None; Card = Some newCard }
                 |> pms.Create
 
-            Assert.AreEqual (expected, actual)
+            //fields Id and Created come back different each time, so set them to match expected
+            let actual' = { actual with Id = "pm_1Hi0ZmGXSUku3vEhZqOXTv2k"; Created = 1604075742 }
+
+            Assert.AreEqual (expected, actual')
         }
         |> Async.RunSynchronously

@@ -12,6 +12,10 @@ module RestApi =
 
         let AuthHeader = HttpRequestHeaders.BasicAuth ApiKey ""
 
+        let outputToConsole (s: string) =
+            printf "%s" s
+            s
+
         member _.GetAsync<'a> (url: string) =
             async {
                 let! json =
@@ -24,7 +28,7 @@ module RestApi =
         member _.GetWithAsync<'a, 'b> (data: 'a) (url: string) =
             async {
                 let! json =
-                    Http.AsyncRequestString ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = TextRequest (data |> string))
+                    Http.AsyncRequestString ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
                 return
                     json
                     |> JsonUtil.deserialise<'b>
@@ -33,8 +37,9 @@ module RestApi =
         member _.PostAsync<'a, 'b> (data: 'a) (url: string) = 
             async {
                 let! json =
-                    Http.AsyncRequestString ( $"{BaseUrl}{url}", headers = [ AuthHeader ], body = TextRequest (data |> string))
+                    Http.AsyncRequestString ( $"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
                 return
                     json
+                    |> outputToConsole
                     |> JsonUtil.deserialise<'b>
             }

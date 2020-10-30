@@ -11,13 +11,10 @@ module PaymentMethods =
         Metadata: Map<string, string>
         Type: Type
         Card: Card option
-        Object: ObjectString
+        Object: string
         Created: int
         Livemode: bool
     }
-
-    and ObjectString =
-        | PaymentMethod
 
     and Type =
         | Alipay

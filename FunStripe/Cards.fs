@@ -1,11 +1,13 @@
 namespace FunStripe
 
+open FSharp.Json
+
 module Cards =
     type Address = {
         City: string option
         Country: string option
-        Line1: string option
-        Line2: string option
+        [<JsonField("line1")>] Line1: string option
+        [<JsonField("line2")>] Line2: string option
         PostalCode: string option
         State: string option
     }
@@ -26,7 +28,7 @@ module Cards =
         Fingerprint: string
         Funding: Funding
         GeneratedFrom: GeneratedFrom option
-        Last4: string
+        [<JsonField("last4")>] Last4: string
         Networks: Networks
         ThreeDSecureUsage: ThreeDSecureUsage
         Wallet: Wallet option
@@ -70,7 +72,7 @@ module Cards =
         Fingerprint: string
         Funding: Funding
         GeneratedCard: string
-        Last4: string
+        [<JsonField("last4")>] Last4: string
         Network: Network
         ReadMethod: ReadMethod
         Receipt: Receipt
@@ -139,7 +141,7 @@ module Cards =
     and Wallet = {
         AmexExpressCheckout: WalletInfo
         ApplePay: WalletInfo
-        DynamicLast4: string
+        [<JsonField("dynamiclast4")>] DynamicLast4: string
         GooglePay: WalletInfo
         Masterpass: WalletInfo
         SamsungPay: WalletInfo

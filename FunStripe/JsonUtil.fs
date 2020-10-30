@@ -1,6 +1,8 @@
 namespace FunStripe
 
 open FSharp.Json
+//open Newtonsoft.Json
+//open Newtonsoft.Json.Serialization
 
 module JsonUtil =
     
@@ -14,3 +16,11 @@ module JsonUtil =
 
     let toSnakeCase =
         Json.snakeCase
+
+    // let contractResolver = DefaultContractResolver(NamingStrategy = SnakeCaseNamingStrategy())
+
+    // let serialise data =
+    //     JsonConvert.SerializeObject (data, JsonSerializerSettings(ContractResolver = contractResolver))
+
+    // let deserialise<'a> data =
+    //     JsonConvert.DeserializeObject<'a> (data, JsonSerializerSettings(ContractResolver = contractResolver))
