@@ -40,6 +40,6 @@ module RestApi =
                     Http.AsyncRequestString ( $"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
                 return
                     json
-                    |> outputToConsole
+                    //|> outputToConsole
                     |> JsonUtil.deserialise<'b>
             }

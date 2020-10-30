@@ -1,15 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <UserSecretsId>170450ff-243d-4b38-9f56-c74254e1ca70</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\FunStripe\FunStripe.fsproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.fs" />
     <Compile Include="PaymentMethodUnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.9" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />

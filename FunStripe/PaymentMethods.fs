@@ -63,9 +63,9 @@ module PaymentMethods =
         member _.Limit = limit
         member _.StartingAfter = startingAfter
 
-    type PaymentMethodService() =
+    type PaymentMethodService(?apiKey: string) =
         member _.Endpoint = "/v1/payment_methods"
-        member _.RestApiClient = RestApi.RestApiClient()
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         member this.Get (id: string) =
             this.Endpoint + $@"/:{id}"
