@@ -45,15 +45,19 @@ module PaymentMethods =
         Cvc: int
     }
 
-    type UpdateParams(``type``: Type, ?billingDetails: Cards.BillingDetails, ?metadata: Map<string, string>, ?card: UpdateCard) =
-        member _.Type = ``type``
-        member _.BillingDetails = billingDetails
-        member _.Metadata = metadata
-        member _.Card = card
+    type UpdateParams = {
+        BillingDetails: Cards.BillingDetails option
+        Metadata: Map<string, string>option
+        Card: UpdateCard option
+    }
 
     and UpdateCard = {
         ExpMonth: int
         ExpYear: int
+    }
+
+    type AttachParams = {
+        Customer: string
     }
 
     type ListParams(customer: string, ``type``: Type, ?endingBefore: string, ?limit: int, ?startingAfter: string ) =
@@ -68,7 +72,7 @@ module PaymentMethods =
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         member this.Get (id: string) =
-            this.Endpoint + $@"/:{id}"
+            this.Endpoint + $@"/{id}"
             |> this.RestApiClient.GetAsync<PaymentMethod>
 
         member this.Create (``params``: CreateParams) =
@@ -76,9 +80,17 @@ module PaymentMethods =
             |> this.RestApiClient.PostAsync<_, PaymentMethod> ``params``
 
         member this.Update (id: string) (``params``: UpdateParams) =
-            this.Endpoint + $@"/:{id}"
+            this.Endpoint + $@"/{id}"
             |> this.RestApiClient.PostAsync<_, PaymentMethod> ``params``
 
         member this.List (``params``: ListParams) =
             this.Endpoint
             |> this.RestApiClient.GetWithAsync<_, PaymentMethod list> ``params``
+
+        member this.Attach (id: string) (``params``: AttachParams) =
+            this.Endpoint + $@"/{id}/attach"
+            |> this.RestApiClient.PostAsync<_, PaymentMethod> ``params``
+
+        member this.Detach (id: string) =
+            this.Endpoint + $@"/{id}/detach"
+            |> this.RestApiClient.PostWithoutAsync<_, PaymentMethod>

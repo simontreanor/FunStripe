@@ -40,6 +40,14 @@ module RestApi =
                     Http.AsyncRequestString ( $"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
                 return
                     json
-                    //|> outputToConsole
+                    |> JsonUtil.deserialise<'b>
+            }
+
+        member _.PostWithoutAsync<'a, 'b> (url: string) = 
+            async {
+                let! json =
+                    Http.AsyncRequestString ( $"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Post )
+                return
+                    json
                     |> JsonUtil.deserialise<'b>
             }
