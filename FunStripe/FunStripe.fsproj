@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="JsonUtil.fs" />
@@ -12,6 +13,5 @@
   <ItemGroup>
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
     <PackageReference Include="FSharp.Json" Version="0.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 </Project>

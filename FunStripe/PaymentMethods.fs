@@ -93,4 +93,4 @@ module PaymentMethods =
 
         member this.Detach (id: string) =
             this.Endpoint + $@"/{id}/detach"
-            |> this.RestApiClient.PostWithoutAsync<_, PaymentMethod>
+            |> this.RestApiClient.PostWithoutAsync<PaymentMethod>

@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
     <UserSecretsId>170450ff-243d-4b38-9f56-c74254e1ca70</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\FunStripe\FunStripe.fsproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncResult.fs" />
     <Compile Include="Config.fs" />
     <Compile Include="Tests.fs" />
   </ItemGroup>

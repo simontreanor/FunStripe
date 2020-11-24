@@ -91,21 +91,21 @@ module Tests =
 
         [<Test>]
         member _.``test payment method creation``() =
-            async {
+            asyncResult {
                 let expected = { defaultPaymentMethod with Card = None } 
 
                 let! actual = getNewPaymentMethod
 
                 //fields Id and Created come back different each time, so set them to match expected
                 let actual' = { actual with Id = "IgnoreThisId"; Created = 1604075742; Card = None }
-
                 Assert.AreEqual (expected, actual')
             }
             |> Async.RunSynchronously
+            |> ignore
 
         [<Test>]
         member _.``test payment method retrieval``() =
-            async {
+            asyncResult {
                 let! pm = getNewPaymentMethod
 
                 let expected = pm
@@ -117,10 +117,11 @@ module Tests =
                 Assert.AreEqual (expected, actual)
             }
             |> Async.RunSynchronously
+            |> ignore
 
         [<Test>]
         member _.``test payment method update``() =
-            async {
+            asyncResult {
                 let! pm = getNewPaymentMethod
 
                 let! newPM = attachCustomer pm.Id
@@ -141,10 +142,11 @@ module Tests =
                 Assert.AreEqual (expected, actual')
             }
             |> Async.RunSynchronously
+            |> ignore
 
         [<Test>]
         member _.``test attaching customer to payment method``() =
-            async {
+            asyncResult {
                 let! pm = getNewPaymentMethod
 
                 let expected = { pm with Customer = Some testCustomer; Card = None }
@@ -159,10 +161,11 @@ module Tests =
                 Assert.AreEqual (expected, actual')
             }
             |> Async.RunSynchronously
+            |> ignore
 
         [<Test>]
         member _.``test detaching customer from payment method``() =
-            async {
+            asyncResult {
                 let! pm = getNewPaymentMethod
 
                 let! newPM = attachCustomer pm.Id
@@ -178,3 +181,4 @@ module Tests =
                 Assert.AreEqual (expected, actual')
             }
             |> Async.RunSynchronously
+            |> ignore
