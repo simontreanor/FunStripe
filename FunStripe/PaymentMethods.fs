@@ -1,12 +1,13 @@
 ﻿namespace FunStripe
 
 open Cards
+open Common
 
 module PaymentMethods =
 
     type PaymentMethod = {
         Id: string
-        BillingDetails: Cards.BillingDetails
+        BillingDetails: Common.BillingDetails
         Customer: string option
         Metadata: Map<string, string>
         Type: Type
@@ -33,7 +34,7 @@ module PaymentMethods =
 
     type CreateParams = {
         Type: Type
-        BillingDetails: Cards.BillingDetails option
+        BillingDetails: Common.BillingDetails option
         Metadata: Map<string, string>option
         Card: CreateCard option
     }
@@ -46,7 +47,7 @@ module PaymentMethods =
     }
 
     type UpdateParams = {
-        BillingDetails: Cards.BillingDetails option
+        BillingDetails: Common.BillingDetails option
         Metadata: Map<string, string>option
         Card: UpdateCard option
     }

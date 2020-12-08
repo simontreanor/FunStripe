@@ -3,21 +3,6 @@ namespace FunStripe
 open FSharp.Json
 
 module Cards =
-    type Address = {
-        City: string option
-        Country: string option
-        [<JsonField("line1")>] Line1: string option
-        [<JsonField("line2")>] Line2: string option
-        PostalCode: string option
-        State: string option
-    }
-
-    type BillingDetails = {
-        Address: Address
-        Email: string option
-        Name: string option
-        Phone: string option
-    }
 
     type Card = {
         Brand: Brand
@@ -158,8 +143,8 @@ module Cards =
         | VisaCheckout
 
     and WalletInfo = {
-        BillingAddress: Address
+        BillingAddress: Common.Address
         Email: string
         Name: string
-        ShippingAddress: Address
+        ShippingAddress: Common.Address
     }
