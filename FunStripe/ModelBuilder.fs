@@ -133,7 +133,7 @@ module ModelBuilder =
 
         let mutable isFirstOccurrence = true
 
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule Stripe =\n"
+        sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule StripeModel =\n"
         
         for (key, value) in schemas.Properties do
             let name = key |> casify

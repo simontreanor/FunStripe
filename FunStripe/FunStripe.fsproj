@@ -8,7 +8,9 @@
     <Compile Include="FormUtil.fs" />
     <Compile Include="RestApi.fs" />
     <Compile Include="StripeModel.fs" />
+    <Compile Include="StripeService.fs" />
     <Compile Include="ModelBuilder.fs" />
+    <Compile Include="ServiceBuilder.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Data" Version="3.3.3" />

@@ -2,7 +2,7 @@ namespace FunStripe
 
 open FSharp.Json
 
-module Stripe =
+module StripeModel =
 
     ///This is an object representing a Stripe account. You can retrieve it to see
     ///properties on the account like its current e-mail address or if the account is

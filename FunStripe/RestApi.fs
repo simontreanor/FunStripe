@@ -58,13 +58,20 @@ module RestApi =
         member x.PostAsync<'a, 'b> (data: 'a) (url: string) = 
             async {
                 let! response =
-                    Http.AsyncRequest ( $"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
+                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
                 return response |> x.parseResponse<'b>
             }
 
         member x.PostWithoutAsync<'a> (url: string) = 
             async {
                 let! response =
-                    Http.AsyncRequest ( $"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Post )
+                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Post)
                 return response |> x.parseResponse<'a>
+            }
+
+        member x.DeleteAsync<'a> (url: string) =
+            async {
+                let! response =
+                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Delete)
+                return response |> x.parseResponse<'a> //to do: check if response should be unit
             }
