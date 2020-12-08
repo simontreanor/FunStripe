@@ -152,6 +152,7 @@ module ServiceBuilder =
                 sb |> write "\t\tmember _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)\n"
 
                 v0.AsArray()
+                |> Array.filter(fun jv -> jv.TryGetProperty("method_on") |> function | Some p -> p.AsString() = "service" | _ -> false)
                 |> Array.iter(fun jv ->
                     let path = jv.GetProperty("path").AsString()
                     let method = jv.GetProperty("method_name").AsString()
