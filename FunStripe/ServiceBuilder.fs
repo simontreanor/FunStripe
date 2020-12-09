@@ -13,110 +13,70 @@ open System.Text.RegularExpressions
 
 module ServiceBuilder =
 
-    type Property = {
-        AnyOf: JsonValue array option
-        Description: string option
-        Enum: JsonValue array option
-        Items: JsonValue option
-        Nullable: bool option
-        Ref: string option
-        Type': string option
-    }
-
     let commentify (s: string) = 
-        s.Replace("\n", "\n\t///")
+        let s' = s.Replace("<p>", "").Replace("</p>", "").Replace("\n\n", "\n").Replace("\n", "\n\t\t///")
+        $"<p>{s'}</p>"
 
-    let clean (s: string) =
-        s.Replace("-", "").Replace(" ", "")
+    let pascalCasify (s: string) =
+        Regex.Replace(s, @"(^|_|\.| |-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-    let casify (s: string) =
-        let convertCase s = Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
+    let camelCasify (s: string) =
+        Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-        if Regex.IsMatch(s, @"^\p{Lu}") then
-            $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> convertCase}"
-        else
-            if Regex.IsMatch(s, @"^\d") then
-                $@"[<JsonUnionCase(""{s}"")>] Numeric{s |> clean |> convertCase}"
-            elif s.Contains("-") || s.Contains(" ") then
-                $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> convertCase}"
-            else
-                s |> clean |> convertCase
+    let escapeTypeName name =
+        match name with
+        | "type" ->
+            $"``{name}``"
+        | _ ->
+            name
 
-    let parseRef (s: string) =
-        let m = Regex.Match(s, "/([^/]+)$")
-        if m.Success then
-            m.Groups.[1].Value
-        else
-            failwith $"Error: unparsable reference: {s}"
+    let write s (sb: Text.StringBuilder) =
+        sb.AppendLine s |> ignore
 
     let mapType (s: string) =
         match s with
         | "boolean" -> "bool"
         | "integer" -> "int"
         | "number" -> "decimal"
+        | "array" -> "string list"
+        | "object" -> "Map<string, string>"
         | _ -> s
 
-    let getProperties (jv: JsonValue) =
-        {
-            AnyOf = jv.TryGetProperty("anyOf") |> function | Some v -> v.AsArray() |> Some | None -> None
-            Description = jv.TryGetProperty("description") |> function | Some v -> v.AsString() |> Some | None -> None
-            Enum = jv.TryGetProperty("enum") |> function | Some v -> v.AsArray() |> Some | None -> None
-            Items = jv.TryGetProperty("items") |> function | Some v -> v |> Some | None -> None
-            Nullable = jv.TryGetProperty("nullable") |> function | Some v -> v.AsBoolean() |> Some | None -> None
-            Ref = jv.TryGetProperty("$ref") |> function | Some v -> v.AsString() |> Some | None -> None
-            Type' = jv.TryGetProperty("type") |> function | Some v -> v.AsString() |> mapType |> Some | None -> None
-        }
+    let formatParams (ss: string array) =
+        (", ", 
+            ss
+            |> Array.map camelCasify
+        ) |> String.Join
 
-    let createEnum name (jvv: JsonValue array) =
-        let s = 
-            ("", 
-                jvv
-                |> Array.map(fun jv -> $"\t\t| {jv.AsString() |> casify}\n")
-            ) |> String.Join
-        $"\tand {name} =\n{s}"
+    let formatParametersString (parameters: JsonValue array) =
+        (
+            ", ",
+            parameters
+            |> Array.map (fun jv ->
+                let name'' = jv.GetProperty("name").AsString()
+                let required = jv.GetProperty("required").AsBoolean()
+                let schema' = jv.GetProperty("schema")
+                let type' =
+                    schema'.TryGetProperty("type") |> function
+                    | Some jv -> jv.AsString()
+                    | None ->
+                        schema'.TryGetProperty("anyOf") |> function
+                        | Some jv -> jv.AsArray() |> Array.find (fun jv' -> jv'.GetProperty("type").AsString() <> "object") |> fun jv' -> jv'.GetProperty("type").AsString()
+                        | None -> ""
+                (name'', required, type')
+            )
+            |> Array.sortBy (fun (n, req, t) -> if req then 0 else 1)
+            |> Array.map (fun (n, req, t) ->
+                let opt = if req then "" else "?"
+                $"{opt}{n |> escapeTypeName |> camelCasify}: {t |> mapType}"
+            )
+        ) |> String.Join
 
-    let createEnum2 name (ss: string seq) =
-        let s = 
-            ("", 
-                ss
-                |> Seq.map(fun s -> $"\t\t| {s |> casify}\n")
-            ) |> String.Join
-        $"\tand {name} =\n{s}"
+    let formatPathParams (path: string) =
+        Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{{m.Groups.[1].Value |> escapeTypeName |> camelCasify}}}")
 
-    let parseStringEnum desc =
-        let m = Regex.Match(desc, @"Can be `([^`]+)`(?:[^,]*?, `([^`]+)`)*[^,]*?,? or (?:`([^`]+)`|null).")
-        if m.Success then
-            m.Groups.Cast<Group>()
-            |> Seq.skip 1
-            |> Seq.collect(fun g -> g.Captures.Cast<Capture>())
-            |> Seq.map(fun c -> c.Value)
-            |> Some
-        else
-            None
-
-    let createAnyOf name (jvv: JsonValue array) =
-        let s =
-            ("", 
-                jvv
-                |> Array.map(fun jv ->
-                    let props = jv |> getProperties
-                    match props.Type' with
-                    | Some t ->
-                        $"\t\t| {t |> casify} of {t}\n"
-                    | _ ->
-                    
-                        match props.Ref with
-                        | Some r ->
-                            let refName = (r |> parseRef |> casify)
-                            $"\t\t| {refName} of {refName}\n"
-                        | None ->
-                            ""
-                )
-            ) |> String.Join
-        $"\tand {name} =\n{s}"
-
-    let write s (sb: Text.StringBuilder) =
-        sb.AppendLine s |> ignore
+    let singularise (s: string) =
+        Regex.Replace(s, "s$", "")
 
     let parseService filePath =
 
@@ -128,51 +88,81 @@ module ServiceBuilder =
         let root = JsonValue.Parse json
         let components = root.Item "components"
         let schemas = components.Item "schemas"
+        let operationPaths = root.Item "paths"
+
+        let servicePaths =
+            schemas.Properties
+            |> Array.filter(fun (k, v) ->
+                v.Properties
+                |> Array.exists(fun (k, _) -> k = "x-stripeOperations")
+            )
+            |> Array.map(fun (k, v) ->
+                (
+                    k,
+                    v.Properties
+                    |> Array.filter(fun (k, _) -> k = "x-stripeOperations")
+                    |> Array.collect(fun (_, v) -> v.AsArray())
+                    |> Array.filter(fun jv -> jv.TryGetProperty("method_on") |> function | Some p -> p.AsString() = "service" | _ -> false)
+                    |> Array.map(fun jv -> (jv.GetProperty("method_name").AsString(), jv.GetProperty("operation").AsString(), jv.GetProperty("path").AsString()))
+                )
+            )
 
         let sb = Text.StringBuilder()
 
-        let mutable isFirstOccurrence = true
-
         sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nopen StripeModel\n\nmodule StripeService =\n"
-        
-        for (key, value) in schemas.Properties do
-            let name = key |> casify
+        sb |> write "\ttype DeleteResult = {\n\t\tId: string\n\t\tObject: string\n\t\tDeleted: bool\n\t}\n"
 
-            let keyword =
-                if isFirstOccurrence then
-                    isFirstOccurrence <- false
-                    "type"
-                else
-                    "and"
+        servicePaths
+        |> Array.iter (fun (name, methodOperationPaths) ->
 
-            value.Properties
-            |> Array.filter(fun (k0, _) -> k0 = "x-stripeOperations")
-            |> Array.iter(fun(k0, v0) ->
-                sb |> write $"\t{keyword} {name}Service(?apiKey: string) = \n"
-                sb |> write "\t\tmember _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)\n"
+            let name' = name |> pascalCasify
 
-                v0.AsArray()
-                |> Array.filter(fun jv -> jv.TryGetProperty("method_on") |> function | Some p -> p.AsString() = "service" | _ -> false)
-                |> Array.iter(fun jv ->
-                    let path = jv.GetProperty("path").AsString()
-                    let method = jv.GetProperty("method_name").AsString()
-                    let parameters = jv.TryGetProperty("path_resource_variables") |> function | Some jv -> jv.AsArray() | None -> [||]
-                    let verb = jv.GetProperty("operation").AsString()
-                    let body = if verb = "get" || verb = "delete" then "" else "_, "
+            sb |> write $"\tand {name'}Service(?apiKey: string) = \n"
+            sb |> write "\t\tmember _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)\n"
 
-                    let formatParams (jvv: JsonValue array) =
-                        (", ", 
-                            jvv
-                            |> Array.map(fun jv -> jv.GetProperty("name").AsString())
-                        ) |> String.Join
+            methodOperationPaths
+            |> Array.iter (fun (method, operation, path) ->
 
-                    sb |> write $"\t\tmember this.{method |> casify} ({parameters |> formatParams}) ="
-                    sb |> write $"\t\t\t$\"{path}\""
-                    sb |> write $"\t\t\t|> this.RestApiClient.{verb |> casify}Async<{body}{name}>\n"
+                let pathRoot = Regex.Match(path, @"^/v[^/]+/([^/]+)/").Groups.[1].Value |> pascalCasify |> singularise
+                let method' = if name'.StartsWith pathRoot then method else $"{method}For{pathRoot}"
 
-                    //sb |> write $"%A{jv}"
+                operationPaths.Properties
+                |> Array.find (fun (p, _) -> p = path)
+                |> fun (_, v) -> v.Properties
+                |> Array.filter (fun (verb, _) -> verb = operation)
+                |> Array.iter (fun (verb, v) ->
+
+                    let description = v.GetProperty("description").AsString()
+                    let parameters = v.TryGetProperty("parameters") |> function | Some jv -> jv.AsArray() | None -> [||]
+                    let parametersString = parameters |> formatParametersString
+
+                    let form = v.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function | Some jv -> jv | None -> JsonValue.Null
+                    let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> JsonValue.Null
+                    let formParameters = schema.TryGetProperty("properties") |> function | Some jv -> jv.Properties | None -> [||]
+                    let requiredFormParameters = schema.TryGetProperty("required") |> function | Some jv -> jv.Properties | None -> [||]
+
+                    sb |> write $"\t\t///{description |> commentify}"
+
+                    sb |> write $"\t\tmember this.{method' |> pascalCasify} ({parametersString}) ="
+                    sb |> write $"\t\t\t$\"{path |> formatPathParams}\""
+
+                    match verb with
+                    | "get" when formParameters.Any() ->
+                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {name'}>\n"
+                    | "get" ->
+                        sb |> write $"\t\t\t|> this.RestApiClient.GetAsync<{name'}>\n"
+                    | "post" when formParameters.Any() |> not ->
+                        sb |> write $"\t\t\t|> this.RestApiClient.PostWithoutAsync<{name'}>\n"
+                    | "post" ->
+                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {name'}>\n"
+                    | "delete" ->
+                        sb |> write $"\t\t\t|> this.RestApiClient.DeleteAsync<DeleteResult>\n"
+                    | _ ->
+                        failwith $"Error: Unhandled verb: {verb}"
+
                 )
             )
+        )
             
         sb.ToString().Replace("\t", "    ")
 

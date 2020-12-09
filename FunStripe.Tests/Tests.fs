@@ -1,8 +1,8 @@
 namespace FunStripe
 
 open NUnit.Framework
-open Cards
-open PaymentMethods
+open StripeModel
+open StripeService
 
 module Tests =
 

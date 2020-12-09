@@ -18,54 +18,54 @@ module StripeModel =
         ///The business type.
         BusinessType: AccountBusinessType option
 
-        Capabilities: AccountCapabilities
+        Capabilities: AccountCapabilities option
 
         ///Whether the account can create live charges.
-        ChargesEnabled: bool
+        ChargesEnabled: bool option
 
-        Company: LegalEntityCompany
+        Company: LegalEntityCompany option
 
         ///The account's country.
-        Country: string
+        Country: string option
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
+        Created: int option
 
         ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
-        DefaultCurrency: string
+        DefaultCurrency: string option
 
         ///Whether account details have been submitted. Standard accounts cannot receive payouts before this is true.
-        DetailsSubmitted: bool
+        DetailsSubmitted: bool option
 
         ///The primary user's email address.
         Email: string option
 
         ///External accounts (bank accounts and debit cards) currently attached to this account
-        ExternalAccounts: Map<string, string>
+        ExternalAccounts: Map<string, string> option
 
         ///Unique identifier for the object.
         Id: string
 
-        Individual: Person
+        Individual: Person option
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
+        Metadata: Map<string, string> option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: AccountObject
 
         ///Whether Stripe can send payouts to this account.
-        PayoutsEnabled: bool
+        PayoutsEnabled: bool option
 
-        Requirements: AccountRequirements
+        Requirements: AccountRequirements option
 
         ///Options for customizing how the account functions within Stripe.
         Settings: AccountSettingsDU option
 
-        TosAcceptance: AccountTosAcceptance
+        TosAcceptance: AccountTosAcceptance option
 
         ///The Stripe account type. Can be `standard`, `express`, or `custom`.
-        Type: AccountType
+        Type: AccountType option
 
     }
 
@@ -93,7 +93,7 @@ module StripeModel =
     and AccountBacsDebitPaymentsSettings = {
 
         ///The Bacs Direct Debit Display Name for this account. For payments made with Bacs Direct Debit, this will appear on the mandate, and as the statement descriptor.
-        DisplayName: string
+        DisplayName: string option
 
     }
 
@@ -101,16 +101,16 @@ module StripeModel =
     and AccountBrandingSettings = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px.
-        Icon: AccountBrandingSettingsIconDU option
+        Icon: AccountBrandingSettingsIconDU
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A logo for the account that will be used in Checkout instead of the icon and without the account's name next to it if provided. Must be at least 128px x 128px.
-        Logo: AccountBrandingSettingsLogoDU option
+        Logo: AccountBrandingSettingsLogoDU
 
         ///A CSS hex color value representing the primary branding color for this account
-        PrimaryColor: string option
+        PrimaryColor: string
 
         ///A CSS hex color value representing the secondary branding color for this account
-        SecondaryColor: string option
+        SecondaryColor: string
 
     }
 
@@ -126,28 +126,28 @@ module StripeModel =
     and AccountBusinessProfile = {
 
         ///[The merchant category code for the account](https://stripe.com/docs/connect/setting-mcc). MCCs are used to classify businesses based on the goods or services they provide.
-        Mcc: string option
+        Mcc: string
 
         ///The customer-facing business name.
-        Name: string option
+        Name: string
 
         ///Internal-only description of the product sold or service provided by the business. It's used by Stripe for risk and underwriting purposes.
         ProductDescription: string option
 
         ///A publicly available mailing address for sending support issues to.
-        SupportAddress: AccountBusinessProfileSupportAddressDU option
+        SupportAddress: AccountBusinessProfileSupportAddressDU
 
         ///A publicly available email address for sending support issues to.
-        SupportEmail: string option
+        SupportEmail: string
 
         ///A publicly available phone number to call with support issues.
-        SupportPhone: string option
+        SupportPhone: string
 
         ///A publicly available website for handling support issues.
-        SupportUrl: string option
+        SupportUrl: string
 
         ///The business's publicly available website.
-        Url: string option
+        Url: string
 
     }
 
@@ -158,64 +158,64 @@ module StripeModel =
     and AccountCapabilities = {
 
         ///The status of the BECS Direct Debit (AU) payments capability of the account, or whether the account can directly process BECS Direct Debit (AU) charges.
-        AuBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments
+        AuBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments option
 
         ///The status of the Bacs Direct Debits payments capability of the account, or whether the account can directly process Bacs Direct Debits charges.
-        BacsDebitPayments: AccountCapabilitiesBacsDebitPayments
+        BacsDebitPayments: AccountCapabilitiesBacsDebitPayments option
 
         ///The status of the Bancontact payments capability of the account, or whether the account can directly process Bancontact charges.
-        BancontactPayments: AccountCapabilitiesBancontactPayments
+        BancontactPayments: AccountCapabilitiesBancontactPayments option
 
         ///The status of the card issuing capability of the account, or whether you can use Issuing to distribute funds on cards
-        CardIssuing: AccountCapabilitiesCardIssuing
+        CardIssuing: AccountCapabilitiesCardIssuing option
 
         ///The status of the card payments capability of the account, or whether the account can directly process credit and debit card charges.
-        CardPayments: AccountCapabilitiesCardPayments
+        CardPayments: AccountCapabilitiesCardPayments option
 
         ///The status of the Cartes Bancaires payments capability of the account, or whether the account can directly process Cartes Bancaires card charges in EUR currency.
-        CartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments
+        CartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments option
 
         ///The status of the EPS payments capability of the account, or whether the account can directly process EPS charges.
-        EpsPayments: AccountCapabilitiesEpsPayments
+        EpsPayments: AccountCapabilitiesEpsPayments option
 
         ///The status of the FPX payments capability of the account, or whether the account can directly process FPX charges.
-        FpxPayments: AccountCapabilitiesFpxPayments
+        FpxPayments: AccountCapabilitiesFpxPayments option
 
         ///The status of the giropay payments capability of the account, or whether the account can directly process giropay charges.
-        GiropayPayments: AccountCapabilitiesGiropayPayments
+        GiropayPayments: AccountCapabilitiesGiropayPayments option
 
         ///The status of the GrabPay payments capability of the account, or whether the account can directly process GrabPay charges.
-        GrabpayPayments: AccountCapabilitiesGrabpayPayments
+        GrabpayPayments: AccountCapabilitiesGrabpayPayments option
 
         ///The status of the iDEAL payments capability of the account, or whether the account can directly process iDEAL charges.
-        IdealPayments: AccountCapabilitiesIdealPayments
+        IdealPayments: AccountCapabilitiesIdealPayments option
 
         ///The status of the JCB payments capability of the account, or whether the account (Japan only) can directly process JCB credit card charges in JPY currency.
-        JcbPayments: AccountCapabilitiesJcbPayments
+        JcbPayments: AccountCapabilitiesJcbPayments option
 
         ///The status of the legacy payments capability of the account.
-        LegacyPayments: AccountCapabilitiesLegacyPayments
+        LegacyPayments: AccountCapabilitiesLegacyPayments option
 
         ///The status of the OXXO payments capability of the account, or whether the account can directly process OXXO charges.
-        OxxoPayments: AccountCapabilitiesOxxoPayments
+        OxxoPayments: AccountCapabilitiesOxxoPayments option
 
         ///The status of the P24 payments capability of the account, or whether the account can directly process P24 charges.
-        P24Payments: AccountCapabilitiesP24Payments
+        P24Payments: AccountCapabilitiesP24Payments option
 
         ///The status of the SEPA Direct Debits payments capability of the account, or whether the account can directly process SEPA Direct Debits charges.
-        SepaDebitPayments: AccountCapabilitiesSepaDebitPayments
+        SepaDebitPayments: AccountCapabilitiesSepaDebitPayments option
 
         ///The status of the Sofort payments capability of the account, or whether the account can directly process Sofort charges.
-        SofortPayments: AccountCapabilitiesSofortPayments
+        SofortPayments: AccountCapabilitiesSofortPayments option
 
         ///The status of the tax reporting 1099-K (US) capability of the account.
-        TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K
+        TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
 
         ///The status of the tax reporting 1099-MISC (US) capability of the account.
-        TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc
+        TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
 
         ///The status of the transfers capability of the account, or whether your platform can transfer funds to the account.
-        Transfers: AccountCapabilitiesTransfers
+        Transfers: AccountCapabilitiesTransfers option
 
     }
 
@@ -323,13 +323,13 @@ module StripeModel =
     and AccountCapabilityRequirements = {
 
         ///The date the fields in `currently_due` must be collected by to keep the capability enabled for the account.
-        CurrentDeadline: int option
+        CurrentDeadline: int
 
         ///The fields that need to be collected to keep the capability enabled. If not collected by the `current_deadline`, these fields appear in `past_due` as well, and the capability is disabled.
         CurrentlyDue: string list
 
         ///If the capability is disabled, this string describes why. Possible values are `requirement.fields_needed`, `pending.onboarding`, `pending.review`, `rejected_fraud`, or `rejected.other`.
-        DisabledReason: string option
+        DisabledReason: string
 
         ///The fields that are `currently_due` and need to be collected again because validation or verification failed for some reason.
         Errors: AccountRequirementsError list
@@ -348,10 +348,10 @@ module StripeModel =
     ///
     and AccountCardPaymentsSettings = {
 
-        DeclineOn: AccountDeclineChargeOn
+        DeclineOn: AccountDeclineChargeOn option
 
         ///The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. `statement_descriptor_prefix` is useful for maximizing descriptor space for the dynamic portion.
-        StatementDescriptorPrefix: string option
+        StatementDescriptorPrefix: string
 
     }
 
@@ -359,10 +359,10 @@ module StripeModel =
     and AccountDashboardSettings = {
 
         ///The display name for this account. This is used on the Stripe Dashboard to differentiate between accounts.
-        DisplayName: string option
+        DisplayName: string
 
         ///The timezone used in the Stripe Dashboard for this account. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones).
-        Timezone: string option
+        Timezone: string
 
     }
 
@@ -404,13 +404,13 @@ module StripeModel =
     and AccountPaymentsSettings = {
 
         ///The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///The Kana variation of the default text that appears on credit card statements when a charge is made (Japan only)
-        StatementDescriptorKana: string option
+        StatementDescriptorKana: string
 
         ///The Kanji variation of the default text that appears on credit card statements when a charge is made (Japan only)
-        StatementDescriptorKanji: string option
+        StatementDescriptorKanji: string
 
     }
 
@@ -423,7 +423,7 @@ module StripeModel =
         Schedule: TransferSchedule
 
         ///The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
     }
 
@@ -431,25 +431,25 @@ module StripeModel =
     and AccountRequirements = {
 
         ///The date the fields in `currently_due` must be collected by to keep payouts enabled for the account. These fields might block payouts sooner if the next threshold is reached before these fields are collected.
-        CurrentDeadline: int option
+        CurrentDeadline: int
 
         ///The fields that need to be collected to keep the account enabled. If not collected by the `current_deadline`, these fields appear in `past_due` as well, and the account is disabled.
-        CurrentlyDue: string list option
+        CurrentlyDue: string list
 
         ///If the account is disabled, this string describes why the account can’t create charges or receive payouts. Can be `requirements.past_due`, `requirements.pending_verification`, `rejected.fraud`, `rejected.terms_of_service`, `rejected.listed`, `rejected.other`, `listed`, `under_review`, or `other`.
-        DisabledReason: AccountRequirementsDisabledReason option
+        DisabledReason: AccountRequirementsDisabledReason
 
         ///The fields that are `currently_due` and need to be collected again because validation or verification failed for some reason.
         Errors: AccountRequirementsError list
 
         ///The fields that need to be collected assuming all volume thresholds are reached. As they become required, these fields appear in `currently_due` as well, and the `current_deadline` is set.
-        EventuallyDue: string list option
+        EventuallyDue: string list
 
         ///The fields that weren't collected by the `current_deadline`. These fields need to be collected to re-enable the account.
-        PastDue: string list option
+        PastDue: string list
 
         ///Fields that may become required depending on the results of verification or review. An empty array unless an asynchronous verification is pending. If verification fails, the fields in this array become required and move to `currently_due` or `past_due`.
-        PendingVerification: string list option
+        PendingVerification: string list
 
     }
 
@@ -526,14 +526,14 @@ module StripeModel =
     and AccountSepaDebitPaymentsSettings = {
 
         ///SEPA creditor identifier that identifies the company making the payment.
-        CreditorId: string
+        CreditorId: string option
 
     }
 
     ///
     and AccountSettings = {
 
-        BacsDebitPayments: AccountBacsDebitPaymentsSettings
+        BacsDebitPayments: AccountBacsDebitPaymentsSettings option
 
         Branding: AccountBrandingSettings
 
@@ -543,9 +543,9 @@ module StripeModel =
 
         Payments: AccountPaymentsSettings
 
-        Payouts: AccountPayoutSettings
+        Payouts: AccountPayoutSettings option
 
-        SepaDebitPayments: AccountSepaDebitPaymentsSettings
+        SepaDebitPayments: AccountSepaDebitPaymentsSettings option
 
     }
 
@@ -559,7 +559,7 @@ module StripeModel =
         Ip: string option
 
         ///The user's service agreement type
-        ServiceAgreement: string
+        ServiceAgreement: string option
 
         ///The user agent of the browser from which the account representative accepted their service agreement
         UserAgent: string option
@@ -570,22 +570,22 @@ module StripeModel =
     and Address = {
 
         ///City, district, suburb, town, or village.
-        City: string option
+        City: string
 
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
+        Country: string
 
         ///Address line 1 (e.g., street, PO Box, or company name).
-        Line1: string option
+        Line1: string
 
         ///Address line 2 (e.g., apartment, suite, unit, or building).
-        Line2: string option
+        Line2: string
 
         ///ZIP or postal code.
-        PostalCode: string option
+        PostalCode: string
 
         ///State, county, province, or region.
-        State: string option
+        State: string
 
     }
 
@@ -608,16 +608,16 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
+        Metadata: Map<string, string> option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: AlipayAccountObject
 
         ///If the Alipay account object is not reusable, the exact amount that you can create a charge for.
-        PaymentAmount: int option
+        PaymentAmount: int
 
         ///If the Alipay account object is not reusable, the exact currency that you can create a charge for.
-        PaymentCurrency: string option
+        PaymentCurrency: string
 
         ///True if you can create multiple payments using this account. If the account is reusable, then you can freely choose the amount of each payment.
         Reusable: bool
@@ -642,10 +642,10 @@ module StripeModel =
     and AlternateStatementDescriptors = {
 
         ///The Kana variation of the descriptor.
-        Kana: string
+        Kana: string option
 
         ///The Kanji variation of the descriptor.
-        Kanji: string
+        Kanji: string option
 
     }
 
@@ -653,33 +653,33 @@ module StripeModel =
     and ApiErrors = {
 
         ///For card errors, the ID of the failed charge.
-        Charge: string
+        Charge: string option
 
         ///For some errors that could be handled programmatically, a short string indicating the [error code](https://stripe.com/docs/error-codes) reported.
-        Code: string
+        Code: string option
 
         ///For card errors resulting from a card issuer decline, a short string indicating the [card issuer's reason for the decline](https://stripe.com/docs/declines#issuer-declines) if they provide one.
-        DeclineCode: string
+        DeclineCode: string option
 
         ///A URL to more information about the [error code](https://stripe.com/docs/error-codes) reported.
-        DocUrl: string
+        DocUrl: string option
 
         ///A human-readable message providing more details about the error. For card errors, these messages can be shown to your users.
-        Message: string
+        Message: string option
 
         ///If the error is parameter-specific, the parameter related to the error. For example, you can use this to display a message near the correct form field.
-        Param: string
+        Param: string option
 
-        PaymentIntent: PaymentIntent
+        PaymentIntent: PaymentIntent option
 
-        PaymentMethod: PaymentMethod
+        PaymentMethod: PaymentMethod option
 
         ///If the error is specific to the type of payment method, the payment method type that had a problem. This field is only populated for invoice-related errors.
-        PaymentMethodType: string
+        PaymentMethodType: string option
 
-        SetupIntent: SetupIntent
+        SetupIntent: SetupIntent option
 
-        Source: PaymentSource
+        Source: PaymentSource option
 
         ///The type of error returned. One of `api_connection_error`, `api_error`, `authentication_error`, `card_error`, `idempotency_error`, `invalid_request_error`, or `rate_limit_error`
         Type: ApiErrorsType
@@ -724,7 +724,7 @@ module StripeModel =
         Id: string
 
         ///The name of the application.
-        Name: string option
+        Name: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: ApplicationObject
@@ -750,7 +750,7 @@ module StripeModel =
         Application: ApplicationFeeApplicationDU
 
         ///Balance transaction that describes the impact of this collected application fee on your account balance (not including refunds).
-        BalanceTransaction: ApplicationFeeBalanceTransactionDU option
+        BalanceTransaction: ApplicationFeeBalanceTransactionDU
 
         ///ID of the charge that the application fee was taken from.
         Charge: ApplicationFeeChargeDU
@@ -771,7 +771,7 @@ module StripeModel =
         Object: ApplicationFeeObject
 
         ///ID of the corresponding charge on the platform account, if this fee was the result of a charge using the `destination` parameter.
-        OriginatingTransaction: ApplicationFeeOriginatingTransactionDU option
+        OriginatingTransaction: ApplicationFeeOriginatingTransactionDU
 
         ///Whether the fee has been fully refunded. If the fee is only partially refunded, this attribute will still be false.
         Refunded: bool
@@ -826,7 +826,7 @@ module StripeModel =
         ///Funds that can be paid out using Instant Payouts.
         InstantAvailable: BalanceAmount list
 
-        Issuing: BalanceDetail
+        Issuing: BalanceDetail option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -851,7 +851,7 @@ module StripeModel =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
 
-        SourceTypes: BalanceAmountBySourceType
+        SourceTypes: BalanceAmountBySourceType option
 
     }
 
@@ -859,13 +859,13 @@ module StripeModel =
     and BalanceAmountBySourceType = {
 
         ///Amount for bank account.
-        BankAccount: int
+        BankAccount: int option
 
         ///Amount for card.
-        Card: int
+        Card: int option
 
         ///Amount for FPX.
-        Fpx: int
+        Fpx: int option
 
     }
 
@@ -896,10 +896,10 @@ module StripeModel =
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///The exchange rate used, if applicable, for this transaction. Specifically, if money was converted from currency A to currency B, then the `amount` in currency A, times `exchange_rate`, would be the `amount` in currency B. For example, suppose you charged a customer 10.00 EUR. Then the PaymentIntent's `amount` would be `1000` and `currency` would be `eur`. Suppose this was converted into 12.34 USD in your Stripe account. Then the BalanceTransaction's `amount` would be `1234`, `currency` would be `usd`, and `exchange_rate` would be `1.234`.
-        ExchangeRate: decimal option
+        ExchangeRate: decimal
 
         ///Fees (in %s) paid for this transaction.
         Fee: int
@@ -920,7 +920,7 @@ module StripeModel =
         ReportingCategory: string
 
         ///The Stripe object to which this transaction is related.
-        Source: BalanceTransactionSourceDU option
+        Source: BalanceTransactionSourceDU
 
         ///If the transaction's net funds are available in the Stripe balance yet. Either `available` or `pending`.
         Status: string
@@ -1002,16 +1002,16 @@ module StripeModel =
         Account: BankAccountAccountDU option
 
         ///The name of the person or business that owns the bank account.
-        AccountHolderName: string option
+        AccountHolderName: string
 
         ///The type of entity that holds the account. This can be either `individual` or `company`.
-        AccountHolderType: string option
+        AccountHolderType: string
 
         ///A set of available payout methods for this bank account. Only values from this set should be passed as the `method` when creating a payout.
         AvailablePayoutMethods: BankAccountAvailablePayoutMethods list option
 
         ///Name of the bank associated with the routing number (e.g., `WELLS FARGO`).
-        BankName: string option
+        BankName: string
 
         ///Two-letter ISO code representing the country the bank account is located in.
         Country: string
@@ -1026,7 +1026,7 @@ module StripeModel =
         DefaultForCurrency: bool option
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Unique identifier for the object.
         Id: string
@@ -1041,7 +1041,7 @@ module StripeModel =
         Object: BankAccountObject
 
         ///The routing transit number for the bank account.
-        RoutingNumber: string option
+        RoutingNumber: string
 
         ///For bank accounts, possible values are `new`, `validated`, `verified`, `verification_failed`, or `errored`. A bank account that hasn't had any activity or validation performed is `new`. If Stripe can determine that the bank account exists, its status will be `validated`. Note that there often isn’t enough information to know (e.g., for smaller credit unions), and the validation is not always run. If customer bank account verification has succeeded, the bank account status will be `verified`. If the verification failed for any reason, such as microdeposit failure, the status will be `verification_failed`. If a transfer sent to this bank account fails, we'll set the status to `errored` and will not continue to send transfers until the bank details are updated.
     ///
@@ -1070,16 +1070,16 @@ module StripeModel =
     and BillingDetails = {
 
         ///Billing address.
-        Address: BillingDetailsAddressDU option
+        Address: BillingDetailsAddressDU
 
         ///Email address.
-        Email: string option
+        Email: string
 
         ///Full name.
-        Name: string option
+        Name: string
 
         ///Billing phone number (including extension).
-        Phone: string option
+        Phone: string
 
     }
 
@@ -1152,10 +1152,10 @@ module StripeModel =
         Customer: string option
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///The customer's email address, set by the API call that creates the receiver.
-        Email: string option
+        Email: string
 
         ///This flag is initially false and updates to true when the customer sends the `bitcoin_amount` to this receiver.
         Filled: bool
@@ -1170,7 +1170,7 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: BitcoinReceiverObject
@@ -1179,16 +1179,16 @@ module StripeModel =
         Payment: string option
 
         ///The refund address of this bitcoin receiver.
-        RefundAddress: string option
+        RefundAddress: string
 
         ///A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key.
-        Transactions: Map<string, string>
+        Transactions: Map<string, string> option
 
         ///This receiver contains uncaptured funds that can be used for a payment or refunded.
         UncapturedFunds: bool
 
         ///Indicate if this source is used for payment.
-        UsedForPayment: bool option
+        UsedForPayment: bool
 
     }
 
@@ -1242,9 +1242,9 @@ module StripeModel =
         Requested: bool
 
         ///Time at which the capability was requested. Measured in seconds since the Unix epoch.
-        RequestedAt: int option
+        RequestedAt: int
 
-        Requirements: AccountCapabilityRequirements
+        Requirements: AccountCapabilityRequirements option
 
         ///The status of the capability. Can be `active`, `inactive`, `pending`, or `unrequested`.
         Status: CapabilityStatus
@@ -1276,28 +1276,28 @@ module StripeModel =
         Account: CardAccountDU option
 
         ///City/District/Suburb/Town/Village.
-        AddressCity: string option
+        AddressCity: string
 
         ///Billing address country, if provided when creating card.
-        AddressCountry: string option
+        AddressCountry: string
 
         ///Address line 1 (Street address/PO Box/Company name).
-        AddressLine1: string option
+        AddressLine1: string
 
         ///If `address_line1` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressLine1Check: string option
+        AddressLine1Check: string
 
         ///Address line 2 (Apartment/Suite/Unit/Building).
-        AddressLine2: string option
+        AddressLine2: string
 
         ///State/County/Province/Region.
-        AddressState: string option
+        AddressState: string
 
         ///ZIP or postal code.
-        AddressZip: string option
+        AddressZip: string
 
         ///If `address_zip` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressZipCheck: string option
+        AddressZipCheck: string
 
         ///A set of available payout methods for this card. Only values from this set should be passed as the `method` when creating a payout.
         AvailablePayoutMethods: CardAvailablePayoutMethods list option
@@ -1306,7 +1306,7 @@ module StripeModel =
         Brand: CardBrand
 
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: string
 
         ///Three-letter [ISO code for currency](https://stripe.com/docs/payouts). Only applicable on accounts (not customers or recipients). The card can be used as a transfer destination for funds in this currency.
         Currency: string option
@@ -1315,16 +1315,16 @@ module StripeModel =
         Customer: CardCustomerDU option
 
         ///If a CVC was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. A result of unchecked indicates that CVC was provided but hasn't been checked yet. Checks are typically performed when attaching a card to a Customer object, or when creating a charge. For more details, see [Check if a card is valid without a charge](https://support.stripe.com/questions/check-if-a-card-is-valid-without-a-charge).
-        CvcCheck: string option
+        CvcCheck: string
 
         ///Whether this card is the default external account for its currency.
         DefaultForCurrency: bool option
 
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
-        Description: string
+        Description: string option
 
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        DynamicLast4: string option
+        DynamicLast4: string
 
         ///Two-digit number representing the card's expiration month.
         ExpMonth: int
@@ -1342,19 +1342,19 @@ module StripeModel =
         Id: string
 
         ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
-        Iin: string
+        Iin: string option
 
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
-        Issuer: string
+        Issuer: string option
 
         ///The last four digits of the card.
         Last4: string
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///Cardholder name.
-        Name: string option
+        Name: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: CardObject
@@ -1363,7 +1363,7 @@ module StripeModel =
         Recipient: CardRecipientDU option
 
         ///If the card number is tokenized, this is the method that was used. Can be `android_pay` (includes Google Pay), `apple_pay`, `masterpass`, `visa_checkout`, or null.
-        TokenizationMethod: CardTokenizationMethod option
+        TokenizationMethod: CardTokenizationMethod
 
     }
 
@@ -1423,7 +1423,7 @@ module StripeModel =
     ///Related guide: [Accept a payment with the Charges API](https://stripe.com/docs/payments/accept-a-payment-charges).
     and Charge = {
 
-        AlternateStatementDescriptors: AlternateStatementDescriptors
+        AlternateStatementDescriptors: AlternateStatementDescriptors option
 
         ///Amount intended to be collected by this payment. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
         Amount: int
@@ -1435,24 +1435,24 @@ module StripeModel =
         AmountRefunded: int
 
         ///ID of the Connect application that created the charge.
-        Application: ChargeApplicationDU option
+        Application: ChargeApplicationDU
 
         ///The application fee (if any) for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees) for details.
-        ApplicationFee: ChargeApplicationFeeDU option
+        ApplicationFee: ChargeApplicationFeeDU
 
         ///The amount of the application fee (if any) requested for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees) for details.
-        ApplicationFeeAmount: int option
+        ApplicationFeeAmount: int
 
         ///Authorization code on the charge.
-        AuthorizationCode: string
+        AuthorizationCode: string option
 
         ///ID of the balance transaction that describes the impact of this charge on your account balance (not including refunds or disputes).
-        BalanceTransaction: ChargeBalanceTransactionDU option
+        BalanceTransaction: ChargeBalanceTransactionDU
 
         BillingDetails: BillingDetails
 
         ///The full statement descriptor that is passed to card networks, and that is displayed on your customers' credit card and bank statements. Allows you to see what the statement descriptor looks like after the static and dynamic portions are combined.
-        CalculatedStatementDescriptor: string option
+        CalculatedStatementDescriptor: string
 
         ///If the charge was created without capturing, this Boolean represents whether it is still uncaptured or has since been captured.
         Captured: bool
@@ -1464,36 +1464,36 @@ module StripeModel =
         Currency: string
 
         ///ID of the customer this charge is for if one exists.
-        Customer: ChargeCustomerDU option
+        Customer: ChargeCustomerDU
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.
-        Destination: ChargeDestinationDU option
+        Destination: ChargeDestinationDU
 
         ///Details about the dispute if the charge has been disputed.
-        Dispute: ChargeDisputeDU option
+        Dispute: ChargeDisputeDU
 
         ///Whether the charge has been disputed.
         Disputed: bool
 
         ///Error code explaining reason for charge failure if available (see [the errors section](https://stripe.com/docs/api#errors) for a list of codes).
-        FailureCode: string option
+        FailureCode: string
 
         ///Message to user further explaining reason for charge failure if available.
-        FailureMessage: string option
+        FailureMessage: string
 
         ///Information on fraud assessments for the charge.
-        FraudDetails: ChargeFraudDetailsDU option
+        FraudDetails: ChargeFraudDetailsDU
 
         ///Unique identifier for the object.
         Id: string
 
         ///ID of the invoice this charge is for if one exists.
-        Invoice: ChargeInvoiceDU option
+        Invoice: ChargeInvoiceDU
 
-        Level3: Level3
+        Level3: Level3 option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -1505,34 +1505,34 @@ module StripeModel =
         Object: ChargeObject
 
         ///The account (if any) the charge was made on behalf of without triggering an automatic transfer. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers) for details.
-        OnBehalfOf: ChargeOnBehalfOfDU option
+        OnBehalfOf: ChargeOnBehalfOfDU
 
         ///ID of the order this charge is for if one exists.
-        Order: ChargeOrderDU option
+        Order: ChargeOrderDU
 
         ///Details about whether the payment was accepted, and why. See [understanding declines](https://stripe.com/docs/declines) for details.
-        Outcome: ChargeOutcomeDU option
+        Outcome: ChargeOutcomeDU
 
         ///`true` if the charge succeeded, or was successfully authorized for later capture.
         Paid: bool
 
         ///ID of the PaymentIntent associated with this charge, if one exists.
-        PaymentIntent: ChargePaymentIntentDU option
+        PaymentIntent: ChargePaymentIntentDU
 
         ///ID of the payment method used in this charge.
-        PaymentMethod: string option
+        PaymentMethod: string
 
         ///Details about the payment method at the time of the transaction.
-        PaymentMethodDetails: ChargePaymentMethodDetailsDU option
+        PaymentMethodDetails: ChargePaymentMethodDetailsDU
 
         ///This is the email address that the receipt for this charge was sent to.
-        ReceiptEmail: string option
+        ReceiptEmail: string
 
         ///This is the transaction number that appears on email receipts sent for this charge. This attribute will be `null` until a receipt has been sent.
-        ReceiptNumber: string option
+        ReceiptNumber: string
 
         ///This is the URL to view the receipt for this charge. The receipt is kept up-to-date to the latest state of the charge, including any refunds. If the charge is for an Invoice, the receipt will be stylized as an Invoice receipt.
-        ReceiptUrl: string option
+        ReceiptUrl: string
 
         ///Whether the charge has been fully refunded. If the charge is only partially refunded, this attribute will still be false.
         Refunded: bool
@@ -1541,34 +1541,34 @@ module StripeModel =
         Refunds: Map<string, string>
 
         ///ID of the review associated with this charge if one exists.
-        Review: ChargeReviewDU option
+        Review: ChargeReviewDU
 
         ///Shipping information for the charge.
-        Shipping: ChargeShippingDU option
+        Shipping: ChargeShippingDU
 
         ///This is a legacy field that will be removed in the future. It contains the Source, Card, or BankAccount object used for the charge. For details about the payment method used for this charge, refer to `payment_method` or `payment_method_details` instead.
-        Source: ChargeSourceDU option
+        Source: ChargeSourceDU
 
         ///The transfer ID which created this charge. Only present if the charge came from another Stripe account. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.
-        SourceTransfer: ChargeSourceTransferDU option
+        SourceTransfer: ChargeSourceTransferDU
 
         ///For card charges, use `statement_descriptor_suffix` instead. Otherwise, you can use this value as the complete description of a charge on your customers’ statements. Must contain at least one letter, maximum 22 characters.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///Provides information about the charge that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
-        StatementDescriptorSuffix: string option
+        StatementDescriptorSuffix: string
 
         ///The status of the payment is either `succeeded`, `pending`, or `failed`.
         Status: string
 
         ///ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter).
-        Transfer: ChargeTransferDU
+        Transfer: ChargeTransferDU option
 
         ///An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.
-        TransferData: ChargeTransferDataDU option
+        TransferData: ChargeTransferDataDU
 
         ///A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
-        TransferGroup: string option
+        TransferGroup: string
 
     }
 
@@ -1650,10 +1650,10 @@ module StripeModel =
     and ChargeFraudDetails = {
 
         ///Assessments from Stripe. If set, the value is `fraudulent`.
-        StripeReport: string
+        StripeReport: string option
 
         ///Assessments reported by you. If set, possible values of are `safe` and `fraudulent`.
-        UserReport: string
+        UserReport: string option
 
     }
 
@@ -1661,22 +1661,22 @@ module StripeModel =
     and ChargeOutcome = {
 
         ///Possible values are `approved_by_network`, `declined_by_network`, `not_sent_to_network`, and `reversed_after_approval`. The value `reversed_after_approval` indicates the payment was [blocked by Stripe](https://stripe.com/docs/declines#blocked-payments) after bank authorization, and may temporarily appear as "pending" on a cardholder's statement.
-        NetworkStatus: string option
+        NetworkStatus: string
 
         ///An enumerated value providing a more detailed explanation of the outcome's `type`. Charges blocked by Radar's default block rule have the value `highest_risk_level`. Charges placed in review by Radar's default review rule have the value `elevated_risk_level`. Charges authorized, blocked, or placed in review by custom rules have the value `rule`. See [understanding declines](https://stripe.com/docs/declines) for more details.
-        Reason: string option
+        Reason: string
 
         ///Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are `normal`, `elevated`, `highest`. For non-card payments, and card-based payments predating the public assignment of risk levels, this field will have the value `not_assessed`. In the event of an error in the evaluation, this field will have the value `unknown`. This field is only available with Radar.
-        RiskLevel: string
+        RiskLevel: string option
 
         ///Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are between 0 and 100. For non-card payments, card-based payments predating the public assignment of risk scores, or in the event of an error during evaluation, this field will not be present. This field is only available with Radar for Fraud Teams.
-        RiskScore: int
+        RiskScore: int option
 
         ///The ID of the Radar rule that matched the payment, if applicable.
-        Rule: ChargeOutcomeRuleDU
+        Rule: ChargeOutcomeRuleDU option
 
         ///A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer.
-        SellerMessage: string option
+        SellerMessage: string
 
         ///Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://stripe.com/docs/declines) and [Radar reviews](https://stripe.com/docs/radar/reviews) for details.
         Type: string
@@ -1691,7 +1691,7 @@ module StripeModel =
     and ChargeTransferData = {
 
         ///The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
-        Amount: int option
+        Amount: int
 
         ///ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.
         Destination: ChargeTransferDataDestinationDU
@@ -1718,16 +1718,16 @@ module StripeModel =
     and CheckoutSession = {
 
         ///Enables user redeemable promotion codes.
-        AllowPromotionCodes: bool option
+        AllowPromotionCodes: bool
 
         ///Total of all items before discounts or taxes are applied.
-        AmountSubtotal: int option
+        AmountSubtotal: int
 
         ///Total of all items after discounts and taxes are applied.
-        AmountTotal: int option
+        AmountTotal: int
 
         ///Describes whether Checkout should collect the customer's billing address.
-        BillingAddressCollection: CheckoutSessionBillingAddressCollection option
+        BillingAddressCollection: CheckoutSessionBillingAddressCollection
 
         ///The URL the customer will be directed to if they decide to cancel payment and return to your website.
         CancelUrl: string
@@ -1735,40 +1735,40 @@ module StripeModel =
         ///A unique string to reference the Checkout Session. This can be a
     ///customer ID, a cart ID, or similar, and can be used to reconcile the
     ///session with your internal systems.
-        ClientReferenceId: string option
+        ClientReferenceId: string
 
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string option
+        Currency: string
 
         ///The ID of the customer for this session.
     ///For Checkout Sessions in `payment` or `subscription` mode, Checkout
     ///will create a new customer object based on information provided
     ///during the session unless an existing customer was provided when
     ///the session was created.
-        Customer: CheckoutSessionCustomerDU option
+        Customer: CheckoutSessionCustomerDU
 
         ///If provided, this value will be used when the Customer object is created.
     ///If not provided, customers will be asked to enter their email address.
     ///Use this parameter to prefill customer data if you already have an email
     ///on file. To access information about the customer once a session is
     ///complete, use the `customer` attribute.
-        CustomerEmail: string option
+        CustomerEmail: string
 
         ///Unique identifier for the object. Used to pass to `redirectToCheckout`
     ///in Stripe.js.
         Id: string
 
         ///The line items purchased by the customer.
-        LineItems: Map<string, string>
+        LineItems: Map<string, string> option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///The IETF language tag of the locale Checkout is displayed in. If blank or `auto`, the browser's locale is used.
-        Locale: CheckoutSessionLocale option
+        Locale: CheckoutSessionLocale
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///The mode of the Checkout Session.
         Mode: CheckoutSessionMode
@@ -1777,7 +1777,7 @@ module StripeModel =
         Object: CheckoutSessionObject
 
         ///The ID of the PaymentIntent for Checkout Sessions in `payment` mode.
-        PaymentIntent: CheckoutSessionPaymentIntentDU option
+        PaymentIntent: CheckoutSessionPaymentIntentDU
 
         ///A list of the types of payment methods (e.g. card) this Checkout
     ///Session is allowed to accept.
@@ -1788,29 +1788,29 @@ module StripeModel =
         PaymentStatus: CheckoutSessionPaymentStatus
 
         ///The ID of the SetupIntent for Checkout Sessions in `setup` mode.
-        SetupIntent: CheckoutSessionSetupIntentDU option
+        SetupIntent: CheckoutSessionSetupIntentDU
 
         ///Shipping information for this Checkout Session.
-        Shipping: CheckoutSessionShippingDU option
+        Shipping: CheckoutSessionShippingDU
 
         ///When set, provides configuration for Checkout to collect a shipping address from a customer.
-        ShippingAddressCollection: CheckoutSessionShippingAddressCollectionDU option
+        ShippingAddressCollection: CheckoutSessionShippingAddressCollectionDU
 
         ///Describes the type of transaction being performed by Checkout in order to customize
     ///relevant text on the page, such as the submit button. `submit_type` can only be
     ///specified on Checkout Sessions in `payment` mode, but not Checkout Sessions
     ///in `subscription` or `setup` mode.
-        SubmitType: CheckoutSessionSubmitType option
+        SubmitType: CheckoutSessionSubmitType
 
         ///The ID of the subscription for Checkout Sessions in `subscription` mode.
-        Subscription: CheckoutSessionSubscriptionDU option
+        Subscription: CheckoutSessionSubscriptionDU
 
         ///The URL the customer will be directed to after the payment or
     ///subscription creation is successful.
         SuccessUrl: string
 
         ///Tax and discount details for the computed total amount.
-        TotalDetails: CheckoutSessionTotalDetailsDU option
+        TotalDetails: CheckoutSessionTotalDetailsDU
 
     }
 
@@ -1993,21 +1993,21 @@ module StripeModel =
     and Coupon = {
 
         ///Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
-        AmountOff: int option
+        AmountOff: int
 
-        AppliesTo: CouponAppliesTo
+        AppliesTo: CouponAppliesTo option
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///If `amount_off` has been set, the three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the amount to take off.
-        Currency: string option
+        Currency: string
 
         ///One of `forever`, `once`, and `repeating`. Describes how long a customer who applies this coupon will get the discount.
         Duration: CouponDuration
 
         ///If `duration` is `repeating`, the number of months the coupon applies. Null if coupon `duration` is `forever` or `once`.
-        DurationInMonths: int option
+        DurationInMonths: int
 
         ///Unique identifier for the object.
         Id: string
@@ -2016,22 +2016,22 @@ module StripeModel =
         Livemode: bool
 
         ///Maximum number of times this coupon can be redeemed, in total, across all customers, before it is no longer valid.
-        MaxRedemptions: int option
+        MaxRedemptions: int
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///Name of the coupon displayed to customers on for instance invoices or receipts.
-        Name: string option
+        Name: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: CouponObject
 
         ///Percent that will be taken off the subtotal of any invoices for this customer for the duration of the coupon. For example, a coupon with percent_off of 50 will make a %s100 invoice %s50 instead.
-        PercentOff: decimal option
+        PercentOff: decimal
 
         ///Date after which the coupon can no longer be redeemed.
-        RedeemBy: int option
+        RedeemBy: int
 
         ///Number of times this coupon has been applied to a customer.
         TimesRedeemed: int
@@ -2075,7 +2075,7 @@ module StripeModel =
         Customer: CreditNoteCustomerDU
 
         ///Customer balance transaction related to this credit note.
-        CustomerBalanceTransaction: CreditNoteCustomerBalanceTransactionDU option
+        CustomerBalanceTransaction: CreditNoteCustomerBalanceTransactionDU
 
         ///The integer amount in %s representing the total amount of discount that was credited.
         DiscountAmount: int
@@ -2096,10 +2096,10 @@ module StripeModel =
         Livemode: bool
 
         ///Customer-facing text that appears on the credit note PDF.
-        Memo: string option
+        Memo: string
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///A unique number that identifies this particular credit note and appears on the PDF of the credit note and its associated invoice.
         Number: string
@@ -2108,16 +2108,16 @@ module StripeModel =
         Object: CreditNoteObject
 
         ///Amount that was credited outside of Stripe.
-        OutOfBandAmount: int option
+        OutOfBandAmount: int
 
         ///The link to download the PDF of the credit note.
         Pdf: string
 
         ///Reason for issuing this credit note, one of `duplicate`, `fraudulent`, `order_change`, or `product_unsatisfactory`
-        Reason: CreditNoteReason option
+        Reason: CreditNoteReason
 
         ///Refund related to this credit note.
-        Refund: CreditNoteRefundDU option
+        Refund: CreditNoteRefundDU
 
         ///Status of this credit note, one of `issued` or `void`. Learn more about [voiding credit notes](https://stripe.com/docs/billing/invoices/credit-notes#voiding).
         Status: CreditNoteStatus
@@ -2135,7 +2135,7 @@ module StripeModel =
         Type: CreditNoteType
 
         ///The time that the credit note was voided.
-        VoidedAt: int option
+        VoidedAt: int
 
     }
 
@@ -2180,7 +2180,7 @@ module StripeModel =
         Amount: int
 
         ///Description of the item being credited.
-        Description: string option
+        Description: string
 
         ///The integer amount in %s representing the discount being credited for this line item.
         DiscountAmount: int
@@ -2192,7 +2192,7 @@ module StripeModel =
         Id: string
 
         ///ID of the invoice line item being credited
-        InvoiceLineItem: string
+        InvoiceLineItem: string option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -2201,7 +2201,7 @@ module StripeModel =
         Object: CreditNoteLineItemObject
 
         ///The number of units of product being credited.
-        Quantity: int option
+        Quantity: int
 
         ///The amount of tax calculated per tax rate for this line item
         TaxAmounts: CreditNoteTaxAmount list
@@ -2213,10 +2213,10 @@ module StripeModel =
         Type: CreditNoteLineItemType
 
         ///The cost of each unit of product being credited.
-        UnitAmount: int option
+        UnitAmount: int
 
         ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string option
+        UnitAmountDecimal: string
 
     }
 
@@ -2257,7 +2257,7 @@ module StripeModel =
         Address: CustomerAddressDU option
 
         ///Current balance, if any, being stored on the customer. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice. The balance does not refer to any unpaid invoices; it solely takes into account amounts that have yet to be successfully applied to any invoice. This balance is only taken into account as invoices are finalized.
-        Balance: int
+        Balance: int option
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -2268,7 +2268,7 @@ module StripeModel =
         ///ID of the default payment source for the customer.
     ///
     ///If you are using payment methods created via the PaymentMethods API, see the [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) field instead.
-        DefaultSource: CustomerDefaultSourceDU option
+        DefaultSource: CustomerDefaultSourceDU
 
         ///When the customer's latest invoice is billed by charging automatically, `delinquent` is `true` if the invoice's latest charge failed. When the customer's latest invoice is billed by sending an invoice, `delinquent` is `true` if the invoice isn't paid by its due date.
     ///
@@ -2276,13 +2276,13 @@ module StripeModel =
         Delinquent: bool option
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///Describes the current discount active on the customer, if there is one.
         Discount: CustomerDiscountDU option
 
         ///The customer's email address.
-        Email: string option
+        Email: string
 
         ///Unique identifier for the object.
         Id: string
@@ -2290,19 +2290,19 @@ module StripeModel =
         ///The prefix for the customer used to generate unique invoice numbers.
         InvoicePrefix: string option
 
-        InvoiceSettings: InvoiceSettingCustomerSetting
+        InvoiceSettings: InvoiceSettingCustomerSetting option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
+        Metadata: Map<string, string> option
 
         ///The customer's full name or business name.
         Name: string option
 
         ///The suffix of the customer's next invoice number, e.g., 0001.
-        NextInvoiceSequence: int
+        NextInvoiceSequence: int option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: CustomerObject
@@ -2314,19 +2314,19 @@ module StripeModel =
         PreferredLocales: string list option
 
         ///Mailing and shipping address for the customer. Appears on invoices emailed to this customer.
-        Shipping: CustomerShippingDU option
+        Shipping: CustomerShippingDU
 
         ///The customer's payment sources, if any.
-        Sources: Map<string, string>
+        Sources: Map<string, string> option
 
         ///The customer's current subscriptions, if any.
-        Subscriptions: Map<string, string>
+        Subscriptions: Map<string, string> option
 
         ///Describes the customer's tax exemption status. One of `none`, `exempt`, or `reverse`. When set to `reverse`, invoice and receipt PDFs include the text **"Reverse charge"**.
         TaxExempt: CustomerTaxExempt option
 
         ///The customer's tax IDs.
-        TaxIds: Map<string, string>
+        TaxIds: Map<string, string> option
 
     }
 
@@ -2355,11 +2355,11 @@ module StripeModel =
     and CustomerAcceptance = {
 
         ///The time at which the customer accepted the Mandate.
-        AcceptedAt: int option
+        AcceptedAt: int
 
-        Offline: OfflineAcceptance
+        Offline: OfflineAcceptance option
 
-        Online: OnlineAcceptance
+        Online: OnlineAcceptance option
 
         ///The type of customer acceptance information included with the Mandate. One of `online` or `offline`.
         Type: CustomerAcceptanceType
@@ -2385,7 +2385,7 @@ module StripeModel =
         Created: int
 
         ///The ID of the credit note (if any) related to the transaction.
-        CreditNote: CustomerBalanceTransactionCreditNoteDU option
+        CreditNote: CustomerBalanceTransactionCreditNoteDU
 
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
@@ -2394,7 +2394,7 @@ module StripeModel =
         Customer: CustomerBalanceTransactionCustomerDU
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///The customer's `balance` after the transaction was applied. A negative value decreases the amount due on the customer's next invoice. A positive value increases the amount due on the customer's next invoice.
         EndingBalance: int
@@ -2403,13 +2403,13 @@ module StripeModel =
         Id: string
 
         ///The ID of the invoice (if any) related to the transaction.
-        Invoice: CustomerBalanceTransactionInvoiceDU option
+        Invoice: CustomerBalanceTransactionInvoiceDU
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: CustomerBalanceTransactionObject
@@ -2509,7 +2509,7 @@ module StripeModel =
     and DeletedBankAccount = {
 
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string option
+        Currency: string
 
         ///Always true for a deleted object
         Deleted: DeletedBankAccountDeleted
@@ -2552,7 +2552,7 @@ module StripeModel =
     and DeletedCard = {
 
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string option
+        Currency: string
 
         ///Always true for a deleted object
         Deleted: DeletedCardDeleted
@@ -2615,12 +2615,12 @@ module StripeModel =
     and DeletedDiscount = {
 
         ///The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.
-        CheckoutSession: string option
+        CheckoutSession: string
 
         Coupon: Coupon
 
         ///The ID of the customer associated with this discount.
-        Customer: DeletedDiscountCustomerDU option
+        Customer: DeletedDiscountCustomerDU
 
         ///Always true for a deleted object
         Deleted: DeletedDiscountDeleted
@@ -2629,22 +2629,22 @@ module StripeModel =
         Id: string
 
         ///The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
-        Invoice: string option
+        Invoice: string
 
         ///The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
-        InvoiceItem: string option
+        InvoiceItem: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: DeletedDiscountObject
 
         ///The promotion code applied to create this discount.
-        PromotionCode: DeletedDiscountPromotionCodeDU option
+        PromotionCode: DeletedDiscountPromotionCodeDU
 
         ///Date that the coupon was applied.
         Start: int
 
         ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
-        Subscription: string option
+        Subscription: string
 
     }
 
@@ -2977,13 +2977,13 @@ module StripeModel =
     and DeliveryEstimate = {
 
         ///If `type` is `"exact"`, `date` will be the expected delivery date in the format YYYY-MM-DD.
-        Date: string
+        Date: string option
 
         ///If `type` is `"range"`, `earliest` will be be the earliest delivery date in the format YYYY-MM-DD.
-        Earliest: string
+        Earliest: string option
 
         ///If `type` is `"range"`, `latest` will be the latest delivery date in the format YYYY-MM-DD.
-        Latest: string
+        Latest: string option
 
         ///The type of estimate. Must be either `"range"` or `"exact"`.
         Type: string
@@ -2998,36 +2998,36 @@ module StripeModel =
     and Discount = {
 
         ///The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.
-        CheckoutSession: string option
+        CheckoutSession: string
 
         Coupon: Coupon
 
         ///The ID of the customer associated with this discount.
-        Customer: DiscountCustomerDU option
+        Customer: DiscountCustomerDU
 
         ///If the coupon has a duration of `repeating`, the date that this discount will end. If the coupon has a duration of `once` or `forever`, this attribute will be null.
-        End: int option
+        End: int
 
         ///The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
         Id: string
 
         ///The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
-        Invoice: string option
+        Invoice: string
 
         ///The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
-        InvoiceItem: string option
+        InvoiceItem: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: DiscountObject
 
         ///The promotion code applied to create this discount.
-        PromotionCode: DiscountPromotionCodeDU option
+        PromotionCode: DiscountPromotionCodeDU
 
         ///Date that the coupon was applied.
         Start: int
 
         ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
-        Subscription: string option
+        Subscription: string
 
     }
 
@@ -3106,7 +3106,7 @@ module StripeModel =
         Object: DisputeObject
 
         ///ID of the PaymentIntent that was disputed.
-        PaymentIntent: DisputePaymentIntentDU option
+        PaymentIntent: DisputePaymentIntentDU
 
         ///Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Read more about [dispute reasons](https://stripe.com/docs/disputes/categories).
         Reason: string
@@ -3141,85 +3141,85 @@ module StripeModel =
     and DisputeEvidence = {
 
         ///Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity.
-        AccessActivityLog: string option
+        AccessActivityLog: string
 
         ///The billing address provided by the customer.
-        BillingAddress: string option
+        BillingAddress: string
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your subscription cancellation policy, as shown to the customer.
-        CancellationPolicy: DisputeEvidenceCancellationPolicyDU option
+        CancellationPolicy: DisputeEvidenceCancellationPolicyDU
 
         ///An explanation of how and when the customer was shown your refund policy prior to purchase.
-        CancellationPolicyDisclosure: string option
+        CancellationPolicyDisclosure: string
 
         ///A justification for why the customer's subscription was not canceled.
-        CancellationRebuttal: string option
+        CancellationRebuttal: string
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any communication with the customer that you feel is relevant to your case. Examples include emails proving that the customer received the product or service, or demonstrating their use of or satisfaction with the product or service.
-        CustomerCommunication: DisputeEvidenceCustomerCommunicationDU option
+        CustomerCommunication: DisputeEvidenceCustomerCommunicationDU
 
         ///The email address of the customer.
-        CustomerEmailAddress: string option
+        CustomerEmailAddress: string
 
         ///The name of the customer.
-        CustomerName: string option
+        CustomerName: string
 
         ///The IP address that the customer used when making the purchase.
-        CustomerPurchaseIp: string option
+        CustomerPurchaseIp: string
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A relevant document or contract showing the customer's signature.
-        CustomerSignature: DisputeEvidenceCustomerSignatureDU option
+        CustomerSignature: DisputeEvidenceCustomerSignatureDU
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation for the prior charge that can uniquely identify the charge, such as a receipt, shipping label, work order, etc. This document should be paired with a similar document from the disputed payment that proves the two payments are separate.
-        DuplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentationDU option
+        DuplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentationDU
 
         ///An explanation of the difference between the disputed charge versus the prior charge that appears to be a duplicate.
-        DuplicateChargeExplanation: string option
+        DuplicateChargeExplanation: string
 
         ///The Stripe ID for the prior charge which appears to be a duplicate of the disputed charge.
-        DuplicateChargeId: string option
+        DuplicateChargeId: string
 
         ///A description of the product or service that was sold.
-        ProductDescription: string option
+        ProductDescription: string
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any receipt or message sent to the customer notifying them of the charge.
-        Receipt: DisputeEvidenceReceiptDU option
+        Receipt: DisputeEvidenceReceiptDU
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your refund policy, as shown to the customer.
-        RefundPolicy: DisputeEvidenceRefundPolicyDU option
+        RefundPolicy: DisputeEvidenceRefundPolicyDU
 
         ///Documentation demonstrating that the customer was shown your refund policy prior to purchase.
-        RefundPolicyDisclosure: string option
+        RefundPolicyDisclosure: string
 
         ///A justification for why the customer is not entitled to a refund.
-        RefundRefusalExplanation: string option
+        RefundRefusalExplanation: string
 
         ///The date on which the customer received or began receiving the purchased service, in a clear human-readable format.
-        ServiceDate: string option
+        ServiceDate: string
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a service was provided to the customer. This could include a copy of a signed contract, work order, or other form of written agreement.
-        ServiceDocumentation: DisputeEvidenceServiceDocumentationDU option
+        ServiceDocumentation: DisputeEvidenceServiceDocumentationDU
 
         ///The address to which a physical product was shipped. You should try to include as complete address information as possible.
-        ShippingAddress: string option
+        ShippingAddress: string
 
         ///The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc. If multiple carriers were used for this purchase, please separate them with commas.
-        ShippingCarrier: string option
+        ShippingCarrier: string
 
         ///The date on which a physical product began its route to the shipping address, in a clear human-readable format.
-        ShippingDate: string option
+        ShippingDate: string
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a product was shipped to the customer at the same address the customer provided to you. This could include a copy of the shipment receipt, shipping label, etc. It should show the customer's full shipping address, if possible.
-        ShippingDocumentation: DisputeEvidenceShippingDocumentationDU option
+        ShippingDocumentation: DisputeEvidenceShippingDocumentationDU
 
         ///The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas.
-        ShippingTrackingNumber: string option
+        ShippingTrackingNumber: string
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any additional evidence or statements.
-        UncategorizedFile: DisputeEvidenceUncategorizedFileDU option
+        UncategorizedFile: DisputeEvidenceUncategorizedFileDU
 
         ///Any additional evidence or statements.
-        UncategorizedText: string option
+        UncategorizedText: string
 
     }
 
@@ -3263,7 +3263,7 @@ module StripeModel =
     and DisputeEvidenceDetails = {
 
         ///Date by which evidence must be submitted in order to successfully challenge dispute. Will be null if the customer's bank or credit card company doesn't allow a response for this particular dispute.
-        DueBy: int option
+        DueBy: int
 
         ///Whether evidence has been staged for this dispute.
         HasEvidence: bool
@@ -3295,7 +3295,7 @@ module StripeModel =
         Object: EphemeralKeyObject
 
         ///The key's secret. You can use this value to make authorized requests to the Stripe API.
-        Secret: string
+        Secret: string option
 
     }
 
@@ -3341,10 +3341,10 @@ module StripeModel =
     and Event = {
 
         ///The connected account that originated the event.
-        Account: string
+        Account: string option
 
         ///The Stripe API version used to render `data`. *Note: This property is populated only for events on or after October 31, 2014*.
-        ApiVersion: string option
+        ApiVersion: string
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -3364,7 +3364,7 @@ module StripeModel =
         PendingWebhooks: int
 
         ///Information on the API request that instigated the event.
-        Request: EventRequestDU option
+        Request: EventRequestDU
 
         ///Description of the event (e.g., `invoice.created` or `charge.refunded`).
         Type: string
@@ -3415,13 +3415,13 @@ module StripeModel =
         Amount: int
 
         ///ID of the Connect application that earned the fee.
-        Application: string option
+        Application: string
 
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///Type of the fee, one of: `application_fee`, `stripe_fee` or `tax`.
         Type: string
@@ -3439,7 +3439,7 @@ module StripeModel =
         Amount: int
 
         ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: FeeRefundBalanceTransactionDU option
+        BalanceTransaction: FeeRefundBalanceTransactionDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -3454,7 +3454,7 @@ module StripeModel =
         Id: string
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: FeeRefundObject
@@ -3485,10 +3485,10 @@ module StripeModel =
         Created: int
 
         ///The time at which the file expires and is no longer available in epoch seconds.
-        ExpiresAt: int option
+        ExpiresAt: int
 
         ///A filename for the file, suitable for saving to a filesystem.
-        Filename: string option
+        Filename: string
 
         ///Unique identifier for the object.
         Id: string
@@ -3506,13 +3506,13 @@ module StripeModel =
         Size: int
 
         ///A user friendly title for the document.
-        Title: string option
+        Title: string
 
         ///The type of the file returned (e.g., `csv`, `pdf`, `jpg`, or `png`).
-        Type: string option
+        Type: string
 
         ///The URL from which the file can be downloaded using your live secret API key.
-        Url: string option
+        Url: string
 
     }
 
@@ -3541,7 +3541,7 @@ module StripeModel =
         Expired: bool
 
         ///Time at which the link expires.
-        ExpiresAt: int option
+        ExpiresAt: int
 
         ///The file object this link points to.
         File: FileLinkFileDU
@@ -3559,7 +3559,7 @@ module StripeModel =
         Object: FileLinkObject
 
         ///The publicly accessible URL to download the file.
-        Url: string option
+        Url: string
 
     }
 
@@ -3574,28 +3574,28 @@ module StripeModel =
     and FinancialReportingFinanceReportRunRunParameters = {
 
         ///The set of output columns requested for inclusion in the report run.
-        Columns: string list
+        Columns: string list option
 
         ///Connected account ID by which to filter the report run.
-        ConnectedAccount: string
+        ConnectedAccount: string option
 
         ///Currency of objects to be included in the report run.
-        Currency: string
+        Currency: string option
 
         ///Ending timestamp of data to be included in the report run (exclusive).
-        IntervalEnd: int
+        IntervalEnd: int option
 
         ///Starting timestamp of data to be included in the report run.
-        IntervalStart: int
+        IntervalStart: int option
 
         ///Payout ID by which to filter the report run.
-        Payout: string
+        Payout: string option
 
         ///Category of balance transactions to be included in the report run.
-        ReportingCategory: string
+        ReportingCategory: string option
 
         ///Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
-        Timezone: string
+        Timezone: string option
 
     }
 
@@ -3603,13 +3603,13 @@ module StripeModel =
     and Inventory = {
 
         ///The count of inventory available. Will be present if and only if `type` is `finite`.
-        Quantity: int option
+        Quantity: int
 
         ///Inventory type. Possible values are `finite`, `bucket` (not quantified), and `infinite`.
         Type: string
 
         ///An indicator of the inventory available. Possible values are `in_stock`, `limited`, and `out_of_stock`. Will be present if and only if `type` is `bucket`.
-        Value: string option
+        Value: string
 
     }
 
@@ -3648,10 +3648,10 @@ module StripeModel =
     and Invoice = {
 
         ///The country of the business associated with this invoice, most often the business creating the invoice.
-        AccountCountry: string option
+        AccountCountry: string
 
         ///The public name of the business associated with this invoice, most often the business creating the invoice.
-        AccountName: string option
+        AccountName: string
 
         ///The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
         AccountTaxIds: InvoiceAccountTaxIdsDU list option
@@ -3666,7 +3666,7 @@ module StripeModel =
         AmountRemaining: int
 
         ///The fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account when the invoice is paid.
-        ApplicationFeeAmount: int option
+        ApplicationFeeAmount: int
 
         ///Number of payment attempts made for this invoice, from the perspective of the payment retry schedule. Any payment attempt counts as the first attempt, and subsequently only automatic retries increment the attempt count. In other words, manual payment attempts after the first attempt do not affect the retry schedule.
         AttemptCount: int
@@ -3675,16 +3675,16 @@ module StripeModel =
         Attempted: bool
 
         ///Controls whether Stripe will perform [automatic collection](https://stripe.com/docs/billing/invoices/workflow/#auto_advance) of the invoice. When `false`, the invoice's state will not automatically advance without an explicit action.
-        AutoAdvance: bool
+        AutoAdvance: bool option
 
         ///Indicates the reason why the invoice was created. `subscription_cycle` indicates an invoice created by a subscription advancing into a new period. `subscription_create` indicates an invoice created due to creating a subscription. `subscription_update` indicates an invoice created due to updating a subscription. `subscription` is set for all old invoices to indicate either a change to a subscription or a period advancement. `manual` is set for all invoices unrelated to a subscription (for example: created via the invoice editor). The `upcoming` value is reserved for simulated invoices per the upcoming invoice endpoint. `subscription_threshold` indicates an invoice created due to a billing threshold being reached.
-        BillingReason: InvoiceBillingReason option
+        BillingReason: InvoiceBillingReason
 
         ///ID of the latest charge generated for this invoice, if any.
-        Charge: InvoiceChargeDU option
+        Charge: InvoiceChargeDU
 
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this invoice using the default source attached to the customer. When sending an invoice, Stripe will email this invoice to the customer with payment instructions.
-        CollectionMethod: InvoiceCollectionMethod option
+        CollectionMethod: InvoiceCollectionMethod
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -3699,58 +3699,58 @@ module StripeModel =
         Customer: InvoiceCustomerDU
 
         ///The customer's address. Until the invoice is finalized, this field will equal `customer.address`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerAddress: InvoiceCustomerAddressDU option
+        CustomerAddress: InvoiceCustomerAddressDU
 
         ///The customer's email. Until the invoice is finalized, this field will equal `customer.email`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerEmail: string option
+        CustomerEmail: string
 
         ///The customer's name. Until the invoice is finalized, this field will equal `customer.name`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerName: string option
+        CustomerName: string
 
         ///The customer's phone number. Until the invoice is finalized, this field will equal `customer.phone`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerPhone: string option
+        CustomerPhone: string
 
         ///The customer's shipping information. Until the invoice is finalized, this field will equal `customer.shipping`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerShipping: InvoiceCustomerShippingDU option
+        CustomerShipping: InvoiceCustomerShippingDU
 
         ///The customer's tax exempt status. Until the invoice is finalized, this field will equal `customer.tax_exempt`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerTaxExempt: InvoiceCustomerTaxExempt option
+        CustomerTaxExempt: InvoiceCustomerTaxExempt
 
         ///The customer's tax IDs. Until the invoice is finalized, this field will contain the same tax IDs as `customer.tax_ids`. Once the invoice is finalized, this field will no longer be updated.
         CustomerTaxIds: InvoicesResourceInvoiceTaxId list
 
         ///ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: InvoiceDefaultPaymentMethodDU option
+        DefaultPaymentMethod: InvoiceDefaultPaymentMethodDU
 
         ///ID of the default payment source for the invoice. It must belong to the customer associated with the invoice and be in a chargeable state. If not set, defaults to the subscription's default source, if any, or to the customer's default source.
-        DefaultSource: InvoiceDefaultSourceDU option
+        DefaultSource: InvoiceDefaultSourceDU
 
         ///The tax rates applied to this invoice, if any.
         DefaultTaxRates: TaxRate list
 
         ///An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard.
-        Description: string option
+        Description: string
 
         ///Describes the current discount applied to this invoice, if there is one. Not populated if there are multiple discounts.
-        Discount: InvoiceDiscountDU option
+        Discount: InvoiceDiscountDU
 
         ///The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: InvoiceDiscountsDU list option
+        Discounts: InvoiceDiscountsDU list
 
         ///The date on which payment for this invoice is due. This value will be `null` for invoices where `collection_method=charge_automatically`.
-        DueDate: int option
+        DueDate: int
 
         ///Ending customer balance after the invoice is finalized. Invoices are finalized approximately an hour after successful webhook delivery or when payment collection is attempted for the invoice. If the invoice has not been finalized yet, this will be null.
-        EndingBalance: int option
+        EndingBalance: int
 
         ///Footer displayed on the invoice.
-        Footer: string option
+        Footer: string
 
         ///The URL for the hosted invoice page, which allows customers to view and pay an invoice. If the invoice has not been finalized yet, this will be null.
         HostedInvoiceUrl: string option
 
         ///Unique identifier for the object.
-        Id: string
+        Id: string option
 
         ///The link to download the PDF for the invoice. If the invoice has not been finalized yet, this will be null.
         InvoicePdf: string option
@@ -3765,13 +3765,13 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///The time at which payment will next be attempted. This value will be `null` for invoices where `collection_method=send_invoice`.
-        NextPaymentAttempt: int option
+        NextPaymentAttempt: int
 
         ///A unique, identifying string that appears on emails sent to the customer for this invoice. This starts with the customer's unique invoice_prefix if it is specified.
-        Number: string option
+        Number: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: InvoiceObject
@@ -3780,7 +3780,7 @@ module StripeModel =
         Paid: bool
 
         ///The PaymentIntent associated with this invoice. The PaymentIntent is generated when the invoice is finalized, and can then be used to pay the invoice. Note that voiding an invoice will cancel the PaymentIntent.
-        PaymentIntent: InvoicePaymentIntentDU option
+        PaymentIntent: InvoicePaymentIntentDU
 
         ///End of the usage period during which invoice items were added to this invoice.
         PeriodEnd: int
@@ -3795,32 +3795,32 @@ module StripeModel =
         PrePaymentCreditNotesAmount: int
 
         ///This is the transaction number that appears on email receipts sent for this invoice.
-        ReceiptNumber: string option
+        ReceiptNumber: string
 
         ///Starting customer balance before the invoice is finalized. If the invoice has not been finalized yet, this will be the current customer balance.
         StartingBalance: int
 
         ///Extra information about an invoice for the customer's credit card statement.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview)
-        Status: InvoiceStatus option
+        Status: InvoiceStatus
 
         StatusTransitions: InvoicesStatusTransitions
 
         ///The subscription that this invoice was prepared for, if any.
-        Subscription: InvoiceSubscriptionDU option
+        Subscription: InvoiceSubscriptionDU
 
         ///Only set for upcoming invoices that preview prorations. The time used to calculate prorations.
-        SubscriptionProrationDate: int
+        SubscriptionProrationDate: int option
 
         ///Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied. Item discounts are already incorporated
         Subtotal: int
 
         ///The amount of tax on this invoice. This is the sum of all the tax amounts on this invoice.
-        Tax: int option
+        Tax: int
 
-        ThresholdReason: InvoiceThresholdReason
+        ThresholdReason: InvoiceThresholdReason option
 
         ///Total after discounts and taxes.
         Total: int
@@ -3832,10 +3832,10 @@ module StripeModel =
         TotalTaxAmounts: InvoiceTaxAmount list
 
         ///The account (if any) the payment will be attributed to for tax reporting, and where funds from the payment will be transferred to for the invoice.
-        TransferData: InvoiceTransferDataDU option
+        TransferData: InvoiceTransferDataDU
 
         ///Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have [been exhausted](https://stripe.com/docs/billing/webhooks#understand). This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
-        WebhooksDeliveredAt: int option
+        WebhooksDeliveredAt: int
 
     }
 
@@ -3959,10 +3959,10 @@ module StripeModel =
         CustomFields: InvoiceSettingCustomField list
 
         ///ID of a payment method that's attached to the customer, to be used as the customer's default payment method for subscriptions and invoices.
-        DefaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethodDU option
+        DefaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethodDU
 
         ///Default footer to be displayed on invoices for this customer.
-        Footer: string option
+        Footer: string
 
     }
 
@@ -3974,7 +3974,7 @@ module StripeModel =
     and InvoiceSettingSubscriptionScheduleSetting = {
 
         ///Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
-        DaysUntilDue: int option
+        DaysUntilDue: int
 
     }
 
@@ -4000,7 +4000,7 @@ module StripeModel =
     and InvoiceThresholdReason = {
 
         ///The total invoice amount threshold boundary if it triggered the threshold invoice.
-        AmountGte: int option
+        AmountGte: int
 
         ///Indicates which line items triggered a threshold invoice.
         ItemReasons: InvoiceItemThresholdReason list
@@ -4011,7 +4011,7 @@ module StripeModel =
     and InvoiceTransferData = {
 
         ///The amount in %s that will be transferred to the destination account when the invoice is paid. By default, the entire amount is transferred to the destination.
-        Amount: int option
+        Amount: int
 
         ///The account where funds from the payment will be transferred to upon payment success.
         Destination: InvoiceTransferDataDestinationDU
@@ -4044,25 +4044,25 @@ module StripeModel =
         Date: int
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///If true, discounts will apply to this invoice item. Always false for prorations.
         Discountable: bool
 
         ///The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: InvoiceitemDiscountsDU list option
+        Discounts: InvoiceitemDiscountsDU list
 
         ///Unique identifier for the object.
         Id: string
 
         ///The ID of the invoice this invoice item belongs to.
-        Invoice: InvoiceitemInvoiceDU option
+        Invoice: InvoiceitemInvoiceDU
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: InvoiceitemObject
@@ -4070,10 +4070,10 @@ module StripeModel =
         Period: InvoiceLineItemPeriod
 
         ///If the invoice item is a proration, the plan of the subscription that the proration was computed for.
-        Plan: InvoiceitemPlanDU option
+        Plan: InvoiceitemPlanDU
 
         ///The price of the invoice item.
-        Price: InvoiceitemPriceDU option
+        Price: InvoiceitemPriceDU
 
         ///Whether the invoice item was created automatically as a proration adjustment when the customer switched plans.
         Proration: bool
@@ -4082,19 +4082,19 @@ module StripeModel =
         Quantity: int
 
         ///The subscription that this invoice item has been created for, if any.
-        Subscription: InvoiceitemSubscriptionDU option
+        Subscription: InvoiceitemSubscriptionDU
 
         ///The subscription item that this invoice item has been created for, if any.
-        SubscriptionItem: string
+        SubscriptionItem: string option
 
         ///The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item.
         TaxRates: TaxRate list
 
         ///Unit amount (in the `currency` specified) of the invoice item.
-        UnitAmount: int option
+        UnitAmount: int
 
         ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string option
+        UnitAmountDecimal: string
 
     }
 
@@ -4131,7 +4131,7 @@ module StripeModel =
         Type: InvoicesResourceInvoiceTaxIdType
 
         ///The value of the tax ID.
-        Value: string option
+        Value: string
 
     }
 
@@ -4174,16 +4174,16 @@ module StripeModel =
     and InvoicesStatusTransitions = {
 
         ///The time that the invoice draft was finalized.
-        FinalizedAt: int option
+        FinalizedAt: int
 
         ///The time that the invoice was marked uncollectible.
-        MarkedUncollectibleAt: int option
+        MarkedUncollectibleAt: int
 
         ///The time that the invoice was paid.
-        PaidAt: int option
+        PaidAt: int
 
         ///The time that the invoice was voided.
-        VoidedAt: int option
+        VoidedAt: int
 
     }
 
@@ -4239,7 +4239,7 @@ module StripeModel =
         Amount: int
 
         ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingAuthorizationAmountDetailsDU option
+        AmountDetails: IssuingAuthorizationAmountDetailsDU
 
         ///Whether the authorization has been approved.
         Approved: bool
@@ -4253,7 +4253,7 @@ module StripeModel =
         Card: IssuingCard
 
         ///The cardholder to whom this authorization belongs.
-        Cardholder: IssuingAuthorizationCardholderDU option
+        Cardholder: IssuingAuthorizationCardholderDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -4282,7 +4282,7 @@ module StripeModel =
         Object: IssuingAuthorizationObject
 
         ///The pending authorization request. This field will only be non-null during an `issuing_authorization.request` webhook.
-        PendingRequest: IssuingAuthorizationPendingRequestDU option
+        PendingRequest: IssuingAuthorizationPendingRequestDU
 
         ///History of every time the authorization was approved/denied (whether approved/denied by you directly or by Stripe based on your `spending_controls`). If the merchant changes the authorization by performing an [incremental authorization or partial capture](https://stripe.com/docs/issuing/purchases/authorizations), you can look at this field to see the previous states of the authorization.
         RequestHistory: IssuingAuthorizationRequest list
@@ -4296,7 +4296,7 @@ module StripeModel =
         VerificationData: IssuingAuthorizationVerificationData
 
         ///What, if any, digital wallet was used for this authorization. One of `apple_pay`, `google_pay`, or `samsung_pay`.
-        Wallet: string option
+        Wallet: string
 
     }
 
@@ -4332,7 +4332,7 @@ module StripeModel =
         Brand: string
 
         ///The reason why the card was canceled.
-        CancellationReason: IssuingCardCancellationReason option
+        CancellationReason: IssuingCardCancellationReason
 
         Cardholder: IssuingCardholder
 
@@ -4343,7 +4343,7 @@ module StripeModel =
         Currency: string
 
         ///The card's CVC. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
-        Cvc: string
+        Cvc: string option
 
         ///The expiration month of the card.
         ExpMonth: int
@@ -4364,22 +4364,22 @@ module StripeModel =
         Metadata: Map<string, string>
 
         ///The full unredacted card number. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
-        Number: string
+        Number: string option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: IssuingCardObject
 
         ///The latest card that replaces this card, if any.
-        ReplacedBy: IssuingCardReplacedByDU option
+        ReplacedBy: IssuingCardReplacedByDU
 
         ///The card this card replaces, if any.
-        ReplacementFor: IssuingCardReplacementForDU option
+        ReplacementFor: IssuingCardReplacementForDU
 
         ///The reason why the previous card needed to be replaced.
-        ReplacementReason: IssuingCardReplacementReason option
+        ReplacementReason: IssuingCardReplacementReason
 
         ///Where and how the card will be shipped.
-        Shipping: IssuingCardShippingDU option
+        Shipping: IssuingCardShippingDU
 
         SpendingControls: IssuingCardAuthorizationControls
 
@@ -4432,19 +4432,19 @@ module StripeModel =
         Billing: IssuingCardholderAddress
 
         ///Additional information about a `company` cardholder.
-        Company: IssuingCardholderCompanyDU option
+        Company: IssuingCardholderCompanyDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///The cardholder's email address.
-        Email: string option
+        Email: string
 
         ///Unique identifier for the object.
         Id: string
 
         ///Additional information about an `individual` cardholder.
-        Individual: IssuingCardholderIndividualDU option
+        Individual: IssuingCardholderIndividualDU
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -4459,12 +4459,12 @@ module StripeModel =
         Object: IssuingCardholderObject
 
         ///The cardholder's phone number.
-        PhoneNumber: string option
+        PhoneNumber: string
 
         Requirements: IssuingCardholderRequirements
 
         ///Rules that control spending across this cardholder's cards. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details.
-        SpendingControls: IssuingCardholderSpendingControlsDU option
+        SpendingControls: IssuingCardholderSpendingControlsDU
 
         ///Specifies whether to permit authorizations on this cardholder's cards.
         Status: IssuingCardholderStatus
@@ -4501,18 +4501,18 @@ module StripeModel =
     and IssuingDispute = {
 
         ///Disputed amount. Usually the amount of the `disputed_transaction`, but can differ (usually because of currency fluctuation).
-        Amount: int
+        Amount: int option
 
         ///List of balance transactions associated with the dispute.
         BalanceTransactions: BalanceTransaction list
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
+        Created: int option
 
         ///The currency the `disputed_transaction` was made in.
-        Currency: string
+        Currency: string option
 
-        Evidence: IssuingDisputeEvidence
+        Evidence: IssuingDisputeEvidence option
 
         ///Unique identifier for the object.
         Id: string
@@ -4521,13 +4521,13 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
+        Metadata: Map<string, string> option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: IssuingDisputeObject
 
         ///Current status of the dispute.
-        Status: IssuingDisputeStatus
+        Status: IssuingDisputeStatus option
 
         ///The transaction being disputed.
         Transaction: IssuingDisputeTransactionDU
@@ -4559,19 +4559,19 @@ module StripeModel =
         Amount: int
 
         ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingTransactionAmountDetailsDU option
+        AmountDetails: IssuingTransactionAmountDetailsDU
 
         ///The `Authorization` object that led to this transaction.
-        Authorization: IssuingTransactionAuthorizationDU option
+        Authorization: IssuingTransactionAuthorizationDU
 
         ///ID of the [balance transaction](https://stripe.com/docs/api/balance_transactions) associated with this transaction.
-        BalanceTransaction: IssuingTransactionBalanceTransactionDU option
+        BalanceTransaction: IssuingTransactionBalanceTransactionDU
 
         ///The card used to make this transaction.
         Card: IssuingTransactionCardDU
 
         ///The cardholder to whom this transaction belongs.
-        Cardholder: IssuingTransactionCardholderDU option
+        Cardholder: IssuingTransactionCardholderDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -4603,7 +4603,7 @@ module StripeModel =
         Object: IssuingTransactionObject
 
         ///Additional purchase information that is optionally provided by the merchant.
-        PurchaseDetails: IssuingTransactionPurchaseDetailsDU option
+        PurchaseDetails: IssuingTransactionPurchaseDetailsDU
 
         ///The nature of the transaction.
         Type: IssuingTransactionType
@@ -4648,7 +4648,7 @@ module StripeModel =
     and IssuingAuthorizationAmountDetails = {
 
         ///The fee charged by the ATM for the cash withdrawal.
-        AtmFee: int option
+        AtmFee: int
 
     }
 
@@ -4659,22 +4659,22 @@ module StripeModel =
         Category: string
 
         ///City where the seller is located
-        City: string option
+        City: string
 
         ///Country where the seller is located
-        Country: string option
+        Country: string
 
         ///Name of the seller
-        Name: string option
+        Name: string
 
         ///Identifier assigned to the seller by the card brand
         NetworkId: string
 
         ///Postal code where the seller is located
-        PostalCode: string option
+        PostalCode: string
 
         ///State where the seller is located
-        State: string option
+        State: string
 
     }
 
@@ -4685,7 +4685,7 @@ module StripeModel =
         Amount: int
 
         ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingAuthorizationPendingRequestAmountDetailsDU option
+        AmountDetails: IssuingAuthorizationPendingRequestAmountDetailsDU
 
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
@@ -4711,7 +4711,7 @@ module StripeModel =
         Amount: int
 
         ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingAuthorizationRequestAmountDetailsDU option
+        AmountDetails: IssuingAuthorizationRequestAmountDetailsDU
 
         ///Whether this request was approved.
         Approved: bool
@@ -4792,16 +4792,16 @@ module StripeModel =
     and IssuingCardAuthorizationControls = {
 
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
-        AllowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option
+        AllowedCategories: IssuingCardAuthorizationControlsAllowedCategories list
 
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
-        BlockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option
+        BlockedCategories: IssuingCardAuthorizationControlsBlockedCategories list
 
         ///Limit spending with amount-based rules.
         SpendingLimits: IssuingCardSpendingLimit list
 
         ///Currency of the amounts within `spending_limits`. Always the same as the currency of the card.
-        SpendingLimitsCurrency: string option
+        SpendingLimitsCurrency: string
 
     }
 
@@ -5391,10 +5391,10 @@ module StripeModel =
         Address: Address
 
         ///The delivery company that shipped a card.
-        Carrier: IssuingCardShippingCarrier option
+        Carrier: IssuingCardShippingCarrier
 
         ///A unix timestamp representing a best estimate of when the card will be delivered.
-        Eta: int option
+        Eta: int
 
         ///Recipient name.
         Name: string
@@ -5403,13 +5403,13 @@ module StripeModel =
         Service: IssuingCardShippingService
 
         ///The delivery status of the card.
-        Status: IssuingCardShippingStatus option
+        Status: IssuingCardShippingStatus
 
         ///A tracking number for a card shipment.
-        TrackingNumber: string option
+        TrackingNumber: string
 
         ///A link to the shipping carrier's site where you can view detailed information about a card shipment.
-        TrackingUrl: string option
+        TrackingUrl: string
 
         ///Packaging options.
         Type: IssuingCardShippingType
@@ -5444,7 +5444,7 @@ module StripeModel =
         Amount: int
 
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
-        Categories: IssuingCardSpendingLimitCategories list option
+        Categories: IssuingCardSpendingLimitCategories list
 
         ///Interval (or event) to which the amount applies.
         Interval: IssuingCardSpendingLimitInterval
@@ -5760,16 +5760,16 @@ module StripeModel =
     and IssuingCardholderAuthorizationControls = {
 
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
-        AllowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option
+        AllowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list
 
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
-        BlockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option
+        BlockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list
 
         ///Limit spending with amount-based rules that apply across this cardholder's cards.
         SpendingLimits: IssuingCardholderSpendingLimit list
 
         ///Currency of the amounts within `spending_limits`.
-        SpendingLimitsCurrency: string option
+        SpendingLimitsCurrency: string
 
     }
 
@@ -6365,10 +6365,10 @@ module StripeModel =
     and IssuingCardholderIdDocument = {
 
         ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Back: IssuingCardholderIdDocumentBackDU option
+        Back: IssuingCardholderIdDocumentBackDU
 
         ///The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Front: IssuingCardholderIdDocumentFrontDU option
+        Front: IssuingCardholderIdDocumentFrontDU
 
     }
 
@@ -6384,7 +6384,7 @@ module StripeModel =
     and IssuingCardholderIndividual = {
 
         ///The date of birth of this cardholder.
-        Dob: IssuingCardholderIndividualDobDU option
+        Dob: IssuingCardholderIndividualDobDU
 
         ///The first name of this cardholder.
         FirstName: string
@@ -6393,7 +6393,7 @@ module StripeModel =
         LastName: string
 
         ///Government-issued ID document for this cardholder.
-        Verification: IssuingCardholderIndividualVerificationDU option
+        Verification: IssuingCardholderIndividualVerificationDU
 
     }
 
@@ -6407,13 +6407,13 @@ module StripeModel =
     and IssuingCardholderIndividualDob = {
 
         ///The day of birth, between 1 and 31.
-        Day: int option
+        Day: int
 
         ///The month of birth, between 1 and 12.
-        Month: int option
+        Month: int
 
         ///The four-digit year of birth.
-        Year: int option
+        Year: int
 
     }
 
@@ -6421,10 +6421,10 @@ module StripeModel =
     and IssuingCardholderRequirements = {
 
         ///If `disabled_reason` is present, all cards will decline authorizations with `cardholder_verification_required` reason.
-        DisabledReason: IssuingCardholderRequirementsDisabledReason option
+        DisabledReason: IssuingCardholderRequirementsDisabledReason
 
         ///Array of fields that need to be collected in order to verify and re-enable the cardholder.
-        PastDue: IssuingCardholderRequirementsPastDue list option
+        PastDue: IssuingCardholderRequirementsPastDue list
 
     }
 
@@ -6449,7 +6449,7 @@ module StripeModel =
         Amount: int
 
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
-        Categories: IssuingCardholderSpendingLimitCategories list option
+        Categories: IssuingCardholderSpendingLimitCategories list
 
         ///Interval (or event) to which the amount applies.
         Interval: IssuingCardholderSpendingLimitInterval
@@ -6758,7 +6758,7 @@ module StripeModel =
     and IssuingCardholderVerification = {
 
         ///An identifying document, either a passport or local ID card.
-        Document: IssuingCardholderVerificationDocumentDU option
+        Document: IssuingCardholderVerificationDocumentDU
 
     }
 
@@ -6769,34 +6769,34 @@ module StripeModel =
     and IssuingDisputeCanceledEvidence = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentationDU option
+        AdditionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentationDU
 
         ///Date when order was canceled.
-        CanceledAt: int option
+        CanceledAt: int
 
         ///Whether the cardholder was provided with a cancellation policy.
-        CancellationPolicyProvided: bool option
+        CancellationPolicyProvided: bool
 
         ///Reason for canceling the order.
-        CancellationReason: string option
+        CancellationReason: string
 
         ///Date when the cardholder expected to receive the product.
-        ExpectedAt: int option
+        ExpectedAt: int
 
         ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string option
+        Explanation: string
 
         ///Description of the merchandise or service that was purchased.
-        ProductDescription: string option
+        ProductDescription: string
 
         ///Whether the product was a merchandise or service.
-        ProductType: IssuingDisputeCanceledEvidenceProductType option
+        ProductType: IssuingDisputeCanceledEvidenceProductType
 
         ///Result of cardholder's attempt to return the product.
-        ReturnStatus: IssuingDisputeCanceledEvidenceReturnStatus option
+        ReturnStatus: IssuingDisputeCanceledEvidenceReturnStatus
 
         ///Date when the product was returned or attempted to be returned.
-        ReturnedAt: int option
+        ReturnedAt: int
 
     }
 
@@ -6816,22 +6816,22 @@ module StripeModel =
     and IssuingDisputeDuplicateEvidence = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentationDU option
+        AdditionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentationDU
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.
-        CardStatement: IssuingDisputeDuplicateEvidenceCardStatementDU option
+        CardStatement: IssuingDisputeDuplicateEvidenceCardStatementDU
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.
-        CashReceipt: IssuingDisputeDuplicateEvidenceCashReceiptDU option
+        CashReceipt: IssuingDisputeDuplicateEvidenceCashReceiptDU
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.
-        CheckImage: IssuingDisputeDuplicateEvidenceCheckImageDU option
+        CheckImage: IssuingDisputeDuplicateEvidenceCheckImageDU
 
         ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string option
+        Explanation: string
 
         ///Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.
-        OriginalTransaction: string option
+        OriginalTransaction: string
 
     }
 
@@ -6854,22 +6854,22 @@ module StripeModel =
     ///
     and IssuingDisputeEvidence = {
 
-        Canceled: IssuingDisputeCanceledEvidence
+        Canceled: IssuingDisputeCanceledEvidence option
 
-        Duplicate: IssuingDisputeDuplicateEvidence
+        Duplicate: IssuingDisputeDuplicateEvidence option
 
-        Fraudulent: IssuingDisputeFraudulentEvidence
+        Fraudulent: IssuingDisputeFraudulentEvidence option
 
-        MerchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence
+        MerchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence option
 
-        NotReceived: IssuingDisputeNotReceivedEvidence
+        NotReceived: IssuingDisputeNotReceivedEvidence option
 
-        Other: IssuingDisputeOtherEvidence
+        Other: IssuingDisputeOtherEvidence option
 
         ///The reason for filing the dispute. Its value will match the field containing the evidence.
         Reason: IssuingDisputeEvidenceReason
 
-        ServiceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence
+        ServiceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence option
 
     }
 
@@ -6886,10 +6886,10 @@ module StripeModel =
     and IssuingDisputeFraudulentEvidence = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentationDU option
+        AdditionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentationDU
 
         ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string option
+        Explanation: string
 
     }
 
@@ -6901,22 +6901,22 @@ module StripeModel =
     and IssuingDisputeMerchandiseNotAsDescribedEvidence = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentationDU option
+        AdditionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentationDU
 
         ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string option
+        Explanation: string
 
         ///Date when the product was received.
-        ReceivedAt: int option
+        ReceivedAt: int
 
         ///Description of the cardholder's attempt to return the product.
-        ReturnDescription: string option
+        ReturnDescription: string
 
         ///Result of cardholder's attempt to return the product.
-        ReturnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option
+        ReturnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus
 
         ///Date when the product was returned or attempted to be returned.
-        ReturnedAt: int option
+        ReturnedAt: int
 
     }
 
@@ -6932,19 +6932,19 @@ module StripeModel =
     and IssuingDisputeNotReceivedEvidence = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentationDU option
+        AdditionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentationDU
 
         ///Date when the cardholder expected to receive the product.
-        ExpectedAt: int option
+        ExpectedAt: int
 
         ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string option
+        Explanation: string
 
         ///Description of the merchandise or service that was purchased.
-        ProductDescription: string option
+        ProductDescription: string
 
         ///Whether the product was a merchandise or service.
-        ProductType: IssuingDisputeNotReceivedEvidenceProductType option
+        ProductType: IssuingDisputeNotReceivedEvidenceProductType
 
     }
 
@@ -6960,16 +6960,16 @@ module StripeModel =
     and IssuingDisputeOtherEvidence = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentationDU option
+        AdditionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentationDU
 
         ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string option
+        Explanation: string
 
         ///Description of the merchandise or service that was purchased.
-        ProductDescription: string option
+        ProductDescription: string
 
         ///Whether the product was a merchandise or service.
-        ProductType: IssuingDisputeOtherEvidenceProductType option
+        ProductType: IssuingDisputeOtherEvidenceProductType
 
     }
 
@@ -6985,19 +6985,19 @@ module StripeModel =
     and IssuingDisputeServiceNotAsDescribedEvidence = {
 
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentationDU option
+        AdditionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentationDU
 
         ///Date when order was canceled.
-        CanceledAt: int option
+        CanceledAt: int
 
         ///Reason for canceling the order.
-        CancellationReason: string option
+        CancellationReason: string
 
         ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string option
+        Explanation: string
 
         ///Date when the product was received.
-        ReceivedAt: int option
+        ReceivedAt: int
 
     }
 
@@ -7009,7 +7009,7 @@ module StripeModel =
     and IssuingTransactionAmountDetails = {
 
         ///The fee charged by the ATM for the cash withdrawal.
-        AtmFee: int option
+        AtmFee: int
 
     }
 
@@ -7017,19 +7017,19 @@ module StripeModel =
     and IssuingTransactionFlightData = {
 
         ///The time that the flight departed.
-        DepartureAt: int option
+        DepartureAt: int
 
         ///The name of the passenger.
-        PassengerName: string option
+        PassengerName: string
 
         ///Whether the ticket is refundable.
-        Refundable: bool option
+        Refundable: bool
 
         ///The legs of the trip.
         Segments: IssuingTransactionFlightDataLeg list
 
         ///The travel agency that issued the ticket.
-        TravelAgency: string option
+        TravelAgency: string
 
     }
 
@@ -7037,22 +7037,22 @@ module StripeModel =
     and IssuingTransactionFlightDataLeg = {
 
         ///The three-letter IATA airport code of the flight's destination.
-        ArrivalAirportCode: string option
+        ArrivalAirportCode: string
 
         ///The airline carrier code.
-        Carrier: string option
+        Carrier: string
 
         ///The three-letter IATA airport code that the flight departed from.
-        DepartureAirportCode: string option
+        DepartureAirportCode: string
 
         ///The flight number.
-        FlightNumber: string option
+        FlightNumber: string
 
         ///The flight's service class.
-        ServiceClass: string option
+        ServiceClass: string
 
         ///Whether a stopover is allowed on this flight.
-        StopoverAllowed: bool option
+        StopoverAllowed: bool
 
     }
 
@@ -7069,7 +7069,7 @@ module StripeModel =
         UnitCostDecimal: string
 
         ///The volume of the fuel that was pumped, represented as a decimal string with at most 12 decimal places.
-        VolumeDecimal: string option
+        VolumeDecimal: string
 
     }
 
@@ -7077,10 +7077,10 @@ module StripeModel =
     and IssuingTransactionLodgingData = {
 
         ///The time of checking into the lodging.
-        CheckInAt: int option
+        CheckInAt: int
 
         ///The number of nights stayed at the lodging.
-        Nights: int option
+        Nights: int
 
     }
 
@@ -7088,19 +7088,19 @@ module StripeModel =
     and IssuingTransactionPurchaseDetails = {
 
         ///Information about the flight that was purchased with this transaction.
-        Flight: IssuingTransactionPurchaseDetailsFlightDU option
+        Flight: IssuingTransactionPurchaseDetailsFlightDU
 
         ///Information about fuel that was purchased with this transaction.
-        Fuel: IssuingTransactionPurchaseDetailsFuelDU option
+        Fuel: IssuingTransactionPurchaseDetailsFuelDU
 
         ///Information about lodging that was purchased with this transaction.
-        Lodging: IssuingTransactionPurchaseDetailsLodgingDU option
+        Lodging: IssuingTransactionPurchaseDetailsLodgingDU
 
         ///The line items in the purchase.
         Receipt: IssuingTransactionReceiptData list
 
         ///A merchant-specific order number.
-        Reference: string option
+        Reference: string
 
     }
 
@@ -7117,16 +7117,16 @@ module StripeModel =
     and IssuingTransactionReceiptData = {
 
         ///The description of the item. The maximum length of this field is 26 characters.
-        Description: string option
+        Description: string
 
         ///The quantity of the item.
-        Quantity: decimal option
+        Quantity: decimal
 
         ///The total for this line item in cents.
-        Total: int option
+        Total: int
 
         ///The unit cost of the item in cents.
-        UnitCost: int option
+        UnitCost: int
 
     }
 
@@ -7134,10 +7134,10 @@ module StripeModel =
     and Item = {
 
         ///Total before any discounts or taxes is applied.
-        AmountSubtotal: int option
+        AmountSubtotal: int
 
         ///Total after discounts and taxes.
-        AmountTotal: int option
+        AmountTotal: int
 
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
@@ -7157,7 +7157,7 @@ module StripeModel =
         Price: Price
 
         ///The quantity of products being purchased.
-        Quantity: int option
+        Quantity: int
 
         ///The taxes applied to the line item.
         Taxes: LineItemsTaxAmount list
@@ -7170,7 +7170,7 @@ module StripeModel =
     ///
     and LegalEntityCompany = {
 
-        Address: Address
+        Address: Address option
 
         ///The Kana variation of the company's primary address (Japan only).
         AddressKana: LegalEntityCompanyAddressKanaDU option
@@ -7179,13 +7179,13 @@ module StripeModel =
         AddressKanji: LegalEntityCompanyAddressKanjiDU option
 
         ///Whether the company's directors have been provided. This Boolean will be `true` if you've manually indicated that all directors are provided via [the `directors_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-directors_provided).
-        DirectorsProvided: bool
+        DirectorsProvided: bool option
 
         ///Whether the company's executives have been provided. This Boolean will be `true` if you've manually indicated that all executives are provided via [the `executives_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-executives_provided), or if Stripe determined that sufficient executives were provided.
-        ExecutivesProvided: bool
+        ExecutivesProvided: bool option
 
         ///The company's legal name.
-        Name: string option
+        Name: string
 
         ///The Kana variation of the company's legal name (Japan only).
         NameKana: string option
@@ -7194,22 +7194,22 @@ module StripeModel =
         NameKanji: string option
 
         ///Whether the company's owners have been provided. This Boolean will be `true` if you've manually indicated that all owners are provided via [the `owners_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-owners_provided), or if Stripe determined that sufficient owners were provided. Stripe determines ownership requirements using both the number of owners provided and their total percent ownership (calculated by adding the `percent_ownership` of each owner together).
-        OwnersProvided: bool
+        OwnersProvided: bool option
 
         ///The company's phone number (used for verification).
         Phone: string option
 
         ///The category identifying the legal structure of the company or legal entity. See [Business structure](https://stripe.com/docs/connect/identity-verification#business-structure) for more details.
-        Structure: LegalEntityCompanyStructure
+        Structure: LegalEntityCompanyStructure option
 
         ///Whether the company's business ID number was provided.
-        TaxIdProvided: bool
+        TaxIdProvided: bool option
 
         ///The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
-        TaxIdRegistrar: string
+        TaxIdRegistrar: string option
 
         ///Whether the company's business VAT number was provided.
-        VatIdProvided: bool
+        VatIdProvided: bool option
 
         ///Information on the verification state of the company.
         Verification: LegalEntityCompanyVerificationDU option
@@ -7253,16 +7253,16 @@ module StripeModel =
     and LegalEntityCompanyVerificationDocument = {
 
         ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
-        Back: LegalEntityCompanyVerificationDocumentBackDU option
+        Back: LegalEntityCompanyVerificationDocumentBackDU
 
         ///A user-displayable string describing the verification state of this document.
-        Details: string option
+        Details: string
 
         ///One of `document_corrupt`, `document_expired`, `document_failed_copy`, `document_failed_greyscale`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_not_readable`, `document_not_uploaded`, `document_type_not_supported`, or `document_too_large`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: string option
+        DetailsCode: string
 
         ///The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
-        Front: LegalEntityCompanyVerificationDocumentFrontDU option
+        Front: LegalEntityCompanyVerificationDocumentFrontDU
 
     }
 
@@ -7278,13 +7278,13 @@ module StripeModel =
     and LegalEntityDob = {
 
         ///The day of birth, between 1 and 31.
-        Day: int option
+        Day: int
 
         ///The month of birth, between 1 and 12.
-        Month: int option
+        Month: int
 
         ///The four-digit year of birth.
-        Year: int option
+        Year: int
 
     }
 
@@ -7292,25 +7292,25 @@ module StripeModel =
     and LegalEntityJapanAddress = {
 
         ///City/Ward.
-        City: string option
+        City: string
 
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
+        Country: string
 
         ///Block/Building number.
-        Line1: string option
+        Line1: string
 
         ///Building details.
-        Line2: string option
+        Line2: string
 
         ///ZIP or postal code.
-        PostalCode: string option
+        PostalCode: string
 
         ///Prefecture.
-        State: string option
+        State: string
 
         ///Town/cho-me.
-        Town: string option
+        Town: string
 
     }
 
@@ -7326,7 +7326,7 @@ module StripeModel =
         ///One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person.
         DetailsCode: string option
 
-        Document: LegalEntityPersonVerificationDocument
+        Document: LegalEntityPersonVerificationDocument option
 
         ///The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`.
         Status: string
@@ -7340,16 +7340,16 @@ module StripeModel =
     and LegalEntityPersonVerificationDocument = {
 
         ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Back: LegalEntityPersonVerificationDocumentBackDU option
+        Back: LegalEntityPersonVerificationDocumentBackDU
 
         ///A user-displayable string describing the verification state of this document. For example, if a document is uploaded and the picture is too fuzzy, this may say "Identity document is too unclear to read".
-        Details: string option
+        Details: string
 
         ///One of `document_corrupt`, `document_country_not_supported`, `document_expired`, `document_failed_copy`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_failed_greyscale`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_missing_back`, `document_missing_front`, `document_not_readable`, `document_not_uploaded`, `document_photo_mismatch`, `document_too_large`, or `document_type_not_supported`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: string option
+        DetailsCode: string
 
         ///The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Front: LegalEntityPersonVerificationDocumentFrontDU option
+        Front: LegalEntityPersonVerificationDocumentFrontDU
 
     }
 
@@ -7364,34 +7364,34 @@ module StripeModel =
     ///
     and Level3 = {
 
-        CustomerReference: string
+        CustomerReference: string option
 
         LineItems: Level3LineItems list
 
         MerchantReference: string
 
-        ShippingAddressZip: string
+        ShippingAddressZip: string option
 
-        ShippingAmount: int
+        ShippingAmount: int option
 
-        ShippingFromZip: string
+        ShippingFromZip: string option
 
     }
 
     ///
     and Level3LineItems = {
 
-        DiscountAmount: int option
+        DiscountAmount: int
 
         ProductCode: string
 
         ProductDescription: string
 
-        Quantity: int option
+        Quantity: int
 
-        TaxAmount: int option
+        TaxAmount: int
 
-        UnitCost: int option
+        UnitCost: int
 
     }
 
@@ -7405,7 +7405,7 @@ module StripeModel =
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///The amount of discount calculated per discount for this line item.
         DiscountAmounts: DiscountsResourceDiscountAmount list
@@ -7414,13 +7414,13 @@ module StripeModel =
         Discountable: bool
 
         ///The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: LineItemDiscountsDU list option
+        Discounts: LineItemDiscountsDU list
 
         ///Unique identifier for the object.
         Id: string
 
         ///The ID of the [invoice item](https://stripe.com/docs/api/invoiceitems) associated with this line item if any.
-        InvoiceItem: string
+        InvoiceItem: string option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -7434,22 +7434,22 @@ module StripeModel =
         Period: InvoiceLineItemPeriod
 
         ///The plan of the subscription, if the line item is a subscription or a proration.
-        Plan: LineItemPlanDU option
+        Plan: LineItemPlanDU
 
         ///The price of the line item.
-        Price: LineItemPriceDU option
+        Price: LineItemPriceDU
 
         ///Whether this is a proration.
         Proration: bool
 
         ///The quantity of the subscription, if the line item is a subscription or a proration.
-        Quantity: int option
+        Quantity: int
 
         ///The subscription that the invoice item pertains to, if any.
-        Subscription: string option
+        Subscription: string
 
         ///The subscription item that generated this invoice item. Left empty if the line item is not an explicit result of a subscription.
-        SubscriptionItem: string
+        SubscriptionItem: string option
 
         ///The amount of tax calculated per tax rate for this line item
         TaxAmounts: InvoiceTaxAmount list
@@ -7527,7 +7527,7 @@ module StripeModel =
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
-        MultiUse: MandateMultiUse
+        MultiUse: MandateMultiUse option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: MandateObject
@@ -7537,7 +7537,7 @@ module StripeModel =
 
         PaymentMethodDetails: MandatePaymentMethodDetails
 
-        SingleUse: MandateSingleUse
+        SingleUse: MandateSingleUse option
 
         ///The status of the mandate, which indicates whether it can be used to initiate a payment.
         Status: MandateStatus
@@ -7601,13 +7601,13 @@ module StripeModel =
     ///
     and MandatePaymentMethodDetails = {
 
-        AuBecsDebit: MandateAuBecsDebit
+        AuBecsDebit: MandateAuBecsDebit option
 
-        BacsDebit: MandateBacsDebit
+        BacsDebit: MandateBacsDebit option
 
-        Card: CardMandatePaymentMethodDetails
+        Card: CardMandatePaymentMethodDetails option
 
-        SepaDebit: MandateSepaDebit
+        SepaDebit: MandateSepaDebit option
 
         ///The type of the payment method associated with this mandate. An additional hash is included on `payment_method_details` with a name matching this value. It contains mandate information specific to the payment method.
         Type: string
@@ -7643,7 +7643,7 @@ module StripeModel =
         Available: string list
 
         ///The preferred network for the card.
-        Preferred: string option
+        Preferred: string
 
     }
 
@@ -7654,7 +7654,7 @@ module StripeModel =
         Object: Map<string, string>
 
         ///Object containing the names of the attributes that have changed, and their previous values (sent along only with *.updated events).
-        PreviousAttributes: Map<string, string>
+        PreviousAttributes: Map<string, string> option
 
     }
 
@@ -7662,10 +7662,10 @@ module StripeModel =
     and NotificationEventRequest = {
 
         ///ID of the API request that caused the event. If null, the event was automatic (e.g., Stripe's automatic subscription handling). Request logs are available in the [dashboard](https://dashboard.stripe.com/logs), but currently not in the API.
-        Id: string option
+        Id: string
 
         ///The idempotency key transmitted during the request, if any. *Note: This property is populated only for events on or after May 23, 2017*.
-        IdempotencyKey: string option
+        IdempotencyKey: string
 
     }
 
@@ -7680,10 +7680,10 @@ module StripeModel =
     and OnlineAcceptance = {
 
         ///The IP address from which the Mandate was accepted by the customer.
-        IpAddress: string option
+        IpAddress: string
 
         ///The user agent of the browser from which the Mandate was accepted by the customer.
-        UserAgent: string option
+        UserAgent: string
 
     }
 
@@ -7698,16 +7698,16 @@ module StripeModel =
         Amount: int
 
         ///The total amount that was returned to the customer.
-        AmountReturned: int option
+        AmountReturned: int
 
         ///ID of the Connect Application that created the order.
-        Application: string option
+        Application: string
 
         ///A fee in cents that will be applied to the order and transferred to the application owner’s Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees documentation.
-        ApplicationFee: int option
+        ApplicationFee: int
 
         ///The ID of the payment used to pay for the order. Present if the order status is `paid`, `fulfilled`, or `refunded`.
-        Charge: OrderChargeDU option
+        Charge: OrderChargeDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -7716,13 +7716,13 @@ module StripeModel =
         Currency: string
 
         ///The customer used for the order.
-        Customer: OrderCustomerDU option
+        Customer: OrderCustomerDU
 
         ///The email address of the customer placing the order.
-        Email: string option
+        Email: string
 
         ///External coupon code to load for this order.
-        ExternalCouponCode: string
+        ExternalCouponCode: string option
 
         ///Unique identifier for the object.
         Id: string
@@ -7734,19 +7734,19 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: OrderObject
 
         ///A list of returns that have taken place for this order.
-        Returns: Map<string, string> option
+        Returns: Map<string, string>
 
         ///The shipping method that is currently selected for this order, if any. If present, it is equal to one of the `id`s of shipping methods in the `shipping_methods` array. At order creation time, if there are multiple shipping methods, Stripe will automatically selected the first method.
-        SelectedShippingMethod: string option
+        SelectedShippingMethod: string
 
         ///The shipping address for the order. Present if the order is for goods to be shipped.
-        Shipping: OrderShippingDU option
+        Shipping: OrderShippingDU
 
         ///A list of supported shipping methods for this order. The desired shipping method can be specified either by updating the order, or when paying it.
         ShippingMethods: ShippingMethod list
@@ -7755,13 +7755,13 @@ module StripeModel =
         Status: string
 
         ///The timestamps at which the order status was updated.
-        StatusTransitions: OrderStatusTransitionsDU option
+        StatusTransitions: OrderStatusTransitionsDU
 
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        Updated: int option
+        Updated: int
 
         ///The user's order ID if it is different from the Stripe order ID.
-        UpstreamId: string
+        UpstreamId: string option
 
     }
 
@@ -7802,10 +7802,10 @@ module StripeModel =
         Object: OrderItemObject
 
         ///The ID of the associated object for this line item. Expandable if not null (e.g., expandable to a SKU).
-        Parent: OrderItemParentDU option
+        Parent: OrderItemParentDU
 
         ///A positive integer representing the number of instances of `parent` that are included in this order item. Applicable/present only if `type` is `sku`.
-        Quantity: int option
+        Quantity: int
 
         ///The type of line item. One of `sku`, `tax`, `shipping`, or `discount`.
         Type: string
@@ -7847,10 +7847,10 @@ module StripeModel =
         Object: OrderReturnObject
 
         ///The order that this return includes items from.
-        Order: OrderReturnOrderDU option
+        Order: OrderReturnOrderDU
 
         ///The ID of the refund issued for this return.
-        Refund: OrderReturnRefundDU option
+        Refund: OrderReturnRefundDU
 
     }
 
@@ -7893,10 +7893,10 @@ module StripeModel =
     and PaymentFlowsPrivatePaymentMethodsAlipayDetails = {
 
         ///Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Transaction ID of this particular Alipay transaction.
-        TransactionId: string option
+        TransactionId: string
 
     }
 
@@ -7923,16 +7923,16 @@ module StripeModel =
         AmountReceived: int
 
         ///ID of the Connect application that created the PaymentIntent.
-        Application: PaymentIntentApplicationDU option
+        Application: PaymentIntentApplicationDU
 
         ///The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).
-        ApplicationFeeAmount: int option
+        ApplicationFeeAmount: int
 
         ///Populated when `status` is `canceled`, this is the time at which the PaymentIntent was canceled. Measured in seconds since the Unix epoch.
-        CanceledAt: int option
+        CanceledAt: int
 
         ///Reason for cancellation of this PaymentIntent, either user-provided (`duplicate`, `fraudulent`, `requested_by_customer`, or `abandoned`) or generated by Stripe internally (`failed_invoice`, `void_invoice`, or `automatic`).
-        CancellationReason: PaymentIntentCancellationReason option
+        CancellationReason: PaymentIntentCancellationReason
 
         ///Controls when the funds will be captured from the customer's account.
         CaptureMethod: PaymentIntentCaptureMethod
@@ -7945,7 +7945,7 @@ module StripeModel =
     ///The client secret can be used to complete a payment from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
     ///
     ///Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?integration=elements) and learn about how `client_secret` should be handled.
-        ClientSecret: string option
+        ClientSecret: string
 
         ConfirmationMethod: PaymentIntentConfirmationMethod
 
@@ -7960,19 +7960,19 @@ module StripeModel =
     ///Payment methods attached to other Customers cannot be used with this PaymentIntent.
     ///
     ///If present in combination with [setup_future_usage](https://stripe.com/docs/api#payment_intent_object-setup_future_usage), this PaymentIntent's payment method will be attached to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete.
-        Customer: PaymentIntentCustomerDU option
+        Customer: PaymentIntentCustomerDU
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///Unique identifier for the object.
         Id: string
 
         ///ID of the invoice that created this PaymentIntent, if it exists.
-        Invoice: PaymentIntentInvoiceDU option
+        Invoice: PaymentIntentInvoiceDU
 
         ///The payment error encountered in the previous PaymentIntent confirmation. It will be cleared if the PaymentIntent is later updated for any reason.
-        LastPaymentError: PaymentIntentLastPaymentErrorDU option
+        LastPaymentError: PaymentIntentLastPaymentErrorDU
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -7981,56 +7981,56 @@ module StripeModel =
         Metadata: Map<string, string>
 
         ///If present, this property tells you what actions you need to take in order for your customer to fulfill a payment using the provided source.
-        NextAction: PaymentIntentNextActionDU option
+        NextAction: PaymentIntentNextActionDU
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: PaymentIntentObject
 
         ///The account (if any) for which the funds of the PaymentIntent are intended. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.
-        OnBehalfOf: PaymentIntentOnBehalfOfDU option
+        OnBehalfOf: PaymentIntentOnBehalfOfDU
 
         ///ID of the payment method used in this PaymentIntent.
-        PaymentMethod: PaymentIntentPaymentMethodDU option
+        PaymentMethod: PaymentIntentPaymentMethodDU
 
         ///Payment-method-specific configuration for this PaymentIntent.
-        PaymentMethodOptions: PaymentIntentPaymentMethodOptionsDU option
+        PaymentMethodOptions: PaymentIntentPaymentMethodOptionsDU
 
         ///The list of payment method types (e.g. card) that this PaymentIntent is allowed to use.
         PaymentMethodTypes: string list
 
         ///Email address that the receipt for the resulting payment will be sent to. If `receipt_email` is specified for a payment in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
-        ReceiptEmail: string option
+        ReceiptEmail: string
 
         ///ID of the review associated with this PaymentIntent, if any.
-        Review: PaymentIntentReviewDU option
+        Review: PaymentIntentReviewDU
 
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
     ///
     ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
     ///
     ///When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
-        SetupFutureUsage: PaymentIntentSetupFutureUsage option
+        SetupFutureUsage: PaymentIntentSetupFutureUsage
 
         ///Shipping information for this PaymentIntent.
-        Shipping: PaymentIntentShippingDU option
+        Shipping: PaymentIntentShippingDU
 
         ///This is a legacy field that will be removed in the future. It is the ID of the Source object that is associated with this PaymentIntent, if one was supplied.
-        Source: PaymentIntentSourceDU option
+        Source: PaymentIntentSourceDU
 
         ///For non-card charges, you can use this value as the complete description that appears on your customers’ statements. Must contain at least one letter, maximum 22 characters.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///Provides information about a card payment that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
-        StatementDescriptorSuffix: string option
+        StatementDescriptorSuffix: string
 
         ///Status of this PaymentIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `requires_capture`, `canceled`, or `succeeded`. Read more about each PaymentIntent [status](https://stripe.com/docs/payments/intents#intent-statuses).
         Status: PaymentIntentStatus
 
         ///The data with which to automatically create a Transfer when the payment is finalized. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.
-        TransferData: PaymentIntentTransferDataDU option
+        TransferData: PaymentIntentTransferDataDU
 
         ///A string that identifies the resulting payment as part of a group. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.
-        TransferGroup: string option
+        TransferGroup: string
 
     }
 
@@ -8115,17 +8115,17 @@ module StripeModel =
     ///
     and PaymentIntentNextAction = {
 
-        AlipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect
+        AlipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect option
 
-        OxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails
+        OxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails option
 
-        RedirectToUrl: PaymentIntentNextActionRedirectToUrl
+        RedirectToUrl: PaymentIntentNextActionRedirectToUrl option
 
         ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
         Type: string
 
         ///When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: Map<string, string>
+        UseStripeSdk: Map<string, string> option
 
     }
 
@@ -8133,16 +8133,16 @@ module StripeModel =
     and PaymentIntentNextActionAlipayHandleRedirect = {
 
         ///The native data to be used with Alipay SDK you must redirect your customer to in order to authenticate the payment in an Android App.
-        NativeData: string option
+        NativeData: string
 
         ///The native URL you must redirect your customer to in order to authenticate the payment in an iOS App.
-        NativeUrl: string option
+        NativeUrl: string
 
         ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
-        ReturnUrl: string option
+        ReturnUrl: string
 
         ///The URL you must redirect your customer to in order to authenticate the payment.
-        Url: string option
+        Url: string
 
     }
 
@@ -8150,13 +8150,13 @@ module StripeModel =
     and PaymentIntentNextActionDisplayOxxoDetails = {
 
         ///The timestamp after which the OXXO voucher expires.
-        ExpiresAfter: int option
+        ExpiresAfter: int
 
         ///The URL for the hosted OXXO voucher page, which allows customers to view and print an OXXO voucher.
-        HostedVoucherUrl: string option
+        HostedVoucherUrl: string
 
         ///OXXO reference number.
-        Number: string option
+        Number: string
 
     }
 
@@ -8164,29 +8164,29 @@ module StripeModel =
     and PaymentIntentNextActionRedirectToUrl = {
 
         ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
-        ReturnUrl: string option
+        ReturnUrl: string
 
         ///The URL you must redirect your customer to in order to authenticate the payment.
-        Url: string option
+        Url: string
 
     }
 
     ///
     and PaymentIntentPaymentMethodOptions = {
 
-        Alipay: PaymentMethodOptionsAlipay
+        Alipay: PaymentMethodOptionsAlipay option
 
-        Bancontact: PaymentMethodOptionsBancontact
+        Bancontact: PaymentMethodOptionsBancontact option
 
-        Card: PaymentIntentPaymentMethodOptionsCard
+        Card: PaymentIntentPaymentMethodOptionsCard option
 
-        Oxxo: PaymentMethodOptionsOxxo
+        Oxxo: PaymentMethodOptionsOxxo option
 
-        P24: PaymentMethodOptionsP24
+        P24: PaymentMethodOptionsP24 option
 
-        SepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit
+        SepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit option
 
-        Sofort: PaymentMethodOptionsSofort
+        Sofort: PaymentMethodOptionsSofort option
 
     }
 
@@ -8196,13 +8196,13 @@ module StripeModel =
         ///Installment details for this payment (Mexico only).
     ///
     ///For more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).
-        Installments: PaymentIntentPaymentMethodOptionsCardInstallmentsDU option
+        Installments: PaymentIntentPaymentMethodOptionsCardInstallmentsDU
 
         ///Selected network to process this PaymentIntent on. Depends on the available networks of the card attached to the PaymentIntent. Can be only set confirm-time.
-        Network: PaymentIntentPaymentMethodOptionsCardNetwork option
+        Network: PaymentIntentPaymentMethodOptionsCardNetwork
 
         ///We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Permitted values include: `automatic` or `any`. If not provided, defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
-        RequestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option
+        RequestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure
 
     }
 
@@ -8236,7 +8236,7 @@ module StripeModel =
     ///
     and PaymentIntentPaymentMethodOptionsSepaDebit = {
 
-        MandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit
+        MandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit option
 
     }
 
@@ -8247,57 +8247,57 @@ module StripeModel =
     ///Related guides: [Payment Methods](https://stripe.com/docs/payments/payment-methods) and [More Payment Scenarios](https://stripe.com/docs/payments/more-payment-scenarios).
     and PaymentMethod = {
 
-        Alipay: PaymentFlowsPrivatePaymentMethodsAlipay
+        Alipay: PaymentFlowsPrivatePaymentMethodsAlipay option
 
-        AuBecsDebit: PaymentMethodAuBecsDebit
+        AuBecsDebit: PaymentMethodAuBecsDebit option
 
-        BacsDebit: PaymentMethodBacsDebit
+        BacsDebit: PaymentMethodBacsDebit option
 
-        Bancontact: PaymentMethodBancontact
+        Bancontact: PaymentMethodBancontact option
 
         BillingDetails: BillingDetails
 
-        Card: PaymentMethodCard
+        Card: PaymentMethodCard option
 
-        CardPresent: PaymentMethodCardPresent
+        CardPresent: PaymentMethodCardPresent option
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.
-        Customer: PaymentMethodCustomerDU option
+        Customer: PaymentMethodCustomerDU
 
-        Eps: PaymentMethodEps
+        Eps: PaymentMethodEps option
 
-        Fpx: PaymentMethodFpx
+        Fpx: PaymentMethodFpx option
 
-        Giropay: PaymentMethodGiropay
+        Giropay: PaymentMethodGiropay option
 
-        Grabpay: PaymentMethodGrabpay
+        Grabpay: PaymentMethodGrabpay option
 
         ///Unique identifier for the object.
         Id: string
 
-        Ideal: PaymentMethodIdeal
+        Ideal: PaymentMethodIdeal option
 
-        InteracPresent: PaymentMethodInteracPresent
+        InteracPresent: PaymentMethodInteracPresent option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: PaymentMethodObject
 
-        Oxxo: PaymentMethodOxxo
+        Oxxo: PaymentMethodOxxo option
 
-        P24: PaymentMethodP24
+        P24: PaymentMethodP24 option
 
-        SepaDebit: PaymentMethodSepaDebit
+        SepaDebit: PaymentMethodSepaDebit option
 
-        Sofort: PaymentMethodSofort
+        Sofort: PaymentMethodSofort option
 
         ///The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.
         Type: PaymentMethodType
@@ -8333,13 +8333,13 @@ module StripeModel =
     and PaymentMethodAuBecsDebit = {
 
         ///Six-digit number identifying bank and branch associated with this bank account.
-        BsbNumber: string option
+        BsbNumber: string
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Last four digits of the bank account number.
-        Last4: string option
+        Last4: string
 
     }
 
@@ -8347,13 +8347,13 @@ module StripeModel =
     and PaymentMethodBacsDebit = {
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Last four digits of the bank account number.
-        Last4: string option
+        Last4: string
 
         ///Sort code of the bank account. (e.g., `10-20-30`)
-        SortCode: string option
+        SortCode: string
 
     }
 
@@ -8371,10 +8371,10 @@ module StripeModel =
         Brand: PaymentMethodCardBrand
 
         ///Checks on Card address and CVC if provided.
-        Checks: PaymentMethodCardChecksDU option
+        Checks: PaymentMethodCardChecksDU
 
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: string
 
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
@@ -8401,13 +8401,13 @@ module StripeModel =
         Last4: string
 
         ///Contains information about card networks that can be used to process the payment.
-        Networks: PaymentMethodCardNetworksDU option
+        Networks: PaymentMethodCardNetworksDU
 
         ///Contains details on how this Card maybe be used for 3D Secure authentication.
-        ThreeDSecureUsage: PaymentMethodCardThreeDSecureUsageDU option
+        ThreeDSecureUsage: PaymentMethodCardThreeDSecureUsageDU
 
         ///If this Card is part of a card wallet, this contains the details of the card wallet.
-        Wallet: PaymentMethodCardWalletDU option
+        Wallet: PaymentMethodCardWalletDU
 
     }
 
@@ -8443,13 +8443,13 @@ module StripeModel =
     and PaymentMethodCardChecks = {
 
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressLine1Check: string option
+        AddressLine1Check: string
 
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressPostalCodeCheck: string option
+        AddressPostalCodeCheck: string
 
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        CvcCheck: string option
+        CvcCheck: string
 
     }
 
@@ -8463,23 +8463,23 @@ module StripeModel =
     ///
     and PaymentMethodCardWallet = {
 
-        AmexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout
+        AmexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout option
 
-        ApplePay: PaymentMethodCardWalletApplePay
+        ApplePay: PaymentMethodCardWalletApplePay option
 
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        DynamicLast4: string option
+        DynamicLast4: string
 
-        GooglePay: PaymentMethodCardWalletGooglePay
+        GooglePay: PaymentMethodCardWalletGooglePay option
 
-        Masterpass: PaymentMethodCardWalletMasterpass
+        Masterpass: PaymentMethodCardWalletMasterpass option
 
-        SamsungPay: PaymentMethodCardWalletSamsungPay
+        SamsungPay: PaymentMethodCardWalletSamsungPay option
 
         ///The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, or `visa_checkout`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
         Type: PaymentMethodCardWalletType
 
-        VisaCheckout: PaymentMethodCardWalletVisaCheckout
+        VisaCheckout: PaymentMethodCardWalletVisaCheckout option
 
     }
 
@@ -8516,16 +8516,16 @@ module StripeModel =
     and PaymentMethodCardWalletMasterpass = {
 
         ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodCardWalletMasterpassBillingAddressDU option
+        BillingAddress: PaymentMethodCardWalletMasterpassBillingAddressDU
 
         ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string option
+        Email: string
 
         ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string option
+        Name: string
 
         ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodCardWalletMasterpassShippingAddressDU option
+        ShippingAddress: PaymentMethodCardWalletMasterpassShippingAddressDU
 
     }
 
@@ -8546,16 +8546,16 @@ module StripeModel =
     and PaymentMethodCardWalletVisaCheckout = {
 
         ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodCardWalletVisaCheckoutBillingAddressDU option
+        BillingAddress: PaymentMethodCardWalletVisaCheckoutBillingAddressDU
 
         ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string option
+        Email: string
 
         ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string option
+        Name: string
 
         ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodCardWalletVisaCheckoutShippingAddressDU option
+        ShippingAddress: PaymentMethodCardWalletVisaCheckoutShippingAddressDU
 
     }
 
@@ -8568,58 +8568,58 @@ module StripeModel =
     ///
     and PaymentMethodDetails = {
 
-        AchCreditTransfer: PaymentMethodDetailsAchCreditTransfer
+        AchCreditTransfer: PaymentMethodDetailsAchCreditTransfer option
 
-        AchDebit: PaymentMethodDetailsAchDebit
+        AchDebit: PaymentMethodDetailsAchDebit option
 
-        AcssDebit: PaymentMethodDetailsAcssDebit
+        AcssDebit: PaymentMethodDetailsAcssDebit option
 
-        Alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails
+        Alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails option
 
-        AuBecsDebit: PaymentMethodDetailsAuBecsDebit
+        AuBecsDebit: PaymentMethodDetailsAuBecsDebit option
 
-        BacsDebit: PaymentMethodDetailsBacsDebit
+        BacsDebit: PaymentMethodDetailsBacsDebit option
 
-        Bancontact: PaymentMethodDetailsBancontact
+        Bancontact: PaymentMethodDetailsBancontact option
 
-        Card: PaymentMethodDetailsCard
+        Card: PaymentMethodDetailsCard option
 
-        CardPresent: PaymentMethodDetailsCardPresent
+        CardPresent: PaymentMethodDetailsCardPresent option
 
-        Eps: PaymentMethodDetailsEps
+        Eps: PaymentMethodDetailsEps option
 
-        Fpx: PaymentMethodDetailsFpx
+        Fpx: PaymentMethodDetailsFpx option
 
-        Giropay: PaymentMethodDetailsGiropay
+        Giropay: PaymentMethodDetailsGiropay option
 
-        Grabpay: PaymentMethodDetailsGrabpay
+        Grabpay: PaymentMethodDetailsGrabpay option
 
-        Ideal: PaymentMethodDetailsIdeal
+        Ideal: PaymentMethodDetailsIdeal option
 
-        InteracPresent: PaymentMethodDetailsInteracPresent
+        InteracPresent: PaymentMethodDetailsInteracPresent option
 
-        Klarna: PaymentMethodDetailsKlarna
+        Klarna: PaymentMethodDetailsKlarna option
 
-        Multibanco: PaymentMethodDetailsMultibanco
+        Multibanco: PaymentMethodDetailsMultibanco option
 
-        Oxxo: PaymentMethodDetailsOxxo
+        Oxxo: PaymentMethodDetailsOxxo option
 
-        P24: PaymentMethodDetailsP24
+        P24: PaymentMethodDetailsP24 option
 
-        SepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer
+        SepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer option
 
-        SepaDebit: PaymentMethodDetailsSepaDebit
+        SepaDebit: PaymentMethodDetailsSepaDebit option
 
-        Sofort: PaymentMethodDetailsSofort
+        Sofort: PaymentMethodDetailsSofort option
 
-        StripeAccount: PaymentMethodDetailsStripeAccount
+        StripeAccount: PaymentMethodDetailsStripeAccount option
 
         ///The type of transaction-specific details of the payment method used in the payment, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `au_becs_debit`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `klarna`, `multibanco`, `p24`, `sepa_debit`, `sofort`, `stripe_account`, or `wechat`.
     ///An additional hash is included on `payment_method_details` with a name matching this value.
     ///It contains information specific to the payment method.
         Type: string
 
-        Wechat: PaymentMethodDetailsWechat
+        Wechat: PaymentMethodDetailsWechat option
 
     }
 
@@ -8627,16 +8627,16 @@ module StripeModel =
     and PaymentMethodDetailsAchCreditTransfer = {
 
         ///Account number to transfer funds to.
-        AccountNumber: string option
+        AccountNumber: string
 
         ///Name of the bank associated with the routing number.
-        BankName: string option
+        BankName: string
 
         ///Routing transit number for the bank account to transfer funds to.
-        RoutingNumber: string option
+        RoutingNumber: string
 
         ///SWIFT code of the bank associated with the routing number.
-        SwiftCode: string option
+        SwiftCode: string
 
     }
 
@@ -8644,22 +8644,22 @@ module StripeModel =
     and PaymentMethodDetailsAchDebit = {
 
         ///Type of entity that holds the account. This can be either `individual` or `company`.
-        AccountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option
+        AccountHolderType: PaymentMethodDetailsAchDebitAccountHolderType
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: string
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Last four digits of the bank account number.
-        Last4: string option
+        Last4: string
 
         ///Routing transit number of the bank account.
-        RoutingNumber: string option
+        RoutingNumber: string
 
     }
 
@@ -8671,22 +8671,22 @@ module StripeModel =
     and PaymentMethodDetailsAcssDebit = {
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Institution number of the bank account
-        InstitutionNumber: string option
+        InstitutionNumber: string
 
         ///Last four digits of the bank account number.
-        Last4: string option
+        Last4: string
 
         ///ID of the mandate used to make this payment.
-        Mandate: string
+        Mandate: string option
 
         ///Transit number of the bank account.
-        TransitNumber: string option
+        TransitNumber: string
 
     }
 
@@ -8694,16 +8694,16 @@ module StripeModel =
     and PaymentMethodDetailsAuBecsDebit = {
 
         ///Bank-State-Branch number of the bank account.
-        BsbNumber: string option
+        BsbNumber: string
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Last four digits of the bank account number.
-        Last4: string option
+        Last4: string
 
         ///ID of the mandate used to make this payment.
-        Mandate: string
+        Mandate: string option
 
     }
 
@@ -8711,16 +8711,16 @@ module StripeModel =
     and PaymentMethodDetailsBacsDebit = {
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Last four digits of the bank account number.
-        Last4: string option
+        Last4: string
 
         ///ID of the mandate used to make this payment.
-        Mandate: string option
+        Mandate: string
 
         ///Sort code of the bank account. (e.g., `10-20-30`)
-        SortCode: string option
+        SortCode: string
 
     }
 
@@ -8728,30 +8728,30 @@ module StripeModel =
     and PaymentMethodDetailsBancontact = {
 
         ///Bank code of bank associated with the bank account.
-        BankCode: string option
+        BankCode: string
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string option
+        Bic: string
 
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebitDU option
+        GeneratedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebitDU
 
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU option
+        GeneratedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU
 
         ///Last four characters of the IBAN.
-        IbanLast4: string option
+        IbanLast4: string
 
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
     ///Can be one of `en`, `de`, `fr`, or `nl`
-        PreferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option
+        PreferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage
 
         ///Owner's verified full name. Values are verified or provided by Bancontact directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -8773,13 +8773,13 @@ module StripeModel =
     and PaymentMethodDetailsCard = {
 
         ///Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Brand: PaymentMethodDetailsCardBrand option
+        Brand: PaymentMethodDetailsCardBrand
 
         ///Check results by Card networks on Card address and CVC at time of payment.
-        Checks: PaymentMethodDetailsCardChecksDU option
+        Checks: PaymentMethodDetailsCardChecksDU
 
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: string
 
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
@@ -8794,7 +8794,7 @@ module StripeModel =
         Fingerprint: string option
 
         ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: PaymentMethodDetailsCardFunding option
+        Funding: PaymentMethodDetailsCardFunding
 
         ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
         Iin: string option
@@ -8802,25 +8802,25 @@ module StripeModel =
         ///Installment details for this payment (Mexico only).
     ///
     ///For more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).
-        Installments: PaymentMethodDetailsCardInstallmentsDU option
+        Installments: PaymentMethodDetailsCardInstallmentsDU
 
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
 
         ///The last four digits of the card.
-        Last4: string option
+        Last4: string
 
         ///True if this payment was marked as MOTO and out of scope for SCA.
         Moto: bool option
 
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Network: PaymentMethodDetailsCardNetwork option
+        Network: PaymentMethodDetailsCardNetwork
 
         ///Populated if this transaction used 3D Secure authentication.
-        ThreeDSecure: PaymentMethodDetailsCardThreeDSecureDU option
+        ThreeDSecure: PaymentMethodDetailsCardThreeDSecureDU
 
         ///If this Card is part of a card wallet, this contains the details of the card wallet.
-        Wallet: PaymentMethodDetailsCardWalletDU option
+        Wallet: PaymentMethodDetailsCardWalletDU
 
     }
 
@@ -8868,13 +8868,13 @@ module StripeModel =
     and PaymentMethodDetailsCardChecks = {
 
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressLine1Check: string option
+        AddressLine1Check: string
 
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressPostalCodeCheck: string option
+        AddressPostalCodeCheck: string
 
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        CvcCheck: string option
+        CvcCheck: string
 
     }
 
@@ -8882,7 +8882,7 @@ module StripeModel =
     and PaymentMethodDetailsCardInstallments = {
 
         ///Installment plan selected for the payment.
-        Plan: PaymentMethodDetailsCardInstallmentsPlanDU option
+        Plan: PaymentMethodDetailsCardInstallmentsPlanDU
 
     }
 
@@ -8893,11 +8893,11 @@ module StripeModel =
     and PaymentMethodDetailsCardInstallmentsPlan = {
 
         ///For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
-        Count: int option
+        Count: int
 
         ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
     ///One of `month`.
-        Interval: PaymentMethodDetailsCardInstallmentsPlanInterval option
+        Interval: PaymentMethodDetailsCardInstallmentsPlanInterval
 
         ///Type of installment plan, one of `fixed_count`.
         Type: PaymentMethodDetailsCardInstallmentsPlanType
@@ -8914,19 +8914,19 @@ module StripeModel =
     and PaymentMethodDetailsCardPresent = {
 
         ///Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Brand: PaymentMethodDetailsCardPresentBrand option
+        Brand: PaymentMethodDetailsCardPresentBrand
 
         ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`).
-        CardholderName: string option
+        CardholderName: string
 
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: string
 
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
 
         ///Authorization response cryptogram.
-        EmvAuthData: string option
+        EmvAuthData: string
 
         ///Two-digit number representing the card's expiration month.
         ExpMonth: int
@@ -8935,13 +8935,13 @@ module StripeModel =
         ExpYear: int
 
         ///Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: PaymentMethodDetailsCardPresentFunding option
+        Funding: PaymentMethodDetailsCardPresentFunding
 
         ///ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod.
-        GeneratedCard: string option
+        GeneratedCard: string
 
         ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
         Iin: string option
@@ -8950,16 +8950,16 @@ module StripeModel =
         Issuer: string option
 
         ///The last four digits of the card.
-        Last4: string option
+        Last4: string
 
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Network: PaymentMethodDetailsCardPresentNetwork option
+        Network: PaymentMethodDetailsCardPresentNetwork
 
         ///How card details were read in this transaction.
-        ReadMethod: PaymentMethodDetailsCardPresentReadMethod option
+        ReadMethod: PaymentMethodDetailsCardPresentReadMethod
 
         ///A collection of fields required to be displayed on receipts. Only required for EMV transactions.
-        Receipt: PaymentMethodDetailsCardPresentReceiptDU option
+        Receipt: PaymentMethodDetailsCardPresentReceiptDU
 
     }
 
@@ -9005,31 +9005,31 @@ module StripeModel =
     and PaymentMethodDetailsCardPresentReceipt = {
 
         ///The type of account being debited or credited
-        AccountType: PaymentMethodDetailsCardPresentReceiptAccountType
+        AccountType: PaymentMethodDetailsCardPresentReceiptAccountType option
 
         ///EMV tag 9F26, cryptogram generated by the integrated circuit chip.
-        ApplicationCryptogram: string option
+        ApplicationCryptogram: string
 
         ///Mnenomic of the Application Identifier.
-        ApplicationPreferredName: string option
+        ApplicationPreferredName: string
 
         ///Identifier for this transaction.
-        AuthorizationCode: string option
+        AuthorizationCode: string
 
         ///EMV tag 8A. A code returned by the card issuer.
-        AuthorizationResponseCode: string option
+        AuthorizationResponseCode: string
 
         ///How the cardholder verified ownership of the card.
-        CardholderVerificationMethod: string option
+        CardholderVerificationMethod: string
 
         ///EMV tag 84. Similar to the application identifier stored on the integrated circuit chip.
-        DedicatedFileName: string option
+        DedicatedFileName: string
 
         ///The outcome of a series of EMV functions performed by the card reader.
-        TerminalVerificationResults: string option
+        TerminalVerificationResults: string
 
         ///An indication of various EMV functions performed during the transaction.
-        TransactionStatusInformation: string option
+        TransactionStatusInformation: string
 
     }
 
@@ -9042,23 +9042,23 @@ module StripeModel =
     ///
     and PaymentMethodDetailsCardWallet = {
 
-        AmexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout
+        AmexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout option
 
-        ApplePay: PaymentMethodDetailsCardWalletApplePay
+        ApplePay: PaymentMethodDetailsCardWalletApplePay option
 
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        DynamicLast4: string option
+        DynamicLast4: string
 
-        GooglePay: PaymentMethodDetailsCardWalletGooglePay
+        GooglePay: PaymentMethodDetailsCardWalletGooglePay option
 
-        Masterpass: PaymentMethodDetailsCardWalletMasterpass
+        Masterpass: PaymentMethodDetailsCardWalletMasterpass option
 
-        SamsungPay: PaymentMethodDetailsCardWalletSamsungPay
+        SamsungPay: PaymentMethodDetailsCardWalletSamsungPay option
 
         ///The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, or `visa_checkout`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
         Type: PaymentMethodDetailsCardWalletType
 
-        VisaCheckout: PaymentMethodDetailsCardWalletVisaCheckout
+        VisaCheckout: PaymentMethodDetailsCardWalletVisaCheckout option
 
     }
 
@@ -9095,16 +9095,16 @@ module StripeModel =
     and PaymentMethodDetailsCardWalletMasterpass = {
 
         ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodDetailsCardWalletMasterpassBillingAddressDU option
+        BillingAddress: PaymentMethodDetailsCardWalletMasterpassBillingAddressDU
 
         ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string option
+        Email: string
 
         ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string option
+        Name: string
 
         ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodDetailsCardWalletMasterpassShippingAddressDU option
+        ShippingAddress: PaymentMethodDetailsCardWalletMasterpassShippingAddressDU
 
     }
 
@@ -9125,16 +9125,16 @@ module StripeModel =
     and PaymentMethodDetailsCardWalletVisaCheckout = {
 
         ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU option
+        BillingAddress: PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU
 
         ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string option
+        Email: string
 
         ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string option
+        Name: string
 
         ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU option
+        ShippingAddress: PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU
 
     }
 
@@ -9150,7 +9150,7 @@ module StripeModel =
         ///Owner's verified full name. Values are verified or provided by EPS directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
     ///EPS rarely provides this information so the attribute is usually empty.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -9158,13 +9158,13 @@ module StripeModel =
     and PaymentMethodDetailsFpx = {
 
         ///Account holder type, if provided. Can be one of `individual` or `company`.
-        AccountHolderType: PaymentMethodDetailsFpxAccountHolderType option
+        AccountHolderType: PaymentMethodDetailsFpxAccountHolderType
 
         ///The customer's bank. Can be one of `affin_bank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`.
         Bank: PaymentMethodDetailsFpxBank
 
         ///Unique transaction id generated by FPX for every request from the merchant
-        TransactionId: string option
+        TransactionId: string
 
     }
 
@@ -9198,18 +9198,18 @@ module StripeModel =
     and PaymentMethodDetailsGiropay = {
 
         ///Bank code of bank associated with the bank account.
-        BankCode: string option
+        BankCode: string
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string option
+        Bic: string
 
         ///Owner's verified full name. Values are verified or provided by Giropay directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
     ///Giropay rarely provides this information so the attribute is usually empty.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -9217,7 +9217,7 @@ module StripeModel =
     and PaymentMethodDetailsGrabpay = {
 
         ///Unique transaction id generated by GrabPay
-        TransactionId: string option
+        TransactionId: string
 
     }
 
@@ -9225,23 +9225,23 @@ module StripeModel =
     and PaymentMethodDetailsIdeal = {
 
         ///The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
-        Bank: PaymentMethodDetailsIdealBank option
+        Bank: PaymentMethodDetailsIdealBank
 
         ///The Bank Identifier Code of the customer's bank.
-        Bic: PaymentMethodDetailsIdealBic option
+        Bic: PaymentMethodDetailsIdealBic
 
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebitDU option
+        GeneratedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebitDU
 
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU option
+        GeneratedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU
 
         ///Last four characters of the IBAN.
-        IbanLast4: string option
+        IbanLast4: string
 
         ///Owner's verified full name. Values are verified or provided by iDEAL directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -9285,19 +9285,19 @@ module StripeModel =
     and PaymentMethodDetailsInteracPresent = {
 
         ///Card brand. Can be `interac`, `mastercard` or `visa`.
-        Brand: PaymentMethodDetailsInteracPresentBrand option
+        Brand: PaymentMethodDetailsInteracPresentBrand
 
         ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`).
-        CardholderName: string option
+        CardholderName: string
 
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: string
 
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
 
         ///Authorization response cryptogram.
-        EmvAuthData: string option
+        EmvAuthData: string
 
         ///Two-digit number representing the card's expiration month.
         ExpMonth: int
@@ -9306,13 +9306,13 @@ module StripeModel =
         ExpYear: int
 
         ///Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: PaymentMethodDetailsInteracPresentFunding option
+        Funding: PaymentMethodDetailsInteracPresentFunding
 
         ///ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod.
-        GeneratedCard: string option
+        GeneratedCard: string
 
         ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
         Iin: string option
@@ -9321,19 +9321,19 @@ module StripeModel =
         Issuer: string option
 
         ///The last four digits of the card.
-        Last4: string option
+        Last4: string
 
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Network: PaymentMethodDetailsInteracPresentNetwork option
+        Network: PaymentMethodDetailsInteracPresentNetwork
 
         ///EMV tag 5F2D. Preferred languages specified by the integrated circuit chip.
-        PreferredLocales: string list option
+        PreferredLocales: string list
 
         ///How card details were read in this transaction.
-        ReadMethod: PaymentMethodDetailsInteracPresentReadMethod option
+        ReadMethod: PaymentMethodDetailsInteracPresentReadMethod
 
         ///A collection of fields required to be displayed on receipts. Only required for EMV transactions.
-        Receipt: PaymentMethodDetailsInteracPresentReceiptDU option
+        Receipt: PaymentMethodDetailsInteracPresentReceiptDU
 
     }
 
@@ -9374,31 +9374,31 @@ module StripeModel =
     and PaymentMethodDetailsInteracPresentReceipt = {
 
         ///The type of account being debited or credited
-        AccountType: PaymentMethodDetailsInteracPresentReceiptAccountType
+        AccountType: PaymentMethodDetailsInteracPresentReceiptAccountType option
 
         ///EMV tag 9F26, cryptogram generated by the integrated circuit chip.
-        ApplicationCryptogram: string option
+        ApplicationCryptogram: string
 
         ///Mnenomic of the Application Identifier.
-        ApplicationPreferredName: string option
+        ApplicationPreferredName: string
 
         ///Identifier for this transaction.
-        AuthorizationCode: string option
+        AuthorizationCode: string
 
         ///EMV tag 8A. A code returned by the card issuer.
-        AuthorizationResponseCode: string option
+        AuthorizationResponseCode: string
 
         ///How the cardholder verified ownership of the card.
-        CardholderVerificationMethod: string option
+        CardholderVerificationMethod: string
 
         ///EMV tag 84. Similar to the application identifier stored on the integrated circuit chip.
-        DedicatedFileName: string option
+        DedicatedFileName: string
 
         ///The outcome of a series of EMV functions performed by the card reader.
-        TerminalVerificationResults: string option
+        TerminalVerificationResults: string
 
         ///An indication of various EMV functions performed during the transaction.
-        TransactionStatusInformation: string option
+        TransactionStatusInformation: string
 
     }
 
@@ -9418,10 +9418,10 @@ module StripeModel =
     and PaymentMethodDetailsMultibanco = {
 
         ///Entity number associated with this Multibanco payment.
-        Entity: string option
+        Entity: string
 
         ///Reference number associated with this Multibanco payment.
-        Reference: string option
+        Reference: string
 
     }
 
@@ -9429,7 +9429,7 @@ module StripeModel =
     and PaymentMethodDetailsOxxo = {
 
         ///OXXO reference number
-        Number: string option
+        Number: string
 
     }
 
@@ -9437,12 +9437,12 @@ module StripeModel =
     and PaymentMethodDetailsP24 = {
 
         ///Unique reference for this Przelewy24 payment.
-        Reference: string option
+        Reference: string
 
         ///Owner's verified full name. Values are verified or provided by Przelewy24 directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
     ///Przelewy24 rarely provides this information so the attribute is usually empty.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -9450,13 +9450,13 @@ module StripeModel =
     and PaymentMethodDetailsSepaCreditTransfer = {
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string option
+        Bic: string
 
         ///IBAN of the bank account to transfer funds to.
-        Iban: string option
+        Iban: string
 
     }
 
@@ -9464,22 +9464,22 @@ module StripeModel =
     and PaymentMethodDetailsSepaDebit = {
 
         ///Bank code of bank associated with the bank account.
-        BankCode: string option
+        BankCode: string
 
         ///Branch code of bank associated with the bank account.
-        BranchCode: string option
+        BranchCode: string
 
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: string
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Last four characters of the IBAN.
-        Last4: string option
+        Last4: string
 
         ///ID of the mandate used to make this payment.
-        Mandate: string option
+        Mandate: string
 
     }
 
@@ -9487,33 +9487,33 @@ module StripeModel =
     and PaymentMethodDetailsSofort = {
 
         ///Bank code of bank associated with the bank account.
-        BankCode: string option
+        BankCode: string
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string option
+        Bic: string
 
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: string
 
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebitDU option
+        GeneratedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebitDU
 
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandateDU option
+        GeneratedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandateDU
 
         ///Last four characters of the IBAN.
-        IbanLast4: string option
+        IbanLast4: string
 
         ///Preferred language of the SOFORT authorization page that the customer is redirected to.
     ///Can be one of `de`, `en`, `es`, `fr`, `it`, `nl`, or `pl`
-        PreferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option
+        PreferredLanguage: PaymentMethodDetailsSofortPreferredLanguage
 
         ///Owner's verified full name. Values are verified or provided by SOFORT directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -9559,7 +9559,7 @@ module StripeModel =
     and PaymentMethodFpx = {
 
         ///Account holder type, if provided. Can be one of `individual` or `company`.
-        AccountHolderType: PaymentMethodFpxAccountHolderType option
+        AccountHolderType: PaymentMethodFpxAccountHolderType
 
         ///The customer's bank, if provided. Can be one of `affin_bank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`.
         Bank: PaymentMethodFpxBank
@@ -9610,10 +9610,10 @@ module StripeModel =
     and PaymentMethodIdeal = {
 
         ///The customer's bank, if provided. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
-        Bank: PaymentMethodIdealBank option
+        Bank: PaymentMethodIdealBank
 
         ///The Bank Identifier Code of the customer's bank, if the bank was provided.
-        Bic: PaymentMethodIdealBic option
+        Bic: PaymentMethodIdealBic
 
     }
 
@@ -9683,7 +9683,7 @@ module StripeModel =
         Enabled: bool
 
         ///Installment plan selected for this PaymentIntent.
-        Plan: PaymentMethodOptionsCardInstallmentsPlanDU option
+        Plan: PaymentMethodOptionsCardInstallmentsPlanDU
 
     }
 
@@ -9709,7 +9709,7 @@ module StripeModel =
     and PaymentMethodOptionsSofort = {
 
         ///Preferred language of the SOFORT authorization page that the customer is redirected to.
-        PreferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option
+        PreferredLanguage: PaymentMethodOptionsSofortPreferredLanguage
 
     }
 
@@ -9733,7 +9733,7 @@ module StripeModel =
     and PaymentMethodP24 = {
 
         ///The customer's bank, if provided.
-        Bank: PaymentMethodP24Bank option
+        Bank: PaymentMethodP24Bank
 
     }
 
@@ -9768,22 +9768,22 @@ module StripeModel =
     and PaymentMethodSepaDebit = {
 
         ///Bank code of bank associated with the bank account.
-        BankCode: string option
+        BankCode: string
 
         ///Branch code of bank associated with the bank account.
-        BranchCode: string option
+        BranchCode: string
 
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: string
 
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
+        Fingerprint: string
 
         ///Information about the object that generated this PaymentMethod.
-        GeneratedFrom: PaymentMethodSepaDebitGeneratedFromDU option
+        GeneratedFrom: PaymentMethodSepaDebitGeneratedFromDU
 
         ///Last four characters of the IBAN.
-        Last4: string option
+        Last4: string
 
     }
 
@@ -9794,7 +9794,7 @@ module StripeModel =
     and PaymentMethodSofort = {
 
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: string
 
     }
 
@@ -9807,7 +9807,7 @@ module StripeModel =
         ///This is the sum of all the line item tax amounts.
         AmountTax: int
 
-        Breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown
+        Breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown option
 
     }
 
@@ -10098,7 +10098,7 @@ module StripeModel =
         Automatic: bool
 
         ///ID of the balance transaction that describes the impact of this payout on your account balance.
-        BalanceTransaction: PayoutBalanceTransactionDU option
+        BalanceTransaction: PayoutBalanceTransactionDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -10107,19 +10107,19 @@ module StripeModel =
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///ID of the bank account or card the payout was sent to.
-        Destination: PayoutDestinationDU option
+        Destination: PayoutDestinationDU
 
         ///If the payout failed or was canceled, this will be the ID of the balance transaction that reversed the initial balance transaction, and puts the funds from the failed payout back in your balance.
-        FailureBalanceTransaction: PayoutFailureBalanceTransactionDU option
+        FailureBalanceTransaction: PayoutFailureBalanceTransactionDU
 
         ///Error code explaining reason for payout failure if available. See [Types of payout failures](https://stripe.com/docs/api#payout_failures) for a list of failure codes.
-        FailureCode: string option
+        FailureCode: string
 
         ///Message to user further explaining reason for payout failure if available.
-        FailureMessage: string option
+        FailureMessage: string
 
         ///Unique identifier for the object.
         Id: string
@@ -10128,7 +10128,7 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///The method used to send this payout, which can be `standard` or `instant`. `instant` is only supported for payouts to debit cards. (See [Instant payouts for marketplaces](https://stripe.com/blog/instant-payouts-for-marketplaces) for more information.)
         Method: string
@@ -10137,16 +10137,16 @@ module StripeModel =
         Object: PayoutObject
 
         ///If the payout reverses another, this is the ID of the original payout.
-        OriginalPayout: PayoutOriginalPayoutDU option
+        OriginalPayout: PayoutOriginalPayoutDU
 
         ///If the payout was reversed, this is the ID of the payout that reverses this payout.
-        ReversedBy: PayoutReversedByDU option
+        ReversedBy: PayoutReversedByDU
 
         ///The source balance this payout came from. One of `card`, `fpx`, or `bank_account`.
         SourceType: string
 
         ///Extra information about a payout to be displayed on the user's bank statement.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///Current status of the payout: `paid`, `pending`, `in_transit`, `canceled` or `failed`. A payout is `pending` until it is submitted to the bank, when it becomes `in_transit`. The status then changes to `paid` if the transaction goes through, or to `failed` or `canceled` (within 5 business days). Some failed payouts may initially show as `paid` but then change to `failed`.
         Status: string
@@ -10188,10 +10188,10 @@ module StripeModel =
     and Period = {
 
         ///The end date of this usage period. All usage up to and including this point in time is included.
-        End: int option
+        End: int
 
         ///The start date of this usage period. All usage after this point in time is included.
-        Start: int option
+        Start: int
 
     }
 
@@ -10201,9 +10201,9 @@ module StripeModel =
     and Person = {
 
         ///The account the person is associated with.
-        Account: string
+        Account: string option
 
-        Address: Address
+        Address: Address option
 
         ///The Kana variation of the person's address (Japan only).
         AddressKana: PersonAddressKanaDU option
@@ -10214,7 +10214,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
-        Dob: LegalEntityDob
+        Dob: LegalEntityDob option
 
         ///The person's email address.
         Email: string option
@@ -10235,7 +10235,7 @@ module StripeModel =
         Id: string
 
         ///Whether the person's `id_number` was provided.
-        IdNumberProvided: bool
+        IdNumberProvided: bool option
 
         ///The person's last name.
         LastName: string option
@@ -10250,7 +10250,7 @@ module StripeModel =
         MaidenName: string option
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
+        Metadata: Map<string, string> option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: PersonObject
@@ -10259,17 +10259,17 @@ module StripeModel =
         Phone: string option
 
         ///Indicates if the person or any of their representatives, family members, or other closely related persons, declares that they hold or have held an important public job or function, in any jurisdiction.
-        PoliticalExposure: PersonPoliticalExposure
+        PoliticalExposure: PersonPoliticalExposure option
 
-        Relationship: PersonRelationship
+        Relationship: PersonRelationship option
 
         ///Information about the requirements for this person, including what information needs to be collected, and by when.
         Requirements: PersonRequirementsDU option
 
         ///Whether the last four digits of the person's Social Security number have been provided (U.S. only).
-        SsnLast4Provided: bool
+        SsnLast4Provided: bool option
 
-        Verification: LegalEntityPersonVerification
+        Verification: LegalEntityPersonVerification option
 
     }
 
@@ -10293,22 +10293,22 @@ module StripeModel =
     and PersonRelationship = {
 
         ///Whether the person is a director of the account's legal entity. Currently only required for accounts in the EU. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
-        Director: bool option
+        Director: bool
 
         ///Whether the person has significant responsibility to control, manage, or direct the organization.
-        Executive: bool option
+        Executive: bool
 
         ///Whether the person is an owner of the account’s legal entity.
-        Owner: bool option
+        Owner: bool
 
         ///The percent owned by the person of the account's legal entity.
-        PercentOwnership: decimal option
+        PercentOwnership: decimal
 
         ///Whether the person is authorized as the primary representative of the account. This is the person nominated by the business to provide information about themselves, and general information about the account. There can only be one representative at any given time. At the time the account is created, this person should be set to the person responsible for opening the account.
-        Representative: bool option
+        Representative: bool
 
         ///The person's title (e.g., CEO, Support Engineer).
-        Title: string option
+        Title: string
 
     }
 
@@ -10346,13 +10346,13 @@ module StripeModel =
         Active: bool
 
         ///Specifies a usage aggregation strategy for plans of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
-        AggregateUsage: PlanAggregateUsage option
+        AggregateUsage: PlanAggregateUsage
 
         ///The unit amount in %s to be charged, represented as a whole integer if possible.
-        Amount: int option
+        Amount: int
 
         ///The unit amount in %s to be charged, represented as a decimal string with at most 12 decimal places.
-        AmountDecimal: string option
+        AmountDecimal: string
 
         ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `amount`) will be charged per unit in `quantity` (for plans with `usage_type=licensed`), or per unit of total usage (for plans with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
         BillingScheme: PlanBillingScheme
@@ -10376,28 +10376,28 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///A brief description of the plan, hidden from customers.
-        Nickname: string option
+        Nickname: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: PlanObject
 
         ///The product whose pricing this plan determines.
-        Product: PlanProductDU option
+        Product: PlanProductDU
 
         ///Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
         Tiers: PlanTier list
 
         ///Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
-        TiersMode: PlanTiersMode option
+        TiersMode: PlanTiersMode
 
         ///Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.
-        TransformUsage: PlanTransformUsageDU option
+        TransformUsage: PlanTransformUsageDU
 
         ///Default number of trial days when subscribing a customer to this plan using [`trial_from_plan=true`](https://stripe.com/docs/api#create_subscription-trial_from_plan).
-        TrialPeriodDays: int option
+        TrialPeriodDays: int
 
         ///Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`.
         UsageType: PlanUsageType
@@ -10443,19 +10443,19 @@ module StripeModel =
     and PlanTier = {
 
         ///Price for the entire tier.
-        FlatAmount: int option
+        FlatAmount: int
 
         ///Same as `flat_amount`, but contains a decimal value with at most 12 decimal places.
-        FlatAmountDecimal: string option
+        FlatAmountDecimal: string
 
         ///Per unit price for units relevant to the tier.
-        UnitAmount: int option
+        UnitAmount: int
 
         ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string option
+        UnitAmountDecimal: string
 
         ///Up to and including to this quantity will be contained in the tier.
-        UpTo: int option
+        UpTo: int
 
     }
 
@@ -10509,13 +10509,13 @@ module StripeModel =
         Livemode: bool
 
         ///A lookup key used to retrieve prices dynamically from a static string.
-        LookupKey: string option
+        LookupKey: string
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
 
         ///A brief description of the plan, hidden from customers.
-        Nickname: string option
+        Nickname: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: PriceObject
@@ -10524,25 +10524,25 @@ module StripeModel =
         Product: PriceProductDU
 
         ///The recurring components of a price such as `interval` and `usage_type`.
-        Recurring: PriceRecurringDU option
+        Recurring: PriceRecurringDU
 
         ///Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
         Tiers: PriceTier list
 
         ///Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
-        TiersMode: PriceTiersMode option
+        TiersMode: PriceTiersMode
 
         ///Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.
-        TransformQuantity: PriceTransformQuantityDU option
+        TransformQuantity: PriceTransformQuantityDU
 
         ///One of `one_time` or `recurring` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase.
         Type: PriceType
 
         ///The unit amount in %s to be charged, represented as a whole integer if possible.
-        UnitAmount: int option
+        UnitAmount: int
 
         ///The unit amount in %s to be charged, represented as a decimal string with at most 12 decimal places.
-        UnitAmountDecimal: string option
+        UnitAmountDecimal: string
 
     }
 
@@ -10576,19 +10576,19 @@ module StripeModel =
     and PriceTier = {
 
         ///Price for the entire tier.
-        FlatAmount: int option
+        FlatAmount: int
 
         ///Same as `flat_amount`, but contains a decimal value with at most 12 decimal places.
-        FlatAmountDecimal: string option
+        FlatAmountDecimal: string
 
         ///Per unit price for units relevant to the tier.
-        UnitAmount: int option
+        UnitAmount: int
 
         ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string option
+        UnitAmountDecimal: string
 
         ///Up to and including to this quantity will be contained in the tier.
-        UpTo: int option
+        UpTo: int
 
     }
 
@@ -10603,19 +10603,19 @@ module StripeModel =
         Active: bool
 
         ///A list of up to 5 attributes that each SKU can provide values for (e.g., `["color", "size"]`).
-        Attributes: string list option
+        Attributes: string list
 
         ///A short one-line description of the product, meant to be displayable to the customer. Only applicable to products of `type=good`.
-        Caption: string option
+        Caption: string
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///An array of connect application identifiers that cannot purchase this product. Only applicable to products of `type=good`.
-        DeactivateOn: string list
+        DeactivateOn: string list option
 
         ///The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
-        Description: string option
+        Description: string
 
         ///Unique identifier for the object.
         Id: string
@@ -10636,25 +10636,25 @@ module StripeModel =
         Object: ProductObject
 
         ///The dimensions of this product for shipping purposes. A SKU associated with this product can override this value by having its own `package_dimensions`. Only applicable to products of `type=good`.
-        PackageDimensions: ProductPackageDimensionsDU option
+        PackageDimensions: ProductPackageDimensionsDU
 
         ///Whether this product is a shipped good. Only applicable to products of `type=good`.
-        Shippable: bool option
+        Shippable: bool
 
         ///Extra information about a product which will appear on your customer's credit card statement. In the case that multiple products are billed at once, the first statement descriptor will be used.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///The type of the product. The product is either of type `good`, which is eligible for use with Orders and SKUs, or `service`, which is eligible for use with Subscriptions and Plans.
         Type: ProductType
 
         ///A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions.
-        UnitLabel: string option
+        UnitLabel: string
 
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
         Updated: int
 
         ///A URL of a publicly-accessible webpage for this product. Only applicable to products of `type=good`.
-        Url: string option
+        Url: string
 
     }
 
@@ -10684,10 +10684,10 @@ module StripeModel =
         Created: int
 
         ///The customer that this promotion code can be used by.
-        Customer: PromotionCodeCustomerDU option
+        Customer: PromotionCodeCustomerDU
 
         ///Date at which the promotion code can no longer be redeemed.
-        ExpiresAt: int option
+        ExpiresAt: int
 
         ///Unique identifier for the object.
         Id: string
@@ -10696,10 +10696,10 @@ module StripeModel =
         Livemode: bool
 
         ///Maximum number of times this promotion code can be redeemed.
-        MaxRedemptions: int option
+        MaxRedemptions: int
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: PromotionCodeObject
@@ -10726,10 +10726,10 @@ module StripeModel =
         FirstTimeTransaction: bool
 
         ///Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
-        MinimumAmount: int option
+        MinimumAmount: int
 
         ///Three-letter [ISO code](https://stripe.com/docs/currencies) for minimum_amount
-        MinimumAmountCurrency: string option
+        MinimumAmountCurrency: string
 
     }
 
@@ -10853,19 +10853,19 @@ module StripeModel =
     and RadarReviewResourceLocation = {
 
         ///The city where the payment originated.
-        City: string option
+        City: string
 
         ///Two-letter ISO code representing the country where the payment originated.
-        Country: string option
+        Country: string
 
         ///The geographic latitude where the payment originated.
-        Latitude: decimal option
+        Latitude: decimal
 
         ///The geographic longitude where the payment originated.
-        Longitude: decimal option
+        Longitude: decimal
 
         ///The state/county/province/region where the payment originated.
-        Region: string option
+        Region: string
 
     }
 
@@ -10873,16 +10873,16 @@ module StripeModel =
     and RadarReviewResourceSession = {
 
         ///The browser used in this browser session (e.g., `Chrome`).
-        Browser: string option
+        Browser: string
 
         ///Information about the device used for the browser session (e.g., `Samsung SM-G930T`).
-        Device: string option
+        Device: string
 
         ///The platform for the browser session (e.g., `Macintosh`).
-        Platform: string option
+        Platform: string
 
         ///The version for the browser session (e.g., `61.0.3163.100`).
-        Version: string option
+        Version: string
 
     }
 
@@ -10899,20 +10899,20 @@ module StripeModel =
     and Recipient = {
 
         ///Hash describing the current account on the recipient, if there is one.
-        ActiveAccount: RecipientActiveAccountDU option
+        ActiveAccount: RecipientActiveAccountDU
 
-        Cards: Map<string, string> option
+        Cards: Map<string, string>
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///The default card to use for creating transfers to this recipient.
-        DefaultCard: RecipientDefaultCardDU option
+        DefaultCard: RecipientDefaultCardDU
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
-        Email: string option
+        Email: string
 
         ///Unique identifier for the object.
         Id: string
@@ -10924,15 +10924,15 @@ module StripeModel =
         Metadata: Map<string, string>
 
         ///The ID of the [Custom account](https://stripe.com/docs/connect/custom-accounts) this recipient was migrated to. If set, the recipient can no longer be updated, nor can transfers be made to it: use the Custom account instead.
-        MigratedTo: RecipientMigratedToDU option
+        MigratedTo: RecipientMigratedToDU
 
         ///Full, legal name of the recipient.
-        Name: string option
+        Name: string
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: RecipientObject
 
-        RolledBackFrom: RecipientRolledBackFromDU
+        RolledBackFrom: RecipientRolledBackFromDU option
 
         ///Type of the recipient, one of `individual` or `corporation`.
         Type: string
@@ -10964,7 +10964,7 @@ module StripeModel =
     and Recurring = {
 
         ///Specifies a usage aggregation strategy for prices of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
-        AggregateUsage: RecurringAggregateUsage option
+        AggregateUsage: RecurringAggregateUsage
 
         ///The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
         Interval: RecurringInterval
@@ -10973,7 +10973,7 @@ module StripeModel =
         IntervalCount: int
 
         ///Default number of trial days when subscribing a customer to this price using [`trial_from_plan=true`](https://stripe.com/docs/api#create_subscription-trial_from_plan).
-        TrialPeriodDays: int option
+        TrialPeriodDays: int
 
         ///Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`.
         UsageType: RecurringUsageType
@@ -11007,10 +11007,10 @@ module StripeModel =
         Amount: int
 
         ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: RefundBalanceTransactionDU option
+        BalanceTransaction: RefundBalanceTransactionDU
 
         ///ID of the charge that was refunded.
-        Charge: RefundChargeDU option
+        Charge: RefundChargeDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -11019,40 +11019,40 @@ module StripeModel =
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users. (Available on non-card refunds only)
-        Description: string
+        Description: string option
 
         ///If the refund failed, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction.
-        FailureBalanceTransaction: RefundFailureBalanceTransactionDU
+        FailureBalanceTransaction: RefundFailureBalanceTransactionDU option
 
         ///If the refund failed, the reason for refund failure if known. Possible values are `lost_or_stolen_card`, `expired_or_canceled_card`, or `unknown`.
-        FailureReason: string
+        FailureReason: string option
 
         ///Unique identifier for the object.
         Id: string
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: RefundObject
 
         ///ID of the PaymentIntent that was refunded.
-        PaymentIntent: RefundPaymentIntentDU option
+        PaymentIntent: RefundPaymentIntentDU
 
         ///Reason for the refund, either user-provided (`duplicate`, `fraudulent`, or `requested_by_customer`) or generated by Stripe internally (`expired_uncaptured_charge`).
-        Reason: string option
+        Reason: string
 
         ///This is the transaction number that appears on email receipts sent for this refund.
-        ReceiptNumber: string option
+        ReceiptNumber: string
 
         ///The transfer reversal that is associated with the refund. Only present if the charge came from another Stripe account. See the Connect documentation for details.
-        SourceTransferReversal: RefundSourceTransferReversalDU option
+        SourceTransferReversal: RefundSourceTransferReversalDU
 
         ///Status of the refund. For credit card refunds, this can be `pending`, `succeeded`, or `failed`. For other types of refunds, it can be `pending`, `succeeded`, `failed`, or `canceled`. Refer to our [refunds](https://stripe.com/docs/refunds#failed-refunds) documentation for more details.
-        Status: string option
+        Status: string
 
         ///If the accompanying transfer was reversed, the transfer reversal object. Only applicable if the charge was created using the destination parameter.
-        TransferReversal: RefundTransferReversalDU option
+        TransferReversal: RefundTransferReversalDU
 
     }
 
@@ -11099,7 +11099,7 @@ module StripeModel =
 
         ///If something should go wrong during the run, a message about the failure (populated when
     /// `status=failed`).
-        Error: string option
+        Error: string
 
         ///Unique identifier for the object.
         Id: string
@@ -11117,7 +11117,7 @@ module StripeModel =
 
         ///The file object representing the result of the report run (populated when
     /// `status=succeeded`).
-        Result: ReportingReportRunResultDU option
+        Result: ReportingReportRunResultDU
 
         ///Status of this report run. This will be `pending` when the run is initially created.
     /// When the run finishes, this will be set to `succeeded` and the `result` field will be populated.
@@ -11126,7 +11126,7 @@ module StripeModel =
 
         ///Timestamp at which this run successfully finished (populated when
     /// `status=succeeded`). Measured in seconds since the Unix epoch.
-        SucceededAt: int option
+        SucceededAt: int
 
     }
 
@@ -11154,7 +11154,7 @@ module StripeModel =
         DataAvailableStart: int
 
         ///List of column names that are included by default when this Report Type gets run. (If the Report Type doesn't support the `columns` parameter, this will be null.)
-        DefaultColumns: string list option
+        DefaultColumns: string list
 
         ///The [ID of the Report Type](https://stripe.com/docs/reporting/statements/api#available-report-types), such as `balance.summary.1`.
         Id: string
@@ -11185,7 +11185,7 @@ module StripeModel =
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///Unique identifier for the object.
         Id: string
@@ -11205,13 +11205,13 @@ module StripeModel =
     and Review = {
 
         ///The ZIP or postal code of the card used, if applicable.
-        BillingZip: string option
+        BillingZip: string
 
         ///The charge associated with this review.
-        Charge: ReviewChargeDU option
+        Charge: ReviewChargeDU
 
         ///The reason the review was closed, or null if it has not yet been closed. One of `approved`, `refunded`, `refunded_as_fraud`, or `disputed`.
-        ClosedReason: ReviewClosedReason option
+        ClosedReason: ReviewClosedReason
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -11220,10 +11220,10 @@ module StripeModel =
         Id: string
 
         ///The IP address where the payment originated.
-        IpAddress: string option
+        IpAddress: string
 
         ///Information related to the location of the payment. Note that this information is an approximation and attempts to locate the nearest population center - it should not be used to determine a specific address.
-        IpAddressLocation: ReviewIpAddressLocationDU option
+        IpAddressLocation: ReviewIpAddressLocationDU
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -11238,13 +11238,13 @@ module StripeModel =
         OpenedReason: ReviewOpenedReason
 
         ///The PaymentIntent ID associated with this review, if one exists.
-        PaymentIntent: ReviewPaymentIntentDU
+        PaymentIntent: ReviewPaymentIntentDU option
 
         ///The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, or `disputed`.
         Reason: string
 
         ///Information related to the browsing session of the user who initiated the payment.
-        Session: ReviewSessionDU option
+        Session: ReviewSessionDU
 
     }
 
@@ -11301,10 +11301,10 @@ module StripeModel =
         ///When the query was run, Sigma contained a snapshot of your Stripe data at this time.
         DataLoadTime: int
 
-        Error: SigmaScheduledQueryRunError
+        Error: SigmaScheduledQueryRunError option
 
         ///The file object representing the results of the query.
-        File: ScheduledQueryRunFileDU option
+        File: ScheduledQueryRunFileDU
 
         ///Unique identifier for the object.
         Id: string
@@ -11339,10 +11339,10 @@ module StripeModel =
     and SepaDebitGeneratedFrom = {
 
         ///The ID of the Charge that generated this PaymentMethod, if any.
-        Charge: SepaDebitGeneratedFromChargeDU option
+        Charge: SepaDebitGeneratedFromChargeDU
 
         ///The ID of the SetupAttempt that generated this PaymentMethod, if any.
-        SetupAttempt: SepaDebitGeneratedFromSetupAttemptDU option
+        SetupAttempt: SepaDebitGeneratedFromSetupAttemptDU
 
     }
 
@@ -11361,13 +11361,13 @@ module StripeModel =
     and SetupAttempt = {
 
         ///The value of [application](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-application) on the SetupIntent at the time of this confirmation.
-        Application: SetupAttemptApplicationDU option
+        Application: SetupAttemptApplicationDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///The value of [customer](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-customer) on the SetupIntent at the time of this confirmation.
-        Customer: SetupAttemptCustomerDU option
+        Customer: SetupAttemptCustomerDU
 
         ///Unique identifier for the object.
         Id: string
@@ -11379,7 +11379,7 @@ module StripeModel =
         Object: SetupAttemptObject
 
         ///The value of [on_behalf_of](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-on_behalf_of) on the SetupIntent at the time of this confirmation.
-        OnBehalfOf: SetupAttemptOnBehalfOfDU option
+        OnBehalfOf: SetupAttemptOnBehalfOfDU
 
         ///ID of the payment method used with this SetupAttempt.
         PaymentMethod: SetupAttemptPaymentMethodDU
@@ -11387,7 +11387,7 @@ module StripeModel =
         PaymentMethodDetails: SetupAttemptPaymentMethodDetails
 
         ///The error encountered during this attempt to confirm the SetupIntent, if any.
-        SetupError: SetupAttemptSetupErrorDU option
+        SetupError: SetupAttemptSetupErrorDU
 
         ///ID of the SetupIntent that this attempt belongs to.
         SetupIntent: SetupAttemptSetupIntentDU
@@ -11430,13 +11430,13 @@ module StripeModel =
     ///
     and SetupAttemptPaymentMethodDetails = {
 
-        Bancontact: SetupAttemptPaymentMethodDetailsBancontact
+        Bancontact: SetupAttemptPaymentMethodDetailsBancontact option
 
-        Card: SetupAttemptPaymentMethodDetailsCard
+        Card: SetupAttemptPaymentMethodDetailsCard option
 
-        Ideal: SetupAttemptPaymentMethodDetailsIdeal
+        Ideal: SetupAttemptPaymentMethodDetailsIdeal option
 
-        Sofort: SetupAttemptPaymentMethodDetailsSofort
+        Sofort: SetupAttemptPaymentMethodDetailsSofort option
 
         ///The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method.
         Type: string
@@ -11447,30 +11447,30 @@ module StripeModel =
     and SetupAttemptPaymentMethodDetailsBancontact = {
 
         ///Bank code of bank associated with the bank account.
-        BankCode: string option
+        BankCode: string
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string option
+        Bic: string
 
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitDU option
+        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitDU
 
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU option
+        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU
 
         ///Last four characters of the IBAN.
-        IbanLast4: string option
+        IbanLast4: string
 
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
     ///Can be one of `en`, `de`, `fr`, or `nl`
-        PreferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option
+        PreferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage
 
         ///Owner's verified full name. Values are verified or provided by Bancontact directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -11492,7 +11492,7 @@ module StripeModel =
     and SetupAttemptPaymentMethodDetailsCard = {
 
         ///Populated if this authorization used 3D Secure authentication.
-        ThreeDSecure: SetupAttemptPaymentMethodDetailsCardThreeDSecureDU option
+        ThreeDSecure: SetupAttemptPaymentMethodDetailsCardThreeDSecureDU
 
     }
 
@@ -11503,23 +11503,23 @@ module StripeModel =
     and SetupAttemptPaymentMethodDetailsIdeal = {
 
         ///The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
-        Bank: SetupAttemptPaymentMethodDetailsIdealBank option
+        Bank: SetupAttemptPaymentMethodDetailsIdealBank
 
         ///The Bank Identifier Code of the customer's bank.
-        Bic: SetupAttemptPaymentMethodDetailsIdealBic option
+        Bic: SetupAttemptPaymentMethodDetailsIdealBic
 
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU option
+        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU
 
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU option
+        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU
 
         ///Last four characters of the IBAN.
-        IbanLast4: string option
+        IbanLast4: string
 
         ///Owner's verified full name. Values are verified or provided by iDEAL directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -11563,30 +11563,30 @@ module StripeModel =
     and SetupAttemptPaymentMethodDetailsSofort = {
 
         ///Bank code of bank associated with the bank account.
-        BankCode: string option
+        BankCode: string
 
         ///Name of the bank associated with the bank account.
-        BankName: string option
+        BankName: string
 
         ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string option
+        Bic: string
 
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitDU option
+        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitDU
 
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandateDU option
+        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandateDU
 
         ///Last four characters of the IBAN.
-        IbanLast4: string option
+        IbanLast4: string
 
         ///Preferred language of the Sofort authorization page that the customer is redirected to.
     ///Can be one of `en`, `de`, `fr`, or `nl`
-        PreferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option
+        PreferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage
 
         ///Owner's verified full name. Values are verified or provided by Sofort directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -11629,15 +11629,15 @@ module StripeModel =
     and SetupIntent = {
 
         ///ID of the Connect application that created the SetupIntent.
-        Application: SetupIntentApplicationDU option
+        Application: SetupIntentApplicationDU
 
         ///Reason for cancellation of this SetupIntent, one of `abandoned`, `requested_by_customer`, or `duplicate`.
-        CancellationReason: SetupIntentCancellationReason option
+        CancellationReason: SetupIntentCancellationReason
 
         ///The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
     ///
     ///The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
-        ClientSecret: string option
+        ClientSecret: string
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -11645,49 +11645,49 @@ module StripeModel =
         ///ID of the Customer this SetupIntent belongs to, if one exists.
     ///
     ///If present, the SetupIntent's payment method will be attached to the Customer on successful setup. Payment methods attached to other Customers cannot be used with this SetupIntent.
-        Customer: SetupIntentCustomerDU option
+        Customer: SetupIntentCustomerDU
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///Unique identifier for the object.
         Id: string
 
         ///The error encountered in the previous SetupIntent confirmation.
-        LastSetupError: SetupIntentLastSetupErrorDU option
+        LastSetupError: SetupIntentLastSetupErrorDU
 
         ///The most recent SetupAttempt for this SetupIntent.
-        LatestAttempt: SetupIntentLatestAttemptDU option
+        LatestAttempt: SetupIntentLatestAttemptDU
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///ID of the multi use Mandate generated by the SetupIntent.
-        Mandate: SetupIntentMandateDU option
+        Mandate: SetupIntentMandateDU
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///If present, this property tells you what actions you need to take in order for your customer to continue payment setup.
-        NextAction: SetupIntentNextActionDU option
+        NextAction: SetupIntentNextActionDU
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: SetupIntentObject
 
         ///The account (if any) for which the setup is intended.
-        OnBehalfOf: SetupIntentOnBehalfOfDU option
+        OnBehalfOf: SetupIntentOnBehalfOfDU
 
         ///ID of the payment method used with this SetupIntent.
-        PaymentMethod: SetupIntentPaymentMethodDU option
+        PaymentMethod: SetupIntentPaymentMethodDU
 
         ///Payment-method-specific configuration for this SetupIntent.
-        PaymentMethodOptions: SetupIntentPaymentMethodOptionsDU option
+        PaymentMethodOptions: SetupIntentPaymentMethodOptionsDU
 
         ///The list of payment method types (e.g. card) that this SetupIntent is allowed to set up.
         PaymentMethodTypes: string list
 
         ///ID of the single_use Mandate generated by the SetupIntent.
-        SingleUseMandate: SetupIntentSingleUseMandateDU option
+        SingleUseMandate: SetupIntentSingleUseMandateDU
 
         ///[Status](https://stripe.com/docs/payments/intents#intent-statuses) of this SetupIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `canceled`, or `succeeded`.
         Status: SetupIntentStatus
@@ -11756,13 +11756,13 @@ module StripeModel =
     ///
     and SetupIntentNextAction = {
 
-        RedirectToUrl: SetupIntentNextActionRedirectToUrl
+        RedirectToUrl: SetupIntentNextActionRedirectToUrl option
 
         ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
         Type: string
 
         ///When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: Map<string, string>
+        UseStripeSdk: Map<string, string> option
 
     }
 
@@ -11770,19 +11770,19 @@ module StripeModel =
     and SetupIntentNextActionRedirectToUrl = {
 
         ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
-        ReturnUrl: string option
+        ReturnUrl: string
 
         ///The URL you must redirect your customer to in order to authenticate.
-        Url: string option
+        Url: string
 
     }
 
     ///
     and SetupIntentPaymentMethodOptions = {
 
-        Card: SetupIntentPaymentMethodOptionsCard
+        Card: SetupIntentPaymentMethodOptionsCard option
 
-        SepaDebit: SetupIntentPaymentMethodOptionsSepaDebit
+        SepaDebit: SetupIntentPaymentMethodOptionsSepaDebit option
 
     }
 
@@ -11790,7 +11790,7 @@ module StripeModel =
     and SetupIntentPaymentMethodOptionsCard = {
 
         ///We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Permitted values include: `automatic` or `any`. If not provided, defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
-        RequestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option
+        RequestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure
 
     }
 
@@ -11809,14 +11809,14 @@ module StripeModel =
     ///
     and SetupIntentPaymentMethodOptionsSepaDebit = {
 
-        MandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit
+        MandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit option
 
     }
 
     ///
     and Shipping = {
 
-        Address: Address
+        Address: Address option
 
         ///The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc.
         Carrier: string option
@@ -11842,7 +11842,7 @@ module StripeModel =
         Currency: string
 
         ///The estimated delivery date for the given shipping method. Can be either a specific date or a range.
-        DeliveryEstimate: ShippingMethodDeliveryEstimateDU option
+        DeliveryEstimate: ShippingMethodDeliveryEstimateDU
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string
@@ -11889,7 +11889,7 @@ module StripeModel =
         Id: string
 
         ///The URL of an image for this SKU, meant to be displayable to the customer.
-        Image: string option
+        Image: string
 
         Inventory: Inventory
 
@@ -11903,7 +11903,7 @@ module StripeModel =
         Object: SkuObject
 
         ///The dimensions of this SKU for shipping purposes.
-        PackageDimensions: SkuPackageDimensionsDU option
+        PackageDimensions: SkuPackageDimensionsDU
 
         ///The cost of the item as a positive integer in the smallest currency unit (that is, 100 cents to charge $1.00, or 100 to charge ¥100, Japanese Yen being a zero-decimal currency).
         Price: int
@@ -11934,96 +11934,96 @@ module StripeModel =
     ///Related guides: [Sources API](https://stripe.com/docs/sources) and [Sources & Customers](https://stripe.com/docs/sources/customers).
     and Source = {
 
-        AchCreditTransfer: SourceTypeAchCreditTransfer
+        AchCreditTransfer: SourceTypeAchCreditTransfer option
 
-        AchDebit: SourceTypeAchDebit
+        AchDebit: SourceTypeAchDebit option
 
-        AcssDebit: SourceTypeAcssDebit
+        AcssDebit: SourceTypeAcssDebit option
 
-        Alipay: SourceTypeAlipay
+        Alipay: SourceTypeAlipay option
 
         ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount associated with the source. This is the amount for which the source will be chargeable once ready. Required for `single_use` sources.
-        Amount: int option
+        Amount: int
 
-        AuBecsDebit: SourceTypeAuBecsDebit
+        AuBecsDebit: SourceTypeAuBecsDebit option
 
-        Bancontact: SourceTypeBancontact
+        Bancontact: SourceTypeBancontact option
 
-        Card: SourceTypeCard
+        Card: SourceTypeCard option
 
-        CardPresent: SourceTypeCardPresent
+        CardPresent: SourceTypeCardPresent option
 
         ///The client secret of the source. Used for client-side retrieval using a publishable key.
         ClientSecret: string
 
-        CodeVerification: SourceCodeVerificationFlow
+        CodeVerification: SourceCodeVerificationFlow option
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources.
-        Currency: string option
+        Currency: string
 
         ///The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer.
-        Customer: string
+        Customer: string option
 
-        Eps: SourceTypeEps
+        Eps: SourceTypeEps option
 
         ///The authentication `flow` of the source. `flow` is one of `redirect`, `receiver`, `code_verification`, `none`.
         Flow: string
 
-        Giropay: SourceTypeGiropay
+        Giropay: SourceTypeGiropay option
 
         ///Unique identifier for the object.
         Id: string
 
-        Ideal: SourceTypeIdeal
+        Ideal: SourceTypeIdeal option
 
-        Klarna: SourceTypeKlarna
+        Klarna: SourceTypeKlarna option
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
-        Multibanco: SourceTypeMultibanco
+        Multibanco: SourceTypeMultibanco option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: SourceObject
 
         ///Information about the owner of the payment instrument that may be used or required by particular source types.
-        Owner: SourceOwnerDU option
+        Owner: SourceOwnerDU
 
-        P24: SourceTypeP24
+        P24: SourceTypeP24 option
 
-        Receiver: SourceReceiverFlow
+        Receiver: SourceReceiverFlow option
 
-        Redirect: SourceRedirectFlow
+        Redirect: SourceRedirectFlow option
 
-        SepaCreditTransfer: SourceTypeSepaCreditTransfer
+        SepaCreditTransfer: SourceTypeSepaCreditTransfer option
 
-        SepaDebit: SourceTypeSepaDebit
+        SepaDebit: SourceTypeSepaDebit option
 
-        Sofort: SourceTypeSofort
+        Sofort: SourceTypeSofort option
 
-        SourceOrder: SourceOrder
+        SourceOrder: SourceOrder option
 
         ///Extra information about a source. This will appear on your customer's statement every time you charge the source.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///The status of the source, one of `canceled`, `chargeable`, `consumed`, `failed`, or `pending`. Only `chargeable` sources can be used to create a charge.
         Status: string
 
-        ThreeDSecure: SourceTypeThreeDSecure
+        ThreeDSecure: SourceTypeThreeDSecure option
 
         ///The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://stripe.com/docs/sources) used.
         Type: SourceType
 
         ///Either `reusable` or `single_use`. Whether this source should be reusable or not. Some source types may or may not be reusable by construction, while others may leave the option at creation. If an incompatible value is passed, an error will be returned.
-        Usage: string option
+        Usage: string
 
-        Wechat: SourceTypeWechat
+        Wechat: SourceTypeWechat option
 
     }
 
@@ -12070,12 +12070,12 @@ module StripeModel =
     ///deliver an email to the customer.
     and SourceMandateNotification = {
 
-        AcssDebit: SourceMandateNotificationAcssDebitData
+        AcssDebit: SourceMandateNotificationAcssDebitData option
 
         ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount associated with the mandate notification. The amount is expressed in the currency of the underlying source. Required if the notification type is `debit_initiated`.
-        Amount: int option
+        Amount: int
 
-        BacsDebit: SourceMandateNotificationBacsDebitData
+        BacsDebit: SourceMandateNotificationBacsDebitData option
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -12092,7 +12092,7 @@ module StripeModel =
         ///The reason of the mandate notification. Valid reasons are `mandate_confirmed` or `debit_initiated`.
         Reason: string
 
-        SepaDebit: SourceMandateNotificationSepaDebitData
+        SepaDebit: SourceMandateNotificationSepaDebitData option
 
         Source: Source
 
@@ -12111,7 +12111,7 @@ module StripeModel =
     and SourceMandateNotificationAcssDebitData = {
 
         ///The statement descriptor associate with the debit.
-        StatementDescriptor: string
+        StatementDescriptor: string option
 
     }
 
@@ -12119,7 +12119,7 @@ module StripeModel =
     and SourceMandateNotificationBacsDebitData = {
 
         ///Last 4 digits of the account number associated with the debit.
-        Last4: string
+        Last4: string option
 
     }
 
@@ -12127,13 +12127,13 @@ module StripeModel =
     and SourceMandateNotificationSepaDebitData = {
 
         ///SEPA creditor ID.
-        CreditorIdentifier: string
+        CreditorIdentifier: string option
 
         ///Last 4 digits of the account number associated with the debit.
-        Last4: string
+        Last4: string option
 
         ///Mandate reference associated with the debit.
-        MandateReference: string
+        MandateReference: string option
 
     }
 
@@ -12147,12 +12147,12 @@ module StripeModel =
         Currency: string
 
         ///The email address of the customer placing the order.
-        Email: string
+        Email: string option
 
         ///List of items constituting the order.
         Items: SourceOrderItem list
 
-        Shipping: Shipping
+        Shipping: Shipping option
 
     }
 
@@ -12160,22 +12160,22 @@ module StripeModel =
     and SourceOrderItem = {
 
         ///The amount (price) for this order item.
-        Amount: int option
+        Amount: int
 
         ///This currency of this order item. Required when `amount` is present.
-        Currency: string option
+        Currency: string
 
         ///Human-readable description for this order item.
-        Description: string option
+        Description: string
 
         ///The ID of the associated object for this line item. Expandable if not null (e.g., expandable to a SKU).
-        Parent: string option
+        Parent: string
 
         ///The quantity of this order item. When type is `sku`, this is the number of instances of the SKU to be ordered.
-        Quantity: int
+        Quantity: int option
 
         ///The type of this order item. Must be `sku`, `tax`, or `shipping`.
-        Type: string option
+        Type: string
 
     }
 
@@ -12183,28 +12183,28 @@ module StripeModel =
     and SourceOwner = {
 
         ///Owner's address.
-        Address: SourceOwnerAddressDU option
+        Address: SourceOwnerAddressDU
 
         ///Owner's email address.
-        Email: string option
+        Email: string
 
         ///Owner's full name.
-        Name: string option
+        Name: string
 
         ///Owner's phone number (including extension).
-        Phone: string option
+        Phone: string
 
         ///Verified owner's address. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedAddress: SourceOwnerVerifiedAddressDU option
+        VerifiedAddress: SourceOwnerVerifiedAddressDU
 
         ///Verified owner's email address. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedEmail: string option
+        VerifiedEmail: string
 
         ///Verified owner's full name. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string option
+        VerifiedName: string
 
         ///Verified owner's phone number (including extension). Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedPhone: string option
+        VerifiedPhone: string
 
     }
 
@@ -12218,7 +12218,7 @@ module StripeModel =
     and SourceReceiverFlow = {
 
         ///The address of the receiver source. This is the value that should be communicated to the customer to send their funds to.
-        Address: string option
+        Address: string
 
         ///The total amount that was moved to your balance. This is almost always equal to the amount charged. In rare cases when customers deposit excess funds and we are unable to refund those, those funds get moved to your balance and show up in amount_charged as well. The amount charged is expressed in the source's currency.
         AmountCharged: int
@@ -12241,7 +12241,7 @@ module StripeModel =
     and SourceRedirectFlow = {
 
         ///The failure reason for the redirect, either `user_abort` (the customer aborted or dropped out of the redirect flow), `declined` (the authentication failed or the transaction was declined), or `processing_error` (the redirect failed due to a technical error). Present only if the redirect status is `failed`.
-        FailureReason: string option
+        FailureReason: string
 
         ///The URL you provide to redirect the customer to after they authenticated their payment.
         ReturnUrl: string
@@ -12260,12 +12260,12 @@ module StripeModel =
     ///transactions.
     and SourceTransaction = {
 
-        AchCreditTransfer: SourceTransactionAchCreditTransferData
+        AchCreditTransfer: SourceTransactionAchCreditTransferData option
 
         ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount your customer has pushed to the receiver.
         Amount: int
 
-        ChfCreditTransfer: SourceTransactionChfCreditTransferData
+        ChfCreditTransfer: SourceTransactionChfCreditTransferData option
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -12273,7 +12273,7 @@ module StripeModel =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
 
-        GbpCreditTransfer: SourceTransactionGbpCreditTransferData
+        GbpCreditTransfer: SourceTransactionGbpCreditTransferData option
 
         ///Unique identifier for the object.
         Id: string
@@ -12284,9 +12284,9 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         Object: SourceTransactionObject
 
-        PaperCheck: SourceTransactionPaperCheckData
+        PaperCheck: SourceTransactionPaperCheckData option
 
-        SepaCreditTransfer: SourceTransactionSepaCreditTransferData
+        SepaCreditTransfer: SourceTransactionSepaCreditTransferData option
 
         ///The ID of the source this transaction is attached to.
         Source: string
@@ -12324,16 +12324,16 @@ module StripeModel =
     and SourceTransactionAchCreditTransferData = {
 
         ///Customer data associated with the transfer.
-        CustomerData: string
+        CustomerData: string option
 
         ///Bank account fingerprint associated with the transfer.
-        Fingerprint: string
+        Fingerprint: string option
 
         ///Last 4 digits of the account number associated with the transfer.
-        Last4: string
+        Last4: string option
 
         ///Routing number associated with the transfer.
-        RoutingNumber: string
+        RoutingNumber: string option
 
     }
 
@@ -12341,19 +12341,19 @@ module StripeModel =
     and SourceTransactionChfCreditTransferData = {
 
         ///Reference associated with the transfer.
-        Reference: string
+        Reference: string option
 
         ///Sender's country address.
-        SenderAddressCountry: string
+        SenderAddressCountry: string option
 
         ///Sender's line 1 address.
-        SenderAddressLine1: string
+        SenderAddressLine1: string option
 
         ///Sender's bank account IBAN.
-        SenderIban: string
+        SenderIban: string option
 
         ///Sender's name.
-        SenderName: string
+        SenderName: string option
 
     }
 
@@ -12361,25 +12361,25 @@ module StripeModel =
     and SourceTransactionGbpCreditTransferData = {
 
         ///Bank account fingerprint associated with the Stripe owned bank account receiving the transfer.
-        Fingerprint: string
+        Fingerprint: string option
 
         ///The credit transfer rails the sender used to push this transfer. The possible rails are: Faster Payments, BACS, CHAPS, and wire transfers. Currently only Faster Payments is supported.
-        FundingMethod: string
+        FundingMethod: string option
 
         ///Last 4 digits of sender account number associated with the transfer.
-        Last4: string
+        Last4: string option
 
         ///Sender entered arbitrary information about the transfer.
-        Reference: string
+        Reference: string option
 
         ///Sender account number associated with the transfer.
-        SenderAccountNumber: string
+        SenderAccountNumber: string option
 
         ///Sender name associated with the transfer.
-        SenderName: string
+        SenderName: string option
 
         ///Sender sort code associated with the transfer.
-        SenderSortCode: string
+        SenderSortCode: string option
 
     }
 
@@ -12387,10 +12387,10 @@ module StripeModel =
     and SourceTransactionPaperCheckData = {
 
         ///Time at which the deposited funds will be available for use. Measured in seconds since the Unix epoch.
-        AvailableAt: string
+        AvailableAt: string option
 
         ///Comma-separated list of invoice IDs associated with the paper check.
-        Invoices: string
+        Invoices: string option
 
     }
 
@@ -12398,13 +12398,13 @@ module StripeModel =
     and SourceTransactionSepaCreditTransferData = {
 
         ///Reference associated with the transfer.
-        Reference: string
+        Reference: string option
 
         ///Sender's bank account IBAN.
-        SenderIban: string
+        SenderIban: string option
 
         ///Sender's name.
-        SenderName: string
+        SenderName: string option
 
     }
 
@@ -12516,7 +12516,7 @@ module StripeModel =
 
         CvcCheck: string option
 
-        Description: string
+        Description: string option
 
         DynamicLast4: string option
 
@@ -12524,19 +12524,19 @@ module StripeModel =
 
         ExpYear: int option
 
-        Fingerprint: string
+        Fingerprint: string option
 
         Funding: string option
 
-        Iin: string
+        Iin: string option
 
-        Issuer: string
+        Issuer: string option
 
         Last4: string option
 
         Name: string option
 
-        ThreeDSecure: string
+        ThreeDSecure: string option
 
         TokenizationMethod: string option
 
@@ -12544,27 +12544,27 @@ module StripeModel =
 
     and SourceTypeCardPresent = {
 
-        ApplicationCryptogram: string
+        ApplicationCryptogram: string option
 
-        ApplicationPreferredName: string
+        ApplicationPreferredName: string option
 
         AuthorizationCode: string option
 
-        AuthorizationResponseCode: string
+        AuthorizationResponseCode: string option
 
         Brand: string option
 
         Country: string option
 
-        CvmType: string
+        CvmType: string option
 
         DataType: string option
 
-        DedicatedFileName: string
+        DedicatedFileName: string option
 
-        Description: string
+        Description: string option
 
-        EmvAuthData: string
+        EmvAuthData: string option
 
         EvidenceCustomerSignature: string option
 
@@ -12574,27 +12574,27 @@ module StripeModel =
 
         ExpYear: int option
 
-        Fingerprint: string
+        Fingerprint: string option
 
         Funding: string option
 
-        Iin: string
+        Iin: string option
 
-        Issuer: string
+        Issuer: string option
 
         Last4: string option
 
         PosDeviceId: string option
 
-        PosEntryMode: string
+        PosEntryMode: string option
 
         ReadMethod: string option
 
         Reader: string option
 
-        TerminalVerificationResults: string
+        TerminalVerificationResults: string option
 
-        TransactionStatusInformation: string
+        TransactionStatusInformation: string option
 
     }
 
@@ -12632,57 +12632,57 @@ module StripeModel =
 
     and SourceTypeKlarna = {
 
-        BackgroundImageUrl: string
+        BackgroundImageUrl: string option
 
         ClientToken: string option
 
-        FirstName: string
+        FirstName: string option
 
-        LastName: string
+        LastName: string option
 
-        Locale: string
+        Locale: string option
 
-        LogoUrl: string
+        LogoUrl: string option
 
-        PageTitle: string
+        PageTitle: string option
 
-        PayLaterAssetUrlsDescriptive: string
+        PayLaterAssetUrlsDescriptive: string option
 
-        PayLaterAssetUrlsStandard: string
+        PayLaterAssetUrlsStandard: string option
 
-        PayLaterName: string
+        PayLaterName: string option
 
-        PayLaterRedirectUrl: string
+        PayLaterRedirectUrl: string option
 
-        PayNowAssetUrlsDescriptive: string
+        PayNowAssetUrlsDescriptive: string option
 
-        PayNowAssetUrlsStandard: string
+        PayNowAssetUrlsStandard: string option
 
-        PayNowName: string
+        PayNowName: string option
 
-        PayNowRedirectUrl: string
+        PayNowRedirectUrl: string option
 
-        PayOverTimeAssetUrlsDescriptive: string
+        PayOverTimeAssetUrlsDescriptive: string option
 
-        PayOverTimeAssetUrlsStandard: string
+        PayOverTimeAssetUrlsStandard: string option
 
-        PayOverTimeName: string
+        PayOverTimeName: string option
 
-        PayOverTimeRedirectUrl: string
+        PayOverTimeRedirectUrl: string option
 
-        PaymentMethodCategories: string
+        PaymentMethodCategories: string option
 
-        PurchaseCountry: string
+        PurchaseCountry: string option
 
-        PurchaseType: string
+        PurchaseType: string option
 
-        RedirectUrl: string
+        RedirectUrl: string option
 
-        ShippingDelay: int
+        ShippingDelay: int option
 
-        ShippingFirstName: string
+        ShippingFirstName: string option
 
-        ShippingLastName: string
+        ShippingLastName: string option
 
     }
 
@@ -12796,7 +12796,7 @@ module StripeModel =
 
         CvcCheck: string option
 
-        Description: string
+        Description: string option
 
         DynamicLast4: string option
 
@@ -12804,19 +12804,19 @@ module StripeModel =
 
         ExpYear: int option
 
-        Fingerprint: string
+        Fingerprint: string option
 
         Funding: string option
 
-        Iin: string
+        Iin: string option
 
-        Issuer: string
+        Issuer: string option
 
         Last4: string option
 
         Name: string option
 
-        ThreeDSecure: string
+        ThreeDSecure: string option
 
         TokenizationMethod: string option
 
@@ -12824,11 +12824,11 @@ module StripeModel =
 
     and SourceTypeWechat = {
 
-        PrepayId: string
+        PrepayId: string option
 
         QrCodeUrl: string option
 
-        StatementDescriptor: string
+        StatementDescriptor: string option
 
     }
 
@@ -12836,16 +12836,16 @@ module StripeModel =
     and StatusTransitions = {
 
         ///The time that the order was canceled.
-        Canceled: int option
+        Canceled: int
 
         ///The time that the order was fulfilled.
-        Fulfiled: int option
+        Fulfiled: int
 
         ///The time that the order was paid.
-        Paid: int option
+        Paid: int
 
         ///The time that the order was returned.
-        Returned: int option
+        Returned: int
 
     }
 
@@ -12855,25 +12855,25 @@ module StripeModel =
     and Subscription = {
 
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account.
-        ApplicationFeePercent: decimal option
+        ApplicationFeePercent: decimal
 
         ///Determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices.
         BillingCycleAnchor: int
 
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
-        BillingThresholds: SubscriptionBillingThresholdsDU option
+        BillingThresholds: SubscriptionBillingThresholdsDU
 
         ///A date in the future at which the subscription will automatically get canceled
-        CancelAt: int option
+        CancelAt: int
 
         ///If the subscription has been canceled with the `at_period_end` flag set to `true`, `cancel_at_period_end` on the subscription will be true. You can use this attribute to determine whether a subscription that has a status of active is scheduled to be canceled at the end of the current period.
         CancelAtPeriodEnd: bool
 
         ///If the subscription has been canceled, the date of that cancellation. If the subscription was canceled with `cancel_at_period_end`, `canceled_at` will reflect the time of the most recent update request, not the end of the subscription period when the subscription is automatically moved to a canceled state.
-        CanceledAt: int option
+        CanceledAt: int
 
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
-        CollectionMethod: SubscriptionCollectionMethod option
+        CollectionMethod: SubscriptionCollectionMethod
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -12888,22 +12888,22 @@ module StripeModel =
         Customer: SubscriptionCustomerDU
 
         ///Number of days a customer has to pay invoices generated by this subscription. This value will be `null` for subscriptions where `collection_method=charge_automatically`.
-        DaysUntilDue: int option
+        DaysUntilDue: int
 
         ///ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-        DefaultPaymentMethod: SubscriptionDefaultPaymentMethodDU option
+        DefaultPaymentMethod: SubscriptionDefaultPaymentMethodDU
 
         ///ID of the default payment source for the subscription. It must belong to the customer associated with the subscription and be in a chargeable state. If `default_payment_method` is also set, `default_payment_method` will take precedence. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-        DefaultSource: SubscriptionDefaultSourceDU option
+        DefaultSource: SubscriptionDefaultSourceDU
 
         ///The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription.
         DefaultTaxRates: TaxRate list
 
         ///Describes the current discount applied to this subscription, if there is one. When billing, a discount applied to a subscription overrides a discount applied on a customer-wide basis.
-        Discount: SubscriptionDiscountDU option
+        Discount: SubscriptionDiscountDU
 
         ///If the subscription has ended, the date the subscription ended.
-        EndedAt: int option
+        EndedAt: int
 
         ///Unique identifier for the object.
         Id: string
@@ -12912,7 +12912,7 @@ module StripeModel =
         Items: Map<string, string>
 
         ///The most recent invoice this subscription has generated.
-        LatestInvoice: SubscriptionLatestInvoiceDU option
+        LatestInvoice: SubscriptionLatestInvoiceDU
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -12921,25 +12921,25 @@ module StripeModel =
         Metadata: Map<string, string>
 
         ///Specifies the approximate timestamp on which any pending invoice items will be billed according to the schedule provided at `pending_invoice_item_interval`.
-        NextPendingInvoiceItemInvoice: int option
+        NextPendingInvoiceItemInvoice: int
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: SubscriptionObject
 
         ///If specified, payment collection for this subscription will be paused.
-        PauseCollection: SubscriptionPauseCollectionDU option
+        PauseCollection: SubscriptionPauseCollectionDU
 
         ///Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval.
-        PendingInvoiceItemInterval: SubscriptionPendingInvoiceItemIntervalDU option
+        PendingInvoiceItemInterval: SubscriptionPendingInvoiceItemIntervalDU
 
         ///You can use this [SetupIntent](https://stripe.com/docs/api/setup_intents) to collect user authentication when creating a subscription without immediate payment or updating a subscription's payment method, allowing you to optimize for off-session payments. Learn more in the [SCA Migration Guide](https://stripe.com/docs/billing/migration/strong-customer-authentication#scenario-2).
-        PendingSetupIntent: SubscriptionPendingSetupIntentDU option
+        PendingSetupIntent: SubscriptionPendingSetupIntentDU
 
         ///If specified, [pending updates](https://stripe.com/docs/billing/subscriptions/pending-updates) that will be applied to the subscription once the `latest_invoice` has been paid.
-        PendingUpdate: SubscriptionPendingUpdateDU option
+        PendingUpdate: SubscriptionPendingUpdateDU
 
         ///The schedule attached to the subscription
-        Schedule: SubscriptionScheduleDU option
+        Schedule: SubscriptionScheduleDU
 
         ///Date when the subscription was first created. The date might differ from the `created` date due to backdating.
         StartDate: int
@@ -12956,13 +12956,13 @@ module StripeModel =
         Status: SubscriptionStatus
 
         ///The account (if any) the subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
-        TransferData: SubscriptionTransferDataDU option
+        TransferData: SubscriptionTransferDataDU
 
         ///If the subscription has a trial, the end of that trial.
-        TrialEnd: int option
+        TrialEnd: int
 
         ///If the subscription has a trial, the beginning of that trial.
-        TrialStart: int option
+        TrialStart: int
 
     }
 
@@ -13029,10 +13029,10 @@ module StripeModel =
     and SubscriptionBillingThresholds = {
 
         ///Monetary threshold that triggers the subscription to create an invoice
-        AmountGte: int option
+        AmountGte: int
 
         ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged. This value may not be `true` if the subscription contains items with plans that have `aggregate_usage=last_ever`.
-        ResetBillingCycleAnchor: bool option
+        ResetBillingCycleAnchor: bool
 
     }
 
@@ -13041,7 +13041,7 @@ module StripeModel =
     and SubscriptionItem = {
 
         ///Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period
-        BillingThresholds: SubscriptionItemBillingThresholdsDU option
+        BillingThresholds: SubscriptionItemBillingThresholdsDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -13060,7 +13060,7 @@ module StripeModel =
         Price: Price
 
         ///The [quantity](https://stripe.com/docs/subscriptions/quantities) of the plan to which the customer should be subscribed.
-        Quantity: int
+        Quantity: int option
 
         ///The `subscription` this `subscription_item` belongs to.
         Subscription: string
@@ -13080,7 +13080,7 @@ module StripeModel =
     and SubscriptionItemBillingThresholds = {
 
         ///Usage threshold that triggers the subscription to create an invoice
-        UsageGte: int option
+        UsageGte: int
 
     }
 
@@ -13107,16 +13107,16 @@ module StripeModel =
     and SubscriptionSchedule = {
 
         ///Time at which the subscription schedule was canceled. Measured in seconds since the Unix epoch.
-        CanceledAt: int option
+        CanceledAt: int
 
         ///Time at which the subscription schedule was completed. Measured in seconds since the Unix epoch.
-        CompletedAt: int option
+        CompletedAt: int
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///Object representing the start and end dates for the current phase of the subscription schedule, if it is `active`.
-        CurrentPhase: SubscriptionScheduleCurrentPhaseDU option
+        CurrentPhase: SubscriptionScheduleCurrentPhaseDU
 
         ///ID of the customer who owns the subscription schedule.
         Customer: SubscriptionScheduleCustomerDU
@@ -13133,7 +13133,7 @@ module StripeModel =
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: SubscriptionScheduleObject
@@ -13142,16 +13142,16 @@ module StripeModel =
         Phases: SubscriptionSchedulePhaseConfiguration list
 
         ///Time at which the subscription schedule was released. Measured in seconds since the Unix epoch.
-        ReleasedAt: int option
+        ReleasedAt: int
 
         ///ID of the subscription once managed by the subscription schedule (if it is released).
-        ReleasedSubscription: string option
+        ReleasedSubscription: string
 
         ///The present status of the subscription schedule. Possible values are `not_started`, `active`, `completed`, `released`, and `canceled`. You can read more about the different states in our [behavior guide](https://stripe.com/docs/billing/subscriptions/subscription-schedules).
         Status: SubscriptionScheduleStatus
 
         ///ID of the subscription managed by the subscription schedule.
-        Subscription: SubscriptionScheduleSubscriptionDU option
+        Subscription: SubscriptionScheduleSubscriptionDU
 
     }
 
@@ -13190,7 +13190,7 @@ module StripeModel =
         Price: SubscriptionScheduleAddInvoiceItemPriceDU
 
         ///The quantity of the invoice item.
-        Quantity: int option
+        Quantity: int
 
         ///The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
         TaxRates: TaxRate list
@@ -13206,7 +13206,7 @@ module StripeModel =
     and SubscriptionScheduleConfigurationItem = {
 
         ///Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period
-        BillingThresholds: SubscriptionScheduleConfigurationItemBillingThresholdsDU option
+        BillingThresholds: SubscriptionScheduleConfigurationItemBillingThresholdsDU
 
         ///ID of the plan to which the customer should be subscribed.
         Plan: SubscriptionScheduleConfigurationItemPlanDU
@@ -13215,7 +13215,7 @@ module StripeModel =
         Price: SubscriptionScheduleConfigurationItemPriceDU
 
         ///Quantity of the plan to which the customer should be subscribed.
-        Quantity: int
+        Quantity: int option
 
         ///The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`.
         TaxRates: TaxRate list
@@ -13253,22 +13253,22 @@ module StripeModel =
         AddInvoiceItems: SubscriptionScheduleAddInvoiceItem list
 
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account during this phase of the schedule.
-        ApplicationFeePercent: decimal option
+        ApplicationFeePercent: decimal
 
         ///Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
-        BillingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option
+        BillingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor
 
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
-        BillingThresholds: SubscriptionSchedulePhaseConfigurationBillingThresholdsDU option
+        BillingThresholds: SubscriptionSchedulePhaseConfigurationBillingThresholdsDU
 
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
-        CollectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option
+        CollectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod
 
         ///ID of the coupon to use during this phase of the subscription schedule.
-        Coupon: SubscriptionSchedulePhaseConfigurationCouponDU option
+        Coupon: SubscriptionSchedulePhaseConfigurationCouponDU
 
         ///ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU option
+        DefaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU
 
         ///The default tax rates to apply to the subscription during this phase of the subscription schedule.
         DefaultTaxRates: TaxRate list
@@ -13277,7 +13277,7 @@ module StripeModel =
         EndDate: int
 
         ///The subscription schedule's default invoice settings.
-        InvoiceSettings: SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU option
+        InvoiceSettings: SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU
 
         ///Subscription items to configure the subscription to during this phase of the subscription schedule.
         Items: SubscriptionScheduleConfigurationItem list
@@ -13289,10 +13289,10 @@ module StripeModel =
         StartDate: int
 
         ///The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
-        TransferData: SubscriptionSchedulePhaseConfigurationTransferDataDU option
+        TransferData: SubscriptionSchedulePhaseConfigurationTransferDataDU
 
         ///When the trial ends within the phase.
-        TrialEnd: int option
+        TrialEnd: int
 
     }
 
@@ -13334,19 +13334,19 @@ module StripeModel =
         BillingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor
 
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
-        BillingThresholds: SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU option
+        BillingThresholds: SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU
 
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
-        CollectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option
+        CollectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod
 
         ///ID of the default payment method for the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU option
+        DefaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU
 
         ///The subscription schedule's default invoice settings.
-        InvoiceSettings: SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU option
+        InvoiceSettings: SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU
 
         ///The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
-        TransferData: SubscriptionSchedulesResourceDefaultSettingsTransferDataDU option
+        TransferData: SubscriptionSchedulesResourceDefaultSettingsTransferDataDU
 
     }
 
@@ -13375,7 +13375,7 @@ module StripeModel =
     and SubscriptionTransferData = {
 
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
-        AmountPercent: decimal option
+        AmountPercent: decimal
 
         ///The account where funds from the payment will be transferred to upon payment success.
         Destination: SubscriptionTransferDataDestinationDU
@@ -13394,7 +13394,7 @@ module StripeModel =
         Behavior: SubscriptionsResourcePauseCollectionBehavior
 
         ///The time after which the subscription will resume collecting payments.
-        ResumesAt: int option
+        ResumesAt: int
 
     }
 
@@ -13408,7 +13408,7 @@ module StripeModel =
     and SubscriptionsResourcePendingUpdate = {
 
         ///If the update is applied, determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices.
-        BillingCycleAnchor: int option
+        BillingCycleAnchor: int
 
         ///The point after which the changes reflected by this update will be discarded and no longer applied.
         ExpiresAt: int
@@ -13417,10 +13417,10 @@ module StripeModel =
         SubscriptionItems: SubscriptionItem list
 
         ///Unix timestamp representing the end of the trial period the customer will get before being charged for the first time, if the update is applied.
-        TrialEnd: int option
+        TrialEnd: int
 
         ///Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed.
-        TrialFromPlan: bool option
+        TrialFromPlan: bool
 
     }
 
@@ -13454,13 +13454,13 @@ module StripeModel =
     and TaxId = {
 
         ///Two-letter ISO code representing the country of the tax ID.
-        Country: string option
+        Country: string
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///ID of the customer.
-        Customer: TaxIdCustomerDU option
+        Customer: TaxIdCustomerDU
 
         ///Unique identifier for the object.
         Id: string
@@ -13478,7 +13478,7 @@ module StripeModel =
         Value: string
 
         ///Tax ID verification information.
-        Verification: TaxIdVerificationDU option
+        Verification: TaxIdVerificationDU
 
     }
 
@@ -13534,10 +13534,10 @@ module StripeModel =
         Status: TaxIdVerificationStatus
 
         ///Verified address.
-        VerifiedAddress: string option
+        VerifiedAddress: string
 
         ///Verified name.
-        VerifiedName: string option
+        VerifiedName: string
 
     }
 
@@ -13559,7 +13559,7 @@ module StripeModel =
         Created: int
 
         ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
-        Description: string option
+        Description: string
 
         ///The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
         DisplayName: string
@@ -13571,13 +13571,13 @@ module StripeModel =
         Inclusive: bool
 
         ///The jurisdiction for the tax rate. You can use this label field for tax reporting purposes. It also appears on your customer’s invoice.
-        Jurisdiction: string option
+        Jurisdiction: string
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: TaxRateObject
@@ -13596,7 +13596,7 @@ module StripeModel =
     and TerminalConnectionToken = {
 
         ///The id of the location that this connection token is scoped to.
-        Location: string
+        Location: string option
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: TerminalConnectionTokenObject
@@ -13642,7 +13642,7 @@ module StripeModel =
     and TerminalReader = {
 
         ///The current software version of the reader.
-        DeviceSwVersion: string option
+        DeviceSwVersion: string
 
         ///Type of reader, one of `bbpos_chipper2x` or `verifone_P400`.
         DeviceType: TerminalReaderDeviceType
@@ -13651,7 +13651,7 @@ module StripeModel =
         Id: string
 
         ///The local IP address of the reader.
-        IpAddress: string option
+        IpAddress: string
 
         ///Custom label given to the reader for easier identification.
         Label: string
@@ -13660,7 +13660,7 @@ module StripeModel =
         Livemode: bool
 
         ///The location identifier of the reader.
-        Location: string option
+        Location: string
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
@@ -13672,7 +13672,7 @@ module StripeModel =
         SerialNumber: string
 
         ///The networking status of the reader.
-        Status: string option
+        Status: string
 
     }
 
@@ -13712,7 +13712,7 @@ module StripeModel =
         Object: ThreeDSecureObject
 
         ///If present, this is the URL that you should send the cardholder to for authentication. If you are going to use Stripe.js to display the authentication page in an iframe, you should use the value "_callback".
-        RedirectUrl: string option
+        RedirectUrl: string
 
         ///Possible values are `redirect_pending`, `succeeded`, or `failed`. When the cardholder can be authenticated, the object starts with status `redirect_pending`. When liability will be shifted to the cardholder's bank (either because the cardholder was successfully authenticated, or because the bank has not implemented 3D Secure, the object wlil be in status `succeeded`. `failed` indicates that authentication was attempted unsuccessfully.
         Status: string
@@ -13727,14 +13727,14 @@ module StripeModel =
 
         ///For authenticated transactions: how the customer was authenticated by
     ///the issuing bank.
-        AuthenticationFlow: ThreeDSecureDetailsAuthenticationFlow option
+        AuthenticationFlow: ThreeDSecureDetailsAuthenticationFlow
 
         ///Indicates the outcome of 3D Secure authentication.
         Result: ThreeDSecureDetailsResult
 
         ///Additional information about why 3D Secure succeeded or failed based
     ///on the `result`.
-        ResultReason: ThreeDSecureDetailsResultReason option
+        ResultReason: ThreeDSecureDetailsResultReason
 
         ///The version of 3D Secure that was used.
         Version: ThreeDSecureDetailsVersion
@@ -13798,12 +13798,12 @@ module StripeModel =
     ///Related guide: [Accept a payment](https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token)
     and Token = {
 
-        BankAccount: BankAccount
+        BankAccount: BankAccount option
 
-        Card: Card
+        Card: Card option
 
         ///IP address of the client that generated the token.
-        ClientIp: string option
+        ClientIp: string
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -13839,7 +13839,7 @@ module StripeModel =
         Amount: int
 
         ///ID of the balance transaction that describes the impact of this top-up on your account balance. May not be specified depending on status of top-up.
-        BalanceTransaction: TopupBalanceTransactionDU option
+        BalanceTransaction: TopupBalanceTransactionDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -13848,16 +13848,16 @@ module StripeModel =
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///Date the funds are expected to arrive in your Stripe account for payouts. This factors in delays like weekends or bank holidays. May not be specified depending on status of top-up.
-        ExpectedAvailabilityDate: int option
+        ExpectedAvailabilityDate: int
 
         ///Error code explaining reason for top-up failure if available (see [the errors section](https://stripe.com/docs/api#errors) for a list of codes).
-        FailureCode: string option
+        FailureCode: string
 
         ///Message to user further explaining reason for top-up failure if available.
-        FailureMessage: string option
+        FailureMessage: string
 
         ///Unique identifier for the object.
         Id: string
@@ -13874,13 +13874,13 @@ module StripeModel =
         Source: Source
 
         ///Extra information about a top-up. This will appear on your source's bank statement. It must contain at least one letter.
-        StatementDescriptor: string option
+        StatementDescriptor: string
 
         ///The status of the top-up is either `canceled`, `failed`, `pending`, `reversed`, or `succeeded`.
         Status: TopupStatus
 
         ///A string that identifies this top-up as part of a group.
-        TransferGroup: string option
+        TransferGroup: string
 
     }
 
@@ -13917,7 +13917,7 @@ module StripeModel =
         AmountReversed: int
 
         ///Balance transaction that describes the impact of this transfer on your account balance.
-        BalanceTransaction: TransferBalanceTransactionDU option
+        BalanceTransaction: TransferBalanceTransactionDU
 
         ///Time that this record of the transfer was first created.
         Created: int
@@ -13926,13 +13926,13 @@ module StripeModel =
         Currency: string
 
         ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
+        Description: string
 
         ///ID of the Stripe account the transfer was sent to.
-        Destination: TransferDestinationDU option
+        Destination: TransferDestinationDU
 
         ///If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer.
-        DestinationPayment: TransferDestinationPaymentDU
+        DestinationPayment: TransferDestinationPaymentDU option
 
         ///Unique identifier for the object.
         Id: string
@@ -13953,13 +13953,13 @@ module StripeModel =
         Reversed: bool
 
         ///ID of the charge or payment that was used to fund the transfer. If null, the transfer was funded from the available balance.
-        SourceTransaction: TransferSourceTransactionDU option
+        SourceTransaction: TransferSourceTransactionDU
 
         ///The source balance this transfer came from. One of `card`, `fpx`, or `bank_account`.
-        SourceType: string option
+        SourceType: string
 
         ///A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
-        TransferGroup: string option
+        TransferGroup: string
 
     }
 
@@ -13986,7 +13986,7 @@ module StripeModel =
     and TransferData = {
 
         ///Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
-        Amount: int
+        Amount: int option
 
         ///The account (if any) the payment will be attributed to for tax
     ///reporting, and where funds from the payment will be transferred to upon
@@ -14018,7 +14018,7 @@ module StripeModel =
         Amount: int
 
         ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: TransferReversalBalanceTransactionDU option
+        BalanceTransaction: TransferReversalBalanceTransactionDU
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
@@ -14027,19 +14027,19 @@ module StripeModel =
         Currency: string
 
         ///Linked payment refund for the transfer reversal.
-        DestinationPaymentRefund: TransferReversalDestinationPaymentRefundDU option
+        DestinationPaymentRefund: TransferReversalDestinationPaymentRefundDU
 
         ///Unique identifier for the object.
         Id: string
 
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
 
         ///String representing the object's type. Objects of the same type share the same value.
         Object: TransferReversalObject
 
         ///ID of the refund responsible for the transfer reversal.
-        SourceRefund: TransferReversalSourceRefundDU option
+        SourceRefund: TransferReversalSourceRefundDU
 
         ///ID of the transfer that was reversed.
         Transfer: TransferReversalTransferDU
@@ -14075,10 +14075,10 @@ module StripeModel =
         Interval: string
 
         ///The day of the month funds will be paid out. Only shown if `interval` is monthly. Payouts scheduled between the 29th and 31st of the month are sent on the last day of shorter months.
-        MonthlyAnchor: int
+        MonthlyAnchor: int option
 
         ///The day of the week funds will be paid out, of the style 'monday', 'tuesday', etc. Only shown if `interval` is weekly.
-        WeeklyAnchor: string
+        WeeklyAnchor: string option
 
     }
 
@@ -14148,7 +14148,7 @@ module StripeModel =
         Id: string
 
         ///The invoice in which this usage period has been billed for.
-        Invoice: string option
+        Invoice: string
 
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
@@ -14179,16 +14179,16 @@ module StripeModel =
     and WebhookEndpoint = {
 
         ///The API version events are rendered as for this webhook endpoint.
-        ApiVersion: string option
+        ApiVersion: string
 
         ///The ID of the associated Connect application.
-        Application: string option
+        Application: string
 
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
 
         ///An optional description of what the webhook is used for.
-        Description: string option
+        Description: string
 
         ///The list of events to enable for this endpoint. `['*']` indicates that all events are enabled, except those that require explicit selection.
         EnabledEvents: string list
@@ -14206,7 +14206,7 @@ module StripeModel =
         Object: WebhookEndpointObject
 
         ///The endpoint's secret, used to generate [webhook signatures](https://stripe.com/docs/webhooks/signatures). Only returned at creation.
-        Secret: string
+        Secret: string option
 
         ///The status of the webhook. It can be `enabled` or `disabled`.
         Status: string

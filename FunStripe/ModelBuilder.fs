@@ -19,7 +19,9 @@ module ModelBuilder =
         Enum: JsonValue array option
         Items: JsonValue option
         Nullable: bool option
+        Properties: JsonValue
         Ref: string option
+        Required: JsonValue array
         Type': string option
     }
 
@@ -63,7 +65,9 @@ module ModelBuilder =
             Enum = jv.TryGetProperty("enum") |> function | Some v -> v.AsArray() |> Some | None -> None
             Items = jv.TryGetProperty("items") |> function | Some v -> v |> Some | None -> None
             Nullable = jv.TryGetProperty("nullable") |> function | Some v -> v.AsBoolean() |> Some | None -> None
+            Properties = jv.TryGetProperty("properties") |> function | Some v -> v | None -> JsonValue.Null
             Ref = jv.TryGetProperty("$ref") |> function | Some v -> v.AsString() |> Some | None -> None
+            Required = jv.TryGetProperty("required") |> function | Some v -> v.AsArray() | None -> [||]
             Type' = jv.TryGetProperty("type") |> function | Some v -> v.AsString() |> mapType |> Some | None -> None
         }
 
@@ -161,113 +165,104 @@ module ModelBuilder =
         
                 let enums = Collections.Generic.List<string>()
                 let anyOfs = Collections.Generic.List<string>()
-                
-                for (k0, v0) in value.Properties do
-                
-                    match k0 with
-                    | "description"
-                    | "required"
-                    | "title"
-                    | "type"
-                    | "x-expandableFields"
-                    | "x-expansionResources"
-                    | "x-resourceId"
-                    | "x-stripeOperations"
-                    | "x-stripeResource" ->
-                        ()
-                    | _ ->
 
-                        if (v0.Properties.Any() |> not) then
-                            sb |> write "\t\tEmptyProperties: string list\n"
-                        else
-                            
-                        for (k1, v1) in v0.Properties do
+                let properties = record.Properties
+                let required = record.Required |> Array.map (fun jv -> jv.AsString())
 
-                            let k1' = k1 |> casify
-                            let props = v1 |> getProperties
-            
-                            let opt =
-                                match props.Nullable with
-                                | Some true ->
-                                    " option"
-                                | _ ->
-                                    ""
-                            
+                if properties.Properties |> Array.isEmpty then
+                    sb |> write "\t\tEmptyProperties: string list\n"
+                else
+                    properties.Properties
+                    |> Array.iter (fun (k1, v1) ->
+                        let k1' = k1 |> casify
+                        let props = v1 |> getProperties
+        
+                        let opt = if required |> Array.exists (fun r -> r = k1) then "" else " option"
+                        
+                        //// to do: the following is nullable fields but the preceding is optional create params
+                        // let opt =
+                        //     match props.Nullable with
+                        //     | Some true ->
+                        //         " option"
+                        //     | _ ->
+                        //         ""
+
+                        match props.Description with
+                        | Some d when (String.IsNullOrWhiteSpace d |> not) ->
+                            sb |> write $"\t\t///{d |> commentify}"
+                        | _ ->
+                            ()
+        
+                        match props.Enum with
+                        | Some ee ->
+                            let enumName = $"{name}{k1'}"
+                            sb |> write $"\t\t{k1'}: {enumName}{opt}\n"
+                            enums.Add (createEnum enumName ee)
+                        | None ->
+
                             match props.Description with
-                            | Some d when (String.IsNullOrWhiteSpace d |> not) ->
-                                sb |> write $"\t\t///{d |> commentify}"
+                            | Some d when (String.IsNullOrWhiteSpace d |> not) && (d.Contains("Can be `")) ->
+                                match d |> parseStringEnum with
+                                | Some ee ->
+                                    let enumName = $"{name}{k1'}"
+                                    sb |> write $"\t\t{k1'}: {enumName}{opt}\n"
+                                    enums.Add (createEnum2 enumName ee)
+                                | None ->
+                                    ()
                             | _ ->
                                 ()
-            
-                            match props.Enum with
-                            | Some ee ->
-                                let enumName = $"{name}{k1'}"
-                                sb |> write $"\t\t{k1'}: {enumName}{opt}\n"
-                                enums.Add (createEnum enumName ee)
-                            | None ->
 
-                                match props.Description with
-                                | Some d when (String.IsNullOrWhiteSpace d |> not) && (d.Contains("Can be `")) ->
-                                    match d |> parseStringEnum with
-                                    | Some ee ->
-                                        let enumName = $"{name}{k1'}"
-                                        sb |> write $"\t\t{k1'}: {enumName}{opt}\n"
-                                        enums.Add (createEnum2 enumName ee)
+                            match props.AnyOf with
+                            | Some aoo ->
+                                let anyOfName = $"{name}{k1'}DU"
+                                sb |> write $"\t\t{k1'}: {anyOfName}{opt}\n"
+                                anyOfs.Add (createAnyOf anyOfName aoo)
+                            | None ->
+        
+                                match props.Type' with
+                                | Some t when t = "array" ->
+                                    match props.Items with
+                                    | Some i ->
+                                        let itemProps = i |> getProperties
+                                        match itemProps.Ref with
+                                        | Some r ->
+                                            sb |> write $"\t\t{k1'}: {r |> parseRef |> casify} list\n"
+                                        | None ->
+                                            match itemProps.Enum with
+                                            | Some ee ->
+                                                let enumName = $"{name}{k1'}"
+                                                sb |> write $"\t\t{k1'}: {enumName} list{opt}\n"
+                                                enums.Add(createEnum enumName ee)
+                                            | None ->
+                                                match itemProps.Type' with
+                                                | Some t ->
+                                                    sb |> write $"\t\t{k1'}: {t} list{opt}\n"
+                                                | None ->
+                                                    match itemProps.AnyOf with
+                                                    | Some aoo ->
+                                                        let anyOfName = $"{name}{k1'}DU"
+                                                        sb |> write $"\t\t{k1'}: {anyOfName} list{opt}\n"
+                                                        anyOfs.Add(createAnyOf anyOfName aoo)
+                                                    | None ->
+                                                        failwith $"Error: unhandled property: %A{i}"
+                                    | None ->
+                                        sb |> write $"\t\t{k1'}: {t}{opt}\n"
+                                | Some t when t = "object" ->
+                                    sb |> write $"\t\t{k1'}: Map<string, string>{opt}\n"
+                                | Some t ->
+                                    match props.Description with
+                                    | Some d when (String.IsNullOrWhiteSpace d |> not) && (d.Contains("Can be `")) ->
+                                        ()
+                                    | _ ->
+                                        sb |> write $"\t\t{k1'}: {t}{opt}\n"
+                                | _ ->
+                                
+                                    match props.Ref with
+                                    | Some r ->
+                                        sb |> write $"\t\t{k1'}: {r |> parseRef |> casify}{opt}\n"
                                     | None ->
                                         ()
-                                | _ ->
-                                    ()
-
-                                match props.AnyOf with
-                                | Some aoo ->
-                                    let anyOfName = $"{name}{k1'}DU"
-                                    sb |> write $"\t\t{k1'}: {anyOfName}{opt}\n"
-                                    anyOfs.Add (createAnyOf anyOfName aoo)
-                                | None ->
-            
-                                    match props.Type' with
-                                    | Some t when t = "array" ->
-                                        match props.Items with
-                                        | Some i ->
-                                            let itemProps = i |> getProperties
-                                            match itemProps.Ref with
-                                            | Some r ->
-                                                sb |> write $"\t\t{k1'}: {r |> parseRef |> casify} list\n"
-                                            | None ->
-                                                match itemProps.Enum with
-                                                | Some ee ->
-                                                    let enumName = $"{name}{k1'}"
-                                                    sb |> write $"\t\t{k1'}: {enumName} list{opt}\n"
-                                                    enums.Add(createEnum enumName ee)
-                                                | None ->
-                                                    match itemProps.Type' with
-                                                    | Some t ->
-                                                        sb |> write $"\t\t{k1'}: {t} list{opt}\n"
-                                                    | None ->
-                                                        match itemProps.AnyOf with
-                                                        | Some aoo ->
-                                                            let anyOfName = $"{name}{k1'}DU"
-                                                            sb |> write $"\t\t{k1'}: {anyOfName} list{opt}\n"
-                                                            anyOfs.Add(createAnyOf anyOfName aoo)
-                                                        | None ->
-                                                            failwith $"Error: unhandled property: %A{i}"
-                                        | None ->
-                                            sb |> write $"\t\t{k1'}: {t}{opt}\n"
-                                    | Some t when t = "object" ->
-                                        sb |> write $"\t\t{k1'}: Map<string, string>{opt}\n"
-                                    | Some t ->
-                                        match props.Description with
-                                        | Some d when (String.IsNullOrWhiteSpace d |> not) && (d.Contains("Can be `")) ->
-                                            ()
-                                        | _ ->
-                                            sb |> write $"\t\t{k1'}: {t}{opt}\n"
-                                    | _ ->
-                                    
-                                        match props.Ref with
-                                        | Some r ->
-                                            sb |> write $"\t\t{k1'}: {r |> parseRef |> casify}\n"
-                                        | None ->
-                                            ()
+                    )
             
                 sb |> write "\t}\n"
                 
