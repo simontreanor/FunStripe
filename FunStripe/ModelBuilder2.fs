@@ -237,6 +237,13 @@ module ModelBuilder2 =
                                     ()
 
                                 match props.AnyOf with
+                                | Some aoo when aoo |> Array.length = 1 ->
+                                    let ref' = ((aoo |> Array.exactlyOne) |> getProperties).Ref
+                                    match ref' with
+                                    | Some r ->
+                                        yield Parameter(description, optional, k1', $"{r |> parseRef |> pascalCasify}", nullable)
+                                    | None ->
+                                        ()
                                 | Some aoo ->
                                     let anyOfName = $"{name}{k1'}DU"
                                     anyOfs.Add (createAnyOf anyOfName aoo)
@@ -263,6 +270,13 @@ module ModelBuilder2 =
                                                         yield Parameter(description, optional, k1', $"{t} list", nullable)
                                                     | None ->
                                                         match itemProps.AnyOf with
+                                                        | Some aoo when aoo |> Array.length = 1 ->
+                                                            let ref' = ((aoo |> Array.exactlyOne) |> getProperties).Ref
+                                                            match ref' with
+                                                            | Some r ->
+                                                                yield Parameter(description, optional, k1', $"{r |> parseRef |> pascalCasify} list", nullable)
+                                                            | None ->
+                                                                ()
                                                         | Some aoo ->
                                                             let anyOfName = $"{name}{k1'}DU"
                                                             anyOfs.Add(createAnyOf anyOfName aoo)

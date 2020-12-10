@@ -9,11 +9,11 @@ module Tests =
     [<TestFixture>]
     type PaymentMethodUnitTests () =
 
-        // let testCustomer = "cus_HxEURwENT9MKb3"
+        let testCustomer = "cus_HxEURwENT9MKb3"
 
         // let getNewPaymentMethod =
         //     let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
-        //     async {
+        //     asyncResult {
         //         let newCard = { ExpMonth = 10; ExpYear = 2021; Number = 4242424242424242L; Cvc = 314 }
         //         return!
         //             { Type = Card; BillingDetails = None; Metadata = None; Card = Some newCard }
@@ -27,11 +27,11 @@ module Tests =
         //     }
 
         let defaultPaymentMethod =
-            let address = Address(None, None, None, None, None, None) |> BillingDetailsAddressDU'Address
+            let address = Address(None, None, None, None, None, None)
             let billingDetails = BillingDetails (Some address, None, None, None)
-            let checks = PaymentMethodCardChecks(None, None, None) |> PaymentMethodCardChecksDU'PaymentMethodCardChecks
-            let networks = Networks(["Visa"], None) |> PaymentMethodCardNetworksDU'Networks
-            let threeDSecureUsage = ThreeDSecureUsage(true) |> PaymentMethodCardThreeDSecureUsageDU'ThreeDSecureUsage
+            let checks = PaymentMethodCardChecks(None, None, None)
+            let networks = Networks(["Visa"], None)
+            let threeDSecureUsage = ThreeDSecureUsage(true)
             let card =
                 PaymentMethodCard (
                     brand = PaymentMethodCardBrand'Visa,
@@ -43,7 +43,7 @@ module Tests =
                     funding = PaymentMethodCardFunding'Credit,
                     last4 = "4242",
                     networks = Some networks,
-                    threeDSecureUsage = Some threeDSecureUsage, //todo: get rid of single-case DUs?
+                    threeDSecureUsage = Some threeDSecureUsage,
                     wallet = None
                 )
             

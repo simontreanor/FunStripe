@@ -10,7 +10,7 @@ module StripeModel =
     ///
     ///Some properties, marked below, are available only to platforms that want to
     ///[create and manage Express or Custom accounts](https://stripe.com/docs/connect/accounts).
-    type Account (id: string, object: AccountObject, ?businessProfile: AccountBusinessProfileDU option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?country: string, ?created: int, ?defaultCurrency: string, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: Map<string, string>, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettingsDU option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
+    type Account (id: string, object: AccountObject, ?businessProfile: AccountBusinessProfile option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?country: string, ?created: int, ?defaultCurrency: string, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: Map<string, string>, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettings option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
 
         member _.BusinessProfile = businessProfile |> Option.flatten
         member _.BusinessType = businessType |> Option.flatten
@@ -47,12 +47,6 @@ module StripeModel =
         | AccountType'Express
         | AccountType'Standard
 
-    and AccountBusinessProfileDU =
-        | AccountBusinessProfileDU'AccountBusinessProfile of AccountBusinessProfile
-
-    and AccountSettingsDU =
-        | AccountSettingsDU'AccountSettings of AccountSettings
-
     ///
     and AccountBacsDebitPaymentsSettings (?displayName: string) =
 
@@ -75,7 +69,7 @@ module StripeModel =
         | AccountBrandingSettingsLogoDU'File of File
 
     ///
-    and AccountBusinessProfile (mcc: string option, name: string option, supportAddress: AccountBusinessProfileSupportAddressDU option, supportEmail: string option, supportPhone: string option, supportUrl: string option, url: string option, ?productDescription: string option) =
+    and AccountBusinessProfile (mcc: string option, name: string option, supportAddress: Address option, supportEmail: string option, supportPhone: string option, supportUrl: string option, url: string option, ?productDescription: string option) =
 
         member _.Mcc = mcc
         member _.Name = name
@@ -85,9 +79,6 @@ module StripeModel =
         member _.SupportPhone = supportPhone
         member _.SupportUrl = supportUrl
         member _.Url = url
-
-    and AccountBusinessProfileSupportAddressDU =
-        | AccountBusinessProfileSupportAddressDU'Address of Address
 
     ///
     and AccountCapabilities (?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers) =
@@ -378,7 +369,7 @@ module StripeModel =
         member _.State = state
 
     ///
-    and AlipayAccount (created: int, fingerprint: string, id: string, livemode: bool, object: AlipayAccountObject, paymentAmount: int option, paymentCurrency: string option, reusable: bool, used: bool, username: string, ?customer: AlipayAccountCustomerDU option, ?metadata: Map<string, string>) =
+    and AlipayAccount (created: int, fingerprint: string, id: string, livemode: bool, object: AlipayAccountObject, paymentAmount: int option, paymentCurrency: string option, reusable: bool, used: bool, username: string, ?customer: Choice<string, Customer, DeletedCustomer, File> option, ?metadata: Map<string, string>) =
 
         member _.Created = created
         member _.Customer = customer |> Option.flatten
@@ -662,15 +653,12 @@ module StripeModel =
         | BankAccountCustomerDU'DeletedCustomer of DeletedCustomer
 
     ///
-    and BillingDetails (address: BillingDetailsAddressDU option, email: string option, name: string option, phone: string option) =
+    and BillingDetails (address: Address option, email: string option, name: string option, phone: string option) =
 
         member _.Address = address
         member _.Email = email
         member _.Name = name
         member _.Phone = phone
-
-    and BillingDetailsAddressDU =
-        | BillingDetailsAddressDU'Address of Address
 
     ///A session describes the instantiation of the customer portal for
     ///a particular customer. By visiting the session's URL, the customer
@@ -853,7 +841,7 @@ module StripeModel =
     ///are identified by a unique, random ID.
     ///
     ///Related guide: [Accept a payment with the Charges API](https://stripe.com/docs/payments/accept-a-payment-charges).
-    and Charge (amount: int, amountCaptured: int, amountRefunded: int, application: ChargeApplicationDU option, applicationFee: ChargeApplicationFeeDU option, applicationFeeAmount: int option, balanceTransaction: ChargeBalanceTransactionDU option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: int, currency: string, customer: ChargeCustomerDU option, description: string option, destination: ChargeDestinationDU option, dispute: ChargeDisputeDU option, disputed: bool, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetailsDU option, id: string, invoice: ChargeInvoiceDU option, livemode: bool, metadata: Map<string, string>, object: ChargeObject, onBehalfOf: ChargeOnBehalfOfDU option, order: ChargeOrderDU option, outcome: ChargeOutcomeDU option, paid: bool, paymentIntent: ChargePaymentIntentDU option, paymentMethod: string option, paymentMethodDetails: ChargePaymentMethodDetailsDU option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, refunds: Map<string, string>, review: ChargeReviewDU option, shipping: ChargeShippingDU option, source: ChargeSourceDU option, sourceTransfer: ChargeSourceTransferDU option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: string, transferData: ChargeTransferDataDU option, transferGroup: string option, ?alternateStatementDescriptors: AlternateStatementDescriptors, ?authorizationCode: string, ?level3: Level3, ?transfer: ChargeTransferDU) =
+    and Charge (amount: int, amountCaptured: int, amountRefunded: int, application: ChargeApplicationDU option, applicationFee: ChargeApplicationFeeDU option, applicationFeeAmount: int option, balanceTransaction: ChargeBalanceTransactionDU option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: int, currency: string, customer: ChargeCustomerDU option, description: string option, destination: ChargeDestinationDU option, dispute: ChargeDisputeDU option, disputed: bool, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetails option, id: string, invoice: ChargeInvoiceDU option, livemode: bool, metadata: Map<string, string>, object: ChargeObject, onBehalfOf: ChargeOnBehalfOfDU option, order: ChargeOrderDU option, outcome: ChargeOutcome option, paid: bool, paymentIntent: ChargePaymentIntentDU option, paymentMethod: string option, paymentMethodDetails: PaymentMethodDetails option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, refunds: Map<string, string>, review: ChargeReviewDU option, shipping: Shipping option, source: PaymentSource option, sourceTransfer: ChargeSourceTransferDU option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: string, transferData: ChargeTransferData option, transferGroup: string option, ?alternateStatementDescriptors: AlternateStatementDescriptors, ?authorizationCode: string, ?level3: Level3, ?transfer: ChargeTransferDU) =
 
         member _.AlternateStatementDescriptors = alternateStatementDescriptors
         member _.Amount = amount
@@ -934,9 +922,6 @@ module StripeModel =
         | ChargeDisputeDU'String of string
         | ChargeDisputeDU'Dispute of Dispute
 
-    and ChargeFraudDetailsDU =
-        | ChargeFraudDetailsDU'ChargeFraudDetails of ChargeFraudDetails
-
     and ChargeInvoiceDU =
         | ChargeInvoiceDU'String of string
         | ChargeInvoiceDU'Invoice of Invoice
@@ -949,25 +934,13 @@ module StripeModel =
         | ChargeOrderDU'String of string
         | ChargeOrderDU'Order of Order
 
-    and ChargeOutcomeDU =
-        | ChargeOutcomeDU'ChargeOutcome of ChargeOutcome
-
     and ChargePaymentIntentDU =
         | ChargePaymentIntentDU'String of string
         | ChargePaymentIntentDU'PaymentIntent of PaymentIntent
 
-    and ChargePaymentMethodDetailsDU =
-        | ChargePaymentMethodDetailsDU'PaymentMethodDetails of PaymentMethodDetails
-
     and ChargeReviewDU =
         | ChargeReviewDU'String of string
         | ChargeReviewDU'Review of Review
-
-    and ChargeShippingDU =
-        | ChargeShippingDU'Shipping of Shipping
-
-    and ChargeSourceDU =
-        | ChargeSourceDU'PaymentSource of PaymentSource
 
     and ChargeSourceTransferDU =
         | ChargeSourceTransferDU'String of string
@@ -976,9 +949,6 @@ module StripeModel =
     and ChargeTransferDU =
         | ChargeTransferDU'String of string
         | ChargeTransferDU'Transfer of Transfer
-
-    and ChargeTransferDataDU =
-        | ChargeTransferDataDU'ChargeTransferData of ChargeTransferData
 
     ///
     and ChargeFraudDetails (?stripeReport: string, ?userReport: string) =
@@ -1024,7 +994,7 @@ module StripeModel =
     ///client to begin Checkout.
     ///
     ///Related guide: [Checkout Server Quickstart](https://stripe.com/docs/payments/checkout/api).
-    and CheckoutSession (allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string, clientReferenceId: string option, currency: string option, customer: CheckoutSessionCustomerDU option, customerEmail: string option, id: string, livemode: bool, locale: CheckoutSessionLocale option, metadata: Map<string, string> option, mode: CheckoutSessionMode, object: CheckoutSessionObject, paymentIntent: CheckoutSessionPaymentIntentDU option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, setupIntent: CheckoutSessionSetupIntentDU option, shipping: CheckoutSessionShippingDU option, shippingAddressCollection: CheckoutSessionShippingAddressCollectionDU option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscriptionDU option, successUrl: string, totalDetails: CheckoutSessionTotalDetailsDU option, ?lineItems: Map<string, string>) =
+    and CheckoutSession (allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string, clientReferenceId: string option, currency: string option, customer: CheckoutSessionCustomerDU option, customerEmail: string option, id: string, livemode: bool, locale: CheckoutSessionLocale option, metadata: Map<string, string> option, mode: CheckoutSessionMode, object: CheckoutSessionObject, paymentIntent: CheckoutSessionPaymentIntentDU option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, setupIntent: CheckoutSessionSetupIntentDU option, shipping: Shipping option, shippingAddressCollection: PaymentPagesPaymentPageResourcesShippingAddressCollection option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscriptionDU option, successUrl: string, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, ?lineItems: Map<string, string>) =
 
         member _.AllowPromotionCodes = allowPromotionCodes
         member _.AmountSubtotal = amountSubtotal
@@ -1127,18 +1097,9 @@ module StripeModel =
         | CheckoutSessionSetupIntentDU'String of string
         | CheckoutSessionSetupIntentDU'SetupIntent of SetupIntent
 
-    and CheckoutSessionShippingDU =
-        | CheckoutSessionShippingDU'Shipping of Shipping
-
-    and CheckoutSessionShippingAddressCollectionDU =
-        | CheckoutSessionShippingAddressCollectionDU'PaymentPagesPaymentPageResourcesShippingAddressCollection of PaymentPagesPaymentPageResourcesShippingAddressCollection
-
     and CheckoutSessionSubscriptionDU =
         | CheckoutSessionSubscriptionDU'String of string
         | CheckoutSessionSubscriptionDU'Subscription of Subscription
-
-    and CheckoutSessionTotalDetailsDU =
-        | CheckoutSessionTotalDetailsDU'PaymentPagesCheckoutSessionTotalDetails of PaymentPagesCheckoutSessionTotalDetails
 
     ///
     and ConnectCollectionTransfer (amount: int, currency: string, destination: ConnectCollectionTransferDestinationDU, id: string, livemode: bool, object: ConnectCollectionTransferObject) =
@@ -1331,7 +1292,7 @@ module StripeModel =
     ///customers as well as a list of all your customers.
     ///
     ///Related guide: [Save a card during payment](https://stripe.com/docs/payments/save-during-payment).
-    and Customer (created: int, defaultSource: CustomerDefaultSourceDU option, description: string option, email: string option, id: string, livemode: bool, object: CustomerObject, shipping: CustomerShippingDU option, ?address: CustomerAddressDU option, ?balance: int, ?currency: string option, ?delinquent: bool option, ?discount: CustomerDiscountDU option, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: Map<string, string>, ?subscriptions: Map<string, string>, ?taxExempt: CustomerTaxExempt option, ?taxIds: Map<string, string>) =
+    and Customer (created: int, defaultSource: CustomerDefaultSourceDU option, description: string option, email: string option, id: string, livemode: bool, object: CustomerObject, shipping: Shipping option, ?address: Address option, ?balance: int, ?currency: string option, ?delinquent: bool option, ?discount: Discount option, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: Map<string, string>, ?subscriptions: Map<string, string>, ?taxExempt: CustomerTaxExempt option, ?taxIds: Map<string, string>) =
 
         member _.Address = address |> Option.flatten
         member _.Balance = balance
@@ -1366,18 +1327,9 @@ module StripeModel =
         | CustomerTaxExempt'None
         | CustomerTaxExempt'Reverse
 
-    and CustomerAddressDU =
-        | CustomerAddressDU'Address of Address
-
     and CustomerDefaultSourceDU =
         | CustomerDefaultSourceDU'String of string
         | CustomerDefaultSourceDU'PaymentSource of PaymentSource
-
-    and CustomerDiscountDU =
-        | CustomerDiscountDU'Discount of Discount
-
-    and CustomerShippingDU =
-        | CustomerShippingDU'Shipping of Shipping
 
     ///
     and CustomerAcceptance (acceptedAt: int option, ``type``: CustomerAcceptanceType, ?offline: OfflineAcceptance, ?online: OnlineAcceptance) =
@@ -1999,7 +1951,7 @@ module StripeModel =
     ///
     ///**NOTE:** Right now, access to events through the [Retrieve Event API](https://stripe.com/docs/api#retrieve_event) is
     ///guaranteed only for 30 days.
-    and Event (apiVersion: string option, created: int, data: NotificationEventData, id: string, livemode: bool, object: EventObject, pendingWebhooks: int, request: EventRequestDU option, ``type``: string, ?account: string) =
+    and Event (apiVersion: string option, created: int, data: NotificationEventData, id: string, livemode: bool, object: EventObject, pendingWebhooks: int, request: NotificationEventRequest option, ``type``: string, ?account: string) =
 
         member _.Account = account
         member _.ApiVersion = apiVersion
@@ -2014,9 +1966,6 @@ module StripeModel =
 
     and EventObject =
         | EventObject'Event
-
-    and EventRequestDU =
-        | EventRequestDU'NotificationEventRequest of NotificationEventRequest
 
     ///`Exchange Rate` objects allow you to determine the rates that Stripe is
     ///currently using to convert from one currency to another. Since this number is
@@ -2185,7 +2134,7 @@ module StripeModel =
     ///[here](https://stripe.com/docs/api/customers/object#customer_object-account_balance).
     ///
     ///Related guide: [Send Invoices to Customers](https://stripe.com/docs/billing/invoices/sending).
-    and Invoice (accountCountry: string option, accountName: string option, amountDue: int, amountPaid: int, amountRemaining: int, applicationFeeAmount: int option, attemptCount: int, attempted: bool, billingReason: InvoiceBillingReason option, charge: InvoiceChargeDU option, collectionMethod: InvoiceCollectionMethod option, created: int, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomerDU, customerAddress: InvoiceCustomerAddressDU option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: InvoiceCustomerShippingDU option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethodDU option, defaultSource: InvoiceDefaultSourceDU option, defaultTaxRates: TaxRate list, description: string option, discount: InvoiceDiscountDU option, discounts: InvoiceDiscountsDU list option, dueDate: int option, endingBalance: int option, footer: string option, lines: Map<string, string>, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: int option, number: string option, object: InvoiceObject, paid: bool, paymentIntent: InvoicePaymentIntentDU option, periodEnd: int, periodStart: int, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesStatusTransitions, subscription: InvoiceSubscriptionDU option, subtotal: int, tax: int option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalTaxAmounts: InvoiceTaxAmount list, transferData: InvoiceTransferDataDU option, webhooksDeliveredAt: int option, ?accountTaxIds: InvoiceAccountTaxIdsDU list option, ?autoAdvance: bool, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?lastFinalizationError: InvoiceLastFinalizationErrorDU option, ?subscriptionProrationDate: int, ?thresholdReason: InvoiceThresholdReason) =
+    and Invoice (accountCountry: string option, accountName: string option, amountDue: int, amountPaid: int, amountRemaining: int, applicationFeeAmount: int option, attemptCount: int, attempted: bool, billingReason: InvoiceBillingReason option, charge: InvoiceChargeDU option, collectionMethod: InvoiceCollectionMethod option, created: int, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomerDU, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethodDU option, defaultSource: InvoiceDefaultSourceDU option, defaultTaxRates: TaxRate list, description: string option, discount: Discount option, discounts: InvoiceDiscountsDU list option, dueDate: int option, endingBalance: int option, footer: string option, lines: Map<string, string>, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: int option, number: string option, object: InvoiceObject, paid: bool, paymentIntent: InvoicePaymentIntentDU option, periodEnd: int, periodStart: int, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesStatusTransitions, subscription: InvoiceSubscriptionDU option, subtotal: int, tax: int option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalTaxAmounts: InvoiceTaxAmount list, transferData: InvoiceTransferData option, webhooksDeliveredAt: int option, ?accountTaxIds: InvoiceAccountTaxIdsDU list option, ?autoAdvance: bool, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?lastFinalizationError: ApiErrors option, ?subscriptionProrationDate: int, ?thresholdReason: InvoiceThresholdReason) =
 
         member _.AccountCountry = accountCountry
         member _.AccountName = accountName
@@ -2296,12 +2245,6 @@ module StripeModel =
         | InvoiceCustomerDU'Customer of Customer
         | InvoiceCustomerDU'DeletedCustomer of DeletedCustomer
 
-    and InvoiceCustomerAddressDU =
-        | InvoiceCustomerAddressDU'Address of Address
-
-    and InvoiceCustomerShippingDU =
-        | InvoiceCustomerShippingDU'Shipping of Shipping
-
     and InvoiceDefaultPaymentMethodDU =
         | InvoiceDefaultPaymentMethodDU'String of string
         | InvoiceDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
@@ -2310,16 +2253,10 @@ module StripeModel =
         | InvoiceDefaultSourceDU'String of string
         | InvoiceDefaultSourceDU'PaymentSource of PaymentSource
 
-    and InvoiceDiscountDU =
-        | InvoiceDiscountDU'Discount of Discount
-
     and InvoiceDiscountsDU =
         | InvoiceDiscountsDU'String of string
         | InvoiceDiscountsDU'Discount of Discount
         | InvoiceDiscountsDU'DeletedDiscount of DeletedDiscount
-
-    and InvoiceLastFinalizationErrorDU =
-        | InvoiceLastFinalizationErrorDU'ApiErrors of ApiErrors
 
     and InvoicePaymentIntentDU =
         | InvoicePaymentIntentDU'String of string
@@ -2328,9 +2265,6 @@ module StripeModel =
     and InvoiceSubscriptionDU =
         | InvoiceSubscriptionDU'String of string
         | InvoiceSubscriptionDU'Subscription of Subscription
-
-    and InvoiceTransferDataDU =
-        | InvoiceTransferDataDU'InvoiceTransferData of InvoiceTransferData
 
     ///
     and InvoiceItemThresholdReason (lineItemIds: string list, usageGte: int) =
@@ -2400,7 +2334,7 @@ module StripeModel =
     ///totals.
     ///
     ///Related guide: [Subscription Invoices](https://stripe.com/docs/billing/invoices/subscription#adding-upcoming-invoice-items).
-    and Invoiceitem (amount: int, currency: string, customer: InvoiceitemCustomerDU, date: int, description: string option, discountable: bool, discounts: InvoiceitemDiscountsDU list option, id: string, invoice: InvoiceitemInvoiceDU option, livemode: bool, metadata: Map<string, string> option, object: InvoiceitemObject, period: InvoiceLineItemPeriod, plan: InvoiceitemPlanDU option, price: InvoiceitemPriceDU option, proration: bool, quantity: int, subscription: InvoiceitemSubscriptionDU option, taxRates: TaxRate list option, unitAmount: int option, unitAmountDecimal: string option, ?subscriptionItem: string) =
+    and Invoiceitem (amount: int, currency: string, customer: InvoiceitemCustomerDU, date: int, description: string option, discountable: bool, discounts: InvoiceitemDiscountsDU list option, id: string, invoice: InvoiceitemInvoiceDU option, livemode: bool, metadata: Map<string, string> option, object: InvoiceitemObject, period: InvoiceLineItemPeriod, plan: Plan option, price: Price option, proration: bool, quantity: int, subscription: InvoiceitemSubscriptionDU option, taxRates: TaxRate list option, unitAmount: int option, unitAmountDecimal: string option, ?subscriptionItem: string) =
 
         member _.Amount = amount
         member _.Currency = currency
@@ -2440,12 +2374,6 @@ module StripeModel =
     and InvoiceitemInvoiceDU =
         | InvoiceitemInvoiceDU'String of string
         | InvoiceitemInvoiceDU'Invoice of Invoice
-
-    and InvoiceitemPlanDU =
-        | InvoiceitemPlanDU'Plan of Plan
-
-    and InvoiceitemPriceDU =
-        | InvoiceitemPriceDU'Price of Price
 
     and InvoiceitemSubscriptionDU =
         | InvoiceitemSubscriptionDU'String of string
@@ -2527,7 +2455,7 @@ module StripeModel =
     ///purchase to be completed successfully.
     ///
     ///Related guide: [Issued Card Authorizations](https://stripe.com/docs/issuing/purchases/authorizations).
-    and IssuingAuthorization (amount: int, amountDetails: IssuingAuthorizationAmountDetailsDU option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardholder: IssuingAuthorizationCardholderDU option, created: int, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, object: IssuingAuthorizationObject, pendingRequest: IssuingAuthorizationPendingRequestDU option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, wallet: string option) =
+    and IssuingAuthorization (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardholder: IssuingAuthorizationCardholderDU option, created: int, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, object: IssuingAuthorizationObject, pendingRequest: IssuingAuthorizationPendingRequest option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, wallet: string option) =
 
         member _.Amount = amount
         member _.AmountDetails = amountDetails
@@ -2567,18 +2495,12 @@ module StripeModel =
         | IssuingAuthorizationStatus'Pending
         | IssuingAuthorizationStatus'Reversed
 
-    and IssuingAuthorizationAmountDetailsDU =
-        | IssuingAuthorizationAmountDetailsDU'IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
-
     and IssuingAuthorizationCardholderDU =
         | IssuingAuthorizationCardholderDU'String of string
         | IssuingAuthorizationCardholderDU'IssuingCardholder of IssuingCardholder
 
-    and IssuingAuthorizationPendingRequestDU =
-        | IssuingAuthorizationPendingRequestDU'IssuingAuthorizationPendingRequest of IssuingAuthorizationPendingRequest
-
     ///You can [create physical or virtual cards](https://stripe.com/docs/issuing/cards) that are issued to cardholders.
-    and IssuingCard (brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: int, currency: string, expMonth: int, expYear: int, id: string, last4: string, livemode: bool, metadata: Map<string, string>, object: IssuingCardObject, replacedBy: IssuingCardReplacedByDU option, replacementFor: IssuingCardReplacementForDU option, replacementReason: IssuingCardReplacementReason option, shipping: IssuingCardShippingDU option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, ?cvc: string, ?number: string) =
+    and IssuingCard (brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: int, currency: string, expMonth: int, expYear: int, id: string, last4: string, livemode: bool, metadata: Map<string, string>, object: IssuingCardObject, replacedBy: IssuingCardReplacedByDU option, replacementFor: IssuingCardReplacementForDU option, replacementReason: IssuingCardReplacementReason option, shipping: IssuingCardShipping option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, ?cvc: string, ?number: string) =
 
         member _.Brand = brand
         member _.CancellationReason = cancellationReason
@@ -2632,13 +2554,10 @@ module StripeModel =
         | IssuingCardReplacementForDU'String of string
         | IssuingCardReplacementForDU'IssuingCard of IssuingCard
 
-    and IssuingCardShippingDU =
-        | IssuingCardShippingDU'IssuingCardShipping of IssuingCardShipping
-
     ///An Issuing `Cardholder` object represents an individual or business entity who is [issued](https://stripe.com/docs/issuing) cards.
     ///
     ///Related guide: [How to create a Cardholder](https://stripe.com/docs/issuing/cards#create-cardholder)
-    and IssuingCardholder (billing: IssuingCardholderAddress, company: IssuingCardholderCompanyDU option, created: int, email: string option, id: string, individual: IssuingCardholderIndividualDU option, livemode: bool, metadata: Map<string, string>, name: string, object: IssuingCardholderObject, phoneNumber: string option, requirements: IssuingCardholderRequirements, spendingControls: IssuingCardholderSpendingControlsDU option, status: IssuingCardholderStatus, ``type``: IssuingCardholderType) =
+    and IssuingCardholder (billing: IssuingCardholderAddress, company: IssuingCardholderCompany option, created: int, email: string option, id: string, individual: IssuingCardholderIndividual option, livemode: bool, metadata: Map<string, string>, name: string, object: IssuingCardholderObject, phoneNumber: string option, requirements: IssuingCardholderRequirements, spendingControls: IssuingCardholderAuthorizationControls option, status: IssuingCardholderStatus, ``type``: IssuingCardholderType) =
 
         member _.Billing = billing
         member _.Company = company
@@ -2667,15 +2586,6 @@ module StripeModel =
     and IssuingCardholderType =
         | IssuingCardholderType'Company
         | IssuingCardholderType'Individual
-
-    and IssuingCardholderCompanyDU =
-        | IssuingCardholderCompanyDU'IssuingCardholderCompany of IssuingCardholderCompany
-
-    and IssuingCardholderIndividualDU =
-        | IssuingCardholderIndividualDU'IssuingCardholderIndividual of IssuingCardholderIndividual
-
-    and IssuingCardholderSpendingControlsDU =
-        | IssuingCardholderSpendingControlsDU'IssuingCardholderAuthorizationControls of IssuingCardholderAuthorizationControls
 
     ///As a [card issuer](https://stripe.com/docs/issuing), you can dispute transactions that the cardholder does not recognize, suspects to be fraudulent, or has other issues with.
     ///
@@ -2713,7 +2623,7 @@ module StripeModel =
     ///`Transaction` object.
     ///
     ///Related guide: [Issued Card Transactions](https://stripe.com/docs/issuing/purchases/transactions).
-    and IssuingTransaction (amount: int, amountDetails: IssuingTransactionAmountDetailsDU option, authorization: IssuingTransactionAuthorizationDU option, balanceTransaction: IssuingTransactionBalanceTransactionDU option, card: IssuingTransactionCardDU, cardholder: IssuingTransactionCardholderDU option, created: int, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, object: IssuingTransactionObject, purchaseDetails: IssuingTransactionPurchaseDetailsDU option, ``type``: IssuingTransactionType, ?dispute: IssuingTransactionDisputeDU option) =
+    and IssuingTransaction (amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: IssuingTransactionAuthorizationDU option, balanceTransaction: IssuingTransactionBalanceTransactionDU option, card: IssuingTransactionCardDU, cardholder: IssuingTransactionCardholderDU option, created: int, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, object: IssuingTransactionObject, purchaseDetails: IssuingTransactionPurchaseDetails option, ``type``: IssuingTransactionType, ?dispute: IssuingTransactionDisputeDU option) =
 
         member _.Amount = amount
         member _.AmountDetails = amountDetails
@@ -2742,9 +2652,6 @@ module StripeModel =
         | IssuingTransactionType'Dispute
         | IssuingTransactionType'Refund
 
-    and IssuingTransactionAmountDetailsDU =
-        | IssuingTransactionAmountDetailsDU'IssuingTransactionAmountDetails of IssuingTransactionAmountDetails
-
     and IssuingTransactionAuthorizationDU =
         | IssuingTransactionAuthorizationDU'String of string
         | IssuingTransactionAuthorizationDU'IssuingAuthorization of IssuingAuthorization
@@ -2765,9 +2672,6 @@ module StripeModel =
         | IssuingTransactionDisputeDU'String of string
         | IssuingTransactionDisputeDU'IssuingDispute of IssuingDispute
 
-    and IssuingTransactionPurchaseDetailsDU =
-        | IssuingTransactionPurchaseDetailsDU'IssuingTransactionPurchaseDetails of IssuingTransactionPurchaseDetails
-
     ///
     and IssuingAuthorizationAmountDetails (atmFee: int option) =
 
@@ -2785,7 +2689,7 @@ module StripeModel =
         member _.State = state
 
     ///
-    and IssuingAuthorizationPendingRequest (amount: int, amountDetails: IssuingAuthorizationPendingRequestAmountDetailsDU option, currency: string, isAmountControllable: bool, merchantAmount: int, merchantCurrency: string) =
+    and IssuingAuthorizationPendingRequest (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, currency: string, isAmountControllable: bool, merchantAmount: int, merchantCurrency: string) =
 
         member _.Amount = amount
         member _.AmountDetails = amountDetails
@@ -2794,11 +2698,8 @@ module StripeModel =
         member _.MerchantAmount = merchantAmount
         member _.MerchantCurrency = merchantCurrency
 
-    and IssuingAuthorizationPendingRequestAmountDetailsDU =
-        | IssuingAuthorizationPendingRequestAmountDetailsDU'IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
-
     ///
-    and IssuingAuthorizationRequest (amount: int, amountDetails: IssuingAuthorizationRequestAmountDetailsDU option, approved: bool, created: int, currency: string, merchantAmount: int, merchantCurrency: string, reason: IssuingAuthorizationRequestReason) =
+    and IssuingAuthorizationRequest (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, created: int, currency: string, merchantAmount: int, merchantCurrency: string, reason: IssuingAuthorizationRequestReason) =
 
         member _.Amount = amount
         member _.AmountDetails = amountDetails
@@ -2823,9 +2724,6 @@ module StripeModel =
         | IssuingAuthorizationRequestReason'WebhookApproved
         | IssuingAuthorizationRequestReason'WebhookDeclined
         | IssuingAuthorizationRequestReason'WebhookTimeout
-
-    and IssuingAuthorizationRequestAmountDetailsDU =
-        | IssuingAuthorizationRequestAmountDetailsDU'IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
 
     ///
     and IssuingAuthorizationVerificationData (addressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check, addressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck, cvcCheck: IssuingAuthorizationVerificationDataCvcCheck, expiryCheck: IssuingAuthorizationVerificationDataExpiryCheck) =
@@ -4395,18 +4293,12 @@ module StripeModel =
         | IssuingCardholderIdDocumentFrontDU'File of File
 
     ///
-    and IssuingCardholderIndividual (dob: IssuingCardholderIndividualDobDU option, firstName: string, lastName: string, verification: IssuingCardholderIndividualVerificationDU option) =
+    and IssuingCardholderIndividual (dob: IssuingCardholderIndividualDob option, firstName: string, lastName: string, verification: IssuingCardholderVerification option) =
 
         member _.Dob = dob
         member _.FirstName = firstName
         member _.LastName = lastName
         member _.Verification = verification
-
-    and IssuingCardholderIndividualDobDU =
-        | IssuingCardholderIndividualDobDU'IssuingCardholderIndividualDob of IssuingCardholderIndividualDob
-
-    and IssuingCardholderIndividualVerificationDU =
-        | IssuingCardholderIndividualVerificationDU'IssuingCardholderVerification of IssuingCardholderVerification
 
     ///
     and IssuingCardholderIndividualDob (day: int option, month: int option, year: int option) =
@@ -4741,12 +4633,9 @@ module StripeModel =
         | IssuingCardholderSpendingLimitInterval'Yearly
 
     ///
-    and IssuingCardholderVerification (document: IssuingCardholderVerificationDocumentDU option) =
+    and IssuingCardholderVerification (document: IssuingCardholderIdDocument option) =
 
         member _.Document = document
-
-    and IssuingCardholderVerificationDocumentDU =
-        | IssuingCardholderVerificationDocumentDU'IssuingCardholderIdDocument of IssuingCardholderIdDocument
 
     ///
     and IssuingDisputeCanceledEvidence (additionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentationDU option, canceledAt: int option, cancellationPolicyProvided: bool option, cancellationReason: string option, expectedAt: int option, explanation: string option, productDescription: string option, productType: IssuingDisputeCanceledEvidenceProductType option, returnStatus: IssuingDisputeCanceledEvidenceReturnStatus option, returnedAt: int option) =
@@ -4934,22 +4823,13 @@ module StripeModel =
         member _.Nights = nights
 
     ///
-    and IssuingTransactionPurchaseDetails (flight: IssuingTransactionPurchaseDetailsFlightDU option, fuel: IssuingTransactionPurchaseDetailsFuelDU option, lodging: IssuingTransactionPurchaseDetailsLodgingDU option, receipt: IssuingTransactionReceiptData list option, reference: string option) =
+    and IssuingTransactionPurchaseDetails (flight: IssuingTransactionFlightData option, fuel: IssuingTransactionFuelData option, lodging: IssuingTransactionLodgingData option, receipt: IssuingTransactionReceiptData list option, reference: string option) =
 
         member _.Flight = flight
         member _.Fuel = fuel
         member _.Lodging = lodging
         member _.Receipt = receipt
         member _.Reference = reference
-
-    and IssuingTransactionPurchaseDetailsFlightDU =
-        | IssuingTransactionPurchaseDetailsFlightDU'IssuingTransactionFlightData of IssuingTransactionFlightData
-
-    and IssuingTransactionPurchaseDetailsFuelDU =
-        | IssuingTransactionPurchaseDetailsFuelDU'IssuingTransactionFuelData of IssuingTransactionFuelData
-
-    and IssuingTransactionPurchaseDetailsLodgingDU =
-        | IssuingTransactionPurchaseDetailsLodgingDU'IssuingTransactionLodgingData of IssuingTransactionLodgingData
 
     ///
     and IssuingTransactionReceiptData (description: string option, quantity: decimal option, total: int option, unitCost: int option) =
@@ -4977,7 +4857,7 @@ module StripeModel =
         | ItemObject'Item
 
     ///
-    and LegalEntityCompany (name: string option, ?address: Address, ?addressKana: LegalEntityCompanyAddressKanaDU option, ?addressKanji: LegalEntityCompanyAddressKanjiDU option, ?directorsProvided: bool, ?executivesProvided: bool, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?phone: string option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerificationDU option) =
+    and LegalEntityCompany (name: string option, ?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?directorsProvided: bool, ?executivesProvided: bool, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?phone: string option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
 
         member _.Address = address
         member _.AddressKana = addressKana |> Option.flatten
@@ -5011,15 +4891,6 @@ module StripeModel =
         | LegalEntityCompanyStructure'TaxExemptGovernmentInstrumentality
         | LegalEntityCompanyStructure'UnincorporatedAssociation
         | LegalEntityCompanyStructure'UnincorporatedNonProfit
-
-    and LegalEntityCompanyAddressKanaDU =
-        | LegalEntityCompanyAddressKanaDU'LegalEntityJapanAddress of LegalEntityJapanAddress
-
-    and LegalEntityCompanyAddressKanjiDU =
-        | LegalEntityCompanyAddressKanjiDU'LegalEntityJapanAddress of LegalEntityJapanAddress
-
-    and LegalEntityCompanyVerificationDU =
-        | LegalEntityCompanyVerificationDU'LegalEntityCompanyVerification of LegalEntityCompanyVerification
 
     ///
     and LegalEntityCompanyVerification (document: LegalEntityCompanyVerificationDocument) =
@@ -5061,16 +4932,13 @@ module StripeModel =
         member _.Town = town
 
     ///
-    and LegalEntityPersonVerification (status: string, ?additionalDocument: LegalEntityPersonVerificationAdditionalDocumentDU option, ?details: string option, ?detailsCode: string option, ?document: LegalEntityPersonVerificationDocument) =
+    and LegalEntityPersonVerification (status: string, ?additionalDocument: LegalEntityPersonVerificationDocument option, ?details: string option, ?detailsCode: string option, ?document: LegalEntityPersonVerificationDocument) =
 
         member _.AdditionalDocument = additionalDocument |> Option.flatten
         member _.Details = details |> Option.flatten
         member _.DetailsCode = detailsCode |> Option.flatten
         member _.Document = document
         member _.Status = status
-
-    and LegalEntityPersonVerificationAdditionalDocumentDU =
-        | LegalEntityPersonVerificationAdditionalDocumentDU'LegalEntityPersonVerificationDocument of LegalEntityPersonVerificationDocument
 
     ///
     and LegalEntityPersonVerificationDocument (back: LegalEntityPersonVerificationDocumentBackDU option, details: string option, detailsCode: string option, front: LegalEntityPersonVerificationDocumentFrontDU option) =
@@ -5109,7 +4977,7 @@ module StripeModel =
         member _.UnitCost = unitCost
 
     ///
-    and LineItem (amount: int, currency: string, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: LineItemDiscountsDU list option, id: string, livemode: bool, metadata: Map<string, string>, object: LineItemObject, period: InvoiceLineItemPeriod, plan: LineItemPlanDU option, price: LineItemPriceDU option, proration: bool, quantity: int option, subscription: string option, ``type``: LineItemType, ?invoiceItem: string, ?subscriptionItem: string, ?taxAmounts: InvoiceTaxAmount list, ?taxRates: TaxRate list) =
+    and LineItem (amount: int, currency: string, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: LineItemDiscountsDU list option, id: string, livemode: bool, metadata: Map<string, string>, object: LineItemObject, period: InvoiceLineItemPeriod, plan: Plan option, price: Price option, proration: bool, quantity: int option, subscription: string option, ``type``: LineItemType, ?invoiceItem: string, ?subscriptionItem: string, ?taxAmounts: InvoiceTaxAmount list, ?taxRates: TaxRate list) =
 
         member _.Amount = amount
         member _.Currency = currency
@@ -5143,12 +5011,6 @@ module StripeModel =
     and LineItemDiscountsDU =
         | LineItemDiscountsDU'String of string
         | LineItemDiscountsDU'Discount of Discount
-
-    and LineItemPlanDU =
-        | LineItemPlanDU'Plan of Plan
-
-    and LineItemPriceDU =
-        | LineItemPriceDU'Price of Price
 
     ///
     and LineItemsDiscountAmount (amount: int, discount: Discount) =
@@ -5280,7 +5142,7 @@ module StripeModel =
     ///as list all orders. Orders are identified by a unique, random ID.
     ///
     ///Related guide: [Tax, Shipping, and Inventory](https://stripe.com/docs/orders).
-    and Order (amount: int, amountReturned: int option, application: string option, applicationFee: int option, charge: OrderChargeDU option, created: int, currency: string, customer: OrderCustomerDU option, email: string option, id: string, items: OrderItem list, livemode: bool, metadata: Map<string, string> option, object: OrderObject, returns: Map<string, string> option, selectedShippingMethod: string option, shipping: OrderShippingDU option, shippingMethods: ShippingMethod list option, status: string, statusTransitions: OrderStatusTransitionsDU option, updated: int option, ?externalCouponCode: string, ?upstreamId: string) =
+    and Order (amount: int, amountReturned: int option, application: string option, applicationFee: int option, charge: OrderChargeDU option, created: int, currency: string, customer: OrderCustomerDU option, email: string option, id: string, items: OrderItem list, livemode: bool, metadata: Map<string, string> option, object: OrderObject, returns: Map<string, string> option, selectedShippingMethod: string option, shipping: Shipping option, shippingMethods: ShippingMethod list option, status: string, statusTransitions: StatusTransitions option, updated: int option, ?externalCouponCode: string, ?upstreamId: string) =
 
         member _.Amount = amount
         member _.AmountReturned = amountReturned
@@ -5317,12 +5179,6 @@ module StripeModel =
         | OrderCustomerDU'String of string
         | OrderCustomerDU'Customer of Customer
         | OrderCustomerDU'DeletedCustomer of DeletedCustomer
-
-    and OrderShippingDU =
-        | OrderShippingDU'Shipping of Shipping
-
-    and OrderStatusTransitionsDU =
-        | OrderStatusTransitionsDU'StatusTransitions of StatusTransitions
 
     ///A representation of the constituent items of any given order. Can be used to
     ///represent [SKUs](https://stripe.com/docs/api#skus), shipping costs, or taxes owed on the order.
@@ -5402,7 +5258,7 @@ module StripeModel =
     ///authentication flows and ultimately creates at most one successful charge.
     ///
     ///Related guide: [Payment Intents API](https://stripe.com/docs/payments/payment-intents).
-    and PaymentIntent (amount: int, amountCapturable: int, amountReceived: int, application: PaymentIntentApplicationDU option, applicationFeeAmount: int option, canceledAt: int option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, charges: Map<string, string>, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: int, currency: string, customer: PaymentIntentCustomerDU option, description: string option, id: string, invoice: PaymentIntentInvoiceDU option, lastPaymentError: PaymentIntentLastPaymentErrorDU option, livemode: bool, metadata: Map<string, string>, nextAction: PaymentIntentNextActionDU option, object: PaymentIntentObject, onBehalfOf: PaymentIntentOnBehalfOfDU option, paymentMethod: PaymentIntentPaymentMethodDU option, paymentMethodOptions: PaymentIntentPaymentMethodOptionsDU option, paymentMethodTypes: string list, receiptEmail: string option, review: PaymentIntentReviewDU option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: PaymentIntentShippingDU option, source: PaymentIntentSourceDU option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferData: PaymentIntentTransferDataDU option, transferGroup: string option) =
+    and PaymentIntent (amount: int, amountCapturable: int, amountReceived: int, application: PaymentIntentApplicationDU option, applicationFeeAmount: int option, canceledAt: int option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, charges: Map<string, string>, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: int, currency: string, customer: PaymentIntentCustomerDU option, description: string option, id: string, invoice: PaymentIntentInvoiceDU option, lastPaymentError: ApiErrors option, livemode: bool, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, object: PaymentIntentObject, onBehalfOf: PaymentIntentOnBehalfOfDU option, paymentMethod: PaymentIntentPaymentMethodDU option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, receiptEmail: string option, review: PaymentIntentReviewDU option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSourceDU option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferData: TransferData option, transferGroup: string option) =
 
         member _.Amount = amount
         member _.AmountCapturable = amountCapturable
@@ -5487,12 +5343,6 @@ module StripeModel =
         | PaymentIntentInvoiceDU'String of string
         | PaymentIntentInvoiceDU'Invoice of Invoice
 
-    and PaymentIntentLastPaymentErrorDU =
-        | PaymentIntentLastPaymentErrorDU'ApiErrors of ApiErrors
-
-    and PaymentIntentNextActionDU =
-        | PaymentIntentNextActionDU'PaymentIntentNextAction of PaymentIntentNextAction
-
     and PaymentIntentOnBehalfOfDU =
         | PaymentIntentOnBehalfOfDU'String of string
         | PaymentIntentOnBehalfOfDU'Account of Account
@@ -5501,23 +5351,14 @@ module StripeModel =
         | PaymentIntentPaymentMethodDU'String of string
         | PaymentIntentPaymentMethodDU'PaymentMethod of PaymentMethod
 
-    and PaymentIntentPaymentMethodOptionsDU =
-        | PaymentIntentPaymentMethodOptionsDU'PaymentIntentPaymentMethodOptions of PaymentIntentPaymentMethodOptions
-
     and PaymentIntentReviewDU =
         | PaymentIntentReviewDU'String of string
         | PaymentIntentReviewDU'Review of Review
-
-    and PaymentIntentShippingDU =
-        | PaymentIntentShippingDU'Shipping of Shipping
 
     and PaymentIntentSourceDU =
         | PaymentIntentSourceDU'String of string
         | PaymentIntentSourceDU'PaymentSource of PaymentSource
         | PaymentIntentSourceDU'DeletedPaymentSource of DeletedPaymentSource
-
-    and PaymentIntentTransferDataDU =
-        | PaymentIntentTransferDataDU'TransferData of TransferData
 
     ///
     and PaymentIntentNextAction (``type``: string, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?useStripeSdk: Map<string, string>) =
@@ -5561,7 +5402,7 @@ module StripeModel =
         member _.Sofort = sofort
 
     ///
-    and PaymentIntentPaymentMethodOptionsCard (installments: PaymentIntentPaymentMethodOptionsCardInstallmentsDU option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
+    and PaymentIntentPaymentMethodOptionsCard (installments: PaymentMethodOptionsCardInstallments option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
 
         member _.Installments = installments
         member _.Network = network
@@ -5583,9 +5424,6 @@ module StripeModel =
         | PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure'Any
         | PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure'Automatic
         | PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure'ChallengeOnly
-
-    and PaymentIntentPaymentMethodOptionsCardInstallmentsDU =
-        | PaymentIntentPaymentMethodOptionsCardInstallmentsDU'PaymentMethodOptionsCardInstallments of PaymentMethodOptionsCardInstallments
 
     ///
     and PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit (?undefined: string list) =
@@ -5674,7 +5512,7 @@ module StripeModel =
         member _.Undefined = undefined
 
     ///
-    and PaymentMethodCard (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecksDU option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, last4: string, networks: PaymentMethodCardNetworksDU option, threeDSecureUsage: PaymentMethodCardThreeDSecureUsageDU option, wallet: PaymentMethodCardWalletDU option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
+    and PaymentMethodCard (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, last4: string, networks: Networks option, threeDSecureUsage: ThreeDSecureUsage option, wallet: PaymentMethodCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
 
         member _.Brand = brand
         member _.Checks = checks
@@ -5706,18 +5544,6 @@ module StripeModel =
         | PaymentMethodCardFunding'Debit
         | PaymentMethodCardFunding'Prepaid
         | PaymentMethodCardFunding'Unknown
-
-    and PaymentMethodCardChecksDU =
-        | PaymentMethodCardChecksDU'PaymentMethodCardChecks of PaymentMethodCardChecks
-
-    and PaymentMethodCardNetworksDU =
-        | PaymentMethodCardNetworksDU'Networks of Networks
-
-    and PaymentMethodCardThreeDSecureUsageDU =
-        | PaymentMethodCardThreeDSecureUsageDU'ThreeDSecureUsage of ThreeDSecureUsage
-
-    and PaymentMethodCardWalletDU =
-        | PaymentMethodCardWalletDU'PaymentMethodCardWallet of PaymentMethodCardWallet
 
     ///
     and PaymentMethodCardChecks (addressLine1Check: string option, addressPostalCodeCheck: string option, cvcCheck: string option) =
@@ -5767,18 +5593,12 @@ module StripeModel =
         member _.Undefined = undefined
 
     ///
-    and PaymentMethodCardWalletMasterpass (billingAddress: PaymentMethodCardWalletMasterpassBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodCardWalletMasterpassShippingAddressDU option) =
+    and PaymentMethodCardWalletMasterpass (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
 
         member _.BillingAddress = billingAddress
         member _.Email = email
         member _.Name = name
         member _.ShippingAddress = shippingAddress
-
-    and PaymentMethodCardWalletMasterpassBillingAddressDU =
-        | PaymentMethodCardWalletMasterpassBillingAddressDU'Address of Address
-
-    and PaymentMethodCardWalletMasterpassShippingAddressDU =
-        | PaymentMethodCardWalletMasterpassShippingAddressDU'Address of Address
 
     ///
     and PaymentMethodCardWalletSamsungPay (?undefined: string list) =
@@ -5786,18 +5606,12 @@ module StripeModel =
         member _.Undefined = undefined
 
     ///
-    and PaymentMethodCardWalletVisaCheckout (billingAddress: PaymentMethodCardWalletVisaCheckoutBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodCardWalletVisaCheckoutShippingAddressDU option) =
+    and PaymentMethodCardWalletVisaCheckout (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
 
         member _.BillingAddress = billingAddress
         member _.Email = email
         member _.Name = name
         member _.ShippingAddress = shippingAddress
-
-    and PaymentMethodCardWalletVisaCheckoutBillingAddressDU =
-        | PaymentMethodCardWalletVisaCheckoutBillingAddressDU'Address of Address
-
-    and PaymentMethodCardWalletVisaCheckoutShippingAddressDU =
-        | PaymentMethodCardWalletVisaCheckoutShippingAddressDU'Address of Address
 
     ///
     and PaymentMethodDetails (``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?klarna: PaymentMethodDetailsKlarna, ?multibanco: PaymentMethodDetailsMultibanco, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?wechat: PaymentMethodDetailsWechat) =
@@ -5903,7 +5717,7 @@ module StripeModel =
         | PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and PaymentMethodDetailsCard (brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecksDU option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallmentsDU option, last4: string option, network: PaymentMethodDetailsCardNetwork option, threeDSecure: PaymentMethodDetailsCardThreeDSecureDU option, wallet: PaymentMethodDetailsCardWalletDU option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option) =
+    and PaymentMethodDetailsCard (brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, network: PaymentMethodDetailsCardNetwork option, threeDSecure: ThreeDSecureDetails option, wallet: PaymentMethodDetailsCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option) =
 
         member _.Brand = brand
         member _.Checks = checks
@@ -5950,18 +5764,6 @@ module StripeModel =
         | PaymentMethodDetailsCardNetwork'Visa
         | PaymentMethodDetailsCardNetwork'Unknown
 
-    and PaymentMethodDetailsCardChecksDU =
-        | PaymentMethodDetailsCardChecksDU'PaymentMethodDetailsCardChecks of PaymentMethodDetailsCardChecks
-
-    and PaymentMethodDetailsCardInstallmentsDU =
-        | PaymentMethodDetailsCardInstallmentsDU'PaymentMethodDetailsCardInstallments of PaymentMethodDetailsCardInstallments
-
-    and PaymentMethodDetailsCardThreeDSecureDU =
-        | PaymentMethodDetailsCardThreeDSecureDU'ThreeDSecureDetails of ThreeDSecureDetails
-
-    and PaymentMethodDetailsCardWalletDU =
-        | PaymentMethodDetailsCardWalletDU'PaymentMethodDetailsCardWallet of PaymentMethodDetailsCardWallet
-
     ///
     and PaymentMethodDetailsCardChecks (addressLine1Check: string option, addressPostalCodeCheck: string option, cvcCheck: string option) =
 
@@ -5970,12 +5772,9 @@ module StripeModel =
         member _.CvcCheck = cvcCheck
 
     ///
-    and PaymentMethodDetailsCardInstallments (plan: PaymentMethodDetailsCardInstallmentsPlanDU option) =
+    and PaymentMethodDetailsCardInstallments (plan: PaymentMethodDetailsCardInstallmentsPlan option) =
 
         member _.Plan = plan
-
-    and PaymentMethodDetailsCardInstallmentsPlanDU =
-        | PaymentMethodDetailsCardInstallmentsPlanDU'PaymentMethodDetailsCardInstallmentsPlan of PaymentMethodDetailsCardInstallmentsPlan
 
     ///
     and PaymentMethodDetailsCardInstallmentsPlan (count: int option, interval: PaymentMethodDetailsCardInstallmentsPlanInterval option, ``type``: PaymentMethodDetailsCardInstallmentsPlanType) =
@@ -5991,7 +5790,7 @@ module StripeModel =
         | PaymentMethodDetailsCardInstallmentsPlanType'FixedCount
 
     ///
-    and PaymentMethodDetailsCardPresent (brand: PaymentMethodDetailsCardPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceiptDU option, ?description: string option, ?iin: string option, ?issuer: string option) =
+    and PaymentMethodDetailsCardPresent (brand: PaymentMethodDetailsCardPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option) =
 
         member _.Brand = brand
         member _.CardholderName = cardholderName
@@ -6044,9 +5843,6 @@ module StripeModel =
         | PaymentMethodDetailsCardPresentReadMethod'ContactlessMagstripeMode
         | PaymentMethodDetailsCardPresentReadMethod'MagneticStripeFallback
         | PaymentMethodDetailsCardPresentReadMethod'MagneticStripeTrack2
-
-    and PaymentMethodDetailsCardPresentReceiptDU =
-        | PaymentMethodDetailsCardPresentReceiptDU'PaymentMethodDetailsCardPresentReceipt of PaymentMethodDetailsCardPresentReceipt
 
     ///
     and PaymentMethodDetailsCardPresentReceipt (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsCardPresentReceiptAccountType) =
@@ -6103,18 +5899,12 @@ module StripeModel =
         member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsCardWalletMasterpass (billingAddress: PaymentMethodDetailsCardWalletMasterpassBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodDetailsCardWalletMasterpassShippingAddressDU option) =
+    and PaymentMethodDetailsCardWalletMasterpass (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
 
         member _.BillingAddress = billingAddress
         member _.Email = email
         member _.Name = name
         member _.ShippingAddress = shippingAddress
-
-    and PaymentMethodDetailsCardWalletMasterpassBillingAddressDU =
-        | PaymentMethodDetailsCardWalletMasterpassBillingAddressDU'Address of Address
-
-    and PaymentMethodDetailsCardWalletMasterpassShippingAddressDU =
-        | PaymentMethodDetailsCardWalletMasterpassShippingAddressDU'Address of Address
 
     ///
     and PaymentMethodDetailsCardWalletSamsungPay (?undefined: string list) =
@@ -6122,18 +5912,12 @@ module StripeModel =
         member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsCardWalletVisaCheckout (billingAddress: PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU option) =
+    and PaymentMethodDetailsCardWalletVisaCheckout (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
 
         member _.BillingAddress = billingAddress
         member _.Email = email
         member _.Name = name
         member _.ShippingAddress = shippingAddress
-
-    and PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU =
-        | PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU'Address of Address
-
-    and PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU =
-        | PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU'Address of Address
 
     ///
     and PaymentMethodDetailsEps (verifiedName: string option) =
@@ -6233,7 +6017,7 @@ module StripeModel =
         | PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and PaymentMethodDetailsInteracPresent (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceiptDU option, ?description: string option, ?iin: string option, ?issuer: string option) =
+    and PaymentMethodDetailsInteracPresent (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option) =
 
         member _.Brand = brand
         member _.CardholderName = cardholderName
@@ -6282,9 +6066,6 @@ module StripeModel =
         | PaymentMethodDetailsInteracPresentReadMethod'ContactlessMagstripeMode
         | PaymentMethodDetailsInteracPresentReadMethod'MagneticStripeFallback
         | PaymentMethodDetailsInteracPresentReadMethod'MagneticStripeTrack2
-
-    and PaymentMethodDetailsInteracPresentReceiptDU =
-        | PaymentMethodDetailsInteracPresentReceiptDU'PaymentMethodDetailsInteracPresentReceipt of PaymentMethodDetailsInteracPresentReceipt
 
     ///
     and PaymentMethodDetailsInteracPresentReceipt (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsInteracPresentReceiptAccountType) =
@@ -6486,14 +6267,11 @@ module StripeModel =
         | PaymentMethodOptionsBancontactPreferredLanguage'Nl
 
     ///
-    and PaymentMethodOptionsCardInstallments (availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodOptionsCardInstallmentsPlanDU option) =
+    and PaymentMethodOptionsCardInstallments (availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodDetailsCardInstallmentsPlan option) =
 
         member _.AvailablePlans = availablePlans
         member _.Enabled = enabled
         member _.Plan = plan
-
-    and PaymentMethodOptionsCardInstallmentsPlanDU =
-        | PaymentMethodOptionsCardInstallmentsPlanDU'PaymentMethodDetailsCardInstallmentsPlan of PaymentMethodDetailsCardInstallmentsPlan
 
     ///
     and PaymentMethodOptionsOxxo (expiresAfterDays: int) =
@@ -6557,7 +6335,7 @@ module StripeModel =
         | PaymentMethodP24Bank'VolkswagenBank
 
     ///
-    and PaymentMethodSepaDebit (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, generatedFrom: PaymentMethodSepaDebitGeneratedFromDU option, last4: string option) =
+    and PaymentMethodSepaDebit (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
 
         member _.BankCode = bankCode
         member _.BranchCode = branchCode
@@ -6565,9 +6343,6 @@ module StripeModel =
         member _.Fingerprint = fingerprint
         member _.GeneratedFrom = generatedFrom
         member _.Last4 = last4
-
-    and PaymentMethodSepaDebitGeneratedFromDU =
-        | PaymentMethodSepaDebitGeneratedFromDU'SepaDebitGeneratedFrom of SepaDebitGeneratedFrom
 
     ///
     and PaymentMethodSofort (country: string option) =
@@ -6909,7 +6684,7 @@ module StripeModel =
     ///This is an object representing a person associated with a Stripe account.
     ///
     ///Related guide: [Handling Identity Verification with the API](https://stripe.com/docs/connect/identity-verification-api#person-information).
-    and Person (created: int, id: string, object: PersonObject, ?account: string, ?address: Address, ?addressKana: PersonAddressKanaDU option, ?addressKanji: PersonAddressKanjiDU option, ?dob: LegalEntityDob, ?email: string option, ?firstName: string option, ?firstNameKana: string option, ?firstNameKanji: string option, ?gender: string option, ?idNumberProvided: bool, ?lastName: string option, ?lastNameKana: string option, ?lastNameKanji: string option, ?maidenName: string option, ?metadata: Map<string, string>, ?phone: string option, ?politicalExposure: PersonPoliticalExposure, ?relationship: PersonRelationship, ?requirements: PersonRequirementsDU option, ?ssnLast4Provided: bool, ?verification: LegalEntityPersonVerification) =
+    and Person (created: int, id: string, object: PersonObject, ?account: string, ?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?dob: LegalEntityDob, ?email: string option, ?firstName: string option, ?firstNameKana: string option, ?firstNameKanji: string option, ?gender: string option, ?idNumberProvided: bool, ?lastName: string option, ?lastNameKana: string option, ?lastNameKanji: string option, ?maidenName: string option, ?metadata: Map<string, string>, ?phone: string option, ?politicalExposure: PersonPoliticalExposure, ?relationship: PersonRelationship, ?requirements: PersonRequirements option, ?ssnLast4Provided: bool, ?verification: LegalEntityPersonVerification) =
 
         member _.Account = account
         member _.Address = address
@@ -6944,15 +6719,6 @@ module StripeModel =
         | PersonPoliticalExposure'Existing
         | PersonPoliticalExposure'None
 
-    and PersonAddressKanaDU =
-        | PersonAddressKanaDU'LegalEntityJapanAddress of LegalEntityJapanAddress
-
-    and PersonAddressKanjiDU =
-        | PersonAddressKanjiDU'LegalEntityJapanAddress of LegalEntityJapanAddress
-
-    and PersonRequirementsDU =
-        | PersonRequirementsDU'PersonRequirements of PersonRequirements
-
     ///
     and PersonRelationship (director: bool option, executive: bool option, owner: bool option, percentOwnership: decimal option, representative: bool option, title: string option) =
 
@@ -6980,7 +6746,7 @@ module StripeModel =
     ///For example, you might have a single "gold" product that has plans for $10/month, $100/year, €9/month, and €90/year.
     ///
     ///Related guides: [Set up a subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription) and more about [products and prices](https://stripe.com/docs/billing/prices-guide).
-    and Plan (active: bool, aggregateUsage: PlanAggregateUsage option, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: int, currency: string, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, nickname: string option, object: PlanObject, product: PlanProductDU option, tiersMode: PlanTiersMode option, transformUsage: PlanTransformUsageDU option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
+    and Plan (active: bool, aggregateUsage: PlanAggregateUsage option, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: int, currency: string, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, nickname: string option, object: PlanObject, product: PlanProductDU option, tiersMode: PlanTiersMode option, transformUsage: TransformUsage option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
 
         member _.Active = active
         member _.AggregateUsage = aggregateUsage
@@ -7035,9 +6801,6 @@ module StripeModel =
         | PlanProductDU'Product of Product
         | PlanProductDU'DeletedProduct of DeletedProduct
 
-    and PlanTransformUsageDU =
-        | PlanTransformUsageDU'TransformUsage of TransformUsage
-
     ///
     and PlanTier (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
 
@@ -7065,7 +6828,7 @@ module StripeModel =
     ///For example, you might have a single "gold" product that has prices for $10/month, $100/year, and €9 once.
     ///
     ///Related guides: [Set up a subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription), [create an invoice](https://stripe.com/docs/billing/invoices/create), and more about [products and prices](https://stripe.com/docs/billing/prices-guide).
-    and Price (active: bool, billingScheme: PriceBillingScheme, created: int, currency: string, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, object: PriceObject, product: PriceProductDU, recurring: PriceRecurringDU option, tiersMode: PriceTiersMode option, transformQuantity: PriceTransformQuantityDU option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
+    and Price (active: bool, billingScheme: PriceBillingScheme, created: int, currency: string, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, object: PriceObject, product: PriceProductDU, recurring: Recurring option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
 
         member _.Active = active
         member _.BillingScheme = billingScheme
@@ -7106,12 +6869,6 @@ module StripeModel =
         | PriceProductDU'Product of Product
         | PriceProductDU'DeletedProduct of DeletedProduct
 
-    and PriceRecurringDU =
-        | PriceRecurringDU'Recurring of Recurring
-
-    and PriceTransformQuantityDU =
-        | PriceTransformQuantityDU'TransformQuantity of TransformQuantity
-
     ///
     and PriceTier (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
 
@@ -7126,7 +6883,7 @@ module StripeModel =
     ///They can be used in conjunction with [Prices](https://stripe.com/docs/api#prices) to configure pricing in Checkout and Subscriptions.
     ///
     ///Related guides: [Set up a subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription) or accept [one-time payments with Checkout](https://stripe.com/docs/payments/checkout/client#create-products) and more about [Products and Prices](https://stripe.com/docs/billing/prices-guide)
-    and Product (active: bool, attributes: string list option, caption: string option, created: int, description: string option, id: string, images: string list, livemode: bool, metadata: Map<string, string>, name: string, object: ProductObject, packageDimensions: ProductPackageDimensionsDU option, shippable: bool option, statementDescriptor: string option, ``type``: ProductType, unitLabel: string option, updated: int, url: string option, ?deactivateOn: string list) =
+    and Product (active: bool, attributes: string list option, caption: string option, created: int, description: string option, id: string, images: string list, livemode: bool, metadata: Map<string, string>, name: string, object: ProductObject, packageDimensions: PackageDimensions option, shippable: bool option, statementDescriptor: string option, ``type``: ProductType, unitLabel: string option, updated: int, url: string option, ?deactivateOn: string list) =
 
         member _.Active = active
         member _.Attributes = attributes
@@ -7154,9 +6911,6 @@ module StripeModel =
     and ProductType =
         | ProductType'Good
         | ProductType'Service
-
-    and ProductPackageDimensionsDU =
-        | ProductPackageDimensionsDU'PackageDimensions of PackageDimensions
 
     ///A Promotion Code represents a customer-redeemable code for a coupon. It can be used to
     ///create multiple codes for a single coupon.
@@ -7283,7 +7037,7 @@ module StripeModel =
     ///[Account objects](https://stripe.com/docs/api#account). Stripe accounts that don't already use
     ///recipients can no longer begin doing so. Please use `Account` objects
     ///instead.**
-    and Recipient (activeAccount: RecipientActiveAccountDU option, cards: Map<string, string> option, created: int, defaultCard: RecipientDefaultCardDU option, description: string option, email: string option, id: string, livemode: bool, metadata: Map<string, string>, migratedTo: RecipientMigratedToDU option, name: string option, object: RecipientObject, ``type``: string, verified: bool, ?rolledBackFrom: RecipientRolledBackFromDU) =
+    and Recipient (activeAccount: BankAccount option, cards: Map<string, string> option, created: int, defaultCard: RecipientDefaultCardDU option, description: string option, email: string option, id: string, livemode: bool, metadata: Map<string, string>, migratedTo: RecipientMigratedToDU option, name: string option, object: RecipientObject, ``type``: string, verified: bool, ?rolledBackFrom: RecipientRolledBackFromDU) =
 
         member _.ActiveAccount = activeAccount
         member _.Cards = cards
@@ -7303,9 +7057,6 @@ module StripeModel =
 
     and RecipientObject =
         | RecipientObject'Recipient
-
-    and RecipientActiveAccountDU =
-        | RecipientActiveAccountDU'BankAccount of BankAccount
 
     and RecipientDefaultCardDU =
         | RecipientDefaultCardDU'String of string
@@ -7405,7 +7156,7 @@ module StripeModel =
     ///Note that reports can only be run based on your live-mode data (not test-mode
     ///data), and thus related requests must be made with a
     ///[live-mode API key](https://stripe.com/docs/keys#test-live-modes).
-    and ReportingReportRun (created: int, error: string option, id: string, livemode: bool, object: ReportingReportRunObject, parameters: FinancialReportingFinanceReportRunRunParameters, reportType: string, result: ReportingReportRunResultDU option, status: string, succeededAt: int option) =
+    and ReportingReportRun (created: int, error: string option, id: string, livemode: bool, object: ReportingReportRunObject, parameters: FinancialReportingFinanceReportRunRunParameters, reportType: string, result: File option, status: string, succeededAt: int option) =
 
         member _.Created = created
         member _.Error = error
@@ -7420,9 +7171,6 @@ module StripeModel =
 
     and ReportingReportRunObject =
         | ReportingReportRunObject'ReportingReportRun
-
-    and ReportingReportRunResultDU =
-        | ReportingReportRunResultDU'File of File
 
     ///The Report Type resource corresponds to a particular type of report, such as
     ///the "Activity summary" or "Itemized payouts" reports. These objects are
@@ -7463,7 +7211,7 @@ module StripeModel =
     ///
     ///Learn more about [Radar](/radar) and reviewing payments
     ///[here](https://stripe.com/docs/radar/reviews).
-    and Review (billingZip: string option, charge: ReviewChargeDU option, closedReason: ReviewClosedReason option, created: int, id: string, ipAddress: string option, ipAddressLocation: ReviewIpAddressLocationDU option, livemode: bool, object: ReviewObject, ``open``: bool, openedReason: ReviewOpenedReason, reason: string, session: ReviewSessionDU option, ?paymentIntent: ReviewPaymentIntentDU) =
+    and Review (billingZip: string option, charge: ReviewChargeDU option, closedReason: ReviewClosedReason option, created: int, id: string, ipAddress: string option, ipAddressLocation: RadarReviewResourceLocation option, livemode: bool, object: ReviewObject, ``open``: bool, openedReason: ReviewOpenedReason, reason: string, session: RadarReviewResourceSession option, ?paymentIntent: ReviewPaymentIntentDU) =
 
         member _.BillingZip = billingZip
         member _.Charge = charge
@@ -7497,15 +7245,9 @@ module StripeModel =
         | ReviewChargeDU'String of string
         | ReviewChargeDU'Charge of Charge
 
-    and ReviewIpAddressLocationDU =
-        | ReviewIpAddressLocationDU'RadarReviewResourceLocation of RadarReviewResourceLocation
-
     and ReviewPaymentIntentDU =
         | ReviewPaymentIntentDU'String of string
         | ReviewPaymentIntentDU'PaymentIntent of PaymentIntent
-
-    and ReviewSessionDU =
-        | ReviewSessionDU'RadarReviewResourceSession of RadarReviewResourceSession
 
     ///
     and Rule (action: string, id: string, predicate: string) =
@@ -7518,7 +7260,7 @@ module StripeModel =
     ///receive a `sigma.scheduled_query_run.created` webhook each time the query
     ///runs. The webhook contains a `ScheduledQueryRun` object, which you can use to
     ///retrieve the query results.
-    and ScheduledQueryRun (created: int, dataLoadTime: int, file: ScheduledQueryRunFileDU option, id: string, livemode: bool, object: ScheduledQueryRunObject, resultAvailableUntil: int, sql: string, status: string, title: string, ?error: SigmaScheduledQueryRunError) =
+    and ScheduledQueryRun (created: int, dataLoadTime: int, file: File option, id: string, livemode: bool, object: ScheduledQueryRunObject, resultAvailableUntil: int, sql: string, status: string, title: string, ?error: SigmaScheduledQueryRunError) =
 
         member _.Created = created
         member _.DataLoadTime = dataLoadTime
@@ -7534,9 +7276,6 @@ module StripeModel =
 
     and ScheduledQueryRunObject =
         | ScheduledQueryRunObject'ScheduledQueryRun
-
-    and ScheduledQueryRunFileDU =
-        | ScheduledQueryRunFileDU'File of File
 
     ///
     and SepaDebitGeneratedFrom (charge: SepaDebitGeneratedFromChargeDU option, setupAttempt: SepaDebitGeneratedFromSetupAttemptDU option) =
@@ -7556,7 +7295,7 @@ module StripeModel =
     ///whether that confirmation was successful or unsuccessful. You can use
     ///SetupAttempts to inspect details of a specific attempt at setting up a
     ///payment method using a SetupIntent.
-    and SetupAttempt (application: SetupAttemptApplicationDU option, created: int, customer: SetupAttemptCustomerDU option, id: string, livemode: bool, object: SetupAttemptObject, onBehalfOf: SetupAttemptOnBehalfOfDU option, paymentMethod: SetupAttemptPaymentMethodDU, paymentMethodDetails: SetupAttemptPaymentMethodDetails, setupError: SetupAttemptSetupErrorDU option, setupIntent: SetupAttemptSetupIntentDU, status: string, usage: string) =
+    and SetupAttempt (application: SetupAttemptApplicationDU option, created: int, customer: SetupAttemptCustomerDU option, id: string, livemode: bool, object: SetupAttemptObject, onBehalfOf: SetupAttemptOnBehalfOfDU option, paymentMethod: SetupAttemptPaymentMethodDU, paymentMethodDetails: SetupAttemptPaymentMethodDetails, setupError: ApiErrors option, setupIntent: SetupAttemptSetupIntentDU, status: string, usage: string) =
 
         member _.Application = application
         member _.Created = created
@@ -7591,9 +7330,6 @@ module StripeModel =
     and SetupAttemptPaymentMethodDU =
         | SetupAttemptPaymentMethodDU'String of string
         | SetupAttemptPaymentMethodDU'PaymentMethod of PaymentMethod
-
-    and SetupAttemptSetupErrorDU =
-        | SetupAttemptSetupErrorDU'ApiErrors of ApiErrors
 
     and SetupAttemptSetupIntentDU =
         | SetupAttemptSetupIntentDU'String of string
@@ -7635,12 +7371,9 @@ module StripeModel =
         | SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and SetupAttemptPaymentMethodDetailsCard (threeDSecure: SetupAttemptPaymentMethodDetailsCardThreeDSecureDU option) =
+    and SetupAttemptPaymentMethodDetailsCard (threeDSecure: ThreeDSecureDetails option) =
 
         member _.ThreeDSecure = threeDSecure
-
-    and SetupAttemptPaymentMethodDetailsCardThreeDSecureDU =
-        | SetupAttemptPaymentMethodDetailsCardThreeDSecureDU'ThreeDSecureDetails of ThreeDSecureDetails
 
     ///
     and SetupAttemptPaymentMethodDetailsIdeal (bank: SetupAttemptPaymentMethodDetailsIdealBank option, bic: SetupAttemptPaymentMethodDetailsIdealBic option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU option, ibanLast4: string option, verifiedName: string option) =
@@ -7736,7 +7469,7 @@ module StripeModel =
     ///even as regulations change over time.
     ///
     ///Related guide: [Setup Intents API](https://stripe.com/docs/payments/setup-intents).
-    and SetupIntent (application: SetupIntentApplicationDU option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: int, customer: SetupIntentCustomerDU option, description: string option, id: string, lastSetupError: SetupIntentLastSetupErrorDU option, latestAttempt: SetupIntentLatestAttemptDU option, livemode: bool, mandate: SetupIntentMandateDU option, metadata: Map<string, string> option, nextAction: SetupIntentNextActionDU option, object: SetupIntentObject, onBehalfOf: SetupIntentOnBehalfOfDU option, paymentMethod: SetupIntentPaymentMethodDU option, paymentMethodOptions: SetupIntentPaymentMethodOptionsDU option, paymentMethodTypes: string list, singleUseMandate: SetupIntentSingleUseMandateDU option, status: SetupIntentStatus, usage: string) =
+    and SetupIntent (application: SetupIntentApplicationDU option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: int, customer: SetupIntentCustomerDU option, description: string option, id: string, lastSetupError: ApiErrors option, latestAttempt: SetupIntentLatestAttemptDU option, livemode: bool, mandate: SetupIntentMandateDU option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, object: SetupIntentObject, onBehalfOf: SetupIntentOnBehalfOfDU option, paymentMethod: SetupIntentPaymentMethodDU option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: SetupIntentSingleUseMandateDU option, status: SetupIntentStatus, usage: string) =
 
         member _.Application = application
         member _.CancellationReason = cancellationReason
@@ -7785,9 +7518,6 @@ module StripeModel =
         | SetupIntentCustomerDU'Customer of Customer
         | SetupIntentCustomerDU'DeletedCustomer of DeletedCustomer
 
-    and SetupIntentLastSetupErrorDU =
-        | SetupIntentLastSetupErrorDU'ApiErrors of ApiErrors
-
     and SetupIntentLatestAttemptDU =
         | SetupIntentLatestAttemptDU'String of string
         | SetupIntentLatestAttemptDU'SetupAttempt of SetupAttempt
@@ -7796,9 +7526,6 @@ module StripeModel =
         | SetupIntentMandateDU'String of string
         | SetupIntentMandateDU'Mandate of Mandate
 
-    and SetupIntentNextActionDU =
-        | SetupIntentNextActionDU'SetupIntentNextAction of SetupIntentNextAction
-
     and SetupIntentOnBehalfOfDU =
         | SetupIntentOnBehalfOfDU'String of string
         | SetupIntentOnBehalfOfDU'Account of Account
@@ -7806,9 +7533,6 @@ module StripeModel =
     and SetupIntentPaymentMethodDU =
         | SetupIntentPaymentMethodDU'String of string
         | SetupIntentPaymentMethodDU'PaymentMethod of PaymentMethod
-
-    and SetupIntentPaymentMethodOptionsDU =
-        | SetupIntentPaymentMethodOptionsDU'SetupIntentPaymentMethodOptions of SetupIntentPaymentMethodOptions
 
     and SetupIntentSingleUseMandateDU =
         | SetupIntentSingleUseMandateDU'String of string
@@ -7863,16 +7587,13 @@ module StripeModel =
         member _.TrackingNumber = trackingNumber |> Option.flatten
 
     ///
-    and ShippingMethod (amount: int, currency: string, deliveryEstimate: ShippingMethodDeliveryEstimateDU option, description: string, id: string) =
+    and ShippingMethod (amount: int, currency: string, deliveryEstimate: DeliveryEstimate option, description: string, id: string) =
 
         member _.Amount = amount
         member _.Currency = currency
         member _.DeliveryEstimate = deliveryEstimate
         member _.Description = description
         member _.Id = id
-
-    and ShippingMethodDeliveryEstimateDU =
-        | ShippingMethodDeliveryEstimateDU'DeliveryEstimate of DeliveryEstimate
 
     ///
     and SigmaScheduledQueryRunError (message: string) =
@@ -7887,7 +7608,7 @@ module StripeModel =
     ///Can also be used to manage inventory.
     ///
     ///Related guide: [Tax, Shipping, and Inventory](https://stripe.com/docs/orders).
-    and Sku (active: bool, attributes: Map<string, string>, created: int, currency: string, id: string, image: string option, inventory: Inventory, livemode: bool, metadata: Map<string, string>, object: SkuObject, packageDimensions: SkuPackageDimensionsDU option, price: int, product: SkuProductDU, updated: int) =
+    and Sku (active: bool, attributes: Map<string, string>, created: int, currency: string, id: string, image: string option, inventory: Inventory, livemode: bool, metadata: Map<string, string>, object: SkuObject, packageDimensions: PackageDimensions option, price: int, product: SkuProductDU, updated: int) =
 
         member _.Active = active
         member _.Attributes = attributes
@@ -7907,9 +7628,6 @@ module StripeModel =
     and SkuObject =
         | SkuObject'Sku
 
-    and SkuPackageDimensionsDU =
-        | SkuPackageDimensionsDU'PackageDimensions of PackageDimensions
-
     and SkuProductDU =
         | SkuProductDU'String of string
         | SkuProductDU'Product of Product
@@ -7920,7 +7638,7 @@ module StripeModel =
     ///attached to customers.
     ///
     ///Related guides: [Sources API](https://stripe.com/docs/sources) and [Sources & Customers](https://stripe.com/docs/sources/customers).
-    and Source (amount: int option, clientSecret: string, created: int, currency: string option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, object: SourceObject, owner: SourceOwnerDU option, statementDescriptor: string option, status: string, ``type``: SourceType, usage: string option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
+    and Source (amount: int option, clientSecret: string, created: int, currency: string option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, object: SourceObject, owner: SourceOwner option, statementDescriptor: string option, status: string, ``type``: SourceType, usage: string option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
 
         member _.AchCreditTransfer = achCreditTransfer
         member _.AchDebit = achDebit
@@ -7984,9 +7702,6 @@ module StripeModel =
         | SourceType'Sofort
         | SourceType'ThreeDSecure
         | SourceType'Wechat
-
-    and SourceOwnerDU =
-        | SourceOwnerDU'SourceOwner of SourceOwner
 
     ///
     and SourceCodeVerificationFlow (attemptsRemaining: int, status: string) =
@@ -8052,7 +7767,7 @@ module StripeModel =
         member _.Type = ``type``
 
     ///
-    and SourceOwner (address: SourceOwnerAddressDU option, email: string option, name: string option, phone: string option, verifiedAddress: SourceOwnerVerifiedAddressDU option, verifiedEmail: string option, verifiedName: string option, verifiedPhone: string option) =
+    and SourceOwner (address: Address option, email: string option, name: string option, phone: string option, verifiedAddress: Address option, verifiedEmail: string option, verifiedName: string option, verifiedPhone: string option) =
 
         member _.Address = address
         member _.Email = email
@@ -8062,12 +7777,6 @@ module StripeModel =
         member _.VerifiedEmail = verifiedEmail
         member _.VerifiedName = verifiedName
         member _.VerifiedPhone = verifiedPhone
-
-    and SourceOwnerAddressDU =
-        | SourceOwnerAddressDU'Address of Address
-
-    and SourceOwnerVerifiedAddressDU =
-        | SourceOwnerVerifiedAddressDU'Address of Address
 
     ///
     and SourceReceiverFlow (address: string option, amountCharged: int, amountReceived: int, amountReturned: int, refundAttributesMethod: string, refundAttributesStatus: string) =
@@ -8412,7 +8121,7 @@ module StripeModel =
     ///Subscriptions allow you to charge a customer on a recurring basis.
     ///
     ///Related guide: [Creating Subscriptions](https://stripe.com/docs/billing/subscriptions/creating).
-    and Subscription (applicationFeePercent: decimal option, billingCycleAnchor: int, billingThresholds: SubscriptionBillingThresholdsDU option, cancelAt: int option, cancelAtPeriodEnd: bool, canceledAt: int option, collectionMethod: SubscriptionCollectionMethod option, created: int, currentPeriodEnd: int, currentPeriodStart: int, customer: SubscriptionCustomerDU, daysUntilDue: int option, defaultPaymentMethod: SubscriptionDefaultPaymentMethodDU option, defaultSource: SubscriptionDefaultSourceDU option, discount: SubscriptionDiscountDU option, endedAt: int option, id: string, items: Map<string, string>, latestInvoice: SubscriptionLatestInvoiceDU option, livemode: bool, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: int option, object: SubscriptionObject, pauseCollection: SubscriptionPauseCollectionDU option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemIntervalDU option, pendingSetupIntent: SubscriptionPendingSetupIntentDU option, pendingUpdate: SubscriptionPendingUpdateDU option, schedule: SubscriptionScheduleDU option, startDate: int, status: SubscriptionStatus, transferData: SubscriptionTransferDataDU option, trialEnd: int option, trialStart: int option, ?defaultTaxRates: TaxRate list option) =
+    and Subscription (applicationFeePercent: decimal option, billingCycleAnchor: int, billingThresholds: SubscriptionBillingThresholds option, cancelAt: int option, cancelAtPeriodEnd: bool, canceledAt: int option, collectionMethod: SubscriptionCollectionMethod option, created: int, currentPeriodEnd: int, currentPeriodStart: int, customer: SubscriptionCustomerDU, daysUntilDue: int option, defaultPaymentMethod: SubscriptionDefaultPaymentMethodDU option, defaultSource: SubscriptionDefaultSourceDU option, discount: Discount option, endedAt: int option, id: string, items: Map<string, string>, latestInvoice: SubscriptionLatestInvoiceDU option, livemode: bool, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: int option, object: SubscriptionObject, pauseCollection: SubscriptionsResourcePauseCollection option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option, pendingSetupIntent: SubscriptionPendingSetupIntentDU option, pendingUpdate: SubscriptionsResourcePendingUpdate option, schedule: SubscriptionScheduleDU option, startDate: int, status: SubscriptionStatus, transferData: SubscriptionTransferData option, trialEnd: int option, trialStart: int option, ?defaultTaxRates: TaxRate list option) =
 
         member _.ApplicationFeePercent = applicationFeePercent
         member _.BillingCycleAnchor = billingCycleAnchor
@@ -8465,9 +8174,6 @@ module StripeModel =
         | SubscriptionStatus'Trialing
         | SubscriptionStatus'Unpaid
 
-    and SubscriptionBillingThresholdsDU =
-        | SubscriptionBillingThresholdsDU'SubscriptionBillingThresholds of SubscriptionBillingThresholds
-
     and SubscriptionCustomerDU =
         | SubscriptionCustomerDU'String of string
         | SubscriptionCustomerDU'Customer of Customer
@@ -8481,32 +8187,17 @@ module StripeModel =
         | SubscriptionDefaultSourceDU'String of string
         | SubscriptionDefaultSourceDU'PaymentSource of PaymentSource
 
-    and SubscriptionDiscountDU =
-        | SubscriptionDiscountDU'Discount of Discount
-
     and SubscriptionLatestInvoiceDU =
         | SubscriptionLatestInvoiceDU'String of string
         | SubscriptionLatestInvoiceDU'Invoice of Invoice
-
-    and SubscriptionPauseCollectionDU =
-        | SubscriptionPauseCollectionDU'SubscriptionsResourcePauseCollection of SubscriptionsResourcePauseCollection
-
-    and SubscriptionPendingInvoiceItemIntervalDU =
-        | SubscriptionPendingInvoiceItemIntervalDU'SubscriptionPendingInvoiceItemInterval of SubscriptionPendingInvoiceItemInterval
 
     and SubscriptionPendingSetupIntentDU =
         | SubscriptionPendingSetupIntentDU'String of string
         | SubscriptionPendingSetupIntentDU'SetupIntent of SetupIntent
 
-    and SubscriptionPendingUpdateDU =
-        | SubscriptionPendingUpdateDU'SubscriptionsResourcePendingUpdate of SubscriptionsResourcePendingUpdate
-
     and SubscriptionScheduleDU =
         | SubscriptionScheduleDU'String of string
         | SubscriptionScheduleDU'SubscriptionSchedule of SubscriptionSchedule
-
-    and SubscriptionTransferDataDU =
-        | SubscriptionTransferDataDU'SubscriptionTransferData of SubscriptionTransferData
 
     ///
     and SubscriptionBillingThresholds (amountGte: int option, resetBillingCycleAnchor: bool option) =
@@ -8516,7 +8207,7 @@ module StripeModel =
 
     ///Subscription items allow you to create customer subscriptions with more than
     ///one plan, making it easy to represent complex billing relationships.
-    and SubscriptionItem (billingThresholds: SubscriptionItemBillingThresholdsDU option, created: int, id: string, metadata: Map<string, string>, object: SubscriptionItemObject, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?quantity: int) =
+    and SubscriptionItem (billingThresholds: SubscriptionItemBillingThresholds option, created: int, id: string, metadata: Map<string, string>, object: SubscriptionItemObject, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?quantity: int) =
 
         member _.BillingThresholds = billingThresholds
         member _.Created = created
@@ -8531,9 +8222,6 @@ module StripeModel =
 
     and SubscriptionItemObject =
         | SubscriptionItemObject'SubscriptionItem
-
-    and SubscriptionItemBillingThresholdsDU =
-        | SubscriptionItemBillingThresholdsDU'SubscriptionItemBillingThresholds of SubscriptionItemBillingThresholds
 
     ///
     and SubscriptionItemBillingThresholds (usageGte: int option) =
@@ -8555,7 +8243,7 @@ module StripeModel =
     ///A subscription schedule allows you to create and manage the lifecycle of a subscription by predefining expected changes.
     ///
     ///Related guide: [Subscription Schedules](https://stripe.com/docs/billing/subscriptions/subscription-schedules).
-    and SubscriptionSchedule (canceledAt: int option, completedAt: int option, created: int, currentPhase: SubscriptionScheduleCurrentPhaseDU option, customer: SubscriptionScheduleCustomerDU, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, object: SubscriptionScheduleObject, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: int option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: SubscriptionScheduleSubscriptionDU option) =
+    and SubscriptionSchedule (canceledAt: int option, completedAt: int option, created: int, currentPhase: SubscriptionScheduleCurrentPhase option, customer: SubscriptionScheduleCustomerDU, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, object: SubscriptionScheduleObject, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: int option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: SubscriptionScheduleSubscriptionDU option) =
 
         member _.CanceledAt = canceledAt
         member _.CompletedAt = completedAt
@@ -8590,9 +8278,6 @@ module StripeModel =
         | SubscriptionScheduleStatus'NotStarted
         | SubscriptionScheduleStatus'Released
 
-    and SubscriptionScheduleCurrentPhaseDU =
-        | SubscriptionScheduleCurrentPhaseDU'SubscriptionScheduleCurrentPhase of SubscriptionScheduleCurrentPhase
-
     and SubscriptionScheduleCustomerDU =
         | SubscriptionScheduleCustomerDU'String of string
         | SubscriptionScheduleCustomerDU'Customer of Customer
@@ -8615,16 +8300,13 @@ module StripeModel =
         | SubscriptionScheduleAddInvoiceItemPriceDU'DeletedPrice of DeletedPrice
 
     ///A phase item describes the price and quantity of a phase.
-    and SubscriptionScheduleConfigurationItem (billingThresholds: SubscriptionScheduleConfigurationItemBillingThresholdsDU option, plan: SubscriptionScheduleConfigurationItemPlanDU, price: SubscriptionScheduleConfigurationItemPriceDU, ?quantity: int, ?taxRates: TaxRate list option) =
+    and SubscriptionScheduleConfigurationItem (billingThresholds: SubscriptionItemBillingThresholds option, plan: SubscriptionScheduleConfigurationItemPlanDU, price: SubscriptionScheduleConfigurationItemPriceDU, ?quantity: int, ?taxRates: TaxRate list option) =
 
         member _.BillingThresholds = billingThresholds
         member _.Plan = plan
         member _.Price = price
         member _.Quantity = quantity
         member _.TaxRates = taxRates |> Option.flatten
-
-    and SubscriptionScheduleConfigurationItemBillingThresholdsDU =
-        | SubscriptionScheduleConfigurationItemBillingThresholdsDU'SubscriptionItemBillingThresholds of SubscriptionItemBillingThresholds
 
     and SubscriptionScheduleConfigurationItemPlanDU =
         | SubscriptionScheduleConfigurationItemPlanDU'String of string
@@ -8643,7 +8325,7 @@ module StripeModel =
         member _.StartDate = startDate
 
     ///A phase describes the plans, coupon, and trialing status of a subscription for a predefined time period.
-    and SubscriptionSchedulePhaseConfiguration (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionSchedulePhaseConfigurationBillingThresholdsDU option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, coupon: SubscriptionSchedulePhaseConfigurationCouponDU option, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU option, endDate: int, invoiceSettings: SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU option, items: SubscriptionScheduleConfigurationItem list, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: int, transferData: SubscriptionSchedulePhaseConfigurationTransferDataDU option, trialEnd: int option, ?defaultTaxRates: TaxRate list option) =
+    and SubscriptionSchedulePhaseConfiguration (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, coupon: SubscriptionSchedulePhaseConfigurationCouponDU option, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU option, endDate: int, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, items: SubscriptionScheduleConfigurationItem list, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: int, transferData: SubscriptionTransferData option, trialEnd: int option, ?defaultTaxRates: TaxRate list option) =
 
         member _.AddInvoiceItems = addInvoiceItems
         member _.ApplicationFeePercent = applicationFeePercent
@@ -8674,9 +8356,6 @@ module StripeModel =
         | SubscriptionSchedulePhaseConfigurationProrationBehavior'CreateProrations
         | SubscriptionSchedulePhaseConfigurationProrationBehavior'None
 
-    and SubscriptionSchedulePhaseConfigurationBillingThresholdsDU =
-        | SubscriptionSchedulePhaseConfigurationBillingThresholdsDU'SubscriptionBillingThresholds of SubscriptionBillingThresholds
-
     and SubscriptionSchedulePhaseConfigurationCouponDU =
         | SubscriptionSchedulePhaseConfigurationCouponDU'String of string
         | SubscriptionSchedulePhaseConfigurationCouponDU'Coupon of Coupon
@@ -8686,14 +8365,8 @@ module StripeModel =
         | SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU'String of string
         | SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
 
-    and SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU =
-        | SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU'InvoiceSettingSubscriptionScheduleSetting of InvoiceSettingSubscriptionScheduleSetting
-
-    and SubscriptionSchedulePhaseConfigurationTransferDataDU =
-        | SubscriptionSchedulePhaseConfigurationTransferDataDU'SubscriptionTransferData of SubscriptionTransferData
-
     ///
-    and SubscriptionSchedulesResourceDefaultSettings (billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU option, invoiceSettings: SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU option, transferData: SubscriptionSchedulesResourceDefaultSettingsTransferDataDU option) =
+    and SubscriptionSchedulesResourceDefaultSettings (billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, transferData: SubscriptionTransferData option) =
 
         member _.BillingCycleAnchor = billingCycleAnchor
         member _.BillingThresholds = billingThresholds
@@ -8710,18 +8383,9 @@ module StripeModel =
         | SubscriptionSchedulesResourceDefaultSettingsCollectionMethod'ChargeAutomatically
         | SubscriptionSchedulesResourceDefaultSettingsCollectionMethod'SendInvoice
 
-    and SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU =
-        | SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU'SubscriptionBillingThresholds of SubscriptionBillingThresholds
-
     and SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU =
         | SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU'String of string
         | SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
-
-    and SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU =
-        | SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU'InvoiceSettingSubscriptionScheduleSetting of InvoiceSettingSubscriptionScheduleSetting
-
-    and SubscriptionSchedulesResourceDefaultSettingsTransferDataDU =
-        | SubscriptionSchedulesResourceDefaultSettingsTransferDataDU'SubscriptionTransferData of SubscriptionTransferData
 
     ///
     and SubscriptionTransferData (amountPercent: decimal option, destination: SubscriptionTransferDataDestinationDU) =
@@ -8771,7 +8435,7 @@ module StripeModel =
     ///A customer's tax IDs are displayed on invoices and credit notes issued for the customer.
     ///
     ///Related guide: [Customer Tax Identification Numbers](https://stripe.com/docs/billing/taxes/tax-ids).
-    and TaxId (country: string option, created: int, customer: TaxIdCustomerDU option, id: string, livemode: bool, object: TaxIdObject, ``type``: TaxIdType, value: string, verification: TaxIdVerificationDU option) =
+    and TaxId (country: string option, created: int, customer: TaxIdCustomerDU option, id: string, livemode: bool, object: TaxIdObject, ``type``: TaxIdType, value: string, verification: TaxIdVerification option) =
 
         member _.Country = country
         member _.Created = created
@@ -8824,9 +8488,6 @@ module StripeModel =
     and TaxIdCustomerDU =
         | TaxIdCustomerDU'String of string
         | TaxIdCustomerDU'Customer of Customer
-
-    and TaxIdVerificationDU =
-        | TaxIdVerificationDU'TaxIdVerification of TaxIdVerification
 
     ///
     and TaxIdVerification (status: TaxIdVerificationStatus, verifiedAddress: string option, verifiedName: string option) =

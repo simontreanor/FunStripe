@@ -7,12 +7,15 @@ module AsyncResultCE =
 
     type AsyncResultBuilder() = 
 
-        member __.Return(x) : AsyncResult<_,_> =
+        member _.Return(x) : AsyncResult<_, _> =
             x
             |> Result.Ok
             |> async.Return
 
-        member __.Bind(x: AsyncResult<_, _>, f: 'a -> AsyncResult<'b,'c>) : AsyncResult<_,_> =
+        member _.ReturnFrom(x: AsyncResult<_, _>) =
+            x
+
+        member _.Bind(x: AsyncResult<_, _>, f: 'a -> AsyncResult<'b, 'c>) : AsyncResult<_, _> =
             async {
                 let! xResult = x
                 match xResult with
