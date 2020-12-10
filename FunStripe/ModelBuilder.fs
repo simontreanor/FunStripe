@@ -86,7 +86,7 @@ module ModelBuilder =
     let mapType (s: string) =
         match s with
         | "boolean" -> "bool"
-        | "integer" -> "int"
+        | "integer" -> "int64"
         | "number" -> "decimal"
         | _ -> s
 

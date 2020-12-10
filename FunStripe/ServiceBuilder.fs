@@ -149,20 +149,30 @@ module ServiceBuilder =
                 |> Array.filter (fun (verb, _) -> verb = operation)
                 |> Array.iter (fun (verb, v) ->
 
+                    //get request method
                     let description = v.GetProperty("description").AsString()
                     let parameters = v.TryGetProperty("parameters") |> function | Some jv -> jv.AsArray() | None -> [||]
                     let parametersString = parameters |> formatParametersString
-
-                    let form = v.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function | Some jv -> jv | None -> JsonValue.Null
-                    let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> JsonValue.Null
-                    let formParameters = schema.TryGetProperty("properties") |> function | Some jv -> jv.Properties | None -> [||]
-                    let requiredFormParameters = schema.TryGetProperty("required") |> function | Some jv -> jv.Properties | None -> [||]
-
                     sb |> write $"\t\t///{description |> commentify}"
-
                     sb |> write $"\t\tmember this.{method' |> pascalCasify} ({parametersString}) ="
                     sb |> write $"\t\t\t$\"{path |> formatPathParams}\""
 
+                    //get form values
+                    let form = v.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function | Some jv -> jv | None -> JsonValue.Null
+                    let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> JsonValue.Null
+                    let formParameters = schema.TryGetProperty("properties") |> function | Some jv -> jv.Properties | None -> [||]
+    
+                    // if formParameters.Any() then
+                    //     //let requiredFormParameters = schema.TryGetProperty("required") |> function | Some jv -> jv.Properties | None -> [||]
+                    //     let formParams = [
+                    //         let rec getFormParams fpp =
+                    //             for fp in fpp do
+                    //                 yield! getFormParams fp
+                    //         getFormParams formParameters
+                    //     ]
+                    //     ()
+
+                    //get response type
                     let responseSchema = v.GetProperty("responses").GetProperty("200").GetProperty("content").GetProperty("application/json").GetProperty("schema")
                     let responseType =
                         match responseSchema.TryGetProperty("$ref") with
@@ -180,15 +190,16 @@ module ServiceBuilder =
                                     failwith $"Unhandled response type: {name'} %A{responseSchema}"
                         |> parseRef |> pascalCasify
 
+                    //set API method
                     match verb with
                     | "get" when formParameters.Any() ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {responseType}>\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {responseType}> ``params``\n"
                     | "get" ->
                         sb |> write $"\t\t\t|> this.RestApiClient.GetAsync<{responseType}>\n"
                     | "post" when formParameters.Any() |> not ->
                         sb |> write $"\t\t\t|> this.RestApiClient.PostWithoutAsync<{responseType}>\n"
                     | "post" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {responseType}>\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {responseType}> ``params``\n"
                     | "delete" ->
                         sb |> write $"\t\t\t|> this.RestApiClient.DeleteAsync<{responseType}>\n"
                     | _ ->

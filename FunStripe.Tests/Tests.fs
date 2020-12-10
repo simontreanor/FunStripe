@@ -54,7 +54,6 @@ module Tests =
                 id = "IgnoreThisId",
                 livemode = false,
                 metadata = None,
-                object = PaymentMethodObject'PaymentMethod, //todo: replace object in constructor with literal assignment
                 ``type`` = PaymentMethodType'Card,
                 card = card
             )
