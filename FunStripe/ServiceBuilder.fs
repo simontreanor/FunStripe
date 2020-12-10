@@ -23,8 +23,10 @@ module ServiceBuilder =
     let camelCasify (s: string) =
         Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-    let escapeTypeName name =
+    let escapeReservedName name =
         match name with
+        | "end"
+        | "open"
         | "type" ->
             $"``{name}``"
         | _ ->
@@ -68,12 +70,12 @@ module ServiceBuilder =
             |> Array.sortBy (fun (n, req, t) -> if req then 0 else 1)
             |> Array.map (fun (n, req, t) ->
                 let opt = if req then "" else "?"
-                $"{opt}{n |> escapeTypeName |> camelCasify}: {t |> mapType}"
+                $"{opt}{n |> escapeReservedName |> camelCasify}: {t |> mapType}"
             )
         ) |> String.Join
 
     let formatPathParams (path: string) =
-        Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{{m.Groups.[1].Value |> escapeTypeName |> camelCasify}}}")
+        Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{{m.Groups.[1].Value |> escapeReservedName |> camelCasify}}}")
 
     let singularise (s: string) =
         Regex.Replace(s, "s$", "")

@@ -10,799 +10,490 @@ module StripeModel =
     ///
     ///Some properties, marked below, are available only to platforms that want to
     ///[create and manage Express or Custom accounts](https://stripe.com/docs/connect/accounts).
-    type Account = {
+    type Account (id: string, object: AccountObject, ?businessProfile: AccountBusinessProfileDU option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?country: string, ?created: int, ?defaultCurrency: string, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: Map<string, string>, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettingsDU option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
 
-        ///Business information about the account.
-        BusinessProfile: AccountBusinessProfileDU option
-
-        ///The business type.
-        BusinessType: AccountBusinessType option
-
-        Capabilities: AccountCapabilities option
-
-        ///Whether the account can create live charges.
-        ChargesEnabled: bool option
-
-        Company: LegalEntityCompany option
-
-        ///The account's country.
-        Country: string option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int option
-
-        ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
-        DefaultCurrency: string option
-
-        ///Whether account details have been submitted. Standard accounts cannot receive payouts before this is true.
-        DetailsSubmitted: bool option
-
-        ///The primary user's email address.
-        Email: string option
-
-        ///External accounts (bank accounts and debit cards) currently attached to this account
-        ExternalAccounts: Map<string, string> option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        Individual: Person option
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: AccountObject
-
-        ///Whether Stripe can send payouts to this account.
-        PayoutsEnabled: bool option
-
-        Requirements: AccountRequirements option
-
-        ///Options for customizing how the account functions within Stripe.
-        Settings: AccountSettingsDU option
-
-        TosAcceptance: AccountTosAcceptance option
-
-        ///The Stripe account type. Can be `standard`, `express`, or `custom`.
-        Type: AccountType option
-
-    }
+        member _.BusinessProfile = businessProfile |> Option.flatten
+        member _.BusinessType = businessType |> Option.flatten
+        member _.Capabilities = capabilities
+        member _.ChargesEnabled = chargesEnabled
+        member _.Company = company
+        member _.Country = country
+        member _.Created = created
+        member _.DefaultCurrency = defaultCurrency
+        member _.DetailsSubmitted = detailsSubmitted
+        member _.Email = email |> Option.flatten
+        member _.ExternalAccounts = externalAccounts
+        member _.Id = id
+        member _.Individual = individual
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.PayoutsEnabled = payoutsEnabled
+        member _.Requirements = requirements
+        member _.Settings = settings |> Option.flatten
+        member _.TosAcceptance = tosAcceptance
+        member _.Type = ``type``
 
     and AccountBusinessType =
-        | Company
-        | GovernmentEntity
-        | Individual
-        | NonProfit
+        | AccountBusinessType'Company
+        | AccountBusinessType'GovernmentEntity
+        | AccountBusinessType'Individual
+        | AccountBusinessType'NonProfit
 
     and AccountObject =
-        | Account
+        | AccountObject'Account
 
     and AccountType =
-        | Custom
-        | Express
-        | Standard
+        | AccountType'Custom
+        | AccountType'Express
+        | AccountType'Standard
 
     and AccountBusinessProfileDU =
-        | AccountBusinessProfile of AccountBusinessProfile
+        | AccountBusinessProfileDU'AccountBusinessProfile of AccountBusinessProfile
 
     and AccountSettingsDU =
-        | AccountSettings of AccountSettings
+        | AccountSettingsDU'AccountSettings of AccountSettings
 
     ///
-    and AccountBacsDebitPaymentsSettings = {
+    and AccountBacsDebitPaymentsSettings (?displayName: string) =
 
-        ///The Bacs Direct Debit Display Name for this account. For payments made with Bacs Direct Debit, this will appear on the mandate, and as the statement descriptor.
-        DisplayName: string option
-
-    }
+        member _.DisplayName = displayName
 
     ///
-    and AccountBrandingSettings = {
+    and AccountBrandingSettings (icon: AccountBrandingSettingsIconDU option, logo: AccountBrandingSettingsLogoDU option, primaryColor: string option, secondaryColor: string option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px.
-        Icon: AccountBrandingSettingsIconDU
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A logo for the account that will be used in Checkout instead of the icon and without the account's name next to it if provided. Must be at least 128px x 128px.
-        Logo: AccountBrandingSettingsLogoDU
-
-        ///A CSS hex color value representing the primary branding color for this account
-        PrimaryColor: string
-
-        ///A CSS hex color value representing the secondary branding color for this account
-        SecondaryColor: string
-
-    }
+        member _.Icon = icon
+        member _.Logo = logo
+        member _.PrimaryColor = primaryColor
+        member _.SecondaryColor = secondaryColor
 
     and AccountBrandingSettingsIconDU =
-        | String of string
-        | File of File
+        | AccountBrandingSettingsIconDU'String of string
+        | AccountBrandingSettingsIconDU'File of File
 
     and AccountBrandingSettingsLogoDU =
-        | String of string
-        | File of File
+        | AccountBrandingSettingsLogoDU'String of string
+        | AccountBrandingSettingsLogoDU'File of File
 
     ///
-    and AccountBusinessProfile = {
+    and AccountBusinessProfile (mcc: string option, name: string option, supportAddress: AccountBusinessProfileSupportAddressDU option, supportEmail: string option, supportPhone: string option, supportUrl: string option, url: string option, ?productDescription: string option) =
 
-        ///[The merchant category code for the account](https://stripe.com/docs/connect/setting-mcc). MCCs are used to classify businesses based on the goods or services they provide.
-        Mcc: string
-
-        ///The customer-facing business name.
-        Name: string
-
-        ///Internal-only description of the product sold or service provided by the business. It's used by Stripe for risk and underwriting purposes.
-        ProductDescription: string option
-
-        ///A publicly available mailing address for sending support issues to.
-        SupportAddress: AccountBusinessProfileSupportAddressDU
-
-        ///A publicly available email address for sending support issues to.
-        SupportEmail: string
-
-        ///A publicly available phone number to call with support issues.
-        SupportPhone: string
-
-        ///A publicly available website for handling support issues.
-        SupportUrl: string
-
-        ///The business's publicly available website.
-        Url: string
-
-    }
+        member _.Mcc = mcc
+        member _.Name = name
+        member _.ProductDescription = productDescription |> Option.flatten
+        member _.SupportAddress = supportAddress
+        member _.SupportEmail = supportEmail
+        member _.SupportPhone = supportPhone
+        member _.SupportUrl = supportUrl
+        member _.Url = url
 
     and AccountBusinessProfileSupportAddressDU =
-        | Address of Address
+        | AccountBusinessProfileSupportAddressDU'Address of Address
 
     ///
-    and AccountCapabilities = {
+    and AccountCapabilities (?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers) =
 
-        ///The status of the BECS Direct Debit (AU) payments capability of the account, or whether the account can directly process BECS Direct Debit (AU) charges.
-        AuBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments option
-
-        ///The status of the Bacs Direct Debits payments capability of the account, or whether the account can directly process Bacs Direct Debits charges.
-        BacsDebitPayments: AccountCapabilitiesBacsDebitPayments option
-
-        ///The status of the Bancontact payments capability of the account, or whether the account can directly process Bancontact charges.
-        BancontactPayments: AccountCapabilitiesBancontactPayments option
-
-        ///The status of the card issuing capability of the account, or whether you can use Issuing to distribute funds on cards
-        CardIssuing: AccountCapabilitiesCardIssuing option
-
-        ///The status of the card payments capability of the account, or whether the account can directly process credit and debit card charges.
-        CardPayments: AccountCapabilitiesCardPayments option
-
-        ///The status of the Cartes Bancaires payments capability of the account, or whether the account can directly process Cartes Bancaires card charges in EUR currency.
-        CartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments option
-
-        ///The status of the EPS payments capability of the account, or whether the account can directly process EPS charges.
-        EpsPayments: AccountCapabilitiesEpsPayments option
-
-        ///The status of the FPX payments capability of the account, or whether the account can directly process FPX charges.
-        FpxPayments: AccountCapabilitiesFpxPayments option
-
-        ///The status of the giropay payments capability of the account, or whether the account can directly process giropay charges.
-        GiropayPayments: AccountCapabilitiesGiropayPayments option
-
-        ///The status of the GrabPay payments capability of the account, or whether the account can directly process GrabPay charges.
-        GrabpayPayments: AccountCapabilitiesGrabpayPayments option
-
-        ///The status of the iDEAL payments capability of the account, or whether the account can directly process iDEAL charges.
-        IdealPayments: AccountCapabilitiesIdealPayments option
-
-        ///The status of the JCB payments capability of the account, or whether the account (Japan only) can directly process JCB credit card charges in JPY currency.
-        JcbPayments: AccountCapabilitiesJcbPayments option
-
-        ///The status of the legacy payments capability of the account.
-        LegacyPayments: AccountCapabilitiesLegacyPayments option
-
-        ///The status of the OXXO payments capability of the account, or whether the account can directly process OXXO charges.
-        OxxoPayments: AccountCapabilitiesOxxoPayments option
-
-        ///The status of the P24 payments capability of the account, or whether the account can directly process P24 charges.
-        P24Payments: AccountCapabilitiesP24Payments option
-
-        ///The status of the SEPA Direct Debits payments capability of the account, or whether the account can directly process SEPA Direct Debits charges.
-        SepaDebitPayments: AccountCapabilitiesSepaDebitPayments option
-
-        ///The status of the Sofort payments capability of the account, or whether the account can directly process Sofort charges.
-        SofortPayments: AccountCapabilitiesSofortPayments option
-
-        ///The status of the tax reporting 1099-K (US) capability of the account.
-        TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
-
-        ///The status of the tax reporting 1099-MISC (US) capability of the account.
-        TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
-
-        ///The status of the transfers capability of the account, or whether your platform can transfer funds to the account.
-        Transfers: AccountCapabilitiesTransfers option
-
-    }
+        member _.AuBecsDebitPayments = auBecsDebitPayments
+        member _.BacsDebitPayments = bacsDebitPayments
+        member _.BancontactPayments = bancontactPayments
+        member _.CardIssuing = cardIssuing
+        member _.CardPayments = cardPayments
+        member _.CartesBancairesPayments = cartesBancairesPayments
+        member _.EpsPayments = epsPayments
+        member _.FpxPayments = fpxPayments
+        member _.GiropayPayments = giropayPayments
+        member _.GrabpayPayments = grabpayPayments
+        member _.IdealPayments = idealPayments
+        member _.JcbPayments = jcbPayments
+        member _.LegacyPayments = legacyPayments
+        member _.OxxoPayments = oxxoPayments
+        member _.P24Payments = p24Payments
+        member _.SepaDebitPayments = sepaDebitPayments
+        member _.SofortPayments = sofortPayments
+        member _.TaxReportingUs1099K = taxReportingUs1099K
+        member _.TaxReportingUs1099Misc = taxReportingUs1099Misc
+        member _.Transfers = transfers
 
     and AccountCapabilitiesAuBecsDebitPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesAuBecsDebitPayments'Active
+        | AccountCapabilitiesAuBecsDebitPayments'Inactive
+        | AccountCapabilitiesAuBecsDebitPayments'Pending
 
     and AccountCapabilitiesBacsDebitPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesBacsDebitPayments'Active
+        | AccountCapabilitiesBacsDebitPayments'Inactive
+        | AccountCapabilitiesBacsDebitPayments'Pending
 
     and AccountCapabilitiesBancontactPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesBancontactPayments'Active
+        | AccountCapabilitiesBancontactPayments'Inactive
+        | AccountCapabilitiesBancontactPayments'Pending
 
     and AccountCapabilitiesCardIssuing =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesCardIssuing'Active
+        | AccountCapabilitiesCardIssuing'Inactive
+        | AccountCapabilitiesCardIssuing'Pending
 
     and AccountCapabilitiesCardPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesCardPayments'Active
+        | AccountCapabilitiesCardPayments'Inactive
+        | AccountCapabilitiesCardPayments'Pending
 
     and AccountCapabilitiesCartesBancairesPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesCartesBancairesPayments'Active
+        | AccountCapabilitiesCartesBancairesPayments'Inactive
+        | AccountCapabilitiesCartesBancairesPayments'Pending
 
     and AccountCapabilitiesEpsPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesEpsPayments'Active
+        | AccountCapabilitiesEpsPayments'Inactive
+        | AccountCapabilitiesEpsPayments'Pending
 
     and AccountCapabilitiesFpxPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesFpxPayments'Active
+        | AccountCapabilitiesFpxPayments'Inactive
+        | AccountCapabilitiesFpxPayments'Pending
 
     and AccountCapabilitiesGiropayPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesGiropayPayments'Active
+        | AccountCapabilitiesGiropayPayments'Inactive
+        | AccountCapabilitiesGiropayPayments'Pending
 
     and AccountCapabilitiesGrabpayPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesGrabpayPayments'Active
+        | AccountCapabilitiesGrabpayPayments'Inactive
+        | AccountCapabilitiesGrabpayPayments'Pending
 
     and AccountCapabilitiesIdealPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesIdealPayments'Active
+        | AccountCapabilitiesIdealPayments'Inactive
+        | AccountCapabilitiesIdealPayments'Pending
 
     and AccountCapabilitiesJcbPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesJcbPayments'Active
+        | AccountCapabilitiesJcbPayments'Inactive
+        | AccountCapabilitiesJcbPayments'Pending
 
     and AccountCapabilitiesLegacyPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesLegacyPayments'Active
+        | AccountCapabilitiesLegacyPayments'Inactive
+        | AccountCapabilitiesLegacyPayments'Pending
 
     and AccountCapabilitiesOxxoPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesOxxoPayments'Active
+        | AccountCapabilitiesOxxoPayments'Inactive
+        | AccountCapabilitiesOxxoPayments'Pending
 
     and AccountCapabilitiesP24Payments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesP24Payments'Active
+        | AccountCapabilitiesP24Payments'Inactive
+        | AccountCapabilitiesP24Payments'Pending
 
     and AccountCapabilitiesSepaDebitPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesSepaDebitPayments'Active
+        | AccountCapabilitiesSepaDebitPayments'Inactive
+        | AccountCapabilitiesSepaDebitPayments'Pending
 
     and AccountCapabilitiesSofortPayments =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesSofortPayments'Active
+        | AccountCapabilitiesSofortPayments'Inactive
+        | AccountCapabilitiesSofortPayments'Pending
 
     and AccountCapabilitiesTaxReportingUs1099K =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesTaxReportingUs1099K'Active
+        | AccountCapabilitiesTaxReportingUs1099K'Inactive
+        | AccountCapabilitiesTaxReportingUs1099K'Pending
 
     and AccountCapabilitiesTaxReportingUs1099Misc =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesTaxReportingUs1099Misc'Active
+        | AccountCapabilitiesTaxReportingUs1099Misc'Inactive
+        | AccountCapabilitiesTaxReportingUs1099Misc'Pending
 
     and AccountCapabilitiesTransfers =
-        | Active
-        | Inactive
-        | Pending
+        | AccountCapabilitiesTransfers'Active
+        | AccountCapabilitiesTransfers'Inactive
+        | AccountCapabilitiesTransfers'Pending
 
     ///
-    and AccountCapabilityRequirements = {
+    and AccountCapabilityRequirements (currentDeadline: int option, currentlyDue: string list, disabledReason: string option, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
 
-        ///The date the fields in `currently_due` must be collected by to keep the capability enabled for the account.
-        CurrentDeadline: int
-
-        ///The fields that need to be collected to keep the capability enabled. If not collected by the `current_deadline`, these fields appear in `past_due` as well, and the capability is disabled.
-        CurrentlyDue: string list
-
-        ///If the capability is disabled, this string describes why. Possible values are `requirement.fields_needed`, `pending.onboarding`, `pending.review`, `rejected_fraud`, or `rejected.other`.
-        DisabledReason: string
-
-        ///The fields that are `currently_due` and need to be collected again because validation or verification failed for some reason.
-        Errors: AccountRequirementsError list
-
-        ///The fields that need to be collected assuming all volume thresholds are reached. As they become required, these fields appear in `currently_due` as well, and the `current_deadline` is set.
-        EventuallyDue: string list
-
-        ///The fields that weren't collected by the `current_deadline`. These fields need to be collected to enable the capability for the account.
-        PastDue: string list
-
-        ///Fields that may become required depending on the results of verification or review. An empty array unless an asynchronous verification is pending. If verification fails, the fields in this array become required and move to `currently_due` or `past_due`.
-        PendingVerification: string list
-
-    }
+        member _.CurrentDeadline = currentDeadline
+        member _.CurrentlyDue = currentlyDue
+        member _.DisabledReason = disabledReason
+        member _.Errors = errors
+        member _.EventuallyDue = eventuallyDue
+        member _.PastDue = pastDue
+        member _.PendingVerification = pendingVerification
 
     ///
-    and AccountCardPaymentsSettings = {
+    and AccountCardPaymentsSettings (statementDescriptorPrefix: string option, ?declineOn: AccountDeclineChargeOn) =
 
-        DeclineOn: AccountDeclineChargeOn option
-
-        ///The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. `statement_descriptor_prefix` is useful for maximizing descriptor space for the dynamic portion.
-        StatementDescriptorPrefix: string
-
-    }
+        member _.DeclineOn = declineOn
+        member _.StatementDescriptorPrefix = statementDescriptorPrefix
 
     ///
-    and AccountDashboardSettings = {
+    and AccountDashboardSettings (displayName: string option, timezone: string option) =
 
-        ///The display name for this account. This is used on the Stripe Dashboard to differentiate between accounts.
-        DisplayName: string
-
-        ///The timezone used in the Stripe Dashboard for this account. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones).
-        Timezone: string
-
-    }
+        member _.DisplayName = displayName
+        member _.Timezone = timezone
 
     ///
-    and AccountDeclineChargeOn = {
+    and AccountDeclineChargeOn (avsFailure: bool, cvcFailure: bool) =
 
-        ///Whether Stripe automatically declines charges with an incorrect ZIP or postal code. This setting only applies when a ZIP or postal code is provided and they fail bank verification.
-        AvsFailure: bool
-
-        ///Whether Stripe automatically declines charges with an incorrect CVC. This setting only applies when a CVC is provided and it fails bank verification.
-        CvcFailure: bool
-
-    }
+        member _.AvsFailure = avsFailure
+        member _.CvcFailure = cvcFailure
 
     ///Account Links are the means by which a Connect platform grants a connected account permission to access
     ///Stripe-hosted applications, such as Connect Onboarding.
     ///
     ///Related guide: [Connect Onboarding](https://stripe.com/docs/connect/connect-onboarding).
-    and AccountLink = {
+    and AccountLink (created: int, expiresAt: int, object: AccountLinkObject, url: string) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The timestamp at which this account link will expire.
-        ExpiresAt: int
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: AccountLinkObject
-
-        ///The URL for the account link.
-        Url: string
-
-    }
+        member _.Created = created
+        member _.ExpiresAt = expiresAt
+        member _.Object = object
+        member _.Url = url
 
     and AccountLinkObject =
-        | AccountLink
+        | AccountLinkObject'AccountLink
 
     ///
-    and AccountPaymentsSettings = {
+    and AccountPaymentsSettings (statementDescriptor: string option, statementDescriptorKana: string option, statementDescriptorKanji: string option) =
 
-        ///The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge.
-        StatementDescriptor: string
-
-        ///The Kana variation of the default text that appears on credit card statements when a charge is made (Japan only)
-        StatementDescriptorKana: string
-
-        ///The Kanji variation of the default text that appears on credit card statements when a charge is made (Japan only)
-        StatementDescriptorKanji: string
-
-    }
+        member _.StatementDescriptor = statementDescriptor
+        member _.StatementDescriptorKana = statementDescriptorKana
+        member _.StatementDescriptorKanji = statementDescriptorKanji
 
     ///
-    and AccountPayoutSettings = {
+    and AccountPayoutSettings (debitNegativeBalances: bool, schedule: TransferSchedule, statementDescriptor: string option) =
 
-        ///A Boolean indicating if Stripe should try to reclaim negative balances from an attached bank account. See our [Understanding Connect Account Balances](https://stripe.com/docs/connect/account-balances) documentation for details. Default value is `true` for Express accounts and `false` for Custom accounts.
-        DebitNegativeBalances: bool
-
-        Schedule: TransferSchedule
-
-        ///The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard.
-        StatementDescriptor: string
-
-    }
+        member _.DebitNegativeBalances = debitNegativeBalances
+        member _.Schedule = schedule
+        member _.StatementDescriptor = statementDescriptor
 
     ///
-    and AccountRequirements = {
+    and AccountRequirements (currentDeadline: int option, currentlyDue: string list option, disabledReason: AccountRequirementsDisabledReason option, errors: AccountRequirementsError list option, eventuallyDue: string list option, pastDue: string list option, pendingVerification: string list option) =
 
-        ///The date the fields in `currently_due` must be collected by to keep payouts enabled for the account. These fields might block payouts sooner if the next threshold is reached before these fields are collected.
-        CurrentDeadline: int
-
-        ///The fields that need to be collected to keep the account enabled. If not collected by the `current_deadline`, these fields appear in `past_due` as well, and the account is disabled.
-        CurrentlyDue: string list
-
-        ///If the account is disabled, this string describes why the account can’t create charges or receive payouts. Can be `requirements.past_due`, `requirements.pending_verification`, `rejected.fraud`, `rejected.terms_of_service`, `rejected.listed`, `rejected.other`, `listed`, `under_review`, or `other`.
-        DisabledReason: AccountRequirementsDisabledReason
-
-        ///The fields that are `currently_due` and need to be collected again because validation or verification failed for some reason.
-        Errors: AccountRequirementsError list
-
-        ///The fields that need to be collected assuming all volume thresholds are reached. As they become required, these fields appear in `currently_due` as well, and the `current_deadline` is set.
-        EventuallyDue: string list
-
-        ///The fields that weren't collected by the `current_deadline`. These fields need to be collected to re-enable the account.
-        PastDue: string list
-
-        ///Fields that may become required depending on the results of verification or review. An empty array unless an asynchronous verification is pending. If verification fails, the fields in this array become required and move to `currently_due` or `past_due`.
-        PendingVerification: string list
-
-    }
+        member _.CurrentDeadline = currentDeadline
+        member _.CurrentlyDue = currentlyDue
+        member _.DisabledReason = disabledReason
+        member _.Errors = errors
+        member _.EventuallyDue = eventuallyDue
+        member _.PastDue = pastDue
+        member _.PendingVerification = pendingVerification
 
     and AccountRequirementsDisabledReason =
-        | RequirementsPastDue
-        | RequirementsPendingVerification
-        | RejectedFraud
-        | RejectedTermsOfService
-        | RejectedListed
-        | RejectedOther
-        | Listed
-        | UnderReview
-        | Other
+        | AccountRequirementsDisabledReason'RequirementsPastDue
+        | AccountRequirementsDisabledReason'RequirementsPendingVerification
+        | AccountRequirementsDisabledReason'RejectedFraud
+        | AccountRequirementsDisabledReason'RejectedTermsOfService
+        | AccountRequirementsDisabledReason'RejectedListed
+        | AccountRequirementsDisabledReason'RejectedOther
+        | AccountRequirementsDisabledReason'Listed
+        | AccountRequirementsDisabledReason'UnderReview
+        | AccountRequirementsDisabledReason'Other
 
     ///
-    and AccountRequirementsError = {
+    and AccountRequirementsError (code: AccountRequirementsErrorCode, reason: string, requirement: string) =
 
-        ///The code for the type of error.
-        Code: AccountRequirementsErrorCode
-
-        ///An informative message that indicates the error type and provides additional details about the error.
-        Reason: string
-
-        ///The specific user onboarding requirement field (in the requirements hash) that needs to be resolved.
-        Requirement: string
-
-    }
+        member _.Code = code
+        member _.Reason = reason
+        member _.Requirement = requirement
 
     and AccountRequirementsErrorCode =
-        | InvalidAddressCityStatePostalCode
-        | InvalidStreetAddress
-        | InvalidValueOther
-        | VerificationDocumentAddressMismatch
-        | VerificationDocumentAddressMissing
-        | VerificationDocumentCorrupt
-        | VerificationDocumentCountryNotSupported
-        | VerificationDocumentDobMismatch
-        | VerificationDocumentDuplicateType
-        | VerificationDocumentExpired
-        | VerificationDocumentFailedCopy
-        | VerificationDocumentFailedGreyscale
-        | VerificationDocumentFailedOther
-        | VerificationDocumentFailedTestMode
-        | VerificationDocumentFraudulent
-        | VerificationDocumentIdNumberMismatch
-        | VerificationDocumentIdNumberMissing
-        | VerificationDocumentIncomplete
-        | VerificationDocumentInvalid
-        | VerificationDocumentIssueOrExpiryDateMissing
-        | VerificationDocumentManipulated
-        | VerificationDocumentMissingBack
-        | VerificationDocumentMissingFront
-        | VerificationDocumentNameMismatch
-        | VerificationDocumentNameMissing
-        | VerificationDocumentNationalityMismatch
-        | VerificationDocumentNotReadable
-        | VerificationDocumentNotSigned
-        | VerificationDocumentNotUploaded
-        | VerificationDocumentPhotoMismatch
-        | VerificationDocumentTooLarge
-        | VerificationDocumentTypeNotSupported
-        | VerificationFailedAddressMatch
-        | VerificationFailedBusinessIecNumber
-        | VerificationFailedDocumentMatch
-        | VerificationFailedIdNumberMatch
-        | VerificationFailedKeyedIdentity
-        | VerificationFailedKeyedMatch
-        | VerificationFailedNameMatch
-        | VerificationFailedOther
-        | VerificationFailedTaxIdMatch
-        | VerificationFailedTaxIdNotIssued
+        | AccountRequirementsErrorCode'InvalidAddressCityStatePostalCode
+        | AccountRequirementsErrorCode'InvalidStreetAddress
+        | AccountRequirementsErrorCode'InvalidValueOther
+        | AccountRequirementsErrorCode'VerificationDocumentAddressMismatch
+        | AccountRequirementsErrorCode'VerificationDocumentAddressMissing
+        | AccountRequirementsErrorCode'VerificationDocumentCorrupt
+        | AccountRequirementsErrorCode'VerificationDocumentCountryNotSupported
+        | AccountRequirementsErrorCode'VerificationDocumentDobMismatch
+        | AccountRequirementsErrorCode'VerificationDocumentDuplicateType
+        | AccountRequirementsErrorCode'VerificationDocumentExpired
+        | AccountRequirementsErrorCode'VerificationDocumentFailedCopy
+        | AccountRequirementsErrorCode'VerificationDocumentFailedGreyscale
+        | AccountRequirementsErrorCode'VerificationDocumentFailedOther
+        | AccountRequirementsErrorCode'VerificationDocumentFailedTestMode
+        | AccountRequirementsErrorCode'VerificationDocumentFraudulent
+        | AccountRequirementsErrorCode'VerificationDocumentIdNumberMismatch
+        | AccountRequirementsErrorCode'VerificationDocumentIdNumberMissing
+        | AccountRequirementsErrorCode'VerificationDocumentIncomplete
+        | AccountRequirementsErrorCode'VerificationDocumentInvalid
+        | AccountRequirementsErrorCode'VerificationDocumentIssueOrExpiryDateMissing
+        | AccountRequirementsErrorCode'VerificationDocumentManipulated
+        | AccountRequirementsErrorCode'VerificationDocumentMissingBack
+        | AccountRequirementsErrorCode'VerificationDocumentMissingFront
+        | AccountRequirementsErrorCode'VerificationDocumentNameMismatch
+        | AccountRequirementsErrorCode'VerificationDocumentNameMissing
+        | AccountRequirementsErrorCode'VerificationDocumentNationalityMismatch
+        | AccountRequirementsErrorCode'VerificationDocumentNotReadable
+        | AccountRequirementsErrorCode'VerificationDocumentNotSigned
+        | AccountRequirementsErrorCode'VerificationDocumentNotUploaded
+        | AccountRequirementsErrorCode'VerificationDocumentPhotoMismatch
+        | AccountRequirementsErrorCode'VerificationDocumentTooLarge
+        | AccountRequirementsErrorCode'VerificationDocumentTypeNotSupported
+        | AccountRequirementsErrorCode'VerificationFailedAddressMatch
+        | AccountRequirementsErrorCode'VerificationFailedBusinessIecNumber
+        | AccountRequirementsErrorCode'VerificationFailedDocumentMatch
+        | AccountRequirementsErrorCode'VerificationFailedIdNumberMatch
+        | AccountRequirementsErrorCode'VerificationFailedKeyedIdentity
+        | AccountRequirementsErrorCode'VerificationFailedKeyedMatch
+        | AccountRequirementsErrorCode'VerificationFailedNameMatch
+        | AccountRequirementsErrorCode'VerificationFailedOther
+        | AccountRequirementsErrorCode'VerificationFailedTaxIdMatch
+        | AccountRequirementsErrorCode'VerificationFailedTaxIdNotIssued
 
     ///
-    and AccountSepaDebitPaymentsSettings = {
+    and AccountSepaDebitPaymentsSettings (?creditorId: string) =
 
-        ///SEPA creditor identifier that identifies the company making the payment.
-        CreditorId: string option
-
-    }
+        member _.CreditorId = creditorId
 
     ///
-    and AccountSettings = {
+    and AccountSettings (branding: AccountBrandingSettings, cardPayments: AccountCardPaymentsSettings, dashboard: AccountDashboardSettings, payments: AccountPaymentsSettings, ?bacsDebitPayments: AccountBacsDebitPaymentsSettings, ?payouts: AccountPayoutSettings, ?sepaDebitPayments: AccountSepaDebitPaymentsSettings) =
 
-        BacsDebitPayments: AccountBacsDebitPaymentsSettings option
-
-        Branding: AccountBrandingSettings
-
-        CardPayments: AccountCardPaymentsSettings
-
-        Dashboard: AccountDashboardSettings
-
-        Payments: AccountPaymentsSettings
-
-        Payouts: AccountPayoutSettings option
-
-        SepaDebitPayments: AccountSepaDebitPaymentsSettings option
-
-    }
+        member _.BacsDebitPayments = bacsDebitPayments
+        member _.Branding = branding
+        member _.CardPayments = cardPayments
+        member _.Dashboard = dashboard
+        member _.Payments = payments
+        member _.Payouts = payouts
+        member _.SepaDebitPayments = sepaDebitPayments
 
     ///
-    and AccountTosAcceptance = {
+    and AccountTosAcceptance (?date: int option, ?ip: string option, ?serviceAgreement: string, ?userAgent: string option) =
 
-        ///The Unix timestamp marking when the account representative accepted their service agreement
-        Date: int option
-
-        ///The IP address from which the account representative accepted their service agreement
-        Ip: string option
-
-        ///The user's service agreement type
-        ServiceAgreement: string option
-
-        ///The user agent of the browser from which the account representative accepted their service agreement
-        UserAgent: string option
-
-    }
+        member _.Date = date |> Option.flatten
+        member _.Ip = ip |> Option.flatten
+        member _.ServiceAgreement = serviceAgreement
+        member _.UserAgent = userAgent |> Option.flatten
 
     ///
-    and Address = {
+    and Address (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
 
-        ///City, district, suburb, town, or village.
-        City: string
-
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string
-
-        ///Address line 1 (e.g., street, PO Box, or company name).
-        Line1: string
-
-        ///Address line 2 (e.g., apartment, suite, unit, or building).
-        Line2: string
-
-        ///ZIP or postal code.
-        PostalCode: string
-
-        ///State, county, province, or region.
-        State: string
-
-    }
+        member _.City = city
+        member _.Country = country
+        member _.Line1 = line1
+        member _.Line2 = line2
+        member _.PostalCode = postalCode
+        member _.State = state
 
     ///
-    and AlipayAccount = {
+    and AlipayAccount (created: int, fingerprint: string, id: string, livemode: bool, object: AlipayAccountObject, paymentAmount: int option, paymentCurrency: string option, reusable: bool, used: bool, username: string, ?customer: AlipayAccountCustomerDU option, ?metadata: Map<string, string>) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The ID of the customer associated with this Alipay Account.
-        Customer: AlipayAccountCustomerDU option
-
-        ///Uniquely identifies the account and will be the same across all Alipay account objects that are linked to the same Alipay account.
-        Fingerprint: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: AlipayAccountObject
-
-        ///If the Alipay account object is not reusable, the exact amount that you can create a charge for.
-        PaymentAmount: int
-
-        ///If the Alipay account object is not reusable, the exact currency that you can create a charge for.
-        PaymentCurrency: string
-
-        ///True if you can create multiple payments using this account. If the account is reusable, then you can freely choose the amount of each payment.
-        Reusable: bool
-
-        ///Whether this Alipay account object has ever been used for a payment.
-        Used: bool
-
-        ///The username for the Alipay account.
-        Username: string
-
-    }
+        member _.Created = created
+        member _.Customer = customer |> Option.flatten
+        member _.Fingerprint = fingerprint
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.PaymentAmount = paymentAmount
+        member _.PaymentCurrency = paymentCurrency
+        member _.Reusable = reusable
+        member _.Used = used
+        member _.Username = username
 
     and AlipayAccountObject =
-        | AlipayAccount
+        | AlipayAccountObject'AlipayAccount
 
     and AlipayAccountCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | AlipayAccountCustomerDU'String of string
+        | AlipayAccountCustomerDU'Customer of Customer
+        | AlipayAccountCustomerDU'DeletedCustomer of DeletedCustomer
 
     ///
-    and AlternateStatementDescriptors = {
+    and AlternateStatementDescriptors (?kana: string, ?kanji: string) =
 
-        ///The Kana variation of the descriptor.
-        Kana: string option
-
-        ///The Kanji variation of the descriptor.
-        Kanji: string option
-
-    }
+        member _.Kana = kana
+        member _.Kanji = kanji
 
     ///
-    and ApiErrors = {
+    and ApiErrors (``type``: ApiErrorsType, ?charge: string, ?code: string, ?declineCode: string, ?docUrl: string, ?message: string, ?param: string, ?paymentIntent: PaymentIntent, ?paymentMethod: PaymentMethod, ?paymentMethodType: string, ?setupIntent: SetupIntent, ?source: PaymentSource) =
 
-        ///For card errors, the ID of the failed charge.
-        Charge: string option
-
-        ///For some errors that could be handled programmatically, a short string indicating the [error code](https://stripe.com/docs/error-codes) reported.
-        Code: string option
-
-        ///For card errors resulting from a card issuer decline, a short string indicating the [card issuer's reason for the decline](https://stripe.com/docs/declines#issuer-declines) if they provide one.
-        DeclineCode: string option
-
-        ///A URL to more information about the [error code](https://stripe.com/docs/error-codes) reported.
-        DocUrl: string option
-
-        ///A human-readable message providing more details about the error. For card errors, these messages can be shown to your users.
-        Message: string option
-
-        ///If the error is parameter-specific, the parameter related to the error. For example, you can use this to display a message near the correct form field.
-        Param: string option
-
-        PaymentIntent: PaymentIntent option
-
-        PaymentMethod: PaymentMethod option
-
-        ///If the error is specific to the type of payment method, the payment method type that had a problem. This field is only populated for invoice-related errors.
-        PaymentMethodType: string option
-
-        SetupIntent: SetupIntent option
-
-        Source: PaymentSource option
-
-        ///The type of error returned. One of `api_connection_error`, `api_error`, `authentication_error`, `card_error`, `idempotency_error`, `invalid_request_error`, or `rate_limit_error`
-        Type: ApiErrorsType
-
-    }
+        member _.Charge = charge
+        member _.Code = code
+        member _.DeclineCode = declineCode
+        member _.DocUrl = docUrl
+        member _.Message = message
+        member _.Param = param
+        member _.PaymentIntent = paymentIntent
+        member _.PaymentMethod = paymentMethod
+        member _.PaymentMethodType = paymentMethodType
+        member _.SetupIntent = setupIntent
+        member _.Source = source
+        member _.Type = ``type``
 
     and ApiErrorsType =
-        | ApiConnectionError
-        | ApiError
-        | AuthenticationError
-        | CardError
-        | IdempotencyError
-        | InvalidRequestError
-        | RateLimitError
+        | ApiErrorsType'ApiConnectionError
+        | ApiErrorsType'ApiError
+        | ApiErrorsType'AuthenticationError
+        | ApiErrorsType'CardError
+        | ApiErrorsType'IdempotencyError
+        | ApiErrorsType'InvalidRequestError
+        | ApiErrorsType'RateLimitError
 
     ///
-    and ApplePayDomain = {
+    and ApplePayDomain (created: int, domainName: string, id: string, livemode: bool, object: ApplePayDomainObject) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        DomainName: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ApplePayDomainObject
-
-    }
+        member _.Created = created
+        member _.DomainName = domainName
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
 
     and ApplePayDomainObject =
-        | ApplePayDomain
+        | ApplePayDomainObject'ApplePayDomain
 
     ///
-    and Application = {
+    and Application (id: string, name: string option, object: ApplicationObject) =
 
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The name of the application.
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ApplicationObject
-
-    }
+        member _.Id = id
+        member _.Name = name
+        member _.Object = object
 
     and ApplicationObject =
-        | Application
+        | ApplicationObject'Application
 
     ///
-    and ApplicationFee = {
+    and ApplicationFee (account: ApplicationFeeAccountDU, amount: int, amountRefunded: int, application: ApplicationFeeApplicationDU, balanceTransaction: ApplicationFeeBalanceTransactionDU option, charge: ApplicationFeeChargeDU, created: int, currency: string, id: string, livemode: bool, object: ApplicationFeeObject, originatingTransaction: ApplicationFeeOriginatingTransactionDU option, refunded: bool, refunds: Map<string, string>) =
 
-        ///ID of the Stripe account this fee was taken from.
-        Account: ApplicationFeeAccountDU
-
-        ///Amount earned, in %s.
-        Amount: int
-
-        ///Amount in %s refunded (can be less than the amount attribute on the fee if a partial refund was issued)
-        AmountRefunded: int
-
-        ///ID of the Connect application that earned the fee.
-        Application: ApplicationFeeApplicationDU
-
-        ///Balance transaction that describes the impact of this collected application fee on your account balance (not including refunds).
-        BalanceTransaction: ApplicationFeeBalanceTransactionDU
-
-        ///ID of the charge that the application fee was taken from.
-        Charge: ApplicationFeeChargeDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ApplicationFeeObject
-
-        ///ID of the corresponding charge on the platform account, if this fee was the result of a charge using the `destination` parameter.
-        OriginatingTransaction: ApplicationFeeOriginatingTransactionDU
-
-        ///Whether the fee has been fully refunded. If the fee is only partially refunded, this attribute will still be false.
-        Refunded: bool
-
-        ///A list of refunds that have been applied to the fee.
-        Refunds: Map<string, string>
-
-    }
+        member _.Account = account
+        member _.Amount = amount
+        member _.AmountRefunded = amountRefunded
+        member _.Application = application
+        member _.BalanceTransaction = balanceTransaction
+        member _.Charge = charge
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.OriginatingTransaction = originatingTransaction
+        member _.Refunded = refunded
+        member _.Refunds = refunds
 
     and ApplicationFeeObject =
-        | ApplicationFee
+        | ApplicationFeeObject'ApplicationFee
 
     and ApplicationFeeAccountDU =
-        | String of string
-        | Account of Account
+        | ApplicationFeeAccountDU'String of string
+        | ApplicationFeeAccountDU'Account of Account
 
     and ApplicationFeeApplicationDU =
-        | String of string
-        | Application of Application
+        | ApplicationFeeApplicationDU'String of string
+        | ApplicationFeeApplicationDU'Application of Application
 
     and ApplicationFeeBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | ApplicationFeeBalanceTransactionDU'String of string
+        | ApplicationFeeBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and ApplicationFeeChargeDU =
-        | String of string
-        | Charge of Charge
+        | ApplicationFeeChargeDU'String of string
+        | ApplicationFeeChargeDU'Charge of Charge
 
     and ApplicationFeeOriginatingTransactionDU =
-        | String of string
-        | Charge of Charge
+        | ApplicationFeeOriginatingTransactionDU'String of string
+        | ApplicationFeeOriginatingTransactionDU'Charge of Charge
 
     ///This is an object representing your Stripe balance. You can retrieve it to see
     ///the balance currently on your Stripe account.
@@ -815,179 +506,118 @@ module StripeModel =
     ///payment source types.
     ///
     ///Related guide: [Understanding Connect Account Balances](https://stripe.com/docs/connect/account-balances).
-    and Balance = {
+    and Balance (available: BalanceAmount list, livemode: bool, object: BalanceObject, pending: BalanceAmount list, ?connectReserved: BalanceAmount list, ?instantAvailable: BalanceAmount list, ?issuing: BalanceDetail) =
 
-        ///Funds that are available to be transferred or paid out, whether automatically by Stripe or explicitly via the [Transfers API](https://stripe.com/docs/api#transfers) or [Payouts API](https://stripe.com/docs/api#payouts). The available balance for each currency and payment type can be found in the `source_types` property.
-        Available: BalanceAmount list
-
-        ///Funds held due to negative balances on connected Custom accounts. The connect reserve balance for each currency and payment type can be found in the `source_types` property.
-        ConnectReserved: BalanceAmount list
-
-        ///Funds that can be paid out using Instant Payouts.
-        InstantAvailable: BalanceAmount list
-
-        Issuing: BalanceDetail option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: BalanceObject
-
-        ///Funds that are not yet available in the balance, due to the 7-day rolling pay cycle. The pending balance for each currency, and for each payment type, can be found in the `source_types` property.
-        Pending: BalanceAmount list
-
-    }
+        member _.Available = available
+        member _.ConnectReserved = connectReserved
+        member _.InstantAvailable = instantAvailable
+        member _.Issuing = issuing
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Pending = pending
 
     and BalanceObject =
-        | Balance
+        | BalanceObject'Balance
 
     ///
-    and BalanceAmount = {
+    and BalanceAmount (amount: int, currency: string, ?sourceTypes: BalanceAmountBySourceType) =
 
-        ///Balance amount.
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        SourceTypes: BalanceAmountBySourceType option
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.SourceTypes = sourceTypes
 
     ///
-    and BalanceAmountBySourceType = {
+    and BalanceAmountBySourceType (?bankAccount: int, ?card: int, ?fpx: int) =
 
-        ///Amount for bank account.
-        BankAccount: int option
-
-        ///Amount for card.
-        Card: int option
-
-        ///Amount for FPX.
-        Fpx: int option
-
-    }
+        member _.BankAccount = bankAccount
+        member _.Card = card
+        member _.Fpx = fpx
 
     ///
-    and BalanceDetail = {
+    and BalanceDetail (available: BalanceAmount list) =
 
-        ///Funds that are available for use.
-        Available: BalanceAmount list
-
-    }
+        member _.Available = available
 
     ///Balance transactions represent funds moving through your Stripe account.
     ///They're created for every type of transaction that comes into or flows out of your Stripe account balance.
     ///
     ///Related guide: [Balance Transaction Types](https://stripe.com/docs/reports/balance-transaction-types).
-    and BalanceTransaction = {
+    and BalanceTransaction (amount: int, availableOn: int, created: int, currency: string, description: string option, exchangeRate: decimal option, fee: int, feeDetails: Fee list, id: string, net: int, object: BalanceTransactionObject, reportingCategory: string, source: BalanceTransactionSourceDU option, status: string, ``type``: BalanceTransactionType) =
 
-        ///Gross amount of the transaction, in %s.
-        Amount: int
-
-        ///The date the transaction's net funds will become available in the Stripe balance.
-        AvailableOn: int
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///The exchange rate used, if applicable, for this transaction. Specifically, if money was converted from currency A to currency B, then the `amount` in currency A, times `exchange_rate`, would be the `amount` in currency B. For example, suppose you charged a customer 10.00 EUR. Then the PaymentIntent's `amount` would be `1000` and `currency` would be `eur`. Suppose this was converted into 12.34 USD in your Stripe account. Then the BalanceTransaction's `amount` would be `1234`, `currency` would be `usd`, and `exchange_rate` would be `1.234`.
-        ExchangeRate: decimal
-
-        ///Fees (in %s) paid for this transaction.
-        Fee: int
-
-        ///Detailed breakdown of fees (in %s) paid for this transaction.
-        FeeDetails: Fee list
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Net amount of the transaction, in %s.
-        Net: int
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: BalanceTransactionObject
-
-        ///[Learn more](https://stripe.com/docs/reports/reporting-categories) about how reporting categories can help you understand balance transactions from an accounting perspective.
-        ReportingCategory: string
-
-        ///The Stripe object to which this transaction is related.
-        Source: BalanceTransactionSourceDU
-
-        ///If the transaction's net funds are available in the Stripe balance yet. Either `available` or `pending`.
-        Status: string
-
-        ///Transaction type: `adjustment`, `advance`, `advance_funding`, `anticipation_repayment`, `application_fee`, `application_fee_refund`, `charge`, `connect_collection_transfer`, `contribution`, `issuing_authorization_hold`, `issuing_authorization_release`, `issuing_dispute`, `issuing_transaction`, `payment`, `payment_failure_refund`, `payment_refund`, `payout`, `payout_cancel`, `payout_failure`, `refund`, `refund_failure`, `reserve_transaction`, `reserved_funds`, `stripe_fee`, `stripe_fx_fee`, `tax_fee`, `topup`, `topup_reversal`, `transfer`, `transfer_cancel`, `transfer_failure`, or `transfer_refund`. [Learn more](https://stripe.com/docs/reports/balance-transaction-types) about balance transaction types and what they represent. If you are looking to classify transactions for accounting purposes, you might want to consider `reporting_category` instead.
-        Type: BalanceTransactionType
-
-    }
+        member _.Amount = amount
+        member _.AvailableOn = availableOn
+        member _.Created = created
+        member _.Currency = currency
+        member _.Description = description
+        member _.ExchangeRate = exchangeRate
+        member _.Fee = fee
+        member _.FeeDetails = feeDetails
+        member _.Id = id
+        member _.Net = net
+        member _.Object = object
+        member _.ReportingCategory = reportingCategory
+        member _.Source = source
+        member _.Status = status
+        member _.Type = ``type``
 
     and BalanceTransactionObject =
-        | BalanceTransaction
+        | BalanceTransactionObject'BalanceTransaction
 
     and BalanceTransactionType =
-        | Adjustment
-        | Advance
-        | AdvanceFunding
-        | AnticipationRepayment
-        | ApplicationFee
-        | ApplicationFeeRefund
-        | Charge
-        | ConnectCollectionTransfer
-        | Contribution
-        | IssuingAuthorizationHold
-        | IssuingAuthorizationRelease
-        | IssuingDispute
-        | IssuingTransaction
-        | Payment
-        | PaymentFailureRefund
-        | PaymentRefund
-        | Payout
-        | PayoutCancel
-        | PayoutFailure
-        | Refund
-        | RefundFailure
-        | ReserveTransaction
-        | ReservedFunds
-        | StripeFee
-        | StripeFxFee
-        | TaxFee
-        | Topup
-        | TopupReversal
-        | Transfer
-        | TransferCancel
-        | TransferFailure
-        | TransferRefund
+        | BalanceTransactionType'Adjustment
+        | BalanceTransactionType'Advance
+        | BalanceTransactionType'AdvanceFunding
+        | BalanceTransactionType'AnticipationRepayment
+        | BalanceTransactionType'ApplicationFee
+        | BalanceTransactionType'ApplicationFeeRefund
+        | BalanceTransactionType'Charge
+        | BalanceTransactionType'ConnectCollectionTransfer
+        | BalanceTransactionType'Contribution
+        | BalanceTransactionType'IssuingAuthorizationHold
+        | BalanceTransactionType'IssuingAuthorizationRelease
+        | BalanceTransactionType'IssuingDispute
+        | BalanceTransactionType'IssuingTransaction
+        | BalanceTransactionType'Payment
+        | BalanceTransactionType'PaymentFailureRefund
+        | BalanceTransactionType'PaymentRefund
+        | BalanceTransactionType'Payout
+        | BalanceTransactionType'PayoutCancel
+        | BalanceTransactionType'PayoutFailure
+        | BalanceTransactionType'Refund
+        | BalanceTransactionType'RefundFailure
+        | BalanceTransactionType'ReserveTransaction
+        | BalanceTransactionType'ReservedFunds
+        | BalanceTransactionType'StripeFee
+        | BalanceTransactionType'StripeFxFee
+        | BalanceTransactionType'TaxFee
+        | BalanceTransactionType'Topup
+        | BalanceTransactionType'TopupReversal
+        | BalanceTransactionType'Transfer
+        | BalanceTransactionType'TransferCancel
+        | BalanceTransactionType'TransferFailure
+        | BalanceTransactionType'TransferRefund
 
     and BalanceTransactionSourceDU =
-        | String of string
-        | BalanceTransactionSource of BalanceTransactionSource
+        | BalanceTransactionSourceDU'String of string
+        | BalanceTransactionSourceDU'BalanceTransactionSource of BalanceTransactionSource
 
     and BalanceTransactionSource =
-        | ApplicationFee of ApplicationFee
-        | Charge of Charge
-        | ConnectCollectionTransfer of ConnectCollectionTransfer
-        | Dispute of Dispute
-        | FeeRefund of FeeRefund
-        | IssuingAuthorization of IssuingAuthorization
-        | IssuingDispute of IssuingDispute
-        | IssuingTransaction of IssuingTransaction
-        | Payout of Payout
-        | PlatformTaxFee of PlatformTaxFee
-        | Refund of Refund
-        | ReserveTransaction of ReserveTransaction
-        | TaxDeductedAtSource of TaxDeductedAtSource
-        | Topup of Topup
-        | Transfer of Transfer
-        | TransferReversal of TransferReversal
+        | BalanceTransactionSource'ApplicationFee of ApplicationFee
+        | BalanceTransactionSource'Charge of Charge
+        | BalanceTransactionSource'ConnectCollectionTransfer of ConnectCollectionTransfer
+        | BalanceTransactionSource'Dispute of Dispute
+        | BalanceTransactionSource'FeeRefund of FeeRefund
+        | BalanceTransactionSource'IssuingAuthorization of IssuingAuthorization
+        | BalanceTransactionSource'IssuingDispute of IssuingDispute
+        | BalanceTransactionSource'IssuingTransaction of IssuingTransaction
+        | BalanceTransactionSource'Payout of Payout
+        | BalanceTransactionSource'PlatformTaxFee of PlatformTaxFee
+        | BalanceTransactionSource'Refund of Refund
+        | BalanceTransactionSource'ReserveTransaction of ReserveTransaction
+        | BalanceTransactionSource'TaxDeductedAtSource of TaxDeductedAtSource
+        | BalanceTransactionSource'Topup of Topup
+        | BalanceTransactionSource'Transfer of Transfer
+        | BalanceTransactionSource'TransferReversal of TransferReversal
 
     ///These bank accounts are payment methods on `Customer` objects.
     ///
@@ -996,95 +626,51 @@ module StripeModel =
     ///They can be bank accounts or debit cards as well, and are documented in the links above.
     ///
     ///Related guide: [Bank Debits and Transfers](https://stripe.com/docs/payments/bank-debits-transfers).
-    and BankAccount = {
+    and BankAccount (accountHolderName: string option, accountHolderType: string option, bankName: string option, country: string, currency: string, fingerprint: string option, id: string, last4: string, object: BankAccountObject, routingNumber: string option, status: string, ?account: BankAccountAccountDU option, ?availablePayoutMethods: BankAccountAvailablePayoutMethods list option, ?customer: BankAccountCustomerDU option, ?defaultForCurrency: bool option, ?metadata: Map<string, string> option) =
 
-        ///The ID of the account that the bank account is associated with.
-        Account: BankAccountAccountDU option
-
-        ///The name of the person or business that owns the bank account.
-        AccountHolderName: string
-
-        ///The type of entity that holds the account. This can be either `individual` or `company`.
-        AccountHolderType: string
-
-        ///A set of available payout methods for this bank account. Only values from this set should be passed as the `method` when creating a payout.
-        AvailablePayoutMethods: BankAccountAvailablePayoutMethods list option
-
-        ///Name of the bank associated with the routing number (e.g., `WELLS FARGO`).
-        BankName: string
-
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string
-
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string
-
-        ///The ID of the customer that the bank account is associated with.
-        Customer: BankAccountCustomerDU option
-
-        ///Whether this bank account is the default external account for its currency.
-        DefaultForCurrency: bool option
-
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The last four digits of the bank account number.
-        Last4: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: BankAccountObject
-
-        ///The routing transit number for the bank account.
-        RoutingNumber: string
-
-        ///For bank accounts, possible values are `new`, `validated`, `verified`, `verification_failed`, or `errored`. A bank account that hasn't had any activity or validation performed is `new`. If Stripe can determine that the bank account exists, its status will be `validated`. Note that there often isn’t enough information to know (e.g., for smaller credit unions), and the validation is not always run. If customer bank account verification has succeeded, the bank account status will be `verified`. If the verification failed for any reason, such as microdeposit failure, the status will be `verification_failed`. If a transfer sent to this bank account fails, we'll set the status to `errored` and will not continue to send transfers until the bank details are updated.
-    ///
-    ///For external accounts, possible values are `new` and `errored`. Validations aren't run against external accounts because they're only used for payouts. This means the other statuses don't apply. If a transfer fails, the status is set to `errored` and transfers are stopped until account details are updated.
-        Status: string
-
-    }
+        member _.Account = account |> Option.flatten
+        member _.AccountHolderName = accountHolderName
+        member _.AccountHolderType = accountHolderType
+        member _.AvailablePayoutMethods = availablePayoutMethods |> Option.flatten
+        member _.BankName = bankName
+        member _.Country = country
+        member _.Currency = currency
+        member _.Customer = customer |> Option.flatten
+        member _.DefaultForCurrency = defaultForCurrency |> Option.flatten
+        member _.Fingerprint = fingerprint
+        member _.Id = id
+        member _.Last4 = last4
+        member _.Metadata = metadata |> Option.flatten
+        member _.Object = object
+        member _.RoutingNumber = routingNumber
+        member _.Status = status
 
     and BankAccountAvailablePayoutMethods =
-        | Instant
-        | Standard
+        | BankAccountAvailablePayoutMethods'Instant
+        | BankAccountAvailablePayoutMethods'Standard
 
     and BankAccountObject =
-        | BankAccount
+        | BankAccountObject'BankAccount
 
     and BankAccountAccountDU =
-        | String of string
-        | Account of Account
+        | BankAccountAccountDU'String of string
+        | BankAccountAccountDU'Account of Account
 
     and BankAccountCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | BankAccountCustomerDU'String of string
+        | BankAccountCustomerDU'Customer of Customer
+        | BankAccountCustomerDU'DeletedCustomer of DeletedCustomer
 
     ///
-    and BillingDetails = {
+    and BillingDetails (address: BillingDetailsAddressDU option, email: string option, name: string option, phone: string option) =
 
-        ///Billing address.
-        Address: BillingDetailsAddressDU
-
-        ///Email address.
-        Email: string
-
-        ///Full name.
-        Name: string
-
-        ///Billing phone number (including extension).
-        Phone: string
-
-    }
+        member _.Address = address
+        member _.Email = email
+        member _.Name = name
+        member _.Phone = phone
 
     and BillingDetailsAddressDU =
-        | Address of Address
+        | BillingDetailsAddressDU'Address of Address
 
     ///A session describes the instantiation of the customer portal for
     ///a particular customer. By visiting the session's URL, the customer
@@ -1093,614 +679,337 @@ module StripeModel =
     ///Create sessions on-demand when customers intend to manage their subscriptions and billing details.
     ///
     ///Integration guide: [Billing customer portal](https://stripe.com/docs/billing/subscriptions/integrating-customer-portal).
-    and BillingPortalSession = {
+    and BillingPortalSession (created: int, customer: string, id: string, livemode: bool, object: BillingPortalSessionObject, returnUrl: string, url: string) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The ID of the customer for this session.
-        Customer: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: BillingPortalSessionObject
-
-        ///The URL to which Stripe should send customers when they click on the link to return to your website.
-        ReturnUrl: string
-
-        ///The short-lived URL of the session giving customers access to the customer portal.
-        Url: string
-
-    }
+        member _.Created = created
+        member _.Customer = customer
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.ReturnUrl = returnUrl
+        member _.Url = url
 
     and BillingPortalSessionObject =
-        | BillingPortalSession
+        | BillingPortalSessionObject'BillingPortalSession
 
     ///
-    and BitcoinReceiver = {
+    and BitcoinReceiver (active: bool, amount: int, amountReceived: int, bitcoinAmount: int, bitcoinAmountReceived: int, bitcoinUri: string, created: int, currency: string, description: string option, email: string option, filled: bool, id: string, inboundAddress: string, livemode: bool, metadata: Map<string, string> option, object: BitcoinReceiverObject, refundAddress: string option, uncapturedFunds: bool, usedForPayment: bool option, ?customer: string option, ?payment: string option, ?transactions: Map<string, string>) =
 
-        ///True when this bitcoin receiver has received a non-zero amount of bitcoin.
-        Active: bool
-
-        ///The amount of `currency` that you are collecting as payment.
-        Amount: int
-
-        ///The amount of `currency` to which `bitcoin_amount_received` has been converted.
-        AmountReceived: int
-
-        ///The amount of bitcoin that the customer should send to fill the receiver. The `bitcoin_amount` is denominated in Satoshi: there are 10^8 Satoshi in one bitcoin.
-        BitcoinAmount: int
-
-        ///The amount of bitcoin that has been sent by the customer to this receiver.
-        BitcoinAmountReceived: int
-
-        ///This URI can be displayed to the customer as a clickable link (to activate their bitcoin client) or as a QR code (for mobile wallets).
-        BitcoinUri: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) to which the bitcoin will be converted.
-        Currency: string
-
-        ///The customer ID of the bitcoin receiver.
-        Customer: string option
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///The customer's email address, set by the API call that creates the receiver.
-        Email: string
-
-        ///This flag is initially false and updates to true when the customer sends the `bitcoin_amount` to this receiver.
-        Filled: bool
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///A bitcoin address that is specific to this receiver. The customer can send bitcoin to this address to fill the receiver.
-        InboundAddress: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: BitcoinReceiverObject
-
-        ///The ID of the payment created from the receiver, if any. Hidden when viewing the receiver with a publishable key.
-        Payment: string option
-
-        ///The refund address of this bitcoin receiver.
-        RefundAddress: string
-
-        ///A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key.
-        Transactions: Map<string, string> option
-
-        ///This receiver contains uncaptured funds that can be used for a payment or refunded.
-        UncapturedFunds: bool
-
-        ///Indicate if this source is used for payment.
-        UsedForPayment: bool
-
-    }
+        member _.Active = active
+        member _.Amount = amount
+        member _.AmountReceived = amountReceived
+        member _.BitcoinAmount = bitcoinAmount
+        member _.BitcoinAmountReceived = bitcoinAmountReceived
+        member _.BitcoinUri = bitcoinUri
+        member _.Created = created
+        member _.Currency = currency
+        member _.Customer = customer |> Option.flatten
+        member _.Description = description
+        member _.Email = email
+        member _.Filled = filled
+        member _.Id = id
+        member _.InboundAddress = inboundAddress
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Payment = payment |> Option.flatten
+        member _.RefundAddress = refundAddress
+        member _.Transactions = transactions
+        member _.UncapturedFunds = uncapturedFunds
+        member _.UsedForPayment = usedForPayment
 
     and BitcoinReceiverObject =
-        | BitcoinReceiver
+        | BitcoinReceiverObject'BitcoinReceiver
 
     ///
-    and BitcoinTransaction = {
+    and BitcoinTransaction (amount: int, bitcoinAmount: int, created: int, currency: string, id: string, object: BitcoinTransactionObject, receiver: string) =
 
-        ///The amount of `currency` that the transaction was converted to in real-time.
-        Amount: int
-
-        ///The amount of bitcoin contained in the transaction.
-        BitcoinAmount: int
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) to which this transaction was converted.
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: BitcoinTransactionObject
-
-        ///The receiver to which this transaction was sent.
-        Receiver: string
-
-    }
+        member _.Amount = amount
+        member _.BitcoinAmount = bitcoinAmount
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Object = object
+        member _.Receiver = receiver
 
     and BitcoinTransactionObject =
-        | BitcoinTransaction
+        | BitcoinTransactionObject'BitcoinTransaction
 
     ///This is an object representing a capability for a Stripe account.
     ///
     ///Related guide: [Account capabilities](https://stripe.com/docs/connect/account-capabilities).
-    and Capability = {
+    and Capability (account: CapabilityAccountDU, id: string, object: CapabilityObject, requested: bool, requestedAt: int option, status: CapabilityStatus, ?requirements: AccountCapabilityRequirements) =
 
-        ///The account for which the capability enables functionality.
-        Account: CapabilityAccountDU
-
-        ///The identifier for the capability.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CapabilityObject
-
-        ///Whether the capability has been requested.
-        Requested: bool
-
-        ///Time at which the capability was requested. Measured in seconds since the Unix epoch.
-        RequestedAt: int
-
-        Requirements: AccountCapabilityRequirements option
-
-        ///The status of the capability. Can be `active`, `inactive`, `pending`, or `unrequested`.
-        Status: CapabilityStatus
-
-    }
+        member _.Account = account
+        member _.Id = id
+        member _.Object = object
+        member _.Requested = requested
+        member _.RequestedAt = requestedAt
+        member _.Requirements = requirements
+        member _.Status = status
 
     and CapabilityObject =
-        | Capability
+        | CapabilityObject'Capability
 
     and CapabilityStatus =
-        | Active
-        | Disabled
-        | Inactive
-        | Pending
-        | Unrequested
+        | CapabilityStatus'Active
+        | CapabilityStatus'Disabled
+        | CapabilityStatus'Inactive
+        | CapabilityStatus'Pending
+        | CapabilityStatus'Unrequested
 
     and CapabilityAccountDU =
-        | String of string
-        | Account of Account
+        | CapabilityAccountDU'String of string
+        | CapabilityAccountDU'Account of Account
 
     ///You can store multiple cards on a customer in order to charge the customer
     ///later. You can also store multiple debit cards on a recipient in order to
     ///transfer to those cards later.
     ///
     ///Related guide: [Card Payments with Sources](https://stripe.com/docs/sources/cards).
-    and Card = {
+    and Card (addressCity: string option, addressCountry: string option, addressLine1: string option, addressLine1Check: string option, addressLine2: string option, addressState: string option, addressZip: string option, addressZipCheck: string option, brand: CardBrand, country: string option, cvcCheck: string option, dynamicLast4: string option, expMonth: int, expYear: int, funding: CardFunding, id: string, last4: string, metadata: Map<string, string> option, name: string option, object: CardObject, tokenizationMethod: CardTokenizationMethod option, ?account: CardAccountDU option, ?availablePayoutMethods: CardAvailablePayoutMethods list option, ?currency: string option, ?customer: CardCustomerDU option, ?defaultForCurrency: bool option, ?description: string, ?fingerprint: string option, ?iin: string, ?issuer: string, ?recipient: CardRecipientDU option) =
 
-        ///The account this card belongs to. This attribute will not be in the card object if the card belongs to a customer or recipient instead.
-        Account: CardAccountDU option
-
-        ///City/District/Suburb/Town/Village.
-        AddressCity: string
-
-        ///Billing address country, if provided when creating card.
-        AddressCountry: string
-
-        ///Address line 1 (Street address/PO Box/Company name).
-        AddressLine1: string
-
-        ///If `address_line1` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressLine1Check: string
-
-        ///Address line 2 (Apartment/Suite/Unit/Building).
-        AddressLine2: string
-
-        ///State/County/Province/Region.
-        AddressState: string
-
-        ///ZIP or postal code.
-        AddressZip: string
-
-        ///If `address_zip` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressZipCheck: string
-
-        ///A set of available payout methods for this card. Only values from this set should be passed as the `method` when creating a payout.
-        AvailablePayoutMethods: CardAvailablePayoutMethods list option
-
-        ///Card brand. Can be `American Express`, `Diners Club`, `Discover`, `JCB`, `MasterCard`, `UnionPay`, `Visa`, or `Unknown`.
-        Brand: CardBrand
-
-        ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string
-
-        ///Three-letter [ISO code for currency](https://stripe.com/docs/payouts). Only applicable on accounts (not customers or recipients). The card can be used as a transfer destination for funds in this currency.
-        Currency: string option
-
-        ///The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead.
-        Customer: CardCustomerDU option
-
-        ///If a CVC was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. A result of unchecked indicates that CVC was provided but hasn't been checked yet. Checks are typically performed when attaching a card to a Customer object, or when creating a charge. For more details, see [Check if a card is valid without a charge](https://support.stripe.com/questions/check-if-a-card-is-valid-without-a-charge).
-        CvcCheck: string
-
-        ///Whether this card is the default external account for its currency.
-        DefaultForCurrency: bool option
-
-        ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
-        Description: string option
-
-        ///(For tokenized numbers only.) The last four digits of the device account number.
-        DynamicLast4: string
-
-        ///Two-digit number representing the card's expiration month.
-        ExpMonth: int
-
-        ///Four-digit number representing the card's expiration year.
-        ExpYear: int
-
-        ///Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
-        Fingerprint: string option
-
-        ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: CardFunding
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
-        Iin: string option
-
-        ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
-        Issuer: string option
-
-        ///The last four digits of the card.
-        Last4: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///Cardholder name.
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CardObject
-
-        ///The recipient that this card belongs to. This attribute will not be in the card object if the card belongs to a customer or account instead.
-        Recipient: CardRecipientDU option
-
-        ///If the card number is tokenized, this is the method that was used. Can be `android_pay` (includes Google Pay), `apple_pay`, `masterpass`, `visa_checkout`, or null.
-        TokenizationMethod: CardTokenizationMethod
-
-    }
+        member _.Account = account |> Option.flatten
+        member _.AddressCity = addressCity
+        member _.AddressCountry = addressCountry
+        member _.AddressLine1 = addressLine1
+        member _.AddressLine1Check = addressLine1Check
+        member _.AddressLine2 = addressLine2
+        member _.AddressState = addressState
+        member _.AddressZip = addressZip
+        member _.AddressZipCheck = addressZipCheck
+        member _.AvailablePayoutMethods = availablePayoutMethods |> Option.flatten
+        member _.Brand = brand
+        member _.Country = country
+        member _.Currency = currency |> Option.flatten
+        member _.Customer = customer |> Option.flatten
+        member _.CvcCheck = cvcCheck
+        member _.DefaultForCurrency = defaultForCurrency |> Option.flatten
+        member _.Description = description
+        member _.DynamicLast4 = dynamicLast4
+        member _.ExpMonth = expMonth
+        member _.ExpYear = expYear
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.Funding = funding
+        member _.Id = id
+        member _.Iin = iin
+        member _.Issuer = issuer
+        member _.Last4 = last4
+        member _.Metadata = metadata
+        member _.Name = name
+        member _.Object = object
+        member _.Recipient = recipient |> Option.flatten
+        member _.TokenizationMethod = tokenizationMethod
 
     and CardAvailablePayoutMethods =
-        | Instant
-        | Standard
+        | CardAvailablePayoutMethods'Instant
+        | CardAvailablePayoutMethods'Standard
 
     and CardBrand =
-        | [<JsonUnionCase("American Express")>] AmericanExpress
-        | [<JsonUnionCase("Diners Club")>] DinersClub
-        | [<JsonUnionCase("Discover")>] Discover
-        | [<JsonUnionCase("JCB")>] JCB
-        | [<JsonUnionCase("MasterCard")>] MasterCard
-        | [<JsonUnionCase("UnionPay")>] UnionPay
-        | [<JsonUnionCase("Visa")>] Visa
-        | [<JsonUnionCase("Unknown")>] Unknown
+        | [<JsonUnionCase("American Express")>] CardBrand'AmericanExpress
+        | [<JsonUnionCase("Diners Club")>] CardBrand'DinersClub
+        | [<JsonUnionCase("Discover")>] CardBrand'Discover
+        | [<JsonUnionCase("JCB")>] CardBrand'JCB
+        | [<JsonUnionCase("MasterCard")>] CardBrand'MasterCard
+        | [<JsonUnionCase("UnionPay")>] CardBrand'UnionPay
+        | [<JsonUnionCase("Visa")>] CardBrand'Visa
+        | [<JsonUnionCase("Unknown")>] CardBrand'Unknown
 
     and CardFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
+        | CardFunding'Credit
+        | CardFunding'Debit
+        | CardFunding'Prepaid
+        | CardFunding'Unknown
 
     and CardObject =
-        | Card
+        | CardObject'Card
 
     and CardTokenizationMethod =
-        | AndroidPay
-        | ApplePay
-        | Masterpass
-        | VisaCheckout
+        | CardTokenizationMethod'AndroidPay
+        | CardTokenizationMethod'ApplePay
+        | CardTokenizationMethod'Masterpass
+        | CardTokenizationMethod'VisaCheckout
 
     and CardAccountDU =
-        | String of string
-        | Account of Account
+        | CardAccountDU'String of string
+        | CardAccountDU'Account of Account
 
     and CardCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | CardCustomerDU'String of string
+        | CardCustomerDU'Customer of Customer
+        | CardCustomerDU'DeletedCustomer of DeletedCustomer
 
     and CardRecipientDU =
-        | String of string
-        | Recipient of Recipient
+        | CardRecipientDU'String of string
+        | CardRecipientDU'Recipient of Recipient
 
     ///
-    and CardMandatePaymentMethodDetails = {
+    and CardMandatePaymentMethodDetails (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///To charge a credit or a debit card, you create a `Charge` object. You can
     ///retrieve and refund individual charges as well as list all charges. Charges
     ///are identified by a unique, random ID.
     ///
     ///Related guide: [Accept a payment with the Charges API](https://stripe.com/docs/payments/accept-a-payment-charges).
-    and Charge = {
+    and Charge (amount: int, amountCaptured: int, amountRefunded: int, application: ChargeApplicationDU option, applicationFee: ChargeApplicationFeeDU option, applicationFeeAmount: int option, balanceTransaction: ChargeBalanceTransactionDU option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: int, currency: string, customer: ChargeCustomerDU option, description: string option, destination: ChargeDestinationDU option, dispute: ChargeDisputeDU option, disputed: bool, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetailsDU option, id: string, invoice: ChargeInvoiceDU option, livemode: bool, metadata: Map<string, string>, object: ChargeObject, onBehalfOf: ChargeOnBehalfOfDU option, order: ChargeOrderDU option, outcome: ChargeOutcomeDU option, paid: bool, paymentIntent: ChargePaymentIntentDU option, paymentMethod: string option, paymentMethodDetails: ChargePaymentMethodDetailsDU option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, refunds: Map<string, string>, review: ChargeReviewDU option, shipping: ChargeShippingDU option, source: ChargeSourceDU option, sourceTransfer: ChargeSourceTransferDU option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: string, transferData: ChargeTransferDataDU option, transferGroup: string option, ?alternateStatementDescriptors: AlternateStatementDescriptors, ?authorizationCode: string, ?level3: Level3, ?transfer: ChargeTransferDU) =
 
-        AlternateStatementDescriptors: AlternateStatementDescriptors option
-
-        ///Amount intended to be collected by this payment. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
-        Amount: int
-
-        ///Amount in %s captured (can be less than the amount attribute on the charge if a partial capture was made).
-        AmountCaptured: int
-
-        ///Amount in %s refunded (can be less than the amount attribute on the charge if a partial refund was issued).
-        AmountRefunded: int
-
-        ///ID of the Connect application that created the charge.
-        Application: ChargeApplicationDU
-
-        ///The application fee (if any) for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees) for details.
-        ApplicationFee: ChargeApplicationFeeDU
-
-        ///The amount of the application fee (if any) requested for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees) for details.
-        ApplicationFeeAmount: int
-
-        ///Authorization code on the charge.
-        AuthorizationCode: string option
-
-        ///ID of the balance transaction that describes the impact of this charge on your account balance (not including refunds or disputes).
-        BalanceTransaction: ChargeBalanceTransactionDU
-
-        BillingDetails: BillingDetails
-
-        ///The full statement descriptor that is passed to card networks, and that is displayed on your customers' credit card and bank statements. Allows you to see what the statement descriptor looks like after the static and dynamic portions are combined.
-        CalculatedStatementDescriptor: string
-
-        ///If the charge was created without capturing, this Boolean represents whether it is still uncaptured or has since been captured.
-        Captured: bool
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///ID of the customer this charge is for if one exists.
-        Customer: ChargeCustomerDU
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.
-        Destination: ChargeDestinationDU
-
-        ///Details about the dispute if the charge has been disputed.
-        Dispute: ChargeDisputeDU
-
-        ///Whether the charge has been disputed.
-        Disputed: bool
-
-        ///Error code explaining reason for charge failure if available (see [the errors section](https://stripe.com/docs/api#errors) for a list of codes).
-        FailureCode: string
-
-        ///Message to user further explaining reason for charge failure if available.
-        FailureMessage: string
-
-        ///Information on fraud assessments for the charge.
-        FraudDetails: ChargeFraudDetailsDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///ID of the invoice this charge is for if one exists.
-        Invoice: ChargeInvoiceDU
-
-        Level3: Level3 option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ChargeObject
-
-        ///The account (if any) the charge was made on behalf of without triggering an automatic transfer. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers) for details.
-        OnBehalfOf: ChargeOnBehalfOfDU
-
-        ///ID of the order this charge is for if one exists.
-        Order: ChargeOrderDU
-
-        ///Details about whether the payment was accepted, and why. See [understanding declines](https://stripe.com/docs/declines) for details.
-        Outcome: ChargeOutcomeDU
-
-        ///`true` if the charge succeeded, or was successfully authorized for later capture.
-        Paid: bool
-
-        ///ID of the PaymentIntent associated with this charge, if one exists.
-        PaymentIntent: ChargePaymentIntentDU
-
-        ///ID of the payment method used in this charge.
-        PaymentMethod: string
-
-        ///Details about the payment method at the time of the transaction.
-        PaymentMethodDetails: ChargePaymentMethodDetailsDU
-
-        ///This is the email address that the receipt for this charge was sent to.
-        ReceiptEmail: string
-
-        ///This is the transaction number that appears on email receipts sent for this charge. This attribute will be `null` until a receipt has been sent.
-        ReceiptNumber: string
-
-        ///This is the URL to view the receipt for this charge. The receipt is kept up-to-date to the latest state of the charge, including any refunds. If the charge is for an Invoice, the receipt will be stylized as an Invoice receipt.
-        ReceiptUrl: string
-
-        ///Whether the charge has been fully refunded. If the charge is only partially refunded, this attribute will still be false.
-        Refunded: bool
-
-        ///A list of refunds that have been applied to the charge.
-        Refunds: Map<string, string>
-
-        ///ID of the review associated with this charge if one exists.
-        Review: ChargeReviewDU
-
-        ///Shipping information for the charge.
-        Shipping: ChargeShippingDU
-
-        ///This is a legacy field that will be removed in the future. It contains the Source, Card, or BankAccount object used for the charge. For details about the payment method used for this charge, refer to `payment_method` or `payment_method_details` instead.
-        Source: ChargeSourceDU
-
-        ///The transfer ID which created this charge. Only present if the charge came from another Stripe account. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.
-        SourceTransfer: ChargeSourceTransferDU
-
-        ///For card charges, use `statement_descriptor_suffix` instead. Otherwise, you can use this value as the complete description of a charge on your customers’ statements. Must contain at least one letter, maximum 22 characters.
-        StatementDescriptor: string
-
-        ///Provides information about the charge that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
-        StatementDescriptorSuffix: string
-
-        ///The status of the payment is either `succeeded`, `pending`, or `failed`.
-        Status: string
-
-        ///ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter).
-        Transfer: ChargeTransferDU option
-
-        ///An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.
-        TransferData: ChargeTransferDataDU
-
-        ///A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
-        TransferGroup: string
-
-    }
+        member _.AlternateStatementDescriptors = alternateStatementDescriptors
+        member _.Amount = amount
+        member _.AmountCaptured = amountCaptured
+        member _.AmountRefunded = amountRefunded
+        member _.Application = application
+        member _.ApplicationFee = applicationFee
+        member _.ApplicationFeeAmount = applicationFeeAmount
+        member _.AuthorizationCode = authorizationCode
+        member _.BalanceTransaction = balanceTransaction
+        member _.BillingDetails = billingDetails
+        member _.CalculatedStatementDescriptor = calculatedStatementDescriptor
+        member _.Captured = captured
+        member _.Created = created
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.Description = description
+        member _.Destination = destination
+        member _.Dispute = dispute
+        member _.Disputed = disputed
+        member _.FailureCode = failureCode
+        member _.FailureMessage = failureMessage
+        member _.FraudDetails = fraudDetails
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.Level3 = level3
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.OnBehalfOf = onBehalfOf
+        member _.Order = order
+        member _.Outcome = outcome
+        member _.Paid = paid
+        member _.PaymentIntent = paymentIntent
+        member _.PaymentMethod = paymentMethod
+        member _.PaymentMethodDetails = paymentMethodDetails
+        member _.ReceiptEmail = receiptEmail
+        member _.ReceiptNumber = receiptNumber
+        member _.ReceiptUrl = receiptUrl
+        member _.Refunded = refunded
+        member _.Refunds = refunds
+        member _.Review = review
+        member _.Shipping = shipping
+        member _.Source = source
+        member _.SourceTransfer = sourceTransfer
+        member _.StatementDescriptor = statementDescriptor
+        member _.StatementDescriptorSuffix = statementDescriptorSuffix
+        member _.Status = status
+        member _.Transfer = transfer
+        member _.TransferData = transferData
+        member _.TransferGroup = transferGroup
 
     and ChargeObject =
-        | Charge
+        | ChargeObject'Charge
 
     and ChargeApplicationDU =
-        | String of string
-        | Application of Application
+        | ChargeApplicationDU'String of string
+        | ChargeApplicationDU'Application of Application
 
     and ChargeApplicationFeeDU =
-        | String of string
-        | ApplicationFee of ApplicationFee
+        | ChargeApplicationFeeDU'String of string
+        | ChargeApplicationFeeDU'ApplicationFee of ApplicationFee
 
     and ChargeBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | ChargeBalanceTransactionDU'String of string
+        | ChargeBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and ChargeCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | ChargeCustomerDU'String of string
+        | ChargeCustomerDU'Customer of Customer
+        | ChargeCustomerDU'DeletedCustomer of DeletedCustomer
 
     and ChargeDestinationDU =
-        | String of string
-        | Account of Account
+        | ChargeDestinationDU'String of string
+        | ChargeDestinationDU'Account of Account
 
     and ChargeDisputeDU =
-        | String of string
-        | Dispute of Dispute
+        | ChargeDisputeDU'String of string
+        | ChargeDisputeDU'Dispute of Dispute
 
     and ChargeFraudDetailsDU =
-        | ChargeFraudDetails of ChargeFraudDetails
+        | ChargeFraudDetailsDU'ChargeFraudDetails of ChargeFraudDetails
 
     and ChargeInvoiceDU =
-        | String of string
-        | Invoice of Invoice
+        | ChargeInvoiceDU'String of string
+        | ChargeInvoiceDU'Invoice of Invoice
 
     and ChargeOnBehalfOfDU =
-        | String of string
-        | Account of Account
+        | ChargeOnBehalfOfDU'String of string
+        | ChargeOnBehalfOfDU'Account of Account
 
     and ChargeOrderDU =
-        | String of string
-        | Order of Order
+        | ChargeOrderDU'String of string
+        | ChargeOrderDU'Order of Order
 
     and ChargeOutcomeDU =
-        | ChargeOutcome of ChargeOutcome
+        | ChargeOutcomeDU'ChargeOutcome of ChargeOutcome
 
     and ChargePaymentIntentDU =
-        | String of string
-        | PaymentIntent of PaymentIntent
+        | ChargePaymentIntentDU'String of string
+        | ChargePaymentIntentDU'PaymentIntent of PaymentIntent
 
     and ChargePaymentMethodDetailsDU =
-        | PaymentMethodDetails of PaymentMethodDetails
+        | ChargePaymentMethodDetailsDU'PaymentMethodDetails of PaymentMethodDetails
 
     and ChargeReviewDU =
-        | String of string
-        | Review of Review
+        | ChargeReviewDU'String of string
+        | ChargeReviewDU'Review of Review
 
     and ChargeShippingDU =
-        | Shipping of Shipping
+        | ChargeShippingDU'Shipping of Shipping
 
     and ChargeSourceDU =
-        | PaymentSource of PaymentSource
+        | ChargeSourceDU'PaymentSource of PaymentSource
 
     and ChargeSourceTransferDU =
-        | String of string
-        | Transfer of Transfer
+        | ChargeSourceTransferDU'String of string
+        | ChargeSourceTransferDU'Transfer of Transfer
 
     and ChargeTransferDU =
-        | String of string
-        | Transfer of Transfer
+        | ChargeTransferDU'String of string
+        | ChargeTransferDU'Transfer of Transfer
 
     and ChargeTransferDataDU =
-        | ChargeTransferData of ChargeTransferData
+        | ChargeTransferDataDU'ChargeTransferData of ChargeTransferData
 
     ///
-    and ChargeFraudDetails = {
+    and ChargeFraudDetails (?stripeReport: string, ?userReport: string) =
 
-        ///Assessments from Stripe. If set, the value is `fraudulent`.
-        StripeReport: string option
-
-        ///Assessments reported by you. If set, possible values of are `safe` and `fraudulent`.
-        UserReport: string option
-
-    }
+        member _.StripeReport = stripeReport
+        member _.UserReport = userReport
 
     ///
-    and ChargeOutcome = {
+    and ChargeOutcome (networkStatus: string option, reason: string option, sellerMessage: string option, ``type``: string, ?riskLevel: string, ?riskScore: int, ?rule: ChargeOutcomeRuleDU) =
 
-        ///Possible values are `approved_by_network`, `declined_by_network`, `not_sent_to_network`, and `reversed_after_approval`. The value `reversed_after_approval` indicates the payment was [blocked by Stripe](https://stripe.com/docs/declines#blocked-payments) after bank authorization, and may temporarily appear as "pending" on a cardholder's statement.
-        NetworkStatus: string
-
-        ///An enumerated value providing a more detailed explanation of the outcome's `type`. Charges blocked by Radar's default block rule have the value `highest_risk_level`. Charges placed in review by Radar's default review rule have the value `elevated_risk_level`. Charges authorized, blocked, or placed in review by custom rules have the value `rule`. See [understanding declines](https://stripe.com/docs/declines) for more details.
-        Reason: string
-
-        ///Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are `normal`, `elevated`, `highest`. For non-card payments, and card-based payments predating the public assignment of risk levels, this field will have the value `not_assessed`. In the event of an error in the evaluation, this field will have the value `unknown`. This field is only available with Radar.
-        RiskLevel: string option
-
-        ///Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are between 0 and 100. For non-card payments, card-based payments predating the public assignment of risk scores, or in the event of an error during evaluation, this field will not be present. This field is only available with Radar for Fraud Teams.
-        RiskScore: int option
-
-        ///The ID of the Radar rule that matched the payment, if applicable.
-        Rule: ChargeOutcomeRuleDU option
-
-        ///A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer.
-        SellerMessage: string
-
-        ///Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://stripe.com/docs/declines) and [Radar reviews](https://stripe.com/docs/radar/reviews) for details.
-        Type: string
-
-    }
+        member _.NetworkStatus = networkStatus
+        member _.Reason = reason
+        member _.RiskLevel = riskLevel
+        member _.RiskScore = riskScore
+        member _.Rule = rule
+        member _.SellerMessage = sellerMessage
+        member _.Type = ``type``
 
     and ChargeOutcomeRuleDU =
-        | String of string
-        | Rule of Rule
+        | ChargeOutcomeRuleDU'String of string
+        | ChargeOutcomeRuleDU'Rule of Rule
 
     ///
-    and ChargeTransferData = {
+    and ChargeTransferData (amount: int option, destination: ChargeTransferDataDestinationDU) =
 
-        ///The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
-        Amount: int
-
-        ///ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.
-        Destination: ChargeTransferDataDestinationDU
-
-    }
+        member _.Amount = amount
+        member _.Destination = destination
 
     and ChargeTransferDataDestinationDU =
-        | String of string
-        | Account of Account
+        | ChargeTransferDataDestinationDU'String of string
+        | ChargeTransferDataDestinationDU'Account of Account
 
     ///A Checkout Session represents your customer's session as they pay for
     ///one-time purchases or subscriptions through [Checkout](https://stripe.com/docs/payments/checkout).
@@ -1715,221 +1024,138 @@ module StripeModel =
     ///client to begin Checkout.
     ///
     ///Related guide: [Checkout Server Quickstart](https://stripe.com/docs/payments/checkout/api).
-    and CheckoutSession = {
+    and CheckoutSession (allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string, clientReferenceId: string option, currency: string option, customer: CheckoutSessionCustomerDU option, customerEmail: string option, id: string, livemode: bool, locale: CheckoutSessionLocale option, metadata: Map<string, string> option, mode: CheckoutSessionMode, object: CheckoutSessionObject, paymentIntent: CheckoutSessionPaymentIntentDU option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, setupIntent: CheckoutSessionSetupIntentDU option, shipping: CheckoutSessionShippingDU option, shippingAddressCollection: CheckoutSessionShippingAddressCollectionDU option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscriptionDU option, successUrl: string, totalDetails: CheckoutSessionTotalDetailsDU option, ?lineItems: Map<string, string>) =
 
-        ///Enables user redeemable promotion codes.
-        AllowPromotionCodes: bool
-
-        ///Total of all items before discounts or taxes are applied.
-        AmountSubtotal: int
-
-        ///Total of all items after discounts and taxes are applied.
-        AmountTotal: int
-
-        ///Describes whether Checkout should collect the customer's billing address.
-        BillingAddressCollection: CheckoutSessionBillingAddressCollection
-
-        ///The URL the customer will be directed to if they decide to cancel payment and return to your website.
-        CancelUrl: string
-
-        ///A unique string to reference the Checkout Session. This can be a
-    ///customer ID, a cart ID, or similar, and can be used to reconcile the
-    ///session with your internal systems.
-        ClientReferenceId: string
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The ID of the customer for this session.
-    ///For Checkout Sessions in `payment` or `subscription` mode, Checkout
-    ///will create a new customer object based on information provided
-    ///during the session unless an existing customer was provided when
-    ///the session was created.
-        Customer: CheckoutSessionCustomerDU
-
-        ///If provided, this value will be used when the Customer object is created.
-    ///If not provided, customers will be asked to enter their email address.
-    ///Use this parameter to prefill customer data if you already have an email
-    ///on file. To access information about the customer once a session is
-    ///complete, use the `customer` attribute.
-        CustomerEmail: string
-
-        ///Unique identifier for the object. Used to pass to `redirectToCheckout`
-    ///in Stripe.js.
-        Id: string
-
-        ///The line items purchased by the customer.
-        LineItems: Map<string, string> option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///The IETF language tag of the locale Checkout is displayed in. If blank or `auto`, the browser's locale is used.
-        Locale: CheckoutSessionLocale
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The mode of the Checkout Session.
-        Mode: CheckoutSessionMode
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CheckoutSessionObject
-
-        ///The ID of the PaymentIntent for Checkout Sessions in `payment` mode.
-        PaymentIntent: CheckoutSessionPaymentIntentDU
-
-        ///A list of the types of payment methods (e.g. card) this Checkout
-    ///Session is allowed to accept.
-        PaymentMethodTypes: string list
-
-        ///The payment status of the Checkout Session, one of `paid`, `unpaid`, or `no_payment_required`.
-    ///You can use this value to decide when to fulfill your customer's order.
-        PaymentStatus: CheckoutSessionPaymentStatus
-
-        ///The ID of the SetupIntent for Checkout Sessions in `setup` mode.
-        SetupIntent: CheckoutSessionSetupIntentDU
-
-        ///Shipping information for this Checkout Session.
-        Shipping: CheckoutSessionShippingDU
-
-        ///When set, provides configuration for Checkout to collect a shipping address from a customer.
-        ShippingAddressCollection: CheckoutSessionShippingAddressCollectionDU
-
-        ///Describes the type of transaction being performed by Checkout in order to customize
-    ///relevant text on the page, such as the submit button. `submit_type` can only be
-    ///specified on Checkout Sessions in `payment` mode, but not Checkout Sessions
-    ///in `subscription` or `setup` mode.
-        SubmitType: CheckoutSessionSubmitType
-
-        ///The ID of the subscription for Checkout Sessions in `subscription` mode.
-        Subscription: CheckoutSessionSubscriptionDU
-
-        ///The URL the customer will be directed to after the payment or
-    ///subscription creation is successful.
-        SuccessUrl: string
-
-        ///Tax and discount details for the computed total amount.
-        TotalDetails: CheckoutSessionTotalDetailsDU
-
-    }
+        member _.AllowPromotionCodes = allowPromotionCodes
+        member _.AmountSubtotal = amountSubtotal
+        member _.AmountTotal = amountTotal
+        member _.BillingAddressCollection = billingAddressCollection
+        member _.CancelUrl = cancelUrl
+        member _.ClientReferenceId = clientReferenceId
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.CustomerEmail = customerEmail
+        member _.Id = id
+        member _.LineItems = lineItems
+        member _.Livemode = livemode
+        member _.Locale = locale
+        member _.Metadata = metadata
+        member _.Mode = mode
+        member _.Object = object
+        member _.PaymentIntent = paymentIntent
+        member _.PaymentMethodTypes = paymentMethodTypes
+        member _.PaymentStatus = paymentStatus
+        member _.SetupIntent = setupIntent
+        member _.Shipping = shipping
+        member _.ShippingAddressCollection = shippingAddressCollection
+        member _.SubmitType = submitType
+        member _.Subscription = subscription
+        member _.SuccessUrl = successUrl
+        member _.TotalDetails = totalDetails
 
     and CheckoutSessionBillingAddressCollection =
-        | Auto
-        | Required
+        | CheckoutSessionBillingAddressCollection'Auto
+        | CheckoutSessionBillingAddressCollection'Required
 
     and CheckoutSessionLocale =
-        | Auto
-        | Bg
-        | Cs
-        | Da
-        | De
-        | El
-        | En
-        | [<JsonUnionCase("en-GB")>] EnGB
-        | Es
-        | [<JsonUnionCase("es-419")>] Es419
-        | Et
-        | Fi
-        | Fr
-        | [<JsonUnionCase("fr-CA")>] FrCA
-        | Hu
-        | Id
-        | It
-        | Ja
-        | Lt
-        | Lv
-        | Ms
-        | Mt
-        | Nb
-        | Nl
-        | Pl
-        | Pt
-        | [<JsonUnionCase("pt-BR")>] PtBR
-        | Ro
-        | Ru
-        | Sk
-        | Sl
-        | Sv
-        | Tr
-        | Zh
-        | [<JsonUnionCase("zh-HK")>] ZhHK
-        | [<JsonUnionCase("zh-TW")>] ZhTW
+        | CheckoutSessionLocale'Auto
+        | CheckoutSessionLocale'Bg
+        | CheckoutSessionLocale'Cs
+        | CheckoutSessionLocale'Da
+        | CheckoutSessionLocale'De
+        | CheckoutSessionLocale'El
+        | CheckoutSessionLocale'En
+        | [<JsonUnionCase("en-GB")>] CheckoutSessionLocale'EnGB
+        | CheckoutSessionLocale'Es
+        | [<JsonUnionCase("es-419")>] CheckoutSessionLocale'Es419
+        | CheckoutSessionLocale'Et
+        | CheckoutSessionLocale'Fi
+        | CheckoutSessionLocale'Fr
+        | [<JsonUnionCase("fr-CA")>] CheckoutSessionLocale'FrCA
+        | CheckoutSessionLocale'Hu
+        | CheckoutSessionLocale'Id
+        | CheckoutSessionLocale'It
+        | CheckoutSessionLocale'Ja
+        | CheckoutSessionLocale'Lt
+        | CheckoutSessionLocale'Lv
+        | CheckoutSessionLocale'Ms
+        | CheckoutSessionLocale'Mt
+        | CheckoutSessionLocale'Nb
+        | CheckoutSessionLocale'Nl
+        | CheckoutSessionLocale'Pl
+        | CheckoutSessionLocale'Pt
+        | [<JsonUnionCase("pt-BR")>] CheckoutSessionLocale'PtBR
+        | CheckoutSessionLocale'Ro
+        | CheckoutSessionLocale'Ru
+        | CheckoutSessionLocale'Sk
+        | CheckoutSessionLocale'Sl
+        | CheckoutSessionLocale'Sv
+        | CheckoutSessionLocale'Tr
+        | CheckoutSessionLocale'Zh
+        | [<JsonUnionCase("zh-HK")>] CheckoutSessionLocale'ZhHK
+        | [<JsonUnionCase("zh-TW")>] CheckoutSessionLocale'ZhTW
 
     and CheckoutSessionMode =
-        | Payment
-        | Setup
-        | Subscription
+        | CheckoutSessionMode'Payment
+        | CheckoutSessionMode'Setup
+        | CheckoutSessionMode'Subscription
 
     and CheckoutSessionObject =
-        | CheckoutSession
+        | CheckoutSessionObject'CheckoutSession
 
     and CheckoutSessionPaymentStatus =
-        | NoPaymentRequired
-        | Paid
-        | Unpaid
+        | CheckoutSessionPaymentStatus'NoPaymentRequired
+        | CheckoutSessionPaymentStatus'Paid
+        | CheckoutSessionPaymentStatus'Unpaid
 
     and CheckoutSessionSubmitType =
-        | Auto
-        | Book
-        | Donate
-        | Pay
+        | CheckoutSessionSubmitType'Auto
+        | CheckoutSessionSubmitType'Book
+        | CheckoutSessionSubmitType'Donate
+        | CheckoutSessionSubmitType'Pay
 
     and CheckoutSessionCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | CheckoutSessionCustomerDU'String of string
+        | CheckoutSessionCustomerDU'Customer of Customer
+        | CheckoutSessionCustomerDU'DeletedCustomer of DeletedCustomer
 
     and CheckoutSessionPaymentIntentDU =
-        | String of string
-        | PaymentIntent of PaymentIntent
+        | CheckoutSessionPaymentIntentDU'String of string
+        | CheckoutSessionPaymentIntentDU'PaymentIntent of PaymentIntent
 
     and CheckoutSessionSetupIntentDU =
-        | String of string
-        | SetupIntent of SetupIntent
+        | CheckoutSessionSetupIntentDU'String of string
+        | CheckoutSessionSetupIntentDU'SetupIntent of SetupIntent
 
     and CheckoutSessionShippingDU =
-        | Shipping of Shipping
+        | CheckoutSessionShippingDU'Shipping of Shipping
 
     and CheckoutSessionShippingAddressCollectionDU =
-        | PaymentPagesPaymentPageResourcesShippingAddressCollection of PaymentPagesPaymentPageResourcesShippingAddressCollection
+        | CheckoutSessionShippingAddressCollectionDU'PaymentPagesPaymentPageResourcesShippingAddressCollection of PaymentPagesPaymentPageResourcesShippingAddressCollection
 
     and CheckoutSessionSubscriptionDU =
-        | String of string
-        | Subscription of Subscription
+        | CheckoutSessionSubscriptionDU'String of string
+        | CheckoutSessionSubscriptionDU'Subscription of Subscription
 
     and CheckoutSessionTotalDetailsDU =
-        | PaymentPagesCheckoutSessionTotalDetails of PaymentPagesCheckoutSessionTotalDetails
+        | CheckoutSessionTotalDetailsDU'PaymentPagesCheckoutSessionTotalDetails of PaymentPagesCheckoutSessionTotalDetails
 
     ///
-    and ConnectCollectionTransfer = {
+    and ConnectCollectionTransfer (amount: int, currency: string, destination: ConnectCollectionTransferDestinationDU, id: string, livemode: bool, object: ConnectCollectionTransferObject) =
 
-        ///Amount transferred, in %s.
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///ID of the account that funds are being collected for.
-        Destination: ConnectCollectionTransferDestinationDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ConnectCollectionTransferObject
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.Destination = destination
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
 
     and ConnectCollectionTransferObject =
-        | ConnectCollectionTransfer
+        | ConnectCollectionTransferObject'ConnectCollectionTransfer
 
     and ConnectCollectionTransferDestinationDU =
-        | String of string
-        | Account of Account
+        | ConnectCollectionTransferDestinationDU'String of string
+        | ConnectCollectionTransferDestinationDU'Account of Account
 
     ///Stripe needs to collect certain pieces of information about each account
     ///created. These requirements can differ depending on the account's country. The
@@ -1937,313 +1163,167 @@ module StripeModel =
     ///
     ///You can also view the information from this API call as [an online
     ///guide](/docs/connect/required-verification-information).
-    and CountrySpec = {
+    and CountrySpec (defaultCurrency: string, id: string, object: CountrySpecObject, supportedBankAccountCurrencies: Map<string, string>, supportedPaymentCurrencies: string list, supportedPaymentMethods: string list, supportedTransferCountries: string list, verificationFields: CountrySpecVerificationFields) =
 
-        ///The default currency for this country. This applies to both payment methods and bank accounts.
-        DefaultCurrency: string
-
-        ///Unique identifier for the object. Represented as the ISO country code for this country.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CountrySpecObject
-
-        ///Currencies that can be accepted in the specific country (for transfers).
-        SupportedBankAccountCurrencies: Map<string, string>
-
-        ///Currencies that can be accepted in the specified country (for payments).
-        SupportedPaymentCurrencies: string list
-
-        ///Payment methods available in the specified country. You may need to enable some payment methods (e.g., [ACH](https://stripe.com/docs/ach)) on your account before they appear in this list. The `stripe` payment method refers to [charging through your platform](https://stripe.com/docs/connect/destination-charges).
-        SupportedPaymentMethods: string list
-
-        ///Countries that can accept transfers from the specified country.
-        SupportedTransferCountries: string list
-
-        VerificationFields: CountrySpecVerificationFields
-
-    }
+        member _.DefaultCurrency = defaultCurrency
+        member _.Id = id
+        member _.Object = object
+        member _.SupportedBankAccountCurrencies = supportedBankAccountCurrencies
+        member _.SupportedPaymentCurrencies = supportedPaymentCurrencies
+        member _.SupportedPaymentMethods = supportedPaymentMethods
+        member _.SupportedTransferCountries = supportedTransferCountries
+        member _.VerificationFields = verificationFields
 
     and CountrySpecObject =
-        | CountrySpec
+        | CountrySpecObject'CountrySpec
 
     ///
-    and CountrySpecVerificationFieldDetails = {
+    and CountrySpecVerificationFieldDetails (additional: string list, minimum: string list) =
 
-        ///Additional fields which are only required for some users.
-        Additional: string list
-
-        ///Fields which every account must eventually provide.
-        Minimum: string list
-
-    }
+        member _.Additional = additional
+        member _.Minimum = minimum
 
     ///
-    and CountrySpecVerificationFields = {
+    and CountrySpecVerificationFields (company: CountrySpecVerificationFieldDetails, individual: CountrySpecVerificationFieldDetails) =
 
-        Company: CountrySpecVerificationFieldDetails
-
-        Individual: CountrySpecVerificationFieldDetails
-
-    }
+        member _.Company = company
+        member _.Individual = individual
 
     ///A coupon contains information about a percent-off or amount-off discount you
     ///might want to apply to a customer. Coupons may be applied to [invoices](https://stripe.com/docs/api#invoices) or
     ///[orders](https://stripe.com/docs/api#create_order-coupon). Coupons do not work with conventional one-off [charges](https://stripe.com/docs/api#create_charge).
-    and Coupon = {
+    and Coupon (amountOff: int option, created: int, currency: string option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, object: CouponObject, percentOff: decimal option, redeemBy: int option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo) =
 
-        ///Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
-        AmountOff: int
-
-        AppliesTo: CouponAppliesTo option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///If `amount_off` has been set, the three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the amount to take off.
-        Currency: string
-
-        ///One of `forever`, `once`, and `repeating`. Describes how long a customer who applies this coupon will get the discount.
-        Duration: CouponDuration
-
-        ///If `duration` is `repeating`, the number of months the coupon applies. Null if coupon `duration` is `forever` or `once`.
-        DurationInMonths: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Maximum number of times this coupon can be redeemed, in total, across all customers, before it is no longer valid.
-        MaxRedemptions: int
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///Name of the coupon displayed to customers on for instance invoices or receipts.
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CouponObject
-
-        ///Percent that will be taken off the subtotal of any invoices for this customer for the duration of the coupon. For example, a coupon with percent_off of 50 will make a %s100 invoice %s50 instead.
-        PercentOff: decimal
-
-        ///Date after which the coupon can no longer be redeemed.
-        RedeemBy: int
-
-        ///Number of times this coupon has been applied to a customer.
-        TimesRedeemed: int
-
-        ///Taking account of the above properties, whether this coupon can still be applied to a customer.
-        Valid: bool
-
-    }
+        member _.AmountOff = amountOff
+        member _.AppliesTo = appliesTo
+        member _.Created = created
+        member _.Currency = currency
+        member _.Duration = duration
+        member _.DurationInMonths = durationInMonths
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.MaxRedemptions = maxRedemptions
+        member _.Metadata = metadata
+        member _.Name = name
+        member _.Object = object
+        member _.PercentOff = percentOff
+        member _.RedeemBy = redeemBy
+        member _.TimesRedeemed = timesRedeemed
+        member _.Valid = valid
 
     and CouponDuration =
-        | Forever
-        | Once
-        | Repeating
+        | CouponDuration'Forever
+        | CouponDuration'Once
+        | CouponDuration'Repeating
 
     and CouponObject =
-        | Coupon
+        | CouponObject'Coupon
 
     ///
-    and CouponAppliesTo = {
+    and CouponAppliesTo (products: string list) =
 
-        ///A list of product IDs this coupon applies to
-        Products: string list
-
-    }
+        member _.Products = products
 
     ///Issue a credit note to adjust an invoice's amount after the invoice is finalized.
     ///
     ///Related guide: [Credit Notes](https://stripe.com/docs/billing/invoices/credit-notes).
-    and CreditNote = {
+    and CreditNote (amount: int, created: int, currency: string, customer: CreditNoteCustomerDU, customerBalanceTransaction: CreditNoteCustomerBalanceTransactionDU option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, id: string, invoice: CreditNoteInvoiceDU, lines: Map<string, string>, livemode: bool, memo: string option, metadata: Map<string, string> option, number: string, object: CreditNoteObject, outOfBandAmount: int option, pdf: string, reason: CreditNoteReason option, refund: CreditNoteRefundDU option, status: CreditNoteStatus, subtotal: int, taxAmounts: CreditNoteTaxAmount list, total: int, ``type``: CreditNoteType, voidedAt: int option) =
 
-        ///The integer amount in %s representing the total amount of the credit note, including tax.
-        Amount: int
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///ID of the customer.
-        Customer: CreditNoteCustomerDU
-
-        ///Customer balance transaction related to this credit note.
-        CustomerBalanceTransaction: CreditNoteCustomerBalanceTransactionDU
-
-        ///The integer amount in %s representing the total amount of discount that was credited.
-        DiscountAmount: int
-
-        ///The aggregate amounts calculated per discount for all line items.
-        DiscountAmounts: DiscountsResourceDiscountAmount list
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///ID of the invoice.
-        Invoice: CreditNoteInvoiceDU
-
-        ///Line items that make up the credit note
-        Lines: Map<string, string>
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Customer-facing text that appears on the credit note PDF.
-        Memo: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///A unique number that identifies this particular credit note and appears on the PDF of the credit note and its associated invoice.
-        Number: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CreditNoteObject
-
-        ///Amount that was credited outside of Stripe.
-        OutOfBandAmount: int
-
-        ///The link to download the PDF of the credit note.
-        Pdf: string
-
-        ///Reason for issuing this credit note, one of `duplicate`, `fraudulent`, `order_change`, or `product_unsatisfactory`
-        Reason: CreditNoteReason
-
-        ///Refund related to this credit note.
-        Refund: CreditNoteRefundDU
-
-        ///Status of this credit note, one of `issued` or `void`. Learn more about [voiding credit notes](https://stripe.com/docs/billing/invoices/credit-notes#voiding).
-        Status: CreditNoteStatus
-
-        ///The integer amount in %s representing the amount of the credit note, excluding tax and invoice level discounts.
-        Subtotal: int
-
-        ///The aggregate amounts calculated per tax rate for all line items.
-        TaxAmounts: CreditNoteTaxAmount list
-
-        ///The integer amount in %s representing the total amount of the credit note, including tax and all discount.
-        Total: int
-
-        ///Type of this credit note, one of `pre_payment` or `post_payment`. A `pre_payment` credit note means it was issued when the invoice was open. A `post_payment` credit note means it was issued when the invoice was paid.
-        Type: CreditNoteType
-
-        ///The time that the credit note was voided.
-        VoidedAt: int
-
-    }
+        member _.Amount = amount
+        member _.Created = created
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.CustomerBalanceTransaction = customerBalanceTransaction
+        member _.DiscountAmount = discountAmount
+        member _.DiscountAmounts = discountAmounts
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.Lines = lines
+        member _.Livemode = livemode
+        member _.Memo = memo
+        member _.Metadata = metadata
+        member _.Number = number
+        member _.Object = object
+        member _.OutOfBandAmount = outOfBandAmount
+        member _.Pdf = pdf
+        member _.Reason = reason
+        member _.Refund = refund
+        member _.Status = status
+        member _.Subtotal = subtotal
+        member _.TaxAmounts = taxAmounts
+        member _.Total = total
+        member _.Type = ``type``
+        member _.VoidedAt = voidedAt
 
     and CreditNoteObject =
-        | CreditNote
+        | CreditNoteObject'CreditNote
 
     and CreditNoteReason =
-        | Duplicate
-        | Fraudulent
-        | OrderChange
-        | ProductUnsatisfactory
+        | CreditNoteReason'Duplicate
+        | CreditNoteReason'Fraudulent
+        | CreditNoteReason'OrderChange
+        | CreditNoteReason'ProductUnsatisfactory
 
     and CreditNoteStatus =
-        | Issued
-        | Void
+        | CreditNoteStatus'Issued
+        | CreditNoteStatus'Void
 
     and CreditNoteType =
-        | PostPayment
-        | PrePayment
+        | CreditNoteType'PostPayment
+        | CreditNoteType'PrePayment
 
     and CreditNoteCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | CreditNoteCustomerDU'String of string
+        | CreditNoteCustomerDU'Customer of Customer
+        | CreditNoteCustomerDU'DeletedCustomer of DeletedCustomer
 
     and CreditNoteCustomerBalanceTransactionDU =
-        | String of string
-        | CustomerBalanceTransaction of CustomerBalanceTransaction
+        | CreditNoteCustomerBalanceTransactionDU'String of string
+        | CreditNoteCustomerBalanceTransactionDU'CustomerBalanceTransaction of CustomerBalanceTransaction
 
     and CreditNoteInvoiceDU =
-        | String of string
-        | Invoice of Invoice
+        | CreditNoteInvoiceDU'String of string
+        | CreditNoteInvoiceDU'Invoice of Invoice
 
     and CreditNoteRefundDU =
-        | String of string
-        | Refund of Refund
+        | CreditNoteRefundDU'String of string
+        | CreditNoteRefundDU'Refund of Refund
 
     ///
-    and CreditNoteLineItem = {
+    and CreditNoteLineItem (amount: int, description: string option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, id: string, livemode: bool, object: CreditNoteLineItemObject, quantity: int option, taxAmounts: CreditNoteTaxAmount list, taxRates: TaxRate list, ``type``: CreditNoteLineItemType, unitAmount: int option, unitAmountDecimal: string option, ?invoiceLineItem: string) =
 
-        ///The integer amount in %s representing the gross amount being credited for this line item, excluding (exclusive) tax and discounts.
-        Amount: int
-
-        ///Description of the item being credited.
-        Description: string
-
-        ///The integer amount in %s representing the discount being credited for this line item.
-        DiscountAmount: int
-
-        ///The amount of discount calculated per discount for this line item
-        DiscountAmounts: DiscountsResourceDiscountAmount list
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///ID of the invoice line item being credited
-        InvoiceLineItem: string option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CreditNoteLineItemObject
-
-        ///The number of units of product being credited.
-        Quantity: int
-
-        ///The amount of tax calculated per tax rate for this line item
-        TaxAmounts: CreditNoteTaxAmount list
-
-        ///The tax rates which apply to the line item.
-        TaxRates: TaxRate list
-
-        ///The type of the credit note line item, one of `invoice_line_item` or `custom_line_item`. When the type is `invoice_line_item` there is an additional `invoice_line_item` property on the resource the value of which is the id of the credited line item on the invoice.
-        Type: CreditNoteLineItemType
-
-        ///The cost of each unit of product being credited.
-        UnitAmount: int
-
-        ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string
-
-    }
+        member _.Amount = amount
+        member _.Description = description
+        member _.DiscountAmount = discountAmount
+        member _.DiscountAmounts = discountAmounts
+        member _.Id = id
+        member _.InvoiceLineItem = invoiceLineItem
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Quantity = quantity
+        member _.TaxAmounts = taxAmounts
+        member _.TaxRates = taxRates
+        member _.Type = ``type``
+        member _.UnitAmount = unitAmount
+        member _.UnitAmountDecimal = unitAmountDecimal
 
     and CreditNoteLineItemObject =
-        | CreditNoteLineItem
+        | CreditNoteLineItemObject'CreditNoteLineItem
 
     and CreditNoteLineItemType =
-        | CustomLineItem
-        | InvoiceLineItem
+        | CreditNoteLineItemType'CustomLineItem
+        | CreditNoteLineItemType'InvoiceLineItem
 
     ///
-    and CreditNoteTaxAmount = {
+    and CreditNoteTaxAmount (amount: int, inclusive: bool, taxRate: CreditNoteTaxAmountTaxRateDU) =
 
-        ///The amount, in %s, of the tax.
-        Amount: int
-
-        ///Whether this tax amount is inclusive or exclusive.
-        Inclusive: bool
-
-        ///The tax rate that was applied to get this tax amount.
-        TaxRate: CreditNoteTaxAmountTaxRateDU
-
-    }
+        member _.Amount = amount
+        member _.Inclusive = inclusive
+        member _.TaxRate = taxRate
 
     and CreditNoteTaxAmountTaxRateDU =
-        | String of string
-        | TaxRate of TaxRate
+        | CreditNoteTaxAmountTaxRateDU'String of string
+        | CreditNoteTaxAmountTaxRateDU'TaxRate of TaxRate
 
     ///`Customer` objects allow you to perform recurring charges, and to track
     ///multiple charges, that are associated with the same customer. The API allows
@@ -2251,124 +1331,65 @@ module StripeModel =
     ///customers as well as a list of all your customers.
     ///
     ///Related guide: [Save a card during payment](https://stripe.com/docs/payments/save-during-payment).
-    and Customer = {
+    and Customer (created: int, defaultSource: CustomerDefaultSourceDU option, description: string option, email: string option, id: string, livemode: bool, object: CustomerObject, shipping: CustomerShippingDU option, ?address: CustomerAddressDU option, ?balance: int, ?currency: string option, ?delinquent: bool option, ?discount: CustomerDiscountDU option, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: Map<string, string>, ?subscriptions: Map<string, string>, ?taxExempt: CustomerTaxExempt option, ?taxIds: Map<string, string>) =
 
-        ///The customer's address.
-        Address: CustomerAddressDU option
-
-        ///Current balance, if any, being stored on the customer. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice. The balance does not refer to any unpaid invoices; it solely takes into account amounts that have yet to be successfully applied to any invoice. This balance is only taken into account as invoices are finalized.
-        Balance: int option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) the customer can be charged in for recurring billing purposes.
-        Currency: string option
-
-        ///ID of the default payment source for the customer.
-    ///
-    ///If you are using payment methods created via the PaymentMethods API, see the [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) field instead.
-        DefaultSource: CustomerDefaultSourceDU
-
-        ///When the customer's latest invoice is billed by charging automatically, `delinquent` is `true` if the invoice's latest charge failed. When the customer's latest invoice is billed by sending an invoice, `delinquent` is `true` if the invoice isn't paid by its due date.
-    ///
-    ///If an invoice is marked uncollectible by [dunning](https://stripe.com/docs/billing/automatic-collection), `delinquent` doesn't get reset to `false`.
-        Delinquent: bool option
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///Describes the current discount active on the customer, if there is one.
-        Discount: CustomerDiscountDU option
-
-        ///The customer's email address.
-        Email: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The prefix for the customer used to generate unique invoice numbers.
-        InvoicePrefix: string option
-
-        InvoiceSettings: InvoiceSettingCustomerSetting option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-
-        ///The customer's full name or business name.
-        Name: string option
-
-        ///The suffix of the customer's next invoice number, e.g., 0001.
-        NextInvoiceSequence: int option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CustomerObject
-
-        ///The customer's phone number.
-        Phone: string option
-
-        ///The customer's preferred locales (languages), ordered by preference.
-        PreferredLocales: string list option
-
-        ///Mailing and shipping address for the customer. Appears on invoices emailed to this customer.
-        Shipping: CustomerShippingDU
-
-        ///The customer's payment sources, if any.
-        Sources: Map<string, string> option
-
-        ///The customer's current subscriptions, if any.
-        Subscriptions: Map<string, string> option
-
-        ///Describes the customer's tax exemption status. One of `none`, `exempt`, or `reverse`. When set to `reverse`, invoice and receipt PDFs include the text **"Reverse charge"**.
-        TaxExempt: CustomerTaxExempt option
-
-        ///The customer's tax IDs.
-        TaxIds: Map<string, string> option
-
-    }
+        member _.Address = address |> Option.flatten
+        member _.Balance = balance
+        member _.Created = created
+        member _.Currency = currency |> Option.flatten
+        member _.DefaultSource = defaultSource
+        member _.Delinquent = delinquent |> Option.flatten
+        member _.Description = description
+        member _.Discount = discount |> Option.flatten
+        member _.Email = email
+        member _.Id = id
+        member _.InvoicePrefix = invoicePrefix |> Option.flatten
+        member _.InvoiceSettings = invoiceSettings
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Name = name |> Option.flatten
+        member _.NextInvoiceSequence = nextInvoiceSequence
+        member _.Object = object
+        member _.Phone = phone |> Option.flatten
+        member _.PreferredLocales = preferredLocales |> Option.flatten
+        member _.Shipping = shipping
+        member _.Sources = sources
+        member _.Subscriptions = subscriptions
+        member _.TaxExempt = taxExempt |> Option.flatten
+        member _.TaxIds = taxIds
 
     and CustomerObject =
-        | Customer
+        | CustomerObject'Customer
 
     and CustomerTaxExempt =
-        | Exempt
-        | None
-        | Reverse
+        | CustomerTaxExempt'Exempt
+        | CustomerTaxExempt'None
+        | CustomerTaxExempt'Reverse
 
     and CustomerAddressDU =
-        | Address of Address
+        | CustomerAddressDU'Address of Address
 
     and CustomerDefaultSourceDU =
-        | String of string
-        | PaymentSource of PaymentSource
+        | CustomerDefaultSourceDU'String of string
+        | CustomerDefaultSourceDU'PaymentSource of PaymentSource
 
     and CustomerDiscountDU =
-        | Discount of Discount
+        | CustomerDiscountDU'Discount of Discount
 
     and CustomerShippingDU =
-        | Shipping of Shipping
+        | CustomerShippingDU'Shipping of Shipping
 
     ///
-    and CustomerAcceptance = {
+    and CustomerAcceptance (acceptedAt: int option, ``type``: CustomerAcceptanceType, ?offline: OfflineAcceptance, ?online: OnlineAcceptance) =
 
-        ///The time at which the customer accepted the Mandate.
-        AcceptedAt: int
-
-        Offline: OfflineAcceptance option
-
-        Online: OnlineAcceptance option
-
-        ///The type of customer acceptance information included with the Mandate. One of `online` or `offline`.
-        Type: CustomerAcceptanceType
-
-    }
+        member _.AcceptedAt = acceptedAt
+        member _.Offline = offline
+        member _.Online = online
+        member _.Type = ``type``
 
     and CustomerAcceptanceType =
-        | Offline
-        | Online
+        | CustomerAcceptanceType'Offline
+        | CustomerAcceptanceType'Online
 
     ///Each customer has a [`balance`](https://stripe.com/docs/api/customers/object#customer_object-balance) value,
     ///which denotes a debit or credit that's automatically applied to their next invoice upon finalization.
@@ -2376,688 +1397,438 @@ module StripeModel =
     ///or by creating a Customer Balance Transaction, which increments or decrements the customer's `balance` by the specified `amount`.
     ///
     ///Related guide: [Customer Balance](https://stripe.com/docs/billing/customer/balance) to learn more.
-    and CustomerBalanceTransaction = {
+    and CustomerBalanceTransaction (amount: int, created: int, creditNote: CustomerBalanceTransactionCreditNoteDU option, currency: string, customer: CustomerBalanceTransactionCustomerDU, description: string option, endingBalance: int, id: string, invoice: CustomerBalanceTransactionInvoiceDU option, livemode: bool, metadata: Map<string, string> option, object: CustomerBalanceTransactionObject, ``type``: CustomerBalanceTransactionType) =
 
-        ///The amount of the transaction. A negative value is a credit for the customer's balance, and a positive value is a debit to the customer's `balance`.
-        Amount: int
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The ID of the credit note (if any) related to the transaction.
-        CreditNote: CustomerBalanceTransactionCreditNoteDU
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The ID of the customer the transaction belongs to.
-        Customer: CustomerBalanceTransactionCustomerDU
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///The customer's `balance` after the transaction was applied. A negative value decreases the amount due on the customer's next invoice. A positive value increases the amount due on the customer's next invoice.
-        EndingBalance: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The ID of the invoice (if any) related to the transaction.
-        Invoice: CustomerBalanceTransactionInvoiceDU
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: CustomerBalanceTransactionObject
-
-        ///Transaction type: `adjustment`, `applied_to_invoice`, `credit_note`, `initial`, `invoice_too_large`, `invoice_too_small`, `unspent_receiver_credit`, or `unapplied_from_invoice`. See the [Customer Balance page](https://stripe.com/docs/billing/customer/balance#types) to learn more about transaction types.
-        Type: CustomerBalanceTransactionType
-
-    }
+        member _.Amount = amount
+        member _.Created = created
+        member _.CreditNote = creditNote
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.Description = description
+        member _.EndingBalance = endingBalance
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Type = ``type``
 
     and CustomerBalanceTransactionObject =
-        | CustomerBalanceTransaction
+        | CustomerBalanceTransactionObject'CustomerBalanceTransaction
 
     and CustomerBalanceTransactionType =
-        | Adjustment
-        | AppliedToInvoice
-        | CreditNote
-        | Initial
-        | InvoiceTooLarge
-        | InvoiceTooSmall
-        | Migration
-        | UnappliedFromInvoice
-        | UnspentReceiverCredit
+        | CustomerBalanceTransactionType'Adjustment
+        | CustomerBalanceTransactionType'AppliedToInvoice
+        | CustomerBalanceTransactionType'CreditNote
+        | CustomerBalanceTransactionType'Initial
+        | CustomerBalanceTransactionType'InvoiceTooLarge
+        | CustomerBalanceTransactionType'InvoiceTooSmall
+        | CustomerBalanceTransactionType'Migration
+        | CustomerBalanceTransactionType'UnappliedFromInvoice
+        | CustomerBalanceTransactionType'UnspentReceiverCredit
 
     and CustomerBalanceTransactionCreditNoteDU =
-        | String of string
-        | CreditNote of CreditNote
+        | CustomerBalanceTransactionCreditNoteDU'String of string
+        | CustomerBalanceTransactionCreditNoteDU'CreditNote of CreditNote
 
     and CustomerBalanceTransactionCustomerDU =
-        | String of string
-        | Customer of Customer
+        | CustomerBalanceTransactionCustomerDU'String of string
+        | CustomerBalanceTransactionCustomerDU'Customer of Customer
 
     and CustomerBalanceTransactionInvoiceDU =
-        | String of string
-        | Invoice of Invoice
+        | CustomerBalanceTransactionInvoiceDU'String of string
+        | CustomerBalanceTransactionInvoiceDU'Invoice of Invoice
 
     ///
-    and DeletedAccount = {
+    and DeletedAccount (deleted: DeletedAccountDeleted, id: string, object: DeletedAccountObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedAccountDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedAccountObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedAccountDeleted =
-        | True
+        | DeletedAccountDeleted'True
 
     and DeletedAccountObject =
-        | Account
+        | DeletedAccountObject'Account
 
     ///
-    and DeletedAlipayAccount = {
+    and DeletedAlipayAccount (deleted: DeletedAlipayAccountDeleted, id: string, object: DeletedAlipayAccountObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedAlipayAccountDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedAlipayAccountObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedAlipayAccountDeleted =
-        | True
+        | DeletedAlipayAccountDeleted'True
 
     and DeletedAlipayAccountObject =
-        | AlipayAccount
+        | DeletedAlipayAccountObject'AlipayAccount
 
     ///
-    and DeletedApplePayDomain = {
+    and DeletedApplePayDomain (deleted: DeletedApplePayDomainDeleted, id: string, object: DeletedApplePayDomainObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedApplePayDomainDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedApplePayDomainObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedApplePayDomainDeleted =
-        | True
+        | DeletedApplePayDomainDeleted'True
 
     and DeletedApplePayDomainObject =
-        | ApplePayDomain
+        | DeletedApplePayDomainObject'ApplePayDomain
 
     ///
-    and DeletedBankAccount = {
+    and DeletedBankAccount (currency: string option, deleted: DeletedBankAccountDeleted, id: string, object: DeletedBankAccountObject) =
 
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string
-
-        ///Always true for a deleted object
-        Deleted: DeletedBankAccountDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedBankAccountObject
-
-    }
+        member _.Currency = currency
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedBankAccountDeleted =
-        | True
+        | DeletedBankAccountDeleted'True
 
     and DeletedBankAccountObject =
-        | BankAccount
+        | DeletedBankAccountObject'BankAccount
 
     ///
-    and DeletedBitcoinReceiver = {
+    and DeletedBitcoinReceiver (deleted: DeletedBitcoinReceiverDeleted, id: string, object: DeletedBitcoinReceiverObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedBitcoinReceiverDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedBitcoinReceiverObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedBitcoinReceiverDeleted =
-        | True
+        | DeletedBitcoinReceiverDeleted'True
 
     and DeletedBitcoinReceiverObject =
-        | BitcoinReceiver
+        | DeletedBitcoinReceiverObject'BitcoinReceiver
 
     ///
-    and DeletedCard = {
+    and DeletedCard (currency: string option, deleted: DeletedCardDeleted, id: string, object: DeletedCardObject) =
 
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string
-
-        ///Always true for a deleted object
-        Deleted: DeletedCardDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedCardObject
-
-    }
+        member _.Currency = currency
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedCardDeleted =
-        | True
+        | DeletedCardDeleted'True
 
     and DeletedCardObject =
-        | Card
+        | DeletedCardObject'Card
 
     ///
-    and DeletedCoupon = {
+    and DeletedCoupon (deleted: DeletedCouponDeleted, id: string, object: DeletedCouponObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedCouponDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedCouponObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedCouponDeleted =
-        | True
+        | DeletedCouponDeleted'True
 
     and DeletedCouponObject =
-        | Coupon
+        | DeletedCouponObject'Coupon
 
     ///
-    and DeletedCustomer = {
+    and DeletedCustomer (deleted: DeletedCustomerDeleted, id: string, object: DeletedCustomerObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedCustomerDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedCustomerObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedCustomerDeleted =
-        | True
+        | DeletedCustomerDeleted'True
 
     and DeletedCustomerObject =
-        | Customer
+        | DeletedCustomerObject'Customer
 
     ///
-    and DeletedDiscount = {
+    and DeletedDiscount (checkoutSession: string option, coupon: Coupon, customer: DeletedDiscountCustomerDU option, deleted: DeletedDiscountDeleted, id: string, invoice: string option, invoiceItem: string option, object: DeletedDiscountObject, promotionCode: DeletedDiscountPromotionCodeDU option, start: int, subscription: string option) =
 
-        ///The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.
-        CheckoutSession: string
-
-        Coupon: Coupon
-
-        ///The ID of the customer associated with this discount.
-        Customer: DeletedDiscountCustomerDU
-
-        ///Always true for a deleted object
-        Deleted: DeletedDiscountDeleted
-
-        ///The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
-        Id: string
-
-        ///The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
-        Invoice: string
-
-        ///The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
-        InvoiceItem: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedDiscountObject
-
-        ///The promotion code applied to create this discount.
-        PromotionCode: DeletedDiscountPromotionCodeDU
-
-        ///Date that the coupon was applied.
-        Start: int
-
-        ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
-        Subscription: string
-
-    }
+        member _.CheckoutSession = checkoutSession
+        member _.Coupon = coupon
+        member _.Customer = customer
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.InvoiceItem = invoiceItem
+        member _.Object = object
+        member _.PromotionCode = promotionCode
+        member _.Start = start
+        member _.Subscription = subscription
 
     and DeletedDiscountDeleted =
-        | True
+        | DeletedDiscountDeleted'True
 
     and DeletedDiscountObject =
-        | Discount
+        | DeletedDiscountObject'Discount
 
     and DeletedDiscountCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | DeletedDiscountCustomerDU'String of string
+        | DeletedDiscountCustomerDU'Customer of Customer
+        | DeletedDiscountCustomerDU'DeletedCustomer of DeletedCustomer
 
     and DeletedDiscountPromotionCodeDU =
-        | String of string
-        | PromotionCode of PromotionCode
+        | DeletedDiscountPromotionCodeDU'String of string
+        | DeletedDiscountPromotionCodeDU'PromotionCode of PromotionCode
 
     and DeletedExternalAccount =
-        | DeletedBankAccount of DeletedBankAccount
-        | DeletedCard of DeletedCard
+        | DeletedExternalAccount'DeletedBankAccount of DeletedBankAccount
+        | DeletedExternalAccount'DeletedCard of DeletedCard
 
     ///
-    and DeletedInvoice = {
+    and DeletedInvoice (deleted: DeletedInvoiceDeleted, id: string, object: DeletedInvoiceObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedInvoiceDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedInvoiceObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedInvoiceDeleted =
-        | True
+        | DeletedInvoiceDeleted'True
 
     and DeletedInvoiceObject =
-        | Invoice
+        | DeletedInvoiceObject'Invoice
 
     ///
-    and DeletedInvoiceitem = {
+    and DeletedInvoiceitem (deleted: DeletedInvoiceitemDeleted, id: string, object: DeletedInvoiceitemObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedInvoiceitemDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedInvoiceitemObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedInvoiceitemDeleted =
-        | True
+        | DeletedInvoiceitemDeleted'True
 
     and DeletedInvoiceitemObject =
-        | Invoiceitem
+        | DeletedInvoiceitemObject'Invoiceitem
 
     and DeletedPaymentSource =
-        | DeletedAlipayAccount of DeletedAlipayAccount
-        | DeletedBankAccount of DeletedBankAccount
-        | DeletedBitcoinReceiver of DeletedBitcoinReceiver
-        | DeletedCard of DeletedCard
+        | DeletedPaymentSource'DeletedAlipayAccount of DeletedAlipayAccount
+        | DeletedPaymentSource'DeletedBankAccount of DeletedBankAccount
+        | DeletedPaymentSource'DeletedBitcoinReceiver of DeletedBitcoinReceiver
+        | DeletedPaymentSource'DeletedCard of DeletedCard
 
     ///
-    and DeletedPerson = {
+    and DeletedPerson (deleted: DeletedPersonDeleted, id: string, object: DeletedPersonObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedPersonDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedPersonObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedPersonDeleted =
-        | True
+        | DeletedPersonDeleted'True
 
     and DeletedPersonObject =
-        | Person
+        | DeletedPersonObject'Person
 
     ///
-    and DeletedPlan = {
+    and DeletedPlan (deleted: DeletedPlanDeleted, id: string, object: DeletedPlanObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedPlanDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedPlanObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedPlanDeleted =
-        | True
+        | DeletedPlanDeleted'True
 
     and DeletedPlanObject =
-        | Plan
+        | DeletedPlanObject'Plan
 
     ///
-    and DeletedPrice = {
+    and DeletedPrice (deleted: DeletedPriceDeleted, id: string, object: DeletedPriceObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedPriceDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedPriceObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedPriceDeleted =
-        | True
+        | DeletedPriceDeleted'True
 
     and DeletedPriceObject =
-        | Price
+        | DeletedPriceObject'Price
 
     ///
-    and DeletedProduct = {
+    and DeletedProduct (deleted: DeletedProductDeleted, id: string, object: DeletedProductObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedProductDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedProductObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedProductDeleted =
-        | True
+        | DeletedProductDeleted'True
 
     and DeletedProductObject =
-        | Product
+        | DeletedProductObject'Product
 
     ///
-    and DeletedRadarValueList = {
+    and DeletedRadarValueList (deleted: DeletedRadarValueListDeleted, id: string, object: DeletedRadarValueListObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedRadarValueListDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedRadarValueListObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedRadarValueListDeleted =
-        | True
+        | DeletedRadarValueListDeleted'True
 
     and DeletedRadarValueListObject =
-        | RadarValueList
+        | DeletedRadarValueListObject'RadarValueList
 
     ///
-    and DeletedRadarValueListItem = {
+    and DeletedRadarValueListItem (deleted: DeletedRadarValueListItemDeleted, id: string, object: DeletedRadarValueListItemObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedRadarValueListItemDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedRadarValueListItemObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedRadarValueListItemDeleted =
-        | True
+        | DeletedRadarValueListItemDeleted'True
 
     and DeletedRadarValueListItemObject =
-        | RadarValueListItem
+        | DeletedRadarValueListItemObject'RadarValueListItem
 
     ///
-    and DeletedRecipient = {
+    and DeletedRecipient (deleted: DeletedRecipientDeleted, id: string, object: DeletedRecipientObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedRecipientDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedRecipientObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedRecipientDeleted =
-        | True
+        | DeletedRecipientDeleted'True
 
     and DeletedRecipientObject =
-        | Recipient
+        | DeletedRecipientObject'Recipient
 
     ///
-    and DeletedSku = {
+    and DeletedSku (deleted: DeletedSkuDeleted, id: string, object: DeletedSkuObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedSkuDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedSkuObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedSkuDeleted =
-        | True
+        | DeletedSkuDeleted'True
 
     and DeletedSkuObject =
-        | Sku
+        | DeletedSkuObject'Sku
 
     ///
-    and DeletedSubscriptionItem = {
+    and DeletedSubscriptionItem (deleted: DeletedSubscriptionItemDeleted, id: string, object: DeletedSubscriptionItemObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedSubscriptionItemDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedSubscriptionItemObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedSubscriptionItemDeleted =
-        | True
+        | DeletedSubscriptionItemDeleted'True
 
     and DeletedSubscriptionItemObject =
-        | SubscriptionItem
+        | DeletedSubscriptionItemObject'SubscriptionItem
 
     ///
-    and DeletedTaxId = {
+    and DeletedTaxId (deleted: DeletedTaxIdDeleted, id: string, object: DeletedTaxIdObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedTaxIdDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedTaxIdObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedTaxIdDeleted =
-        | True
+        | DeletedTaxIdDeleted'True
 
     and DeletedTaxIdObject =
-        | TaxId
+        | DeletedTaxIdObject'TaxId
 
     ///
-    and DeletedTerminalLocation = {
+    and DeletedTerminalLocation (deleted: DeletedTerminalLocationDeleted, id: string, object: DeletedTerminalLocationObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedTerminalLocationDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedTerminalLocationObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedTerminalLocationDeleted =
-        | True
+        | DeletedTerminalLocationDeleted'True
 
     and DeletedTerminalLocationObject =
-        | TerminalLocation
+        | DeletedTerminalLocationObject'TerminalLocation
 
     ///
-    and DeletedTerminalReader = {
+    and DeletedTerminalReader (deleted: DeletedTerminalReaderDeleted, id: string, object: DeletedTerminalReaderObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedTerminalReaderDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedTerminalReaderObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedTerminalReaderDeleted =
-        | True
+        | DeletedTerminalReaderDeleted'True
 
     and DeletedTerminalReaderObject =
-        | TerminalReader
+        | DeletedTerminalReaderObject'TerminalReader
 
     ///
-    and DeletedWebhookEndpoint = {
+    and DeletedWebhookEndpoint (deleted: DeletedWebhookEndpointDeleted, id: string, object: DeletedWebhookEndpointObject) =
 
-        ///Always true for a deleted object
-        Deleted: DeletedWebhookEndpointDeleted
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DeletedWebhookEndpointObject
-
-    }
+        member _.Deleted = deleted
+        member _.Id = id
+        member _.Object = object
 
     and DeletedWebhookEndpointDeleted =
-        | True
+        | DeletedWebhookEndpointDeleted'True
 
     and DeletedWebhookEndpointObject =
-        | WebhookEndpoint
+        | DeletedWebhookEndpointObject'WebhookEndpoint
 
     ///
-    and DeliveryEstimate = {
+    and DeliveryEstimate (``type``: string, ?date: string, ?earliest: string, ?latest: string) =
 
-        ///If `type` is `"exact"`, `date` will be the expected delivery date in the format YYYY-MM-DD.
-        Date: string option
-
-        ///If `type` is `"range"`, `earliest` will be be the earliest delivery date in the format YYYY-MM-DD.
-        Earliest: string option
-
-        ///If `type` is `"range"`, `latest` will be the latest delivery date in the format YYYY-MM-DD.
-        Latest: string option
-
-        ///The type of estimate. Must be either `"range"` or `"exact"`.
-        Type: string
-
-    }
+        member _.Date = date
+        member _.Earliest = earliest
+        member _.Latest = latest
+        member _.Type = ``type``
 
     ///A discount represents the actual application of a coupon to a particular
     ///customer. It contains information about when the discount began and when it
     ///will end.
     ///
     ///Related guide: [Applying Discounts to Subscriptions](https://stripe.com/docs/billing/subscriptions/discounts).
-    and Discount = {
+    and Discount (checkoutSession: string option, coupon: Coupon, customer: DiscountCustomerDU option, ``end``: int option, id: string, invoice: string option, invoiceItem: string option, object: DiscountObject, promotionCode: DiscountPromotionCodeDU option, start: int, subscription: string option) =
 
-        ///The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.
-        CheckoutSession: string
-
-        Coupon: Coupon
-
-        ///The ID of the customer associated with this discount.
-        Customer: DiscountCustomerDU
-
-        ///If the coupon has a duration of `repeating`, the date that this discount will end. If the coupon has a duration of `once` or `forever`, this attribute will be null.
-        End: int
-
-        ///The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
-        Id: string
-
-        ///The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
-        Invoice: string
-
-        ///The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
-        InvoiceItem: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DiscountObject
-
-        ///The promotion code applied to create this discount.
-        PromotionCode: DiscountPromotionCodeDU
-
-        ///Date that the coupon was applied.
-        Start: int
-
-        ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
-        Subscription: string
-
-    }
+        member _.CheckoutSession = checkoutSession
+        member _.Coupon = coupon
+        member _.Customer = customer
+        member _.End = ``end``
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.InvoiceItem = invoiceItem
+        member _.Object = object
+        member _.PromotionCode = promotionCode
+        member _.Start = start
+        member _.Subscription = subscription
 
     and DiscountObject =
-        | Discount
+        | DiscountObject'Discount
 
     and DiscountCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | DiscountCustomerDU'String of string
+        | DiscountCustomerDU'Customer of Customer
+        | DiscountCustomerDU'DeletedCustomer of DeletedCustomer
 
     and DiscountPromotionCodeDU =
-        | String of string
-        | PromotionCode of PromotionCode
+        | DiscountPromotionCodeDU'String of string
+        | DiscountPromotionCodeDU'PromotionCode of PromotionCode
 
     ///
-    and DiscountsResourceDiscountAmount = {
+    and DiscountsResourceDiscountAmount (amount: int, discount: DiscountsResourceDiscountAmountDiscountDU) =
 
-        ///The amount, in %s, of the discount.
-        Amount: int
-
-        ///The discount that was applied to get this discount amount.
-        Discount: DiscountsResourceDiscountAmountDiscountDU
-
-    }
+        member _.Amount = amount
+        member _.Discount = discount
 
     and DiscountsResourceDiscountAmountDiscountDU =
-        | String of string
-        | Discount of Discount
-        | DeletedDiscount of DeletedDiscount
+        | DiscountsResourceDiscountAmountDiscountDU'String of string
+        | DiscountsResourceDiscountAmountDiscountDU'Discount of Discount
+        | DiscountsResourceDiscountAmountDiscountDU'DeletedDiscount of DeletedDiscount
 
     ///A dispute occurs when a customer questions your charge with their card issuer.
     ///When this happens, you're given the opportunity to respond to the dispute with
@@ -3066,248 +1837,138 @@ module StripeModel =
     ///Fraud](/docs/disputes) documentation.
     ///
     ///Related guide: [Disputes and Fraud](https://stripe.com/docs/disputes).
-    and Dispute = {
+    and Dispute (amount: int, balanceTransactions: BalanceTransaction list, charge: DisputeChargeDU, created: int, currency: string, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, object: DisputeObject, paymentIntent: DisputePaymentIntentDU option, reason: string, status: DisputeStatus, ?networkReasonCode: string option) =
 
-        ///Disputed amount. Usually the amount of the charge, but can differ (usually because of currency fluctuation or because only part of the order is disputed).
-        Amount: int
-
-        ///List of zero, one, or two balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute.
-        BalanceTransactions: BalanceTransaction list
-
-        ///ID of the charge that was disputed.
-        Charge: DisputeChargeDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        Evidence: DisputeEvidence
-
-        EvidenceDetails: DisputeEvidenceDetails
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///If true, it is still possible to refund the disputed payment. Once the payment has been fully refunded, no further funds will be withdrawn from your Stripe account as a result of this dispute.
-        IsChargeRefundable: bool
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///Network-dependent reason code for the dispute.
-        NetworkReasonCode: string option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: DisputeObject
-
-        ///ID of the PaymentIntent that was disputed.
-        PaymentIntent: DisputePaymentIntentDU
-
-        ///Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Read more about [dispute reasons](https://stripe.com/docs/disputes/categories).
-        Reason: string
-
-        ///Current status of dispute. Possible values are `warning_needs_response`, `warning_under_review`, `warning_closed`, `needs_response`, `under_review`, `charge_refunded`, `won`, or `lost`.
-        Status: DisputeStatus
-
-    }
+        member _.Amount = amount
+        member _.BalanceTransactions = balanceTransactions
+        member _.Charge = charge
+        member _.Created = created
+        member _.Currency = currency
+        member _.Evidence = evidence
+        member _.EvidenceDetails = evidenceDetails
+        member _.Id = id
+        member _.IsChargeRefundable = isChargeRefundable
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.NetworkReasonCode = networkReasonCode |> Option.flatten
+        member _.Object = object
+        member _.PaymentIntent = paymentIntent
+        member _.Reason = reason
+        member _.Status = status
 
     and DisputeObject =
-        | Dispute
+        | DisputeObject'Dispute
 
     and DisputeStatus =
-        | ChargeRefunded
-        | Lost
-        | NeedsResponse
-        | UnderReview
-        | WarningClosed
-        | WarningNeedsResponse
-        | WarningUnderReview
-        | Won
+        | DisputeStatus'ChargeRefunded
+        | DisputeStatus'Lost
+        | DisputeStatus'NeedsResponse
+        | DisputeStatus'UnderReview
+        | DisputeStatus'WarningClosed
+        | DisputeStatus'WarningNeedsResponse
+        | DisputeStatus'WarningUnderReview
+        | DisputeStatus'Won
 
     and DisputeChargeDU =
-        | String of string
-        | Charge of Charge
+        | DisputeChargeDU'String of string
+        | DisputeChargeDU'Charge of Charge
 
     and DisputePaymentIntentDU =
-        | String of string
-        | PaymentIntent of PaymentIntent
+        | DisputePaymentIntentDU'String of string
+        | DisputePaymentIntentDU'PaymentIntent of PaymentIntent
 
     ///
-    and DisputeEvidence = {
+    and DisputeEvidence (accessActivityLog: string option, billingAddress: string option, cancellationPolicy: DisputeEvidenceCancellationPolicyDU option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: DisputeEvidenceCustomerCommunicationDU option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: DisputeEvidenceCustomerSignatureDU option, duplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentationDU option, duplicateChargeExplanation: string option, duplicateChargeId: string option, productDescription: string option, receipt: DisputeEvidenceReceiptDU option, refundPolicy: DisputeEvidenceRefundPolicyDU option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: DisputeEvidenceServiceDocumentationDU option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: DisputeEvidenceShippingDocumentationDU option, shippingTrackingNumber: string option, uncategorizedFile: DisputeEvidenceUncategorizedFileDU option, uncategorizedText: string option) =
 
-        ///Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity.
-        AccessActivityLog: string
-
-        ///The billing address provided by the customer.
-        BillingAddress: string
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your subscription cancellation policy, as shown to the customer.
-        CancellationPolicy: DisputeEvidenceCancellationPolicyDU
-
-        ///An explanation of how and when the customer was shown your refund policy prior to purchase.
-        CancellationPolicyDisclosure: string
-
-        ///A justification for why the customer's subscription was not canceled.
-        CancellationRebuttal: string
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any communication with the customer that you feel is relevant to your case. Examples include emails proving that the customer received the product or service, or demonstrating their use of or satisfaction with the product or service.
-        CustomerCommunication: DisputeEvidenceCustomerCommunicationDU
-
-        ///The email address of the customer.
-        CustomerEmailAddress: string
-
-        ///The name of the customer.
-        CustomerName: string
-
-        ///The IP address that the customer used when making the purchase.
-        CustomerPurchaseIp: string
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A relevant document or contract showing the customer's signature.
-        CustomerSignature: DisputeEvidenceCustomerSignatureDU
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation for the prior charge that can uniquely identify the charge, such as a receipt, shipping label, work order, etc. This document should be paired with a similar document from the disputed payment that proves the two payments are separate.
-        DuplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentationDU
-
-        ///An explanation of the difference between the disputed charge versus the prior charge that appears to be a duplicate.
-        DuplicateChargeExplanation: string
-
-        ///The Stripe ID for the prior charge which appears to be a duplicate of the disputed charge.
-        DuplicateChargeId: string
-
-        ///A description of the product or service that was sold.
-        ProductDescription: string
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any receipt or message sent to the customer notifying them of the charge.
-        Receipt: DisputeEvidenceReceiptDU
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your refund policy, as shown to the customer.
-        RefundPolicy: DisputeEvidenceRefundPolicyDU
-
-        ///Documentation demonstrating that the customer was shown your refund policy prior to purchase.
-        RefundPolicyDisclosure: string
-
-        ///A justification for why the customer is not entitled to a refund.
-        RefundRefusalExplanation: string
-
-        ///The date on which the customer received or began receiving the purchased service, in a clear human-readable format.
-        ServiceDate: string
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a service was provided to the customer. This could include a copy of a signed contract, work order, or other form of written agreement.
-        ServiceDocumentation: DisputeEvidenceServiceDocumentationDU
-
-        ///The address to which a physical product was shipped. You should try to include as complete address information as possible.
-        ShippingAddress: string
-
-        ///The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc. If multiple carriers were used for this purchase, please separate them with commas.
-        ShippingCarrier: string
-
-        ///The date on which a physical product began its route to the shipping address, in a clear human-readable format.
-        ShippingDate: string
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a product was shipped to the customer at the same address the customer provided to you. This could include a copy of the shipment receipt, shipping label, etc. It should show the customer's full shipping address, if possible.
-        ShippingDocumentation: DisputeEvidenceShippingDocumentationDU
-
-        ///The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas.
-        ShippingTrackingNumber: string
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any additional evidence or statements.
-        UncategorizedFile: DisputeEvidenceUncategorizedFileDU
-
-        ///Any additional evidence or statements.
-        UncategorizedText: string
-
-    }
+        member _.AccessActivityLog = accessActivityLog
+        member _.BillingAddress = billingAddress
+        member _.CancellationPolicy = cancellationPolicy
+        member _.CancellationPolicyDisclosure = cancellationPolicyDisclosure
+        member _.CancellationRebuttal = cancellationRebuttal
+        member _.CustomerCommunication = customerCommunication
+        member _.CustomerEmailAddress = customerEmailAddress
+        member _.CustomerName = customerName
+        member _.CustomerPurchaseIp = customerPurchaseIp
+        member _.CustomerSignature = customerSignature
+        member _.DuplicateChargeDocumentation = duplicateChargeDocumentation
+        member _.DuplicateChargeExplanation = duplicateChargeExplanation
+        member _.DuplicateChargeId = duplicateChargeId
+        member _.ProductDescription = productDescription
+        member _.Receipt = receipt
+        member _.RefundPolicy = refundPolicy
+        member _.RefundPolicyDisclosure = refundPolicyDisclosure
+        member _.RefundRefusalExplanation = refundRefusalExplanation
+        member _.ServiceDate = serviceDate
+        member _.ServiceDocumentation = serviceDocumentation
+        member _.ShippingAddress = shippingAddress
+        member _.ShippingCarrier = shippingCarrier
+        member _.ShippingDate = shippingDate
+        member _.ShippingDocumentation = shippingDocumentation
+        member _.ShippingTrackingNumber = shippingTrackingNumber
+        member _.UncategorizedFile = uncategorizedFile
+        member _.UncategorizedText = uncategorizedText
 
     and DisputeEvidenceCancellationPolicyDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceCancellationPolicyDU'String of string
+        | DisputeEvidenceCancellationPolicyDU'File of File
 
     and DisputeEvidenceCustomerCommunicationDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceCustomerCommunicationDU'String of string
+        | DisputeEvidenceCustomerCommunicationDU'File of File
 
     and DisputeEvidenceCustomerSignatureDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceCustomerSignatureDU'String of string
+        | DisputeEvidenceCustomerSignatureDU'File of File
 
     and DisputeEvidenceDuplicateChargeDocumentationDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceDuplicateChargeDocumentationDU'String of string
+        | DisputeEvidenceDuplicateChargeDocumentationDU'File of File
 
     and DisputeEvidenceReceiptDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceReceiptDU'String of string
+        | DisputeEvidenceReceiptDU'File of File
 
     and DisputeEvidenceRefundPolicyDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceRefundPolicyDU'String of string
+        | DisputeEvidenceRefundPolicyDU'File of File
 
     and DisputeEvidenceServiceDocumentationDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceServiceDocumentationDU'String of string
+        | DisputeEvidenceServiceDocumentationDU'File of File
 
     and DisputeEvidenceShippingDocumentationDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceShippingDocumentationDU'String of string
+        | DisputeEvidenceShippingDocumentationDU'File of File
 
     and DisputeEvidenceUncategorizedFileDU =
-        | String of string
-        | File of File
+        | DisputeEvidenceUncategorizedFileDU'String of string
+        | DisputeEvidenceUncategorizedFileDU'File of File
 
     ///
-    and DisputeEvidenceDetails = {
+    and DisputeEvidenceDetails (dueBy: int option, hasEvidence: bool, pastDue: bool, submissionCount: int) =
 
-        ///Date by which evidence must be submitted in order to successfully challenge dispute. Will be null if the customer's bank or credit card company doesn't allow a response for this particular dispute.
-        DueBy: int
-
-        ///Whether evidence has been staged for this dispute.
-        HasEvidence: bool
-
-        ///Whether the last evidence submission was submitted past the due date. Defaults to `false` if no evidence submissions have occurred. If `true`, then delivery of the latest evidence is *not* guaranteed.
-        PastDue: bool
-
-        ///The number of times evidence has been submitted. Typically, you may only submit evidence once.
-        SubmissionCount: int
-
-    }
+        member _.DueBy = dueBy
+        member _.HasEvidence = hasEvidence
+        member _.PastDue = pastDue
+        member _.SubmissionCount = submissionCount
 
     ///
-    and EphemeralKey = {
+    and EphemeralKey (created: int, expires: int, id: string, livemode: bool, object: EphemeralKeyObject, ?secret: string) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Time at which the key will expire. Measured in seconds since the Unix epoch.
-        Expires: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: EphemeralKeyObject
-
-        ///The key's secret. You can use this value to make authorized requests to the Stripe API.
-        Secret: string option
-
-    }
+        member _.Created = created
+        member _.Expires = expires
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Secret = secret
 
     and EphemeralKeyObject =
-        | EphemeralKey
+        | EphemeralKeyObject'EphemeralKey
 
     ///An error response from the Stripe API
-    and Error = {
+    and Error (error: ApiErrors) =
 
-        Error: ApiErrors
-
-    }
+        member _.Error = error
 
     ///Events are our way of letting you know when something interesting happens in
     ///your account. When an interesting event occurs, we create a new `Event`
@@ -3338,44 +1999,24 @@ module StripeModel =
     ///
     ///**NOTE:** Right now, access to events through the [Retrieve Event API](https://stripe.com/docs/api#retrieve_event) is
     ///guaranteed only for 30 days.
-    and Event = {
+    and Event (apiVersion: string option, created: int, data: NotificationEventData, id: string, livemode: bool, object: EventObject, pendingWebhooks: int, request: EventRequestDU option, ``type``: string, ?account: string) =
 
-        ///The connected account that originated the event.
-        Account: string option
-
-        ///The Stripe API version used to render `data`. *Note: This property is populated only for events on or after October 31, 2014*.
-        ApiVersion: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        Data: NotificationEventData
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: EventObject
-
-        ///Number of webhooks that have yet to be successfully delivered (i.e., to return a 20x response) to the URLs you've specified.
-        PendingWebhooks: int
-
-        ///Information on the API request that instigated the event.
-        Request: EventRequestDU
-
-        ///Description of the event (e.g., `invoice.created` or `charge.refunded`).
-        Type: string
-
-    }
+        member _.Account = account
+        member _.ApiVersion = apiVersion
+        member _.Created = created
+        member _.Data = data
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.PendingWebhooks = pendingWebhooks
+        member _.Request = request
+        member _.Type = ``type``
 
     and EventObject =
-        | Event
+        | EventObject'Event
 
     and EventRequestDU =
-        | NotificationEventRequest of NotificationEventRequest
+        | EventRequestDU'NotificationEventRequest of NotificationEventRequest
 
     ///`Exchange Rate` objects allow you to determine the rates that Stripe is
     ///currently using to convert from one currency to another. Since this number is
@@ -3388,89 +2029,54 @@ module StripeModel =
     ///If the value is no longer up to date, the charge won't go through. Please
     ///refer to our [Exchange Rates API](https://stripe.com/docs/exchange-rates) guide for more
     ///details.
-    and ExchangeRate = {
+    and ExchangeRate (id: string, object: ExchangeRateObject, rates: Map<string, string>) =
 
-        ///Unique identifier for the object. Represented as the three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) in lowercase.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ExchangeRateObject
-
-        ///Hash where the keys are supported currencies and the values are the exchange rate at which the base id currency converts to the key currency.
-        Rates: Map<string, string>
-
-    }
+        member _.Id = id
+        member _.Object = object
+        member _.Rates = rates
 
     and ExchangeRateObject =
-        | ExchangeRate
+        | ExchangeRateObject'ExchangeRate
 
     and ExternalAccount =
-        | BankAccount of BankAccount
-        | Card of Card
+        | ExternalAccount'BankAccount of BankAccount
+        | ExternalAccount'Card of Card
 
     ///
-    and Fee = {
+    and Fee (amount: int, application: string option, currency: string, description: string option, ``type``: string) =
 
-        ///Amount of the fee, in cents.
-        Amount: int
-
-        ///ID of the Connect application that earned the fee.
-        Application: string
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///Type of the fee, one of: `application_fee`, `stripe_fee` or `tax`.
-        Type: string
-
-    }
+        member _.Amount = amount
+        member _.Application = application
+        member _.Currency = currency
+        member _.Description = description
+        member _.Type = ``type``
 
     ///`Application Fee Refund` objects allow you to refund an application fee that
     ///has previously been created but not yet refunded. Funds will be refunded to
     ///the Stripe account from which the fee was originally collected.
     ///
     ///Related guide: [Refunding Application Fees](https://stripe.com/docs/connect/destination-charges#refunding-app-fee).
-    and FeeRefund = {
+    and FeeRefund (amount: int, balanceTransaction: FeeRefundBalanceTransactionDU option, created: int, currency: string, fee: FeeRefundFeeDU, id: string, metadata: Map<string, string> option, object: FeeRefundObject) =
 
-        ///Amount, in %s.
-        Amount: int
-
-        ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: FeeRefundBalanceTransactionDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///ID of the application fee that was refunded.
-        Fee: FeeRefundFeeDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: FeeRefundObject
-
-    }
+        member _.Amount = amount
+        member _.BalanceTransaction = balanceTransaction
+        member _.Created = created
+        member _.Currency = currency
+        member _.Fee = fee
+        member _.Id = id
+        member _.Metadata = metadata
+        member _.Object = object
 
     and FeeRefundObject =
-        | FeeRefund
+        | FeeRefundObject'FeeRefund
 
     and FeeRefundBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | FeeRefundBalanceTransactionDU'String of string
+        | FeeRefundBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and FeeRefundFeeDU =
-        | String of string
-        | ApplicationFee of ApplicationFee
+        | FeeRefundFeeDU'String of string
+        | FeeRefundFeeDU'ApplicationFee of ApplicationFee
 
     ///This is an object representing a file hosted on Stripe's servers. The
     ///file may have been uploaded by yourself using the [create file](https://stripe.com/docs/api#create_file)
@@ -3479,139 +2085,73 @@ module StripeModel =
     ///query](#scheduled_queries)).
     ///
     ///Related guide: [File Upload Guide](https://stripe.com/docs/file-upload).
-    and File = {
+    and File (created: int, expiresAt: int option, filename: string option, id: string, object: FileObject, purpose: FilePurpose, size: int, title: string option, ``type``: string option, url: string option, ?links: Map<string, string> option) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The time at which the file expires and is no longer available in epoch seconds.
-        ExpiresAt: int
-
-        ///A filename for the file, suitable for saving to a filesystem.
-        Filename: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///A list of [file links](https://stripe.com/docs/api#file_links) that point at this file.
-        Links: Map<string, string> option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: FileObject
-
-        ///The [purpose](https://stripe.com/docs/file-upload#uploading-a-file) of the uploaded file.
-        Purpose: FilePurpose
-
-        ///The size in bytes of the file object.
-        Size: int
-
-        ///A user friendly title for the document.
-        Title: string
-
-        ///The type of the file returned (e.g., `csv`, `pdf`, `jpg`, or `png`).
-        Type: string
-
-        ///The URL from which the file can be downloaded using your live secret API key.
-        Url: string
-
-    }
+        member _.Created = created
+        member _.ExpiresAt = expiresAt
+        member _.Filename = filename
+        member _.Id = id
+        member _.Links = links |> Option.flatten
+        member _.Object = object
+        member _.Purpose = purpose
+        member _.Size = size
+        member _.Title = title
+        member _.Type = ``type``
+        member _.Url = url
 
     and FileObject =
-        | File
+        | FileObject'File
 
     and FilePurpose =
-        | AdditionalVerification
-        | BusinessIcon
-        | BusinessLogo
-        | CustomerSignature
-        | DisputeEvidence
-        | IdentityDocument
-        | PciDocument
-        | TaxDocumentUserUpload
+        | FilePurpose'AdditionalVerification
+        | FilePurpose'BusinessIcon
+        | FilePurpose'BusinessLogo
+        | FilePurpose'CustomerSignature
+        | FilePurpose'DisputeEvidence
+        | FilePurpose'IdentityDocument
+        | FilePurpose'PciDocument
+        | FilePurpose'TaxDocumentUserUpload
 
     ///To share the contents of a `File` object with non-Stripe users, you can
     ///create a `FileLink`. `FileLink`s contain a URL that can be used to
     ///retrieve the contents of the file without authentication.
-    and FileLink = {
+    and FileLink (created: int, expired: bool, expiresAt: int option, file: FileLinkFileDU, id: string, livemode: bool, metadata: Map<string, string>, object: FileLinkObject, url: string option) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Whether this link is already expired.
-        Expired: bool
-
-        ///Time at which the link expires.
-        ExpiresAt: int
-
-        ///The file object this link points to.
-        File: FileLinkFileDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: FileLinkObject
-
-        ///The publicly accessible URL to download the file.
-        Url: string
-
-    }
+        member _.Created = created
+        member _.Expired = expired
+        member _.ExpiresAt = expiresAt
+        member _.File = file
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Url = url
 
     and FileLinkObject =
-        | FileLink
+        | FileLinkObject'FileLink
 
     and FileLinkFileDU =
-        | String of string
-        | File of File
+        | FileLinkFileDU'String of string
+        | FileLinkFileDU'File of File
 
     ///
-    and FinancialReportingFinanceReportRunRunParameters = {
+    and FinancialReportingFinanceReportRunRunParameters (?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: int, ?intervalStart: int, ?payout: string, ?reportingCategory: string, ?timezone: string) =
 
-        ///The set of output columns requested for inclusion in the report run.
-        Columns: string list option
-
-        ///Connected account ID by which to filter the report run.
-        ConnectedAccount: string option
-
-        ///Currency of objects to be included in the report run.
-        Currency: string option
-
-        ///Ending timestamp of data to be included in the report run (exclusive).
-        IntervalEnd: int option
-
-        ///Starting timestamp of data to be included in the report run.
-        IntervalStart: int option
-
-        ///Payout ID by which to filter the report run.
-        Payout: string option
-
-        ///Category of balance transactions to be included in the report run.
-        ReportingCategory: string option
-
-        ///Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
-        Timezone: string option
-
-    }
+        member _.Columns = columns
+        member _.ConnectedAccount = connectedAccount
+        member _.Currency = currency
+        member _.IntervalEnd = intervalEnd
+        member _.IntervalStart = intervalStart
+        member _.Payout = payout
+        member _.ReportingCategory = reportingCategory
+        member _.Timezone = timezone
 
     ///
-    and Inventory = {
+    and Inventory (quantity: int option, ``type``: string, value: string option) =
 
-        ///The count of inventory available. Will be present if and only if `type` is `finite`.
-        Quantity: int
-
-        ///Inventory type. Possible values are `finite`, `bucket` (not quantified), and `infinite`.
-        Type: string
-
-        ///An indicator of the inventory available. Possible values are `in_stock`, `limited`, and `out_of_stock`. Will be present if and only if `type` is `bucket`.
-        Value: string
-
-    }
+        member _.Quantity = quantity
+        member _.Type = ``type``
+        member _.Value = value
 
     ///Invoices are statements of amounts owed by a customer, and are either
     ///generated one-off, or generated periodically from a subscription.
@@ -3645,382 +2185,213 @@ module StripeModel =
     ///[here](https://stripe.com/docs/api/customers/object#customer_object-account_balance).
     ///
     ///Related guide: [Send Invoices to Customers](https://stripe.com/docs/billing/invoices/sending).
-    and Invoice = {
-
-        ///The country of the business associated with this invoice, most often the business creating the invoice.
-        AccountCountry: string
-
-        ///The public name of the business associated with this invoice, most often the business creating the invoice.
-        AccountName: string
-
-        ///The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
-        AccountTaxIds: InvoiceAccountTaxIdsDU list option
-
-        ///Final amount due at this time for this invoice. If the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`.
-        AmountDue: int
-
-        ///The amount, in %s, that was paid.
-        AmountPaid: int
-
-        ///The amount remaining, in %s, that is due.
-        AmountRemaining: int
-
-        ///The fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account when the invoice is paid.
-        ApplicationFeeAmount: int
-
-        ///Number of payment attempts made for this invoice, from the perspective of the payment retry schedule. Any payment attempt counts as the first attempt, and subsequently only automatic retries increment the attempt count. In other words, manual payment attempts after the first attempt do not affect the retry schedule.
-        AttemptCount: int
-
-        ///Whether an attempt has been made to pay the invoice. An invoice is not attempted until 1 hour after the `invoice.created` webhook, for example, so you might not want to display that invoice as unpaid to your users.
-        Attempted: bool
-
-        ///Controls whether Stripe will perform [automatic collection](https://stripe.com/docs/billing/invoices/workflow/#auto_advance) of the invoice. When `false`, the invoice's state will not automatically advance without an explicit action.
-        AutoAdvance: bool option
-
-        ///Indicates the reason why the invoice was created. `subscription_cycle` indicates an invoice created by a subscription advancing into a new period. `subscription_create` indicates an invoice created due to creating a subscription. `subscription_update` indicates an invoice created due to updating a subscription. `subscription` is set for all old invoices to indicate either a change to a subscription or a period advancement. `manual` is set for all invoices unrelated to a subscription (for example: created via the invoice editor). The `upcoming` value is reserved for simulated invoices per the upcoming invoice endpoint. `subscription_threshold` indicates an invoice created due to a billing threshold being reached.
-        BillingReason: InvoiceBillingReason
-
-        ///ID of the latest charge generated for this invoice, if any.
-        Charge: InvoiceChargeDU
-
-        ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this invoice using the default source attached to the customer. When sending an invoice, Stripe will email this invoice to the customer with payment instructions.
-        CollectionMethod: InvoiceCollectionMethod
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Custom fields displayed on the invoice.
-        CustomFields: InvoiceSettingCustomField list
-
-        ///The ID of the customer who will be billed.
-        Customer: InvoiceCustomerDU
-
-        ///The customer's address. Until the invoice is finalized, this field will equal `customer.address`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerAddress: InvoiceCustomerAddressDU
-
-        ///The customer's email. Until the invoice is finalized, this field will equal `customer.email`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerEmail: string
-
-        ///The customer's name. Until the invoice is finalized, this field will equal `customer.name`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerName: string
-
-        ///The customer's phone number. Until the invoice is finalized, this field will equal `customer.phone`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerPhone: string
-
-        ///The customer's shipping information. Until the invoice is finalized, this field will equal `customer.shipping`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerShipping: InvoiceCustomerShippingDU
-
-        ///The customer's tax exempt status. Until the invoice is finalized, this field will equal `customer.tax_exempt`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerTaxExempt: InvoiceCustomerTaxExempt
-
-        ///The customer's tax IDs. Until the invoice is finalized, this field will contain the same tax IDs as `customer.tax_ids`. Once the invoice is finalized, this field will no longer be updated.
-        CustomerTaxIds: InvoicesResourceInvoiceTaxId list
-
-        ///ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: InvoiceDefaultPaymentMethodDU
-
-        ///ID of the default payment source for the invoice. It must belong to the customer associated with the invoice and be in a chargeable state. If not set, defaults to the subscription's default source, if any, or to the customer's default source.
-        DefaultSource: InvoiceDefaultSourceDU
-
-        ///The tax rates applied to this invoice, if any.
-        DefaultTaxRates: TaxRate list
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard.
-        Description: string
-
-        ///Describes the current discount applied to this invoice, if there is one. Not populated if there are multiple discounts.
-        Discount: InvoiceDiscountDU
-
-        ///The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: InvoiceDiscountsDU list
-
-        ///The date on which payment for this invoice is due. This value will be `null` for invoices where `collection_method=charge_automatically`.
-        DueDate: int
-
-        ///Ending customer balance after the invoice is finalized. Invoices are finalized approximately an hour after successful webhook delivery or when payment collection is attempted for the invoice. If the invoice has not been finalized yet, this will be null.
-        EndingBalance: int
-
-        ///Footer displayed on the invoice.
-        Footer: string
-
-        ///The URL for the hosted invoice page, which allows customers to view and pay an invoice. If the invoice has not been finalized yet, this will be null.
-        HostedInvoiceUrl: string option
-
-        ///Unique identifier for the object.
-        Id: string option
-
-        ///The link to download the PDF for the invoice. If the invoice has not been finalized yet, this will be null.
-        InvoicePdf: string option
-
-        ///The error encountered during the previous attempt to finalize the invoice. This field is cleared when the invoice is successfully finalized.
-        LastFinalizationError: InvoiceLastFinalizationErrorDU option
-
-        ///The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any.
-        Lines: Map<string, string>
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The time at which payment will next be attempted. This value will be `null` for invoices where `collection_method=send_invoice`.
-        NextPaymentAttempt: int
-
-        ///A unique, identifying string that appears on emails sent to the customer for this invoice. This starts with the customer's unique invoice_prefix if it is specified.
-        Number: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: InvoiceObject
-
-        ///Whether payment was successfully collected for this invoice. An invoice can be paid (most commonly) with a charge or with credit from the customer's account balance.
-        Paid: bool
-
-        ///The PaymentIntent associated with this invoice. The PaymentIntent is generated when the invoice is finalized, and can then be used to pay the invoice. Note that voiding an invoice will cancel the PaymentIntent.
-        PaymentIntent: InvoicePaymentIntentDU
-
-        ///End of the usage period during which invoice items were added to this invoice.
-        PeriodEnd: int
-
-        ///Start of the usage period during which invoice items were added to this invoice.
-        PeriodStart: int
-
-        ///Total amount of all post-payment credit notes issued for this invoice.
-        PostPaymentCreditNotesAmount: int
-
-        ///Total amount of all pre-payment credit notes issued for this invoice.
-        PrePaymentCreditNotesAmount: int
-
-        ///This is the transaction number that appears on email receipts sent for this invoice.
-        ReceiptNumber: string
-
-        ///Starting customer balance before the invoice is finalized. If the invoice has not been finalized yet, this will be the current customer balance.
-        StartingBalance: int
-
-        ///Extra information about an invoice for the customer's credit card statement.
-        StatementDescriptor: string
-
-        ///The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview)
-        Status: InvoiceStatus
-
-        StatusTransitions: InvoicesStatusTransitions
-
-        ///The subscription that this invoice was prepared for, if any.
-        Subscription: InvoiceSubscriptionDU
-
-        ///Only set for upcoming invoices that preview prorations. The time used to calculate prorations.
-        SubscriptionProrationDate: int option
-
-        ///Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied. Item discounts are already incorporated
-        Subtotal: int
-
-        ///The amount of tax on this invoice. This is the sum of all the tax amounts on this invoice.
-        Tax: int
-
-        ThresholdReason: InvoiceThresholdReason option
-
-        ///Total after discounts and taxes.
-        Total: int
-
-        ///The aggregate amounts calculated per discount across all line items.
-        TotalDiscountAmounts: DiscountsResourceDiscountAmount list
-
-        ///The aggregate amounts calculated per tax rate for all line items.
-        TotalTaxAmounts: InvoiceTaxAmount list
-
-        ///The account (if any) the payment will be attributed to for tax reporting, and where funds from the payment will be transferred to for the invoice.
-        TransferData: InvoiceTransferDataDU
-
-        ///Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have [been exhausted](https://stripe.com/docs/billing/webhooks#understand). This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
-        WebhooksDeliveredAt: int
-
-    }
+    and Invoice (accountCountry: string option, accountName: string option, amountDue: int, amountPaid: int, amountRemaining: int, applicationFeeAmount: int option, attemptCount: int, attempted: bool, billingReason: InvoiceBillingReason option, charge: InvoiceChargeDU option, collectionMethod: InvoiceCollectionMethod option, created: int, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomerDU, customerAddress: InvoiceCustomerAddressDU option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: InvoiceCustomerShippingDU option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethodDU option, defaultSource: InvoiceDefaultSourceDU option, defaultTaxRates: TaxRate list, description: string option, discount: InvoiceDiscountDU option, discounts: InvoiceDiscountsDU list option, dueDate: int option, endingBalance: int option, footer: string option, lines: Map<string, string>, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: int option, number: string option, object: InvoiceObject, paid: bool, paymentIntent: InvoicePaymentIntentDU option, periodEnd: int, periodStart: int, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesStatusTransitions, subscription: InvoiceSubscriptionDU option, subtotal: int, tax: int option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalTaxAmounts: InvoiceTaxAmount list, transferData: InvoiceTransferDataDU option, webhooksDeliveredAt: int option, ?accountTaxIds: InvoiceAccountTaxIdsDU list option, ?autoAdvance: bool, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?lastFinalizationError: InvoiceLastFinalizationErrorDU option, ?subscriptionProrationDate: int, ?thresholdReason: InvoiceThresholdReason) =
+
+        member _.AccountCountry = accountCountry
+        member _.AccountName = accountName
+        member _.AccountTaxIds = accountTaxIds |> Option.flatten
+        member _.AmountDue = amountDue
+        member _.AmountPaid = amountPaid
+        member _.AmountRemaining = amountRemaining
+        member _.ApplicationFeeAmount = applicationFeeAmount
+        member _.AttemptCount = attemptCount
+        member _.Attempted = attempted
+        member _.AutoAdvance = autoAdvance
+        member _.BillingReason = billingReason
+        member _.Charge = charge
+        member _.CollectionMethod = collectionMethod
+        member _.Created = created
+        member _.Currency = currency
+        member _.CustomFields = customFields
+        member _.Customer = customer
+        member _.CustomerAddress = customerAddress
+        member _.CustomerEmail = customerEmail
+        member _.CustomerName = customerName
+        member _.CustomerPhone = customerPhone
+        member _.CustomerShipping = customerShipping
+        member _.CustomerTaxExempt = customerTaxExempt
+        member _.CustomerTaxIds = customerTaxIds |> Option.flatten
+        member _.DefaultPaymentMethod = defaultPaymentMethod
+        member _.DefaultSource = defaultSource
+        member _.DefaultTaxRates = defaultTaxRates
+        member _.Description = description
+        member _.Discount = discount
+        member _.Discounts = discounts
+        member _.DueDate = dueDate
+        member _.EndingBalance = endingBalance
+        member _.Footer = footer
+        member _.HostedInvoiceUrl = hostedInvoiceUrl |> Option.flatten
+        member _.Id = id
+        member _.InvoicePdf = invoicePdf |> Option.flatten
+        member _.LastFinalizationError = lastFinalizationError |> Option.flatten
+        member _.Lines = lines
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.NextPaymentAttempt = nextPaymentAttempt
+        member _.Number = number
+        member _.Object = object
+        member _.Paid = paid
+        member _.PaymentIntent = paymentIntent
+        member _.PeriodEnd = periodEnd
+        member _.PeriodStart = periodStart
+        member _.PostPaymentCreditNotesAmount = postPaymentCreditNotesAmount
+        member _.PrePaymentCreditNotesAmount = prePaymentCreditNotesAmount
+        member _.ReceiptNumber = receiptNumber
+        member _.StartingBalance = startingBalance
+        member _.StatementDescriptor = statementDescriptor
+        member _.Status = status
+        member _.StatusTransitions = statusTransitions
+        member _.Subscription = subscription
+        member _.SubscriptionProrationDate = subscriptionProrationDate
+        member _.Subtotal = subtotal
+        member _.Tax = tax
+        member _.ThresholdReason = thresholdReason
+        member _.Total = total
+        member _.TotalDiscountAmounts = totalDiscountAmounts
+        member _.TotalTaxAmounts = totalTaxAmounts
+        member _.TransferData = transferData
+        member _.WebhooksDeliveredAt = webhooksDeliveredAt
 
     and InvoiceBillingReason =
-        | AutomaticPendingInvoiceItemInvoice
-        | Manual
-        | Subscription
-        | SubscriptionCreate
-        | SubscriptionCycle
-        | SubscriptionThreshold
-        | SubscriptionUpdate
-        | Upcoming
+        | InvoiceBillingReason'AutomaticPendingInvoiceItemInvoice
+        | InvoiceBillingReason'Manual
+        | InvoiceBillingReason'Subscription
+        | InvoiceBillingReason'SubscriptionCreate
+        | InvoiceBillingReason'SubscriptionCycle
+        | InvoiceBillingReason'SubscriptionThreshold
+        | InvoiceBillingReason'SubscriptionUpdate
+        | InvoiceBillingReason'Upcoming
 
     and InvoiceCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
+        | InvoiceCollectionMethod'ChargeAutomatically
+        | InvoiceCollectionMethod'SendInvoice
 
     and InvoiceCustomerTaxExempt =
-        | Exempt
-        | None
-        | Reverse
+        | InvoiceCustomerTaxExempt'Exempt
+        | InvoiceCustomerTaxExempt'None
+        | InvoiceCustomerTaxExempt'Reverse
 
     and InvoiceObject =
-        | Invoice
+        | InvoiceObject'Invoice
 
     and InvoiceStatus =
-        | Deleted
-        | Draft
-        | Open
-        | Paid
-        | Uncollectible
-        | Void
+        | InvoiceStatus'Deleted
+        | InvoiceStatus'Draft
+        | InvoiceStatus'Open
+        | InvoiceStatus'Paid
+        | InvoiceStatus'Uncollectible
+        | InvoiceStatus'Void
 
     and InvoiceAccountTaxIdsDU =
-        | String of string
-        | TaxId of TaxId
-        | DeletedTaxId of DeletedTaxId
+        | InvoiceAccountTaxIdsDU'String of string
+        | InvoiceAccountTaxIdsDU'TaxId of TaxId
+        | InvoiceAccountTaxIdsDU'DeletedTaxId of DeletedTaxId
 
     and InvoiceChargeDU =
-        | String of string
-        | Charge of Charge
+        | InvoiceChargeDU'String of string
+        | InvoiceChargeDU'Charge of Charge
 
     and InvoiceCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | InvoiceCustomerDU'String of string
+        | InvoiceCustomerDU'Customer of Customer
+        | InvoiceCustomerDU'DeletedCustomer of DeletedCustomer
 
     and InvoiceCustomerAddressDU =
-        | Address of Address
+        | InvoiceCustomerAddressDU'Address of Address
 
     and InvoiceCustomerShippingDU =
-        | Shipping of Shipping
+        | InvoiceCustomerShippingDU'Shipping of Shipping
 
     and InvoiceDefaultPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | InvoiceDefaultPaymentMethodDU'String of string
+        | InvoiceDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
 
     and InvoiceDefaultSourceDU =
-        | String of string
-        | PaymentSource of PaymentSource
+        | InvoiceDefaultSourceDU'String of string
+        | InvoiceDefaultSourceDU'PaymentSource of PaymentSource
 
     and InvoiceDiscountDU =
-        | Discount of Discount
+        | InvoiceDiscountDU'Discount of Discount
 
     and InvoiceDiscountsDU =
-        | String of string
-        | Discount of Discount
-        | DeletedDiscount of DeletedDiscount
+        | InvoiceDiscountsDU'String of string
+        | InvoiceDiscountsDU'Discount of Discount
+        | InvoiceDiscountsDU'DeletedDiscount of DeletedDiscount
 
     and InvoiceLastFinalizationErrorDU =
-        | ApiErrors of ApiErrors
+        | InvoiceLastFinalizationErrorDU'ApiErrors of ApiErrors
 
     and InvoicePaymentIntentDU =
-        | String of string
-        | PaymentIntent of PaymentIntent
+        | InvoicePaymentIntentDU'String of string
+        | InvoicePaymentIntentDU'PaymentIntent of PaymentIntent
 
     and InvoiceSubscriptionDU =
-        | String of string
-        | Subscription of Subscription
+        | InvoiceSubscriptionDU'String of string
+        | InvoiceSubscriptionDU'Subscription of Subscription
 
     and InvoiceTransferDataDU =
-        | InvoiceTransferData of InvoiceTransferData
+        | InvoiceTransferDataDU'InvoiceTransferData of InvoiceTransferData
 
     ///
-    and InvoiceItemThresholdReason = {
+    and InvoiceItemThresholdReason (lineItemIds: string list, usageGte: int) =
 
-        ///The IDs of the line items that triggered the threshold invoice.
-        LineItemIds: string list
-
-        ///The quantity threshold boundary that applied to the given line item.
-        UsageGte: int
-
-    }
+        member _.LineItemIds = lineItemIds
+        member _.UsageGte = usageGte
 
     ///
-    and InvoiceLineItemPeriod = {
+    and InvoiceLineItemPeriod (``end``: int, start: int) =
 
-        ///End of the line item's billing period
-        End: int
-
-        ///Start of the line item's billing period
-        Start: int
-
-    }
+        member _.End = ``end``
+        member _.Start = start
 
     ///
-    and InvoiceSettingCustomField = {
+    and InvoiceSettingCustomField (name: string, value: string) =
 
-        ///The name of the custom field.
-        Name: string
-
-        ///The value of the custom field.
-        Value: string
-
-    }
+        member _.Name = name
+        member _.Value = value
 
     ///
-    and InvoiceSettingCustomerSetting = {
+    and InvoiceSettingCustomerSetting (customFields: InvoiceSettingCustomField list option, defaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethodDU option, footer: string option) =
 
-        ///Default custom fields to be displayed on invoices for this customer.
-        CustomFields: InvoiceSettingCustomField list
-
-        ///ID of a payment method that's attached to the customer, to be used as the customer's default payment method for subscriptions and invoices.
-        DefaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethodDU
-
-        ///Default footer to be displayed on invoices for this customer.
-        Footer: string
-
-    }
+        member _.CustomFields = customFields
+        member _.DefaultPaymentMethod = defaultPaymentMethod
+        member _.Footer = footer
 
     and InvoiceSettingCustomerSettingDefaultPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | InvoiceSettingCustomerSettingDefaultPaymentMethodDU'String of string
+        | InvoiceSettingCustomerSettingDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
 
     ///
-    and InvoiceSettingSubscriptionScheduleSetting = {
+    and InvoiceSettingSubscriptionScheduleSetting (daysUntilDue: int option) =
 
-        ///Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
-        DaysUntilDue: int
-
-    }
+        member _.DaysUntilDue = daysUntilDue
 
     ///
-    and InvoiceTaxAmount = {
+    and InvoiceTaxAmount (amount: int, inclusive: bool, taxRate: InvoiceTaxAmountTaxRateDU) =
 
-        ///The amount, in %s, of the tax.
-        Amount: int
-
-        ///Whether this tax amount is inclusive or exclusive.
-        Inclusive: bool
-
-        ///The tax rate that was applied to get this tax amount.
-        TaxRate: InvoiceTaxAmountTaxRateDU
-
-    }
+        member _.Amount = amount
+        member _.Inclusive = inclusive
+        member _.TaxRate = taxRate
 
     and InvoiceTaxAmountTaxRateDU =
-        | String of string
-        | TaxRate of TaxRate
+        | InvoiceTaxAmountTaxRateDU'String of string
+        | InvoiceTaxAmountTaxRateDU'TaxRate of TaxRate
 
     ///
-    and InvoiceThresholdReason = {
+    and InvoiceThresholdReason (amountGte: int option, itemReasons: InvoiceItemThresholdReason list) =
 
-        ///The total invoice amount threshold boundary if it triggered the threshold invoice.
-        AmountGte: int
-
-        ///Indicates which line items triggered a threshold invoice.
-        ItemReasons: InvoiceItemThresholdReason list
-
-    }
+        member _.AmountGte = amountGte
+        member _.ItemReasons = itemReasons
 
     ///
-    and InvoiceTransferData = {
+    and InvoiceTransferData (amount: int option, destination: InvoiceTransferDataDestinationDU) =
 
-        ///The amount in %s that will be transferred to the destination account when the invoice is paid. By default, the entire amount is transferred to the destination.
-        Amount: int
-
-        ///The account where funds from the payment will be transferred to upon payment success.
-        Destination: InvoiceTransferDataDestinationDU
-
-    }
+        member _.Amount = amount
+        member _.Destination = destination
 
     and InvoiceTransferDataDestinationDU =
-        | String of string
-        | Account of Account
+        | InvoiceTransferDataDestinationDU'String of string
+        | InvoiceTransferDataDestinationDU'Account of Account
 
     ///Sometimes you want to add a charge or credit to a customer, but actually
     ///charge or credit the customer's card only at the end of a regular billing
@@ -4029,3876 +2400,2996 @@ module StripeModel =
     ///totals.
     ///
     ///Related guide: [Subscription Invoices](https://stripe.com/docs/billing/invoices/subscription#adding-upcoming-invoice-items).
-    and Invoiceitem = {
+    and Invoiceitem (amount: int, currency: string, customer: InvoiceitemCustomerDU, date: int, description: string option, discountable: bool, discounts: InvoiceitemDiscountsDU list option, id: string, invoice: InvoiceitemInvoiceDU option, livemode: bool, metadata: Map<string, string> option, object: InvoiceitemObject, period: InvoiceLineItemPeriod, plan: InvoiceitemPlanDU option, price: InvoiceitemPriceDU option, proration: bool, quantity: int, subscription: InvoiceitemSubscriptionDU option, taxRates: TaxRate list option, unitAmount: int option, unitAmountDecimal: string option, ?subscriptionItem: string) =
 
-        ///Amount (in the `currency` specified) of the invoice item. This should always be equal to `unit_amount * quantity`.
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The ID of the customer who will be billed when this invoice item is billed.
-        Customer: InvoiceitemCustomerDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Date: int
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///If true, discounts will apply to this invoice item. Always false for prorations.
-        Discountable: bool
-
-        ///The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: InvoiceitemDiscountsDU list
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The ID of the invoice this invoice item belongs to.
-        Invoice: InvoiceitemInvoiceDU
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: InvoiceitemObject
-
-        Period: InvoiceLineItemPeriod
-
-        ///If the invoice item is a proration, the plan of the subscription that the proration was computed for.
-        Plan: InvoiceitemPlanDU
-
-        ///The price of the invoice item.
-        Price: InvoiceitemPriceDU
-
-        ///Whether the invoice item was created automatically as a proration adjustment when the customer switched plans.
-        Proration: bool
-
-        ///Quantity of units for the invoice item. If the invoice item is a proration, the quantity of the subscription that the proration was computed for.
-        Quantity: int
-
-        ///The subscription that this invoice item has been created for, if any.
-        Subscription: InvoiceitemSubscriptionDU
-
-        ///The subscription item that this invoice item has been created for, if any.
-        SubscriptionItem: string option
-
-        ///The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item.
-        TaxRates: TaxRate list
-
-        ///Unit amount (in the `currency` specified) of the invoice item.
-        UnitAmount: int
-
-        ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.Date = date
+        member _.Description = description
+        member _.Discountable = discountable
+        member _.Discounts = discounts
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Period = period
+        member _.Plan = plan
+        member _.Price = price
+        member _.Proration = proration
+        member _.Quantity = quantity
+        member _.Subscription = subscription
+        member _.SubscriptionItem = subscriptionItem
+        member _.TaxRates = taxRates
+        member _.UnitAmount = unitAmount
+        member _.UnitAmountDecimal = unitAmountDecimal
 
     and InvoiceitemObject =
-        | Invoiceitem
+        | InvoiceitemObject'Invoiceitem
 
     and InvoiceitemCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | InvoiceitemCustomerDU'String of string
+        | InvoiceitemCustomerDU'Customer of Customer
+        | InvoiceitemCustomerDU'DeletedCustomer of DeletedCustomer
 
     and InvoiceitemDiscountsDU =
-        | String of string
-        | Discount of Discount
+        | InvoiceitemDiscountsDU'String of string
+        | InvoiceitemDiscountsDU'Discount of Discount
 
     and InvoiceitemInvoiceDU =
-        | String of string
-        | Invoice of Invoice
+        | InvoiceitemInvoiceDU'String of string
+        | InvoiceitemInvoiceDU'Invoice of Invoice
 
     and InvoiceitemPlanDU =
-        | Plan of Plan
+        | InvoiceitemPlanDU'Plan of Plan
 
     and InvoiceitemPriceDU =
-        | Price of Price
+        | InvoiceitemPriceDU'Price of Price
 
     and InvoiceitemSubscriptionDU =
-        | String of string
-        | Subscription of Subscription
+        | InvoiceitemSubscriptionDU'String of string
+        | InvoiceitemSubscriptionDU'Subscription of Subscription
 
     ///
-    and InvoicesResourceInvoiceTaxId = {
+    and InvoicesResourceInvoiceTaxId (``type``: InvoicesResourceInvoiceTaxIdType, value: string option) =
 
-        ///The type of the tax ID, one of `eu_vat`, `br_cnpj`, `br_cpf`, `nz_gst`, `au_abn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, or `unknown`
-        Type: InvoicesResourceInvoiceTaxIdType
-
-        ///The value of the tax ID.
-        Value: string
-
-    }
+        member _.Type = ``type``
+        member _.Value = value
 
     and InvoicesResourceInvoiceTaxIdType =
-        | AeTrn
-        | AuAbn
-        | BrCnpj
-        | BrCpf
-        | CaBn
-        | CaQst
-        | ChVat
-        | ClTin
-        | EsCif
-        | EuVat
-        | HkBr
-        | IdNpwp
-        | InGst
-        | JpCn
-        | JpRn
-        | KrBrn
-        | LiUid
-        | MxRfc
-        | MyFrp
-        | MyItn
-        | MySst
-        | NoVat
-        | NzGst
-        | RuInn
-        | RuKpp
-        | SaVat
-        | SgGst
-        | SgUen
-        | ThVat
-        | TwVat
-        | Unknown
-        | UsEin
-        | ZaVat
+        | InvoicesResourceInvoiceTaxIdType'AeTrn
+        | InvoicesResourceInvoiceTaxIdType'AuAbn
+        | InvoicesResourceInvoiceTaxIdType'BrCnpj
+        | InvoicesResourceInvoiceTaxIdType'BrCpf
+        | InvoicesResourceInvoiceTaxIdType'CaBn
+        | InvoicesResourceInvoiceTaxIdType'CaQst
+        | InvoicesResourceInvoiceTaxIdType'ChVat
+        | InvoicesResourceInvoiceTaxIdType'ClTin
+        | InvoicesResourceInvoiceTaxIdType'EsCif
+        | InvoicesResourceInvoiceTaxIdType'EuVat
+        | InvoicesResourceInvoiceTaxIdType'HkBr
+        | InvoicesResourceInvoiceTaxIdType'IdNpwp
+        | InvoicesResourceInvoiceTaxIdType'InGst
+        | InvoicesResourceInvoiceTaxIdType'JpCn
+        | InvoicesResourceInvoiceTaxIdType'JpRn
+        | InvoicesResourceInvoiceTaxIdType'KrBrn
+        | InvoicesResourceInvoiceTaxIdType'LiUid
+        | InvoicesResourceInvoiceTaxIdType'MxRfc
+        | InvoicesResourceInvoiceTaxIdType'MyFrp
+        | InvoicesResourceInvoiceTaxIdType'MyItn
+        | InvoicesResourceInvoiceTaxIdType'MySst
+        | InvoicesResourceInvoiceTaxIdType'NoVat
+        | InvoicesResourceInvoiceTaxIdType'NzGst
+        | InvoicesResourceInvoiceTaxIdType'RuInn
+        | InvoicesResourceInvoiceTaxIdType'RuKpp
+        | InvoicesResourceInvoiceTaxIdType'SaVat
+        | InvoicesResourceInvoiceTaxIdType'SgGst
+        | InvoicesResourceInvoiceTaxIdType'SgUen
+        | InvoicesResourceInvoiceTaxIdType'ThVat
+        | InvoicesResourceInvoiceTaxIdType'TwVat
+        | InvoicesResourceInvoiceTaxIdType'Unknown
+        | InvoicesResourceInvoiceTaxIdType'UsEin
+        | InvoicesResourceInvoiceTaxIdType'ZaVat
 
     ///
-    and InvoicesStatusTransitions = {
+    and InvoicesStatusTransitions (finalizedAt: int option, markedUncollectibleAt: int option, paidAt: int option, voidedAt: int option) =
 
-        ///The time that the invoice draft was finalized.
-        FinalizedAt: int
-
-        ///The time that the invoice was marked uncollectible.
-        MarkedUncollectibleAt: int
-
-        ///The time that the invoice was paid.
-        PaidAt: int
-
-        ///The time that the invoice was voided.
-        VoidedAt: int
-
-    }
+        member _.FinalizedAt = finalizedAt
+        member _.MarkedUncollectibleAt = markedUncollectibleAt
+        member _.PaidAt = paidAt
+        member _.VoidedAt = voidedAt
 
     ///This resource has been renamed to [Early Fraud
     ///Warning](#early_fraud_warning_object) and will be removed in a future API
     ///version.
-    and IssuerFraudRecord = {
+    and IssuerFraudRecord (actionable: bool, charge: IssuerFraudRecordChargeDU, created: int, fraudType: string, hasLiabilityShift: bool, id: string, livemode: bool, object: IssuerFraudRecordObject, postDate: int) =
 
-        ///An IFR is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an IFR, in order to avoid receiving a dispute later.
-        Actionable: bool
-
-        ///ID of the charge this issuer fraud record is for, optionally expanded.
-        Charge: IssuerFraudRecordChargeDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
-        FraudType: string
-
-        ///If true, the associated charge is subject to [liability shift](https://stripe.com/docs/payments/3d-secure#disputed-payments).
-        HasLiabilityShift: bool
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: IssuerFraudRecordObject
-
-        ///The timestamp at which the card issuer posted the issuer fraud record.
-        PostDate: int
-
-    }
+        member _.Actionable = actionable
+        member _.Charge = charge
+        member _.Created = created
+        member _.FraudType = fraudType
+        member _.HasLiabilityShift = hasLiabilityShift
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.PostDate = postDate
 
     and IssuerFraudRecordObject =
-        | IssuerFraudRecord
+        | IssuerFraudRecordObject'IssuerFraudRecord
 
     and IssuerFraudRecordChargeDU =
-        | String of string
-        | Charge of Charge
+        | IssuerFraudRecordChargeDU'String of string
+        | IssuerFraudRecordChargeDU'Charge of Charge
 
     ///When an [issued card](https://stripe.com/docs/issuing) is used to make a purchase, an Issuing `Authorization`
     ///object is created. [Authorizations](https://stripe.com/docs/issuing/purchases/authorizations) must be approved for the
     ///purchase to be completed successfully.
     ///
     ///Related guide: [Issued Card Authorizations](https://stripe.com/docs/issuing/purchases/authorizations).
-    and IssuingAuthorization = {
+    and IssuingAuthorization (amount: int, amountDetails: IssuingAuthorizationAmountDetailsDU option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardholder: IssuingAuthorizationCardholderDU option, created: int, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, object: IssuingAuthorizationObject, pendingRequest: IssuingAuthorizationPendingRequestDU option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, wallet: string option) =
 
-        ///The total amount that was authorized or rejected. This amount is in the card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        Amount: int
-
-        ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingAuthorizationAmountDetailsDU
-
-        ///Whether the authorization has been approved.
-        Approved: bool
-
-        ///How the card details were provided.
-        AuthorizationMethod: IssuingAuthorizationAuthorizationMethod
-
-        ///List of balance transactions associated with this authorization.
-        BalanceTransactions: BalanceTransaction list
-
-        Card: IssuingCard
-
-        ///The cardholder to whom this authorization belongs.
-        Cardholder: IssuingAuthorizationCardholderDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///The total amount that was authorized or rejected. This amount is in the `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        MerchantAmount: int
-
-        ///The currency that was presented to the cardholder for the authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        MerchantCurrency: string
-
-        MerchantData: IssuingAuthorizationMerchantData
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: IssuingAuthorizationObject
-
-        ///The pending authorization request. This field will only be non-null during an `issuing_authorization.request` webhook.
-        PendingRequest: IssuingAuthorizationPendingRequestDU
-
-        ///History of every time the authorization was approved/denied (whether approved/denied by you directly or by Stripe based on your `spending_controls`). If the merchant changes the authorization by performing an [incremental authorization or partial capture](https://stripe.com/docs/issuing/purchases/authorizations), you can look at this field to see the previous states of the authorization.
-        RequestHistory: IssuingAuthorizationRequest list
-
-        ///The current status of the authorization in its lifecycle.
-        Status: IssuingAuthorizationStatus
-
-        ///List of [transactions](https://stripe.com/docs/api/issuing/transactions) associated with this authorization.
-        Transactions: IssuingTransaction list
-
-        VerificationData: IssuingAuthorizationVerificationData
-
-        ///What, if any, digital wallet was used for this authorization. One of `apple_pay`, `google_pay`, or `samsung_pay`.
-        Wallet: string
-
-    }
+        member _.Amount = amount
+        member _.AmountDetails = amountDetails
+        member _.Approved = approved
+        member _.AuthorizationMethod = authorizationMethod
+        member _.BalanceTransactions = balanceTransactions
+        member _.Card = card
+        member _.Cardholder = cardholder
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.MerchantAmount = merchantAmount
+        member _.MerchantCurrency = merchantCurrency
+        member _.MerchantData = merchantData
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.PendingRequest = pendingRequest
+        member _.RequestHistory = requestHistory
+        member _.Status = status
+        member _.Transactions = transactions
+        member _.VerificationData = verificationData
+        member _.Wallet = wallet
 
     and IssuingAuthorizationAuthorizationMethod =
-        | Chip
-        | Contactless
-        | KeyedIn
-        | Online
-        | Swipe
+        | IssuingAuthorizationAuthorizationMethod'Chip
+        | IssuingAuthorizationAuthorizationMethod'Contactless
+        | IssuingAuthorizationAuthorizationMethod'KeyedIn
+        | IssuingAuthorizationAuthorizationMethod'Online
+        | IssuingAuthorizationAuthorizationMethod'Swipe
 
     and IssuingAuthorizationObject =
-        | IssuingAuthorization
+        | IssuingAuthorizationObject'IssuingAuthorization
 
     and IssuingAuthorizationStatus =
-        | Closed
-        | Pending
-        | Reversed
+        | IssuingAuthorizationStatus'Closed
+        | IssuingAuthorizationStatus'Pending
+        | IssuingAuthorizationStatus'Reversed
 
     and IssuingAuthorizationAmountDetailsDU =
-        | IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
+        | IssuingAuthorizationAmountDetailsDU'IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
 
     and IssuingAuthorizationCardholderDU =
-        | String of string
-        | IssuingCardholder of IssuingCardholder
+        | IssuingAuthorizationCardholderDU'String of string
+        | IssuingAuthorizationCardholderDU'IssuingCardholder of IssuingCardholder
 
     and IssuingAuthorizationPendingRequestDU =
-        | IssuingAuthorizationPendingRequest of IssuingAuthorizationPendingRequest
+        | IssuingAuthorizationPendingRequestDU'IssuingAuthorizationPendingRequest of IssuingAuthorizationPendingRequest
 
     ///You can [create physical or virtual cards](https://stripe.com/docs/issuing/cards) that are issued to cardholders.
-    and IssuingCard = {
+    and IssuingCard (brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: int, currency: string, expMonth: int, expYear: int, id: string, last4: string, livemode: bool, metadata: Map<string, string>, object: IssuingCardObject, replacedBy: IssuingCardReplacedByDU option, replacementFor: IssuingCardReplacementForDU option, replacementReason: IssuingCardReplacementReason option, shipping: IssuingCardShippingDU option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, ?cvc: string, ?number: string) =
 
-        ///The brand of the card.
-        Brand: string
-
-        ///The reason why the card was canceled.
-        CancellationReason: IssuingCardCancellationReason
-
-        Cardholder: IssuingCardholder
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The card's CVC. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
-        Cvc: string option
-
-        ///The expiration month of the card.
-        ExpMonth: int
-
-        ///The expiration year of the card.
-        ExpYear: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The last 4 digits of the card number.
-        Last4: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The full unredacted card number. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
-        Number: string option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: IssuingCardObject
-
-        ///The latest card that replaces this card, if any.
-        ReplacedBy: IssuingCardReplacedByDU
-
-        ///The card this card replaces, if any.
-        ReplacementFor: IssuingCardReplacementForDU
-
-        ///The reason why the previous card needed to be replaced.
-        ReplacementReason: IssuingCardReplacementReason
-
-        ///Where and how the card will be shipped.
-        Shipping: IssuingCardShippingDU
-
-        SpendingControls: IssuingCardAuthorizationControls
-
-        ///Whether authorizations can be approved on this card.
-        Status: IssuingCardStatus
-
-        ///The type of the card.
-        Type: IssuingCardType
-
-    }
+        member _.Brand = brand
+        member _.CancellationReason = cancellationReason
+        member _.Cardholder = cardholder
+        member _.Created = created
+        member _.Currency = currency
+        member _.Cvc = cvc
+        member _.ExpMonth = expMonth
+        member _.ExpYear = expYear
+        member _.Id = id
+        member _.Last4 = last4
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Number = number
+        member _.Object = object
+        member _.ReplacedBy = replacedBy
+        member _.ReplacementFor = replacementFor
+        member _.ReplacementReason = replacementReason
+        member _.Shipping = shipping
+        member _.SpendingControls = spendingControls
+        member _.Status = status
+        member _.Type = ``type``
 
     and IssuingCardCancellationReason =
-        | Lost
-        | Stolen
+        | IssuingCardCancellationReason'Lost
+        | IssuingCardCancellationReason'Stolen
 
     and IssuingCardObject =
-        | IssuingCard
+        | IssuingCardObject'IssuingCard
 
     and IssuingCardReplacementReason =
-        | Damaged
-        | Expired
-        | Lost
-        | Stolen
+        | IssuingCardReplacementReason'Damaged
+        | IssuingCardReplacementReason'Expired
+        | IssuingCardReplacementReason'Lost
+        | IssuingCardReplacementReason'Stolen
 
     and IssuingCardStatus =
-        | Active
-        | Canceled
-        | Inactive
+        | IssuingCardStatus'Active
+        | IssuingCardStatus'Canceled
+        | IssuingCardStatus'Inactive
 
     and IssuingCardType =
-        | Physical
-        | Virtual
+        | IssuingCardType'Physical
+        | IssuingCardType'Virtual
 
     and IssuingCardReplacedByDU =
-        | String of string
-        | IssuingCard of IssuingCard
+        | IssuingCardReplacedByDU'String of string
+        | IssuingCardReplacedByDU'IssuingCard of IssuingCard
 
     and IssuingCardReplacementForDU =
-        | String of string
-        | IssuingCard of IssuingCard
+        | IssuingCardReplacementForDU'String of string
+        | IssuingCardReplacementForDU'IssuingCard of IssuingCard
 
     and IssuingCardShippingDU =
-        | IssuingCardShipping of IssuingCardShipping
+        | IssuingCardShippingDU'IssuingCardShipping of IssuingCardShipping
 
     ///An Issuing `Cardholder` object represents an individual or business entity who is [issued](https://stripe.com/docs/issuing) cards.
     ///
     ///Related guide: [How to create a Cardholder](https://stripe.com/docs/issuing/cards#create-cardholder)
-    and IssuingCardholder = {
+    and IssuingCardholder (billing: IssuingCardholderAddress, company: IssuingCardholderCompanyDU option, created: int, email: string option, id: string, individual: IssuingCardholderIndividualDU option, livemode: bool, metadata: Map<string, string>, name: string, object: IssuingCardholderObject, phoneNumber: string option, requirements: IssuingCardholderRequirements, spendingControls: IssuingCardholderSpendingControlsDU option, status: IssuingCardholderStatus, ``type``: IssuingCardholderType) =
 
-        Billing: IssuingCardholderAddress
-
-        ///Additional information about a `company` cardholder.
-        Company: IssuingCardholderCompanyDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The cardholder's email address.
-        Email: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Additional information about an `individual` cardholder.
-        Individual: IssuingCardholderIndividualDU
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The cardholder's name. This will be printed on cards issued to them.
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: IssuingCardholderObject
-
-        ///The cardholder's phone number.
-        PhoneNumber: string
-
-        Requirements: IssuingCardholderRequirements
-
-        ///Rules that control spending across this cardholder's cards. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details.
-        SpendingControls: IssuingCardholderSpendingControlsDU
-
-        ///Specifies whether to permit authorizations on this cardholder's cards.
-        Status: IssuingCardholderStatus
-
-        ///One of `individual` or `company`.
-        Type: IssuingCardholderType
-
-    }
+        member _.Billing = billing
+        member _.Company = company
+        member _.Created = created
+        member _.Email = email
+        member _.Id = id
+        member _.Individual = individual
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Name = name
+        member _.Object = object
+        member _.PhoneNumber = phoneNumber
+        member _.Requirements = requirements
+        member _.SpendingControls = spendingControls
+        member _.Status = status
+        member _.Type = ``type``
 
     and IssuingCardholderObject =
-        | IssuingCardholder
+        | IssuingCardholderObject'IssuingCardholder
 
     and IssuingCardholderStatus =
-        | Active
-        | Blocked
-        | Inactive
+        | IssuingCardholderStatus'Active
+        | IssuingCardholderStatus'Blocked
+        | IssuingCardholderStatus'Inactive
 
     and IssuingCardholderType =
-        | Company
-        | Individual
+        | IssuingCardholderType'Company
+        | IssuingCardholderType'Individual
 
     and IssuingCardholderCompanyDU =
-        | IssuingCardholderCompany of IssuingCardholderCompany
+        | IssuingCardholderCompanyDU'IssuingCardholderCompany of IssuingCardholderCompany
 
     and IssuingCardholderIndividualDU =
-        | IssuingCardholderIndividual of IssuingCardholderIndividual
+        | IssuingCardholderIndividualDU'IssuingCardholderIndividual of IssuingCardholderIndividual
 
     and IssuingCardholderSpendingControlsDU =
-        | IssuingCardholderAuthorizationControls of IssuingCardholderAuthorizationControls
+        | IssuingCardholderSpendingControlsDU'IssuingCardholderAuthorizationControls of IssuingCardholderAuthorizationControls
 
     ///As a [card issuer](https://stripe.com/docs/issuing), you can dispute transactions that the cardholder does not recognize, suspects to be fraudulent, or has other issues with.
     ///
     ///Related guide: [Disputing Transactions](https://stripe.com/docs/issuing/purchases/disputes)
-    and IssuingDispute = {
+    and IssuingDispute (balanceTransactions: BalanceTransaction list option, id: string, livemode: bool, object: IssuingDisputeObject, transaction: IssuingDisputeTransactionDU, ?amount: int, ?created: int, ?currency: string, ?evidence: IssuingDisputeEvidence, ?metadata: Map<string, string>, ?status: IssuingDisputeStatus) =
 
-        ///Disputed amount. Usually the amount of the `disputed_transaction`, but can differ (usually because of currency fluctuation).
-        Amount: int option
-
-        ///List of balance transactions associated with the dispute.
-        BalanceTransactions: BalanceTransaction list
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int option
-
-        ///The currency the `disputed_transaction` was made in.
-        Currency: string option
-
-        Evidence: IssuingDisputeEvidence option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: IssuingDisputeObject
-
-        ///Current status of the dispute.
-        Status: IssuingDisputeStatus option
-
-        ///The transaction being disputed.
-        Transaction: IssuingDisputeTransactionDU
-
-    }
+        member _.Amount = amount
+        member _.BalanceTransactions = balanceTransactions
+        member _.Created = created
+        member _.Currency = currency
+        member _.Evidence = evidence
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Status = status
+        member _.Transaction = transaction
 
     and IssuingDisputeObject =
-        | IssuingDispute
+        | IssuingDisputeObject'IssuingDispute
 
     and IssuingDisputeStatus =
-        | Expired
-        | Lost
-        | Submitted
-        | Unsubmitted
-        | Won
+        | IssuingDisputeStatus'Expired
+        | IssuingDisputeStatus'Lost
+        | IssuingDisputeStatus'Submitted
+        | IssuingDisputeStatus'Unsubmitted
+        | IssuingDisputeStatus'Won
 
     and IssuingDisputeTransactionDU =
-        | String of string
-        | IssuingTransaction of IssuingTransaction
+        | IssuingDisputeTransactionDU'String of string
+        | IssuingDisputeTransactionDU'IssuingTransaction of IssuingTransaction
 
     ///Any use of an [issued card](https://stripe.com/docs/issuing) that results in funds entering or leaving
     ///your Stripe account, such as a completed purchase or refund, is represented by an Issuing
     ///`Transaction` object.
     ///
     ///Related guide: [Issued Card Transactions](https://stripe.com/docs/issuing/purchases/transactions).
-    and IssuingTransaction = {
+    and IssuingTransaction (amount: int, amountDetails: IssuingTransactionAmountDetailsDU option, authorization: IssuingTransactionAuthorizationDU option, balanceTransaction: IssuingTransactionBalanceTransactionDU option, card: IssuingTransactionCardDU, cardholder: IssuingTransactionCardholderDU option, created: int, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, object: IssuingTransactionObject, purchaseDetails: IssuingTransactionPurchaseDetailsDU option, ``type``: IssuingTransactionType, ?dispute: IssuingTransactionDisputeDU option) =
 
-        ///The transaction amount, which will be reflected in your balance. This amount is in your currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        Amount: int
-
-        ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingTransactionAmountDetailsDU
-
-        ///The `Authorization` object that led to this transaction.
-        Authorization: IssuingTransactionAuthorizationDU
-
-        ///ID of the [balance transaction](https://stripe.com/docs/api/balance_transactions) associated with this transaction.
-        BalanceTransaction: IssuingTransactionBalanceTransactionDU
-
-        ///The card used to make this transaction.
-        Card: IssuingTransactionCardDU
-
-        ///The cardholder to whom this transaction belongs.
-        Cardholder: IssuingTransactionCardholderDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///If you've disputed the transaction, the ID of the dispute.
-        Dispute: IssuingTransactionDisputeDU option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///The amount that the merchant will receive, denominated in `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). It will be different from `amount` if the merchant is taking payment in a different currency.
-        MerchantAmount: int
-
-        ///The currency with which the merchant is taking payment.
-        MerchantCurrency: string
-
-        MerchantData: IssuingAuthorizationMerchantData
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: IssuingTransactionObject
-
-        ///Additional purchase information that is optionally provided by the merchant.
-        PurchaseDetails: IssuingTransactionPurchaseDetailsDU
-
-        ///The nature of the transaction.
-        Type: IssuingTransactionType
-
-    }
+        member _.Amount = amount
+        member _.AmountDetails = amountDetails
+        member _.Authorization = authorization
+        member _.BalanceTransaction = balanceTransaction
+        member _.Card = card
+        member _.Cardholder = cardholder
+        member _.Created = created
+        member _.Currency = currency
+        member _.Dispute = dispute |> Option.flatten
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.MerchantAmount = merchantAmount
+        member _.MerchantCurrency = merchantCurrency
+        member _.MerchantData = merchantData
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.PurchaseDetails = purchaseDetails
+        member _.Type = ``type``
 
     and IssuingTransactionObject =
-        | IssuingTransaction
+        | IssuingTransactionObject'IssuingTransaction
 
     and IssuingTransactionType =
-        | Capture
-        | Dispute
-        | Refund
+        | IssuingTransactionType'Capture
+        | IssuingTransactionType'Dispute
+        | IssuingTransactionType'Refund
 
     and IssuingTransactionAmountDetailsDU =
-        | IssuingTransactionAmountDetails of IssuingTransactionAmountDetails
+        | IssuingTransactionAmountDetailsDU'IssuingTransactionAmountDetails of IssuingTransactionAmountDetails
 
     and IssuingTransactionAuthorizationDU =
-        | String of string
-        | IssuingAuthorization of IssuingAuthorization
+        | IssuingTransactionAuthorizationDU'String of string
+        | IssuingTransactionAuthorizationDU'IssuingAuthorization of IssuingAuthorization
 
     and IssuingTransactionBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | IssuingTransactionBalanceTransactionDU'String of string
+        | IssuingTransactionBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and IssuingTransactionCardDU =
-        | String of string
-        | IssuingCard of IssuingCard
+        | IssuingTransactionCardDU'String of string
+        | IssuingTransactionCardDU'IssuingCard of IssuingCard
 
     and IssuingTransactionCardholderDU =
-        | String of string
-        | IssuingCardholder of IssuingCardholder
+        | IssuingTransactionCardholderDU'String of string
+        | IssuingTransactionCardholderDU'IssuingCardholder of IssuingCardholder
 
     and IssuingTransactionDisputeDU =
-        | String of string
-        | IssuingDispute of IssuingDispute
+        | IssuingTransactionDisputeDU'String of string
+        | IssuingTransactionDisputeDU'IssuingDispute of IssuingDispute
 
     and IssuingTransactionPurchaseDetailsDU =
-        | IssuingTransactionPurchaseDetails of IssuingTransactionPurchaseDetails
+        | IssuingTransactionPurchaseDetailsDU'IssuingTransactionPurchaseDetails of IssuingTransactionPurchaseDetails
 
     ///
-    and IssuingAuthorizationAmountDetails = {
+    and IssuingAuthorizationAmountDetails (atmFee: int option) =
 
-        ///The fee charged by the ATM for the cash withdrawal.
-        AtmFee: int
-
-    }
+        member _.AtmFee = atmFee
 
     ///
-    and IssuingAuthorizationMerchantData = {
+    and IssuingAuthorizationMerchantData (category: string, city: string option, country: string option, name: string option, networkId: string, postalCode: string option, state: string option) =
 
-        ///A categorization of the seller's type of business. See our [merchant categories guide](https://stripe.com/docs/issuing/merchant-categories) for a list of possible values.
-        Category: string
-
-        ///City where the seller is located
-        City: string
-
-        ///Country where the seller is located
-        Country: string
-
-        ///Name of the seller
-        Name: string
-
-        ///Identifier assigned to the seller by the card brand
-        NetworkId: string
-
-        ///Postal code where the seller is located
-        PostalCode: string
-
-        ///State where the seller is located
-        State: string
-
-    }
+        member _.Category = category
+        member _.City = city
+        member _.Country = country
+        member _.Name = name
+        member _.NetworkId = networkId
+        member _.PostalCode = postalCode
+        member _.State = state
 
     ///
-    and IssuingAuthorizationPendingRequest = {
+    and IssuingAuthorizationPendingRequest (amount: int, amountDetails: IssuingAuthorizationPendingRequestAmountDetailsDU option, currency: string, isAmountControllable: bool, merchantAmount: int, merchantCurrency: string) =
 
-        ///The additional amount Stripe will hold if the authorization is approved, in the card's [currency](https://stripe.com/docs/api#issuing_authorization_object-pending-request-currency) and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        Amount: int
-
-        ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingAuthorizationPendingRequestAmountDetailsDU
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///If set `true`, you may provide [amount](https://stripe.com/docs/api/issuing/authorizations/approve#approve_issuing_authorization-amount) to control how much to hold for the authorization.
-        IsAmountControllable: bool
-
-        ///The amount the merchant is requesting to be authorized in the `merchant_currency`. The amount is in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        MerchantAmount: int
-
-        ///The local currency the merchant is requesting to authorize.
-        MerchantCurrency: string
-
-    }
+        member _.Amount = amount
+        member _.AmountDetails = amountDetails
+        member _.Currency = currency
+        member _.IsAmountControllable = isAmountControllable
+        member _.MerchantAmount = merchantAmount
+        member _.MerchantCurrency = merchantCurrency
 
     and IssuingAuthorizationPendingRequestAmountDetailsDU =
-        | IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
+        | IssuingAuthorizationPendingRequestAmountDetailsDU'IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
 
     ///
-    and IssuingAuthorizationRequest = {
+    and IssuingAuthorizationRequest (amount: int, amountDetails: IssuingAuthorizationRequestAmountDetailsDU option, approved: bool, created: int, currency: string, merchantAmount: int, merchantCurrency: string, reason: IssuingAuthorizationRequestReason) =
 
-        ///The authorization amount in your card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). Stripe held this amount from your account to fund the authorization if the request was approved.
-        Amount: int
-
-        ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        AmountDetails: IssuingAuthorizationRequestAmountDetailsDU
-
-        ///Whether this request was approved.
-        Approved: bool
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The amount that was authorized at the time of this request. This amount is in the `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
-        MerchantAmount: int
-
-        ///The currency that was collected by the merchant and presented to the cardholder for the authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        MerchantCurrency: string
-
-        ///The reason for the approval or decline.
-        Reason: IssuingAuthorizationRequestReason
-
-    }
+        member _.Amount = amount
+        member _.AmountDetails = amountDetails
+        member _.Approved = approved
+        member _.Created = created
+        member _.Currency = currency
+        member _.MerchantAmount = merchantAmount
+        member _.MerchantCurrency = merchantCurrency
+        member _.Reason = reason
 
     and IssuingAuthorizationRequestReason =
-        | AccountDisabled
-        | CardActive
-        | CardInactive
-        | CardholderInactive
-        | CardholderVerificationRequired
-        | InsufficientFunds
-        | NotAllowed
-        | SpendingControls
-        | SuspectedFraud
-        | VerificationFailed
-        | WebhookApproved
-        | WebhookDeclined
-        | WebhookTimeout
+        | IssuingAuthorizationRequestReason'AccountDisabled
+        | IssuingAuthorizationRequestReason'CardActive
+        | IssuingAuthorizationRequestReason'CardInactive
+        | IssuingAuthorizationRequestReason'CardholderInactive
+        | IssuingAuthorizationRequestReason'CardholderVerificationRequired
+        | IssuingAuthorizationRequestReason'InsufficientFunds
+        | IssuingAuthorizationRequestReason'NotAllowed
+        | IssuingAuthorizationRequestReason'SpendingControls
+        | IssuingAuthorizationRequestReason'SuspectedFraud
+        | IssuingAuthorizationRequestReason'VerificationFailed
+        | IssuingAuthorizationRequestReason'WebhookApproved
+        | IssuingAuthorizationRequestReason'WebhookDeclined
+        | IssuingAuthorizationRequestReason'WebhookTimeout
 
     and IssuingAuthorizationRequestAmountDetailsDU =
-        | IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
+        | IssuingAuthorizationRequestAmountDetailsDU'IssuingAuthorizationAmountDetails of IssuingAuthorizationAmountDetails
 
     ///
-    and IssuingAuthorizationVerificationData = {
+    and IssuingAuthorizationVerificationData (addressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check, addressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck, cvcCheck: IssuingAuthorizationVerificationDataCvcCheck, expiryCheck: IssuingAuthorizationVerificationDataExpiryCheck) =
 
-        ///Whether the cardholder provided an address first line and if it matched the cardholder’s `billing.address.line1`.
-        AddressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check
-
-        ///Whether the cardholder provided a postal code and if it matched the cardholder’s `billing.address.postal_code`.
-        AddressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck
-
-        ///Whether the cardholder provided a CVC and if it matched Stripe’s record.
-        CvcCheck: IssuingAuthorizationVerificationDataCvcCheck
-
-        ///Whether the cardholder provided an expiry date and if it matched Stripe’s record.
-        ExpiryCheck: IssuingAuthorizationVerificationDataExpiryCheck
-
-    }
+        member _.AddressLine1Check = addressLine1Check
+        member _.AddressPostalCodeCheck = addressPostalCodeCheck
+        member _.CvcCheck = cvcCheck
+        member _.ExpiryCheck = expiryCheck
 
     and IssuingAuthorizationVerificationDataAddressLine1Check =
-        | Match
-        | Mismatch
-        | NotProvided
+        | IssuingAuthorizationVerificationDataAddressLine1Check'Match
+        | IssuingAuthorizationVerificationDataAddressLine1Check'Mismatch
+        | IssuingAuthorizationVerificationDataAddressLine1Check'NotProvided
 
     and IssuingAuthorizationVerificationDataAddressPostalCodeCheck =
-        | Match
-        | Mismatch
-        | NotProvided
+        | IssuingAuthorizationVerificationDataAddressPostalCodeCheck'Match
+        | IssuingAuthorizationVerificationDataAddressPostalCodeCheck'Mismatch
+        | IssuingAuthorizationVerificationDataAddressPostalCodeCheck'NotProvided
 
     and IssuingAuthorizationVerificationDataCvcCheck =
-        | Match
-        | Mismatch
-        | NotProvided
+        | IssuingAuthorizationVerificationDataCvcCheck'Match
+        | IssuingAuthorizationVerificationDataCvcCheck'Mismatch
+        | IssuingAuthorizationVerificationDataCvcCheck'NotProvided
 
     and IssuingAuthorizationVerificationDataExpiryCheck =
-        | Match
-        | Mismatch
-        | NotProvided
+        | IssuingAuthorizationVerificationDataExpiryCheck'Match
+        | IssuingAuthorizationVerificationDataExpiryCheck'Mismatch
+        | IssuingAuthorizationVerificationDataExpiryCheck'NotProvided
 
     ///
-    and IssuingCardAuthorizationControls = {
+    and IssuingCardAuthorizationControls (allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: string option) =
 
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
-        AllowedCategories: IssuingCardAuthorizationControlsAllowedCategories list
-
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
-        BlockedCategories: IssuingCardAuthorizationControlsBlockedCategories list
-
-        ///Limit spending with amount-based rules.
-        SpendingLimits: IssuingCardSpendingLimit list
-
-        ///Currency of the amounts within `spending_limits`. Always the same as the currency of the card.
-        SpendingLimitsCurrency: string
-
-    }
+        member _.AllowedCategories = allowedCategories
+        member _.BlockedCategories = blockedCategories
+        member _.SpendingLimits = spendingLimits
+        member _.SpendingLimitsCurrency = spendingLimitsCurrency
 
     and IssuingCardAuthorizationControlsAllowedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
+        | IssuingCardAuthorizationControlsAllowedCategories'AcRefrigerationRepair
+        | IssuingCardAuthorizationControlsAllowedCategories'AccountingBookkeepingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'AdvertisingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'AgriculturalCooperative
+        | IssuingCardAuthorizationControlsAllowedCategories'AirlinesAirCarriers
+        | IssuingCardAuthorizationControlsAllowedCategories'AirportsFlyingFields
+        | IssuingCardAuthorizationControlsAllowedCategories'AmbulanceServices
+        | IssuingCardAuthorizationControlsAllowedCategories'AmusementParksCarnivals
+        | IssuingCardAuthorizationControlsAllowedCategories'AntiqueReproductions
+        | IssuingCardAuthorizationControlsAllowedCategories'AntiqueShops
+        | IssuingCardAuthorizationControlsAllowedCategories'Aquariums
+        | IssuingCardAuthorizationControlsAllowedCategories'ArchitecturalSurveyingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'ArtDealersAndGalleries
+        | IssuingCardAuthorizationControlsAllowedCategories'ArtistsSupplyAndCraftShops
+        | IssuingCardAuthorizationControlsAllowedCategories'AutoAndHomeSupplyStores
+        | IssuingCardAuthorizationControlsAllowedCategories'AutoBodyRepairShops
+        | IssuingCardAuthorizationControlsAllowedCategories'AutoPaintShops
+        | IssuingCardAuthorizationControlsAllowedCategories'AutoServiceShops
+        | IssuingCardAuthorizationControlsAllowedCategories'AutomatedCashDisburse
+        | IssuingCardAuthorizationControlsAllowedCategories'AutomatedFuelDispensers
+        | IssuingCardAuthorizationControlsAllowedCategories'AutomobileAssociations
+        | IssuingCardAuthorizationControlsAllowedCategories'AutomotivePartsAndAccessoriesStores
+        | IssuingCardAuthorizationControlsAllowedCategories'AutomotiveTireStores
+        | IssuingCardAuthorizationControlsAllowedCategories'BailAndBondPayments
+        | IssuingCardAuthorizationControlsAllowedCategories'Bakeries
+        | IssuingCardAuthorizationControlsAllowedCategories'BandsOrchestras
+        | IssuingCardAuthorizationControlsAllowedCategories'BarberAndBeautyShops
+        | IssuingCardAuthorizationControlsAllowedCategories'BettingCasinoGambling
+        | IssuingCardAuthorizationControlsAllowedCategories'BicycleShops
+        | IssuingCardAuthorizationControlsAllowedCategories'BilliardPoolEstablishments
+        | IssuingCardAuthorizationControlsAllowedCategories'BoatDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'BoatRentalsAndLeases
+        | IssuingCardAuthorizationControlsAllowedCategories'BookStores
+        | IssuingCardAuthorizationControlsAllowedCategories'BooksPeriodicalsAndNewspapers
+        | IssuingCardAuthorizationControlsAllowedCategories'BowlingAlleys
+        | IssuingCardAuthorizationControlsAllowedCategories'BusLines
+        | IssuingCardAuthorizationControlsAllowedCategories'BusinessSecretarialSchools
+        | IssuingCardAuthorizationControlsAllowedCategories'BuyingShoppingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'CableSatelliteAndOtherPayTelevisionAndRadio
+        | IssuingCardAuthorizationControlsAllowedCategories'CameraAndPhotographicSupplyStores
+        | IssuingCardAuthorizationControlsAllowedCategories'CandyNutAndConfectioneryStores
+        | IssuingCardAuthorizationControlsAllowedCategories'CarAndTruckDealersNewUsed
+        | IssuingCardAuthorizationControlsAllowedCategories'CarAndTruckDealersUsedOnly
+        | IssuingCardAuthorizationControlsAllowedCategories'CarRentalAgencies
+        | IssuingCardAuthorizationControlsAllowedCategories'CarWashes
+        | IssuingCardAuthorizationControlsAllowedCategories'CarpentryServices
+        | IssuingCardAuthorizationControlsAllowedCategories'CarpetUpholsteryCleaning
+        | IssuingCardAuthorizationControlsAllowedCategories'Caterers
+        | IssuingCardAuthorizationControlsAllowedCategories'CharitableAndSocialServiceOrganizationsFundraising
+        | IssuingCardAuthorizationControlsAllowedCategories'ChemicalsAndAlliedProducts
+        | IssuingCardAuthorizationControlsAllowedCategories'ChildCareServices
+        | IssuingCardAuthorizationControlsAllowedCategories'ChildrensAndInfantsWearStores
+        | IssuingCardAuthorizationControlsAllowedCategories'ChiropodistsPodiatrists
+        | IssuingCardAuthorizationControlsAllowedCategories'Chiropractors
+        | IssuingCardAuthorizationControlsAllowedCategories'CigarStoresAndStands
+        | IssuingCardAuthorizationControlsAllowedCategories'CivicSocialFraternalAssociations
+        | IssuingCardAuthorizationControlsAllowedCategories'CleaningAndMaintenance
+        | IssuingCardAuthorizationControlsAllowedCategories'ClothingRental
+        | IssuingCardAuthorizationControlsAllowedCategories'CollegesUniversities
+        | IssuingCardAuthorizationControlsAllowedCategories'CommercialEquipment
+        | IssuingCardAuthorizationControlsAllowedCategories'CommercialFootwear
+        | IssuingCardAuthorizationControlsAllowedCategories'CommercialPhotographyArtAndGraphics
+        | IssuingCardAuthorizationControlsAllowedCategories'CommuterTransportAndFerries
+        | IssuingCardAuthorizationControlsAllowedCategories'ComputerNetworkServices
+        | IssuingCardAuthorizationControlsAllowedCategories'ComputerProgramming
+        | IssuingCardAuthorizationControlsAllowedCategories'ComputerRepair
+        | IssuingCardAuthorizationControlsAllowedCategories'ComputerSoftwareStores
+        | IssuingCardAuthorizationControlsAllowedCategories'ComputersPeripheralsAndSoftware
+        | IssuingCardAuthorizationControlsAllowedCategories'ConcreteWorkServices
+        | IssuingCardAuthorizationControlsAllowedCategories'ConstructionMaterials
+        | IssuingCardAuthorizationControlsAllowedCategories'ConsultingPublicRelations
+        | IssuingCardAuthorizationControlsAllowedCategories'CorrespondenceSchools
+        | IssuingCardAuthorizationControlsAllowedCategories'CosmeticStores
+        | IssuingCardAuthorizationControlsAllowedCategories'CounselingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'CountryClubs
+        | IssuingCardAuthorizationControlsAllowedCategories'CourierServices
+        | IssuingCardAuthorizationControlsAllowedCategories'CourtCosts
+        | IssuingCardAuthorizationControlsAllowedCategories'CreditReportingAgencies
+        | IssuingCardAuthorizationControlsAllowedCategories'CruiseLines
+        | IssuingCardAuthorizationControlsAllowedCategories'DairyProductsStores
+        | IssuingCardAuthorizationControlsAllowedCategories'DanceHallStudiosSchools
+        | IssuingCardAuthorizationControlsAllowedCategories'DatingEscortServices
+        | IssuingCardAuthorizationControlsAllowedCategories'DentistsOrthodontists
+        | IssuingCardAuthorizationControlsAllowedCategories'DepartmentStores
+        | IssuingCardAuthorizationControlsAllowedCategories'DetectiveAgencies
+        | IssuingCardAuthorizationControlsAllowedCategories'DigitalGoodsApplications
+        | IssuingCardAuthorizationControlsAllowedCategories'DigitalGoodsGames
+        | IssuingCardAuthorizationControlsAllowedCategories'DigitalGoodsLargeVolume
+        | IssuingCardAuthorizationControlsAllowedCategories'DigitalGoodsMedia
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingCatalogMerchant
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingCombinationCatalogAndRetailMerchant
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingInboundTelemarketing
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingInsuranceServices
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingOther
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingOutboundTelemarketing
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingSubscription
+        | IssuingCardAuthorizationControlsAllowedCategories'DirectMarketingTravel
+        | IssuingCardAuthorizationControlsAllowedCategories'DiscountStores
+        | IssuingCardAuthorizationControlsAllowedCategories'Doctors
+        | IssuingCardAuthorizationControlsAllowedCategories'DoorToDoorSales
+        | IssuingCardAuthorizationControlsAllowedCategories'DraperyWindowCoveringAndUpholsteryStores
+        | IssuingCardAuthorizationControlsAllowedCategories'DrinkingPlaces
+        | IssuingCardAuthorizationControlsAllowedCategories'DrugStoresAndPharmacies
+        | IssuingCardAuthorizationControlsAllowedCategories'DrugsDrugProprietariesAndDruggistSundries
+        | IssuingCardAuthorizationControlsAllowedCategories'DryCleaners
+        | IssuingCardAuthorizationControlsAllowedCategories'DurableGoods
+        | IssuingCardAuthorizationControlsAllowedCategories'DutyFreeStores
+        | IssuingCardAuthorizationControlsAllowedCategories'EatingPlacesRestaurants
+        | IssuingCardAuthorizationControlsAllowedCategories'EducationalServices
+        | IssuingCardAuthorizationControlsAllowedCategories'ElectricRazorStores
+        | IssuingCardAuthorizationControlsAllowedCategories'ElectricalPartsAndEquipment
+        | IssuingCardAuthorizationControlsAllowedCategories'ElectricalServices
+        | IssuingCardAuthorizationControlsAllowedCategories'ElectronicsRepairShops
+        | IssuingCardAuthorizationControlsAllowedCategories'ElectronicsStores
+        | IssuingCardAuthorizationControlsAllowedCategories'ElementarySecondarySchools
+        | IssuingCardAuthorizationControlsAllowedCategories'EmploymentTempAgencies
+        | IssuingCardAuthorizationControlsAllowedCategories'EquipmentRental
+        | IssuingCardAuthorizationControlsAllowedCategories'ExterminatingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'FamilyClothingStores
+        | IssuingCardAuthorizationControlsAllowedCategories'FastFoodRestaurants
+        | IssuingCardAuthorizationControlsAllowedCategories'FinancialInstitutions
+        | IssuingCardAuthorizationControlsAllowedCategories'FinesGovernmentAdministrativeEntities
+        | IssuingCardAuthorizationControlsAllowedCategories'FireplaceFireplaceScreensAndAccessoriesStores
+        | IssuingCardAuthorizationControlsAllowedCategories'FloorCoveringStores
+        | IssuingCardAuthorizationControlsAllowedCategories'Florists
+        | IssuingCardAuthorizationControlsAllowedCategories'FloristsSuppliesNurseryStockAndFlowers
+        | IssuingCardAuthorizationControlsAllowedCategories'FreezerAndLockerMeatProvisioners
+        | IssuingCardAuthorizationControlsAllowedCategories'FuelDealersNonAutomotive
+        | IssuingCardAuthorizationControlsAllowedCategories'FuneralServicesCrematories
+        | IssuingCardAuthorizationControlsAllowedCategories'FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | IssuingCardAuthorizationControlsAllowedCategories'FurnitureRepairRefinishing
+        | IssuingCardAuthorizationControlsAllowedCategories'FurriersAndFurShops
+        | IssuingCardAuthorizationControlsAllowedCategories'GeneralServices
+        | IssuingCardAuthorizationControlsAllowedCategories'GiftCardNoveltyAndSouvenirShops
+        | IssuingCardAuthorizationControlsAllowedCategories'GlassPaintAndWallpaperStores
+        | IssuingCardAuthorizationControlsAllowedCategories'GlasswareCrystalStores
+        | IssuingCardAuthorizationControlsAllowedCategories'GolfCoursesPublic
+        | IssuingCardAuthorizationControlsAllowedCategories'GovernmentServices
+        | IssuingCardAuthorizationControlsAllowedCategories'GroceryStoresSupermarkets
+        | IssuingCardAuthorizationControlsAllowedCategories'HardwareEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'HardwareStores
+        | IssuingCardAuthorizationControlsAllowedCategories'HealthAndBeautySpas
+        | IssuingCardAuthorizationControlsAllowedCategories'HearingAidsSalesAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'HeatingPlumbingAC
+        | IssuingCardAuthorizationControlsAllowedCategories'HobbyToyAndGameShops
+        | IssuingCardAuthorizationControlsAllowedCategories'HomeSupplyWarehouseStores
+        | IssuingCardAuthorizationControlsAllowedCategories'Hospitals
+        | IssuingCardAuthorizationControlsAllowedCategories'HotelsMotelsAndResorts
+        | IssuingCardAuthorizationControlsAllowedCategories'HouseholdApplianceStores
+        | IssuingCardAuthorizationControlsAllowedCategories'IndustrialSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'InformationRetrievalServices
+        | IssuingCardAuthorizationControlsAllowedCategories'InsuranceDefault
+        | IssuingCardAuthorizationControlsAllowedCategories'InsuranceUnderwritingPremiums
+        | IssuingCardAuthorizationControlsAllowedCategories'IntraCompanyPurchases
+        | IssuingCardAuthorizationControlsAllowedCategories'JewelryStoresWatchesClocksAndSilverwareStores
+        | IssuingCardAuthorizationControlsAllowedCategories'LandscapingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'Laundries
+        | IssuingCardAuthorizationControlsAllowedCategories'LaundryCleaningServices
+        | IssuingCardAuthorizationControlsAllowedCategories'LegalServicesAttorneys
+        | IssuingCardAuthorizationControlsAllowedCategories'LuggageAndLeatherGoodsStores
+        | IssuingCardAuthorizationControlsAllowedCategories'LumberBuildingMaterialsStores
+        | IssuingCardAuthorizationControlsAllowedCategories'ManualCashDisburse
+        | IssuingCardAuthorizationControlsAllowedCategories'MarinasServiceAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'MasonryStoneworkAndPlaster
+        | IssuingCardAuthorizationControlsAllowedCategories'MassageParlors
+        | IssuingCardAuthorizationControlsAllowedCategories'MedicalAndDentalLabs
+        | IssuingCardAuthorizationControlsAllowedCategories'MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'MedicalServices
+        | IssuingCardAuthorizationControlsAllowedCategories'MembershipOrganizations
+        | IssuingCardAuthorizationControlsAllowedCategories'MensAndBoysClothingAndAccessoriesStores
+        | IssuingCardAuthorizationControlsAllowedCategories'MensWomensClothingStores
+        | IssuingCardAuthorizationControlsAllowedCategories'MetalServiceCenters
+        | IssuingCardAuthorizationControlsAllowedCategories'Miscellaneous
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousApparelAndAccessoryShops
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousAutoDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousBusinessServices
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousFoodStores
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousGeneralMerchandise
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousGeneralServices
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousHomeFurnishingSpecialtyStores
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousPublishingAndPrinting
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousRecreationServices
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousRepairShops
+        | IssuingCardAuthorizationControlsAllowedCategories'MiscellaneousSpecialtyRetail
+        | IssuingCardAuthorizationControlsAllowedCategories'MobileHomeDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'MotionPictureTheaters
+        | IssuingCardAuthorizationControlsAllowedCategories'MotorFreightCarriersAndTrucking
+        | IssuingCardAuthorizationControlsAllowedCategories'MotorHomesDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'MotorVehicleSuppliesAndNewParts
+        | IssuingCardAuthorizationControlsAllowedCategories'MotorcycleShopsAndDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'MotorcycleShopsDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | IssuingCardAuthorizationControlsAllowedCategories'NewsDealersAndNewsstands
+        | IssuingCardAuthorizationControlsAllowedCategories'NonFiMoneyOrders
+        | IssuingCardAuthorizationControlsAllowedCategories'NonFiStoredValueCardPurchaseLoad
+        | IssuingCardAuthorizationControlsAllowedCategories'NondurableGoods
+        | IssuingCardAuthorizationControlsAllowedCategories'NurseriesLawnAndGardenSupplyStores
+        | IssuingCardAuthorizationControlsAllowedCategories'NursingPersonalCare
+        | IssuingCardAuthorizationControlsAllowedCategories'OfficeAndCommercialFurniture
+        | IssuingCardAuthorizationControlsAllowedCategories'OpticiansEyeglasses
+        | IssuingCardAuthorizationControlsAllowedCategories'OptometristsOphthalmologist
+        | IssuingCardAuthorizationControlsAllowedCategories'OrthopedicGoodsProstheticDevices
+        | IssuingCardAuthorizationControlsAllowedCategories'Osteopaths
+        | IssuingCardAuthorizationControlsAllowedCategories'PackageStoresBeerWineAndLiquor
+        | IssuingCardAuthorizationControlsAllowedCategories'PaintsVarnishesAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'ParkingLotsGarages
+        | IssuingCardAuthorizationControlsAllowedCategories'PassengerRailways
+        | IssuingCardAuthorizationControlsAllowedCategories'PawnShops
+        | IssuingCardAuthorizationControlsAllowedCategories'PetShopsPetFoodAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'PetroleumAndPetroleumProducts
+        | IssuingCardAuthorizationControlsAllowedCategories'PhotoDeveloping
+        | IssuingCardAuthorizationControlsAllowedCategories'PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'PhotographicStudios
+        | IssuingCardAuthorizationControlsAllowedCategories'PictureVideoProduction
+        | IssuingCardAuthorizationControlsAllowedCategories'PieceGoodsNotionsAndOtherDryGoods
+        | IssuingCardAuthorizationControlsAllowedCategories'PlumbingHeatingEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'PoliticalOrganizations
+        | IssuingCardAuthorizationControlsAllowedCategories'PostalServicesGovernmentOnly
+        | IssuingCardAuthorizationControlsAllowedCategories'PreciousStonesAndMetalsWatchesAndJewelry
+        | IssuingCardAuthorizationControlsAllowedCategories'ProfessionalServices
+        | IssuingCardAuthorizationControlsAllowedCategories'PublicWarehousingAndStorage
+        | IssuingCardAuthorizationControlsAllowedCategories'QuickCopyReproAndBlueprint
+        | IssuingCardAuthorizationControlsAllowedCategories'Railroads
+        | IssuingCardAuthorizationControlsAllowedCategories'RealEstateAgentsAndManagersRentals
+        | IssuingCardAuthorizationControlsAllowedCategories'RecordStores
+        | IssuingCardAuthorizationControlsAllowedCategories'RecreationalVehicleRentals
+        | IssuingCardAuthorizationControlsAllowedCategories'ReligiousGoodsStores
+        | IssuingCardAuthorizationControlsAllowedCategories'ReligiousOrganizations
+        | IssuingCardAuthorizationControlsAllowedCategories'RoofingSidingSheetMetal
+        | IssuingCardAuthorizationControlsAllowedCategories'SecretarialSupportServices
+        | IssuingCardAuthorizationControlsAllowedCategories'SecurityBrokersDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'ServiceStations
+        | IssuingCardAuthorizationControlsAllowedCategories'SewingNeedleworkFabricAndPieceGoodsStores
+        | IssuingCardAuthorizationControlsAllowedCategories'ShoeRepairHatCleaning
+        | IssuingCardAuthorizationControlsAllowedCategories'ShoeStores
+        | IssuingCardAuthorizationControlsAllowedCategories'SmallApplianceRepair
+        | IssuingCardAuthorizationControlsAllowedCategories'SnowmobileDealers
+        | IssuingCardAuthorizationControlsAllowedCategories'SpecialTradeServices
+        | IssuingCardAuthorizationControlsAllowedCategories'SpecialtyCleaning
+        | IssuingCardAuthorizationControlsAllowedCategories'SportingGoodsStores
+        | IssuingCardAuthorizationControlsAllowedCategories'SportingRecreationCamps
+        | IssuingCardAuthorizationControlsAllowedCategories'SportsAndRidingApparelStores
+        | IssuingCardAuthorizationControlsAllowedCategories'SportsClubsFields
+        | IssuingCardAuthorizationControlsAllowedCategories'StampAndCoinStores
+        | IssuingCardAuthorizationControlsAllowedCategories'StationaryOfficeSuppliesPrintingAndWritingPaper
+        | IssuingCardAuthorizationControlsAllowedCategories'StationeryStoresOfficeAndSchoolSupplyStores
+        | IssuingCardAuthorizationControlsAllowedCategories'SwimmingPoolsSales
+        | IssuingCardAuthorizationControlsAllowedCategories'TUiTravelGermany
+        | IssuingCardAuthorizationControlsAllowedCategories'TailorsAlterations
+        | IssuingCardAuthorizationControlsAllowedCategories'TaxPaymentsGovernmentAgencies
+        | IssuingCardAuthorizationControlsAllowedCategories'TaxPreparationServices
+        | IssuingCardAuthorizationControlsAllowedCategories'TaxicabsLimousines
+        | IssuingCardAuthorizationControlsAllowedCategories'TelecommunicationEquipmentAndTelephoneSales
+        | IssuingCardAuthorizationControlsAllowedCategories'TelecommunicationServices
+        | IssuingCardAuthorizationControlsAllowedCategories'TelegraphServices
+        | IssuingCardAuthorizationControlsAllowedCategories'TentAndAwningShops
+        | IssuingCardAuthorizationControlsAllowedCategories'TestingLaboratories
+        | IssuingCardAuthorizationControlsAllowedCategories'TheatricalTicketAgencies
+        | IssuingCardAuthorizationControlsAllowedCategories'Timeshares
+        | IssuingCardAuthorizationControlsAllowedCategories'TireRetreadingAndRepair
+        | IssuingCardAuthorizationControlsAllowedCategories'TollsBridgeFees
+        | IssuingCardAuthorizationControlsAllowedCategories'TouristAttractionsAndExhibits
+        | IssuingCardAuthorizationControlsAllowedCategories'TowingServices
+        | IssuingCardAuthorizationControlsAllowedCategories'TrailerParksCampgrounds
+        | IssuingCardAuthorizationControlsAllowedCategories'TransportationServices
+        | IssuingCardAuthorizationControlsAllowedCategories'TravelAgenciesTourOperators
+        | IssuingCardAuthorizationControlsAllowedCategories'TruckStopIteration
+        | IssuingCardAuthorizationControlsAllowedCategories'TruckUtilityTrailerRentals
+        | IssuingCardAuthorizationControlsAllowedCategories'TypesettingPlateMakingAndRelatedServices
+        | IssuingCardAuthorizationControlsAllowedCategories'TypewriterStores
+        | IssuingCardAuthorizationControlsAllowedCategories'USFederalGovernmentAgenciesOrDepartments
+        | IssuingCardAuthorizationControlsAllowedCategories'UniformsCommercialClothing
+        | IssuingCardAuthorizationControlsAllowedCategories'UsedMerchandiseAndSecondhandStores
+        | IssuingCardAuthorizationControlsAllowedCategories'Utilities
+        | IssuingCardAuthorizationControlsAllowedCategories'VarietyStores
+        | IssuingCardAuthorizationControlsAllowedCategories'VeterinaryServices
+        | IssuingCardAuthorizationControlsAllowedCategories'VideoAmusementGameSupplies
+        | IssuingCardAuthorizationControlsAllowedCategories'VideoGameArcades
+        | IssuingCardAuthorizationControlsAllowedCategories'VideoTapeRentalStores
+        | IssuingCardAuthorizationControlsAllowedCategories'VocationalTradeSchools
+        | IssuingCardAuthorizationControlsAllowedCategories'WatchJewelryRepair
+        | IssuingCardAuthorizationControlsAllowedCategories'WeldingRepair
+        | IssuingCardAuthorizationControlsAllowedCategories'WholesaleClubs
+        | IssuingCardAuthorizationControlsAllowedCategories'WigAndToupeeStores
+        | IssuingCardAuthorizationControlsAllowedCategories'WiresMoneyOrders
+        | IssuingCardAuthorizationControlsAllowedCategories'WomensAccessoryAndSpecialtyShops
+        | IssuingCardAuthorizationControlsAllowedCategories'WomensReadyToWearStores
+        | IssuingCardAuthorizationControlsAllowedCategories'WreckingAndSalvageYards
 
     and IssuingCardAuthorizationControlsBlockedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
+        | IssuingCardAuthorizationControlsBlockedCategories'AcRefrigerationRepair
+        | IssuingCardAuthorizationControlsBlockedCategories'AccountingBookkeepingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'AdvertisingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'AgriculturalCooperative
+        | IssuingCardAuthorizationControlsBlockedCategories'AirlinesAirCarriers
+        | IssuingCardAuthorizationControlsBlockedCategories'AirportsFlyingFields
+        | IssuingCardAuthorizationControlsBlockedCategories'AmbulanceServices
+        | IssuingCardAuthorizationControlsBlockedCategories'AmusementParksCarnivals
+        | IssuingCardAuthorizationControlsBlockedCategories'AntiqueReproductions
+        | IssuingCardAuthorizationControlsBlockedCategories'AntiqueShops
+        | IssuingCardAuthorizationControlsBlockedCategories'Aquariums
+        | IssuingCardAuthorizationControlsBlockedCategories'ArchitecturalSurveyingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'ArtDealersAndGalleries
+        | IssuingCardAuthorizationControlsBlockedCategories'ArtistsSupplyAndCraftShops
+        | IssuingCardAuthorizationControlsBlockedCategories'AutoAndHomeSupplyStores
+        | IssuingCardAuthorizationControlsBlockedCategories'AutoBodyRepairShops
+        | IssuingCardAuthorizationControlsBlockedCategories'AutoPaintShops
+        | IssuingCardAuthorizationControlsBlockedCategories'AutoServiceShops
+        | IssuingCardAuthorizationControlsBlockedCategories'AutomatedCashDisburse
+        | IssuingCardAuthorizationControlsBlockedCategories'AutomatedFuelDispensers
+        | IssuingCardAuthorizationControlsBlockedCategories'AutomobileAssociations
+        | IssuingCardAuthorizationControlsBlockedCategories'AutomotivePartsAndAccessoriesStores
+        | IssuingCardAuthorizationControlsBlockedCategories'AutomotiveTireStores
+        | IssuingCardAuthorizationControlsBlockedCategories'BailAndBondPayments
+        | IssuingCardAuthorizationControlsBlockedCategories'Bakeries
+        | IssuingCardAuthorizationControlsBlockedCategories'BandsOrchestras
+        | IssuingCardAuthorizationControlsBlockedCategories'BarberAndBeautyShops
+        | IssuingCardAuthorizationControlsBlockedCategories'BettingCasinoGambling
+        | IssuingCardAuthorizationControlsBlockedCategories'BicycleShops
+        | IssuingCardAuthorizationControlsBlockedCategories'BilliardPoolEstablishments
+        | IssuingCardAuthorizationControlsBlockedCategories'BoatDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'BoatRentalsAndLeases
+        | IssuingCardAuthorizationControlsBlockedCategories'BookStores
+        | IssuingCardAuthorizationControlsBlockedCategories'BooksPeriodicalsAndNewspapers
+        | IssuingCardAuthorizationControlsBlockedCategories'BowlingAlleys
+        | IssuingCardAuthorizationControlsBlockedCategories'BusLines
+        | IssuingCardAuthorizationControlsBlockedCategories'BusinessSecretarialSchools
+        | IssuingCardAuthorizationControlsBlockedCategories'BuyingShoppingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'CableSatelliteAndOtherPayTelevisionAndRadio
+        | IssuingCardAuthorizationControlsBlockedCategories'CameraAndPhotographicSupplyStores
+        | IssuingCardAuthorizationControlsBlockedCategories'CandyNutAndConfectioneryStores
+        | IssuingCardAuthorizationControlsBlockedCategories'CarAndTruckDealersNewUsed
+        | IssuingCardAuthorizationControlsBlockedCategories'CarAndTruckDealersUsedOnly
+        | IssuingCardAuthorizationControlsBlockedCategories'CarRentalAgencies
+        | IssuingCardAuthorizationControlsBlockedCategories'CarWashes
+        | IssuingCardAuthorizationControlsBlockedCategories'CarpentryServices
+        | IssuingCardAuthorizationControlsBlockedCategories'CarpetUpholsteryCleaning
+        | IssuingCardAuthorizationControlsBlockedCategories'Caterers
+        | IssuingCardAuthorizationControlsBlockedCategories'CharitableAndSocialServiceOrganizationsFundraising
+        | IssuingCardAuthorizationControlsBlockedCategories'ChemicalsAndAlliedProducts
+        | IssuingCardAuthorizationControlsBlockedCategories'ChildCareServices
+        | IssuingCardAuthorizationControlsBlockedCategories'ChildrensAndInfantsWearStores
+        | IssuingCardAuthorizationControlsBlockedCategories'ChiropodistsPodiatrists
+        | IssuingCardAuthorizationControlsBlockedCategories'Chiropractors
+        | IssuingCardAuthorizationControlsBlockedCategories'CigarStoresAndStands
+        | IssuingCardAuthorizationControlsBlockedCategories'CivicSocialFraternalAssociations
+        | IssuingCardAuthorizationControlsBlockedCategories'CleaningAndMaintenance
+        | IssuingCardAuthorizationControlsBlockedCategories'ClothingRental
+        | IssuingCardAuthorizationControlsBlockedCategories'CollegesUniversities
+        | IssuingCardAuthorizationControlsBlockedCategories'CommercialEquipment
+        | IssuingCardAuthorizationControlsBlockedCategories'CommercialFootwear
+        | IssuingCardAuthorizationControlsBlockedCategories'CommercialPhotographyArtAndGraphics
+        | IssuingCardAuthorizationControlsBlockedCategories'CommuterTransportAndFerries
+        | IssuingCardAuthorizationControlsBlockedCategories'ComputerNetworkServices
+        | IssuingCardAuthorizationControlsBlockedCategories'ComputerProgramming
+        | IssuingCardAuthorizationControlsBlockedCategories'ComputerRepair
+        | IssuingCardAuthorizationControlsBlockedCategories'ComputerSoftwareStores
+        | IssuingCardAuthorizationControlsBlockedCategories'ComputersPeripheralsAndSoftware
+        | IssuingCardAuthorizationControlsBlockedCategories'ConcreteWorkServices
+        | IssuingCardAuthorizationControlsBlockedCategories'ConstructionMaterials
+        | IssuingCardAuthorizationControlsBlockedCategories'ConsultingPublicRelations
+        | IssuingCardAuthorizationControlsBlockedCategories'CorrespondenceSchools
+        | IssuingCardAuthorizationControlsBlockedCategories'CosmeticStores
+        | IssuingCardAuthorizationControlsBlockedCategories'CounselingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'CountryClubs
+        | IssuingCardAuthorizationControlsBlockedCategories'CourierServices
+        | IssuingCardAuthorizationControlsBlockedCategories'CourtCosts
+        | IssuingCardAuthorizationControlsBlockedCategories'CreditReportingAgencies
+        | IssuingCardAuthorizationControlsBlockedCategories'CruiseLines
+        | IssuingCardAuthorizationControlsBlockedCategories'DairyProductsStores
+        | IssuingCardAuthorizationControlsBlockedCategories'DanceHallStudiosSchools
+        | IssuingCardAuthorizationControlsBlockedCategories'DatingEscortServices
+        | IssuingCardAuthorizationControlsBlockedCategories'DentistsOrthodontists
+        | IssuingCardAuthorizationControlsBlockedCategories'DepartmentStores
+        | IssuingCardAuthorizationControlsBlockedCategories'DetectiveAgencies
+        | IssuingCardAuthorizationControlsBlockedCategories'DigitalGoodsApplications
+        | IssuingCardAuthorizationControlsBlockedCategories'DigitalGoodsGames
+        | IssuingCardAuthorizationControlsBlockedCategories'DigitalGoodsLargeVolume
+        | IssuingCardAuthorizationControlsBlockedCategories'DigitalGoodsMedia
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingCatalogMerchant
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingCombinationCatalogAndRetailMerchant
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingInboundTelemarketing
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingInsuranceServices
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingOther
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingOutboundTelemarketing
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingSubscription
+        | IssuingCardAuthorizationControlsBlockedCategories'DirectMarketingTravel
+        | IssuingCardAuthorizationControlsBlockedCategories'DiscountStores
+        | IssuingCardAuthorizationControlsBlockedCategories'Doctors
+        | IssuingCardAuthorizationControlsBlockedCategories'DoorToDoorSales
+        | IssuingCardAuthorizationControlsBlockedCategories'DraperyWindowCoveringAndUpholsteryStores
+        | IssuingCardAuthorizationControlsBlockedCategories'DrinkingPlaces
+        | IssuingCardAuthorizationControlsBlockedCategories'DrugStoresAndPharmacies
+        | IssuingCardAuthorizationControlsBlockedCategories'DrugsDrugProprietariesAndDruggistSundries
+        | IssuingCardAuthorizationControlsBlockedCategories'DryCleaners
+        | IssuingCardAuthorizationControlsBlockedCategories'DurableGoods
+        | IssuingCardAuthorizationControlsBlockedCategories'DutyFreeStores
+        | IssuingCardAuthorizationControlsBlockedCategories'EatingPlacesRestaurants
+        | IssuingCardAuthorizationControlsBlockedCategories'EducationalServices
+        | IssuingCardAuthorizationControlsBlockedCategories'ElectricRazorStores
+        | IssuingCardAuthorizationControlsBlockedCategories'ElectricalPartsAndEquipment
+        | IssuingCardAuthorizationControlsBlockedCategories'ElectricalServices
+        | IssuingCardAuthorizationControlsBlockedCategories'ElectronicsRepairShops
+        | IssuingCardAuthorizationControlsBlockedCategories'ElectronicsStores
+        | IssuingCardAuthorizationControlsBlockedCategories'ElementarySecondarySchools
+        | IssuingCardAuthorizationControlsBlockedCategories'EmploymentTempAgencies
+        | IssuingCardAuthorizationControlsBlockedCategories'EquipmentRental
+        | IssuingCardAuthorizationControlsBlockedCategories'ExterminatingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'FamilyClothingStores
+        | IssuingCardAuthorizationControlsBlockedCategories'FastFoodRestaurants
+        | IssuingCardAuthorizationControlsBlockedCategories'FinancialInstitutions
+        | IssuingCardAuthorizationControlsBlockedCategories'FinesGovernmentAdministrativeEntities
+        | IssuingCardAuthorizationControlsBlockedCategories'FireplaceFireplaceScreensAndAccessoriesStores
+        | IssuingCardAuthorizationControlsBlockedCategories'FloorCoveringStores
+        | IssuingCardAuthorizationControlsBlockedCategories'Florists
+        | IssuingCardAuthorizationControlsBlockedCategories'FloristsSuppliesNurseryStockAndFlowers
+        | IssuingCardAuthorizationControlsBlockedCategories'FreezerAndLockerMeatProvisioners
+        | IssuingCardAuthorizationControlsBlockedCategories'FuelDealersNonAutomotive
+        | IssuingCardAuthorizationControlsBlockedCategories'FuneralServicesCrematories
+        | IssuingCardAuthorizationControlsBlockedCategories'FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | IssuingCardAuthorizationControlsBlockedCategories'FurnitureRepairRefinishing
+        | IssuingCardAuthorizationControlsBlockedCategories'FurriersAndFurShops
+        | IssuingCardAuthorizationControlsBlockedCategories'GeneralServices
+        | IssuingCardAuthorizationControlsBlockedCategories'GiftCardNoveltyAndSouvenirShops
+        | IssuingCardAuthorizationControlsBlockedCategories'GlassPaintAndWallpaperStores
+        | IssuingCardAuthorizationControlsBlockedCategories'GlasswareCrystalStores
+        | IssuingCardAuthorizationControlsBlockedCategories'GolfCoursesPublic
+        | IssuingCardAuthorizationControlsBlockedCategories'GovernmentServices
+        | IssuingCardAuthorizationControlsBlockedCategories'GroceryStoresSupermarkets
+        | IssuingCardAuthorizationControlsBlockedCategories'HardwareEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'HardwareStores
+        | IssuingCardAuthorizationControlsBlockedCategories'HealthAndBeautySpas
+        | IssuingCardAuthorizationControlsBlockedCategories'HearingAidsSalesAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'HeatingPlumbingAC
+        | IssuingCardAuthorizationControlsBlockedCategories'HobbyToyAndGameShops
+        | IssuingCardAuthorizationControlsBlockedCategories'HomeSupplyWarehouseStores
+        | IssuingCardAuthorizationControlsBlockedCategories'Hospitals
+        | IssuingCardAuthorizationControlsBlockedCategories'HotelsMotelsAndResorts
+        | IssuingCardAuthorizationControlsBlockedCategories'HouseholdApplianceStores
+        | IssuingCardAuthorizationControlsBlockedCategories'IndustrialSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'InformationRetrievalServices
+        | IssuingCardAuthorizationControlsBlockedCategories'InsuranceDefault
+        | IssuingCardAuthorizationControlsBlockedCategories'InsuranceUnderwritingPremiums
+        | IssuingCardAuthorizationControlsBlockedCategories'IntraCompanyPurchases
+        | IssuingCardAuthorizationControlsBlockedCategories'JewelryStoresWatchesClocksAndSilverwareStores
+        | IssuingCardAuthorizationControlsBlockedCategories'LandscapingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'Laundries
+        | IssuingCardAuthorizationControlsBlockedCategories'LaundryCleaningServices
+        | IssuingCardAuthorizationControlsBlockedCategories'LegalServicesAttorneys
+        | IssuingCardAuthorizationControlsBlockedCategories'LuggageAndLeatherGoodsStores
+        | IssuingCardAuthorizationControlsBlockedCategories'LumberBuildingMaterialsStores
+        | IssuingCardAuthorizationControlsBlockedCategories'ManualCashDisburse
+        | IssuingCardAuthorizationControlsBlockedCategories'MarinasServiceAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'MasonryStoneworkAndPlaster
+        | IssuingCardAuthorizationControlsBlockedCategories'MassageParlors
+        | IssuingCardAuthorizationControlsBlockedCategories'MedicalAndDentalLabs
+        | IssuingCardAuthorizationControlsBlockedCategories'MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'MedicalServices
+        | IssuingCardAuthorizationControlsBlockedCategories'MembershipOrganizations
+        | IssuingCardAuthorizationControlsBlockedCategories'MensAndBoysClothingAndAccessoriesStores
+        | IssuingCardAuthorizationControlsBlockedCategories'MensWomensClothingStores
+        | IssuingCardAuthorizationControlsBlockedCategories'MetalServiceCenters
+        | IssuingCardAuthorizationControlsBlockedCategories'Miscellaneous
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousApparelAndAccessoryShops
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousAutoDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousBusinessServices
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousFoodStores
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousGeneralMerchandise
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousGeneralServices
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousHomeFurnishingSpecialtyStores
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousPublishingAndPrinting
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousRecreationServices
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousRepairShops
+        | IssuingCardAuthorizationControlsBlockedCategories'MiscellaneousSpecialtyRetail
+        | IssuingCardAuthorizationControlsBlockedCategories'MobileHomeDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'MotionPictureTheaters
+        | IssuingCardAuthorizationControlsBlockedCategories'MotorFreightCarriersAndTrucking
+        | IssuingCardAuthorizationControlsBlockedCategories'MotorHomesDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'MotorVehicleSuppliesAndNewParts
+        | IssuingCardAuthorizationControlsBlockedCategories'MotorcycleShopsAndDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'MotorcycleShopsDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | IssuingCardAuthorizationControlsBlockedCategories'NewsDealersAndNewsstands
+        | IssuingCardAuthorizationControlsBlockedCategories'NonFiMoneyOrders
+        | IssuingCardAuthorizationControlsBlockedCategories'NonFiStoredValueCardPurchaseLoad
+        | IssuingCardAuthorizationControlsBlockedCategories'NondurableGoods
+        | IssuingCardAuthorizationControlsBlockedCategories'NurseriesLawnAndGardenSupplyStores
+        | IssuingCardAuthorizationControlsBlockedCategories'NursingPersonalCare
+        | IssuingCardAuthorizationControlsBlockedCategories'OfficeAndCommercialFurniture
+        | IssuingCardAuthorizationControlsBlockedCategories'OpticiansEyeglasses
+        | IssuingCardAuthorizationControlsBlockedCategories'OptometristsOphthalmologist
+        | IssuingCardAuthorizationControlsBlockedCategories'OrthopedicGoodsProstheticDevices
+        | IssuingCardAuthorizationControlsBlockedCategories'Osteopaths
+        | IssuingCardAuthorizationControlsBlockedCategories'PackageStoresBeerWineAndLiquor
+        | IssuingCardAuthorizationControlsBlockedCategories'PaintsVarnishesAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'ParkingLotsGarages
+        | IssuingCardAuthorizationControlsBlockedCategories'PassengerRailways
+        | IssuingCardAuthorizationControlsBlockedCategories'PawnShops
+        | IssuingCardAuthorizationControlsBlockedCategories'PetShopsPetFoodAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'PetroleumAndPetroleumProducts
+        | IssuingCardAuthorizationControlsBlockedCategories'PhotoDeveloping
+        | IssuingCardAuthorizationControlsBlockedCategories'PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'PhotographicStudios
+        | IssuingCardAuthorizationControlsBlockedCategories'PictureVideoProduction
+        | IssuingCardAuthorizationControlsBlockedCategories'PieceGoodsNotionsAndOtherDryGoods
+        | IssuingCardAuthorizationControlsBlockedCategories'PlumbingHeatingEquipmentAndSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'PoliticalOrganizations
+        | IssuingCardAuthorizationControlsBlockedCategories'PostalServicesGovernmentOnly
+        | IssuingCardAuthorizationControlsBlockedCategories'PreciousStonesAndMetalsWatchesAndJewelry
+        | IssuingCardAuthorizationControlsBlockedCategories'ProfessionalServices
+        | IssuingCardAuthorizationControlsBlockedCategories'PublicWarehousingAndStorage
+        | IssuingCardAuthorizationControlsBlockedCategories'QuickCopyReproAndBlueprint
+        | IssuingCardAuthorizationControlsBlockedCategories'Railroads
+        | IssuingCardAuthorizationControlsBlockedCategories'RealEstateAgentsAndManagersRentals
+        | IssuingCardAuthorizationControlsBlockedCategories'RecordStores
+        | IssuingCardAuthorizationControlsBlockedCategories'RecreationalVehicleRentals
+        | IssuingCardAuthorizationControlsBlockedCategories'ReligiousGoodsStores
+        | IssuingCardAuthorizationControlsBlockedCategories'ReligiousOrganizations
+        | IssuingCardAuthorizationControlsBlockedCategories'RoofingSidingSheetMetal
+        | IssuingCardAuthorizationControlsBlockedCategories'SecretarialSupportServices
+        | IssuingCardAuthorizationControlsBlockedCategories'SecurityBrokersDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'ServiceStations
+        | IssuingCardAuthorizationControlsBlockedCategories'SewingNeedleworkFabricAndPieceGoodsStores
+        | IssuingCardAuthorizationControlsBlockedCategories'ShoeRepairHatCleaning
+        | IssuingCardAuthorizationControlsBlockedCategories'ShoeStores
+        | IssuingCardAuthorizationControlsBlockedCategories'SmallApplianceRepair
+        | IssuingCardAuthorizationControlsBlockedCategories'SnowmobileDealers
+        | IssuingCardAuthorizationControlsBlockedCategories'SpecialTradeServices
+        | IssuingCardAuthorizationControlsBlockedCategories'SpecialtyCleaning
+        | IssuingCardAuthorizationControlsBlockedCategories'SportingGoodsStores
+        | IssuingCardAuthorizationControlsBlockedCategories'SportingRecreationCamps
+        | IssuingCardAuthorizationControlsBlockedCategories'SportsAndRidingApparelStores
+        | IssuingCardAuthorizationControlsBlockedCategories'SportsClubsFields
+        | IssuingCardAuthorizationControlsBlockedCategories'StampAndCoinStores
+        | IssuingCardAuthorizationControlsBlockedCategories'StationaryOfficeSuppliesPrintingAndWritingPaper
+        | IssuingCardAuthorizationControlsBlockedCategories'StationeryStoresOfficeAndSchoolSupplyStores
+        | IssuingCardAuthorizationControlsBlockedCategories'SwimmingPoolsSales
+        | IssuingCardAuthorizationControlsBlockedCategories'TUiTravelGermany
+        | IssuingCardAuthorizationControlsBlockedCategories'TailorsAlterations
+        | IssuingCardAuthorizationControlsBlockedCategories'TaxPaymentsGovernmentAgencies
+        | IssuingCardAuthorizationControlsBlockedCategories'TaxPreparationServices
+        | IssuingCardAuthorizationControlsBlockedCategories'TaxicabsLimousines
+        | IssuingCardAuthorizationControlsBlockedCategories'TelecommunicationEquipmentAndTelephoneSales
+        | IssuingCardAuthorizationControlsBlockedCategories'TelecommunicationServices
+        | IssuingCardAuthorizationControlsBlockedCategories'TelegraphServices
+        | IssuingCardAuthorizationControlsBlockedCategories'TentAndAwningShops
+        | IssuingCardAuthorizationControlsBlockedCategories'TestingLaboratories
+        | IssuingCardAuthorizationControlsBlockedCategories'TheatricalTicketAgencies
+        | IssuingCardAuthorizationControlsBlockedCategories'Timeshares
+        | IssuingCardAuthorizationControlsBlockedCategories'TireRetreadingAndRepair
+        | IssuingCardAuthorizationControlsBlockedCategories'TollsBridgeFees
+        | IssuingCardAuthorizationControlsBlockedCategories'TouristAttractionsAndExhibits
+        | IssuingCardAuthorizationControlsBlockedCategories'TowingServices
+        | IssuingCardAuthorizationControlsBlockedCategories'TrailerParksCampgrounds
+        | IssuingCardAuthorizationControlsBlockedCategories'TransportationServices
+        | IssuingCardAuthorizationControlsBlockedCategories'TravelAgenciesTourOperators
+        | IssuingCardAuthorizationControlsBlockedCategories'TruckStopIteration
+        | IssuingCardAuthorizationControlsBlockedCategories'TruckUtilityTrailerRentals
+        | IssuingCardAuthorizationControlsBlockedCategories'TypesettingPlateMakingAndRelatedServices
+        | IssuingCardAuthorizationControlsBlockedCategories'TypewriterStores
+        | IssuingCardAuthorizationControlsBlockedCategories'USFederalGovernmentAgenciesOrDepartments
+        | IssuingCardAuthorizationControlsBlockedCategories'UniformsCommercialClothing
+        | IssuingCardAuthorizationControlsBlockedCategories'UsedMerchandiseAndSecondhandStores
+        | IssuingCardAuthorizationControlsBlockedCategories'Utilities
+        | IssuingCardAuthorizationControlsBlockedCategories'VarietyStores
+        | IssuingCardAuthorizationControlsBlockedCategories'VeterinaryServices
+        | IssuingCardAuthorizationControlsBlockedCategories'VideoAmusementGameSupplies
+        | IssuingCardAuthorizationControlsBlockedCategories'VideoGameArcades
+        | IssuingCardAuthorizationControlsBlockedCategories'VideoTapeRentalStores
+        | IssuingCardAuthorizationControlsBlockedCategories'VocationalTradeSchools
+        | IssuingCardAuthorizationControlsBlockedCategories'WatchJewelryRepair
+        | IssuingCardAuthorizationControlsBlockedCategories'WeldingRepair
+        | IssuingCardAuthorizationControlsBlockedCategories'WholesaleClubs
+        | IssuingCardAuthorizationControlsBlockedCategories'WigAndToupeeStores
+        | IssuingCardAuthorizationControlsBlockedCategories'WiresMoneyOrders
+        | IssuingCardAuthorizationControlsBlockedCategories'WomensAccessoryAndSpecialtyShops
+        | IssuingCardAuthorizationControlsBlockedCategories'WomensReadyToWearStores
+        | IssuingCardAuthorizationControlsBlockedCategories'WreckingAndSalvageYards
 
     ///
-    and IssuingCardShipping = {
+    and IssuingCardShipping (address: Address, carrier: IssuingCardShippingCarrier option, eta: int option, name: string, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
 
-        Address: Address
-
-        ///The delivery company that shipped a card.
-        Carrier: IssuingCardShippingCarrier
-
-        ///A unix timestamp representing a best estimate of when the card will be delivered.
-        Eta: int
-
-        ///Recipient name.
-        Name: string
-
-        ///Shipment service, such as `standard` or `express`.
-        Service: IssuingCardShippingService
-
-        ///The delivery status of the card.
-        Status: IssuingCardShippingStatus
-
-        ///A tracking number for a card shipment.
-        TrackingNumber: string
-
-        ///A link to the shipping carrier's site where you can view detailed information about a card shipment.
-        TrackingUrl: string
-
-        ///Packaging options.
-        Type: IssuingCardShippingType
-
-    }
+        member _.Address = address
+        member _.Carrier = carrier
+        member _.Eta = eta
+        member _.Name = name
+        member _.Service = service
+        member _.Status = status
+        member _.TrackingNumber = trackingNumber
+        member _.TrackingUrl = trackingUrl
+        member _.Type = ``type``
 
     and IssuingCardShippingCarrier =
-        | Fedex
-        | Usps
+        | IssuingCardShippingCarrier'Fedex
+        | IssuingCardShippingCarrier'Usps
 
     and IssuingCardShippingService =
-        | Express
-        | Priority
-        | Standard
+        | IssuingCardShippingService'Express
+        | IssuingCardShippingService'Priority
+        | IssuingCardShippingService'Standard
 
     and IssuingCardShippingStatus =
-        | Canceled
-        | Delivered
-        | Failure
-        | Pending
-        | Returned
-        | Shipped
+        | IssuingCardShippingStatus'Canceled
+        | IssuingCardShippingStatus'Delivered
+        | IssuingCardShippingStatus'Failure
+        | IssuingCardShippingStatus'Pending
+        | IssuingCardShippingStatus'Returned
+        | IssuingCardShippingStatus'Shipped
 
     and IssuingCardShippingType =
-        | Bulk
-        | Individual
+        | IssuingCardShippingType'Bulk
+        | IssuingCardShippingType'Individual
 
     ///
-    and IssuingCardSpendingLimit = {
+    and IssuingCardSpendingLimit (amount: int, categories: IssuingCardSpendingLimitCategories list option, interval: IssuingCardSpendingLimitInterval) =
 
-        ///Maximum amount allowed to spend per interval.
-        Amount: int
-
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
-        Categories: IssuingCardSpendingLimitCategories list
-
-        ///Interval (or event) to which the amount applies.
-        Interval: IssuingCardSpendingLimitInterval
-
-    }
+        member _.Amount = amount
+        member _.Categories = categories
+        member _.Interval = interval
 
     and IssuingCardSpendingLimitCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
+        | IssuingCardSpendingLimitCategories'AcRefrigerationRepair
+        | IssuingCardSpendingLimitCategories'AccountingBookkeepingServices
+        | IssuingCardSpendingLimitCategories'AdvertisingServices
+        | IssuingCardSpendingLimitCategories'AgriculturalCooperative
+        | IssuingCardSpendingLimitCategories'AirlinesAirCarriers
+        | IssuingCardSpendingLimitCategories'AirportsFlyingFields
+        | IssuingCardSpendingLimitCategories'AmbulanceServices
+        | IssuingCardSpendingLimitCategories'AmusementParksCarnivals
+        | IssuingCardSpendingLimitCategories'AntiqueReproductions
+        | IssuingCardSpendingLimitCategories'AntiqueShops
+        | IssuingCardSpendingLimitCategories'Aquariums
+        | IssuingCardSpendingLimitCategories'ArchitecturalSurveyingServices
+        | IssuingCardSpendingLimitCategories'ArtDealersAndGalleries
+        | IssuingCardSpendingLimitCategories'ArtistsSupplyAndCraftShops
+        | IssuingCardSpendingLimitCategories'AutoAndHomeSupplyStores
+        | IssuingCardSpendingLimitCategories'AutoBodyRepairShops
+        | IssuingCardSpendingLimitCategories'AutoPaintShops
+        | IssuingCardSpendingLimitCategories'AutoServiceShops
+        | IssuingCardSpendingLimitCategories'AutomatedCashDisburse
+        | IssuingCardSpendingLimitCategories'AutomatedFuelDispensers
+        | IssuingCardSpendingLimitCategories'AutomobileAssociations
+        | IssuingCardSpendingLimitCategories'AutomotivePartsAndAccessoriesStores
+        | IssuingCardSpendingLimitCategories'AutomotiveTireStores
+        | IssuingCardSpendingLimitCategories'BailAndBondPayments
+        | IssuingCardSpendingLimitCategories'Bakeries
+        | IssuingCardSpendingLimitCategories'BandsOrchestras
+        | IssuingCardSpendingLimitCategories'BarberAndBeautyShops
+        | IssuingCardSpendingLimitCategories'BettingCasinoGambling
+        | IssuingCardSpendingLimitCategories'BicycleShops
+        | IssuingCardSpendingLimitCategories'BilliardPoolEstablishments
+        | IssuingCardSpendingLimitCategories'BoatDealers
+        | IssuingCardSpendingLimitCategories'BoatRentalsAndLeases
+        | IssuingCardSpendingLimitCategories'BookStores
+        | IssuingCardSpendingLimitCategories'BooksPeriodicalsAndNewspapers
+        | IssuingCardSpendingLimitCategories'BowlingAlleys
+        | IssuingCardSpendingLimitCategories'BusLines
+        | IssuingCardSpendingLimitCategories'BusinessSecretarialSchools
+        | IssuingCardSpendingLimitCategories'BuyingShoppingServices
+        | IssuingCardSpendingLimitCategories'CableSatelliteAndOtherPayTelevisionAndRadio
+        | IssuingCardSpendingLimitCategories'CameraAndPhotographicSupplyStores
+        | IssuingCardSpendingLimitCategories'CandyNutAndConfectioneryStores
+        | IssuingCardSpendingLimitCategories'CarAndTruckDealersNewUsed
+        | IssuingCardSpendingLimitCategories'CarAndTruckDealersUsedOnly
+        | IssuingCardSpendingLimitCategories'CarRentalAgencies
+        | IssuingCardSpendingLimitCategories'CarWashes
+        | IssuingCardSpendingLimitCategories'CarpentryServices
+        | IssuingCardSpendingLimitCategories'CarpetUpholsteryCleaning
+        | IssuingCardSpendingLimitCategories'Caterers
+        | IssuingCardSpendingLimitCategories'CharitableAndSocialServiceOrganizationsFundraising
+        | IssuingCardSpendingLimitCategories'ChemicalsAndAlliedProducts
+        | IssuingCardSpendingLimitCategories'ChildCareServices
+        | IssuingCardSpendingLimitCategories'ChildrensAndInfantsWearStores
+        | IssuingCardSpendingLimitCategories'ChiropodistsPodiatrists
+        | IssuingCardSpendingLimitCategories'Chiropractors
+        | IssuingCardSpendingLimitCategories'CigarStoresAndStands
+        | IssuingCardSpendingLimitCategories'CivicSocialFraternalAssociations
+        | IssuingCardSpendingLimitCategories'CleaningAndMaintenance
+        | IssuingCardSpendingLimitCategories'ClothingRental
+        | IssuingCardSpendingLimitCategories'CollegesUniversities
+        | IssuingCardSpendingLimitCategories'CommercialEquipment
+        | IssuingCardSpendingLimitCategories'CommercialFootwear
+        | IssuingCardSpendingLimitCategories'CommercialPhotographyArtAndGraphics
+        | IssuingCardSpendingLimitCategories'CommuterTransportAndFerries
+        | IssuingCardSpendingLimitCategories'ComputerNetworkServices
+        | IssuingCardSpendingLimitCategories'ComputerProgramming
+        | IssuingCardSpendingLimitCategories'ComputerRepair
+        | IssuingCardSpendingLimitCategories'ComputerSoftwareStores
+        | IssuingCardSpendingLimitCategories'ComputersPeripheralsAndSoftware
+        | IssuingCardSpendingLimitCategories'ConcreteWorkServices
+        | IssuingCardSpendingLimitCategories'ConstructionMaterials
+        | IssuingCardSpendingLimitCategories'ConsultingPublicRelations
+        | IssuingCardSpendingLimitCategories'CorrespondenceSchools
+        | IssuingCardSpendingLimitCategories'CosmeticStores
+        | IssuingCardSpendingLimitCategories'CounselingServices
+        | IssuingCardSpendingLimitCategories'CountryClubs
+        | IssuingCardSpendingLimitCategories'CourierServices
+        | IssuingCardSpendingLimitCategories'CourtCosts
+        | IssuingCardSpendingLimitCategories'CreditReportingAgencies
+        | IssuingCardSpendingLimitCategories'CruiseLines
+        | IssuingCardSpendingLimitCategories'DairyProductsStores
+        | IssuingCardSpendingLimitCategories'DanceHallStudiosSchools
+        | IssuingCardSpendingLimitCategories'DatingEscortServices
+        | IssuingCardSpendingLimitCategories'DentistsOrthodontists
+        | IssuingCardSpendingLimitCategories'DepartmentStores
+        | IssuingCardSpendingLimitCategories'DetectiveAgencies
+        | IssuingCardSpendingLimitCategories'DigitalGoodsApplications
+        | IssuingCardSpendingLimitCategories'DigitalGoodsGames
+        | IssuingCardSpendingLimitCategories'DigitalGoodsLargeVolume
+        | IssuingCardSpendingLimitCategories'DigitalGoodsMedia
+        | IssuingCardSpendingLimitCategories'DirectMarketingCatalogMerchant
+        | IssuingCardSpendingLimitCategories'DirectMarketingCombinationCatalogAndRetailMerchant
+        | IssuingCardSpendingLimitCategories'DirectMarketingInboundTelemarketing
+        | IssuingCardSpendingLimitCategories'DirectMarketingInsuranceServices
+        | IssuingCardSpendingLimitCategories'DirectMarketingOther
+        | IssuingCardSpendingLimitCategories'DirectMarketingOutboundTelemarketing
+        | IssuingCardSpendingLimitCategories'DirectMarketingSubscription
+        | IssuingCardSpendingLimitCategories'DirectMarketingTravel
+        | IssuingCardSpendingLimitCategories'DiscountStores
+        | IssuingCardSpendingLimitCategories'Doctors
+        | IssuingCardSpendingLimitCategories'DoorToDoorSales
+        | IssuingCardSpendingLimitCategories'DraperyWindowCoveringAndUpholsteryStores
+        | IssuingCardSpendingLimitCategories'DrinkingPlaces
+        | IssuingCardSpendingLimitCategories'DrugStoresAndPharmacies
+        | IssuingCardSpendingLimitCategories'DrugsDrugProprietariesAndDruggistSundries
+        | IssuingCardSpendingLimitCategories'DryCleaners
+        | IssuingCardSpendingLimitCategories'DurableGoods
+        | IssuingCardSpendingLimitCategories'DutyFreeStores
+        | IssuingCardSpendingLimitCategories'EatingPlacesRestaurants
+        | IssuingCardSpendingLimitCategories'EducationalServices
+        | IssuingCardSpendingLimitCategories'ElectricRazorStores
+        | IssuingCardSpendingLimitCategories'ElectricalPartsAndEquipment
+        | IssuingCardSpendingLimitCategories'ElectricalServices
+        | IssuingCardSpendingLimitCategories'ElectronicsRepairShops
+        | IssuingCardSpendingLimitCategories'ElectronicsStores
+        | IssuingCardSpendingLimitCategories'ElementarySecondarySchools
+        | IssuingCardSpendingLimitCategories'EmploymentTempAgencies
+        | IssuingCardSpendingLimitCategories'EquipmentRental
+        | IssuingCardSpendingLimitCategories'ExterminatingServices
+        | IssuingCardSpendingLimitCategories'FamilyClothingStores
+        | IssuingCardSpendingLimitCategories'FastFoodRestaurants
+        | IssuingCardSpendingLimitCategories'FinancialInstitutions
+        | IssuingCardSpendingLimitCategories'FinesGovernmentAdministrativeEntities
+        | IssuingCardSpendingLimitCategories'FireplaceFireplaceScreensAndAccessoriesStores
+        | IssuingCardSpendingLimitCategories'FloorCoveringStores
+        | IssuingCardSpendingLimitCategories'Florists
+        | IssuingCardSpendingLimitCategories'FloristsSuppliesNurseryStockAndFlowers
+        | IssuingCardSpendingLimitCategories'FreezerAndLockerMeatProvisioners
+        | IssuingCardSpendingLimitCategories'FuelDealersNonAutomotive
+        | IssuingCardSpendingLimitCategories'FuneralServicesCrematories
+        | IssuingCardSpendingLimitCategories'FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | IssuingCardSpendingLimitCategories'FurnitureRepairRefinishing
+        | IssuingCardSpendingLimitCategories'FurriersAndFurShops
+        | IssuingCardSpendingLimitCategories'GeneralServices
+        | IssuingCardSpendingLimitCategories'GiftCardNoveltyAndSouvenirShops
+        | IssuingCardSpendingLimitCategories'GlassPaintAndWallpaperStores
+        | IssuingCardSpendingLimitCategories'GlasswareCrystalStores
+        | IssuingCardSpendingLimitCategories'GolfCoursesPublic
+        | IssuingCardSpendingLimitCategories'GovernmentServices
+        | IssuingCardSpendingLimitCategories'GroceryStoresSupermarkets
+        | IssuingCardSpendingLimitCategories'HardwareEquipmentAndSupplies
+        | IssuingCardSpendingLimitCategories'HardwareStores
+        | IssuingCardSpendingLimitCategories'HealthAndBeautySpas
+        | IssuingCardSpendingLimitCategories'HearingAidsSalesAndSupplies
+        | IssuingCardSpendingLimitCategories'HeatingPlumbingAC
+        | IssuingCardSpendingLimitCategories'HobbyToyAndGameShops
+        | IssuingCardSpendingLimitCategories'HomeSupplyWarehouseStores
+        | IssuingCardSpendingLimitCategories'Hospitals
+        | IssuingCardSpendingLimitCategories'HotelsMotelsAndResorts
+        | IssuingCardSpendingLimitCategories'HouseholdApplianceStores
+        | IssuingCardSpendingLimitCategories'IndustrialSupplies
+        | IssuingCardSpendingLimitCategories'InformationRetrievalServices
+        | IssuingCardSpendingLimitCategories'InsuranceDefault
+        | IssuingCardSpendingLimitCategories'InsuranceUnderwritingPremiums
+        | IssuingCardSpendingLimitCategories'IntraCompanyPurchases
+        | IssuingCardSpendingLimitCategories'JewelryStoresWatchesClocksAndSilverwareStores
+        | IssuingCardSpendingLimitCategories'LandscapingServices
+        | IssuingCardSpendingLimitCategories'Laundries
+        | IssuingCardSpendingLimitCategories'LaundryCleaningServices
+        | IssuingCardSpendingLimitCategories'LegalServicesAttorneys
+        | IssuingCardSpendingLimitCategories'LuggageAndLeatherGoodsStores
+        | IssuingCardSpendingLimitCategories'LumberBuildingMaterialsStores
+        | IssuingCardSpendingLimitCategories'ManualCashDisburse
+        | IssuingCardSpendingLimitCategories'MarinasServiceAndSupplies
+        | IssuingCardSpendingLimitCategories'MasonryStoneworkAndPlaster
+        | IssuingCardSpendingLimitCategories'MassageParlors
+        | IssuingCardSpendingLimitCategories'MedicalAndDentalLabs
+        | IssuingCardSpendingLimitCategories'MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | IssuingCardSpendingLimitCategories'MedicalServices
+        | IssuingCardSpendingLimitCategories'MembershipOrganizations
+        | IssuingCardSpendingLimitCategories'MensAndBoysClothingAndAccessoriesStores
+        | IssuingCardSpendingLimitCategories'MensWomensClothingStores
+        | IssuingCardSpendingLimitCategories'MetalServiceCenters
+        | IssuingCardSpendingLimitCategories'Miscellaneous
+        | IssuingCardSpendingLimitCategories'MiscellaneousApparelAndAccessoryShops
+        | IssuingCardSpendingLimitCategories'MiscellaneousAutoDealers
+        | IssuingCardSpendingLimitCategories'MiscellaneousBusinessServices
+        | IssuingCardSpendingLimitCategories'MiscellaneousFoodStores
+        | IssuingCardSpendingLimitCategories'MiscellaneousGeneralMerchandise
+        | IssuingCardSpendingLimitCategories'MiscellaneousGeneralServices
+        | IssuingCardSpendingLimitCategories'MiscellaneousHomeFurnishingSpecialtyStores
+        | IssuingCardSpendingLimitCategories'MiscellaneousPublishingAndPrinting
+        | IssuingCardSpendingLimitCategories'MiscellaneousRecreationServices
+        | IssuingCardSpendingLimitCategories'MiscellaneousRepairShops
+        | IssuingCardSpendingLimitCategories'MiscellaneousSpecialtyRetail
+        | IssuingCardSpendingLimitCategories'MobileHomeDealers
+        | IssuingCardSpendingLimitCategories'MotionPictureTheaters
+        | IssuingCardSpendingLimitCategories'MotorFreightCarriersAndTrucking
+        | IssuingCardSpendingLimitCategories'MotorHomesDealers
+        | IssuingCardSpendingLimitCategories'MotorVehicleSuppliesAndNewParts
+        | IssuingCardSpendingLimitCategories'MotorcycleShopsAndDealers
+        | IssuingCardSpendingLimitCategories'MotorcycleShopsDealers
+        | IssuingCardSpendingLimitCategories'MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | IssuingCardSpendingLimitCategories'NewsDealersAndNewsstands
+        | IssuingCardSpendingLimitCategories'NonFiMoneyOrders
+        | IssuingCardSpendingLimitCategories'NonFiStoredValueCardPurchaseLoad
+        | IssuingCardSpendingLimitCategories'NondurableGoods
+        | IssuingCardSpendingLimitCategories'NurseriesLawnAndGardenSupplyStores
+        | IssuingCardSpendingLimitCategories'NursingPersonalCare
+        | IssuingCardSpendingLimitCategories'OfficeAndCommercialFurniture
+        | IssuingCardSpendingLimitCategories'OpticiansEyeglasses
+        | IssuingCardSpendingLimitCategories'OptometristsOphthalmologist
+        | IssuingCardSpendingLimitCategories'OrthopedicGoodsProstheticDevices
+        | IssuingCardSpendingLimitCategories'Osteopaths
+        | IssuingCardSpendingLimitCategories'PackageStoresBeerWineAndLiquor
+        | IssuingCardSpendingLimitCategories'PaintsVarnishesAndSupplies
+        | IssuingCardSpendingLimitCategories'ParkingLotsGarages
+        | IssuingCardSpendingLimitCategories'PassengerRailways
+        | IssuingCardSpendingLimitCategories'PawnShops
+        | IssuingCardSpendingLimitCategories'PetShopsPetFoodAndSupplies
+        | IssuingCardSpendingLimitCategories'PetroleumAndPetroleumProducts
+        | IssuingCardSpendingLimitCategories'PhotoDeveloping
+        | IssuingCardSpendingLimitCategories'PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | IssuingCardSpendingLimitCategories'PhotographicStudios
+        | IssuingCardSpendingLimitCategories'PictureVideoProduction
+        | IssuingCardSpendingLimitCategories'PieceGoodsNotionsAndOtherDryGoods
+        | IssuingCardSpendingLimitCategories'PlumbingHeatingEquipmentAndSupplies
+        | IssuingCardSpendingLimitCategories'PoliticalOrganizations
+        | IssuingCardSpendingLimitCategories'PostalServicesGovernmentOnly
+        | IssuingCardSpendingLimitCategories'PreciousStonesAndMetalsWatchesAndJewelry
+        | IssuingCardSpendingLimitCategories'ProfessionalServices
+        | IssuingCardSpendingLimitCategories'PublicWarehousingAndStorage
+        | IssuingCardSpendingLimitCategories'QuickCopyReproAndBlueprint
+        | IssuingCardSpendingLimitCategories'Railroads
+        | IssuingCardSpendingLimitCategories'RealEstateAgentsAndManagersRentals
+        | IssuingCardSpendingLimitCategories'RecordStores
+        | IssuingCardSpendingLimitCategories'RecreationalVehicleRentals
+        | IssuingCardSpendingLimitCategories'ReligiousGoodsStores
+        | IssuingCardSpendingLimitCategories'ReligiousOrganizations
+        | IssuingCardSpendingLimitCategories'RoofingSidingSheetMetal
+        | IssuingCardSpendingLimitCategories'SecretarialSupportServices
+        | IssuingCardSpendingLimitCategories'SecurityBrokersDealers
+        | IssuingCardSpendingLimitCategories'ServiceStations
+        | IssuingCardSpendingLimitCategories'SewingNeedleworkFabricAndPieceGoodsStores
+        | IssuingCardSpendingLimitCategories'ShoeRepairHatCleaning
+        | IssuingCardSpendingLimitCategories'ShoeStores
+        | IssuingCardSpendingLimitCategories'SmallApplianceRepair
+        | IssuingCardSpendingLimitCategories'SnowmobileDealers
+        | IssuingCardSpendingLimitCategories'SpecialTradeServices
+        | IssuingCardSpendingLimitCategories'SpecialtyCleaning
+        | IssuingCardSpendingLimitCategories'SportingGoodsStores
+        | IssuingCardSpendingLimitCategories'SportingRecreationCamps
+        | IssuingCardSpendingLimitCategories'SportsAndRidingApparelStores
+        | IssuingCardSpendingLimitCategories'SportsClubsFields
+        | IssuingCardSpendingLimitCategories'StampAndCoinStores
+        | IssuingCardSpendingLimitCategories'StationaryOfficeSuppliesPrintingAndWritingPaper
+        | IssuingCardSpendingLimitCategories'StationeryStoresOfficeAndSchoolSupplyStores
+        | IssuingCardSpendingLimitCategories'SwimmingPoolsSales
+        | IssuingCardSpendingLimitCategories'TUiTravelGermany
+        | IssuingCardSpendingLimitCategories'TailorsAlterations
+        | IssuingCardSpendingLimitCategories'TaxPaymentsGovernmentAgencies
+        | IssuingCardSpendingLimitCategories'TaxPreparationServices
+        | IssuingCardSpendingLimitCategories'TaxicabsLimousines
+        | IssuingCardSpendingLimitCategories'TelecommunicationEquipmentAndTelephoneSales
+        | IssuingCardSpendingLimitCategories'TelecommunicationServices
+        | IssuingCardSpendingLimitCategories'TelegraphServices
+        | IssuingCardSpendingLimitCategories'TentAndAwningShops
+        | IssuingCardSpendingLimitCategories'TestingLaboratories
+        | IssuingCardSpendingLimitCategories'TheatricalTicketAgencies
+        | IssuingCardSpendingLimitCategories'Timeshares
+        | IssuingCardSpendingLimitCategories'TireRetreadingAndRepair
+        | IssuingCardSpendingLimitCategories'TollsBridgeFees
+        | IssuingCardSpendingLimitCategories'TouristAttractionsAndExhibits
+        | IssuingCardSpendingLimitCategories'TowingServices
+        | IssuingCardSpendingLimitCategories'TrailerParksCampgrounds
+        | IssuingCardSpendingLimitCategories'TransportationServices
+        | IssuingCardSpendingLimitCategories'TravelAgenciesTourOperators
+        | IssuingCardSpendingLimitCategories'TruckStopIteration
+        | IssuingCardSpendingLimitCategories'TruckUtilityTrailerRentals
+        | IssuingCardSpendingLimitCategories'TypesettingPlateMakingAndRelatedServices
+        | IssuingCardSpendingLimitCategories'TypewriterStores
+        | IssuingCardSpendingLimitCategories'USFederalGovernmentAgenciesOrDepartments
+        | IssuingCardSpendingLimitCategories'UniformsCommercialClothing
+        | IssuingCardSpendingLimitCategories'UsedMerchandiseAndSecondhandStores
+        | IssuingCardSpendingLimitCategories'Utilities
+        | IssuingCardSpendingLimitCategories'VarietyStores
+        | IssuingCardSpendingLimitCategories'VeterinaryServices
+        | IssuingCardSpendingLimitCategories'VideoAmusementGameSupplies
+        | IssuingCardSpendingLimitCategories'VideoGameArcades
+        | IssuingCardSpendingLimitCategories'VideoTapeRentalStores
+        | IssuingCardSpendingLimitCategories'VocationalTradeSchools
+        | IssuingCardSpendingLimitCategories'WatchJewelryRepair
+        | IssuingCardSpendingLimitCategories'WeldingRepair
+        | IssuingCardSpendingLimitCategories'WholesaleClubs
+        | IssuingCardSpendingLimitCategories'WigAndToupeeStores
+        | IssuingCardSpendingLimitCategories'WiresMoneyOrders
+        | IssuingCardSpendingLimitCategories'WomensAccessoryAndSpecialtyShops
+        | IssuingCardSpendingLimitCategories'WomensReadyToWearStores
+        | IssuingCardSpendingLimitCategories'WreckingAndSalvageYards
 
     and IssuingCardSpendingLimitInterval =
-        | AllTime
-        | Daily
-        | Monthly
-        | PerAuthorization
-        | Weekly
-        | Yearly
+        | IssuingCardSpendingLimitInterval'AllTime
+        | IssuingCardSpendingLimitInterval'Daily
+        | IssuingCardSpendingLimitInterval'Monthly
+        | IssuingCardSpendingLimitInterval'PerAuthorization
+        | IssuingCardSpendingLimitInterval'Weekly
+        | IssuingCardSpendingLimitInterval'Yearly
 
     ///
-    and IssuingCardholderAddress = {
+    and IssuingCardholderAddress (address: Address) =
 
-        Address: Address
-
-    }
+        member _.Address = address
 
     ///
-    and IssuingCardholderAuthorizationControls = {
+    and IssuingCardholderAuthorizationControls (allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: string option) =
 
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
-        AllowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list
-
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
-        BlockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list
-
-        ///Limit spending with amount-based rules that apply across this cardholder's cards.
-        SpendingLimits: IssuingCardholderSpendingLimit list
-
-        ///Currency of the amounts within `spending_limits`.
-        SpendingLimitsCurrency: string
-
-    }
+        member _.AllowedCategories = allowedCategories
+        member _.BlockedCategories = blockedCategories
+        member _.SpendingLimits = spendingLimits
+        member _.SpendingLimitsCurrency = spendingLimitsCurrency
 
     and IssuingCardholderAuthorizationControlsAllowedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AcRefrigerationRepair
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AccountingBookkeepingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AdvertisingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AgriculturalCooperative
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AirlinesAirCarriers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AirportsFlyingFields
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AmbulanceServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AmusementParksCarnivals
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AntiqueReproductions
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AntiqueShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Aquariums
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ArchitecturalSurveyingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ArtDealersAndGalleries
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ArtistsSupplyAndCraftShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutoAndHomeSupplyStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutoBodyRepairShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutoPaintShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutoServiceShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutomatedCashDisburse
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutomatedFuelDispensers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutomobileAssociations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutomotivePartsAndAccessoriesStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'AutomotiveTireStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BailAndBondPayments
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Bakeries
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BandsOrchestras
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BarberAndBeautyShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BettingCasinoGambling
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BicycleShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BilliardPoolEstablishments
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BoatDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BoatRentalsAndLeases
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BookStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BooksPeriodicalsAndNewspapers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BowlingAlleys
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BusLines
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BusinessSecretarialSchools
+        | IssuingCardholderAuthorizationControlsAllowedCategories'BuyingShoppingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CableSatelliteAndOtherPayTelevisionAndRadio
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CameraAndPhotographicSupplyStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CandyNutAndConfectioneryStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CarAndTruckDealersNewUsed
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CarAndTruckDealersUsedOnly
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CarRentalAgencies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CarWashes
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CarpentryServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CarpetUpholsteryCleaning
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Caterers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CharitableAndSocialServiceOrganizationsFundraising
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ChemicalsAndAlliedProducts
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ChildCareServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ChildrensAndInfantsWearStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ChiropodistsPodiatrists
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Chiropractors
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CigarStoresAndStands
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CivicSocialFraternalAssociations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CleaningAndMaintenance
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ClothingRental
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CollegesUniversities
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CommercialEquipment
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CommercialFootwear
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CommercialPhotographyArtAndGraphics
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CommuterTransportAndFerries
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ComputerNetworkServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ComputerProgramming
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ComputerRepair
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ComputerSoftwareStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ComputersPeripheralsAndSoftware
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ConcreteWorkServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ConstructionMaterials
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ConsultingPublicRelations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CorrespondenceSchools
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CosmeticStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CounselingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CountryClubs
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CourierServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CourtCosts
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CreditReportingAgencies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'CruiseLines
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DairyProductsStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DanceHallStudiosSchools
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DatingEscortServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DentistsOrthodontists
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DepartmentStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DetectiveAgencies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DigitalGoodsApplications
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DigitalGoodsGames
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DigitalGoodsLargeVolume
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DigitalGoodsMedia
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingCatalogMerchant
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingCombinationCatalogAndRetailMerchant
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingInboundTelemarketing
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingInsuranceServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingOther
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingOutboundTelemarketing
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingSubscription
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DirectMarketingTravel
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DiscountStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Doctors
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DoorToDoorSales
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DraperyWindowCoveringAndUpholsteryStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DrinkingPlaces
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DrugStoresAndPharmacies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DrugsDrugProprietariesAndDruggistSundries
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DryCleaners
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DurableGoods
+        | IssuingCardholderAuthorizationControlsAllowedCategories'DutyFreeStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'EatingPlacesRestaurants
+        | IssuingCardholderAuthorizationControlsAllowedCategories'EducationalServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ElectricRazorStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ElectricalPartsAndEquipment
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ElectricalServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ElectronicsRepairShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ElectronicsStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ElementarySecondarySchools
+        | IssuingCardholderAuthorizationControlsAllowedCategories'EmploymentTempAgencies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'EquipmentRental
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ExterminatingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FamilyClothingStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FastFoodRestaurants
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FinancialInstitutions
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FinesGovernmentAdministrativeEntities
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FireplaceFireplaceScreensAndAccessoriesStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FloorCoveringStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Florists
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FloristsSuppliesNurseryStockAndFlowers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FreezerAndLockerMeatProvisioners
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FuelDealersNonAutomotive
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FuneralServicesCrematories
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FurnitureRepairRefinishing
+        | IssuingCardholderAuthorizationControlsAllowedCategories'FurriersAndFurShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'GeneralServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'GiftCardNoveltyAndSouvenirShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'GlassPaintAndWallpaperStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'GlasswareCrystalStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'GolfCoursesPublic
+        | IssuingCardholderAuthorizationControlsAllowedCategories'GovernmentServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'GroceryStoresSupermarkets
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HardwareEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HardwareStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HealthAndBeautySpas
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HearingAidsSalesAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HeatingPlumbingAC
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HobbyToyAndGameShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HomeSupplyWarehouseStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Hospitals
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HotelsMotelsAndResorts
+        | IssuingCardholderAuthorizationControlsAllowedCategories'HouseholdApplianceStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'IndustrialSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'InformationRetrievalServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'InsuranceDefault
+        | IssuingCardholderAuthorizationControlsAllowedCategories'InsuranceUnderwritingPremiums
+        | IssuingCardholderAuthorizationControlsAllowedCategories'IntraCompanyPurchases
+        | IssuingCardholderAuthorizationControlsAllowedCategories'JewelryStoresWatchesClocksAndSilverwareStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'LandscapingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Laundries
+        | IssuingCardholderAuthorizationControlsAllowedCategories'LaundryCleaningServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'LegalServicesAttorneys
+        | IssuingCardholderAuthorizationControlsAllowedCategories'LuggageAndLeatherGoodsStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'LumberBuildingMaterialsStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ManualCashDisburse
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MarinasServiceAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MasonryStoneworkAndPlaster
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MassageParlors
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MedicalAndDentalLabs
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MedicalServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MembershipOrganizations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MensAndBoysClothingAndAccessoriesStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MensWomensClothingStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MetalServiceCenters
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Miscellaneous
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousApparelAndAccessoryShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousAutoDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousBusinessServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousFoodStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousGeneralMerchandise
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousGeneralServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousHomeFurnishingSpecialtyStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousPublishingAndPrinting
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousRecreationServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousRepairShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MiscellaneousSpecialtyRetail
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MobileHomeDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MotionPictureTheaters
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MotorFreightCarriersAndTrucking
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MotorHomesDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MotorVehicleSuppliesAndNewParts
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MotorcycleShopsAndDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MotorcycleShopsDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | IssuingCardholderAuthorizationControlsAllowedCategories'NewsDealersAndNewsstands
+        | IssuingCardholderAuthorizationControlsAllowedCategories'NonFiMoneyOrders
+        | IssuingCardholderAuthorizationControlsAllowedCategories'NonFiStoredValueCardPurchaseLoad
+        | IssuingCardholderAuthorizationControlsAllowedCategories'NondurableGoods
+        | IssuingCardholderAuthorizationControlsAllowedCategories'NurseriesLawnAndGardenSupplyStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'NursingPersonalCare
+        | IssuingCardholderAuthorizationControlsAllowedCategories'OfficeAndCommercialFurniture
+        | IssuingCardholderAuthorizationControlsAllowedCategories'OpticiansEyeglasses
+        | IssuingCardholderAuthorizationControlsAllowedCategories'OptometristsOphthalmologist
+        | IssuingCardholderAuthorizationControlsAllowedCategories'OrthopedicGoodsProstheticDevices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Osteopaths
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PackageStoresBeerWineAndLiquor
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PaintsVarnishesAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ParkingLotsGarages
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PassengerRailways
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PawnShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PetShopsPetFoodAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PetroleumAndPetroleumProducts
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PhotoDeveloping
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PhotographicStudios
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PictureVideoProduction
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PieceGoodsNotionsAndOtherDryGoods
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PlumbingHeatingEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PoliticalOrganizations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PostalServicesGovernmentOnly
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PreciousStonesAndMetalsWatchesAndJewelry
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ProfessionalServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'PublicWarehousingAndStorage
+        | IssuingCardholderAuthorizationControlsAllowedCategories'QuickCopyReproAndBlueprint
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Railroads
+        | IssuingCardholderAuthorizationControlsAllowedCategories'RealEstateAgentsAndManagersRentals
+        | IssuingCardholderAuthorizationControlsAllowedCategories'RecordStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'RecreationalVehicleRentals
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ReligiousGoodsStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ReligiousOrganizations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'RoofingSidingSheetMetal
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SecretarialSupportServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SecurityBrokersDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ServiceStations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SewingNeedleworkFabricAndPieceGoodsStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ShoeRepairHatCleaning
+        | IssuingCardholderAuthorizationControlsAllowedCategories'ShoeStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SmallApplianceRepair
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SnowmobileDealers
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SpecialTradeServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SpecialtyCleaning
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SportingGoodsStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SportingRecreationCamps
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SportsAndRidingApparelStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SportsClubsFields
+        | IssuingCardholderAuthorizationControlsAllowedCategories'StampAndCoinStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'StationaryOfficeSuppliesPrintingAndWritingPaper
+        | IssuingCardholderAuthorizationControlsAllowedCategories'StationeryStoresOfficeAndSchoolSupplyStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'SwimmingPoolsSales
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TUiTravelGermany
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TailorsAlterations
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TaxPaymentsGovernmentAgencies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TaxPreparationServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TaxicabsLimousines
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TelecommunicationEquipmentAndTelephoneSales
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TelecommunicationServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TelegraphServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TentAndAwningShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TestingLaboratories
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TheatricalTicketAgencies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Timeshares
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TireRetreadingAndRepair
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TollsBridgeFees
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TouristAttractionsAndExhibits
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TowingServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TrailerParksCampgrounds
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TransportationServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TravelAgenciesTourOperators
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TruckStopIteration
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TruckUtilityTrailerRentals
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TypesettingPlateMakingAndRelatedServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'TypewriterStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'USFederalGovernmentAgenciesOrDepartments
+        | IssuingCardholderAuthorizationControlsAllowedCategories'UniformsCommercialClothing
+        | IssuingCardholderAuthorizationControlsAllowedCategories'UsedMerchandiseAndSecondhandStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'Utilities
+        | IssuingCardholderAuthorizationControlsAllowedCategories'VarietyStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'VeterinaryServices
+        | IssuingCardholderAuthorizationControlsAllowedCategories'VideoAmusementGameSupplies
+        | IssuingCardholderAuthorizationControlsAllowedCategories'VideoGameArcades
+        | IssuingCardholderAuthorizationControlsAllowedCategories'VideoTapeRentalStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'VocationalTradeSchools
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WatchJewelryRepair
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WeldingRepair
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WholesaleClubs
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WigAndToupeeStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WiresMoneyOrders
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WomensAccessoryAndSpecialtyShops
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WomensReadyToWearStores
+        | IssuingCardholderAuthorizationControlsAllowedCategories'WreckingAndSalvageYards
 
     and IssuingCardholderAuthorizationControlsBlockedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AcRefrigerationRepair
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AccountingBookkeepingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AdvertisingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AgriculturalCooperative
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AirlinesAirCarriers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AirportsFlyingFields
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AmbulanceServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AmusementParksCarnivals
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AntiqueReproductions
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AntiqueShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Aquariums
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ArchitecturalSurveyingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ArtDealersAndGalleries
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ArtistsSupplyAndCraftShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutoAndHomeSupplyStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutoBodyRepairShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutoPaintShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutoServiceShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutomatedCashDisburse
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutomatedFuelDispensers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutomobileAssociations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutomotivePartsAndAccessoriesStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'AutomotiveTireStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BailAndBondPayments
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Bakeries
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BandsOrchestras
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BarberAndBeautyShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BettingCasinoGambling
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BicycleShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BilliardPoolEstablishments
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BoatDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BoatRentalsAndLeases
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BookStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BooksPeriodicalsAndNewspapers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BowlingAlleys
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BusLines
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BusinessSecretarialSchools
+        | IssuingCardholderAuthorizationControlsBlockedCategories'BuyingShoppingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CableSatelliteAndOtherPayTelevisionAndRadio
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CameraAndPhotographicSupplyStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CandyNutAndConfectioneryStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CarAndTruckDealersNewUsed
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CarAndTruckDealersUsedOnly
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CarRentalAgencies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CarWashes
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CarpentryServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CarpetUpholsteryCleaning
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Caterers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CharitableAndSocialServiceOrganizationsFundraising
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ChemicalsAndAlliedProducts
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ChildCareServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ChildrensAndInfantsWearStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ChiropodistsPodiatrists
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Chiropractors
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CigarStoresAndStands
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CivicSocialFraternalAssociations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CleaningAndMaintenance
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ClothingRental
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CollegesUniversities
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CommercialEquipment
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CommercialFootwear
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CommercialPhotographyArtAndGraphics
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CommuterTransportAndFerries
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ComputerNetworkServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ComputerProgramming
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ComputerRepair
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ComputerSoftwareStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ComputersPeripheralsAndSoftware
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ConcreteWorkServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ConstructionMaterials
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ConsultingPublicRelations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CorrespondenceSchools
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CosmeticStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CounselingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CountryClubs
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CourierServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CourtCosts
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CreditReportingAgencies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'CruiseLines
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DairyProductsStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DanceHallStudiosSchools
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DatingEscortServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DentistsOrthodontists
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DepartmentStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DetectiveAgencies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DigitalGoodsApplications
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DigitalGoodsGames
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DigitalGoodsLargeVolume
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DigitalGoodsMedia
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingCatalogMerchant
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingCombinationCatalogAndRetailMerchant
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingInboundTelemarketing
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingInsuranceServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingOther
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingOutboundTelemarketing
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingSubscription
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DirectMarketingTravel
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DiscountStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Doctors
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DoorToDoorSales
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DraperyWindowCoveringAndUpholsteryStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DrinkingPlaces
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DrugStoresAndPharmacies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DrugsDrugProprietariesAndDruggistSundries
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DryCleaners
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DurableGoods
+        | IssuingCardholderAuthorizationControlsBlockedCategories'DutyFreeStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'EatingPlacesRestaurants
+        | IssuingCardholderAuthorizationControlsBlockedCategories'EducationalServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ElectricRazorStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ElectricalPartsAndEquipment
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ElectricalServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ElectronicsRepairShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ElectronicsStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ElementarySecondarySchools
+        | IssuingCardholderAuthorizationControlsBlockedCategories'EmploymentTempAgencies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'EquipmentRental
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ExterminatingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FamilyClothingStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FastFoodRestaurants
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FinancialInstitutions
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FinesGovernmentAdministrativeEntities
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FireplaceFireplaceScreensAndAccessoriesStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FloorCoveringStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Florists
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FloristsSuppliesNurseryStockAndFlowers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FreezerAndLockerMeatProvisioners
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FuelDealersNonAutomotive
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FuneralServicesCrematories
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FurnitureRepairRefinishing
+        | IssuingCardholderAuthorizationControlsBlockedCategories'FurriersAndFurShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'GeneralServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'GiftCardNoveltyAndSouvenirShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'GlassPaintAndWallpaperStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'GlasswareCrystalStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'GolfCoursesPublic
+        | IssuingCardholderAuthorizationControlsBlockedCategories'GovernmentServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'GroceryStoresSupermarkets
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HardwareEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HardwareStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HealthAndBeautySpas
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HearingAidsSalesAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HeatingPlumbingAC
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HobbyToyAndGameShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HomeSupplyWarehouseStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Hospitals
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HotelsMotelsAndResorts
+        | IssuingCardholderAuthorizationControlsBlockedCategories'HouseholdApplianceStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'IndustrialSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'InformationRetrievalServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'InsuranceDefault
+        | IssuingCardholderAuthorizationControlsBlockedCategories'InsuranceUnderwritingPremiums
+        | IssuingCardholderAuthorizationControlsBlockedCategories'IntraCompanyPurchases
+        | IssuingCardholderAuthorizationControlsBlockedCategories'JewelryStoresWatchesClocksAndSilverwareStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'LandscapingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Laundries
+        | IssuingCardholderAuthorizationControlsBlockedCategories'LaundryCleaningServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'LegalServicesAttorneys
+        | IssuingCardholderAuthorizationControlsBlockedCategories'LuggageAndLeatherGoodsStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'LumberBuildingMaterialsStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ManualCashDisburse
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MarinasServiceAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MasonryStoneworkAndPlaster
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MassageParlors
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MedicalAndDentalLabs
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MedicalServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MembershipOrganizations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MensAndBoysClothingAndAccessoriesStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MensWomensClothingStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MetalServiceCenters
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Miscellaneous
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousApparelAndAccessoryShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousAutoDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousBusinessServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousFoodStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousGeneralMerchandise
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousGeneralServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousHomeFurnishingSpecialtyStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousPublishingAndPrinting
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousRecreationServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousRepairShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MiscellaneousSpecialtyRetail
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MobileHomeDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MotionPictureTheaters
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MotorFreightCarriersAndTrucking
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MotorHomesDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MotorVehicleSuppliesAndNewParts
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MotorcycleShopsAndDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MotorcycleShopsDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | IssuingCardholderAuthorizationControlsBlockedCategories'NewsDealersAndNewsstands
+        | IssuingCardholderAuthorizationControlsBlockedCategories'NonFiMoneyOrders
+        | IssuingCardholderAuthorizationControlsBlockedCategories'NonFiStoredValueCardPurchaseLoad
+        | IssuingCardholderAuthorizationControlsBlockedCategories'NondurableGoods
+        | IssuingCardholderAuthorizationControlsBlockedCategories'NurseriesLawnAndGardenSupplyStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'NursingPersonalCare
+        | IssuingCardholderAuthorizationControlsBlockedCategories'OfficeAndCommercialFurniture
+        | IssuingCardholderAuthorizationControlsBlockedCategories'OpticiansEyeglasses
+        | IssuingCardholderAuthorizationControlsBlockedCategories'OptometristsOphthalmologist
+        | IssuingCardholderAuthorizationControlsBlockedCategories'OrthopedicGoodsProstheticDevices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Osteopaths
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PackageStoresBeerWineAndLiquor
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PaintsVarnishesAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ParkingLotsGarages
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PassengerRailways
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PawnShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PetShopsPetFoodAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PetroleumAndPetroleumProducts
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PhotoDeveloping
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PhotographicStudios
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PictureVideoProduction
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PieceGoodsNotionsAndOtherDryGoods
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PlumbingHeatingEquipmentAndSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PoliticalOrganizations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PostalServicesGovernmentOnly
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PreciousStonesAndMetalsWatchesAndJewelry
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ProfessionalServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'PublicWarehousingAndStorage
+        | IssuingCardholderAuthorizationControlsBlockedCategories'QuickCopyReproAndBlueprint
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Railroads
+        | IssuingCardholderAuthorizationControlsBlockedCategories'RealEstateAgentsAndManagersRentals
+        | IssuingCardholderAuthorizationControlsBlockedCategories'RecordStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'RecreationalVehicleRentals
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ReligiousGoodsStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ReligiousOrganizations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'RoofingSidingSheetMetal
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SecretarialSupportServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SecurityBrokersDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ServiceStations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SewingNeedleworkFabricAndPieceGoodsStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ShoeRepairHatCleaning
+        | IssuingCardholderAuthorizationControlsBlockedCategories'ShoeStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SmallApplianceRepair
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SnowmobileDealers
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SpecialTradeServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SpecialtyCleaning
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SportingGoodsStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SportingRecreationCamps
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SportsAndRidingApparelStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SportsClubsFields
+        | IssuingCardholderAuthorizationControlsBlockedCategories'StampAndCoinStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'StationaryOfficeSuppliesPrintingAndWritingPaper
+        | IssuingCardholderAuthorizationControlsBlockedCategories'StationeryStoresOfficeAndSchoolSupplyStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'SwimmingPoolsSales
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TUiTravelGermany
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TailorsAlterations
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TaxPaymentsGovernmentAgencies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TaxPreparationServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TaxicabsLimousines
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TelecommunicationEquipmentAndTelephoneSales
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TelecommunicationServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TelegraphServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TentAndAwningShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TestingLaboratories
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TheatricalTicketAgencies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Timeshares
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TireRetreadingAndRepair
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TollsBridgeFees
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TouristAttractionsAndExhibits
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TowingServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TrailerParksCampgrounds
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TransportationServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TravelAgenciesTourOperators
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TruckStopIteration
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TruckUtilityTrailerRentals
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TypesettingPlateMakingAndRelatedServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'TypewriterStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'USFederalGovernmentAgenciesOrDepartments
+        | IssuingCardholderAuthorizationControlsBlockedCategories'UniformsCommercialClothing
+        | IssuingCardholderAuthorizationControlsBlockedCategories'UsedMerchandiseAndSecondhandStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'Utilities
+        | IssuingCardholderAuthorizationControlsBlockedCategories'VarietyStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'VeterinaryServices
+        | IssuingCardholderAuthorizationControlsBlockedCategories'VideoAmusementGameSupplies
+        | IssuingCardholderAuthorizationControlsBlockedCategories'VideoGameArcades
+        | IssuingCardholderAuthorizationControlsBlockedCategories'VideoTapeRentalStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'VocationalTradeSchools
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WatchJewelryRepair
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WeldingRepair
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WholesaleClubs
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WigAndToupeeStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WiresMoneyOrders
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WomensAccessoryAndSpecialtyShops
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WomensReadyToWearStores
+        | IssuingCardholderAuthorizationControlsBlockedCategories'WreckingAndSalvageYards
 
     ///
-    and IssuingCardholderCompany = {
+    and IssuingCardholderCompany (taxIdProvided: bool) =
 
-        ///Whether the company's business ID number was provided.
-        TaxIdProvided: bool
-
-    }
+        member _.TaxIdProvided = taxIdProvided
 
     ///
-    and IssuingCardholderIdDocument = {
+    and IssuingCardholderIdDocument (back: IssuingCardholderIdDocumentBackDU option, front: IssuingCardholderIdDocumentFrontDU option) =
 
-        ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Back: IssuingCardholderIdDocumentBackDU
-
-        ///The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Front: IssuingCardholderIdDocumentFrontDU
-
-    }
+        member _.Back = back
+        member _.Front = front
 
     and IssuingCardholderIdDocumentBackDU =
-        | String of string
-        | File of File
+        | IssuingCardholderIdDocumentBackDU'String of string
+        | IssuingCardholderIdDocumentBackDU'File of File
 
     and IssuingCardholderIdDocumentFrontDU =
-        | String of string
-        | File of File
+        | IssuingCardholderIdDocumentFrontDU'String of string
+        | IssuingCardholderIdDocumentFrontDU'File of File
 
     ///
-    and IssuingCardholderIndividual = {
+    and IssuingCardholderIndividual (dob: IssuingCardholderIndividualDobDU option, firstName: string, lastName: string, verification: IssuingCardholderIndividualVerificationDU option) =
 
-        ///The date of birth of this cardholder.
-        Dob: IssuingCardholderIndividualDobDU
-
-        ///The first name of this cardholder.
-        FirstName: string
-
-        ///The last name of this cardholder.
-        LastName: string
-
-        ///Government-issued ID document for this cardholder.
-        Verification: IssuingCardholderIndividualVerificationDU
-
-    }
+        member _.Dob = dob
+        member _.FirstName = firstName
+        member _.LastName = lastName
+        member _.Verification = verification
 
     and IssuingCardholderIndividualDobDU =
-        | IssuingCardholderIndividualDob of IssuingCardholderIndividualDob
+        | IssuingCardholderIndividualDobDU'IssuingCardholderIndividualDob of IssuingCardholderIndividualDob
 
     and IssuingCardholderIndividualVerificationDU =
-        | IssuingCardholderVerification of IssuingCardholderVerification
+        | IssuingCardholderIndividualVerificationDU'IssuingCardholderVerification of IssuingCardholderVerification
 
     ///
-    and IssuingCardholderIndividualDob = {
+    and IssuingCardholderIndividualDob (day: int option, month: int option, year: int option) =
 
-        ///The day of birth, between 1 and 31.
-        Day: int
-
-        ///The month of birth, between 1 and 12.
-        Month: int
-
-        ///The four-digit year of birth.
-        Year: int
-
-    }
+        member _.Day = day
+        member _.Month = month
+        member _.Year = year
 
     ///
-    and IssuingCardholderRequirements = {
+    and IssuingCardholderRequirements (disabledReason: IssuingCardholderRequirementsDisabledReason option, pastDue: IssuingCardholderRequirementsPastDue list option) =
 
-        ///If `disabled_reason` is present, all cards will decline authorizations with `cardholder_verification_required` reason.
-        DisabledReason: IssuingCardholderRequirementsDisabledReason
-
-        ///Array of fields that need to be collected in order to verify and re-enable the cardholder.
-        PastDue: IssuingCardholderRequirementsPastDue list
-
-    }
+        member _.DisabledReason = disabledReason
+        member _.PastDue = pastDue
 
     and IssuingCardholderRequirementsDisabledReason =
-        | Listed
-        | RejectedListed
-        | UnderReview
+        | IssuingCardholderRequirementsDisabledReason'Listed
+        | IssuingCardholderRequirementsDisabledReason'RejectedListed
+        | IssuingCardholderRequirementsDisabledReason'UnderReview
 
     and IssuingCardholderRequirementsPastDue =
-        | CompanyTaxId
-        | IndividualDobDay
-        | IndividualDobMonth
-        | IndividualDobYear
-        | IndividualFirstName
-        | IndividualLastName
-        | IndividualVerificationDocument
+        | IssuingCardholderRequirementsPastDue'CompanyTaxId
+        | IssuingCardholderRequirementsPastDue'IndividualDobDay
+        | IssuingCardholderRequirementsPastDue'IndividualDobMonth
+        | IssuingCardholderRequirementsPastDue'IndividualDobYear
+        | IssuingCardholderRequirementsPastDue'IndividualFirstName
+        | IssuingCardholderRequirementsPastDue'IndividualLastName
+        | IssuingCardholderRequirementsPastDue'IndividualVerificationDocument
 
     ///
-    and IssuingCardholderSpendingLimit = {
+    and IssuingCardholderSpendingLimit (amount: int, categories: IssuingCardholderSpendingLimitCategories list option, interval: IssuingCardholderSpendingLimitInterval) =
 
-        ///Maximum amount allowed to spend per interval.
-        Amount: int
-
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
-        Categories: IssuingCardholderSpendingLimitCategories list
-
-        ///Interval (or event) to which the amount applies.
-        Interval: IssuingCardholderSpendingLimitInterval
-
-    }
+        member _.Amount = amount
+        member _.Categories = categories
+        member _.Interval = interval
 
     and IssuingCardholderSpendingLimitCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
+        | IssuingCardholderSpendingLimitCategories'AcRefrigerationRepair
+        | IssuingCardholderSpendingLimitCategories'AccountingBookkeepingServices
+        | IssuingCardholderSpendingLimitCategories'AdvertisingServices
+        | IssuingCardholderSpendingLimitCategories'AgriculturalCooperative
+        | IssuingCardholderSpendingLimitCategories'AirlinesAirCarriers
+        | IssuingCardholderSpendingLimitCategories'AirportsFlyingFields
+        | IssuingCardholderSpendingLimitCategories'AmbulanceServices
+        | IssuingCardholderSpendingLimitCategories'AmusementParksCarnivals
+        | IssuingCardholderSpendingLimitCategories'AntiqueReproductions
+        | IssuingCardholderSpendingLimitCategories'AntiqueShops
+        | IssuingCardholderSpendingLimitCategories'Aquariums
+        | IssuingCardholderSpendingLimitCategories'ArchitecturalSurveyingServices
+        | IssuingCardholderSpendingLimitCategories'ArtDealersAndGalleries
+        | IssuingCardholderSpendingLimitCategories'ArtistsSupplyAndCraftShops
+        | IssuingCardholderSpendingLimitCategories'AutoAndHomeSupplyStores
+        | IssuingCardholderSpendingLimitCategories'AutoBodyRepairShops
+        | IssuingCardholderSpendingLimitCategories'AutoPaintShops
+        | IssuingCardholderSpendingLimitCategories'AutoServiceShops
+        | IssuingCardholderSpendingLimitCategories'AutomatedCashDisburse
+        | IssuingCardholderSpendingLimitCategories'AutomatedFuelDispensers
+        | IssuingCardholderSpendingLimitCategories'AutomobileAssociations
+        | IssuingCardholderSpendingLimitCategories'AutomotivePartsAndAccessoriesStores
+        | IssuingCardholderSpendingLimitCategories'AutomotiveTireStores
+        | IssuingCardholderSpendingLimitCategories'BailAndBondPayments
+        | IssuingCardholderSpendingLimitCategories'Bakeries
+        | IssuingCardholderSpendingLimitCategories'BandsOrchestras
+        | IssuingCardholderSpendingLimitCategories'BarberAndBeautyShops
+        | IssuingCardholderSpendingLimitCategories'BettingCasinoGambling
+        | IssuingCardholderSpendingLimitCategories'BicycleShops
+        | IssuingCardholderSpendingLimitCategories'BilliardPoolEstablishments
+        | IssuingCardholderSpendingLimitCategories'BoatDealers
+        | IssuingCardholderSpendingLimitCategories'BoatRentalsAndLeases
+        | IssuingCardholderSpendingLimitCategories'BookStores
+        | IssuingCardholderSpendingLimitCategories'BooksPeriodicalsAndNewspapers
+        | IssuingCardholderSpendingLimitCategories'BowlingAlleys
+        | IssuingCardholderSpendingLimitCategories'BusLines
+        | IssuingCardholderSpendingLimitCategories'BusinessSecretarialSchools
+        | IssuingCardholderSpendingLimitCategories'BuyingShoppingServices
+        | IssuingCardholderSpendingLimitCategories'CableSatelliteAndOtherPayTelevisionAndRadio
+        | IssuingCardholderSpendingLimitCategories'CameraAndPhotographicSupplyStores
+        | IssuingCardholderSpendingLimitCategories'CandyNutAndConfectioneryStores
+        | IssuingCardholderSpendingLimitCategories'CarAndTruckDealersNewUsed
+        | IssuingCardholderSpendingLimitCategories'CarAndTruckDealersUsedOnly
+        | IssuingCardholderSpendingLimitCategories'CarRentalAgencies
+        | IssuingCardholderSpendingLimitCategories'CarWashes
+        | IssuingCardholderSpendingLimitCategories'CarpentryServices
+        | IssuingCardholderSpendingLimitCategories'CarpetUpholsteryCleaning
+        | IssuingCardholderSpendingLimitCategories'Caterers
+        | IssuingCardholderSpendingLimitCategories'CharitableAndSocialServiceOrganizationsFundraising
+        | IssuingCardholderSpendingLimitCategories'ChemicalsAndAlliedProducts
+        | IssuingCardholderSpendingLimitCategories'ChildCareServices
+        | IssuingCardholderSpendingLimitCategories'ChildrensAndInfantsWearStores
+        | IssuingCardholderSpendingLimitCategories'ChiropodistsPodiatrists
+        | IssuingCardholderSpendingLimitCategories'Chiropractors
+        | IssuingCardholderSpendingLimitCategories'CigarStoresAndStands
+        | IssuingCardholderSpendingLimitCategories'CivicSocialFraternalAssociations
+        | IssuingCardholderSpendingLimitCategories'CleaningAndMaintenance
+        | IssuingCardholderSpendingLimitCategories'ClothingRental
+        | IssuingCardholderSpendingLimitCategories'CollegesUniversities
+        | IssuingCardholderSpendingLimitCategories'CommercialEquipment
+        | IssuingCardholderSpendingLimitCategories'CommercialFootwear
+        | IssuingCardholderSpendingLimitCategories'CommercialPhotographyArtAndGraphics
+        | IssuingCardholderSpendingLimitCategories'CommuterTransportAndFerries
+        | IssuingCardholderSpendingLimitCategories'ComputerNetworkServices
+        | IssuingCardholderSpendingLimitCategories'ComputerProgramming
+        | IssuingCardholderSpendingLimitCategories'ComputerRepair
+        | IssuingCardholderSpendingLimitCategories'ComputerSoftwareStores
+        | IssuingCardholderSpendingLimitCategories'ComputersPeripheralsAndSoftware
+        | IssuingCardholderSpendingLimitCategories'ConcreteWorkServices
+        | IssuingCardholderSpendingLimitCategories'ConstructionMaterials
+        | IssuingCardholderSpendingLimitCategories'ConsultingPublicRelations
+        | IssuingCardholderSpendingLimitCategories'CorrespondenceSchools
+        | IssuingCardholderSpendingLimitCategories'CosmeticStores
+        | IssuingCardholderSpendingLimitCategories'CounselingServices
+        | IssuingCardholderSpendingLimitCategories'CountryClubs
+        | IssuingCardholderSpendingLimitCategories'CourierServices
+        | IssuingCardholderSpendingLimitCategories'CourtCosts
+        | IssuingCardholderSpendingLimitCategories'CreditReportingAgencies
+        | IssuingCardholderSpendingLimitCategories'CruiseLines
+        | IssuingCardholderSpendingLimitCategories'DairyProductsStores
+        | IssuingCardholderSpendingLimitCategories'DanceHallStudiosSchools
+        | IssuingCardholderSpendingLimitCategories'DatingEscortServices
+        | IssuingCardholderSpendingLimitCategories'DentistsOrthodontists
+        | IssuingCardholderSpendingLimitCategories'DepartmentStores
+        | IssuingCardholderSpendingLimitCategories'DetectiveAgencies
+        | IssuingCardholderSpendingLimitCategories'DigitalGoodsApplications
+        | IssuingCardholderSpendingLimitCategories'DigitalGoodsGames
+        | IssuingCardholderSpendingLimitCategories'DigitalGoodsLargeVolume
+        | IssuingCardholderSpendingLimitCategories'DigitalGoodsMedia
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingCatalogMerchant
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingCombinationCatalogAndRetailMerchant
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingInboundTelemarketing
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingInsuranceServices
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingOther
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingOutboundTelemarketing
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingSubscription
+        | IssuingCardholderSpendingLimitCategories'DirectMarketingTravel
+        | IssuingCardholderSpendingLimitCategories'DiscountStores
+        | IssuingCardholderSpendingLimitCategories'Doctors
+        | IssuingCardholderSpendingLimitCategories'DoorToDoorSales
+        | IssuingCardholderSpendingLimitCategories'DraperyWindowCoveringAndUpholsteryStores
+        | IssuingCardholderSpendingLimitCategories'DrinkingPlaces
+        | IssuingCardholderSpendingLimitCategories'DrugStoresAndPharmacies
+        | IssuingCardholderSpendingLimitCategories'DrugsDrugProprietariesAndDruggistSundries
+        | IssuingCardholderSpendingLimitCategories'DryCleaners
+        | IssuingCardholderSpendingLimitCategories'DurableGoods
+        | IssuingCardholderSpendingLimitCategories'DutyFreeStores
+        | IssuingCardholderSpendingLimitCategories'EatingPlacesRestaurants
+        | IssuingCardholderSpendingLimitCategories'EducationalServices
+        | IssuingCardholderSpendingLimitCategories'ElectricRazorStores
+        | IssuingCardholderSpendingLimitCategories'ElectricalPartsAndEquipment
+        | IssuingCardholderSpendingLimitCategories'ElectricalServices
+        | IssuingCardholderSpendingLimitCategories'ElectronicsRepairShops
+        | IssuingCardholderSpendingLimitCategories'ElectronicsStores
+        | IssuingCardholderSpendingLimitCategories'ElementarySecondarySchools
+        | IssuingCardholderSpendingLimitCategories'EmploymentTempAgencies
+        | IssuingCardholderSpendingLimitCategories'EquipmentRental
+        | IssuingCardholderSpendingLimitCategories'ExterminatingServices
+        | IssuingCardholderSpendingLimitCategories'FamilyClothingStores
+        | IssuingCardholderSpendingLimitCategories'FastFoodRestaurants
+        | IssuingCardholderSpendingLimitCategories'FinancialInstitutions
+        | IssuingCardholderSpendingLimitCategories'FinesGovernmentAdministrativeEntities
+        | IssuingCardholderSpendingLimitCategories'FireplaceFireplaceScreensAndAccessoriesStores
+        | IssuingCardholderSpendingLimitCategories'FloorCoveringStores
+        | IssuingCardholderSpendingLimitCategories'Florists
+        | IssuingCardholderSpendingLimitCategories'FloristsSuppliesNurseryStockAndFlowers
+        | IssuingCardholderSpendingLimitCategories'FreezerAndLockerMeatProvisioners
+        | IssuingCardholderSpendingLimitCategories'FuelDealersNonAutomotive
+        | IssuingCardholderSpendingLimitCategories'FuneralServicesCrematories
+        | IssuingCardholderSpendingLimitCategories'FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | IssuingCardholderSpendingLimitCategories'FurnitureRepairRefinishing
+        | IssuingCardholderSpendingLimitCategories'FurriersAndFurShops
+        | IssuingCardholderSpendingLimitCategories'GeneralServices
+        | IssuingCardholderSpendingLimitCategories'GiftCardNoveltyAndSouvenirShops
+        | IssuingCardholderSpendingLimitCategories'GlassPaintAndWallpaperStores
+        | IssuingCardholderSpendingLimitCategories'GlasswareCrystalStores
+        | IssuingCardholderSpendingLimitCategories'GolfCoursesPublic
+        | IssuingCardholderSpendingLimitCategories'GovernmentServices
+        | IssuingCardholderSpendingLimitCategories'GroceryStoresSupermarkets
+        | IssuingCardholderSpendingLimitCategories'HardwareEquipmentAndSupplies
+        | IssuingCardholderSpendingLimitCategories'HardwareStores
+        | IssuingCardholderSpendingLimitCategories'HealthAndBeautySpas
+        | IssuingCardholderSpendingLimitCategories'HearingAidsSalesAndSupplies
+        | IssuingCardholderSpendingLimitCategories'HeatingPlumbingAC
+        | IssuingCardholderSpendingLimitCategories'HobbyToyAndGameShops
+        | IssuingCardholderSpendingLimitCategories'HomeSupplyWarehouseStores
+        | IssuingCardholderSpendingLimitCategories'Hospitals
+        | IssuingCardholderSpendingLimitCategories'HotelsMotelsAndResorts
+        | IssuingCardholderSpendingLimitCategories'HouseholdApplianceStores
+        | IssuingCardholderSpendingLimitCategories'IndustrialSupplies
+        | IssuingCardholderSpendingLimitCategories'InformationRetrievalServices
+        | IssuingCardholderSpendingLimitCategories'InsuranceDefault
+        | IssuingCardholderSpendingLimitCategories'InsuranceUnderwritingPremiums
+        | IssuingCardholderSpendingLimitCategories'IntraCompanyPurchases
+        | IssuingCardholderSpendingLimitCategories'JewelryStoresWatchesClocksAndSilverwareStores
+        | IssuingCardholderSpendingLimitCategories'LandscapingServices
+        | IssuingCardholderSpendingLimitCategories'Laundries
+        | IssuingCardholderSpendingLimitCategories'LaundryCleaningServices
+        | IssuingCardholderSpendingLimitCategories'LegalServicesAttorneys
+        | IssuingCardholderSpendingLimitCategories'LuggageAndLeatherGoodsStores
+        | IssuingCardholderSpendingLimitCategories'LumberBuildingMaterialsStores
+        | IssuingCardholderSpendingLimitCategories'ManualCashDisburse
+        | IssuingCardholderSpendingLimitCategories'MarinasServiceAndSupplies
+        | IssuingCardholderSpendingLimitCategories'MasonryStoneworkAndPlaster
+        | IssuingCardholderSpendingLimitCategories'MassageParlors
+        | IssuingCardholderSpendingLimitCategories'MedicalAndDentalLabs
+        | IssuingCardholderSpendingLimitCategories'MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | IssuingCardholderSpendingLimitCategories'MedicalServices
+        | IssuingCardholderSpendingLimitCategories'MembershipOrganizations
+        | IssuingCardholderSpendingLimitCategories'MensAndBoysClothingAndAccessoriesStores
+        | IssuingCardholderSpendingLimitCategories'MensWomensClothingStores
+        | IssuingCardholderSpendingLimitCategories'MetalServiceCenters
+        | IssuingCardholderSpendingLimitCategories'Miscellaneous
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousApparelAndAccessoryShops
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousAutoDealers
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousBusinessServices
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousFoodStores
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousGeneralMerchandise
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousGeneralServices
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousHomeFurnishingSpecialtyStores
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousPublishingAndPrinting
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousRecreationServices
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousRepairShops
+        | IssuingCardholderSpendingLimitCategories'MiscellaneousSpecialtyRetail
+        | IssuingCardholderSpendingLimitCategories'MobileHomeDealers
+        | IssuingCardholderSpendingLimitCategories'MotionPictureTheaters
+        | IssuingCardholderSpendingLimitCategories'MotorFreightCarriersAndTrucking
+        | IssuingCardholderSpendingLimitCategories'MotorHomesDealers
+        | IssuingCardholderSpendingLimitCategories'MotorVehicleSuppliesAndNewParts
+        | IssuingCardholderSpendingLimitCategories'MotorcycleShopsAndDealers
+        | IssuingCardholderSpendingLimitCategories'MotorcycleShopsDealers
+        | IssuingCardholderSpendingLimitCategories'MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | IssuingCardholderSpendingLimitCategories'NewsDealersAndNewsstands
+        | IssuingCardholderSpendingLimitCategories'NonFiMoneyOrders
+        | IssuingCardholderSpendingLimitCategories'NonFiStoredValueCardPurchaseLoad
+        | IssuingCardholderSpendingLimitCategories'NondurableGoods
+        | IssuingCardholderSpendingLimitCategories'NurseriesLawnAndGardenSupplyStores
+        | IssuingCardholderSpendingLimitCategories'NursingPersonalCare
+        | IssuingCardholderSpendingLimitCategories'OfficeAndCommercialFurniture
+        | IssuingCardholderSpendingLimitCategories'OpticiansEyeglasses
+        | IssuingCardholderSpendingLimitCategories'OptometristsOphthalmologist
+        | IssuingCardholderSpendingLimitCategories'OrthopedicGoodsProstheticDevices
+        | IssuingCardholderSpendingLimitCategories'Osteopaths
+        | IssuingCardholderSpendingLimitCategories'PackageStoresBeerWineAndLiquor
+        | IssuingCardholderSpendingLimitCategories'PaintsVarnishesAndSupplies
+        | IssuingCardholderSpendingLimitCategories'ParkingLotsGarages
+        | IssuingCardholderSpendingLimitCategories'PassengerRailways
+        | IssuingCardholderSpendingLimitCategories'PawnShops
+        | IssuingCardholderSpendingLimitCategories'PetShopsPetFoodAndSupplies
+        | IssuingCardholderSpendingLimitCategories'PetroleumAndPetroleumProducts
+        | IssuingCardholderSpendingLimitCategories'PhotoDeveloping
+        | IssuingCardholderSpendingLimitCategories'PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | IssuingCardholderSpendingLimitCategories'PhotographicStudios
+        | IssuingCardholderSpendingLimitCategories'PictureVideoProduction
+        | IssuingCardholderSpendingLimitCategories'PieceGoodsNotionsAndOtherDryGoods
+        | IssuingCardholderSpendingLimitCategories'PlumbingHeatingEquipmentAndSupplies
+        | IssuingCardholderSpendingLimitCategories'PoliticalOrganizations
+        | IssuingCardholderSpendingLimitCategories'PostalServicesGovernmentOnly
+        | IssuingCardholderSpendingLimitCategories'PreciousStonesAndMetalsWatchesAndJewelry
+        | IssuingCardholderSpendingLimitCategories'ProfessionalServices
+        | IssuingCardholderSpendingLimitCategories'PublicWarehousingAndStorage
+        | IssuingCardholderSpendingLimitCategories'QuickCopyReproAndBlueprint
+        | IssuingCardholderSpendingLimitCategories'Railroads
+        | IssuingCardholderSpendingLimitCategories'RealEstateAgentsAndManagersRentals
+        | IssuingCardholderSpendingLimitCategories'RecordStores
+        | IssuingCardholderSpendingLimitCategories'RecreationalVehicleRentals
+        | IssuingCardholderSpendingLimitCategories'ReligiousGoodsStores
+        | IssuingCardholderSpendingLimitCategories'ReligiousOrganizations
+        | IssuingCardholderSpendingLimitCategories'RoofingSidingSheetMetal
+        | IssuingCardholderSpendingLimitCategories'SecretarialSupportServices
+        | IssuingCardholderSpendingLimitCategories'SecurityBrokersDealers
+        | IssuingCardholderSpendingLimitCategories'ServiceStations
+        | IssuingCardholderSpendingLimitCategories'SewingNeedleworkFabricAndPieceGoodsStores
+        | IssuingCardholderSpendingLimitCategories'ShoeRepairHatCleaning
+        | IssuingCardholderSpendingLimitCategories'ShoeStores
+        | IssuingCardholderSpendingLimitCategories'SmallApplianceRepair
+        | IssuingCardholderSpendingLimitCategories'SnowmobileDealers
+        | IssuingCardholderSpendingLimitCategories'SpecialTradeServices
+        | IssuingCardholderSpendingLimitCategories'SpecialtyCleaning
+        | IssuingCardholderSpendingLimitCategories'SportingGoodsStores
+        | IssuingCardholderSpendingLimitCategories'SportingRecreationCamps
+        | IssuingCardholderSpendingLimitCategories'SportsAndRidingApparelStores
+        | IssuingCardholderSpendingLimitCategories'SportsClubsFields
+        | IssuingCardholderSpendingLimitCategories'StampAndCoinStores
+        | IssuingCardholderSpendingLimitCategories'StationaryOfficeSuppliesPrintingAndWritingPaper
+        | IssuingCardholderSpendingLimitCategories'StationeryStoresOfficeAndSchoolSupplyStores
+        | IssuingCardholderSpendingLimitCategories'SwimmingPoolsSales
+        | IssuingCardholderSpendingLimitCategories'TUiTravelGermany
+        | IssuingCardholderSpendingLimitCategories'TailorsAlterations
+        | IssuingCardholderSpendingLimitCategories'TaxPaymentsGovernmentAgencies
+        | IssuingCardholderSpendingLimitCategories'TaxPreparationServices
+        | IssuingCardholderSpendingLimitCategories'TaxicabsLimousines
+        | IssuingCardholderSpendingLimitCategories'TelecommunicationEquipmentAndTelephoneSales
+        | IssuingCardholderSpendingLimitCategories'TelecommunicationServices
+        | IssuingCardholderSpendingLimitCategories'TelegraphServices
+        | IssuingCardholderSpendingLimitCategories'TentAndAwningShops
+        | IssuingCardholderSpendingLimitCategories'TestingLaboratories
+        | IssuingCardholderSpendingLimitCategories'TheatricalTicketAgencies
+        | IssuingCardholderSpendingLimitCategories'Timeshares
+        | IssuingCardholderSpendingLimitCategories'TireRetreadingAndRepair
+        | IssuingCardholderSpendingLimitCategories'TollsBridgeFees
+        | IssuingCardholderSpendingLimitCategories'TouristAttractionsAndExhibits
+        | IssuingCardholderSpendingLimitCategories'TowingServices
+        | IssuingCardholderSpendingLimitCategories'TrailerParksCampgrounds
+        | IssuingCardholderSpendingLimitCategories'TransportationServices
+        | IssuingCardholderSpendingLimitCategories'TravelAgenciesTourOperators
+        | IssuingCardholderSpendingLimitCategories'TruckStopIteration
+        | IssuingCardholderSpendingLimitCategories'TruckUtilityTrailerRentals
+        | IssuingCardholderSpendingLimitCategories'TypesettingPlateMakingAndRelatedServices
+        | IssuingCardholderSpendingLimitCategories'TypewriterStores
+        | IssuingCardholderSpendingLimitCategories'USFederalGovernmentAgenciesOrDepartments
+        | IssuingCardholderSpendingLimitCategories'UniformsCommercialClothing
+        | IssuingCardholderSpendingLimitCategories'UsedMerchandiseAndSecondhandStores
+        | IssuingCardholderSpendingLimitCategories'Utilities
+        | IssuingCardholderSpendingLimitCategories'VarietyStores
+        | IssuingCardholderSpendingLimitCategories'VeterinaryServices
+        | IssuingCardholderSpendingLimitCategories'VideoAmusementGameSupplies
+        | IssuingCardholderSpendingLimitCategories'VideoGameArcades
+        | IssuingCardholderSpendingLimitCategories'VideoTapeRentalStores
+        | IssuingCardholderSpendingLimitCategories'VocationalTradeSchools
+        | IssuingCardholderSpendingLimitCategories'WatchJewelryRepair
+        | IssuingCardholderSpendingLimitCategories'WeldingRepair
+        | IssuingCardholderSpendingLimitCategories'WholesaleClubs
+        | IssuingCardholderSpendingLimitCategories'WigAndToupeeStores
+        | IssuingCardholderSpendingLimitCategories'WiresMoneyOrders
+        | IssuingCardholderSpendingLimitCategories'WomensAccessoryAndSpecialtyShops
+        | IssuingCardholderSpendingLimitCategories'WomensReadyToWearStores
+        | IssuingCardholderSpendingLimitCategories'WreckingAndSalvageYards
 
     and IssuingCardholderSpendingLimitInterval =
-        | AllTime
-        | Daily
-        | Monthly
-        | PerAuthorization
-        | Weekly
-        | Yearly
+        | IssuingCardholderSpendingLimitInterval'AllTime
+        | IssuingCardholderSpendingLimitInterval'Daily
+        | IssuingCardholderSpendingLimitInterval'Monthly
+        | IssuingCardholderSpendingLimitInterval'PerAuthorization
+        | IssuingCardholderSpendingLimitInterval'Weekly
+        | IssuingCardholderSpendingLimitInterval'Yearly
 
     ///
-    and IssuingCardholderVerification = {
+    and IssuingCardholderVerification (document: IssuingCardholderVerificationDocumentDU option) =
 
-        ///An identifying document, either a passport or local ID card.
-        Document: IssuingCardholderVerificationDocumentDU
-
-    }
+        member _.Document = document
 
     and IssuingCardholderVerificationDocumentDU =
-        | IssuingCardholderIdDocument of IssuingCardholderIdDocument
+        | IssuingCardholderVerificationDocumentDU'IssuingCardholderIdDocument of IssuingCardholderIdDocument
 
     ///
-    and IssuingDisputeCanceledEvidence = {
+    and IssuingDisputeCanceledEvidence (additionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentationDU option, canceledAt: int option, cancellationPolicyProvided: bool option, cancellationReason: string option, expectedAt: int option, explanation: string option, productDescription: string option, productType: IssuingDisputeCanceledEvidenceProductType option, returnStatus: IssuingDisputeCanceledEvidenceReturnStatus option, returnedAt: int option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentationDU
-
-        ///Date when order was canceled.
-        CanceledAt: int
-
-        ///Whether the cardholder was provided with a cancellation policy.
-        CancellationPolicyProvided: bool
-
-        ///Reason for canceling the order.
-        CancellationReason: string
-
-        ///Date when the cardholder expected to receive the product.
-        ExpectedAt: int
-
-        ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string
-
-        ///Description of the merchandise or service that was purchased.
-        ProductDescription: string
-
-        ///Whether the product was a merchandise or service.
-        ProductType: IssuingDisputeCanceledEvidenceProductType
-
-        ///Result of cardholder's attempt to return the product.
-        ReturnStatus: IssuingDisputeCanceledEvidenceReturnStatus
-
-        ///Date when the product was returned or attempted to be returned.
-        ReturnedAt: int
-
-    }
+        member _.AdditionalDocumentation = additionalDocumentation
+        member _.CanceledAt = canceledAt
+        member _.CancellationPolicyProvided = cancellationPolicyProvided
+        member _.CancellationReason = cancellationReason
+        member _.ExpectedAt = expectedAt
+        member _.Explanation = explanation
+        member _.ProductDescription = productDescription
+        member _.ProductType = productType
+        member _.ReturnStatus = returnStatus
+        member _.ReturnedAt = returnedAt
 
     and IssuingDisputeCanceledEvidenceProductType =
-        | Merchandise
-        | Service
+        | IssuingDisputeCanceledEvidenceProductType'Merchandise
+        | IssuingDisputeCanceledEvidenceProductType'Service
 
     and IssuingDisputeCanceledEvidenceReturnStatus =
-        | MerchantRejected
-        | Successful
+        | IssuingDisputeCanceledEvidenceReturnStatus'MerchantRejected
+        | IssuingDisputeCanceledEvidenceReturnStatus'Successful
 
     and IssuingDisputeCanceledEvidenceAdditionalDocumentationDU =
-        | String of string
-        | File of File
+        | IssuingDisputeCanceledEvidenceAdditionalDocumentationDU'String of string
+        | IssuingDisputeCanceledEvidenceAdditionalDocumentationDU'File of File
 
     ///
-    and IssuingDisputeDuplicateEvidence = {
+    and IssuingDisputeDuplicateEvidence (additionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentationDU option, cardStatement: IssuingDisputeDuplicateEvidenceCardStatementDU option, cashReceipt: IssuingDisputeDuplicateEvidenceCashReceiptDU option, checkImage: IssuingDisputeDuplicateEvidenceCheckImageDU option, explanation: string option, originalTransaction: string option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentationDU
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.
-        CardStatement: IssuingDisputeDuplicateEvidenceCardStatementDU
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.
-        CashReceipt: IssuingDisputeDuplicateEvidenceCashReceiptDU
-
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.
-        CheckImage: IssuingDisputeDuplicateEvidenceCheckImageDU
-
-        ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string
-
-        ///Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.
-        OriginalTransaction: string
-
-    }
+        member _.AdditionalDocumentation = additionalDocumentation
+        member _.CardStatement = cardStatement
+        member _.CashReceipt = cashReceipt
+        member _.CheckImage = checkImage
+        member _.Explanation = explanation
+        member _.OriginalTransaction = originalTransaction
 
     and IssuingDisputeDuplicateEvidenceAdditionalDocumentationDU =
-        | String of string
-        | File of File
+        | IssuingDisputeDuplicateEvidenceAdditionalDocumentationDU'String of string
+        | IssuingDisputeDuplicateEvidenceAdditionalDocumentationDU'File of File
 
     and IssuingDisputeDuplicateEvidenceCardStatementDU =
-        | String of string
-        | File of File
+        | IssuingDisputeDuplicateEvidenceCardStatementDU'String of string
+        | IssuingDisputeDuplicateEvidenceCardStatementDU'File of File
 
     and IssuingDisputeDuplicateEvidenceCashReceiptDU =
-        | String of string
-        | File of File
+        | IssuingDisputeDuplicateEvidenceCashReceiptDU'String of string
+        | IssuingDisputeDuplicateEvidenceCashReceiptDU'File of File
 
     and IssuingDisputeDuplicateEvidenceCheckImageDU =
-        | String of string
-        | File of File
+        | IssuingDisputeDuplicateEvidenceCheckImageDU'String of string
+        | IssuingDisputeDuplicateEvidenceCheckImageDU'File of File
 
     ///
-    and IssuingDisputeEvidence = {
+    and IssuingDisputeEvidence (reason: IssuingDisputeEvidenceReason, ?canceled: IssuingDisputeCanceledEvidence, ?duplicate: IssuingDisputeDuplicateEvidence, ?fraudulent: IssuingDisputeFraudulentEvidence, ?merchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence, ?notReceived: IssuingDisputeNotReceivedEvidence, ?other: IssuingDisputeOtherEvidence, ?serviceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence) =
 
-        Canceled: IssuingDisputeCanceledEvidence option
-
-        Duplicate: IssuingDisputeDuplicateEvidence option
-
-        Fraudulent: IssuingDisputeFraudulentEvidence option
-
-        MerchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence option
-
-        NotReceived: IssuingDisputeNotReceivedEvidence option
-
-        Other: IssuingDisputeOtherEvidence option
-
-        ///The reason for filing the dispute. Its value will match the field containing the evidence.
-        Reason: IssuingDisputeEvidenceReason
-
-        ServiceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence option
-
-    }
+        member _.Canceled = canceled
+        member _.Duplicate = duplicate
+        member _.Fraudulent = fraudulent
+        member _.MerchandiseNotAsDescribed = merchandiseNotAsDescribed
+        member _.NotReceived = notReceived
+        member _.Other = other
+        member _.Reason = reason
+        member _.ServiceNotAsDescribed = serviceNotAsDescribed
 
     and IssuingDisputeEvidenceReason =
-        | Canceled
-        | Duplicate
-        | Fraudulent
-        | MerchandiseNotAsDescribed
-        | NotReceived
-        | Other
-        | ServiceNotAsDescribed
+        | IssuingDisputeEvidenceReason'Canceled
+        | IssuingDisputeEvidenceReason'Duplicate
+        | IssuingDisputeEvidenceReason'Fraudulent
+        | IssuingDisputeEvidenceReason'MerchandiseNotAsDescribed
+        | IssuingDisputeEvidenceReason'NotReceived
+        | IssuingDisputeEvidenceReason'Other
+        | IssuingDisputeEvidenceReason'ServiceNotAsDescribed
 
     ///
-    and IssuingDisputeFraudulentEvidence = {
+    and IssuingDisputeFraudulentEvidence (additionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentationDU option, explanation: string option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentationDU
-
-        ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string
-
-    }
+        member _.AdditionalDocumentation = additionalDocumentation
+        member _.Explanation = explanation
 
     and IssuingDisputeFraudulentEvidenceAdditionalDocumentationDU =
-        | String of string
-        | File of File
+        | IssuingDisputeFraudulentEvidenceAdditionalDocumentationDU'String of string
+        | IssuingDisputeFraudulentEvidenceAdditionalDocumentationDU'File of File
 
     ///
-    and IssuingDisputeMerchandiseNotAsDescribedEvidence = {
+    and IssuingDisputeMerchandiseNotAsDescribedEvidence (additionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentationDU option, explanation: string option, receivedAt: int option, returnDescription: string option, returnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option, returnedAt: int option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentationDU
-
-        ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string
-
-        ///Date when the product was received.
-        ReceivedAt: int
-
-        ///Description of the cardholder's attempt to return the product.
-        ReturnDescription: string
-
-        ///Result of cardholder's attempt to return the product.
-        ReturnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus
-
-        ///Date when the product was returned or attempted to be returned.
-        ReturnedAt: int
-
-    }
+        member _.AdditionalDocumentation = additionalDocumentation
+        member _.Explanation = explanation
+        member _.ReceivedAt = receivedAt
+        member _.ReturnDescription = returnDescription
+        member _.ReturnStatus = returnStatus
+        member _.ReturnedAt = returnedAt
 
     and IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus =
-        | MerchantRejected
-        | Successful
+        | IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus'MerchantRejected
+        | IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus'Successful
 
     and IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentationDU =
-        | String of string
-        | File of File
+        | IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentationDU'String of string
+        | IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentationDU'File of File
 
     ///
-    and IssuingDisputeNotReceivedEvidence = {
+    and IssuingDisputeNotReceivedEvidence (additionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentationDU option, expectedAt: int option, explanation: string option, productDescription: string option, productType: IssuingDisputeNotReceivedEvidenceProductType option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentationDU
-
-        ///Date when the cardholder expected to receive the product.
-        ExpectedAt: int
-
-        ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string
-
-        ///Description of the merchandise or service that was purchased.
-        ProductDescription: string
-
-        ///Whether the product was a merchandise or service.
-        ProductType: IssuingDisputeNotReceivedEvidenceProductType
-
-    }
+        member _.AdditionalDocumentation = additionalDocumentation
+        member _.ExpectedAt = expectedAt
+        member _.Explanation = explanation
+        member _.ProductDescription = productDescription
+        member _.ProductType = productType
 
     and IssuingDisputeNotReceivedEvidenceProductType =
-        | Merchandise
-        | Service
+        | IssuingDisputeNotReceivedEvidenceProductType'Merchandise
+        | IssuingDisputeNotReceivedEvidenceProductType'Service
 
     and IssuingDisputeNotReceivedEvidenceAdditionalDocumentationDU =
-        | String of string
-        | File of File
+        | IssuingDisputeNotReceivedEvidenceAdditionalDocumentationDU'String of string
+        | IssuingDisputeNotReceivedEvidenceAdditionalDocumentationDU'File of File
 
     ///
-    and IssuingDisputeOtherEvidence = {
+    and IssuingDisputeOtherEvidence (additionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentationDU option, explanation: string option, productDescription: string option, productType: IssuingDisputeOtherEvidenceProductType option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentationDU
-
-        ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string
-
-        ///Description of the merchandise or service that was purchased.
-        ProductDescription: string
-
-        ///Whether the product was a merchandise or service.
-        ProductType: IssuingDisputeOtherEvidenceProductType
-
-    }
+        member _.AdditionalDocumentation = additionalDocumentation
+        member _.Explanation = explanation
+        member _.ProductDescription = productDescription
+        member _.ProductType = productType
 
     and IssuingDisputeOtherEvidenceProductType =
-        | Merchandise
-        | Service
+        | IssuingDisputeOtherEvidenceProductType'Merchandise
+        | IssuingDisputeOtherEvidenceProductType'Service
 
     and IssuingDisputeOtherEvidenceAdditionalDocumentationDU =
-        | String of string
-        | File of File
+        | IssuingDisputeOtherEvidenceAdditionalDocumentationDU'String of string
+        | IssuingDisputeOtherEvidenceAdditionalDocumentationDU'File of File
 
     ///
-    and IssuingDisputeServiceNotAsDescribedEvidence = {
+    and IssuingDisputeServiceNotAsDescribedEvidence (additionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentationDU option, canceledAt: int option, cancellationReason: string option, explanation: string option, receivedAt: int option) =
 
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentationDU
-
-        ///Date when order was canceled.
-        CanceledAt: int
-
-        ///Reason for canceling the order.
-        CancellationReason: string
-
-        ///Explanation of why the cardholder is disputing this transaction.
-        Explanation: string
-
-        ///Date when the product was received.
-        ReceivedAt: int
-
-    }
+        member _.AdditionalDocumentation = additionalDocumentation
+        member _.CanceledAt = canceledAt
+        member _.CancellationReason = cancellationReason
+        member _.Explanation = explanation
+        member _.ReceivedAt = receivedAt
 
     and IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentationDU =
-        | String of string
-        | File of File
+        | IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentationDU'String of string
+        | IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentationDU'File of File
 
     ///
-    and IssuingTransactionAmountDetails = {
+    and IssuingTransactionAmountDetails (atmFee: int option) =
 
-        ///The fee charged by the ATM for the cash withdrawal.
-        AtmFee: int
-
-    }
+        member _.AtmFee = atmFee
 
     ///
-    and IssuingTransactionFlightData = {
+    and IssuingTransactionFlightData (departureAt: int option, passengerName: string option, refundable: bool option, segments: IssuingTransactionFlightDataLeg list option, travelAgency: string option) =
 
-        ///The time that the flight departed.
-        DepartureAt: int
-
-        ///The name of the passenger.
-        PassengerName: string
-
-        ///Whether the ticket is refundable.
-        Refundable: bool
-
-        ///The legs of the trip.
-        Segments: IssuingTransactionFlightDataLeg list
-
-        ///The travel agency that issued the ticket.
-        TravelAgency: string
-
-    }
+        member _.DepartureAt = departureAt
+        member _.PassengerName = passengerName
+        member _.Refundable = refundable
+        member _.Segments = segments
+        member _.TravelAgency = travelAgency
 
     ///
-    and IssuingTransactionFlightDataLeg = {
+    and IssuingTransactionFlightDataLeg (arrivalAirportCode: string option, carrier: string option, departureAirportCode: string option, flightNumber: string option, serviceClass: string option, stopoverAllowed: bool option) =
 
-        ///The three-letter IATA airport code of the flight's destination.
-        ArrivalAirportCode: string
-
-        ///The airline carrier code.
-        Carrier: string
-
-        ///The three-letter IATA airport code that the flight departed from.
-        DepartureAirportCode: string
-
-        ///The flight number.
-        FlightNumber: string
-
-        ///The flight's service class.
-        ServiceClass: string
-
-        ///Whether a stopover is allowed on this flight.
-        StopoverAllowed: bool
-
-    }
+        member _.ArrivalAirportCode = arrivalAirportCode
+        member _.Carrier = carrier
+        member _.DepartureAirportCode = departureAirportCode
+        member _.FlightNumber = flightNumber
+        member _.ServiceClass = serviceClass
+        member _.StopoverAllowed = stopoverAllowed
 
     ///
-    and IssuingTransactionFuelData = {
+    and IssuingTransactionFuelData (``type``: string, unit: string, unitCostDecimal: string, volumeDecimal: string option) =
 
-        ///The type of fuel that was purchased. One of `diesel`, `unleaded_plus`, `unleaded_regular`, `unleaded_super`, or `other`.
-        Type: string
-
-        ///The units for `volume_decimal`. One of `us_gallon` or `liter`.
-        Unit: string
-
-        ///The cost in cents per each unit of fuel, represented as a decimal string with at most 12 decimal places.
-        UnitCostDecimal: string
-
-        ///The volume of the fuel that was pumped, represented as a decimal string with at most 12 decimal places.
-        VolumeDecimal: string
-
-    }
+        member _.Type = ``type``
+        member _.Unit = unit
+        member _.UnitCostDecimal = unitCostDecimal
+        member _.VolumeDecimal = volumeDecimal
 
     ///
-    and IssuingTransactionLodgingData = {
+    and IssuingTransactionLodgingData (checkInAt: int option, nights: int option) =
 
-        ///The time of checking into the lodging.
-        CheckInAt: int
-
-        ///The number of nights stayed at the lodging.
-        Nights: int
-
-    }
+        member _.CheckInAt = checkInAt
+        member _.Nights = nights
 
     ///
-    and IssuingTransactionPurchaseDetails = {
+    and IssuingTransactionPurchaseDetails (flight: IssuingTransactionPurchaseDetailsFlightDU option, fuel: IssuingTransactionPurchaseDetailsFuelDU option, lodging: IssuingTransactionPurchaseDetailsLodgingDU option, receipt: IssuingTransactionReceiptData list option, reference: string option) =
 
-        ///Information about the flight that was purchased with this transaction.
-        Flight: IssuingTransactionPurchaseDetailsFlightDU
-
-        ///Information about fuel that was purchased with this transaction.
-        Fuel: IssuingTransactionPurchaseDetailsFuelDU
-
-        ///Information about lodging that was purchased with this transaction.
-        Lodging: IssuingTransactionPurchaseDetailsLodgingDU
-
-        ///The line items in the purchase.
-        Receipt: IssuingTransactionReceiptData list
-
-        ///A merchant-specific order number.
-        Reference: string
-
-    }
+        member _.Flight = flight
+        member _.Fuel = fuel
+        member _.Lodging = lodging
+        member _.Receipt = receipt
+        member _.Reference = reference
 
     and IssuingTransactionPurchaseDetailsFlightDU =
-        | IssuingTransactionFlightData of IssuingTransactionFlightData
+        | IssuingTransactionPurchaseDetailsFlightDU'IssuingTransactionFlightData of IssuingTransactionFlightData
 
     and IssuingTransactionPurchaseDetailsFuelDU =
-        | IssuingTransactionFuelData of IssuingTransactionFuelData
+        | IssuingTransactionPurchaseDetailsFuelDU'IssuingTransactionFuelData of IssuingTransactionFuelData
 
     and IssuingTransactionPurchaseDetailsLodgingDU =
-        | IssuingTransactionLodgingData of IssuingTransactionLodgingData
+        | IssuingTransactionPurchaseDetailsLodgingDU'IssuingTransactionLodgingData of IssuingTransactionLodgingData
 
     ///
-    and IssuingTransactionReceiptData = {
+    and IssuingTransactionReceiptData (description: string option, quantity: decimal option, total: int option, unitCost: int option) =
 
-        ///The description of the item. The maximum length of this field is 26 characters.
-        Description: string
-
-        ///The quantity of the item.
-        Quantity: decimal
-
-        ///The total for this line item in cents.
-        Total: int
-
-        ///The unit cost of the item in cents.
-        UnitCost: int
-
-    }
+        member _.Description = description
+        member _.Quantity = quantity
+        member _.Total = total
+        member _.UnitCost = unitCost
 
     ///A line item.
-    and Item = {
+    and Item (amountSubtotal: int option, amountTotal: int option, currency: string, description: string, id: string, object: ItemObject, price: Price, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
 
-        ///Total before any discounts or taxes is applied.
-        AmountSubtotal: int
-
-        ///Total after discounts and taxes.
-        AmountTotal: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users. Defaults to product name.
-        Description: string
-
-        ///The discounts applied to the line item.
-        Discounts: LineItemsDiscountAmount list
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ItemObject
-
-        Price: Price
-
-        ///The quantity of products being purchased.
-        Quantity: int
-
-        ///The taxes applied to the line item.
-        Taxes: LineItemsTaxAmount list
-
-    }
+        member _.AmountSubtotal = amountSubtotal
+        member _.AmountTotal = amountTotal
+        member _.Currency = currency
+        member _.Description = description
+        member _.Discounts = discounts
+        member _.Id = id
+        member _.Object = object
+        member _.Price = price
+        member _.Quantity = quantity
+        member _.Taxes = taxes
 
     and ItemObject =
-        | Item
+        | ItemObject'Item
 
     ///
-    and LegalEntityCompany = {
+    and LegalEntityCompany (name: string option, ?address: Address, ?addressKana: LegalEntityCompanyAddressKanaDU option, ?addressKanji: LegalEntityCompanyAddressKanjiDU option, ?directorsProvided: bool, ?executivesProvided: bool, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?phone: string option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerificationDU option) =
 
-        Address: Address option
-
-        ///The Kana variation of the company's primary address (Japan only).
-        AddressKana: LegalEntityCompanyAddressKanaDU option
-
-        ///The Kanji variation of the company's primary address (Japan only).
-        AddressKanji: LegalEntityCompanyAddressKanjiDU option
-
-        ///Whether the company's directors have been provided. This Boolean will be `true` if you've manually indicated that all directors are provided via [the `directors_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-directors_provided).
-        DirectorsProvided: bool option
-
-        ///Whether the company's executives have been provided. This Boolean will be `true` if you've manually indicated that all executives are provided via [the `executives_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-executives_provided), or if Stripe determined that sufficient executives were provided.
-        ExecutivesProvided: bool option
-
-        ///The company's legal name.
-        Name: string
-
-        ///The Kana variation of the company's legal name (Japan only).
-        NameKana: string option
-
-        ///The Kanji variation of the company's legal name (Japan only).
-        NameKanji: string option
-
-        ///Whether the company's owners have been provided. This Boolean will be `true` if you've manually indicated that all owners are provided via [the `owners_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-owners_provided), or if Stripe determined that sufficient owners were provided. Stripe determines ownership requirements using both the number of owners provided and their total percent ownership (calculated by adding the `percent_ownership` of each owner together).
-        OwnersProvided: bool option
-
-        ///The company's phone number (used for verification).
-        Phone: string option
-
-        ///The category identifying the legal structure of the company or legal entity. See [Business structure](https://stripe.com/docs/connect/identity-verification#business-structure) for more details.
-        Structure: LegalEntityCompanyStructure option
-
-        ///Whether the company's business ID number was provided.
-        TaxIdProvided: bool option
-
-        ///The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
-        TaxIdRegistrar: string option
-
-        ///Whether the company's business VAT number was provided.
-        VatIdProvided: bool option
-
-        ///Information on the verification state of the company.
-        Verification: LegalEntityCompanyVerificationDU option
-
-    }
+        member _.Address = address
+        member _.AddressKana = addressKana |> Option.flatten
+        member _.AddressKanji = addressKanji |> Option.flatten
+        member _.DirectorsProvided = directorsProvided
+        member _.ExecutivesProvided = executivesProvided
+        member _.Name = name
+        member _.NameKana = nameKana |> Option.flatten
+        member _.NameKanji = nameKanji |> Option.flatten
+        member _.OwnersProvided = ownersProvided
+        member _.Phone = phone |> Option.flatten
+        member _.Structure = structure
+        member _.TaxIdProvided = taxIdProvided
+        member _.TaxIdRegistrar = taxIdRegistrar
+        member _.VatIdProvided = vatIdProvided
+        member _.Verification = verification |> Option.flatten
 
     and LegalEntityCompanyStructure =
-        | GovernmentInstrumentality
-        | GovernmentalUnit
-        | IncorporatedNonProfit
-        | LimitedLiabilityPartnership
-        | MultiMemberLlc
-        | PrivateCompany
-        | PrivateCorporation
-        | PrivatePartnership
-        | PublicCompany
-        | PublicCorporation
-        | PublicPartnership
-        | SoleProprietorship
-        | TaxExemptGovernmentInstrumentality
-        | UnincorporatedAssociation
-        | UnincorporatedNonProfit
+        | LegalEntityCompanyStructure'GovernmentInstrumentality
+        | LegalEntityCompanyStructure'GovernmentalUnit
+        | LegalEntityCompanyStructure'IncorporatedNonProfit
+        | LegalEntityCompanyStructure'LimitedLiabilityPartnership
+        | LegalEntityCompanyStructure'MultiMemberLlc
+        | LegalEntityCompanyStructure'PrivateCompany
+        | LegalEntityCompanyStructure'PrivateCorporation
+        | LegalEntityCompanyStructure'PrivatePartnership
+        | LegalEntityCompanyStructure'PublicCompany
+        | LegalEntityCompanyStructure'PublicCorporation
+        | LegalEntityCompanyStructure'PublicPartnership
+        | LegalEntityCompanyStructure'SoleProprietorship
+        | LegalEntityCompanyStructure'TaxExemptGovernmentInstrumentality
+        | LegalEntityCompanyStructure'UnincorporatedAssociation
+        | LegalEntityCompanyStructure'UnincorporatedNonProfit
 
     and LegalEntityCompanyAddressKanaDU =
-        | LegalEntityJapanAddress of LegalEntityJapanAddress
+        | LegalEntityCompanyAddressKanaDU'LegalEntityJapanAddress of LegalEntityJapanAddress
 
     and LegalEntityCompanyAddressKanjiDU =
-        | LegalEntityJapanAddress of LegalEntityJapanAddress
+        | LegalEntityCompanyAddressKanjiDU'LegalEntityJapanAddress of LegalEntityJapanAddress
 
     and LegalEntityCompanyVerificationDU =
-        | LegalEntityCompanyVerification of LegalEntityCompanyVerification
+        | LegalEntityCompanyVerificationDU'LegalEntityCompanyVerification of LegalEntityCompanyVerification
 
     ///
-    and LegalEntityCompanyVerification = {
+    and LegalEntityCompanyVerification (document: LegalEntityCompanyVerificationDocument) =
 
-        Document: LegalEntityCompanyVerificationDocument
-
-    }
+        member _.Document = document
 
     ///
-    and LegalEntityCompanyVerificationDocument = {
+    and LegalEntityCompanyVerificationDocument (back: LegalEntityCompanyVerificationDocumentBackDU option, details: string option, detailsCode: string option, front: LegalEntityCompanyVerificationDocumentFrontDU option) =
 
-        ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
-        Back: LegalEntityCompanyVerificationDocumentBackDU
-
-        ///A user-displayable string describing the verification state of this document.
-        Details: string
-
-        ///One of `document_corrupt`, `document_expired`, `document_failed_copy`, `document_failed_greyscale`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_not_readable`, `document_not_uploaded`, `document_type_not_supported`, or `document_too_large`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: string
-
-        ///The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
-        Front: LegalEntityCompanyVerificationDocumentFrontDU
-
-    }
+        member _.Back = back
+        member _.Details = details
+        member _.DetailsCode = detailsCode
+        member _.Front = front
 
     and LegalEntityCompanyVerificationDocumentBackDU =
-        | String of string
-        | File of File
+        | LegalEntityCompanyVerificationDocumentBackDU'String of string
+        | LegalEntityCompanyVerificationDocumentBackDU'File of File
 
     and LegalEntityCompanyVerificationDocumentFrontDU =
-        | String of string
-        | File of File
+        | LegalEntityCompanyVerificationDocumentFrontDU'String of string
+        | LegalEntityCompanyVerificationDocumentFrontDU'File of File
 
     ///
-    and LegalEntityDob = {
+    and LegalEntityDob (day: int option, month: int option, year: int option) =
 
-        ///The day of birth, between 1 and 31.
-        Day: int
-
-        ///The month of birth, between 1 and 12.
-        Month: int
-
-        ///The four-digit year of birth.
-        Year: int
-
-    }
+        member _.Day = day
+        member _.Month = month
+        member _.Year = year
 
     ///
-    and LegalEntityJapanAddress = {
+    and LegalEntityJapanAddress (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option, town: string option) =
 
-        ///City/Ward.
-        City: string
-
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string
-
-        ///Block/Building number.
-        Line1: string
-
-        ///Building details.
-        Line2: string
-
-        ///ZIP or postal code.
-        PostalCode: string
-
-        ///Prefecture.
-        State: string
-
-        ///Town/cho-me.
-        Town: string
-
-    }
+        member _.City = city
+        member _.Country = country
+        member _.Line1 = line1
+        member _.Line2 = line2
+        member _.PostalCode = postalCode
+        member _.State = state
+        member _.Town = town
 
     ///
-    and LegalEntityPersonVerification = {
+    and LegalEntityPersonVerification (status: string, ?additionalDocument: LegalEntityPersonVerificationAdditionalDocumentDU option, ?details: string option, ?detailsCode: string option, ?document: LegalEntityPersonVerificationDocument) =
 
-        ///A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
-        AdditionalDocument: LegalEntityPersonVerificationAdditionalDocumentDU option
-
-        ///A user-displayable string describing the verification state for the person. For example, this may say "Provided identity information could not be verified".
-        Details: string option
-
-        ///One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person.
-        DetailsCode: string option
-
-        Document: LegalEntityPersonVerificationDocument option
-
-        ///The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`.
-        Status: string
-
-    }
+        member _.AdditionalDocument = additionalDocument |> Option.flatten
+        member _.Details = details |> Option.flatten
+        member _.DetailsCode = detailsCode |> Option.flatten
+        member _.Document = document
+        member _.Status = status
 
     and LegalEntityPersonVerificationAdditionalDocumentDU =
-        | LegalEntityPersonVerificationDocument of LegalEntityPersonVerificationDocument
+        | LegalEntityPersonVerificationAdditionalDocumentDU'LegalEntityPersonVerificationDocument of LegalEntityPersonVerificationDocument
 
     ///
-    and LegalEntityPersonVerificationDocument = {
+    and LegalEntityPersonVerificationDocument (back: LegalEntityPersonVerificationDocumentBackDU option, details: string option, detailsCode: string option, front: LegalEntityPersonVerificationDocumentFrontDU option) =
 
-        ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Back: LegalEntityPersonVerificationDocumentBackDU
-
-        ///A user-displayable string describing the verification state of this document. For example, if a document is uploaded and the picture is too fuzzy, this may say "Identity document is too unclear to read".
-        Details: string
-
-        ///One of `document_corrupt`, `document_country_not_supported`, `document_expired`, `document_failed_copy`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_failed_greyscale`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_missing_back`, `document_missing_front`, `document_not_readable`, `document_not_uploaded`, `document_photo_mismatch`, `document_too_large`, or `document_type_not_supported`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: string
-
-        ///The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Front: LegalEntityPersonVerificationDocumentFrontDU
-
-    }
+        member _.Back = back
+        member _.Details = details
+        member _.DetailsCode = detailsCode
+        member _.Front = front
 
     and LegalEntityPersonVerificationDocumentBackDU =
-        | String of string
-        | File of File
+        | LegalEntityPersonVerificationDocumentBackDU'String of string
+        | LegalEntityPersonVerificationDocumentBackDU'File of File
 
     and LegalEntityPersonVerificationDocumentFrontDU =
-        | String of string
-        | File of File
+        | LegalEntityPersonVerificationDocumentFrontDU'String of string
+        | LegalEntityPersonVerificationDocumentFrontDU'File of File
 
     ///
-    and Level3 = {
+    and Level3 (lineItems: Level3LineItems list, merchantReference: string, ?customerReference: string, ?shippingAddressZip: string, ?shippingAmount: int, ?shippingFromZip: string) =
 
-        CustomerReference: string option
-
-        LineItems: Level3LineItems list
-
-        MerchantReference: string
-
-        ShippingAddressZip: string option
-
-        ShippingAmount: int option
-
-        ShippingFromZip: string option
-
-    }
+        member _.CustomerReference = customerReference
+        member _.LineItems = lineItems
+        member _.MerchantReference = merchantReference
+        member _.ShippingAddressZip = shippingAddressZip
+        member _.ShippingAmount = shippingAmount
+        member _.ShippingFromZip = shippingFromZip
 
     ///
-    and Level3LineItems = {
+    and Level3LineItems (discountAmount: int option, productCode: string, productDescription: string, quantity: int option, taxAmount: int option, unitCost: int option) =
 
-        DiscountAmount: int
-
-        ProductCode: string
-
-        ProductDescription: string
-
-        Quantity: int
-
-        TaxAmount: int
-
-        UnitCost: int
-
-    }
+        member _.DiscountAmount = discountAmount
+        member _.ProductCode = productCode
+        member _.ProductDescription = productDescription
+        member _.Quantity = quantity
+        member _.TaxAmount = taxAmount
+        member _.UnitCost = unitCost
 
     ///
-    and LineItem = {
+    and LineItem (amount: int, currency: string, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: LineItemDiscountsDU list option, id: string, livemode: bool, metadata: Map<string, string>, object: LineItemObject, period: InvoiceLineItemPeriod, plan: LineItemPlanDU option, price: LineItemPriceDU option, proration: bool, quantity: int option, subscription: string option, ``type``: LineItemType, ?invoiceItem: string, ?subscriptionItem: string, ?taxAmounts: InvoiceTaxAmount list, ?taxRates: TaxRate list) =
 
-        ///The amount, in %s.
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///The amount of discount calculated per discount for this line item.
-        DiscountAmounts: DiscountsResourceDiscountAmount list
-
-        ///If true, discounts will apply to this line item. Always false for prorations.
-        Discountable: bool
-
-        ///The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: LineItemDiscountsDU list
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The ID of the [invoice item](https://stripe.com/docs/api/invoiceitems) associated with this line item if any.
-        InvoiceItem: string option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Note that for line items with `type=subscription` this will reflect the metadata of the subscription that caused the line item to be created.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: LineItemObject
-
-        Period: InvoiceLineItemPeriod
-
-        ///The plan of the subscription, if the line item is a subscription or a proration.
-        Plan: LineItemPlanDU
-
-        ///The price of the line item.
-        Price: LineItemPriceDU
-
-        ///Whether this is a proration.
-        Proration: bool
-
-        ///The quantity of the subscription, if the line item is a subscription or a proration.
-        Quantity: int
-
-        ///The subscription that the invoice item pertains to, if any.
-        Subscription: string
-
-        ///The subscription item that generated this invoice item. Left empty if the line item is not an explicit result of a subscription.
-        SubscriptionItem: string option
-
-        ///The amount of tax calculated per tax rate for this line item
-        TaxAmounts: InvoiceTaxAmount list
-
-        ///The tax rates which apply to the line item.
-        TaxRates: TaxRate list
-
-        ///A string identifying the type of the source of this line item, either an `invoiceitem` or a `subscription`.
-        Type: LineItemType
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.Description = description
+        member _.DiscountAmounts = discountAmounts
+        member _.Discountable = discountable
+        member _.Discounts = discounts
+        member _.Id = id
+        member _.InvoiceItem = invoiceItem
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Period = period
+        member _.Plan = plan
+        member _.Price = price
+        member _.Proration = proration
+        member _.Quantity = quantity
+        member _.Subscription = subscription
+        member _.SubscriptionItem = subscriptionItem
+        member _.TaxAmounts = taxAmounts
+        member _.TaxRates = taxRates
+        member _.Type = ``type``
 
     and LineItemObject =
-        | LineItem
+        | LineItemObject'LineItem
 
     and LineItemType =
-        | Invoiceitem
-        | Subscription
+        | LineItemType'Invoiceitem
+        | LineItemType'Subscription
 
     and LineItemDiscountsDU =
-        | String of string
-        | Discount of Discount
+        | LineItemDiscountsDU'String of string
+        | LineItemDiscountsDU'Discount of Discount
 
     and LineItemPlanDU =
-        | Plan of Plan
+        | LineItemPlanDU'Plan of Plan
 
     and LineItemPriceDU =
-        | Price of Price
+        | LineItemPriceDU'Price of Price
 
     ///
-    and LineItemsDiscountAmount = {
+    and LineItemsDiscountAmount (amount: int, discount: Discount) =
 
-        ///The amount discounted.
-        Amount: int
-
-        Discount: Discount
-
-    }
+        member _.Amount = amount
+        member _.Discount = discount
 
     ///
-    and LineItemsTaxAmount = {
+    and LineItemsTaxAmount (amount: int, rate: TaxRate) =
 
-        ///Amount of tax applied for this rate.
-        Amount: int
-
-        Rate: TaxRate
-
-    }
+        member _.Amount = amount
+        member _.Rate = rate
 
     ///
-    and LoginLink = {
+    and LoginLink (created: int, object: LoginLinkObject, url: string) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: LoginLinkObject
-
-        ///The URL for the login link.
-        Url: string
-
-    }
+        member _.Created = created
+        member _.Object = object
+        member _.Url = url
 
     and LoginLinkObject =
-        | LoginLink
+        | LoginLinkObject'LoginLink
 
     ///A Mandate is a record of the permission a customer has given you to debit their payment method.
-    and Mandate = {
+    and Mandate (customerAcceptance: CustomerAcceptance, id: string, livemode: bool, object: MandateObject, paymentMethod: MandatePaymentMethodDU, paymentMethodDetails: MandatePaymentMethodDetails, status: MandateStatus, ``type``: MandateType, ?multiUse: MandateMultiUse, ?singleUse: MandateSingleUse) =
 
-        CustomerAcceptance: CustomerAcceptance
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        MultiUse: MandateMultiUse option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: MandateObject
-
-        ///ID of the payment method associated with this mandate.
-        PaymentMethod: MandatePaymentMethodDU
-
-        PaymentMethodDetails: MandatePaymentMethodDetails
-
-        SingleUse: MandateSingleUse option
-
-        ///The status of the mandate, which indicates whether it can be used to initiate a payment.
-        Status: MandateStatus
-
-        ///The type of the mandate.
-        Type: MandateType
-
-    }
+        member _.CustomerAcceptance = customerAcceptance
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.MultiUse = multiUse
+        member _.Object = object
+        member _.PaymentMethod = paymentMethod
+        member _.PaymentMethodDetails = paymentMethodDetails
+        member _.SingleUse = singleUse
+        member _.Status = status
+        member _.Type = ``type``
 
     and MandateObject =
-        | Mandate
+        | MandateObject'Mandate
 
     and MandateStatus =
-        | Active
-        | Inactive
-        | Pending
+        | MandateStatus'Active
+        | MandateStatus'Inactive
+        | MandateStatus'Pending
 
     and MandateType =
-        | MultiUse
-        | SingleUse
+        | MandateType'MultiUse
+        | MandateType'SingleUse
 
     and MandatePaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | MandatePaymentMethodDU'String of string
+        | MandatePaymentMethodDU'PaymentMethod of PaymentMethod
 
     ///
-    and MandateAuBecsDebit = {
+    and MandateAuBecsDebit (url: string) =
 
-        ///The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
-        Url: string
-
-    }
+        member _.Url = url
 
     ///
-    and MandateBacsDebit = {
+    and MandateBacsDebit (networkStatus: MandateBacsDebitNetworkStatus, reference: string, url: string) =
 
-        ///The status of the mandate on the Bacs network. Can be one of `pending`, `revoked`, `refused`, or `accepted`.
-        NetworkStatus: MandateBacsDebitNetworkStatus
-
-        ///The unique reference identifying the mandate on the Bacs network.
-        Reference: string
-
-        ///The URL that will contain the mandate that the customer has signed.
-        Url: string
-
-    }
+        member _.NetworkStatus = networkStatus
+        member _.Reference = reference
+        member _.Url = url
 
     and MandateBacsDebitNetworkStatus =
-        | Accepted
-        | Pending
-        | Refused
-        | Revoked
+        | MandateBacsDebitNetworkStatus'Accepted
+        | MandateBacsDebitNetworkStatus'Pending
+        | MandateBacsDebitNetworkStatus'Refused
+        | MandateBacsDebitNetworkStatus'Revoked
 
     ///
-    and MandateMultiUse = {
+    and MandateMultiUse (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and MandatePaymentMethodDetails = {
+    and MandatePaymentMethodDetails (``type``: string, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?card: CardMandatePaymentMethodDetails, ?sepaDebit: MandateSepaDebit) =
 
-        AuBecsDebit: MandateAuBecsDebit option
-
-        BacsDebit: MandateBacsDebit option
-
-        Card: CardMandatePaymentMethodDetails option
-
-        SepaDebit: MandateSepaDebit option
-
-        ///The type of the payment method associated with this mandate. An additional hash is included on `payment_method_details` with a name matching this value. It contains mandate information specific to the payment method.
-        Type: string
-
-    }
+        member _.AuBecsDebit = auBecsDebit
+        member _.BacsDebit = bacsDebit
+        member _.Card = card
+        member _.SepaDebit = sepaDebit
+        member _.Type = ``type``
 
     ///
-    and MandateSepaDebit = {
+    and MandateSepaDebit (reference: string, url: string) =
 
-        ///The unique reference of the mandate.
-        Reference: string
-
-        ///The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
-        Url: string
-
-    }
+        member _.Reference = reference
+        member _.Url = url
 
     ///
-    and MandateSingleUse = {
+    and MandateSingleUse (amount: int, currency: string) =
 
-        ///On a single use mandate, the amount of the payment.
-        Amount: int
-
-        ///On a single use mandate, the currency of the payment.
-        Currency: string
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
 
     ///
-    and Networks = {
+    and Networks (available: string list, preferred: string option) =
 
-        ///All available networks for the card.
-        Available: string list
-
-        ///The preferred network for the card.
-        Preferred: string
-
-    }
+        member _.Available = available
+        member _.Preferred = preferred
 
     ///
-    and NotificationEventData = {
+    and NotificationEventData (object: Map<string, string>, ?previousAttributes: Map<string, string>) =
 
-        ///Object containing the API resource relevant to the event. For example, an `invoice.created` event will have a full [invoice object](https://stripe.com/docs/api#invoice_object) as the value of the object key.
-        Object: Map<string, string>
-
-        ///Object containing the names of the attributes that have changed, and their previous values (sent along only with *.updated events).
-        PreviousAttributes: Map<string, string> option
-
-    }
+        member _.Object = object
+        member _.PreviousAttributes = previousAttributes
 
     ///
-    and NotificationEventRequest = {
+    and NotificationEventRequest (id: string option, idempotencyKey: string option) =
 
-        ///ID of the API request that caused the event. If null, the event was automatic (e.g., Stripe's automatic subscription handling). Request logs are available in the [dashboard](https://dashboard.stripe.com/logs), but currently not in the API.
-        Id: string
-
-        ///The idempotency key transmitted during the request, if any. *Note: This property is populated only for events on or after May 23, 2017*.
-        IdempotencyKey: string
-
-    }
+        member _.Id = id
+        member _.IdempotencyKey = idempotencyKey
 
     ///
-    and OfflineAcceptance = {
+    and OfflineAcceptance (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and OnlineAcceptance = {
+    and OnlineAcceptance (ipAddress: string option, userAgent: string option) =
 
-        ///The IP address from which the Mandate was accepted by the customer.
-        IpAddress: string
-
-        ///The user agent of the browser from which the Mandate was accepted by the customer.
-        UserAgent: string
-
-    }
+        member _.IpAddress = ipAddress
+        member _.UserAgent = userAgent
 
     ///Order objects are created to handle end customers' purchases of previously
     ///defined [products](https://stripe.com/docs/api#products). You can create, retrieve, and pay individual orders, as well
     ///as list all orders. Orders are identified by a unique, random ID.
     ///
     ///Related guide: [Tax, Shipping, and Inventory](https://stripe.com/docs/orders).
-    and Order = {
+    and Order (amount: int, amountReturned: int option, application: string option, applicationFee: int option, charge: OrderChargeDU option, created: int, currency: string, customer: OrderCustomerDU option, email: string option, id: string, items: OrderItem list, livemode: bool, metadata: Map<string, string> option, object: OrderObject, returns: Map<string, string> option, selectedShippingMethod: string option, shipping: OrderShippingDU option, shippingMethods: ShippingMethod list option, status: string, statusTransitions: OrderStatusTransitionsDU option, updated: int option, ?externalCouponCode: string, ?upstreamId: string) =
 
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the order.
-        Amount: int
-
-        ///The total amount that was returned to the customer.
-        AmountReturned: int
-
-        ///ID of the Connect Application that created the order.
-        Application: string
-
-        ///A fee in cents that will be applied to the order and transferred to the application owner’s Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees documentation.
-        ApplicationFee: int
-
-        ///The ID of the payment used to pay for the order. Present if the order status is `paid`, `fulfilled`, or `refunded`.
-        Charge: OrderChargeDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The customer used for the order.
-        Customer: OrderCustomerDU
-
-        ///The email address of the customer placing the order.
-        Email: string
-
-        ///External coupon code to load for this order.
-        ExternalCouponCode: string option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///List of items constituting the order. An order can have up to 25 items.
-        Items: OrderItem list
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: OrderObject
-
-        ///A list of returns that have taken place for this order.
-        Returns: Map<string, string>
-
-        ///The shipping method that is currently selected for this order, if any. If present, it is equal to one of the `id`s of shipping methods in the `shipping_methods` array. At order creation time, if there are multiple shipping methods, Stripe will automatically selected the first method.
-        SelectedShippingMethod: string
-
-        ///The shipping address for the order. Present if the order is for goods to be shipped.
-        Shipping: OrderShippingDU
-
-        ///A list of supported shipping methods for this order. The desired shipping method can be specified either by updating the order, or when paying it.
-        ShippingMethods: ShippingMethod list
-
-        ///Current order status. One of `created`, `paid`, `canceled`, `fulfilled`, or `returned`. More details in the [Orders Guide](https://stripe.com/docs/orders/guide#understanding-order-statuses).
-        Status: string
-
-        ///The timestamps at which the order status was updated.
-        StatusTransitions: OrderStatusTransitionsDU
-
-        ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        Updated: int
-
-        ///The user's order ID if it is different from the Stripe order ID.
-        UpstreamId: string option
-
-    }
+        member _.Amount = amount
+        member _.AmountReturned = amountReturned
+        member _.Application = application
+        member _.ApplicationFee = applicationFee
+        member _.Charge = charge
+        member _.Created = created
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.Email = email
+        member _.ExternalCouponCode = externalCouponCode
+        member _.Id = id
+        member _.Items = items
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Returns = returns
+        member _.SelectedShippingMethod = selectedShippingMethod
+        member _.Shipping = shipping
+        member _.ShippingMethods = shippingMethods
+        member _.Status = status
+        member _.StatusTransitions = statusTransitions
+        member _.Updated = updated
+        member _.UpstreamId = upstreamId
 
     and OrderObject =
-        | Order
+        | OrderObject'Order
 
     and OrderChargeDU =
-        | String of string
-        | Charge of Charge
+        | OrderChargeDU'String of string
+        | OrderChargeDU'Charge of Charge
 
     and OrderCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | OrderCustomerDU'String of string
+        | OrderCustomerDU'Customer of Customer
+        | OrderCustomerDU'DeletedCustomer of DeletedCustomer
 
     and OrderShippingDU =
-        | Shipping of Shipping
+        | OrderShippingDU'Shipping of Shipping
 
     and OrderStatusTransitionsDU =
-        | StatusTransitions of StatusTransitions
+        | OrderStatusTransitionsDU'StatusTransitions of StatusTransitions
 
     ///A representation of the constituent items of any given order. Can be used to
     ///represent [SKUs](https://stripe.com/docs/api#skus), shipping costs, or taxes owed on the order.
     ///
     ///Related guide: [Orders](https://stripe.com/docs/orders/guide).
-    and OrderItem = {
+    and OrderItem (amount: int, currency: string, description: string, object: OrderItemObject, parent: OrderItemParentDU option, quantity: int option, ``type``: string) =
 
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the line item.
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Description of the line item, meant to be displayable to the user (e.g., `"Express shipping"`).
-        Description: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: OrderItemObject
-
-        ///The ID of the associated object for this line item. Expandable if not null (e.g., expandable to a SKU).
-        Parent: OrderItemParentDU
-
-        ///A positive integer representing the number of instances of `parent` that are included in this order item. Applicable/present only if `type` is `sku`.
-        Quantity: int
-
-        ///The type of line item. One of `sku`, `tax`, `shipping`, or `discount`.
-        Type: string
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.Description = description
+        member _.Object = object
+        member _.Parent = parent
+        member _.Quantity = quantity
+        member _.Type = ``type``
 
     and OrderItemObject =
-        | OrderItem
+        | OrderItemObject'OrderItem
 
     and OrderItemParentDU =
-        | String of string
-        | Sku of Sku
+        | OrderItemParentDU'String of string
+        | OrderItemParentDU'Sku of Sku
 
     ///A return represents the full or partial return of a number of [order items](https://stripe.com/docs/api#order_items).
     ///Returns always belong to an order, and may optionally contain a refund.
     ///
     ///Related guide: [Handling Returns](https://stripe.com/docs/orders/guide#handling-returns).
-    and OrderReturn = {
+    and OrderReturn (amount: int, created: int, currency: string, id: string, items: OrderItem list, livemode: bool, object: OrderReturnObject, order: OrderReturnOrderDU option, refund: OrderReturnRefundDU option) =
 
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the returned line item.
-        Amount: int
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The items included in this order return.
-        Items: OrderItem list
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: OrderReturnObject
-
-        ///The order that this return includes items from.
-        Order: OrderReturnOrderDU
-
-        ///The ID of the refund issued for this return.
-        Refund: OrderReturnRefundDU
-
-    }
+        member _.Amount = amount
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Items = items
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Order = order
+        member _.Refund = refund
 
     and OrderReturnObject =
-        | OrderReturn
+        | OrderReturnObject'OrderReturn
 
     and OrderReturnOrderDU =
-        | String of string
-        | Order of Order
+        | OrderReturnOrderDU'String of string
+        | OrderReturnOrderDU'Order of Order
 
     and OrderReturnRefundDU =
-        | String of string
-        | Refund of Refund
+        | OrderReturnRefundDU'String of string
+        | OrderReturnRefundDU'Refund of Refund
 
     ///
-    and PackageDimensions = {
+    and PackageDimensions (height: decimal, length: decimal, weight: decimal, width: decimal) =
 
-        ///Height, in inches.
-        Height: decimal
-
-        ///Length, in inches.
-        Length: decimal
-
-        ///Weight, in ounces.
-        Weight: decimal
-
-        ///Width, in inches.
-        Width: decimal
-
-    }
+        member _.Height = height
+        member _.Length = length
+        member _.Weight = weight
+        member _.Width = width
 
     ///
-    and PaymentFlowsPrivatePaymentMethodsAlipay = {
+    and PaymentFlowsPrivatePaymentMethodsAlipay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentFlowsPrivatePaymentMethodsAlipayDetails = {
+    and PaymentFlowsPrivatePaymentMethodsAlipayDetails (fingerprint: string option, transactionId: string option) =
 
-        ///Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
-        Fingerprint: string
-
-        ///Transaction ID of this particular Alipay transaction.
-        TransactionId: string
-
-    }
+        member _.Fingerprint = fingerprint
+        member _.TransactionId = transactionId
 
     ///A PaymentIntent guides you through the process of collecting a payment from your customer.
     ///We recommend that you create exactly one PaymentIntent for each order or
@@ -7911,2172 +5402,1442 @@ module StripeModel =
     ///authentication flows and ultimately creates at most one successful charge.
     ///
     ///Related guide: [Payment Intents API](https://stripe.com/docs/payments/payment-intents).
-    and PaymentIntent = {
+    and PaymentIntent (amount: int, amountCapturable: int, amountReceived: int, application: PaymentIntentApplicationDU option, applicationFeeAmount: int option, canceledAt: int option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, charges: Map<string, string>, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: int, currency: string, customer: PaymentIntentCustomerDU option, description: string option, id: string, invoice: PaymentIntentInvoiceDU option, lastPaymentError: PaymentIntentLastPaymentErrorDU option, livemode: bool, metadata: Map<string, string>, nextAction: PaymentIntentNextActionDU option, object: PaymentIntentObject, onBehalfOf: PaymentIntentOnBehalfOfDU option, paymentMethod: PaymentIntentPaymentMethodDU option, paymentMethodOptions: PaymentIntentPaymentMethodOptionsDU option, paymentMethodTypes: string list, receiptEmail: string option, review: PaymentIntentReviewDU option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: PaymentIntentShippingDU option, source: PaymentIntentSourceDU option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferData: PaymentIntentTransferDataDU option, transferGroup: string option) =
 
-        ///Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
-        Amount: int
-
-        ///Amount that can be captured from this PaymentIntent.
-        AmountCapturable: int
-
-        ///Amount that was collected by this PaymentIntent.
-        AmountReceived: int
-
-        ///ID of the Connect application that created the PaymentIntent.
-        Application: PaymentIntentApplicationDU
-
-        ///The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).
-        ApplicationFeeAmount: int
-
-        ///Populated when `status` is `canceled`, this is the time at which the PaymentIntent was canceled. Measured in seconds since the Unix epoch.
-        CanceledAt: int
-
-        ///Reason for cancellation of this PaymentIntent, either user-provided (`duplicate`, `fraudulent`, `requested_by_customer`, or `abandoned`) or generated by Stripe internally (`failed_invoice`, `void_invoice`, or `automatic`).
-        CancellationReason: PaymentIntentCancellationReason
-
-        ///Controls when the funds will be captured from the customer's account.
-        CaptureMethod: PaymentIntentCaptureMethod
-
-        ///Charges that were created by this PaymentIntent, if any.
-        Charges: Map<string, string>
-
-        ///The client secret of this PaymentIntent. Used for client-side retrieval using a publishable key. 
-    ///
-    ///The client secret can be used to complete a payment from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
-    ///
-    ///Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?integration=elements) and learn about how `client_secret` should be handled.
-        ClientSecret: string
-
-        ConfirmationMethod: PaymentIntentConfirmationMethod
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///ID of the Customer this PaymentIntent belongs to, if one exists.
-    ///
-    ///Payment methods attached to other Customers cannot be used with this PaymentIntent.
-    ///
-    ///If present in combination with [setup_future_usage](https://stripe.com/docs/api#payment_intent_object-setup_future_usage), this PaymentIntent's payment method will be attached to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete.
-        Customer: PaymentIntentCustomerDU
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///ID of the invoice that created this PaymentIntent, if it exists.
-        Invoice: PaymentIntentInvoiceDU
-
-        ///The payment error encountered in the previous PaymentIntent confirmation. It will be cleared if the PaymentIntent is later updated for any reason.
-        LastPaymentError: PaymentIntentLastPaymentErrorDU
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. For more information, see the [documentation](https://stripe.com/docs/payments/payment-intents/creating-payment-intents#storing-information-in-metadata).
-        Metadata: Map<string, string>
-
-        ///If present, this property tells you what actions you need to take in order for your customer to fulfill a payment using the provided source.
-        NextAction: PaymentIntentNextActionDU
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PaymentIntentObject
-
-        ///The account (if any) for which the funds of the PaymentIntent are intended. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.
-        OnBehalfOf: PaymentIntentOnBehalfOfDU
-
-        ///ID of the payment method used in this PaymentIntent.
-        PaymentMethod: PaymentIntentPaymentMethodDU
-
-        ///Payment-method-specific configuration for this PaymentIntent.
-        PaymentMethodOptions: PaymentIntentPaymentMethodOptionsDU
-
-        ///The list of payment method types (e.g. card) that this PaymentIntent is allowed to use.
-        PaymentMethodTypes: string list
-
-        ///Email address that the receipt for the resulting payment will be sent to. If `receipt_email` is specified for a payment in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
-        ReceiptEmail: string
-
-        ///ID of the review associated with this PaymentIntent, if any.
-        Review: PaymentIntentReviewDU
-
-        ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///
-    ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
-    ///
-    ///When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
-        SetupFutureUsage: PaymentIntentSetupFutureUsage
-
-        ///Shipping information for this PaymentIntent.
-        Shipping: PaymentIntentShippingDU
-
-        ///This is a legacy field that will be removed in the future. It is the ID of the Source object that is associated with this PaymentIntent, if one was supplied.
-        Source: PaymentIntentSourceDU
-
-        ///For non-card charges, you can use this value as the complete description that appears on your customers’ statements. Must contain at least one letter, maximum 22 characters.
-        StatementDescriptor: string
-
-        ///Provides information about a card payment that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
-        StatementDescriptorSuffix: string
-
-        ///Status of this PaymentIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `requires_capture`, `canceled`, or `succeeded`. Read more about each PaymentIntent [status](https://stripe.com/docs/payments/intents#intent-statuses).
-        Status: PaymentIntentStatus
-
-        ///The data with which to automatically create a Transfer when the payment is finalized. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.
-        TransferData: PaymentIntentTransferDataDU
-
-        ///A string that identifies the resulting payment as part of a group. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.
-        TransferGroup: string
-
-    }
+        member _.Amount = amount
+        member _.AmountCapturable = amountCapturable
+        member _.AmountReceived = amountReceived
+        member _.Application = application
+        member _.ApplicationFeeAmount = applicationFeeAmount
+        member _.CanceledAt = canceledAt
+        member _.CancellationReason = cancellationReason
+        member _.CaptureMethod = captureMethod
+        member _.Charges = charges
+        member _.ClientSecret = clientSecret
+        member _.ConfirmationMethod = confirmationMethod
+        member _.Created = created
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.Description = description
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.LastPaymentError = lastPaymentError
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.NextAction = nextAction
+        member _.Object = object
+        member _.OnBehalfOf = onBehalfOf
+        member _.PaymentMethod = paymentMethod
+        member _.PaymentMethodOptions = paymentMethodOptions
+        member _.PaymentMethodTypes = paymentMethodTypes
+        member _.ReceiptEmail = receiptEmail
+        member _.Review = review
+        member _.SetupFutureUsage = setupFutureUsage
+        member _.Shipping = shipping
+        member _.Source = source
+        member _.StatementDescriptor = statementDescriptor
+        member _.StatementDescriptorSuffix = statementDescriptorSuffix
+        member _.Status = status
+        member _.TransferData = transferData
+        member _.TransferGroup = transferGroup
 
     and PaymentIntentCancellationReason =
-        | Abandoned
-        | Automatic
-        | Duplicate
-        | FailedInvoice
-        | Fraudulent
-        | RequestedByCustomer
-        | VoidInvoice
+        | PaymentIntentCancellationReason'Abandoned
+        | PaymentIntentCancellationReason'Automatic
+        | PaymentIntentCancellationReason'Duplicate
+        | PaymentIntentCancellationReason'FailedInvoice
+        | PaymentIntentCancellationReason'Fraudulent
+        | PaymentIntentCancellationReason'RequestedByCustomer
+        | PaymentIntentCancellationReason'VoidInvoice
 
     and PaymentIntentCaptureMethod =
-        | Automatic
-        | Manual
+        | PaymentIntentCaptureMethod'Automatic
+        | PaymentIntentCaptureMethod'Manual
 
     and PaymentIntentConfirmationMethod =
-        | Automatic
-        | Manual
+        | PaymentIntentConfirmationMethod'Automatic
+        | PaymentIntentConfirmationMethod'Manual
 
     and PaymentIntentObject =
-        | PaymentIntent
+        | PaymentIntentObject'PaymentIntent
 
     and PaymentIntentSetupFutureUsage =
-        | OffSession
-        | OnSession
+        | PaymentIntentSetupFutureUsage'OffSession
+        | PaymentIntentSetupFutureUsage'OnSession
 
     and PaymentIntentStatus =
-        | Canceled
-        | Processing
-        | RequiresAction
-        | RequiresCapture
-        | RequiresConfirmation
-        | RequiresPaymentMethod
-        | Succeeded
+        | PaymentIntentStatus'Canceled
+        | PaymentIntentStatus'Processing
+        | PaymentIntentStatus'RequiresAction
+        | PaymentIntentStatus'RequiresCapture
+        | PaymentIntentStatus'RequiresConfirmation
+        | PaymentIntentStatus'RequiresPaymentMethod
+        | PaymentIntentStatus'Succeeded
 
     and PaymentIntentApplicationDU =
-        | String of string
-        | Application of Application
+        | PaymentIntentApplicationDU'String of string
+        | PaymentIntentApplicationDU'Application of Application
 
     and PaymentIntentCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | PaymentIntentCustomerDU'String of string
+        | PaymentIntentCustomerDU'Customer of Customer
+        | PaymentIntentCustomerDU'DeletedCustomer of DeletedCustomer
 
     and PaymentIntentInvoiceDU =
-        | String of string
-        | Invoice of Invoice
+        | PaymentIntentInvoiceDU'String of string
+        | PaymentIntentInvoiceDU'Invoice of Invoice
 
     and PaymentIntentLastPaymentErrorDU =
-        | ApiErrors of ApiErrors
+        | PaymentIntentLastPaymentErrorDU'ApiErrors of ApiErrors
 
     and PaymentIntentNextActionDU =
-        | PaymentIntentNextAction of PaymentIntentNextAction
+        | PaymentIntentNextActionDU'PaymentIntentNextAction of PaymentIntentNextAction
 
     and PaymentIntentOnBehalfOfDU =
-        | String of string
-        | Account of Account
+        | PaymentIntentOnBehalfOfDU'String of string
+        | PaymentIntentOnBehalfOfDU'Account of Account
 
     and PaymentIntentPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | PaymentIntentPaymentMethodDU'String of string
+        | PaymentIntentPaymentMethodDU'PaymentMethod of PaymentMethod
 
     and PaymentIntentPaymentMethodOptionsDU =
-        | PaymentIntentPaymentMethodOptions of PaymentIntentPaymentMethodOptions
+        | PaymentIntentPaymentMethodOptionsDU'PaymentIntentPaymentMethodOptions of PaymentIntentPaymentMethodOptions
 
     and PaymentIntentReviewDU =
-        | String of string
-        | Review of Review
+        | PaymentIntentReviewDU'String of string
+        | PaymentIntentReviewDU'Review of Review
 
     and PaymentIntentShippingDU =
-        | Shipping of Shipping
+        | PaymentIntentShippingDU'Shipping of Shipping
 
     and PaymentIntentSourceDU =
-        | String of string
-        | PaymentSource of PaymentSource
-        | DeletedPaymentSource of DeletedPaymentSource
+        | PaymentIntentSourceDU'String of string
+        | PaymentIntentSourceDU'PaymentSource of PaymentSource
+        | PaymentIntentSourceDU'DeletedPaymentSource of DeletedPaymentSource
 
     and PaymentIntentTransferDataDU =
-        | TransferData of TransferData
+        | PaymentIntentTransferDataDU'TransferData of TransferData
 
     ///
-    and PaymentIntentNextAction = {
+    and PaymentIntentNextAction (``type``: string, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?useStripeSdk: Map<string, string>) =
 
-        AlipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect option
-
-        OxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails option
-
-        RedirectToUrl: PaymentIntentNextActionRedirectToUrl option
-
-        ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
-        Type: string
-
-        ///When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: Map<string, string> option
-
-    }
+        member _.AlipayHandleRedirect = alipayHandleRedirect
+        member _.OxxoDisplayDetails = oxxoDisplayDetails
+        member _.RedirectToUrl = redirectToUrl
+        member _.Type = ``type``
+        member _.UseStripeSdk = useStripeSdk
 
     ///
-    and PaymentIntentNextActionAlipayHandleRedirect = {
+    and PaymentIntentNextActionAlipayHandleRedirect (nativeData: string option, nativeUrl: string option, returnUrl: string option, url: string option) =
 
-        ///The native data to be used with Alipay SDK you must redirect your customer to in order to authenticate the payment in an Android App.
-        NativeData: string
-
-        ///The native URL you must redirect your customer to in order to authenticate the payment in an iOS App.
-        NativeUrl: string
-
-        ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
-        ReturnUrl: string
-
-        ///The URL you must redirect your customer to in order to authenticate the payment.
-        Url: string
-
-    }
+        member _.NativeData = nativeData
+        member _.NativeUrl = nativeUrl
+        member _.ReturnUrl = returnUrl
+        member _.Url = url
 
     ///
-    and PaymentIntentNextActionDisplayOxxoDetails = {
+    and PaymentIntentNextActionDisplayOxxoDetails (expiresAfter: int option, hostedVoucherUrl: string option, number: string option) =
 
-        ///The timestamp after which the OXXO voucher expires.
-        ExpiresAfter: int
-
-        ///The URL for the hosted OXXO voucher page, which allows customers to view and print an OXXO voucher.
-        HostedVoucherUrl: string
-
-        ///OXXO reference number.
-        Number: string
-
-    }
+        member _.ExpiresAfter = expiresAfter
+        member _.HostedVoucherUrl = hostedVoucherUrl
+        member _.Number = number
 
     ///
-    and PaymentIntentNextActionRedirectToUrl = {
+    and PaymentIntentNextActionRedirectToUrl (returnUrl: string option, url: string option) =
 
-        ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
-        ReturnUrl: string
-
-        ///The URL you must redirect your customer to in order to authenticate the payment.
-        Url: string
-
-    }
+        member _.ReturnUrl = returnUrl
+        member _.Url = url
 
     ///
-    and PaymentIntentPaymentMethodOptions = {
+    and PaymentIntentPaymentMethodOptions (?alipay: PaymentMethodOptionsAlipay, ?bancontact: PaymentMethodOptionsBancontact, ?card: PaymentIntentPaymentMethodOptionsCard, ?oxxo: PaymentMethodOptionsOxxo, ?p24: PaymentMethodOptionsP24, ?sepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit, ?sofort: PaymentMethodOptionsSofort) =
 
-        Alipay: PaymentMethodOptionsAlipay option
-
-        Bancontact: PaymentMethodOptionsBancontact option
-
-        Card: PaymentIntentPaymentMethodOptionsCard option
-
-        Oxxo: PaymentMethodOptionsOxxo option
-
-        P24: PaymentMethodOptionsP24 option
-
-        SepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit option
-
-        Sofort: PaymentMethodOptionsSofort option
-
-    }
+        member _.Alipay = alipay
+        member _.Bancontact = bancontact
+        member _.Card = card
+        member _.Oxxo = oxxo
+        member _.P24 = p24
+        member _.SepaDebit = sepaDebit
+        member _.Sofort = sofort
 
     ///
-    and PaymentIntentPaymentMethodOptionsCard = {
+    and PaymentIntentPaymentMethodOptionsCard (installments: PaymentIntentPaymentMethodOptionsCardInstallmentsDU option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
 
-        ///Installment details for this payment (Mexico only).
-    ///
-    ///For more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).
-        Installments: PaymentIntentPaymentMethodOptionsCardInstallmentsDU
-
-        ///Selected network to process this PaymentIntent on. Depends on the available networks of the card attached to the PaymentIntent. Can be only set confirm-time.
-        Network: PaymentIntentPaymentMethodOptionsCardNetwork
-
-        ///We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Permitted values include: `automatic` or `any`. If not provided, defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
-        RequestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure
-
-    }
+        member _.Installments = installments
+        member _.Network = network
+        member _.RequestThreeDSecure = requestThreeDSecure
 
     and PaymentIntentPaymentMethodOptionsCardNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Unknown
-        | Visa
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Amex
+        | PaymentIntentPaymentMethodOptionsCardNetwork'CartesBancaires
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Diners
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Discover
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Interac
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Jcb
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Mastercard
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Unionpay
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Unknown
+        | PaymentIntentPaymentMethodOptionsCardNetwork'Visa
 
     and PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure =
-        | Any
-        | Automatic
-        | ChallengeOnly
+        | PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure'Any
+        | PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure'Automatic
+        | PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure'ChallengeOnly
 
     and PaymentIntentPaymentMethodOptionsCardInstallmentsDU =
-        | PaymentMethodOptionsCardInstallments of PaymentMethodOptionsCardInstallments
+        | PaymentIntentPaymentMethodOptionsCardInstallmentsDU'PaymentMethodOptionsCardInstallments of PaymentMethodOptionsCardInstallments
 
     ///
-    and PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit = {
+    and PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentIntentPaymentMethodOptionsSepaDebit = {
+    and PaymentIntentPaymentMethodOptionsSepaDebit (?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
 
-        MandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit option
-
-    }
+        member _.MandateOptions = mandateOptions
 
     ///PaymentMethod objects represent your customer's payment instruments.
     ///They can be used with [PaymentIntents](https://stripe.com/docs/payments/payment-intents) to collect payments or saved to
     ///Customer objects to store instrument details for future payments.
     ///
     ///Related guides: [Payment Methods](https://stripe.com/docs/payments/payment-methods) and [More Payment Scenarios](https://stripe.com/docs/payments/more-payment-scenarios).
-    and PaymentMethod = {
+    and PaymentMethod (billingDetails: BillingDetails, created: int, customer: PaymentMethodCustomerDU option, id: string, livemode: bool, metadata: Map<string, string> option, object: PaymentMethodObject, ``type``: PaymentMethodType, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?card: PaymentMethodCard, ?cardPresent: PaymentMethodCardPresent, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?sepaDebit: PaymentMethodSepaDebit, ?sofort: PaymentMethodSofort) =
 
-        Alipay: PaymentFlowsPrivatePaymentMethodsAlipay option
-
-        AuBecsDebit: PaymentMethodAuBecsDebit option
-
-        BacsDebit: PaymentMethodBacsDebit option
-
-        Bancontact: PaymentMethodBancontact option
-
-        BillingDetails: BillingDetails
-
-        Card: PaymentMethodCard option
-
-        CardPresent: PaymentMethodCardPresent option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.
-        Customer: PaymentMethodCustomerDU
-
-        Eps: PaymentMethodEps option
-
-        Fpx: PaymentMethodFpx option
-
-        Giropay: PaymentMethodGiropay option
-
-        Grabpay: PaymentMethodGrabpay option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        Ideal: PaymentMethodIdeal option
-
-        InteracPresent: PaymentMethodInteracPresent option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PaymentMethodObject
-
-        Oxxo: PaymentMethodOxxo option
-
-        P24: PaymentMethodP24 option
-
-        SepaDebit: PaymentMethodSepaDebit option
-
-        Sofort: PaymentMethodSofort option
-
-        ///The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.
-        Type: PaymentMethodType
-
-    }
+        member _.Alipay = alipay
+        member _.AuBecsDebit = auBecsDebit
+        member _.BacsDebit = bacsDebit
+        member _.Bancontact = bancontact
+        member _.BillingDetails = billingDetails
+        member _.Card = card
+        member _.CardPresent = cardPresent
+        member _.Created = created
+        member _.Customer = customer
+        member _.Eps = eps
+        member _.Fpx = fpx
+        member _.Giropay = giropay
+        member _.Grabpay = grabpay
+        member _.Id = id
+        member _.Ideal = ideal
+        member _.InteracPresent = interacPresent
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Oxxo = oxxo
+        member _.P24 = p24
+        member _.SepaDebit = sepaDebit
+        member _.Sofort = sofort
+        member _.Type = ``type``
 
     and PaymentMethodObject =
-        | PaymentMethod
+        | PaymentMethodObject'PaymentMethod
 
     and PaymentMethodType =
-        | Alipay
-        | AuBecsDebit
-        | BacsDebit
-        | Bancontact
-        | Card
-        | CardPresent
-        | Eps
-        | Fpx
-        | Giropay
-        | Grabpay
-        | Ideal
-        | InteracPresent
-        | Oxxo
-        | P24
-        | SepaDebit
-        | Sofort
+        | PaymentMethodType'Alipay
+        | PaymentMethodType'AuBecsDebit
+        | PaymentMethodType'BacsDebit
+        | PaymentMethodType'Bancontact
+        | PaymentMethodType'Card
+        | PaymentMethodType'CardPresent
+        | PaymentMethodType'Eps
+        | PaymentMethodType'Fpx
+        | PaymentMethodType'Giropay
+        | PaymentMethodType'Grabpay
+        | PaymentMethodType'Ideal
+        | PaymentMethodType'InteracPresent
+        | PaymentMethodType'Oxxo
+        | PaymentMethodType'P24
+        | PaymentMethodType'SepaDebit
+        | PaymentMethodType'Sofort
 
     and PaymentMethodCustomerDU =
-        | String of string
-        | Customer of Customer
+        | PaymentMethodCustomerDU'String of string
+        | PaymentMethodCustomerDU'Customer of Customer
 
     ///
-    and PaymentMethodAuBecsDebit = {
+    and PaymentMethodAuBecsDebit (bsbNumber: string option, fingerprint: string option, last4: string option) =
 
-        ///Six-digit number identifying bank and branch associated with this bank account.
-        BsbNumber: string
-
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Last four digits of the bank account number.
-        Last4: string
-
-    }
+        member _.BsbNumber = bsbNumber
+        member _.Fingerprint = fingerprint
+        member _.Last4 = last4
 
     ///
-    and PaymentMethodBacsDebit = {
+    and PaymentMethodBacsDebit (fingerprint: string option, last4: string option, sortCode: string option) =
 
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Last four digits of the bank account number.
-        Last4: string
-
-        ///Sort code of the bank account. (e.g., `10-20-30`)
-        SortCode: string
-
-    }
+        member _.Fingerprint = fingerprint
+        member _.Last4 = last4
+        member _.SortCode = sortCode
 
     ///
-    and PaymentMethodBancontact = {
+    and PaymentMethodBancontact (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodCard = {
+    and PaymentMethodCard (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecksDU option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, last4: string, networks: PaymentMethodCardNetworksDU option, threeDSecureUsage: PaymentMethodCardThreeDSecureUsageDU option, wallet: PaymentMethodCardWalletDU option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
 
-        ///Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Brand: PaymentMethodCardBrand
-
-        ///Checks on Card address and CVC if provided.
-        Checks: PaymentMethodCardChecksDU
-
-        ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string
-
-        ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
-        Description: string option
-
-        ///Two-digit number representing the card's expiration month.
-        ExpMonth: int
-
-        ///Four-digit number representing the card's expiration year.
-        ExpYear: int
-
-        ///Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
-        Fingerprint: string option
-
-        ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: PaymentMethodCardFunding
-
-        ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
-        Iin: string option
-
-        ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
-        Issuer: string option
-
-        ///The last four digits of the card.
-        Last4: string
-
-        ///Contains information about card networks that can be used to process the payment.
-        Networks: PaymentMethodCardNetworksDU
-
-        ///Contains details on how this Card maybe be used for 3D Secure authentication.
-        ThreeDSecureUsage: PaymentMethodCardThreeDSecureUsageDU
-
-        ///If this Card is part of a card wallet, this contains the details of the card wallet.
-        Wallet: PaymentMethodCardWalletDU
-
-    }
+        member _.Brand = brand
+        member _.Checks = checks
+        member _.Country = country
+        member _.Description = description |> Option.flatten
+        member _.ExpMonth = expMonth
+        member _.ExpYear = expYear
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.Funding = funding
+        member _.Iin = iin |> Option.flatten
+        member _.Issuer = issuer |> Option.flatten
+        member _.Last4 = last4
+        member _.Networks = networks
+        member _.ThreeDSecureUsage = threeDSecureUsage
+        member _.Wallet = wallet
 
     and PaymentMethodCardBrand =
-        | Amex
-        | Diners
-        | Discover
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
+        | PaymentMethodCardBrand'Amex
+        | PaymentMethodCardBrand'Diners
+        | PaymentMethodCardBrand'Discover
+        | PaymentMethodCardBrand'Jcb
+        | PaymentMethodCardBrand'Mastercard
+        | PaymentMethodCardBrand'Unionpay
+        | PaymentMethodCardBrand'Visa
+        | PaymentMethodCardBrand'Unknown
 
     and PaymentMethodCardFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
+        | PaymentMethodCardFunding'Credit
+        | PaymentMethodCardFunding'Debit
+        | PaymentMethodCardFunding'Prepaid
+        | PaymentMethodCardFunding'Unknown
 
     and PaymentMethodCardChecksDU =
-        | PaymentMethodCardChecks of PaymentMethodCardChecks
+        | PaymentMethodCardChecksDU'PaymentMethodCardChecks of PaymentMethodCardChecks
 
     and PaymentMethodCardNetworksDU =
-        | Networks of Networks
+        | PaymentMethodCardNetworksDU'Networks of Networks
 
     and PaymentMethodCardThreeDSecureUsageDU =
-        | ThreeDSecureUsage of ThreeDSecureUsage
+        | PaymentMethodCardThreeDSecureUsageDU'ThreeDSecureUsage of ThreeDSecureUsage
 
     and PaymentMethodCardWalletDU =
-        | PaymentMethodCardWallet of PaymentMethodCardWallet
+        | PaymentMethodCardWalletDU'PaymentMethodCardWallet of PaymentMethodCardWallet
 
     ///
-    and PaymentMethodCardChecks = {
+    and PaymentMethodCardChecks (addressLine1Check: string option, addressPostalCodeCheck: string option, cvcCheck: string option) =
 
-        ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressLine1Check: string
-
-        ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressPostalCodeCheck: string
-
-        ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        CvcCheck: string
-
-    }
+        member _.AddressLine1Check = addressLine1Check
+        member _.AddressPostalCodeCheck = addressPostalCodeCheck
+        member _.CvcCheck = cvcCheck
 
     ///
-    and PaymentMethodCardPresent = {
+    and PaymentMethodCardPresent (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodCardWallet = {
+    and PaymentMethodCardWallet (dynamicLast4: string option, ``type``: PaymentMethodCardWalletType, ?amexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout, ?applePay: PaymentMethodCardWalletApplePay, ?googlePay: PaymentMethodCardWalletGooglePay, ?masterpass: PaymentMethodCardWalletMasterpass, ?samsungPay: PaymentMethodCardWalletSamsungPay, ?visaCheckout: PaymentMethodCardWalletVisaCheckout) =
 
-        AmexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout option
-
-        ApplePay: PaymentMethodCardWalletApplePay option
-
-        ///(For tokenized numbers only.) The last four digits of the device account number.
-        DynamicLast4: string
-
-        GooglePay: PaymentMethodCardWalletGooglePay option
-
-        Masterpass: PaymentMethodCardWalletMasterpass option
-
-        SamsungPay: PaymentMethodCardWalletSamsungPay option
-
-        ///The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, or `visa_checkout`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
-        Type: PaymentMethodCardWalletType
-
-        VisaCheckout: PaymentMethodCardWalletVisaCheckout option
-
-    }
+        member _.AmexExpressCheckout = amexExpressCheckout
+        member _.ApplePay = applePay
+        member _.DynamicLast4 = dynamicLast4
+        member _.GooglePay = googlePay
+        member _.Masterpass = masterpass
+        member _.SamsungPay = samsungPay
+        member _.Type = ``type``
+        member _.VisaCheckout = visaCheckout
 
     and PaymentMethodCardWalletType =
-        | AmexExpressCheckout
-        | ApplePay
-        | GooglePay
-        | Masterpass
-        | SamsungPay
-        | VisaCheckout
+        | PaymentMethodCardWalletType'AmexExpressCheckout
+        | PaymentMethodCardWalletType'ApplePay
+        | PaymentMethodCardWalletType'GooglePay
+        | PaymentMethodCardWalletType'Masterpass
+        | PaymentMethodCardWalletType'SamsungPay
+        | PaymentMethodCardWalletType'VisaCheckout
 
     ///
-    and PaymentMethodCardWalletAmexExpressCheckout = {
+    and PaymentMethodCardWalletAmexExpressCheckout (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodCardWalletApplePay = {
+    and PaymentMethodCardWalletApplePay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodCardWalletGooglePay = {
+    and PaymentMethodCardWalletGooglePay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodCardWalletMasterpass = {
+    and PaymentMethodCardWalletMasterpass (billingAddress: PaymentMethodCardWalletMasterpassBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodCardWalletMasterpassShippingAddressDU option) =
 
-        ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodCardWalletMasterpassBillingAddressDU
-
-        ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string
-
-        ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string
-
-        ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodCardWalletMasterpassShippingAddressDU
-
-    }
+        member _.BillingAddress = billingAddress
+        member _.Email = email
+        member _.Name = name
+        member _.ShippingAddress = shippingAddress
 
     and PaymentMethodCardWalletMasterpassBillingAddressDU =
-        | Address of Address
+        | PaymentMethodCardWalletMasterpassBillingAddressDU'Address of Address
 
     and PaymentMethodCardWalletMasterpassShippingAddressDU =
-        | Address of Address
+        | PaymentMethodCardWalletMasterpassShippingAddressDU'Address of Address
 
     ///
-    and PaymentMethodCardWalletSamsungPay = {
+    and PaymentMethodCardWalletSamsungPay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodCardWalletVisaCheckout = {
+    and PaymentMethodCardWalletVisaCheckout (billingAddress: PaymentMethodCardWalletVisaCheckoutBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodCardWalletVisaCheckoutShippingAddressDU option) =
 
-        ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodCardWalletVisaCheckoutBillingAddressDU
-
-        ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string
-
-        ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string
-
-        ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodCardWalletVisaCheckoutShippingAddressDU
-
-    }
+        member _.BillingAddress = billingAddress
+        member _.Email = email
+        member _.Name = name
+        member _.ShippingAddress = shippingAddress
 
     and PaymentMethodCardWalletVisaCheckoutBillingAddressDU =
-        | Address of Address
+        | PaymentMethodCardWalletVisaCheckoutBillingAddressDU'Address of Address
 
     and PaymentMethodCardWalletVisaCheckoutShippingAddressDU =
-        | Address of Address
+        | PaymentMethodCardWalletVisaCheckoutShippingAddressDU'Address of Address
 
     ///
-    and PaymentMethodDetails = {
+    and PaymentMethodDetails (``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?klarna: PaymentMethodDetailsKlarna, ?multibanco: PaymentMethodDetailsMultibanco, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?wechat: PaymentMethodDetailsWechat) =
 
-        AchCreditTransfer: PaymentMethodDetailsAchCreditTransfer option
-
-        AchDebit: PaymentMethodDetailsAchDebit option
-
-        AcssDebit: PaymentMethodDetailsAcssDebit option
-
-        Alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails option
-
-        AuBecsDebit: PaymentMethodDetailsAuBecsDebit option
-
-        BacsDebit: PaymentMethodDetailsBacsDebit option
-
-        Bancontact: PaymentMethodDetailsBancontact option
-
-        Card: PaymentMethodDetailsCard option
-
-        CardPresent: PaymentMethodDetailsCardPresent option
-
-        Eps: PaymentMethodDetailsEps option
-
-        Fpx: PaymentMethodDetailsFpx option
-
-        Giropay: PaymentMethodDetailsGiropay option
-
-        Grabpay: PaymentMethodDetailsGrabpay option
-
-        Ideal: PaymentMethodDetailsIdeal option
-
-        InteracPresent: PaymentMethodDetailsInteracPresent option
-
-        Klarna: PaymentMethodDetailsKlarna option
-
-        Multibanco: PaymentMethodDetailsMultibanco option
-
-        Oxxo: PaymentMethodDetailsOxxo option
-
-        P24: PaymentMethodDetailsP24 option
-
-        SepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer option
-
-        SepaDebit: PaymentMethodDetailsSepaDebit option
-
-        Sofort: PaymentMethodDetailsSofort option
-
-        StripeAccount: PaymentMethodDetailsStripeAccount option
-
-        ///The type of transaction-specific details of the payment method used in the payment, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `au_becs_debit`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `klarna`, `multibanco`, `p24`, `sepa_debit`, `sofort`, `stripe_account`, or `wechat`.
-    ///An additional hash is included on `payment_method_details` with a name matching this value.
-    ///It contains information specific to the payment method.
-        Type: string
-
-        Wechat: PaymentMethodDetailsWechat option
-
-    }
+        member _.AchCreditTransfer = achCreditTransfer
+        member _.AchDebit = achDebit
+        member _.AcssDebit = acssDebit
+        member _.Alipay = alipay
+        member _.AuBecsDebit = auBecsDebit
+        member _.BacsDebit = bacsDebit
+        member _.Bancontact = bancontact
+        member _.Card = card
+        member _.CardPresent = cardPresent
+        member _.Eps = eps
+        member _.Fpx = fpx
+        member _.Giropay = giropay
+        member _.Grabpay = grabpay
+        member _.Ideal = ideal
+        member _.InteracPresent = interacPresent
+        member _.Klarna = klarna
+        member _.Multibanco = multibanco
+        member _.Oxxo = oxxo
+        member _.P24 = p24
+        member _.SepaCreditTransfer = sepaCreditTransfer
+        member _.SepaDebit = sepaDebit
+        member _.Sofort = sofort
+        member _.StripeAccount = stripeAccount
+        member _.Type = ``type``
+        member _.Wechat = wechat
 
     ///
-    and PaymentMethodDetailsAchCreditTransfer = {
+    and PaymentMethodDetailsAchCreditTransfer (accountNumber: string option, bankName: string option, routingNumber: string option, swiftCode: string option) =
 
-        ///Account number to transfer funds to.
-        AccountNumber: string
-
-        ///Name of the bank associated with the routing number.
-        BankName: string
-
-        ///Routing transit number for the bank account to transfer funds to.
-        RoutingNumber: string
-
-        ///SWIFT code of the bank associated with the routing number.
-        SwiftCode: string
-
-    }
+        member _.AccountNumber = accountNumber
+        member _.BankName = bankName
+        member _.RoutingNumber = routingNumber
+        member _.SwiftCode = swiftCode
 
     ///
-    and PaymentMethodDetailsAchDebit = {
+    and PaymentMethodDetailsAchDebit (accountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option, bankName: string option, country: string option, fingerprint: string option, last4: string option, routingNumber: string option) =
 
-        ///Type of entity that holds the account. This can be either `individual` or `company`.
-        AccountHolderType: PaymentMethodDetailsAchDebitAccountHolderType
-
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string
-
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Last four digits of the bank account number.
-        Last4: string
-
-        ///Routing transit number of the bank account.
-        RoutingNumber: string
-
-    }
+        member _.AccountHolderType = accountHolderType
+        member _.BankName = bankName
+        member _.Country = country
+        member _.Fingerprint = fingerprint
+        member _.Last4 = last4
+        member _.RoutingNumber = routingNumber
 
     and PaymentMethodDetailsAchDebitAccountHolderType =
-        | Company
-        | Individual
+        | PaymentMethodDetailsAchDebitAccountHolderType'Company
+        | PaymentMethodDetailsAchDebitAccountHolderType'Individual
 
     ///
-    and PaymentMethodDetailsAcssDebit = {
+    and PaymentMethodDetailsAcssDebit (bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option, ?mandate: string) =
 
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Institution number of the bank account
-        InstitutionNumber: string
-
-        ///Last four digits of the bank account number.
-        Last4: string
-
-        ///ID of the mandate used to make this payment.
-        Mandate: string option
-
-        ///Transit number of the bank account.
-        TransitNumber: string
-
-    }
+        member _.BankName = bankName
+        member _.Fingerprint = fingerprint
+        member _.InstitutionNumber = institutionNumber
+        member _.Last4 = last4
+        member _.Mandate = mandate
+        member _.TransitNumber = transitNumber
 
     ///
-    and PaymentMethodDetailsAuBecsDebit = {
+    and PaymentMethodDetailsAuBecsDebit (bsbNumber: string option, fingerprint: string option, last4: string option, ?mandate: string) =
 
-        ///Bank-State-Branch number of the bank account.
-        BsbNumber: string
-
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Last four digits of the bank account number.
-        Last4: string
-
-        ///ID of the mandate used to make this payment.
-        Mandate: string option
-
-    }
+        member _.BsbNumber = bsbNumber
+        member _.Fingerprint = fingerprint
+        member _.Last4 = last4
+        member _.Mandate = mandate
 
     ///
-    and PaymentMethodDetailsBacsDebit = {
+    and PaymentMethodDetailsBacsDebit (fingerprint: string option, last4: string option, mandate: string option, sortCode: string option) =
 
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Last four digits of the bank account number.
-        Last4: string
-
-        ///ID of the mandate used to make this payment.
-        Mandate: string
-
-        ///Sort code of the bank account. (e.g., `10-20-30`)
-        SortCode: string
-
-    }
+        member _.Fingerprint = fingerprint
+        member _.Last4 = last4
+        member _.Mandate = mandate
+        member _.SortCode = sortCode
 
     ///
-    and PaymentMethodDetailsBancontact = {
+    and PaymentMethodDetailsBancontact (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebitDU option, generatedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
 
-        ///Bank code of bank associated with the bank account.
-        BankCode: string
-
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string
-
-        ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebitDU
-
-        ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU
-
-        ///Last four characters of the IBAN.
-        IbanLast4: string
-
-        ///Preferred language of the Bancontact authorization page that the customer is redirected to.
-    ///Can be one of `en`, `de`, `fr`, or `nl`
-        PreferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage
-
-        ///Owner's verified full name. Values are verified or provided by Bancontact directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string
-
-    }
+        member _.BankCode = bankCode
+        member _.BankName = bankName
+        member _.Bic = bic
+        member _.GeneratedSepaDebit = generatedSepaDebit
+        member _.GeneratedSepaDebitMandate = generatedSepaDebitMandate
+        member _.IbanLast4 = ibanLast4
+        member _.PreferredLanguage = preferredLanguage
+        member _.VerifiedName = verifiedName
 
     and PaymentMethodDetailsBancontactPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
+        | PaymentMethodDetailsBancontactPreferredLanguage'De
+        | PaymentMethodDetailsBancontactPreferredLanguage'En
+        | PaymentMethodDetailsBancontactPreferredLanguage'Fr
+        | PaymentMethodDetailsBancontactPreferredLanguage'Nl
 
     and PaymentMethodDetailsBancontactGeneratedSepaDebitDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | PaymentMethodDetailsBancontactGeneratedSepaDebitDU'String of string
+        | PaymentMethodDetailsBancontactGeneratedSepaDebitDU'PaymentMethod of PaymentMethod
 
     and PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU'String of string
+        | PaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and PaymentMethodDetailsCard = {
+    and PaymentMethodDetailsCard (brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecksDU option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallmentsDU option, last4: string option, network: PaymentMethodDetailsCardNetwork option, threeDSecure: PaymentMethodDetailsCardThreeDSecureDU option, wallet: PaymentMethodDetailsCardWalletDU option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option) =
 
-        ///Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Brand: PaymentMethodDetailsCardBrand
-
-        ///Check results by Card networks on Card address and CVC at time of payment.
-        Checks: PaymentMethodDetailsCardChecksDU
-
-        ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string
-
-        ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
-        Description: string option
-
-        ///Two-digit number representing the card's expiration month.
-        ExpMonth: int
-
-        ///Four-digit number representing the card's expiration year.
-        ExpYear: int
-
-        ///Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
-        Fingerprint: string option
-
-        ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: PaymentMethodDetailsCardFunding
-
-        ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
-        Iin: string option
-
-        ///Installment details for this payment (Mexico only).
-    ///
-    ///For more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).
-        Installments: PaymentMethodDetailsCardInstallmentsDU
-
-        ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
-        Issuer: string option
-
-        ///The last four digits of the card.
-        Last4: string
-
-        ///True if this payment was marked as MOTO and out of scope for SCA.
-        Moto: bool option
-
-        ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Network: PaymentMethodDetailsCardNetwork
-
-        ///Populated if this transaction used 3D Secure authentication.
-        ThreeDSecure: PaymentMethodDetailsCardThreeDSecureDU
-
-        ///If this Card is part of a card wallet, this contains the details of the card wallet.
-        Wallet: PaymentMethodDetailsCardWalletDU
-
-    }
+        member _.Brand = brand
+        member _.Checks = checks
+        member _.Country = country
+        member _.Description = description |> Option.flatten
+        member _.ExpMonth = expMonth
+        member _.ExpYear = expYear
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.Funding = funding
+        member _.Iin = iin |> Option.flatten
+        member _.Installments = installments
+        member _.Issuer = issuer |> Option.flatten
+        member _.Last4 = last4
+        member _.Moto = moto |> Option.flatten
+        member _.Network = network
+        member _.ThreeDSecure = threeDSecure
+        member _.Wallet = wallet
 
     and PaymentMethodDetailsCardBrand =
-        | Amex
-        | Diners
-        | Discover
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
+        | PaymentMethodDetailsCardBrand'Amex
+        | PaymentMethodDetailsCardBrand'Diners
+        | PaymentMethodDetailsCardBrand'Discover
+        | PaymentMethodDetailsCardBrand'Jcb
+        | PaymentMethodDetailsCardBrand'Mastercard
+        | PaymentMethodDetailsCardBrand'Unionpay
+        | PaymentMethodDetailsCardBrand'Visa
+        | PaymentMethodDetailsCardBrand'Unknown
 
     and PaymentMethodDetailsCardFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
+        | PaymentMethodDetailsCardFunding'Credit
+        | PaymentMethodDetailsCardFunding'Debit
+        | PaymentMethodDetailsCardFunding'Prepaid
+        | PaymentMethodDetailsCardFunding'Unknown
 
     and PaymentMethodDetailsCardNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
+        | PaymentMethodDetailsCardNetwork'Amex
+        | PaymentMethodDetailsCardNetwork'CartesBancaires
+        | PaymentMethodDetailsCardNetwork'Diners
+        | PaymentMethodDetailsCardNetwork'Discover
+        | PaymentMethodDetailsCardNetwork'Interac
+        | PaymentMethodDetailsCardNetwork'Jcb
+        | PaymentMethodDetailsCardNetwork'Mastercard
+        | PaymentMethodDetailsCardNetwork'Unionpay
+        | PaymentMethodDetailsCardNetwork'Visa
+        | PaymentMethodDetailsCardNetwork'Unknown
 
     and PaymentMethodDetailsCardChecksDU =
-        | PaymentMethodDetailsCardChecks of PaymentMethodDetailsCardChecks
+        | PaymentMethodDetailsCardChecksDU'PaymentMethodDetailsCardChecks of PaymentMethodDetailsCardChecks
 
     and PaymentMethodDetailsCardInstallmentsDU =
-        | PaymentMethodDetailsCardInstallments of PaymentMethodDetailsCardInstallments
+        | PaymentMethodDetailsCardInstallmentsDU'PaymentMethodDetailsCardInstallments of PaymentMethodDetailsCardInstallments
 
     and PaymentMethodDetailsCardThreeDSecureDU =
-        | ThreeDSecureDetails of ThreeDSecureDetails
+        | PaymentMethodDetailsCardThreeDSecureDU'ThreeDSecureDetails of ThreeDSecureDetails
 
     and PaymentMethodDetailsCardWalletDU =
-        | PaymentMethodDetailsCardWallet of PaymentMethodDetailsCardWallet
+        | PaymentMethodDetailsCardWalletDU'PaymentMethodDetailsCardWallet of PaymentMethodDetailsCardWallet
 
     ///
-    and PaymentMethodDetailsCardChecks = {
+    and PaymentMethodDetailsCardChecks (addressLine1Check: string option, addressPostalCodeCheck: string option, cvcCheck: string option) =
 
-        ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressLine1Check: string
-
-        ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressPostalCodeCheck: string
-
-        ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        CvcCheck: string
-
-    }
+        member _.AddressLine1Check = addressLine1Check
+        member _.AddressPostalCodeCheck = addressPostalCodeCheck
+        member _.CvcCheck = cvcCheck
 
     ///
-    and PaymentMethodDetailsCardInstallments = {
+    and PaymentMethodDetailsCardInstallments (plan: PaymentMethodDetailsCardInstallmentsPlanDU option) =
 
-        ///Installment plan selected for the payment.
-        Plan: PaymentMethodDetailsCardInstallmentsPlanDU
-
-    }
+        member _.Plan = plan
 
     and PaymentMethodDetailsCardInstallmentsPlanDU =
-        | PaymentMethodDetailsCardInstallmentsPlan of PaymentMethodDetailsCardInstallmentsPlan
+        | PaymentMethodDetailsCardInstallmentsPlanDU'PaymentMethodDetailsCardInstallmentsPlan of PaymentMethodDetailsCardInstallmentsPlan
 
     ///
-    and PaymentMethodDetailsCardInstallmentsPlan = {
+    and PaymentMethodDetailsCardInstallmentsPlan (count: int option, interval: PaymentMethodDetailsCardInstallmentsPlanInterval option, ``type``: PaymentMethodDetailsCardInstallmentsPlanType) =
 
-        ///For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
-        Count: int
-
-        ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
-    ///One of `month`.
-        Interval: PaymentMethodDetailsCardInstallmentsPlanInterval
-
-        ///Type of installment plan, one of `fixed_count`.
-        Type: PaymentMethodDetailsCardInstallmentsPlanType
-
-    }
+        member _.Count = count
+        member _.Interval = interval
+        member _.Type = ``type``
 
     and PaymentMethodDetailsCardInstallmentsPlanInterval =
-        | Month
+        | PaymentMethodDetailsCardInstallmentsPlanInterval'Month
 
     and PaymentMethodDetailsCardInstallmentsPlanType =
-        | FixedCount
+        | PaymentMethodDetailsCardInstallmentsPlanType'FixedCount
 
     ///
-    and PaymentMethodDetailsCardPresent = {
+    and PaymentMethodDetailsCardPresent (brand: PaymentMethodDetailsCardPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceiptDU option, ?description: string option, ?iin: string option, ?issuer: string option) =
 
-        ///Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Brand: PaymentMethodDetailsCardPresentBrand
-
-        ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`).
-        CardholderName: string
-
-        ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string
-
-        ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
-        Description: string option
-
-        ///Authorization response cryptogram.
-        EmvAuthData: string
-
-        ///Two-digit number representing the card's expiration month.
-        ExpMonth: int
-
-        ///Four-digit number representing the card's expiration year.
-        ExpYear: int
-
-        ///Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
-        Fingerprint: string
-
-        ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: PaymentMethodDetailsCardPresentFunding
-
-        ///ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod.
-        GeneratedCard: string
-
-        ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
-        Iin: string option
-
-        ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
-        Issuer: string option
-
-        ///The last four digits of the card.
-        Last4: string
-
-        ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Network: PaymentMethodDetailsCardPresentNetwork
-
-        ///How card details were read in this transaction.
-        ReadMethod: PaymentMethodDetailsCardPresentReadMethod
-
-        ///A collection of fields required to be displayed on receipts. Only required for EMV transactions.
-        Receipt: PaymentMethodDetailsCardPresentReceiptDU
-
-    }
+        member _.Brand = brand
+        member _.CardholderName = cardholderName
+        member _.Country = country
+        member _.Description = description |> Option.flatten
+        member _.EmvAuthData = emvAuthData
+        member _.ExpMonth = expMonth
+        member _.ExpYear = expYear
+        member _.Fingerprint = fingerprint
+        member _.Funding = funding
+        member _.GeneratedCard = generatedCard
+        member _.Iin = iin |> Option.flatten
+        member _.Issuer = issuer |> Option.flatten
+        member _.Last4 = last4
+        member _.Network = network
+        member _.ReadMethod = readMethod
+        member _.Receipt = receipt
 
     and PaymentMethodDetailsCardPresentBrand =
-        | Amex
-        | Diners
-        | Discover
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
+        | PaymentMethodDetailsCardPresentBrand'Amex
+        | PaymentMethodDetailsCardPresentBrand'Diners
+        | PaymentMethodDetailsCardPresentBrand'Discover
+        | PaymentMethodDetailsCardPresentBrand'Jcb
+        | PaymentMethodDetailsCardPresentBrand'Mastercard
+        | PaymentMethodDetailsCardPresentBrand'Unionpay
+        | PaymentMethodDetailsCardPresentBrand'Visa
+        | PaymentMethodDetailsCardPresentBrand'Unknown
 
     and PaymentMethodDetailsCardPresentFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
+        | PaymentMethodDetailsCardPresentFunding'Credit
+        | PaymentMethodDetailsCardPresentFunding'Debit
+        | PaymentMethodDetailsCardPresentFunding'Prepaid
+        | PaymentMethodDetailsCardPresentFunding'Unknown
 
     and PaymentMethodDetailsCardPresentNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
+        | PaymentMethodDetailsCardPresentNetwork'Amex
+        | PaymentMethodDetailsCardPresentNetwork'CartesBancaires
+        | PaymentMethodDetailsCardPresentNetwork'Diners
+        | PaymentMethodDetailsCardPresentNetwork'Discover
+        | PaymentMethodDetailsCardPresentNetwork'Interac
+        | PaymentMethodDetailsCardPresentNetwork'Jcb
+        | PaymentMethodDetailsCardPresentNetwork'Mastercard
+        | PaymentMethodDetailsCardPresentNetwork'Unionpay
+        | PaymentMethodDetailsCardPresentNetwork'Visa
+        | PaymentMethodDetailsCardPresentNetwork'Unknown
 
     and PaymentMethodDetailsCardPresentReadMethod =
-        | ContactEmv
-        | ContactlessEmv
-        | ContactlessMagstripeMode
-        | MagneticStripeFallback
-        | MagneticStripeTrack2
+        | PaymentMethodDetailsCardPresentReadMethod'ContactEmv
+        | PaymentMethodDetailsCardPresentReadMethod'ContactlessEmv
+        | PaymentMethodDetailsCardPresentReadMethod'ContactlessMagstripeMode
+        | PaymentMethodDetailsCardPresentReadMethod'MagneticStripeFallback
+        | PaymentMethodDetailsCardPresentReadMethod'MagneticStripeTrack2
 
     and PaymentMethodDetailsCardPresentReceiptDU =
-        | PaymentMethodDetailsCardPresentReceipt of PaymentMethodDetailsCardPresentReceipt
+        | PaymentMethodDetailsCardPresentReceiptDU'PaymentMethodDetailsCardPresentReceipt of PaymentMethodDetailsCardPresentReceipt
 
     ///
-    and PaymentMethodDetailsCardPresentReceipt = {
+    and PaymentMethodDetailsCardPresentReceipt (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsCardPresentReceiptAccountType) =
 
-        ///The type of account being debited or credited
-        AccountType: PaymentMethodDetailsCardPresentReceiptAccountType option
-
-        ///EMV tag 9F26, cryptogram generated by the integrated circuit chip.
-        ApplicationCryptogram: string
-
-        ///Mnenomic of the Application Identifier.
-        ApplicationPreferredName: string
-
-        ///Identifier for this transaction.
-        AuthorizationCode: string
-
-        ///EMV tag 8A. A code returned by the card issuer.
-        AuthorizationResponseCode: string
-
-        ///How the cardholder verified ownership of the card.
-        CardholderVerificationMethod: string
-
-        ///EMV tag 84. Similar to the application identifier stored on the integrated circuit chip.
-        DedicatedFileName: string
-
-        ///The outcome of a series of EMV functions performed by the card reader.
-        TerminalVerificationResults: string
-
-        ///An indication of various EMV functions performed during the transaction.
-        TransactionStatusInformation: string
-
-    }
+        member _.AccountType = accountType
+        member _.ApplicationCryptogram = applicationCryptogram
+        member _.ApplicationPreferredName = applicationPreferredName
+        member _.AuthorizationCode = authorizationCode
+        member _.AuthorizationResponseCode = authorizationResponseCode
+        member _.CardholderVerificationMethod = cardholderVerificationMethod
+        member _.DedicatedFileName = dedicatedFileName
+        member _.TerminalVerificationResults = terminalVerificationResults
+        member _.TransactionStatusInformation = transactionStatusInformation
 
     and PaymentMethodDetailsCardPresentReceiptAccountType =
-        | Checking
-        | Credit
-        | Prepaid
-        | Unknown
+        | PaymentMethodDetailsCardPresentReceiptAccountType'Checking
+        | PaymentMethodDetailsCardPresentReceiptAccountType'Credit
+        | PaymentMethodDetailsCardPresentReceiptAccountType'Prepaid
+        | PaymentMethodDetailsCardPresentReceiptAccountType'Unknown
 
     ///
-    and PaymentMethodDetailsCardWallet = {
+    and PaymentMethodDetailsCardWallet (dynamicLast4: string option, ``type``: PaymentMethodDetailsCardWalletType, ?amexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout, ?applePay: PaymentMethodDetailsCardWalletApplePay, ?googlePay: PaymentMethodDetailsCardWalletGooglePay, ?masterpass: PaymentMethodDetailsCardWalletMasterpass, ?samsungPay: PaymentMethodDetailsCardWalletSamsungPay, ?visaCheckout: PaymentMethodDetailsCardWalletVisaCheckout) =
 
-        AmexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout option
-
-        ApplePay: PaymentMethodDetailsCardWalletApplePay option
-
-        ///(For tokenized numbers only.) The last four digits of the device account number.
-        DynamicLast4: string
-
-        GooglePay: PaymentMethodDetailsCardWalletGooglePay option
-
-        Masterpass: PaymentMethodDetailsCardWalletMasterpass option
-
-        SamsungPay: PaymentMethodDetailsCardWalletSamsungPay option
-
-        ///The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, or `visa_checkout`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
-        Type: PaymentMethodDetailsCardWalletType
-
-        VisaCheckout: PaymentMethodDetailsCardWalletVisaCheckout option
-
-    }
+        member _.AmexExpressCheckout = amexExpressCheckout
+        member _.ApplePay = applePay
+        member _.DynamicLast4 = dynamicLast4
+        member _.GooglePay = googlePay
+        member _.Masterpass = masterpass
+        member _.SamsungPay = samsungPay
+        member _.Type = ``type``
+        member _.VisaCheckout = visaCheckout
 
     and PaymentMethodDetailsCardWalletType =
-        | AmexExpressCheckout
-        | ApplePay
-        | GooglePay
-        | Masterpass
-        | SamsungPay
-        | VisaCheckout
+        | PaymentMethodDetailsCardWalletType'AmexExpressCheckout
+        | PaymentMethodDetailsCardWalletType'ApplePay
+        | PaymentMethodDetailsCardWalletType'GooglePay
+        | PaymentMethodDetailsCardWalletType'Masterpass
+        | PaymentMethodDetailsCardWalletType'SamsungPay
+        | PaymentMethodDetailsCardWalletType'VisaCheckout
 
     ///
-    and PaymentMethodDetailsCardWalletAmexExpressCheckout = {
+    and PaymentMethodDetailsCardWalletAmexExpressCheckout (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsCardWalletApplePay = {
+    and PaymentMethodDetailsCardWalletApplePay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsCardWalletGooglePay = {
+    and PaymentMethodDetailsCardWalletGooglePay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsCardWalletMasterpass = {
+    and PaymentMethodDetailsCardWalletMasterpass (billingAddress: PaymentMethodDetailsCardWalletMasterpassBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodDetailsCardWalletMasterpassShippingAddressDU option) =
 
-        ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodDetailsCardWalletMasterpassBillingAddressDU
-
-        ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string
-
-        ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string
-
-        ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodDetailsCardWalletMasterpassShippingAddressDU
-
-    }
+        member _.BillingAddress = billingAddress
+        member _.Email = email
+        member _.Name = name
+        member _.ShippingAddress = shippingAddress
 
     and PaymentMethodDetailsCardWalletMasterpassBillingAddressDU =
-        | Address of Address
+        | PaymentMethodDetailsCardWalletMasterpassBillingAddressDU'Address of Address
 
     and PaymentMethodDetailsCardWalletMasterpassShippingAddressDU =
-        | Address of Address
+        | PaymentMethodDetailsCardWalletMasterpassShippingAddressDU'Address of Address
 
     ///
-    and PaymentMethodDetailsCardWalletSamsungPay = {
+    and PaymentMethodDetailsCardWalletSamsungPay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsCardWalletVisaCheckout = {
+    and PaymentMethodDetailsCardWalletVisaCheckout (billingAddress: PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU option, email: string option, name: string option, shippingAddress: PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU option) =
 
-        ///Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        BillingAddress: PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU
-
-        ///Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Email: string
-
-        ///Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Name: string
-
-        ///Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        ShippingAddress: PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU
-
-    }
+        member _.BillingAddress = billingAddress
+        member _.Email = email
+        member _.Name = name
+        member _.ShippingAddress = shippingAddress
 
     and PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU =
-        | Address of Address
+        | PaymentMethodDetailsCardWalletVisaCheckoutBillingAddressDU'Address of Address
 
     and PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU =
-        | Address of Address
+        | PaymentMethodDetailsCardWalletVisaCheckoutShippingAddressDU'Address of Address
 
     ///
-    and PaymentMethodDetailsEps = {
+    and PaymentMethodDetailsEps (verifiedName: string option) =
 
-        ///Owner's verified full name. Values are verified or provided by EPS directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-    ///EPS rarely provides this information so the attribute is usually empty.
-        VerifiedName: string
-
-    }
+        member _.VerifiedName = verifiedName
 
     ///
-    and PaymentMethodDetailsFpx = {
+    and PaymentMethodDetailsFpx (accountHolderType: PaymentMethodDetailsFpxAccountHolderType option, bank: PaymentMethodDetailsFpxBank, transactionId: string option) =
 
-        ///Account holder type, if provided. Can be one of `individual` or `company`.
-        AccountHolderType: PaymentMethodDetailsFpxAccountHolderType
-
-        ///The customer's bank. Can be one of `affin_bank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`.
-        Bank: PaymentMethodDetailsFpxBank
-
-        ///Unique transaction id generated by FPX for every request from the merchant
-        TransactionId: string
-
-    }
+        member _.AccountHolderType = accountHolderType
+        member _.Bank = bank
+        member _.TransactionId = transactionId
 
     and PaymentMethodDetailsFpxAccountHolderType =
-        | Company
-        | Individual
+        | PaymentMethodDetailsFpxAccountHolderType'Company
+        | PaymentMethodDetailsFpxAccountHolderType'Individual
 
     and PaymentMethodDetailsFpxBank =
-        | AffinBank
-        | AllianceBank
-        | Ambank
-        | BankIslam
-        | BankMuamalat
-        | BankRakyat
-        | Bsn
-        | Cimb
-        | DeutscheBank
-        | HongLeongBank
-        | Hsbc
-        | Kfh
-        | Maybank2e
-        | Maybank2u
-        | Ocbc
-        | PbEnterprise
-        | PublicBank
-        | Rhb
-        | StandardChartered
-        | Uob
+        | PaymentMethodDetailsFpxBank'AffinBank
+        | PaymentMethodDetailsFpxBank'AllianceBank
+        | PaymentMethodDetailsFpxBank'Ambank
+        | PaymentMethodDetailsFpxBank'BankIslam
+        | PaymentMethodDetailsFpxBank'BankMuamalat
+        | PaymentMethodDetailsFpxBank'BankRakyat
+        | PaymentMethodDetailsFpxBank'Bsn
+        | PaymentMethodDetailsFpxBank'Cimb
+        | PaymentMethodDetailsFpxBank'DeutscheBank
+        | PaymentMethodDetailsFpxBank'HongLeongBank
+        | PaymentMethodDetailsFpxBank'Hsbc
+        | PaymentMethodDetailsFpxBank'Kfh
+        | PaymentMethodDetailsFpxBank'Maybank2e
+        | PaymentMethodDetailsFpxBank'Maybank2u
+        | PaymentMethodDetailsFpxBank'Ocbc
+        | PaymentMethodDetailsFpxBank'PbEnterprise
+        | PaymentMethodDetailsFpxBank'PublicBank
+        | PaymentMethodDetailsFpxBank'Rhb
+        | PaymentMethodDetailsFpxBank'StandardChartered
+        | PaymentMethodDetailsFpxBank'Uob
 
     ///
-    and PaymentMethodDetailsGiropay = {
+    and PaymentMethodDetailsGiropay (bankCode: string option, bankName: string option, bic: string option, verifiedName: string option) =
 
-        ///Bank code of bank associated with the bank account.
-        BankCode: string
-
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string
-
-        ///Owner's verified full name. Values are verified or provided by Giropay directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-    ///Giropay rarely provides this information so the attribute is usually empty.
-        VerifiedName: string
-
-    }
+        member _.BankCode = bankCode
+        member _.BankName = bankName
+        member _.Bic = bic
+        member _.VerifiedName = verifiedName
 
     ///
-    and PaymentMethodDetailsGrabpay = {
+    and PaymentMethodDetailsGrabpay (transactionId: string option) =
 
-        ///Unique transaction id generated by GrabPay
-        TransactionId: string
-
-    }
+        member _.TransactionId = transactionId
 
     ///
-    and PaymentMethodDetailsIdeal = {
+    and PaymentMethodDetailsIdeal (bank: PaymentMethodDetailsIdealBank option, bic: PaymentMethodDetailsIdealBic option, generatedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebitDU option, generatedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU option, ibanLast4: string option, verifiedName: string option) =
 
-        ///The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
-        Bank: PaymentMethodDetailsIdealBank
-
-        ///The Bank Identifier Code of the customer's bank.
-        Bic: PaymentMethodDetailsIdealBic
-
-        ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebitDU
-
-        ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU
-
-        ///Last four characters of the IBAN.
-        IbanLast4: string
-
-        ///Owner's verified full name. Values are verified or provided by iDEAL directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string
-
-    }
+        member _.Bank = bank
+        member _.Bic = bic
+        member _.GeneratedSepaDebit = generatedSepaDebit
+        member _.GeneratedSepaDebitMandate = generatedSepaDebitMandate
+        member _.IbanLast4 = ibanLast4
+        member _.VerifiedName = verifiedName
 
     and PaymentMethodDetailsIdealBank =
-        | AbnAmro
-        | AsnBank
-        | Bunq
-        | Handelsbanken
-        | Ing
-        | Knab
-        | Moneyou
-        | Rabobank
-        | Regiobank
-        | SnsBank
-        | TriodosBank
-        | VanLanschot
+        | PaymentMethodDetailsIdealBank'AbnAmro
+        | PaymentMethodDetailsIdealBank'AsnBank
+        | PaymentMethodDetailsIdealBank'Bunq
+        | PaymentMethodDetailsIdealBank'Handelsbanken
+        | PaymentMethodDetailsIdealBank'Ing
+        | PaymentMethodDetailsIdealBank'Knab
+        | PaymentMethodDetailsIdealBank'Moneyou
+        | PaymentMethodDetailsIdealBank'Rabobank
+        | PaymentMethodDetailsIdealBank'Regiobank
+        | PaymentMethodDetailsIdealBank'SnsBank
+        | PaymentMethodDetailsIdealBank'TriodosBank
+        | PaymentMethodDetailsIdealBank'VanLanschot
 
     and PaymentMethodDetailsIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+        | [<JsonUnionCase("ABNANL2A")>] PaymentMethodDetailsIdealBic'ABNANL2A
+        | [<JsonUnionCase("ASNBNL21")>] PaymentMethodDetailsIdealBic'ASNBNL21
+        | [<JsonUnionCase("BUNQNL2A")>] PaymentMethodDetailsIdealBic'BUNQNL2A
+        | [<JsonUnionCase("FVLBNL22")>] PaymentMethodDetailsIdealBic'FVLBNL22
+        | [<JsonUnionCase("HANDNL2A")>] PaymentMethodDetailsIdealBic'HANDNL2A
+        | [<JsonUnionCase("INGBNL2A")>] PaymentMethodDetailsIdealBic'INGBNL2A
+        | [<JsonUnionCase("KNABNL2H")>] PaymentMethodDetailsIdealBic'KNABNL2H
+        | [<JsonUnionCase("MOYONL21")>] PaymentMethodDetailsIdealBic'MOYONL21
+        | [<JsonUnionCase("RABONL2U")>] PaymentMethodDetailsIdealBic'RABONL2U
+        | [<JsonUnionCase("RBRBNL21")>] PaymentMethodDetailsIdealBic'RBRBNL21
+        | [<JsonUnionCase("SNSBNL2A")>] PaymentMethodDetailsIdealBic'SNSBNL2A
+        | [<JsonUnionCase("TRIONL2U")>] PaymentMethodDetailsIdealBic'TRIONL2U
 
     and PaymentMethodDetailsIdealGeneratedSepaDebitDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | PaymentMethodDetailsIdealGeneratedSepaDebitDU'String of string
+        | PaymentMethodDetailsIdealGeneratedSepaDebitDU'PaymentMethod of PaymentMethod
 
     and PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU'String of string
+        | PaymentMethodDetailsIdealGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and PaymentMethodDetailsInteracPresent = {
+    and PaymentMethodDetailsInteracPresent (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceiptDU option, ?description: string option, ?iin: string option, ?issuer: string option) =
 
-        ///Card brand. Can be `interac`, `mastercard` or `visa`.
-        Brand: PaymentMethodDetailsInteracPresentBrand
-
-        ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`).
-        CardholderName: string
-
-        ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string
-
-        ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
-        Description: string option
-
-        ///Authorization response cryptogram.
-        EmvAuthData: string
-
-        ///Two-digit number representing the card's expiration month.
-        ExpMonth: int
-
-        ///Four-digit number representing the card's expiration year.
-        ExpYear: int
-
-        ///Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
-        Fingerprint: string
-
-        ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-        Funding: PaymentMethodDetailsInteracPresentFunding
-
-        ///ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod.
-        GeneratedCard: string
-
-        ///Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
-        Iin: string option
-
-        ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
-        Issuer: string option
-
-        ///The last four digits of the card.
-        Last4: string
-
-        ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-        Network: PaymentMethodDetailsInteracPresentNetwork
-
-        ///EMV tag 5F2D. Preferred languages specified by the integrated circuit chip.
-        PreferredLocales: string list
-
-        ///How card details were read in this transaction.
-        ReadMethod: PaymentMethodDetailsInteracPresentReadMethod
-
-        ///A collection of fields required to be displayed on receipts. Only required for EMV transactions.
-        Receipt: PaymentMethodDetailsInteracPresentReceiptDU
-
-    }
+        member _.Brand = brand
+        member _.CardholderName = cardholderName
+        member _.Country = country
+        member _.Description = description |> Option.flatten
+        member _.EmvAuthData = emvAuthData
+        member _.ExpMonth = expMonth
+        member _.ExpYear = expYear
+        member _.Fingerprint = fingerprint
+        member _.Funding = funding
+        member _.GeneratedCard = generatedCard
+        member _.Iin = iin |> Option.flatten
+        member _.Issuer = issuer |> Option.flatten
+        member _.Last4 = last4
+        member _.Network = network
+        member _.PreferredLocales = preferredLocales
+        member _.ReadMethod = readMethod
+        member _.Receipt = receipt
 
     and PaymentMethodDetailsInteracPresentBrand =
-        | Interac
-        | Mastercard
-        | Visa
+        | PaymentMethodDetailsInteracPresentBrand'Interac
+        | PaymentMethodDetailsInteracPresentBrand'Mastercard
+        | PaymentMethodDetailsInteracPresentBrand'Visa
 
     and PaymentMethodDetailsInteracPresentFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
+        | PaymentMethodDetailsInteracPresentFunding'Credit
+        | PaymentMethodDetailsInteracPresentFunding'Debit
+        | PaymentMethodDetailsInteracPresentFunding'Prepaid
+        | PaymentMethodDetailsInteracPresentFunding'Unknown
 
     and PaymentMethodDetailsInteracPresentNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
+        | PaymentMethodDetailsInteracPresentNetwork'Amex
+        | PaymentMethodDetailsInteracPresentNetwork'CartesBancaires
+        | PaymentMethodDetailsInteracPresentNetwork'Diners
+        | PaymentMethodDetailsInteracPresentNetwork'Discover
+        | PaymentMethodDetailsInteracPresentNetwork'Interac
+        | PaymentMethodDetailsInteracPresentNetwork'Jcb
+        | PaymentMethodDetailsInteracPresentNetwork'Mastercard
+        | PaymentMethodDetailsInteracPresentNetwork'Unionpay
+        | PaymentMethodDetailsInteracPresentNetwork'Visa
+        | PaymentMethodDetailsInteracPresentNetwork'Unknown
 
     and PaymentMethodDetailsInteracPresentReadMethod =
-        | ContactEmv
-        | ContactlessEmv
-        | ContactlessMagstripeMode
-        | MagneticStripeFallback
-        | MagneticStripeTrack2
+        | PaymentMethodDetailsInteracPresentReadMethod'ContactEmv
+        | PaymentMethodDetailsInteracPresentReadMethod'ContactlessEmv
+        | PaymentMethodDetailsInteracPresentReadMethod'ContactlessMagstripeMode
+        | PaymentMethodDetailsInteracPresentReadMethod'MagneticStripeFallback
+        | PaymentMethodDetailsInteracPresentReadMethod'MagneticStripeTrack2
 
     and PaymentMethodDetailsInteracPresentReceiptDU =
-        | PaymentMethodDetailsInteracPresentReceipt of PaymentMethodDetailsInteracPresentReceipt
+        | PaymentMethodDetailsInteracPresentReceiptDU'PaymentMethodDetailsInteracPresentReceipt of PaymentMethodDetailsInteracPresentReceipt
 
     ///
-    and PaymentMethodDetailsInteracPresentReceipt = {
+    and PaymentMethodDetailsInteracPresentReceipt (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsInteracPresentReceiptAccountType) =
 
-        ///The type of account being debited or credited
-        AccountType: PaymentMethodDetailsInteracPresentReceiptAccountType option
-
-        ///EMV tag 9F26, cryptogram generated by the integrated circuit chip.
-        ApplicationCryptogram: string
-
-        ///Mnenomic of the Application Identifier.
-        ApplicationPreferredName: string
-
-        ///Identifier for this transaction.
-        AuthorizationCode: string
-
-        ///EMV tag 8A. A code returned by the card issuer.
-        AuthorizationResponseCode: string
-
-        ///How the cardholder verified ownership of the card.
-        CardholderVerificationMethod: string
-
-        ///EMV tag 84. Similar to the application identifier stored on the integrated circuit chip.
-        DedicatedFileName: string
-
-        ///The outcome of a series of EMV functions performed by the card reader.
-        TerminalVerificationResults: string
-
-        ///An indication of various EMV functions performed during the transaction.
-        TransactionStatusInformation: string
-
-    }
+        member _.AccountType = accountType
+        member _.ApplicationCryptogram = applicationCryptogram
+        member _.ApplicationPreferredName = applicationPreferredName
+        member _.AuthorizationCode = authorizationCode
+        member _.AuthorizationResponseCode = authorizationResponseCode
+        member _.CardholderVerificationMethod = cardholderVerificationMethod
+        member _.DedicatedFileName = dedicatedFileName
+        member _.TerminalVerificationResults = terminalVerificationResults
+        member _.TransactionStatusInformation = transactionStatusInformation
 
     and PaymentMethodDetailsInteracPresentReceiptAccountType =
-        | Checking
-        | Savings
-        | Unknown
+        | PaymentMethodDetailsInteracPresentReceiptAccountType'Checking
+        | PaymentMethodDetailsInteracPresentReceiptAccountType'Savings
+        | PaymentMethodDetailsInteracPresentReceiptAccountType'Unknown
 
     ///
-    and PaymentMethodDetailsKlarna = {
+    and PaymentMethodDetailsKlarna (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsMultibanco = {
+    and PaymentMethodDetailsMultibanco (entity: string option, reference: string option) =
 
-        ///Entity number associated with this Multibanco payment.
-        Entity: string
-
-        ///Reference number associated with this Multibanco payment.
-        Reference: string
-
-    }
+        member _.Entity = entity
+        member _.Reference = reference
 
     ///
-    and PaymentMethodDetailsOxxo = {
+    and PaymentMethodDetailsOxxo (number: string option) =
 
-        ///OXXO reference number
-        Number: string
-
-    }
+        member _.Number = number
 
     ///
-    and PaymentMethodDetailsP24 = {
+    and PaymentMethodDetailsP24 (reference: string option, verifiedName: string option) =
 
-        ///Unique reference for this Przelewy24 payment.
-        Reference: string
-
-        ///Owner's verified full name. Values are verified or provided by Przelewy24 directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-    ///Przelewy24 rarely provides this information so the attribute is usually empty.
-        VerifiedName: string
-
-    }
+        member _.Reference = reference
+        member _.VerifiedName = verifiedName
 
     ///
-    and PaymentMethodDetailsSepaCreditTransfer = {
+    and PaymentMethodDetailsSepaCreditTransfer (bankName: string option, bic: string option, iban: string option) =
 
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string
-
-        ///IBAN of the bank account to transfer funds to.
-        Iban: string
-
-    }
+        member _.BankName = bankName
+        member _.Bic = bic
+        member _.Iban = iban
 
     ///
-    and PaymentMethodDetailsSepaDebit = {
+    and PaymentMethodDetailsSepaDebit (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, last4: string option, mandate: string option) =
 
-        ///Bank code of bank associated with the bank account.
-        BankCode: string
-
-        ///Branch code of bank associated with the bank account.
-        BranchCode: string
-
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string
-
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Last four characters of the IBAN.
-        Last4: string
-
-        ///ID of the mandate used to make this payment.
-        Mandate: string
-
-    }
+        member _.BankCode = bankCode
+        member _.BranchCode = branchCode
+        member _.Country = country
+        member _.Fingerprint = fingerprint
+        member _.Last4 = last4
+        member _.Mandate = mandate
 
     ///
-    and PaymentMethodDetailsSofort = {
+    and PaymentMethodDetailsSofort (bankCode: string option, bankName: string option, bic: string option, country: string option, generatedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebitDU option, generatedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandateDU option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
 
-        ///Bank code of bank associated with the bank account.
-        BankCode: string
-
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string
-
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string
-
-        ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebitDU
-
-        ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandateDU
-
-        ///Last four characters of the IBAN.
-        IbanLast4: string
-
-        ///Preferred language of the SOFORT authorization page that the customer is redirected to.
-    ///Can be one of `de`, `en`, `es`, `fr`, `it`, `nl`, or `pl`
-        PreferredLanguage: PaymentMethodDetailsSofortPreferredLanguage
-
-        ///Owner's verified full name. Values are verified or provided by SOFORT directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string
-
-    }
+        member _.BankCode = bankCode
+        member _.BankName = bankName
+        member _.Bic = bic
+        member _.Country = country
+        member _.GeneratedSepaDebit = generatedSepaDebit
+        member _.GeneratedSepaDebitMandate = generatedSepaDebitMandate
+        member _.IbanLast4 = ibanLast4
+        member _.PreferredLanguage = preferredLanguage
+        member _.VerifiedName = verifiedName
 
     and PaymentMethodDetailsSofortPreferredLanguage =
-        | De
-        | En
-        | Es
-        | Fr
-        | It
-        | Nl
-        | Pl
+        | PaymentMethodDetailsSofortPreferredLanguage'De
+        | PaymentMethodDetailsSofortPreferredLanguage'En
+        | PaymentMethodDetailsSofortPreferredLanguage'Es
+        | PaymentMethodDetailsSofortPreferredLanguage'Fr
+        | PaymentMethodDetailsSofortPreferredLanguage'It
+        | PaymentMethodDetailsSofortPreferredLanguage'Nl
+        | PaymentMethodDetailsSofortPreferredLanguage'Pl
 
     and PaymentMethodDetailsSofortGeneratedSepaDebitDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | PaymentMethodDetailsSofortGeneratedSepaDebitDU'String of string
+        | PaymentMethodDetailsSofortGeneratedSepaDebitDU'PaymentMethod of PaymentMethod
 
     and PaymentMethodDetailsSofortGeneratedSepaDebitMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | PaymentMethodDetailsSofortGeneratedSepaDebitMandateDU'String of string
+        | PaymentMethodDetailsSofortGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and PaymentMethodDetailsStripeAccount = {
+    and PaymentMethodDetailsStripeAccount (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodDetailsWechat = {
+    and PaymentMethodDetailsWechat (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodEps = {
+    and PaymentMethodEps (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodFpx = {
+    and PaymentMethodFpx (accountHolderType: PaymentMethodFpxAccountHolderType option, bank: PaymentMethodFpxBank) =
 
-        ///Account holder type, if provided. Can be one of `individual` or `company`.
-        AccountHolderType: PaymentMethodFpxAccountHolderType
-
-        ///The customer's bank, if provided. Can be one of `affin_bank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`.
-        Bank: PaymentMethodFpxBank
-
-    }
+        member _.AccountHolderType = accountHolderType
+        member _.Bank = bank
 
     and PaymentMethodFpxAccountHolderType =
-        | Company
-        | Individual
+        | PaymentMethodFpxAccountHolderType'Company
+        | PaymentMethodFpxAccountHolderType'Individual
 
     and PaymentMethodFpxBank =
-        | AffinBank
-        | AllianceBank
-        | Ambank
-        | BankIslam
-        | BankMuamalat
-        | BankRakyat
-        | Bsn
-        | Cimb
-        | DeutscheBank
-        | HongLeongBank
-        | Hsbc
-        | Kfh
-        | Maybank2e
-        | Maybank2u
-        | Ocbc
-        | PbEnterprise
-        | PublicBank
-        | Rhb
-        | StandardChartered
-        | Uob
+        | PaymentMethodFpxBank'AffinBank
+        | PaymentMethodFpxBank'AllianceBank
+        | PaymentMethodFpxBank'Ambank
+        | PaymentMethodFpxBank'BankIslam
+        | PaymentMethodFpxBank'BankMuamalat
+        | PaymentMethodFpxBank'BankRakyat
+        | PaymentMethodFpxBank'Bsn
+        | PaymentMethodFpxBank'Cimb
+        | PaymentMethodFpxBank'DeutscheBank
+        | PaymentMethodFpxBank'HongLeongBank
+        | PaymentMethodFpxBank'Hsbc
+        | PaymentMethodFpxBank'Kfh
+        | PaymentMethodFpxBank'Maybank2e
+        | PaymentMethodFpxBank'Maybank2u
+        | PaymentMethodFpxBank'Ocbc
+        | PaymentMethodFpxBank'PbEnterprise
+        | PaymentMethodFpxBank'PublicBank
+        | PaymentMethodFpxBank'Rhb
+        | PaymentMethodFpxBank'StandardChartered
+        | PaymentMethodFpxBank'Uob
 
     ///
-    and PaymentMethodGiropay = {
+    and PaymentMethodGiropay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodGrabpay = {
+    and PaymentMethodGrabpay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodIdeal = {
+    and PaymentMethodIdeal (bank: PaymentMethodIdealBank option, bic: PaymentMethodIdealBic option) =
 
-        ///The customer's bank, if provided. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
-        Bank: PaymentMethodIdealBank
-
-        ///The Bank Identifier Code of the customer's bank, if the bank was provided.
-        Bic: PaymentMethodIdealBic
-
-    }
+        member _.Bank = bank
+        member _.Bic = bic
 
     and PaymentMethodIdealBank =
-        | AbnAmro
-        | AsnBank
-        | Bunq
-        | Handelsbanken
-        | Ing
-        | Knab
-        | Moneyou
-        | Rabobank
-        | Regiobank
-        | SnsBank
-        | TriodosBank
-        | VanLanschot
+        | PaymentMethodIdealBank'AbnAmro
+        | PaymentMethodIdealBank'AsnBank
+        | PaymentMethodIdealBank'Bunq
+        | PaymentMethodIdealBank'Handelsbanken
+        | PaymentMethodIdealBank'Ing
+        | PaymentMethodIdealBank'Knab
+        | PaymentMethodIdealBank'Moneyou
+        | PaymentMethodIdealBank'Rabobank
+        | PaymentMethodIdealBank'Regiobank
+        | PaymentMethodIdealBank'SnsBank
+        | PaymentMethodIdealBank'TriodosBank
+        | PaymentMethodIdealBank'VanLanschot
 
     and PaymentMethodIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+        | [<JsonUnionCase("ABNANL2A")>] PaymentMethodIdealBic'ABNANL2A
+        | [<JsonUnionCase("ASNBNL21")>] PaymentMethodIdealBic'ASNBNL21
+        | [<JsonUnionCase("BUNQNL2A")>] PaymentMethodIdealBic'BUNQNL2A
+        | [<JsonUnionCase("FVLBNL22")>] PaymentMethodIdealBic'FVLBNL22
+        | [<JsonUnionCase("HANDNL2A")>] PaymentMethodIdealBic'HANDNL2A
+        | [<JsonUnionCase("INGBNL2A")>] PaymentMethodIdealBic'INGBNL2A
+        | [<JsonUnionCase("KNABNL2H")>] PaymentMethodIdealBic'KNABNL2H
+        | [<JsonUnionCase("MOYONL21")>] PaymentMethodIdealBic'MOYONL21
+        | [<JsonUnionCase("RABONL2U")>] PaymentMethodIdealBic'RABONL2U
+        | [<JsonUnionCase("RBRBNL21")>] PaymentMethodIdealBic'RBRBNL21
+        | [<JsonUnionCase("SNSBNL2A")>] PaymentMethodIdealBic'SNSBNL2A
+        | [<JsonUnionCase("TRIONL2U")>] PaymentMethodIdealBic'TRIONL2U
 
     ///
-    and PaymentMethodInteracPresent = {
+    and PaymentMethodInteracPresent (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodOptionsAlipay = {
+    and PaymentMethodOptionsAlipay (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodOptionsBancontact = {
+    and PaymentMethodOptionsBancontact (preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage) =
 
-        ///Preferred language of the Bancontact authorization page that the customer is redirected to.
-        PreferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage
-
-    }
+        member _.PreferredLanguage = preferredLanguage
 
     and PaymentMethodOptionsBancontactPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
+        | PaymentMethodOptionsBancontactPreferredLanguage'De
+        | PaymentMethodOptionsBancontactPreferredLanguage'En
+        | PaymentMethodOptionsBancontactPreferredLanguage'Fr
+        | PaymentMethodOptionsBancontactPreferredLanguage'Nl
 
     ///
-    and PaymentMethodOptionsCardInstallments = {
+    and PaymentMethodOptionsCardInstallments (availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodOptionsCardInstallmentsPlanDU option) =
 
-        ///Installment plans that may be selected for this PaymentIntent.
-        AvailablePlans: PaymentMethodDetailsCardInstallmentsPlan list
-
-        ///Whether Installments are enabled for this PaymentIntent.
-        Enabled: bool
-
-        ///Installment plan selected for this PaymentIntent.
-        Plan: PaymentMethodOptionsCardInstallmentsPlanDU
-
-    }
+        member _.AvailablePlans = availablePlans
+        member _.Enabled = enabled
+        member _.Plan = plan
 
     and PaymentMethodOptionsCardInstallmentsPlanDU =
-        | PaymentMethodDetailsCardInstallmentsPlan of PaymentMethodDetailsCardInstallmentsPlan
+        | PaymentMethodOptionsCardInstallmentsPlanDU'PaymentMethodDetailsCardInstallmentsPlan of PaymentMethodDetailsCardInstallmentsPlan
 
     ///
-    and PaymentMethodOptionsOxxo = {
+    and PaymentMethodOptionsOxxo (expiresAfterDays: int) =
 
-        ///The number of calendar days before an OXXO invoice expires. For example, if you create an OXXO invoice on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
-        ExpiresAfterDays: int
-
-    }
+        member _.ExpiresAfterDays = expiresAfterDays
 
     ///
-    and PaymentMethodOptionsP24 = {
+    and PaymentMethodOptionsP24 (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodOptionsSofort = {
+    and PaymentMethodOptionsSofort (preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option) =
 
-        ///Preferred language of the SOFORT authorization page that the customer is redirected to.
-        PreferredLanguage: PaymentMethodOptionsSofortPreferredLanguage
-
-    }
+        member _.PreferredLanguage = preferredLanguage
 
     and PaymentMethodOptionsSofortPreferredLanguage =
-        | De
-        | En
-        | Es
-        | Fr
-        | It
-        | Nl
-        | Pl
+        | PaymentMethodOptionsSofortPreferredLanguage'De
+        | PaymentMethodOptionsSofortPreferredLanguage'En
+        | PaymentMethodOptionsSofortPreferredLanguage'Es
+        | PaymentMethodOptionsSofortPreferredLanguage'Fr
+        | PaymentMethodOptionsSofortPreferredLanguage'It
+        | PaymentMethodOptionsSofortPreferredLanguage'Nl
+        | PaymentMethodOptionsSofortPreferredLanguage'Pl
 
     ///
-    and PaymentMethodOxxo = {
+    and PaymentMethodOxxo (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and PaymentMethodP24 = {
+    and PaymentMethodP24 (bank: PaymentMethodP24Bank option) =
 
-        ///The customer's bank, if provided.
-        Bank: PaymentMethodP24Bank
-
-    }
+        member _.Bank = bank
 
     and PaymentMethodP24Bank =
-        | AliorBank
-        | BankMillennium
-        | BankNowyBfgSa
-        | BankPekaoSa
-        | BankiSpbdzielcze
-        | Blik
-        | BnpParibas
-        | Boz
-        | CitiHandlowy
-        | CreditAgricole
-        | Envelobank
-        | EtransferPocztowy24
-        | GetinBank
-        | Ideabank
-        | Ing
-        | Inteligo
-        | MbankMtransfer
-        | NestPrzelew
-        | NoblePay
-        | PbacZIpko
-        | PlusBank
-        | SantanderPrzelew24
-        | TmobileUsbugiBankowe
-        | ToyotaBank
-        | VolkswagenBank
+        | PaymentMethodP24Bank'AliorBank
+        | PaymentMethodP24Bank'BankMillennium
+        | PaymentMethodP24Bank'BankNowyBfgSa
+        | PaymentMethodP24Bank'BankPekaoSa
+        | PaymentMethodP24Bank'BankiSpbdzielcze
+        | PaymentMethodP24Bank'Blik
+        | PaymentMethodP24Bank'BnpParibas
+        | PaymentMethodP24Bank'Boz
+        | PaymentMethodP24Bank'CitiHandlowy
+        | PaymentMethodP24Bank'CreditAgricole
+        | PaymentMethodP24Bank'Envelobank
+        | PaymentMethodP24Bank'EtransferPocztowy24
+        | PaymentMethodP24Bank'GetinBank
+        | PaymentMethodP24Bank'Ideabank
+        | PaymentMethodP24Bank'Ing
+        | PaymentMethodP24Bank'Inteligo
+        | PaymentMethodP24Bank'MbankMtransfer
+        | PaymentMethodP24Bank'NestPrzelew
+        | PaymentMethodP24Bank'NoblePay
+        | PaymentMethodP24Bank'PbacZIpko
+        | PaymentMethodP24Bank'PlusBank
+        | PaymentMethodP24Bank'SantanderPrzelew24
+        | PaymentMethodP24Bank'TmobileUsbugiBankowe
+        | PaymentMethodP24Bank'ToyotaBank
+        | PaymentMethodP24Bank'VolkswagenBank
 
     ///
-    and PaymentMethodSepaDebit = {
+    and PaymentMethodSepaDebit (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, generatedFrom: PaymentMethodSepaDebitGeneratedFromDU option, last4: string option) =
 
-        ///Bank code of bank associated with the bank account.
-        BankCode: string
-
-        ///Branch code of bank associated with the bank account.
-        BranchCode: string
-
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string
-
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string
-
-        ///Information about the object that generated this PaymentMethod.
-        GeneratedFrom: PaymentMethodSepaDebitGeneratedFromDU
-
-        ///Last four characters of the IBAN.
-        Last4: string
-
-    }
+        member _.BankCode = bankCode
+        member _.BranchCode = branchCode
+        member _.Country = country
+        member _.Fingerprint = fingerprint
+        member _.GeneratedFrom = generatedFrom
+        member _.Last4 = last4
 
     and PaymentMethodSepaDebitGeneratedFromDU =
-        | SepaDebitGeneratedFrom of SepaDebitGeneratedFrom
+        | PaymentMethodSepaDebitGeneratedFromDU'SepaDebitGeneratedFrom of SepaDebitGeneratedFrom
 
     ///
-    and PaymentMethodSofort = {
+    and PaymentMethodSofort (country: string option) =
 
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string
-
-    }
+        member _.Country = country
 
     ///
-    and PaymentPagesCheckoutSessionTotalDetails = {
+    and PaymentPagesCheckoutSessionTotalDetails (amountDiscount: int, amountTax: int, ?breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown) =
 
-        ///This is the sum of all the line item discounts.
-        AmountDiscount: int
-
-        ///This is the sum of all the line item tax amounts.
-        AmountTax: int
-
-        Breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown option
-
-    }
+        member _.AmountDiscount = amountDiscount
+        member _.AmountTax = amountTax
+        member _.Breakdown = breakdown
 
     ///
-    and PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown = {
+    and PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown (discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
 
-        ///The aggregated line item discounts.
-        Discounts: LineItemsDiscountAmount list
-
-        ///The aggregated line item tax amounts by rate.
-        Taxes: LineItemsTaxAmount list
-
-    }
+        member _.Discounts = discounts
+        member _.Taxes = taxes
 
     ///
-    and PaymentPagesPaymentPageResourcesShippingAddressCollection = {
+    and PaymentPagesPaymentPageResourcesShippingAddressCollection (allowedCountries: PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries list) =
 
-        ///An array of two-letter ISO country codes representing which countries Checkout should provide as options for
-    ///shipping locations. Unsupported country codes: `AS, CX, CC, CU, HM, IR, KP, MH, FM, NF, MP, PW, SD, SY, UM, VI`.
-        AllowedCountries: PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries list
-
-    }
+        member _.AllowedCountries = allowedCountries
 
     and PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries =
-        | [<JsonUnionCase("AC")>] AC
-        | [<JsonUnionCase("AD")>] AD
-        | [<JsonUnionCase("AE")>] AE
-        | [<JsonUnionCase("AF")>] AF
-        | [<JsonUnionCase("AG")>] AG
-        | [<JsonUnionCase("AI")>] AI
-        | [<JsonUnionCase("AL")>] AL
-        | [<JsonUnionCase("AM")>] AM
-        | [<JsonUnionCase("AO")>] AO
-        | [<JsonUnionCase("AQ")>] AQ
-        | [<JsonUnionCase("AR")>] AR
-        | [<JsonUnionCase("AT")>] AT
-        | [<JsonUnionCase("AU")>] AU
-        | [<JsonUnionCase("AW")>] AW
-        | [<JsonUnionCase("AX")>] AX
-        | [<JsonUnionCase("AZ")>] AZ
-        | [<JsonUnionCase("BA")>] BA
-        | [<JsonUnionCase("BB")>] BB
-        | [<JsonUnionCase("BD")>] BD
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("BF")>] BF
-        | [<JsonUnionCase("BG")>] BG
-        | [<JsonUnionCase("BH")>] BH
-        | [<JsonUnionCase("BI")>] BI
-        | [<JsonUnionCase("BJ")>] BJ
-        | [<JsonUnionCase("BL")>] BL
-        | [<JsonUnionCase("BM")>] BM
-        | [<JsonUnionCase("BN")>] BN
-        | [<JsonUnionCase("BO")>] BO
-        | [<JsonUnionCase("BQ")>] BQ
-        | [<JsonUnionCase("BR")>] BR
-        | [<JsonUnionCase("BS")>] BS
-        | [<JsonUnionCase("BT")>] BT
-        | [<JsonUnionCase("BV")>] BV
-        | [<JsonUnionCase("BW")>] BW
-        | [<JsonUnionCase("BY")>] BY
-        | [<JsonUnionCase("BZ")>] BZ
-        | [<JsonUnionCase("CA")>] CA
-        | [<JsonUnionCase("CD")>] CD
-        | [<JsonUnionCase("CF")>] CF
-        | [<JsonUnionCase("CG")>] CG
-        | [<JsonUnionCase("CH")>] CH
-        | [<JsonUnionCase("CI")>] CI
-        | [<JsonUnionCase("CK")>] CK
-        | [<JsonUnionCase("CL")>] CL
-        | [<JsonUnionCase("CM")>] CM
-        | [<JsonUnionCase("CN")>] CN
-        | [<JsonUnionCase("CO")>] CO
-        | [<JsonUnionCase("CR")>] CR
-        | [<JsonUnionCase("CV")>] CV
-        | [<JsonUnionCase("CW")>] CW
-        | [<JsonUnionCase("CY")>] CY
-        | [<JsonUnionCase("CZ")>] CZ
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("DJ")>] DJ
-        | [<JsonUnionCase("DK")>] DK
-        | [<JsonUnionCase("DM")>] DM
-        | [<JsonUnionCase("DO")>] DO
-        | [<JsonUnionCase("DZ")>] DZ
-        | [<JsonUnionCase("EC")>] EC
-        | [<JsonUnionCase("EE")>] EE
-        | [<JsonUnionCase("EG")>] EG
-        | [<JsonUnionCase("EH")>] EH
-        | [<JsonUnionCase("ER")>] ER
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("ET")>] ET
-        | [<JsonUnionCase("FI")>] FI
-        | [<JsonUnionCase("FJ")>] FJ
-        | [<JsonUnionCase("FK")>] FK
-        | [<JsonUnionCase("FO")>] FO
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("GA")>] GA
-        | [<JsonUnionCase("GB")>] GB
-        | [<JsonUnionCase("GD")>] GD
-        | [<JsonUnionCase("GE")>] GE
-        | [<JsonUnionCase("GF")>] GF
-        | [<JsonUnionCase("GG")>] GG
-        | [<JsonUnionCase("GH")>] GH
-        | [<JsonUnionCase("GI")>] GI
-        | [<JsonUnionCase("GL")>] GL
-        | [<JsonUnionCase("GM")>] GM
-        | [<JsonUnionCase("GN")>] GN
-        | [<JsonUnionCase("GP")>] GP
-        | [<JsonUnionCase("GQ")>] GQ
-        | [<JsonUnionCase("GR")>] GR
-        | [<JsonUnionCase("GS")>] GS
-        | [<JsonUnionCase("GT")>] GT
-        | [<JsonUnionCase("GU")>] GU
-        | [<JsonUnionCase("GW")>] GW
-        | [<JsonUnionCase("GY")>] GY
-        | [<JsonUnionCase("HK")>] HK
-        | [<JsonUnionCase("HN")>] HN
-        | [<JsonUnionCase("HR")>] HR
-        | [<JsonUnionCase("HT")>] HT
-        | [<JsonUnionCase("HU")>] HU
-        | [<JsonUnionCase("ID")>] ID
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("IL")>] IL
-        | [<JsonUnionCase("IM")>] IM
-        | [<JsonUnionCase("IN")>] IN
-        | [<JsonUnionCase("IO")>] IO
-        | [<JsonUnionCase("IQ")>] IQ
-        | [<JsonUnionCase("IS")>] IS
-        | [<JsonUnionCase("IT")>] IT
-        | [<JsonUnionCase("JE")>] JE
-        | [<JsonUnionCase("JM")>] JM
-        | [<JsonUnionCase("JO")>] JO
-        | [<JsonUnionCase("JP")>] JP
-        | [<JsonUnionCase("KE")>] KE
-        | [<JsonUnionCase("KG")>] KG
-        | [<JsonUnionCase("KH")>] KH
-        | [<JsonUnionCase("KI")>] KI
-        | [<JsonUnionCase("KM")>] KM
-        | [<JsonUnionCase("KN")>] KN
-        | [<JsonUnionCase("KR")>] KR
-        | [<JsonUnionCase("KW")>] KW
-        | [<JsonUnionCase("KY")>] KY
-        | [<JsonUnionCase("KZ")>] KZ
-        | [<JsonUnionCase("LA")>] LA
-        | [<JsonUnionCase("LB")>] LB
-        | [<JsonUnionCase("LC")>] LC
-        | [<JsonUnionCase("LI")>] LI
-        | [<JsonUnionCase("LK")>] LK
-        | [<JsonUnionCase("LR")>] LR
-        | [<JsonUnionCase("LS")>] LS
-        | [<JsonUnionCase("LT")>] LT
-        | [<JsonUnionCase("LU")>] LU
-        | [<JsonUnionCase("LV")>] LV
-        | [<JsonUnionCase("LY")>] LY
-        | [<JsonUnionCase("MA")>] MA
-        | [<JsonUnionCase("MC")>] MC
-        | [<JsonUnionCase("MD")>] MD
-        | [<JsonUnionCase("ME")>] ME
-        | [<JsonUnionCase("MF")>] MF
-        | [<JsonUnionCase("MG")>] MG
-        | [<JsonUnionCase("MK")>] MK
-        | [<JsonUnionCase("ML")>] ML
-        | [<JsonUnionCase("MM")>] MM
-        | [<JsonUnionCase("MN")>] MN
-        | [<JsonUnionCase("MO")>] MO
-        | [<JsonUnionCase("MQ")>] MQ
-        | [<JsonUnionCase("MR")>] MR
-        | [<JsonUnionCase("MS")>] MS
-        | [<JsonUnionCase("MT")>] MT
-        | [<JsonUnionCase("MU")>] MU
-        | [<JsonUnionCase("MV")>] MV
-        | [<JsonUnionCase("MW")>] MW
-        | [<JsonUnionCase("MX")>] MX
-        | [<JsonUnionCase("MY")>] MY
-        | [<JsonUnionCase("MZ")>] MZ
-        | [<JsonUnionCase("NA")>] NA
-        | [<JsonUnionCase("NC")>] NC
-        | [<JsonUnionCase("NE")>] NE
-        | [<JsonUnionCase("NG")>] NG
-        | [<JsonUnionCase("NI")>] NI
-        | [<JsonUnionCase("NL")>] NL
-        | [<JsonUnionCase("NO")>] NO
-        | [<JsonUnionCase("NP")>] NP
-        | [<JsonUnionCase("NR")>] NR
-        | [<JsonUnionCase("NU")>] NU
-        | [<JsonUnionCase("NZ")>] NZ
-        | [<JsonUnionCase("OM")>] OM
-        | [<JsonUnionCase("PA")>] PA
-        | [<JsonUnionCase("PE")>] PE
-        | [<JsonUnionCase("PF")>] PF
-        | [<JsonUnionCase("PG")>] PG
-        | [<JsonUnionCase("PH")>] PH
-        | [<JsonUnionCase("PK")>] PK
-        | [<JsonUnionCase("PL")>] PL
-        | [<JsonUnionCase("PM")>] PM
-        | [<JsonUnionCase("PN")>] PN
-        | [<JsonUnionCase("PR")>] PR
-        | [<JsonUnionCase("PS")>] PS
-        | [<JsonUnionCase("PT")>] PT
-        | [<JsonUnionCase("PY")>] PY
-        | [<JsonUnionCase("QA")>] QA
-        | [<JsonUnionCase("RE")>] RE
-        | [<JsonUnionCase("RO")>] RO
-        | [<JsonUnionCase("RS")>] RS
-        | [<JsonUnionCase("RU")>] RU
-        | [<JsonUnionCase("RW")>] RW
-        | [<JsonUnionCase("SA")>] SA
-        | [<JsonUnionCase("SB")>] SB
-        | [<JsonUnionCase("SC")>] SC
-        | [<JsonUnionCase("SE")>] SE
-        | [<JsonUnionCase("SG")>] SG
-        | [<JsonUnionCase("SH")>] SH
-        | [<JsonUnionCase("SI")>] SI
-        | [<JsonUnionCase("SJ")>] SJ
-        | [<JsonUnionCase("SK")>] SK
-        | [<JsonUnionCase("SL")>] SL
-        | [<JsonUnionCase("SM")>] SM
-        | [<JsonUnionCase("SN")>] SN
-        | [<JsonUnionCase("SO")>] SO
-        | [<JsonUnionCase("SR")>] SR
-        | [<JsonUnionCase("SS")>] SS
-        | [<JsonUnionCase("ST")>] ST
-        | [<JsonUnionCase("SV")>] SV
-        | [<JsonUnionCase("SX")>] SX
-        | [<JsonUnionCase("SZ")>] SZ
-        | [<JsonUnionCase("TA")>] TA
-        | [<JsonUnionCase("TC")>] TC
-        | [<JsonUnionCase("TD")>] TD
-        | [<JsonUnionCase("TF")>] TF
-        | [<JsonUnionCase("TG")>] TG
-        | [<JsonUnionCase("TH")>] TH
-        | [<JsonUnionCase("TJ")>] TJ
-        | [<JsonUnionCase("TK")>] TK
-        | [<JsonUnionCase("TL")>] TL
-        | [<JsonUnionCase("TM")>] TM
-        | [<JsonUnionCase("TN")>] TN
-        | [<JsonUnionCase("TO")>] TO
-        | [<JsonUnionCase("TR")>] TR
-        | [<JsonUnionCase("TT")>] TT
-        | [<JsonUnionCase("TV")>] TV
-        | [<JsonUnionCase("TW")>] TW
-        | [<JsonUnionCase("TZ")>] TZ
-        | [<JsonUnionCase("UA")>] UA
-        | [<JsonUnionCase("UG")>] UG
-        | [<JsonUnionCase("US")>] US
-        | [<JsonUnionCase("UY")>] UY
-        | [<JsonUnionCase("UZ")>] UZ
-        | [<JsonUnionCase("VA")>] VA
-        | [<JsonUnionCase("VC")>] VC
-        | [<JsonUnionCase("VE")>] VE
-        | [<JsonUnionCase("VG")>] VG
-        | [<JsonUnionCase("VN")>] VN
-        | [<JsonUnionCase("VU")>] VU
-        | [<JsonUnionCase("WF")>] WF
-        | [<JsonUnionCase("WS")>] WS
-        | [<JsonUnionCase("XK")>] XK
-        | [<JsonUnionCase("YE")>] YE
-        | [<JsonUnionCase("YT")>] YT
-        | [<JsonUnionCase("ZA")>] ZA
-        | [<JsonUnionCase("ZM")>] ZM
-        | [<JsonUnionCase("ZW")>] ZW
-        | [<JsonUnionCase("ZZ")>] ZZ
+        | [<JsonUnionCase("AC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AC
+        | [<JsonUnionCase("AD")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AD
+        | [<JsonUnionCase("AE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AE
+        | [<JsonUnionCase("AF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AF
+        | [<JsonUnionCase("AG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AG
+        | [<JsonUnionCase("AI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AI
+        | [<JsonUnionCase("AL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AL
+        | [<JsonUnionCase("AM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AM
+        | [<JsonUnionCase("AO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AO
+        | [<JsonUnionCase("AQ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AQ
+        | [<JsonUnionCase("AR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AR
+        | [<JsonUnionCase("AT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AT
+        | [<JsonUnionCase("AU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AU
+        | [<JsonUnionCase("AW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AW
+        | [<JsonUnionCase("AX")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AX
+        | [<JsonUnionCase("AZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'AZ
+        | [<JsonUnionCase("BA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BA
+        | [<JsonUnionCase("BB")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BB
+        | [<JsonUnionCase("BD")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BD
+        | [<JsonUnionCase("BE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BE
+        | [<JsonUnionCase("BF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BF
+        | [<JsonUnionCase("BG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BG
+        | [<JsonUnionCase("BH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BH
+        | [<JsonUnionCase("BI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BI
+        | [<JsonUnionCase("BJ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BJ
+        | [<JsonUnionCase("BL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BL
+        | [<JsonUnionCase("BM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BM
+        | [<JsonUnionCase("BN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BN
+        | [<JsonUnionCase("BO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BO
+        | [<JsonUnionCase("BQ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BQ
+        | [<JsonUnionCase("BR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BR
+        | [<JsonUnionCase("BS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BS
+        | [<JsonUnionCase("BT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BT
+        | [<JsonUnionCase("BV")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BV
+        | [<JsonUnionCase("BW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BW
+        | [<JsonUnionCase("BY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BY
+        | [<JsonUnionCase("BZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'BZ
+        | [<JsonUnionCase("CA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CA
+        | [<JsonUnionCase("CD")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CD
+        | [<JsonUnionCase("CF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CF
+        | [<JsonUnionCase("CG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CG
+        | [<JsonUnionCase("CH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CH
+        | [<JsonUnionCase("CI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CI
+        | [<JsonUnionCase("CK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CK
+        | [<JsonUnionCase("CL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CL
+        | [<JsonUnionCase("CM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CM
+        | [<JsonUnionCase("CN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CN
+        | [<JsonUnionCase("CO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CO
+        | [<JsonUnionCase("CR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CR
+        | [<JsonUnionCase("CV")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CV
+        | [<JsonUnionCase("CW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CW
+        | [<JsonUnionCase("CY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CY
+        | [<JsonUnionCase("CZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'CZ
+        | [<JsonUnionCase("DE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'DE
+        | [<JsonUnionCase("DJ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'DJ
+        | [<JsonUnionCase("DK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'DK
+        | [<JsonUnionCase("DM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'DM
+        | [<JsonUnionCase("DO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'DO
+        | [<JsonUnionCase("DZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'DZ
+        | [<JsonUnionCase("EC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'EC
+        | [<JsonUnionCase("EE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'EE
+        | [<JsonUnionCase("EG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'EG
+        | [<JsonUnionCase("EH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'EH
+        | [<JsonUnionCase("ER")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ER
+        | [<JsonUnionCase("ES")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ES
+        | [<JsonUnionCase("ET")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ET
+        | [<JsonUnionCase("FI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'FI
+        | [<JsonUnionCase("FJ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'FJ
+        | [<JsonUnionCase("FK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'FK
+        | [<JsonUnionCase("FO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'FO
+        | [<JsonUnionCase("FR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'FR
+        | [<JsonUnionCase("GA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GA
+        | [<JsonUnionCase("GB")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GB
+        | [<JsonUnionCase("GD")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GD
+        | [<JsonUnionCase("GE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GE
+        | [<JsonUnionCase("GF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GF
+        | [<JsonUnionCase("GG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GG
+        | [<JsonUnionCase("GH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GH
+        | [<JsonUnionCase("GI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GI
+        | [<JsonUnionCase("GL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GL
+        | [<JsonUnionCase("GM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GM
+        | [<JsonUnionCase("GN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GN
+        | [<JsonUnionCase("GP")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GP
+        | [<JsonUnionCase("GQ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GQ
+        | [<JsonUnionCase("GR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GR
+        | [<JsonUnionCase("GS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GS
+        | [<JsonUnionCase("GT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GT
+        | [<JsonUnionCase("GU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GU
+        | [<JsonUnionCase("GW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GW
+        | [<JsonUnionCase("GY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'GY
+        | [<JsonUnionCase("HK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'HK
+        | [<JsonUnionCase("HN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'HN
+        | [<JsonUnionCase("HR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'HR
+        | [<JsonUnionCase("HT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'HT
+        | [<JsonUnionCase("HU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'HU
+        | [<JsonUnionCase("ID")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ID
+        | [<JsonUnionCase("IE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IE
+        | [<JsonUnionCase("IL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IL
+        | [<JsonUnionCase("IM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IM
+        | [<JsonUnionCase("IN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IN
+        | [<JsonUnionCase("IO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IO
+        | [<JsonUnionCase("IQ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IQ
+        | [<JsonUnionCase("IS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IS
+        | [<JsonUnionCase("IT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'IT
+        | [<JsonUnionCase("JE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'JE
+        | [<JsonUnionCase("JM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'JM
+        | [<JsonUnionCase("JO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'JO
+        | [<JsonUnionCase("JP")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'JP
+        | [<JsonUnionCase("KE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KE
+        | [<JsonUnionCase("KG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KG
+        | [<JsonUnionCase("KH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KH
+        | [<JsonUnionCase("KI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KI
+        | [<JsonUnionCase("KM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KM
+        | [<JsonUnionCase("KN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KN
+        | [<JsonUnionCase("KR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KR
+        | [<JsonUnionCase("KW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KW
+        | [<JsonUnionCase("KY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KY
+        | [<JsonUnionCase("KZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'KZ
+        | [<JsonUnionCase("LA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LA
+        | [<JsonUnionCase("LB")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LB
+        | [<JsonUnionCase("LC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LC
+        | [<JsonUnionCase("LI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LI
+        | [<JsonUnionCase("LK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LK
+        | [<JsonUnionCase("LR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LR
+        | [<JsonUnionCase("LS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LS
+        | [<JsonUnionCase("LT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LT
+        | [<JsonUnionCase("LU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LU
+        | [<JsonUnionCase("LV")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LV
+        | [<JsonUnionCase("LY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'LY
+        | [<JsonUnionCase("MA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MA
+        | [<JsonUnionCase("MC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MC
+        | [<JsonUnionCase("MD")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MD
+        | [<JsonUnionCase("ME")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ME
+        | [<JsonUnionCase("MF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MF
+        | [<JsonUnionCase("MG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MG
+        | [<JsonUnionCase("MK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MK
+        | [<JsonUnionCase("ML")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ML
+        | [<JsonUnionCase("MM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MM
+        | [<JsonUnionCase("MN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MN
+        | [<JsonUnionCase("MO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MO
+        | [<JsonUnionCase("MQ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MQ
+        | [<JsonUnionCase("MR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MR
+        | [<JsonUnionCase("MS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MS
+        | [<JsonUnionCase("MT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MT
+        | [<JsonUnionCase("MU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MU
+        | [<JsonUnionCase("MV")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MV
+        | [<JsonUnionCase("MW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MW
+        | [<JsonUnionCase("MX")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MX
+        | [<JsonUnionCase("MY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MY
+        | [<JsonUnionCase("MZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'MZ
+        | [<JsonUnionCase("NA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NA
+        | [<JsonUnionCase("NC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NC
+        | [<JsonUnionCase("NE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NE
+        | [<JsonUnionCase("NG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NG
+        | [<JsonUnionCase("NI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NI
+        | [<JsonUnionCase("NL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NL
+        | [<JsonUnionCase("NO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NO
+        | [<JsonUnionCase("NP")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NP
+        | [<JsonUnionCase("NR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NR
+        | [<JsonUnionCase("NU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NU
+        | [<JsonUnionCase("NZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'NZ
+        | [<JsonUnionCase("OM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'OM
+        | [<JsonUnionCase("PA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PA
+        | [<JsonUnionCase("PE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PE
+        | [<JsonUnionCase("PF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PF
+        | [<JsonUnionCase("PG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PG
+        | [<JsonUnionCase("PH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PH
+        | [<JsonUnionCase("PK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PK
+        | [<JsonUnionCase("PL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PL
+        | [<JsonUnionCase("PM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PM
+        | [<JsonUnionCase("PN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PN
+        | [<JsonUnionCase("PR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PR
+        | [<JsonUnionCase("PS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PS
+        | [<JsonUnionCase("PT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PT
+        | [<JsonUnionCase("PY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'PY
+        | [<JsonUnionCase("QA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'QA
+        | [<JsonUnionCase("RE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'RE
+        | [<JsonUnionCase("RO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'RO
+        | [<JsonUnionCase("RS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'RS
+        | [<JsonUnionCase("RU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'RU
+        | [<JsonUnionCase("RW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'RW
+        | [<JsonUnionCase("SA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SA
+        | [<JsonUnionCase("SB")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SB
+        | [<JsonUnionCase("SC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SC
+        | [<JsonUnionCase("SE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SE
+        | [<JsonUnionCase("SG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SG
+        | [<JsonUnionCase("SH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SH
+        | [<JsonUnionCase("SI")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SI
+        | [<JsonUnionCase("SJ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SJ
+        | [<JsonUnionCase("SK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SK
+        | [<JsonUnionCase("SL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SL
+        | [<JsonUnionCase("SM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SM
+        | [<JsonUnionCase("SN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SN
+        | [<JsonUnionCase("SO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SO
+        | [<JsonUnionCase("SR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SR
+        | [<JsonUnionCase("SS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SS
+        | [<JsonUnionCase("ST")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ST
+        | [<JsonUnionCase("SV")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SV
+        | [<JsonUnionCase("SX")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SX
+        | [<JsonUnionCase("SZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'SZ
+        | [<JsonUnionCase("TA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TA
+        | [<JsonUnionCase("TC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TC
+        | [<JsonUnionCase("TD")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TD
+        | [<JsonUnionCase("TF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TF
+        | [<JsonUnionCase("TG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TG
+        | [<JsonUnionCase("TH")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TH
+        | [<JsonUnionCase("TJ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TJ
+        | [<JsonUnionCase("TK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TK
+        | [<JsonUnionCase("TL")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TL
+        | [<JsonUnionCase("TM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TM
+        | [<JsonUnionCase("TN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TN
+        | [<JsonUnionCase("TO")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TO
+        | [<JsonUnionCase("TR")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TR
+        | [<JsonUnionCase("TT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TT
+        | [<JsonUnionCase("TV")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TV
+        | [<JsonUnionCase("TW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TW
+        | [<JsonUnionCase("TZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'TZ
+        | [<JsonUnionCase("UA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'UA
+        | [<JsonUnionCase("UG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'UG
+        | [<JsonUnionCase("US")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'US
+        | [<JsonUnionCase("UY")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'UY
+        | [<JsonUnionCase("UZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'UZ
+        | [<JsonUnionCase("VA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'VA
+        | [<JsonUnionCase("VC")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'VC
+        | [<JsonUnionCase("VE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'VE
+        | [<JsonUnionCase("VG")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'VG
+        | [<JsonUnionCase("VN")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'VN
+        | [<JsonUnionCase("VU")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'VU
+        | [<JsonUnionCase("WF")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'WF
+        | [<JsonUnionCase("WS")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'WS
+        | [<JsonUnionCase("XK")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'XK
+        | [<JsonUnionCase("YE")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'YE
+        | [<JsonUnionCase("YT")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'YT
+        | [<JsonUnionCase("ZA")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ZA
+        | [<JsonUnionCase("ZM")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ZM
+        | [<JsonUnionCase("ZW")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ZW
+        | [<JsonUnionCase("ZZ")>] PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries'ZZ
 
     and PaymentSource =
-        | Account of Account
-        | AlipayAccount of AlipayAccount
-        | BankAccount of BankAccount
-        | BitcoinReceiver of BitcoinReceiver
-        | Card of Card
-        | Source of Source
+        | PaymentSource'Account of Account
+        | PaymentSource'AlipayAccount of AlipayAccount
+        | PaymentSource'BankAccount of BankAccount
+        | PaymentSource'BitcoinReceiver of BitcoinReceiver
+        | PaymentSource'Card of Card
+        | PaymentSource'Source of Source
 
     ///A `Payout` object is created when you receive funds from Stripe, or when you
     ///initiate a payout to either a bank account or debit card of a [connected
@@ -10086,251 +6847,130 @@ module StripeModel =
     ///industry.
     ///
     ///Related guide: [Receiving Payouts](https://stripe.com/docs/payouts).
-    and Payout = {
+    and Payout (amount: int, arrivalDate: int, automatic: bool, balanceTransaction: PayoutBalanceTransactionDU option, created: int, currency: string, description: string option, destination: PayoutDestinationDU option, failureBalanceTransaction: PayoutFailureBalanceTransactionDU option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string> option, method: string, object: PayoutObject, originalPayout: PayoutOriginalPayoutDU option, reversedBy: PayoutReversedByDU option, sourceType: string, statementDescriptor: string option, status: string, ``type``: PayoutType) =
 
-        ///Amount (in %s) to be transferred to your bank account or debit card.
-        Amount: int
-
-        ///Date the payout is expected to arrive in the bank. This factors in delays like weekends or bank holidays.
-        ArrivalDate: int
-
-        ///Returns `true` if the payout was created by an [automated payout schedule](https://stripe.com/docs/payouts#payout-schedule), and `false` if it was [requested manually](https://stripe.com/docs/payouts#manual-payouts).
-        Automatic: bool
-
-        ///ID of the balance transaction that describes the impact of this payout on your account balance.
-        BalanceTransaction: PayoutBalanceTransactionDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///ID of the bank account or card the payout was sent to.
-        Destination: PayoutDestinationDU
-
-        ///If the payout failed or was canceled, this will be the ID of the balance transaction that reversed the initial balance transaction, and puts the funds from the failed payout back in your balance.
-        FailureBalanceTransaction: PayoutFailureBalanceTransactionDU
-
-        ///Error code explaining reason for payout failure if available. See [Types of payout failures](https://stripe.com/docs/api#payout_failures) for a list of failure codes.
-        FailureCode: string
-
-        ///Message to user further explaining reason for payout failure if available.
-        FailureMessage: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The method used to send this payout, which can be `standard` or `instant`. `instant` is only supported for payouts to debit cards. (See [Instant payouts for marketplaces](https://stripe.com/blog/instant-payouts-for-marketplaces) for more information.)
-        Method: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PayoutObject
-
-        ///If the payout reverses another, this is the ID of the original payout.
-        OriginalPayout: PayoutOriginalPayoutDU
-
-        ///If the payout was reversed, this is the ID of the payout that reverses this payout.
-        ReversedBy: PayoutReversedByDU
-
-        ///The source balance this payout came from. One of `card`, `fpx`, or `bank_account`.
-        SourceType: string
-
-        ///Extra information about a payout to be displayed on the user's bank statement.
-        StatementDescriptor: string
-
-        ///Current status of the payout: `paid`, `pending`, `in_transit`, `canceled` or `failed`. A payout is `pending` until it is submitted to the bank, when it becomes `in_transit`. The status then changes to `paid` if the transaction goes through, or to `failed` or `canceled` (within 5 business days). Some failed payouts may initially show as `paid` but then change to `failed`.
-        Status: string
-
-        ///Can be `bank_account` or `card`.
-        Type: PayoutType
-
-    }
+        member _.Amount = amount
+        member _.ArrivalDate = arrivalDate
+        member _.Automatic = automatic
+        member _.BalanceTransaction = balanceTransaction
+        member _.Created = created
+        member _.Currency = currency
+        member _.Description = description
+        member _.Destination = destination
+        member _.FailureBalanceTransaction = failureBalanceTransaction
+        member _.FailureCode = failureCode
+        member _.FailureMessage = failureMessage
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Method = method
+        member _.Object = object
+        member _.OriginalPayout = originalPayout
+        member _.ReversedBy = reversedBy
+        member _.SourceType = sourceType
+        member _.StatementDescriptor = statementDescriptor
+        member _.Status = status
+        member _.Type = ``type``
 
     and PayoutObject =
-        | Payout
+        | PayoutObject'Payout
 
     and PayoutType =
-        | BankAccount
-        | Card
+        | PayoutType'BankAccount
+        | PayoutType'Card
 
     and PayoutBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | PayoutBalanceTransactionDU'String of string
+        | PayoutBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and PayoutDestinationDU =
-        | String of string
-        | ExternalAccount of ExternalAccount
-        | DeletedExternalAccount of DeletedExternalAccount
+        | PayoutDestinationDU'String of string
+        | PayoutDestinationDU'ExternalAccount of ExternalAccount
+        | PayoutDestinationDU'DeletedExternalAccount of DeletedExternalAccount
 
     and PayoutFailureBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | PayoutFailureBalanceTransactionDU'String of string
+        | PayoutFailureBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and PayoutOriginalPayoutDU =
-        | String of string
-        | Payout of Payout
+        | PayoutOriginalPayoutDU'String of string
+        | PayoutOriginalPayoutDU'Payout of Payout
 
     and PayoutReversedByDU =
-        | String of string
-        | Payout of Payout
+        | PayoutReversedByDU'String of string
+        | PayoutReversedByDU'Payout of Payout
 
     ///
-    and Period = {
+    and Period (``end``: int option, start: int option) =
 
-        ///The end date of this usage period. All usage up to and including this point in time is included.
-        End: int
-
-        ///The start date of this usage period. All usage after this point in time is included.
-        Start: int
-
-    }
+        member _.End = ``end``
+        member _.Start = start
 
     ///This is an object representing a person associated with a Stripe account.
     ///
     ///Related guide: [Handling Identity Verification with the API](https://stripe.com/docs/connect/identity-verification-api#person-information).
-    and Person = {
+    and Person (created: int, id: string, object: PersonObject, ?account: string, ?address: Address, ?addressKana: PersonAddressKanaDU option, ?addressKanji: PersonAddressKanjiDU option, ?dob: LegalEntityDob, ?email: string option, ?firstName: string option, ?firstNameKana: string option, ?firstNameKanji: string option, ?gender: string option, ?idNumberProvided: bool, ?lastName: string option, ?lastNameKana: string option, ?lastNameKanji: string option, ?maidenName: string option, ?metadata: Map<string, string>, ?phone: string option, ?politicalExposure: PersonPoliticalExposure, ?relationship: PersonRelationship, ?requirements: PersonRequirementsDU option, ?ssnLast4Provided: bool, ?verification: LegalEntityPersonVerification) =
 
-        ///The account the person is associated with.
-        Account: string option
-
-        Address: Address option
-
-        ///The Kana variation of the person's address (Japan only).
-        AddressKana: PersonAddressKanaDU option
-
-        ///The Kanji variation of the person's address (Japan only).
-        AddressKanji: PersonAddressKanjiDU option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        Dob: LegalEntityDob option
-
-        ///The person's email address.
-        Email: string option
-
-        ///The person's first name.
-        FirstName: string option
-
-        ///The Kana variation of the person's first name (Japan only).
-        FirstNameKana: string option
-
-        ///The Kanji variation of the person's first name (Japan only).
-        FirstNameKanji: string option
-
-        ///The person's gender (International regulations require either "male" or "female").
-        Gender: string option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Whether the person's `id_number` was provided.
-        IdNumberProvided: bool option
-
-        ///The person's last name.
-        LastName: string option
-
-        ///The Kana variation of the person's last name (Japan only).
-        LastNameKana: string option
-
-        ///The Kanji variation of the person's last name (Japan only).
-        LastNameKanji: string option
-
-        ///The person's maiden name.
-        MaidenName: string option
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PersonObject
-
-        ///The person's phone number.
-        Phone: string option
-
-        ///Indicates if the person or any of their representatives, family members, or other closely related persons, declares that they hold or have held an important public job or function, in any jurisdiction.
-        PoliticalExposure: PersonPoliticalExposure option
-
-        Relationship: PersonRelationship option
-
-        ///Information about the requirements for this person, including what information needs to be collected, and by when.
-        Requirements: PersonRequirementsDU option
-
-        ///Whether the last four digits of the person's Social Security number have been provided (U.S. only).
-        SsnLast4Provided: bool option
-
-        Verification: LegalEntityPersonVerification option
-
-    }
+        member _.Account = account
+        member _.Address = address
+        member _.AddressKana = addressKana |> Option.flatten
+        member _.AddressKanji = addressKanji |> Option.flatten
+        member _.Created = created
+        member _.Dob = dob
+        member _.Email = email |> Option.flatten
+        member _.FirstName = firstName |> Option.flatten
+        member _.FirstNameKana = firstNameKana |> Option.flatten
+        member _.FirstNameKanji = firstNameKanji |> Option.flatten
+        member _.Gender = gender |> Option.flatten
+        member _.Id = id
+        member _.IdNumberProvided = idNumberProvided
+        member _.LastName = lastName |> Option.flatten
+        member _.LastNameKana = lastNameKana |> Option.flatten
+        member _.LastNameKanji = lastNameKanji |> Option.flatten
+        member _.MaidenName = maidenName |> Option.flatten
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Phone = phone |> Option.flatten
+        member _.PoliticalExposure = politicalExposure
+        member _.Relationship = relationship
+        member _.Requirements = requirements |> Option.flatten
+        member _.SsnLast4Provided = ssnLast4Provided
+        member _.Verification = verification
 
     and PersonObject =
-        | Person
+        | PersonObject'Person
 
     and PersonPoliticalExposure =
-        | Existing
-        | None
+        | PersonPoliticalExposure'Existing
+        | PersonPoliticalExposure'None
 
     and PersonAddressKanaDU =
-        | LegalEntityJapanAddress of LegalEntityJapanAddress
+        | PersonAddressKanaDU'LegalEntityJapanAddress of LegalEntityJapanAddress
 
     and PersonAddressKanjiDU =
-        | LegalEntityJapanAddress of LegalEntityJapanAddress
+        | PersonAddressKanjiDU'LegalEntityJapanAddress of LegalEntityJapanAddress
 
     and PersonRequirementsDU =
-        | PersonRequirements of PersonRequirements
+        | PersonRequirementsDU'PersonRequirements of PersonRequirements
 
     ///
-    and PersonRelationship = {
+    and PersonRelationship (director: bool option, executive: bool option, owner: bool option, percentOwnership: decimal option, representative: bool option, title: string option) =
 
-        ///Whether the person is a director of the account's legal entity. Currently only required for accounts in the EU. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
-        Director: bool
-
-        ///Whether the person has significant responsibility to control, manage, or direct the organization.
-        Executive: bool
-
-        ///Whether the person is an owner of the account’s legal entity.
-        Owner: bool
-
-        ///The percent owned by the person of the account's legal entity.
-        PercentOwnership: decimal
-
-        ///Whether the person is authorized as the primary representative of the account. This is the person nominated by the business to provide information about themselves, and general information about the account. There can only be one representative at any given time. At the time the account is created, this person should be set to the person responsible for opening the account.
-        Representative: bool
-
-        ///The person's title (e.g., CEO, Support Engineer).
-        Title: string
-
-    }
+        member _.Director = director
+        member _.Executive = executive
+        member _.Owner = owner
+        member _.PercentOwnership = percentOwnership
+        member _.Representative = representative
+        member _.Title = title
 
     ///
-    and PersonRequirements = {
+    and PersonRequirements (currentlyDue: string list, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
 
-        ///Fields that need to be collected to keep the person's account enabled. If not collected by the account's `current_deadline`, these fields appear in `past_due` as well, and the account is disabled.
-        CurrentlyDue: string list
-
-        ///The fields that are `currently_due` and need to be collected again because validation or verification failed for some reason.
-        Errors: AccountRequirementsError list
-
-        ///Fields that need to be collected assuming all volume thresholds are reached. As fields are needed, they are moved to `currently_due` and the account's `current_deadline` is set.
-        EventuallyDue: string list
-
-        ///Fields that weren't collected by the account's `current_deadline`. These fields need to be collected to enable payouts for the person's account.
-        PastDue: string list
-
-        ///Fields that may become required depending on the results of verification or review. An empty array unless an asynchronous verification is pending. If verification fails, the fields in this array become required and move to `currently_due` or `past_due`.
-        PendingVerification: string list
-
-    }
+        member _.CurrentlyDue = currentlyDue
+        member _.Errors = errors
+        member _.EventuallyDue = eventuallyDue
+        member _.PastDue = pastDue
+        member _.PendingVerification = pendingVerification
 
     ///You can now model subscriptions more flexibly using the [Prices API](https://stripe.com/docs/api#prices). It replaces the Plans API and is backwards compatible to simplify your migration.
     ///
@@ -10340,147 +6980,84 @@ module StripeModel =
     ///For example, you might have a single "gold" product that has plans for $10/month, $100/year, €9/month, and €90/year.
     ///
     ///Related guides: [Set up a subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription) and more about [products and prices](https://stripe.com/docs/billing/prices-guide).
-    and Plan = {
+    and Plan (active: bool, aggregateUsage: PlanAggregateUsage option, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: int, currency: string, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, nickname: string option, object: PlanObject, product: PlanProductDU option, tiersMode: PlanTiersMode option, transformUsage: PlanTransformUsageDU option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
 
-        ///Whether the plan can be used for new purchases.
-        Active: bool
-
-        ///Specifies a usage aggregation strategy for plans of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
-        AggregateUsage: PlanAggregateUsage
-
-        ///The unit amount in %s to be charged, represented as a whole integer if possible.
-        Amount: int
-
-        ///The unit amount in %s to be charged, represented as a decimal string with at most 12 decimal places.
-        AmountDecimal: string
-
-        ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `amount`) will be charged per unit in `quantity` (for plans with `usage_type=licensed`), or per unit of total usage (for plans with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
-        BillingScheme: PlanBillingScheme
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
-        Interval: PlanInterval
-
-        ///The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months.
-        IntervalCount: int
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///A brief description of the plan, hidden from customers.
-        Nickname: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PlanObject
-
-        ///The product whose pricing this plan determines.
-        Product: PlanProductDU
-
-        ///Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
-        Tiers: PlanTier list
-
-        ///Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
-        TiersMode: PlanTiersMode
-
-        ///Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.
-        TransformUsage: PlanTransformUsageDU
-
-        ///Default number of trial days when subscribing a customer to this plan using [`trial_from_plan=true`](https://stripe.com/docs/api#create_subscription-trial_from_plan).
-        TrialPeriodDays: int
-
-        ///Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`.
-        UsageType: PlanUsageType
-
-    }
+        member _.Active = active
+        member _.AggregateUsage = aggregateUsage
+        member _.Amount = amount
+        member _.AmountDecimal = amountDecimal
+        member _.BillingScheme = billingScheme
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Interval = interval
+        member _.IntervalCount = intervalCount
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Nickname = nickname
+        member _.Object = object
+        member _.Product = product
+        member _.Tiers = tiers
+        member _.TiersMode = tiersMode
+        member _.TransformUsage = transformUsage
+        member _.TrialPeriodDays = trialPeriodDays
+        member _.UsageType = usageType
 
     and PlanAggregateUsage =
-        | LastDuringPeriod
-        | LastEver
-        | Max
-        | Sum
+        | PlanAggregateUsage'LastDuringPeriod
+        | PlanAggregateUsage'LastEver
+        | PlanAggregateUsage'Max
+        | PlanAggregateUsage'Sum
 
     and PlanBillingScheme =
-        | PerUnit
-        | Tiered
+        | PlanBillingScheme'PerUnit
+        | PlanBillingScheme'Tiered
 
     and PlanInterval =
-        | Day
-        | Month
-        | Week
-        | Year
+        | PlanInterval'Day
+        | PlanInterval'Month
+        | PlanInterval'Week
+        | PlanInterval'Year
 
     and PlanObject =
-        | Plan
+        | PlanObject'Plan
 
     and PlanTiersMode =
-        | Graduated
-        | Volume
+        | PlanTiersMode'Graduated
+        | PlanTiersMode'Volume
 
     and PlanUsageType =
-        | Licensed
-        | Metered
+        | PlanUsageType'Licensed
+        | PlanUsageType'Metered
 
     and PlanProductDU =
-        | String of string
-        | Product of Product
-        | DeletedProduct of DeletedProduct
+        | PlanProductDU'String of string
+        | PlanProductDU'Product of Product
+        | PlanProductDU'DeletedProduct of DeletedProduct
 
     and PlanTransformUsageDU =
-        | TransformUsage of TransformUsage
+        | PlanTransformUsageDU'TransformUsage of TransformUsage
 
     ///
-    and PlanTier = {
+    and PlanTier (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
 
-        ///Price for the entire tier.
-        FlatAmount: int
-
-        ///Same as `flat_amount`, but contains a decimal value with at most 12 decimal places.
-        FlatAmountDecimal: string
-
-        ///Per unit price for units relevant to the tier.
-        UnitAmount: int
-
-        ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string
-
-        ///Up to and including to this quantity will be contained in the tier.
-        UpTo: int
-
-    }
+        member _.FlatAmount = flatAmount
+        member _.FlatAmountDecimal = flatAmountDecimal
+        member _.UnitAmount = unitAmount
+        member _.UnitAmountDecimal = unitAmountDecimal
+        member _.UpTo = upTo
 
     ///
-    and PlatformTaxFee = {
+    and PlatformTaxFee (account: string, id: string, object: PlatformTaxFeeObject, sourceTransaction: string, ``type``: string) =
 
-        ///The Connected account that incurred this charge.
-        Account: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PlatformTaxFeeObject
-
-        ///The payment object that caused this tax to be inflicted.
-        SourceTransaction: string
-
-        ///The type of tax (VAT).
-        Type: string
-
-    }
+        member _.Account = account
+        member _.Id = id
+        member _.Object = object
+        member _.SourceTransaction = sourceTransaction
+        member _.Type = ``type``
 
     and PlatformTaxFeeObject =
-        | PlatformTaxFee
+        | PlatformTaxFeeObject'PlatformTaxFee
 
     ///Prices define the unit cost, currency, and (optional) billing cycle for both recurring and one-time purchases of products.
     ///[Products](https://stripe.com/docs/api#products) help you track inventory or provisioning, and prices help you track payment terms. Different physical goods or levels of service should be represented by products, and pricing options should be represented by prices. This approach lets you change prices without having to change your provisioning scheme.
@@ -10488,403 +7065,213 @@ module StripeModel =
     ///For example, you might have a single "gold" product that has prices for $10/month, $100/year, and €9 once.
     ///
     ///Related guides: [Set up a subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription), [create an invoice](https://stripe.com/docs/billing/invoices/create), and more about [products and prices](https://stripe.com/docs/billing/prices-guide).
-    and Price = {
+    and Price (active: bool, billingScheme: PriceBillingScheme, created: int, currency: string, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, object: PriceObject, product: PriceProductDU, recurring: PriceRecurringDU option, tiersMode: PriceTiersMode option, transformQuantity: PriceTransformQuantityDU option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
 
-        ///Whether the price can be used for new purchases.
-        Active: bool
-
-        ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `unit_amount` or `unit_amount_decimal`) will be charged per unit in `quantity` (for prices with `usage_type=licensed`), or per unit of total usage (for prices with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
-        BillingScheme: PriceBillingScheme
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///A lookup key used to retrieve prices dynamically from a static string.
-        LookupKey: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///A brief description of the plan, hidden from customers.
-        Nickname: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PriceObject
-
-        ///The ID of the product this price is associated with.
-        Product: PriceProductDU
-
-        ///The recurring components of a price such as `interval` and `usage_type`.
-        Recurring: PriceRecurringDU
-
-        ///Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
-        Tiers: PriceTier list
-
-        ///Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
-        TiersMode: PriceTiersMode
-
-        ///Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.
-        TransformQuantity: PriceTransformQuantityDU
-
-        ///One of `one_time` or `recurring` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase.
-        Type: PriceType
-
-        ///The unit amount in %s to be charged, represented as a whole integer if possible.
-        UnitAmount: int
-
-        ///The unit amount in %s to be charged, represented as a decimal string with at most 12 decimal places.
-        UnitAmountDecimal: string
-
-    }
+        member _.Active = active
+        member _.BillingScheme = billingScheme
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.LookupKey = lookupKey
+        member _.Metadata = metadata
+        member _.Nickname = nickname
+        member _.Object = object
+        member _.Product = product
+        member _.Recurring = recurring
+        member _.Tiers = tiers
+        member _.TiersMode = tiersMode
+        member _.TransformQuantity = transformQuantity
+        member _.Type = ``type``
+        member _.UnitAmount = unitAmount
+        member _.UnitAmountDecimal = unitAmountDecimal
 
     and PriceBillingScheme =
-        | PerUnit
-        | Tiered
+        | PriceBillingScheme'PerUnit
+        | PriceBillingScheme'Tiered
 
     and PriceObject =
-        | Price
+        | PriceObject'Price
 
     and PriceTiersMode =
-        | Graduated
-        | Volume
+        | PriceTiersMode'Graduated
+        | PriceTiersMode'Volume
 
     and PriceType =
-        | OneTime
-        | Recurring
+        | PriceType'OneTime
+        | PriceType'Recurring
 
     and PriceProductDU =
-        | String of string
-        | Product of Product
-        | DeletedProduct of DeletedProduct
+        | PriceProductDU'String of string
+        | PriceProductDU'Product of Product
+        | PriceProductDU'DeletedProduct of DeletedProduct
 
     and PriceRecurringDU =
-        | Recurring of Recurring
+        | PriceRecurringDU'Recurring of Recurring
 
     and PriceTransformQuantityDU =
-        | TransformQuantity of TransformQuantity
+        | PriceTransformQuantityDU'TransformQuantity of TransformQuantity
 
     ///
-    and PriceTier = {
+    and PriceTier (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
 
-        ///Price for the entire tier.
-        FlatAmount: int
-
-        ///Same as `flat_amount`, but contains a decimal value with at most 12 decimal places.
-        FlatAmountDecimal: string
-
-        ///Per unit price for units relevant to the tier.
-        UnitAmount: int
-
-        ///Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
-        UnitAmountDecimal: string
-
-        ///Up to and including to this quantity will be contained in the tier.
-        UpTo: int
-
-    }
+        member _.FlatAmount = flatAmount
+        member _.FlatAmountDecimal = flatAmountDecimal
+        member _.UnitAmount = unitAmount
+        member _.UnitAmountDecimal = unitAmountDecimal
+        member _.UpTo = upTo
 
     ///Products describe the specific goods or services you offer to your customers.
     ///For example, you might offer a Standard and Premium version of your goods or service; each version would be a separate Product.
     ///They can be used in conjunction with [Prices](https://stripe.com/docs/api#prices) to configure pricing in Checkout and Subscriptions.
     ///
     ///Related guides: [Set up a subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription) or accept [one-time payments with Checkout](https://stripe.com/docs/payments/checkout/client#create-products) and more about [Products and Prices](https://stripe.com/docs/billing/prices-guide)
-    and Product = {
+    and Product (active: bool, attributes: string list option, caption: string option, created: int, description: string option, id: string, images: string list, livemode: bool, metadata: Map<string, string>, name: string, object: ProductObject, packageDimensions: ProductPackageDimensionsDU option, shippable: bool option, statementDescriptor: string option, ``type``: ProductType, unitLabel: string option, updated: int, url: string option, ?deactivateOn: string list) =
 
-        ///Whether the product is currently available for purchase.
-        Active: bool
-
-        ///A list of up to 5 attributes that each SKU can provide values for (e.g., `["color", "size"]`).
-        Attributes: string list
-
-        ///A short one-line description of the product, meant to be displayable to the customer. Only applicable to products of `type=good`.
-        Caption: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///An array of connect application identifiers that cannot purchase this product. Only applicable to products of `type=good`.
-        DeactivateOn: string list option
-
-        ///The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
-        Description: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///A list of up to 8 URLs of images for this product, meant to be displayable to the customer.
-        Images: string list
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The product's name, meant to be displayable to the customer. Whenever this product is sold via a subscription, name will show up on associated invoice line item descriptions.
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ProductObject
-
-        ///The dimensions of this product for shipping purposes. A SKU associated with this product can override this value by having its own `package_dimensions`. Only applicable to products of `type=good`.
-        PackageDimensions: ProductPackageDimensionsDU
-
-        ///Whether this product is a shipped good. Only applicable to products of `type=good`.
-        Shippable: bool
-
-        ///Extra information about a product which will appear on your customer's credit card statement. In the case that multiple products are billed at once, the first statement descriptor will be used.
-        StatementDescriptor: string
-
-        ///The type of the product. The product is either of type `good`, which is eligible for use with Orders and SKUs, or `service`, which is eligible for use with Subscriptions and Plans.
-        Type: ProductType
-
-        ///A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions.
-        UnitLabel: string
-
-        ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        Updated: int
-
-        ///A URL of a publicly-accessible webpage for this product. Only applicable to products of `type=good`.
-        Url: string
-
-    }
+        member _.Active = active
+        member _.Attributes = attributes
+        member _.Caption = caption
+        member _.Created = created
+        member _.DeactivateOn = deactivateOn
+        member _.Description = description
+        member _.Id = id
+        member _.Images = images
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Name = name
+        member _.Object = object
+        member _.PackageDimensions = packageDimensions
+        member _.Shippable = shippable
+        member _.StatementDescriptor = statementDescriptor
+        member _.Type = ``type``
+        member _.UnitLabel = unitLabel
+        member _.Updated = updated
+        member _.Url = url
 
     and ProductObject =
-        | Product
+        | ProductObject'Product
 
     and ProductType =
-        | Good
-        | Service
+        | ProductType'Good
+        | ProductType'Service
 
     and ProductPackageDimensionsDU =
-        | PackageDimensions of PackageDimensions
+        | ProductPackageDimensionsDU'PackageDimensions of PackageDimensions
 
     ///A Promotion Code represents a customer-redeemable code for a coupon. It can be used to
     ///create multiple codes for a single coupon.
-    and PromotionCode = {
+    and PromotionCode (active: bool, code: string, coupon: Coupon, created: int, customer: PromotionCodeCustomerDU option, expiresAt: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, object: PromotionCodeObject, restrictions: PromotionCodesResourceRestrictions, timesRedeemed: int) =
 
-        ///Whether the promotion code is currently active. A promotion code is only active if the coupon is also valid.
-        Active: bool
-
-        ///The customer-facing code. Regardless of case, this code must be unique across all active promotion codes for each customer.
-        Code: string
-
-        Coupon: Coupon
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The customer that this promotion code can be used by.
-        Customer: PromotionCodeCustomerDU
-
-        ///Date at which the promotion code can no longer be redeemed.
-        ExpiresAt: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Maximum number of times this promotion code can be redeemed.
-        MaxRedemptions: int
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: PromotionCodeObject
-
-        Restrictions: PromotionCodesResourceRestrictions
-
-        ///Number of times this promotion code has been used.
-        TimesRedeemed: int
-
-    }
+        member _.Active = active
+        member _.Code = code
+        member _.Coupon = coupon
+        member _.Created = created
+        member _.Customer = customer
+        member _.ExpiresAt = expiresAt
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.MaxRedemptions = maxRedemptions
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Restrictions = restrictions
+        member _.TimesRedeemed = timesRedeemed
 
     and PromotionCodeObject =
-        | PromotionCode
+        | PromotionCodeObject'PromotionCode
 
     and PromotionCodeCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | PromotionCodeCustomerDU'String of string
+        | PromotionCodeCustomerDU'Customer of Customer
+        | PromotionCodeCustomerDU'DeletedCustomer of DeletedCustomer
 
     ///
-    and PromotionCodesResourceRestrictions = {
+    and PromotionCodesResourceRestrictions (firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: string option) =
 
-        ///A Boolean indicating if the Promotion Code should only be redeemed for Customers without any successful payments or invoices
-        FirstTimeTransaction: bool
-
-        ///Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
-        MinimumAmount: int
-
-        ///Three-letter [ISO code](https://stripe.com/docs/currencies) for minimum_amount
-        MinimumAmountCurrency: string
-
-    }
+        member _.FirstTimeTransaction = firstTimeTransaction
+        member _.MinimumAmount = minimumAmount
+        member _.MinimumAmountCurrency = minimumAmountCurrency
 
     ///An early fraud warning indicates that the card issuer has notified us that a
     ///charge may be fraudulent.
     ///
     ///Related guide: [Early Fraud Warnings](https://stripe.com/docs/disputes/measuring#early-fraud-warnings).
-    and RadarEarlyFraudWarning = {
+    and RadarEarlyFraudWarning (actionable: bool, charge: RadarEarlyFraudWarningChargeDU, created: int, fraudType: string, id: string, livemode: bool, object: RadarEarlyFraudWarningObject) =
 
-        ///An EFW is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an EFW, in order to avoid receiving a dispute later.
-        Actionable: bool
-
-        ///ID of the charge this early fraud warning is for, optionally expanded.
-        Charge: RadarEarlyFraudWarningChargeDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
-        FraudType: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: RadarEarlyFraudWarningObject
-
-    }
+        member _.Actionable = actionable
+        member _.Charge = charge
+        member _.Created = created
+        member _.FraudType = fraudType
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
 
     and RadarEarlyFraudWarningObject =
-        | RadarEarlyFraudWarning
+        | RadarEarlyFraudWarningObject'RadarEarlyFraudWarning
 
     and RadarEarlyFraudWarningChargeDU =
-        | String of string
-        | Charge of Charge
+        | RadarEarlyFraudWarningChargeDU'String of string
+        | RadarEarlyFraudWarningChargeDU'Charge of Charge
 
     ///Value lists allow you to group values together which can then be referenced in rules.
     ///
     ///Related guide: [Default Stripe Lists](https://stripe.com/docs/radar/lists#managing-list-items).
-    and RadarValueList = {
+    and RadarValueList (alias: string, created: int, createdBy: string, id: string, itemType: RadarValueListItemType, listItems: Map<string, string>, livemode: bool, metadata: Map<string, string>, name: string, object: RadarValueListObject) =
 
-        ///The name of the value list for use in rules.
-        Alias: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The name or email address of the user who created this value list.
-        CreatedBy: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The type of items in the value list. One of `card_fingerprint`, `card_bin`, `email`, `ip_address`, `country`, `string`, or `case_sensitive_string`.
-        ItemType: RadarValueListItemType
-
-        ///List of items contained within this value list.
-        ListItems: Map<string, string>
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The name of the value list.
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: RadarValueListObject
-
-    }
+        member _.Alias = alias
+        member _.Created = created
+        member _.CreatedBy = createdBy
+        member _.Id = id
+        member _.ItemType = itemType
+        member _.ListItems = listItems
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Name = name
+        member _.Object = object
 
     and RadarValueListItemType =
-        | CardBin
-        | CardFingerprint
-        | CaseSensitiveString
-        | Country
-        | Email
-        | IpAddress
-        | String
+        | RadarValueListItemType'CardBin
+        | RadarValueListItemType'CardFingerprint
+        | RadarValueListItemType'CaseSensitiveString
+        | RadarValueListItemType'Country
+        | RadarValueListItemType'Email
+        | RadarValueListItemType'IpAddress
+        | RadarValueListItemType'String
 
     and RadarValueListObject =
-        | RadarValueList
+        | RadarValueListObject'RadarValueList
 
     ///Value list items allow you to add specific values to a given Radar value list, which can then be used in rules.
     ///
     ///Related guide: [Managing List Items](https://stripe.com/docs/radar/lists#managing-list-items).
-    and RadarValueListItem = {
+    and RadarValueListItem (created: int, createdBy: string, id: string, livemode: bool, object: RadarValueListItemObject, value: string, valueList: string) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The name or email address of the user who added this item to the value list.
-        CreatedBy: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: RadarValueListItemObject
-
-        ///The value of the item.
-        Value: string
-
-        ///The identifier of the value list this item belongs to.
-        ValueList: string
-
-    }
+        member _.Created = created
+        member _.CreatedBy = createdBy
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Value = value
+        member _.ValueList = valueList
 
     and RadarValueListItemObject =
-        | RadarValueListItem
+        | RadarValueListItemObject'RadarValueListItem
 
     ///
-    and RadarReviewResourceLocation = {
+    and RadarReviewResourceLocation (city: string option, country: string option, latitude: decimal option, longitude: decimal option, region: string option) =
 
-        ///The city where the payment originated.
-        City: string
-
-        ///Two-letter ISO code representing the country where the payment originated.
-        Country: string
-
-        ///The geographic latitude where the payment originated.
-        Latitude: decimal
-
-        ///The geographic longitude where the payment originated.
-        Longitude: decimal
-
-        ///The state/county/province/region where the payment originated.
-        Region: string
-
-    }
+        member _.City = city
+        member _.Country = country
+        member _.Latitude = latitude
+        member _.Longitude = longitude
+        member _.Region = region
 
     ///
-    and RadarReviewResourceSession = {
+    and RadarReviewResourceSession (browser: string option, device: string option, platform: string option, version: string option) =
 
-        ///The browser used in this browser session (e.g., `Chrome`).
-        Browser: string
-
-        ///Information about the device used for the browser session (e.g., `Samsung SM-G930T`).
-        Device: string
-
-        ///The platform for the browser session (e.g., `Macintosh`).
-        Platform: string
-
-        ///The version for the browser session (e.g., `61.0.3163.100`).
-        Version: string
-
-    }
+        member _.Browser = browser
+        member _.Device = device
+        member _.Platform = platform
+        member _.Version = version
 
     ///With `Recipient` objects, you can transfer money from your Stripe account to a
     ///third-party bank account or debit card. The API allows you to create, delete,
@@ -10896,192 +7283,118 @@ module StripeModel =
     ///[Account objects](https://stripe.com/docs/api#account). Stripe accounts that don't already use
     ///recipients can no longer begin doing so. Please use `Account` objects
     ///instead.**
-    and Recipient = {
+    and Recipient (activeAccount: RecipientActiveAccountDU option, cards: Map<string, string> option, created: int, defaultCard: RecipientDefaultCardDU option, description: string option, email: string option, id: string, livemode: bool, metadata: Map<string, string>, migratedTo: RecipientMigratedToDU option, name: string option, object: RecipientObject, ``type``: string, verified: bool, ?rolledBackFrom: RecipientRolledBackFromDU) =
 
-        ///Hash describing the current account on the recipient, if there is one.
-        ActiveAccount: RecipientActiveAccountDU
-
-        Cards: Map<string, string>
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The default card to use for creating transfers to this recipient.
-        DefaultCard: RecipientDefaultCardDU
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        Email: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///The ID of the [Custom account](https://stripe.com/docs/connect/custom-accounts) this recipient was migrated to. If set, the recipient can no longer be updated, nor can transfers be made to it: use the Custom account instead.
-        MigratedTo: RecipientMigratedToDU
-
-        ///Full, legal name of the recipient.
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: RecipientObject
-
-        RolledBackFrom: RecipientRolledBackFromDU option
-
-        ///Type of the recipient, one of `individual` or `corporation`.
-        Type: string
-
-        ///Whether the recipient has been verified. This field is non-standard, and maybe removed in the future
-        Verified: bool
-
-    }
+        member _.ActiveAccount = activeAccount
+        member _.Cards = cards
+        member _.Created = created
+        member _.DefaultCard = defaultCard
+        member _.Description = description
+        member _.Email = email
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.MigratedTo = migratedTo
+        member _.Name = name
+        member _.Object = object
+        member _.RolledBackFrom = rolledBackFrom
+        member _.Type = ``type``
+        member _.Verified = verified
 
     and RecipientObject =
-        | Recipient
+        | RecipientObject'Recipient
 
     and RecipientActiveAccountDU =
-        | BankAccount of BankAccount
+        | RecipientActiveAccountDU'BankAccount of BankAccount
 
     and RecipientDefaultCardDU =
-        | String of string
-        | Card of Card
+        | RecipientDefaultCardDU'String of string
+        | RecipientDefaultCardDU'Card of Card
 
     and RecipientMigratedToDU =
-        | String of string
-        | Account of Account
+        | RecipientMigratedToDU'String of string
+        | RecipientMigratedToDU'Account of Account
 
     and RecipientRolledBackFromDU =
-        | String of string
-        | Account of Account
+        | RecipientRolledBackFromDU'String of string
+        | RecipientRolledBackFromDU'Account of Account
 
     ///
-    and Recurring = {
+    and Recurring (aggregateUsage: RecurringAggregateUsage option, interval: RecurringInterval, intervalCount: int, trialPeriodDays: int option, usageType: RecurringUsageType) =
 
-        ///Specifies a usage aggregation strategy for prices of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
-        AggregateUsage: RecurringAggregateUsage
-
-        ///The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
-        Interval: RecurringInterval
-
-        ///The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months.
-        IntervalCount: int
-
-        ///Default number of trial days when subscribing a customer to this price using [`trial_from_plan=true`](https://stripe.com/docs/api#create_subscription-trial_from_plan).
-        TrialPeriodDays: int
-
-        ///Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`.
-        UsageType: RecurringUsageType
-
-    }
+        member _.AggregateUsage = aggregateUsage
+        member _.Interval = interval
+        member _.IntervalCount = intervalCount
+        member _.TrialPeriodDays = trialPeriodDays
+        member _.UsageType = usageType
 
     and RecurringAggregateUsage =
-        | LastDuringPeriod
-        | LastEver
-        | Max
-        | Sum
+        | RecurringAggregateUsage'LastDuringPeriod
+        | RecurringAggregateUsage'LastEver
+        | RecurringAggregateUsage'Max
+        | RecurringAggregateUsage'Sum
 
     and RecurringInterval =
-        | Day
-        | Month
-        | Week
-        | Year
+        | RecurringInterval'Day
+        | RecurringInterval'Month
+        | RecurringInterval'Week
+        | RecurringInterval'Year
 
     and RecurringUsageType =
-        | Licensed
-        | Metered
+        | RecurringUsageType'Licensed
+        | RecurringUsageType'Metered
 
     ///`Refund` objects allow you to refund a charge that has previously been created
     ///but not yet refunded. Funds will be refunded to the credit or debit card that
     ///was originally charged.
     ///
     ///Related guide: [Refunds](https://stripe.com/docs/refunds).
-    and Refund = {
+    and Refund (amount: int, balanceTransaction: RefundBalanceTransactionDU option, charge: RefundChargeDU option, created: int, currency: string, id: string, metadata: Map<string, string> option, object: RefundObject, paymentIntent: RefundPaymentIntentDU option, reason: string option, receiptNumber: string option, sourceTransferReversal: RefundSourceTransferReversalDU option, status: string option, transferReversal: RefundTransferReversalDU option, ?description: string, ?failureBalanceTransaction: RefundFailureBalanceTransactionDU, ?failureReason: string) =
 
-        ///Amount, in %s.
-        Amount: int
-
-        ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: RefundBalanceTransactionDU
-
-        ///ID of the charge that was refunded.
-        Charge: RefundChargeDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users. (Available on non-card refunds only)
-        Description: string option
-
-        ///If the refund failed, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction.
-        FailureBalanceTransaction: RefundFailureBalanceTransactionDU option
-
-        ///If the refund failed, the reason for refund failure if known. Possible values are `lost_or_stolen_card`, `expired_or_canceled_card`, or `unknown`.
-        FailureReason: string option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: RefundObject
-
-        ///ID of the PaymentIntent that was refunded.
-        PaymentIntent: RefundPaymentIntentDU
-
-        ///Reason for the refund, either user-provided (`duplicate`, `fraudulent`, or `requested_by_customer`) or generated by Stripe internally (`expired_uncaptured_charge`).
-        Reason: string
-
-        ///This is the transaction number that appears on email receipts sent for this refund.
-        ReceiptNumber: string
-
-        ///The transfer reversal that is associated with the refund. Only present if the charge came from another Stripe account. See the Connect documentation for details.
-        SourceTransferReversal: RefundSourceTransferReversalDU
-
-        ///Status of the refund. For credit card refunds, this can be `pending`, `succeeded`, or `failed`. For other types of refunds, it can be `pending`, `succeeded`, `failed`, or `canceled`. Refer to our [refunds](https://stripe.com/docs/refunds#failed-refunds) documentation for more details.
-        Status: string
-
-        ///If the accompanying transfer was reversed, the transfer reversal object. Only applicable if the charge was created using the destination parameter.
-        TransferReversal: RefundTransferReversalDU
-
-    }
+        member _.Amount = amount
+        member _.BalanceTransaction = balanceTransaction
+        member _.Charge = charge
+        member _.Created = created
+        member _.Currency = currency
+        member _.Description = description
+        member _.FailureBalanceTransaction = failureBalanceTransaction
+        member _.FailureReason = failureReason
+        member _.Id = id
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.PaymentIntent = paymentIntent
+        member _.Reason = reason
+        member _.ReceiptNumber = receiptNumber
+        member _.SourceTransferReversal = sourceTransferReversal
+        member _.Status = status
+        member _.TransferReversal = transferReversal
 
     and RefundObject =
-        | Refund
+        | RefundObject'Refund
 
     and RefundBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | RefundBalanceTransactionDU'String of string
+        | RefundBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and RefundChargeDU =
-        | String of string
-        | Charge of Charge
+        | RefundChargeDU'String of string
+        | RefundChargeDU'Charge of Charge
 
     and RefundFailureBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | RefundFailureBalanceTransactionDU'String of string
+        | RefundFailureBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and RefundPaymentIntentDU =
-        | String of string
-        | PaymentIntent of PaymentIntent
+        | RefundPaymentIntentDU'String of string
+        | RefundPaymentIntentDU'PaymentIntent of PaymentIntent
 
     and RefundSourceTransferReversalDU =
-        | String of string
-        | TransferReversal of TransferReversal
+        | RefundSourceTransferReversalDU'String of string
+        | RefundSourceTransferReversalDU'TransferReversal of TransferReversal
 
     and RefundTransferReversalDU =
-        | String of string
-        | TransferReversal of TransferReversal
+        | RefundTransferReversalDU'String of string
+        | RefundTransferReversalDU'TransferReversal of TransferReversal
 
     ///The Report Run object represents an instance of a report type generated with
     ///specific run parameters. Once the object is created, Stripe begins processing the report.
@@ -11092,49 +7405,24 @@ module StripeModel =
     ///Note that reports can only be run based on your live-mode data (not test-mode
     ///data), and thus related requests must be made with a
     ///[live-mode API key](https://stripe.com/docs/keys#test-live-modes).
-    and ReportingReportRun = {
+    and ReportingReportRun (created: int, error: string option, id: string, livemode: bool, object: ReportingReportRunObject, parameters: FinancialReportingFinanceReportRunRunParameters, reportType: string, result: ReportingReportRunResultDU option, status: string, succeededAt: int option) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///If something should go wrong during the run, a message about the failure (populated when
-    /// `status=failed`).
-        Error: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Always `true`: reports can only be run on live-mode data.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ReportingReportRunObject
-
-        Parameters: FinancialReportingFinanceReportRunRunParameters
-
-        ///The ID of the [report type](https://stripe.com/docs/reports/report-types) to run, such as `"balance.summary.1"`.
-        ReportType: string
-
-        ///The file object representing the result of the report run (populated when
-    /// `status=succeeded`).
-        Result: ReportingReportRunResultDU
-
-        ///Status of this report run. This will be `pending` when the run is initially created.
-    /// When the run finishes, this will be set to `succeeded` and the `result` field will be populated.
-    /// Rarely, we may encounter an error, at which point this will be set to `failed` and the `error` field will be populated.
-        Status: string
-
-        ///Timestamp at which this run successfully finished (populated when
-    /// `status=succeeded`). Measured in seconds since the Unix epoch.
-        SucceededAt: int
-
-    }
+        member _.Created = created
+        member _.Error = error
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Parameters = parameters
+        member _.ReportType = reportType
+        member _.Result = result
+        member _.Status = status
+        member _.SucceededAt = succeededAt
 
     and ReportingReportRunObject =
-        | ReportingReportRun
+        | ReportingReportRunObject'ReportingReportRun
 
     and ReportingReportRunResultDU =
-        | File of File
+        | ReportingReportRunResultDU'File of File
 
     ///The Report Type resource corresponds to a particular type of report, such as
     ///the "Activity summary" or "Itemized payouts" reports. These objects are
@@ -11145,464 +7433,286 @@ module StripeModel =
     ///Note that reports can only be run based on your live-mode data (not test-mode
     ///data), and thus related requests must be made with a
     ///[live-mode API key](https://stripe.com/docs/keys#test-live-modes).
-    and ReportingReportType = {
+    and ReportingReportType (dataAvailableEnd: int, dataAvailableStart: int, defaultColumns: string list option, id: string, name: string, object: ReportingReportTypeObject, updated: int, version: int) =
 
-        ///Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.
-        DataAvailableEnd: int
-
-        ///Earliest time for which this Report Type is available. Measured in seconds since the Unix epoch.
-        DataAvailableStart: int
-
-        ///List of column names that are included by default when this Report Type gets run. (If the Report Type doesn't support the `columns` parameter, this will be null.)
-        DefaultColumns: string list
-
-        ///The [ID of the Report Type](https://stripe.com/docs/reporting/statements/api#available-report-types), such as `balance.summary.1`.
-        Id: string
-
-        ///Human-readable name of the Report Type
-        Name: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ReportingReportTypeObject
-
-        ///When this Report Type was latest updated. Measured in seconds since the Unix epoch.
-        Updated: int
-
-        ///Version of the Report Type. Different versions report with the same ID will have the same purpose, but may take different run parameters or have different result schemas.
-        Version: int
-
-    }
+        member _.DataAvailableEnd = dataAvailableEnd
+        member _.DataAvailableStart = dataAvailableStart
+        member _.DefaultColumns = defaultColumns
+        member _.Id = id
+        member _.Name = name
+        member _.Object = object
+        member _.Updated = updated
+        member _.Version = version
 
     and ReportingReportTypeObject =
-        | ReportingReportType
+        | ReportingReportTypeObject'ReportingReportType
 
     ///
-    and ReserveTransaction = {
+    and ReserveTransaction (amount: int, currency: string, description: string option, id: string, object: ReserveTransactionObject) =
 
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ReserveTransactionObject
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.Description = description
+        member _.Id = id
+        member _.Object = object
 
     and ReserveTransactionObject =
-        | ReserveTransaction
+        | ReserveTransactionObject'ReserveTransaction
 
     ///Reviews can be used to supplement automated fraud detection with human expertise.
     ///
     ///Learn more about [Radar](/radar) and reviewing payments
     ///[here](https://stripe.com/docs/radar/reviews).
-    and Review = {
+    and Review (billingZip: string option, charge: ReviewChargeDU option, closedReason: ReviewClosedReason option, created: int, id: string, ipAddress: string option, ipAddressLocation: ReviewIpAddressLocationDU option, livemode: bool, object: ReviewObject, ``open``: bool, openedReason: ReviewOpenedReason, reason: string, session: ReviewSessionDU option, ?paymentIntent: ReviewPaymentIntentDU) =
 
-        ///The ZIP or postal code of the card used, if applicable.
-        BillingZip: string
-
-        ///The charge associated with this review.
-        Charge: ReviewChargeDU
-
-        ///The reason the review was closed, or null if it has not yet been closed. One of `approved`, `refunded`, `refunded_as_fraud`, or `disputed`.
-        ClosedReason: ReviewClosedReason
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The IP address where the payment originated.
-        IpAddress: string
-
-        ///Information related to the location of the payment. Note that this information is an approximation and attempts to locate the nearest population center - it should not be used to determine a specific address.
-        IpAddressLocation: ReviewIpAddressLocationDU
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ReviewObject
-
-        ///If `true`, the review needs action.
-        Open: bool
-
-        ///The reason the review was opened. One of `rule` or `manual`.
-        OpenedReason: ReviewOpenedReason
-
-        ///The PaymentIntent ID associated with this review, if one exists.
-        PaymentIntent: ReviewPaymentIntentDU option
-
-        ///The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, or `disputed`.
-        Reason: string
-
-        ///Information related to the browsing session of the user who initiated the payment.
-        Session: ReviewSessionDU
-
-    }
+        member _.BillingZip = billingZip
+        member _.Charge = charge
+        member _.ClosedReason = closedReason
+        member _.Created = created
+        member _.Id = id
+        member _.IpAddress = ipAddress
+        member _.IpAddressLocation = ipAddressLocation
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Open = ``open``
+        member _.OpenedReason = openedReason
+        member _.PaymentIntent = paymentIntent
+        member _.Reason = reason
+        member _.Session = session
 
     and ReviewClosedReason =
-        | Approved
-        | Disputed
-        | Refunded
-        | RefundedAsFraud
+        | ReviewClosedReason'Approved
+        | ReviewClosedReason'Disputed
+        | ReviewClosedReason'Refunded
+        | ReviewClosedReason'RefundedAsFraud
 
     and ReviewObject =
-        | Review
+        | ReviewObject'Review
 
     and ReviewOpenedReason =
-        | Manual
-        | Rule
+        | ReviewOpenedReason'Manual
+        | ReviewOpenedReason'Rule
 
     and ReviewChargeDU =
-        | String of string
-        | Charge of Charge
+        | ReviewChargeDU'String of string
+        | ReviewChargeDU'Charge of Charge
 
     and ReviewIpAddressLocationDU =
-        | RadarReviewResourceLocation of RadarReviewResourceLocation
+        | ReviewIpAddressLocationDU'RadarReviewResourceLocation of RadarReviewResourceLocation
 
     and ReviewPaymentIntentDU =
-        | String of string
-        | PaymentIntent of PaymentIntent
+        | ReviewPaymentIntentDU'String of string
+        | ReviewPaymentIntentDU'PaymentIntent of PaymentIntent
 
     and ReviewSessionDU =
-        | RadarReviewResourceSession of RadarReviewResourceSession
+        | ReviewSessionDU'RadarReviewResourceSession of RadarReviewResourceSession
 
     ///
-    and Rule = {
+    and Rule (action: string, id: string, predicate: string) =
 
-        ///The action taken on the payment.
-        Action: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The predicate to evaluate the payment against.
-        Predicate: string
-
-    }
+        member _.Action = action
+        member _.Id = id
+        member _.Predicate = predicate
 
     ///If you have [scheduled a Sigma query](https://stripe.com/docs/sigma/scheduled-queries), you'll
     ///receive a `sigma.scheduled_query_run.created` webhook each time the query
     ///runs. The webhook contains a `ScheduledQueryRun` object, which you can use to
     ///retrieve the query results.
-    and ScheduledQueryRun = {
+    and ScheduledQueryRun (created: int, dataLoadTime: int, file: ScheduledQueryRunFileDU option, id: string, livemode: bool, object: ScheduledQueryRunObject, resultAvailableUntil: int, sql: string, status: string, title: string, ?error: SigmaScheduledQueryRunError) =
 
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///When the query was run, Sigma contained a snapshot of your Stripe data at this time.
-        DataLoadTime: int
-
-        Error: SigmaScheduledQueryRunError option
-
-        ///The file object representing the results of the query.
-        File: ScheduledQueryRunFileDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ScheduledQueryRunObject
-
-        ///Time at which the result expires and is no longer available for download.
-        ResultAvailableUntil: int
-
-        ///SQL for the query.
-        Sql: string
-
-        ///The query's execution status, which will be `completed` for successful runs, and `canceled`, `failed`, or `timed_out` otherwise.
-        Status: string
-
-        ///Title of the query.
-        Title: string
-
-    }
+        member _.Created = created
+        member _.DataLoadTime = dataLoadTime
+        member _.Error = error
+        member _.File = file
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.ResultAvailableUntil = resultAvailableUntil
+        member _.Sql = sql
+        member _.Status = status
+        member _.Title = title
 
     and ScheduledQueryRunObject =
-        | ScheduledQueryRun
+        | ScheduledQueryRunObject'ScheduledQueryRun
 
     and ScheduledQueryRunFileDU =
-        | File of File
+        | ScheduledQueryRunFileDU'File of File
 
     ///
-    and SepaDebitGeneratedFrom = {
+    and SepaDebitGeneratedFrom (charge: SepaDebitGeneratedFromChargeDU option, setupAttempt: SepaDebitGeneratedFromSetupAttemptDU option) =
 
-        ///The ID of the Charge that generated this PaymentMethod, if any.
-        Charge: SepaDebitGeneratedFromChargeDU
-
-        ///The ID of the SetupAttempt that generated this PaymentMethod, if any.
-        SetupAttempt: SepaDebitGeneratedFromSetupAttemptDU
-
-    }
+        member _.Charge = charge
+        member _.SetupAttempt = setupAttempt
 
     and SepaDebitGeneratedFromChargeDU =
-        | String of string
-        | Charge of Charge
+        | SepaDebitGeneratedFromChargeDU'String of string
+        | SepaDebitGeneratedFromChargeDU'Charge of Charge
 
     and SepaDebitGeneratedFromSetupAttemptDU =
-        | String of string
-        | SetupAttempt of SetupAttempt
+        | SepaDebitGeneratedFromSetupAttemptDU'String of string
+        | SepaDebitGeneratedFromSetupAttemptDU'SetupAttempt of SetupAttempt
 
     ///A SetupAttempt describes one attempted confirmation of a SetupIntent,
     ///whether that confirmation was successful or unsuccessful. You can use
     ///SetupAttempts to inspect details of a specific attempt at setting up a
     ///payment method using a SetupIntent.
-    and SetupAttempt = {
+    and SetupAttempt (application: SetupAttemptApplicationDU option, created: int, customer: SetupAttemptCustomerDU option, id: string, livemode: bool, object: SetupAttemptObject, onBehalfOf: SetupAttemptOnBehalfOfDU option, paymentMethod: SetupAttemptPaymentMethodDU, paymentMethodDetails: SetupAttemptPaymentMethodDetails, setupError: SetupAttemptSetupErrorDU option, setupIntent: SetupAttemptSetupIntentDU, status: string, usage: string) =
 
-        ///The value of [application](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-application) on the SetupIntent at the time of this confirmation.
-        Application: SetupAttemptApplicationDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///The value of [customer](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-customer) on the SetupIntent at the time of this confirmation.
-        Customer: SetupAttemptCustomerDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SetupAttemptObject
-
-        ///The value of [on_behalf_of](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-on_behalf_of) on the SetupIntent at the time of this confirmation.
-        OnBehalfOf: SetupAttemptOnBehalfOfDU
-
-        ///ID of the payment method used with this SetupAttempt.
-        PaymentMethod: SetupAttemptPaymentMethodDU
-
-        PaymentMethodDetails: SetupAttemptPaymentMethodDetails
-
-        ///The error encountered during this attempt to confirm the SetupIntent, if any.
-        SetupError: SetupAttemptSetupErrorDU
-
-        ///ID of the SetupIntent that this attempt belongs to.
-        SetupIntent: SetupAttemptSetupIntentDU
-
-        ///Status of this SetupAttempt, one of `requires_confirmation`, `requires_action`, `processing`, `succeeded`, `failed`, or `abandoned`.
-        Status: string
-
-        ///The value of [usage](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-usage) on the SetupIntent at the time of this confirmation, one of `off_session` or `on_session`.
-        Usage: string
-
-    }
+        member _.Application = application
+        member _.Created = created
+        member _.Customer = customer
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.OnBehalfOf = onBehalfOf
+        member _.PaymentMethod = paymentMethod
+        member _.PaymentMethodDetails = paymentMethodDetails
+        member _.SetupError = setupError
+        member _.SetupIntent = setupIntent
+        member _.Status = status
+        member _.Usage = usage
 
     and SetupAttemptObject =
-        | SetupAttempt
+        | SetupAttemptObject'SetupAttempt
 
     and SetupAttemptApplicationDU =
-        | String of string
-        | Application of Application
+        | SetupAttemptApplicationDU'String of string
+        | SetupAttemptApplicationDU'Application of Application
 
     and SetupAttemptCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | SetupAttemptCustomerDU'String of string
+        | SetupAttemptCustomerDU'Customer of Customer
+        | SetupAttemptCustomerDU'DeletedCustomer of DeletedCustomer
 
     and SetupAttemptOnBehalfOfDU =
-        | String of string
-        | Account of Account
+        | SetupAttemptOnBehalfOfDU'String of string
+        | SetupAttemptOnBehalfOfDU'Account of Account
 
     and SetupAttemptPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SetupAttemptPaymentMethodDU'String of string
+        | SetupAttemptPaymentMethodDU'PaymentMethod of PaymentMethod
 
     and SetupAttemptSetupErrorDU =
-        | ApiErrors of ApiErrors
+        | SetupAttemptSetupErrorDU'ApiErrors of ApiErrors
 
     and SetupAttemptSetupIntentDU =
-        | String of string
-        | SetupIntent of SetupIntent
+        | SetupAttemptSetupIntentDU'String of string
+        | SetupAttemptSetupIntentDU'SetupIntent of SetupIntent
 
     ///
-    and SetupAttemptPaymentMethodDetails = {
+    and SetupAttemptPaymentMethodDetails (``type``: string, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?card: SetupAttemptPaymentMethodDetailsCard, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?sofort: SetupAttemptPaymentMethodDetailsSofort) =
 
-        Bancontact: SetupAttemptPaymentMethodDetailsBancontact option
-
-        Card: SetupAttemptPaymentMethodDetailsCard option
-
-        Ideal: SetupAttemptPaymentMethodDetailsIdeal option
-
-        Sofort: SetupAttemptPaymentMethodDetailsSofort option
-
-        ///The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method.
-        Type: string
-
-    }
+        member _.Bancontact = bancontact
+        member _.Card = card
+        member _.Ideal = ideal
+        member _.Sofort = sofort
+        member _.Type = ``type``
 
     ///
-    and SetupAttemptPaymentMethodDetailsBancontact = {
+    and SetupAttemptPaymentMethodDetailsBancontact (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitDU option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
 
-        ///Bank code of bank associated with the bank account.
-        BankCode: string
-
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string
-
-        ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitDU
-
-        ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU
-
-        ///Last four characters of the IBAN.
-        IbanLast4: string
-
-        ///Preferred language of the Bancontact authorization page that the customer is redirected to.
-    ///Can be one of `en`, `de`, `fr`, or `nl`
-        PreferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage
-
-        ///Owner's verified full name. Values are verified or provided by Bancontact directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string
-
-    }
+        member _.BankCode = bankCode
+        member _.BankName = bankName
+        member _.Bic = bic
+        member _.GeneratedSepaDebit = generatedSepaDebit
+        member _.GeneratedSepaDebitMandate = generatedSepaDebitMandate
+        member _.IbanLast4 = ibanLast4
+        member _.PreferredLanguage = preferredLanguage
+        member _.VerifiedName = verifiedName
 
     and SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
+        | SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage'De
+        | SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage'En
+        | SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage'Fr
+        | SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage'Nl
 
     and SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitDU'String of string
+        | SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitDU'PaymentMethod of PaymentMethod
 
     and SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU'String of string
+        | SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and SetupAttemptPaymentMethodDetailsCard = {
+    and SetupAttemptPaymentMethodDetailsCard (threeDSecure: SetupAttemptPaymentMethodDetailsCardThreeDSecureDU option) =
 
-        ///Populated if this authorization used 3D Secure authentication.
-        ThreeDSecure: SetupAttemptPaymentMethodDetailsCardThreeDSecureDU
-
-    }
+        member _.ThreeDSecure = threeDSecure
 
     and SetupAttemptPaymentMethodDetailsCardThreeDSecureDU =
-        | ThreeDSecureDetails of ThreeDSecureDetails
+        | SetupAttemptPaymentMethodDetailsCardThreeDSecureDU'ThreeDSecureDetails of ThreeDSecureDetails
 
     ///
-    and SetupAttemptPaymentMethodDetailsIdeal = {
+    and SetupAttemptPaymentMethodDetailsIdeal (bank: SetupAttemptPaymentMethodDetailsIdealBank option, bic: SetupAttemptPaymentMethodDetailsIdealBic option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU option, ibanLast4: string option, verifiedName: string option) =
 
-        ///The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
-        Bank: SetupAttemptPaymentMethodDetailsIdealBank
-
-        ///The Bank Identifier Code of the customer's bank.
-        Bic: SetupAttemptPaymentMethodDetailsIdealBic
-
-        ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU
-
-        ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU
-
-        ///Last four characters of the IBAN.
-        IbanLast4: string
-
-        ///Owner's verified full name. Values are verified or provided by iDEAL directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string
-
-    }
+        member _.Bank = bank
+        member _.Bic = bic
+        member _.GeneratedSepaDebit = generatedSepaDebit
+        member _.GeneratedSepaDebitMandate = generatedSepaDebitMandate
+        member _.IbanLast4 = ibanLast4
+        member _.VerifiedName = verifiedName
 
     and SetupAttemptPaymentMethodDetailsIdealBank =
-        | AbnAmro
-        | AsnBank
-        | Bunq
-        | Handelsbanken
-        | Ing
-        | Knab
-        | Moneyou
-        | Rabobank
-        | Regiobank
-        | SnsBank
-        | TriodosBank
-        | VanLanschot
+        | SetupAttemptPaymentMethodDetailsIdealBank'AbnAmro
+        | SetupAttemptPaymentMethodDetailsIdealBank'AsnBank
+        | SetupAttemptPaymentMethodDetailsIdealBank'Bunq
+        | SetupAttemptPaymentMethodDetailsIdealBank'Handelsbanken
+        | SetupAttemptPaymentMethodDetailsIdealBank'Ing
+        | SetupAttemptPaymentMethodDetailsIdealBank'Knab
+        | SetupAttemptPaymentMethodDetailsIdealBank'Moneyou
+        | SetupAttemptPaymentMethodDetailsIdealBank'Rabobank
+        | SetupAttemptPaymentMethodDetailsIdealBank'Regiobank
+        | SetupAttemptPaymentMethodDetailsIdealBank'SnsBank
+        | SetupAttemptPaymentMethodDetailsIdealBank'TriodosBank
+        | SetupAttemptPaymentMethodDetailsIdealBank'VanLanschot
 
     and SetupAttemptPaymentMethodDetailsIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+        | [<JsonUnionCase("ABNANL2A")>] SetupAttemptPaymentMethodDetailsIdealBic'ABNANL2A
+        | [<JsonUnionCase("ASNBNL21")>] SetupAttemptPaymentMethodDetailsIdealBic'ASNBNL21
+        | [<JsonUnionCase("BUNQNL2A")>] SetupAttemptPaymentMethodDetailsIdealBic'BUNQNL2A
+        | [<JsonUnionCase("FVLBNL22")>] SetupAttemptPaymentMethodDetailsIdealBic'FVLBNL22
+        | [<JsonUnionCase("HANDNL2A")>] SetupAttemptPaymentMethodDetailsIdealBic'HANDNL2A
+        | [<JsonUnionCase("INGBNL2A")>] SetupAttemptPaymentMethodDetailsIdealBic'INGBNL2A
+        | [<JsonUnionCase("KNABNL2H")>] SetupAttemptPaymentMethodDetailsIdealBic'KNABNL2H
+        | [<JsonUnionCase("MOYONL21")>] SetupAttemptPaymentMethodDetailsIdealBic'MOYONL21
+        | [<JsonUnionCase("RABONL2U")>] SetupAttemptPaymentMethodDetailsIdealBic'RABONL2U
+        | [<JsonUnionCase("RBRBNL21")>] SetupAttemptPaymentMethodDetailsIdealBic'RBRBNL21
+        | [<JsonUnionCase("SNSBNL2A")>] SetupAttemptPaymentMethodDetailsIdealBic'SNSBNL2A
+        | [<JsonUnionCase("TRIONL2U")>] SetupAttemptPaymentMethodDetailsIdealBic'TRIONL2U
 
     and SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU'String of string
+        | SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitDU'PaymentMethod of PaymentMethod
 
     and SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU'String of string
+        | SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///
-    and SetupAttemptPaymentMethodDetailsSofort = {
+    and SetupAttemptPaymentMethodDetailsSofort (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitDU option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandateDU option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
 
-        ///Bank code of bank associated with the bank account.
-        BankCode: string
-
-        ///Name of the bank associated with the bank account.
-        BankName: string
-
-        ///Bank Identifier Code of the bank associated with the bank account.
-        Bic: string
-
-        ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitDU
-
-        ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandateDU
-
-        ///Last four characters of the IBAN.
-        IbanLast4: string
-
-        ///Preferred language of the Sofort authorization page that the customer is redirected to.
-    ///Can be one of `en`, `de`, `fr`, or `nl`
-        PreferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage
-
-        ///Owner's verified full name. Values are verified or provided by Sofort directly
-    ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string
-
-    }
+        member _.BankCode = bankCode
+        member _.BankName = bankName
+        member _.Bic = bic
+        member _.GeneratedSepaDebit = generatedSepaDebit
+        member _.GeneratedSepaDebitMandate = generatedSepaDebitMandate
+        member _.IbanLast4 = ibanLast4
+        member _.PreferredLanguage = preferredLanguage
+        member _.VerifiedName = verifiedName
 
     and SetupAttemptPaymentMethodDetailsSofortPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
+        | SetupAttemptPaymentMethodDetailsSofortPreferredLanguage'De
+        | SetupAttemptPaymentMethodDetailsSofortPreferredLanguage'En
+        | SetupAttemptPaymentMethodDetailsSofortPreferredLanguage'Fr
+        | SetupAttemptPaymentMethodDetailsSofortPreferredLanguage'Nl
 
     and SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitDU'String of string
+        | SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitDU'PaymentMethod of PaymentMethod
 
     and SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandateDU'String of string
+        | SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandateDU'Mandate of Mandate
 
     ///A SetupIntent guides you through the process of setting up and saving a customer's payment credentials for future payments.
     ///For example, you could use a SetupIntent to set up and save your customer's card without immediately collecting a payment.
@@ -11626,242 +7736,148 @@ module StripeModel =
     ///even as regulations change over time.
     ///
     ///Related guide: [Setup Intents API](https://stripe.com/docs/payments/setup-intents).
-    and SetupIntent = {
+    and SetupIntent (application: SetupIntentApplicationDU option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: int, customer: SetupIntentCustomerDU option, description: string option, id: string, lastSetupError: SetupIntentLastSetupErrorDU option, latestAttempt: SetupIntentLatestAttemptDU option, livemode: bool, mandate: SetupIntentMandateDU option, metadata: Map<string, string> option, nextAction: SetupIntentNextActionDU option, object: SetupIntentObject, onBehalfOf: SetupIntentOnBehalfOfDU option, paymentMethod: SetupIntentPaymentMethodDU option, paymentMethodOptions: SetupIntentPaymentMethodOptionsDU option, paymentMethodTypes: string list, singleUseMandate: SetupIntentSingleUseMandateDU option, status: SetupIntentStatus, usage: string) =
 
-        ///ID of the Connect application that created the SetupIntent.
-        Application: SetupIntentApplicationDU
-
-        ///Reason for cancellation of this SetupIntent, one of `abandoned`, `requested_by_customer`, or `duplicate`.
-        CancellationReason: SetupIntentCancellationReason
-
-        ///The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
-    ///
-    ///The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
-        ClientSecret: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///ID of the Customer this SetupIntent belongs to, if one exists.
-    ///
-    ///If present, the SetupIntent's payment method will be attached to the Customer on successful setup. Payment methods attached to other Customers cannot be used with this SetupIntent.
-        Customer: SetupIntentCustomerDU
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The error encountered in the previous SetupIntent confirmation.
-        LastSetupError: SetupIntentLastSetupErrorDU
-
-        ///The most recent SetupAttempt for this SetupIntent.
-        LatestAttempt: SetupIntentLatestAttemptDU
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///ID of the multi use Mandate generated by the SetupIntent.
-        Mandate: SetupIntentMandateDU
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///If present, this property tells you what actions you need to take in order for your customer to continue payment setup.
-        NextAction: SetupIntentNextActionDU
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SetupIntentObject
-
-        ///The account (if any) for which the setup is intended.
-        OnBehalfOf: SetupIntentOnBehalfOfDU
-
-        ///ID of the payment method used with this SetupIntent.
-        PaymentMethod: SetupIntentPaymentMethodDU
-
-        ///Payment-method-specific configuration for this SetupIntent.
-        PaymentMethodOptions: SetupIntentPaymentMethodOptionsDU
-
-        ///The list of payment method types (e.g. card) that this SetupIntent is allowed to set up.
-        PaymentMethodTypes: string list
-
-        ///ID of the single_use Mandate generated by the SetupIntent.
-        SingleUseMandate: SetupIntentSingleUseMandateDU
-
-        ///[Status](https://stripe.com/docs/payments/intents#intent-statuses) of this SetupIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `canceled`, or `succeeded`.
-        Status: SetupIntentStatus
-
-        ///Indicates how the payment method is intended to be used in the future.
-    ///
-    ///Use `on_session` if you intend to only reuse the payment method when the customer is in your checkout flow. Use `off_session` if your customer may or may not be in your checkout flow. If not provided, this value defaults to `off_session`.
-        Usage: string
-
-    }
+        member _.Application = application
+        member _.CancellationReason = cancellationReason
+        member _.ClientSecret = clientSecret
+        member _.Created = created
+        member _.Customer = customer
+        member _.Description = description
+        member _.Id = id
+        member _.LastSetupError = lastSetupError
+        member _.LatestAttempt = latestAttempt
+        member _.Livemode = livemode
+        member _.Mandate = mandate
+        member _.Metadata = metadata
+        member _.NextAction = nextAction
+        member _.Object = object
+        member _.OnBehalfOf = onBehalfOf
+        member _.PaymentMethod = paymentMethod
+        member _.PaymentMethodOptions = paymentMethodOptions
+        member _.PaymentMethodTypes = paymentMethodTypes
+        member _.SingleUseMandate = singleUseMandate
+        member _.Status = status
+        member _.Usage = usage
 
     and SetupIntentCancellationReason =
-        | Abandoned
-        | Duplicate
-        | RequestedByCustomer
+        | SetupIntentCancellationReason'Abandoned
+        | SetupIntentCancellationReason'Duplicate
+        | SetupIntentCancellationReason'RequestedByCustomer
 
     and SetupIntentObject =
-        | SetupIntent
+        | SetupIntentObject'SetupIntent
 
     and SetupIntentStatus =
-        | Canceled
-        | Processing
-        | RequiresAction
-        | RequiresConfirmation
-        | RequiresPaymentMethod
-        | Succeeded
+        | SetupIntentStatus'Canceled
+        | SetupIntentStatus'Processing
+        | SetupIntentStatus'RequiresAction
+        | SetupIntentStatus'RequiresConfirmation
+        | SetupIntentStatus'RequiresPaymentMethod
+        | SetupIntentStatus'Succeeded
 
     and SetupIntentApplicationDU =
-        | String of string
-        | Application of Application
+        | SetupIntentApplicationDU'String of string
+        | SetupIntentApplicationDU'Application of Application
 
     and SetupIntentCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | SetupIntentCustomerDU'String of string
+        | SetupIntentCustomerDU'Customer of Customer
+        | SetupIntentCustomerDU'DeletedCustomer of DeletedCustomer
 
     and SetupIntentLastSetupErrorDU =
-        | ApiErrors of ApiErrors
+        | SetupIntentLastSetupErrorDU'ApiErrors of ApiErrors
 
     and SetupIntentLatestAttemptDU =
-        | String of string
-        | SetupAttempt of SetupAttempt
+        | SetupIntentLatestAttemptDU'String of string
+        | SetupIntentLatestAttemptDU'SetupAttempt of SetupAttempt
 
     and SetupIntentMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | SetupIntentMandateDU'String of string
+        | SetupIntentMandateDU'Mandate of Mandate
 
     and SetupIntentNextActionDU =
-        | SetupIntentNextAction of SetupIntentNextAction
+        | SetupIntentNextActionDU'SetupIntentNextAction of SetupIntentNextAction
 
     and SetupIntentOnBehalfOfDU =
-        | String of string
-        | Account of Account
+        | SetupIntentOnBehalfOfDU'String of string
+        | SetupIntentOnBehalfOfDU'Account of Account
 
     and SetupIntentPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SetupIntentPaymentMethodDU'String of string
+        | SetupIntentPaymentMethodDU'PaymentMethod of PaymentMethod
 
     and SetupIntentPaymentMethodOptionsDU =
-        | SetupIntentPaymentMethodOptions of SetupIntentPaymentMethodOptions
+        | SetupIntentPaymentMethodOptionsDU'SetupIntentPaymentMethodOptions of SetupIntentPaymentMethodOptions
 
     and SetupIntentSingleUseMandateDU =
-        | String of string
-        | Mandate of Mandate
+        | SetupIntentSingleUseMandateDU'String of string
+        | SetupIntentSingleUseMandateDU'Mandate of Mandate
 
     ///
-    and SetupIntentNextAction = {
+    and SetupIntentNextAction (``type``: string, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?useStripeSdk: Map<string, string>) =
 
-        RedirectToUrl: SetupIntentNextActionRedirectToUrl option
-
-        ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
-        Type: string
-
-        ///When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: Map<string, string> option
-
-    }
+        member _.RedirectToUrl = redirectToUrl
+        member _.Type = ``type``
+        member _.UseStripeSdk = useStripeSdk
 
     ///
-    and SetupIntentNextActionRedirectToUrl = {
+    and SetupIntentNextActionRedirectToUrl (returnUrl: string option, url: string option) =
 
-        ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
-        ReturnUrl: string
-
-        ///The URL you must redirect your customer to in order to authenticate.
-        Url: string
-
-    }
+        member _.ReturnUrl = returnUrl
+        member _.Url = url
 
     ///
-    and SetupIntentPaymentMethodOptions = {
+    and SetupIntentPaymentMethodOptions (?card: SetupIntentPaymentMethodOptionsCard, ?sepaDebit: SetupIntentPaymentMethodOptionsSepaDebit) =
 
-        Card: SetupIntentPaymentMethodOptionsCard option
-
-        SepaDebit: SetupIntentPaymentMethodOptionsSepaDebit option
-
-    }
+        member _.Card = card
+        member _.SepaDebit = sepaDebit
 
     ///
-    and SetupIntentPaymentMethodOptionsCard = {
+    and SetupIntentPaymentMethodOptionsCard (requestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
 
-        ///We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Permitted values include: `automatic` or `any`. If not provided, defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
-        RequestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure
-
-    }
+        member _.RequestThreeDSecure = requestThreeDSecure
 
     and SetupIntentPaymentMethodOptionsCardRequestThreeDSecure =
-        | Any
-        | Automatic
-        | ChallengeOnly
+        | SetupIntentPaymentMethodOptionsCardRequestThreeDSecure'Any
+        | SetupIntentPaymentMethodOptionsCardRequestThreeDSecure'Automatic
+        | SetupIntentPaymentMethodOptionsCardRequestThreeDSecure'ChallengeOnly
 
     ///
-    and SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit = {
+    and SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit (?undefined: string list) =
 
-        EmptyProperties: string list
-
-    }
+        member _.Undefined = undefined
 
     ///
-    and SetupIntentPaymentMethodOptionsSepaDebit = {
+    and SetupIntentPaymentMethodOptionsSepaDebit (?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
 
-        MandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit option
-
-    }
+        member _.MandateOptions = mandateOptions
 
     ///
-    and Shipping = {
+    and Shipping (?address: Address, ?carrier: string option, ?name: string option, ?phone: string option, ?trackingNumber: string option) =
 
-        Address: Address option
-
-        ///The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc.
-        Carrier: string option
-
-        ///Recipient name.
-        Name: string option
-
-        ///Recipient phone (including extension).
-        Phone: string option
-
-        ///The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas.
-        TrackingNumber: string option
-
-    }
+        member _.Address = address
+        member _.Carrier = carrier |> Option.flatten
+        member _.Name = name |> Option.flatten
+        member _.Phone = phone |> Option.flatten
+        member _.TrackingNumber = trackingNumber |> Option.flatten
 
     ///
-    and ShippingMethod = {
+    and ShippingMethod (amount: int, currency: string, deliveryEstimate: ShippingMethodDeliveryEstimateDU option, description: string, id: string) =
 
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the line item.
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The estimated delivery date for the given shipping method. Can be either a specific date or a range.
-        DeliveryEstimate: ShippingMethodDeliveryEstimateDU
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.DeliveryEstimate = deliveryEstimate
+        member _.Description = description
+        member _.Id = id
 
     and ShippingMethodDeliveryEstimateDU =
-        | DeliveryEstimate of DeliveryEstimate
+        | ShippingMethodDeliveryEstimateDU'DeliveryEstimate of DeliveryEstimate
 
     ///
-    and SigmaScheduledQueryRunError = {
+    and SigmaScheduledQueryRunError (message: string) =
 
-        ///Information about the run failure.
-        Message: string
-
-    }
+        member _.Message = message
 
     ///Stores representations of [stock keeping units](http://en.wikipedia.org/wiki/Stock_keeping_unit).
     ///SKUs describe specific product variations, taking into account any combination of: attributes,
@@ -11871,60 +7887,32 @@ module StripeModel =
     ///Can also be used to manage inventory.
     ///
     ///Related guide: [Tax, Shipping, and Inventory](https://stripe.com/docs/orders).
-    and Sku = {
+    and Sku (active: bool, attributes: Map<string, string>, created: int, currency: string, id: string, image: string option, inventory: Inventory, livemode: bool, metadata: Map<string, string>, object: SkuObject, packageDimensions: SkuPackageDimensionsDU option, price: int, product: SkuProductDU, updated: int) =
 
-        ///Whether the SKU is available for purchase.
-        Active: bool
-
-        ///A dictionary of attributes and values for the attributes defined by the product. If, for example, a product's attributes are `["size", "gender"]`, a valid SKU has the following dictionary of attributes: `{"size": "Medium", "gender": "Unisex"}`.
-        Attributes: Map<string, string>
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The URL of an image for this SKU, meant to be displayable to the customer.
-        Image: string
-
-        Inventory: Inventory
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SkuObject
-
-        ///The dimensions of this SKU for shipping purposes.
-        PackageDimensions: SkuPackageDimensionsDU
-
-        ///The cost of the item as a positive integer in the smallest currency unit (that is, 100 cents to charge $1.00, or 100 to charge ¥100, Japanese Yen being a zero-decimal currency).
-        Price: int
-
-        ///The ID of the product this SKU is associated with. The product must be currently active.
-        Product: SkuProductDU
-
-        ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        Updated: int
-
-    }
+        member _.Active = active
+        member _.Attributes = attributes
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Image = image
+        member _.Inventory = inventory
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.PackageDimensions = packageDimensions
+        member _.Price = price
+        member _.Product = product
+        member _.Updated = updated
 
     and SkuObject =
-        | Sku
+        | SkuObject'Sku
 
     and SkuPackageDimensionsDU =
-        | PackageDimensions of PackageDimensions
+        | SkuPackageDimensionsDU'PackageDimensions of PackageDimensions
 
     and SkuProductDU =
-        | String of string
-        | Product of Product
+        | SkuProductDU'String of string
+        | SkuProductDU'Product of Product
 
     ///`Source` objects allow you to accept a variety of payment methods. They
     ///represent a customer's payment instrument, and can be used with the Stripe API
@@ -11932,1847 +7920,1054 @@ module StripeModel =
     ///attached to customers.
     ///
     ///Related guides: [Sources API](https://stripe.com/docs/sources) and [Sources & Customers](https://stripe.com/docs/sources/customers).
-    and Source = {
+    and Source (amount: int option, clientSecret: string, created: int, currency: string option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, object: SourceObject, owner: SourceOwnerDU option, statementDescriptor: string option, status: string, ``type``: SourceType, usage: string option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
 
-        AchCreditTransfer: SourceTypeAchCreditTransfer option
-
-        AchDebit: SourceTypeAchDebit option
-
-        AcssDebit: SourceTypeAcssDebit option
-
-        Alipay: SourceTypeAlipay option
-
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount associated with the source. This is the amount for which the source will be chargeable once ready. Required for `single_use` sources.
-        Amount: int
-
-        AuBecsDebit: SourceTypeAuBecsDebit option
-
-        Bancontact: SourceTypeBancontact option
-
-        Card: SourceTypeCard option
-
-        CardPresent: SourceTypeCardPresent option
-
-        ///The client secret of the source. Used for client-side retrieval using a publishable key.
-        ClientSecret: string
-
-        CodeVerification: SourceCodeVerificationFlow option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources.
-        Currency: string
-
-        ///The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer.
-        Customer: string option
-
-        Eps: SourceTypeEps option
-
-        ///The authentication `flow` of the source. `flow` is one of `redirect`, `receiver`, `code_verification`, `none`.
-        Flow: string
-
-        Giropay: SourceTypeGiropay option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        Ideal: SourceTypeIdeal option
-
-        Klarna: SourceTypeKlarna option
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        Multibanco: SourceTypeMultibanco option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SourceObject
-
-        ///Information about the owner of the payment instrument that may be used or required by particular source types.
-        Owner: SourceOwnerDU
-
-        P24: SourceTypeP24 option
-
-        Receiver: SourceReceiverFlow option
-
-        Redirect: SourceRedirectFlow option
-
-        SepaCreditTransfer: SourceTypeSepaCreditTransfer option
-
-        SepaDebit: SourceTypeSepaDebit option
-
-        Sofort: SourceTypeSofort option
-
-        SourceOrder: SourceOrder option
-
-        ///Extra information about a source. This will appear on your customer's statement every time you charge the source.
-        StatementDescriptor: string
-
-        ///The status of the source, one of `canceled`, `chargeable`, `consumed`, `failed`, or `pending`. Only `chargeable` sources can be used to create a charge.
-        Status: string
-
-        ThreeDSecure: SourceTypeThreeDSecure option
-
-        ///The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://stripe.com/docs/sources) used.
-        Type: SourceType
-
-        ///Either `reusable` or `single_use`. Whether this source should be reusable or not. Some source types may or may not be reusable by construction, while others may leave the option at creation. If an incompatible value is passed, an error will be returned.
-        Usage: string
-
-        Wechat: SourceTypeWechat option
-
-    }
+        member _.AchCreditTransfer = achCreditTransfer
+        member _.AchDebit = achDebit
+        member _.AcssDebit = acssDebit
+        member _.Alipay = alipay
+        member _.Amount = amount
+        member _.AuBecsDebit = auBecsDebit
+        member _.Bancontact = bancontact
+        member _.Card = card
+        member _.CardPresent = cardPresent
+        member _.ClientSecret = clientSecret
+        member _.CodeVerification = codeVerification
+        member _.Created = created
+        member _.Currency = currency
+        member _.Customer = customer
+        member _.Eps = eps
+        member _.Flow = flow
+        member _.Giropay = giropay
+        member _.Id = id
+        member _.Ideal = ideal
+        member _.Klarna = klarna
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Multibanco = multibanco
+        member _.Object = object
+        member _.Owner = owner
+        member _.P24 = p24
+        member _.Receiver = receiver
+        member _.Redirect = redirect
+        member _.SepaCreditTransfer = sepaCreditTransfer
+        member _.SepaDebit = sepaDebit
+        member _.Sofort = sofort
+        member _.SourceOrder = sourceOrder
+        member _.StatementDescriptor = statementDescriptor
+        member _.Status = status
+        member _.ThreeDSecure = threeDSecure
+        member _.Type = ``type``
+        member _.Usage = usage
+        member _.Wechat = wechat
 
     and SourceObject =
-        | Source
+        | SourceObject'Source
 
     and SourceType =
-        | AchCreditTransfer
-        | AchDebit
-        | AcssDebit
-        | Alipay
-        | AuBecsDebit
-        | Bancontact
-        | Card
-        | CardPresent
-        | Eps
-        | Giropay
-        | Ideal
-        | Klarna
-        | Multibanco
-        | P24
-        | SepaCreditTransfer
-        | SepaDebit
-        | Sofort
-        | ThreeDSecure
-        | Wechat
+        | SourceType'AchCreditTransfer
+        | SourceType'AchDebit
+        | SourceType'AcssDebit
+        | SourceType'Alipay
+        | SourceType'AuBecsDebit
+        | SourceType'Bancontact
+        | SourceType'Card
+        | SourceType'CardPresent
+        | SourceType'Eps
+        | SourceType'Giropay
+        | SourceType'Ideal
+        | SourceType'Klarna
+        | SourceType'Multibanco
+        | SourceType'P24
+        | SourceType'SepaCreditTransfer
+        | SourceType'SepaDebit
+        | SourceType'Sofort
+        | SourceType'ThreeDSecure
+        | SourceType'Wechat
 
     and SourceOwnerDU =
-        | SourceOwner of SourceOwner
+        | SourceOwnerDU'SourceOwner of SourceOwner
 
     ///
-    and SourceCodeVerificationFlow = {
+    and SourceCodeVerificationFlow (attemptsRemaining: int, status: string) =
 
-        ///The number of attempts remaining to authenticate the source object with a verification code.
-        AttemptsRemaining: int
-
-        ///The status of the code verification, either `pending` (awaiting verification, `attempts_remaining` should be greater than 0), `succeeded` (successful verification) or `failed` (failed verification, cannot be verified anymore as `attempts_remaining` should be 0).
-        Status: string
-
-    }
+        member _.AttemptsRemaining = attemptsRemaining
+        member _.Status = status
 
     ///Source mandate notifications should be created when a notification related to
     ///a source mandate must be sent to the payer. They will trigger a webhook or
     ///deliver an email to the customer.
-    and SourceMandateNotification = {
+    and SourceMandateNotification (amount: int option, created: int, id: string, livemode: bool, object: SourceMandateNotificationObject, reason: string, source: Source, status: string, ``type``: string, ?acssDebit: SourceMandateNotificationAcssDebitData, ?bacsDebit: SourceMandateNotificationBacsDebitData, ?sepaDebit: SourceMandateNotificationSepaDebitData) =
 
-        AcssDebit: SourceMandateNotificationAcssDebitData option
-
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount associated with the mandate notification. The amount is expressed in the currency of the underlying source. Required if the notification type is `debit_initiated`.
-        Amount: int
-
-        BacsDebit: SourceMandateNotificationBacsDebitData option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SourceMandateNotificationObject
-
-        ///The reason of the mandate notification. Valid reasons are `mandate_confirmed` or `debit_initiated`.
-        Reason: string
-
-        SepaDebit: SourceMandateNotificationSepaDebitData option
-
-        Source: Source
-
-        ///The status of the mandate notification. Valid statuses are `pending` or `submitted`.
-        Status: string
-
-        ///The type of source this mandate notification is attached to. Should be the source type identifier code for the payment method, such as `three_d_secure`.
-        Type: string
-
-    }
+        member _.AcssDebit = acssDebit
+        member _.Amount = amount
+        member _.BacsDebit = bacsDebit
+        member _.Created = created
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Reason = reason
+        member _.SepaDebit = sepaDebit
+        member _.Source = source
+        member _.Status = status
+        member _.Type = ``type``
 
     and SourceMandateNotificationObject =
-        | SourceMandateNotification
+        | SourceMandateNotificationObject'SourceMandateNotification
 
     ///
-    and SourceMandateNotificationAcssDebitData = {
+    and SourceMandateNotificationAcssDebitData (?statementDescriptor: string) =
 
-        ///The statement descriptor associate with the debit.
-        StatementDescriptor: string option
-
-    }
+        member _.StatementDescriptor = statementDescriptor
 
     ///
-    and SourceMandateNotificationBacsDebitData = {
+    and SourceMandateNotificationBacsDebitData (?last4: string) =
 
-        ///Last 4 digits of the account number associated with the debit.
-        Last4: string option
-
-    }
+        member _.Last4 = last4
 
     ///
-    and SourceMandateNotificationSepaDebitData = {
+    and SourceMandateNotificationSepaDebitData (?creditorIdentifier: string, ?last4: string, ?mandateReference: string) =
 
-        ///SEPA creditor ID.
-        CreditorIdentifier: string option
-
-        ///Last 4 digits of the account number associated with the debit.
-        Last4: string option
-
-        ///Mandate reference associated with the debit.
-        MandateReference: string option
-
-    }
+        member _.CreditorIdentifier = creditorIdentifier
+        member _.Last4 = last4
+        member _.MandateReference = mandateReference
 
     ///
-    and SourceOrder = {
+    and SourceOrder (amount: int, currency: string, items: SourceOrderItem list option, ?email: string, ?shipping: Shipping) =
 
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the order.
-        Amount: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///The email address of the customer placing the order.
-        Email: string option
-
-        ///List of items constituting the order.
-        Items: SourceOrderItem list
-
-        Shipping: Shipping option
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.Email = email
+        member _.Items = items
+        member _.Shipping = shipping
 
     ///
-    and SourceOrderItem = {
+    and SourceOrderItem (amount: int option, currency: string option, description: string option, parent: string option, ``type``: string option, ?quantity: int) =
 
-        ///The amount (price) for this order item.
-        Amount: int
-
-        ///This currency of this order item. Required when `amount` is present.
-        Currency: string
-
-        ///Human-readable description for this order item.
-        Description: string
-
-        ///The ID of the associated object for this line item. Expandable if not null (e.g., expandable to a SKU).
-        Parent: string
-
-        ///The quantity of this order item. When type is `sku`, this is the number of instances of the SKU to be ordered.
-        Quantity: int option
-
-        ///The type of this order item. Must be `sku`, `tax`, or `shipping`.
-        Type: string
-
-    }
+        member _.Amount = amount
+        member _.Currency = currency
+        member _.Description = description
+        member _.Parent = parent
+        member _.Quantity = quantity
+        member _.Type = ``type``
 
     ///
-    and SourceOwner = {
+    and SourceOwner (address: SourceOwnerAddressDU option, email: string option, name: string option, phone: string option, verifiedAddress: SourceOwnerVerifiedAddressDU option, verifiedEmail: string option, verifiedName: string option, verifiedPhone: string option) =
 
-        ///Owner's address.
-        Address: SourceOwnerAddressDU
-
-        ///Owner's email address.
-        Email: string
-
-        ///Owner's full name.
-        Name: string
-
-        ///Owner's phone number (including extension).
-        Phone: string
-
-        ///Verified owner's address. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedAddress: SourceOwnerVerifiedAddressDU
-
-        ///Verified owner's email address. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedEmail: string
-
-        ///Verified owner's full name. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedName: string
-
-        ///Verified owner's phone number (including extension). Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        VerifiedPhone: string
-
-    }
+        member _.Address = address
+        member _.Email = email
+        member _.Name = name
+        member _.Phone = phone
+        member _.VerifiedAddress = verifiedAddress
+        member _.VerifiedEmail = verifiedEmail
+        member _.VerifiedName = verifiedName
+        member _.VerifiedPhone = verifiedPhone
 
     and SourceOwnerAddressDU =
-        | Address of Address
+        | SourceOwnerAddressDU'Address of Address
 
     and SourceOwnerVerifiedAddressDU =
-        | Address of Address
+        | SourceOwnerVerifiedAddressDU'Address of Address
 
     ///
-    and SourceReceiverFlow = {
+    and SourceReceiverFlow (address: string option, amountCharged: int, amountReceived: int, amountReturned: int, refundAttributesMethod: string, refundAttributesStatus: string) =
 
-        ///The address of the receiver source. This is the value that should be communicated to the customer to send their funds to.
-        Address: string
-
-        ///The total amount that was moved to your balance. This is almost always equal to the amount charged. In rare cases when customers deposit excess funds and we are unable to refund those, those funds get moved to your balance and show up in amount_charged as well. The amount charged is expressed in the source's currency.
-        AmountCharged: int
-
-        ///The total amount received by the receiver source. `amount_received = amount_returned + amount_charged` should be true for consumed sources unless customers deposit excess funds. The amount received is expressed in the source's currency.
-        AmountReceived: int
-
-        ///The total amount that was returned to the customer. The amount returned is expressed in the source's currency.
-        AmountReturned: int
-
-        ///Type of refund attribute method, one of `email`, `manual`, or `none`.
-        RefundAttributesMethod: string
-
-        ///Type of refund attribute status, one of `missing`, `requested`, or `available`.
-        RefundAttributesStatus: string
-
-    }
+        member _.Address = address
+        member _.AmountCharged = amountCharged
+        member _.AmountReceived = amountReceived
+        member _.AmountReturned = amountReturned
+        member _.RefundAttributesMethod = refundAttributesMethod
+        member _.RefundAttributesStatus = refundAttributesStatus
 
     ///
-    and SourceRedirectFlow = {
+    and SourceRedirectFlow (failureReason: string option, returnUrl: string, status: string, url: string) =
 
-        ///The failure reason for the redirect, either `user_abort` (the customer aborted or dropped out of the redirect flow), `declined` (the authentication failed or the transaction was declined), or `processing_error` (the redirect failed due to a technical error). Present only if the redirect status is `failed`.
-        FailureReason: string
-
-        ///The URL you provide to redirect the customer to after they authenticated their payment.
-        ReturnUrl: string
-
-        ///The status of the redirect, either `pending` (ready to be used by your customer to authenticate the transaction), `succeeded` (succesful authentication, cannot be reused) or `not_required` (redirect should not be used) or `failed` (failed authentication, cannot be reused).
-        Status: string
-
-        ///The URL provided to you to redirect a customer to as part of a `redirect` authentication flow.
-        Url: string
-
-    }
+        member _.FailureReason = failureReason
+        member _.ReturnUrl = returnUrl
+        member _.Status = status
+        member _.Url = url
 
     ///Some payment methods have no required amount that a customer must send.
     ///Customers can be instructed to send any amount, and it can be made up of
     ///multiple transactions. As such, sources can have multiple associated
     ///transactions.
-    and SourceTransaction = {
+    and SourceTransaction (amount: int, created: int, currency: string, id: string, livemode: bool, object: SourceTransactionObject, source: string, status: string, ``type``: SourceTransactionType, ?achCreditTransfer: SourceTransactionAchCreditTransferData, ?chfCreditTransfer: SourceTransactionChfCreditTransferData, ?gbpCreditTransfer: SourceTransactionGbpCreditTransferData, ?paperCheck: SourceTransactionPaperCheckData, ?sepaCreditTransfer: SourceTransactionSepaCreditTransferData) =
 
-        AchCreditTransfer: SourceTransactionAchCreditTransferData option
-
-        ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount your customer has pushed to the receiver.
-        Amount: int
-
-        ChfCreditTransfer: SourceTransactionChfCreditTransferData option
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        GbpCreditTransfer: SourceTransactionGbpCreditTransferData option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SourceTransactionObject
-
-        PaperCheck: SourceTransactionPaperCheckData option
-
-        SepaCreditTransfer: SourceTransactionSepaCreditTransferData option
-
-        ///The ID of the source this transaction is attached to.
-        Source: string
-
-        ///The status of the transaction, one of `succeeded`, `pending`, or `failed`.
-        Status: string
-
-        ///The type of source this transaction is attached to.
-        Type: SourceTransactionType
-
-    }
+        member _.AchCreditTransfer = achCreditTransfer
+        member _.Amount = amount
+        member _.ChfCreditTransfer = chfCreditTransfer
+        member _.Created = created
+        member _.Currency = currency
+        member _.GbpCreditTransfer = gbpCreditTransfer
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.PaperCheck = paperCheck
+        member _.SepaCreditTransfer = sepaCreditTransfer
+        member _.Source = source
+        member _.Status = status
+        member _.Type = ``type``
 
     and SourceTransactionObject =
-        | SourceTransaction
+        | SourceTransactionObject'SourceTransaction
 
     and SourceTransactionType =
-        | AchCreditTransfer
-        | AchDebit
-        | Alipay
-        | Bancontact
-        | Card
-        | CardPresent
-        | Eps
-        | Giropay
-        | Ideal
-        | Klarna
-        | Multibanco
-        | P24
-        | SepaDebit
-        | Sofort
-        | ThreeDSecure
-        | Wechat
+        | SourceTransactionType'AchCreditTransfer
+        | SourceTransactionType'AchDebit
+        | SourceTransactionType'Alipay
+        | SourceTransactionType'Bancontact
+        | SourceTransactionType'Card
+        | SourceTransactionType'CardPresent
+        | SourceTransactionType'Eps
+        | SourceTransactionType'Giropay
+        | SourceTransactionType'Ideal
+        | SourceTransactionType'Klarna
+        | SourceTransactionType'Multibanco
+        | SourceTransactionType'P24
+        | SourceTransactionType'SepaDebit
+        | SourceTransactionType'Sofort
+        | SourceTransactionType'ThreeDSecure
+        | SourceTransactionType'Wechat
 
     ///
-    and SourceTransactionAchCreditTransferData = {
+    and SourceTransactionAchCreditTransferData (?customerData: string, ?fingerprint: string, ?last4: string, ?routingNumber: string) =
 
-        ///Customer data associated with the transfer.
-        CustomerData: string option
-
-        ///Bank account fingerprint associated with the transfer.
-        Fingerprint: string option
-
-        ///Last 4 digits of the account number associated with the transfer.
-        Last4: string option
-
-        ///Routing number associated with the transfer.
-        RoutingNumber: string option
-
-    }
+        member _.CustomerData = customerData
+        member _.Fingerprint = fingerprint
+        member _.Last4 = last4
+        member _.RoutingNumber = routingNumber
 
     ///
-    and SourceTransactionChfCreditTransferData = {
+    and SourceTransactionChfCreditTransferData (?reference: string, ?senderAddressCountry: string, ?senderAddressLine1: string, ?senderIban: string, ?senderName: string) =
 
-        ///Reference associated with the transfer.
-        Reference: string option
-
-        ///Sender's country address.
-        SenderAddressCountry: string option
-
-        ///Sender's line 1 address.
-        SenderAddressLine1: string option
-
-        ///Sender's bank account IBAN.
-        SenderIban: string option
-
-        ///Sender's name.
-        SenderName: string option
-
-    }
+        member _.Reference = reference
+        member _.SenderAddressCountry = senderAddressCountry
+        member _.SenderAddressLine1 = senderAddressLine1
+        member _.SenderIban = senderIban
+        member _.SenderName = senderName
 
     ///
-    and SourceTransactionGbpCreditTransferData = {
+    and SourceTransactionGbpCreditTransferData (?fingerprint: string, ?fundingMethod: string, ?last4: string, ?reference: string, ?senderAccountNumber: string, ?senderName: string, ?senderSortCode: string) =
 
-        ///Bank account fingerprint associated with the Stripe owned bank account receiving the transfer.
-        Fingerprint: string option
-
-        ///The credit transfer rails the sender used to push this transfer. The possible rails are: Faster Payments, BACS, CHAPS, and wire transfers. Currently only Faster Payments is supported.
-        FundingMethod: string option
-
-        ///Last 4 digits of sender account number associated with the transfer.
-        Last4: string option
-
-        ///Sender entered arbitrary information about the transfer.
-        Reference: string option
-
-        ///Sender account number associated with the transfer.
-        SenderAccountNumber: string option
-
-        ///Sender name associated with the transfer.
-        SenderName: string option
-
-        ///Sender sort code associated with the transfer.
-        SenderSortCode: string option
-
-    }
+        member _.Fingerprint = fingerprint
+        member _.FundingMethod = fundingMethod
+        member _.Last4 = last4
+        member _.Reference = reference
+        member _.SenderAccountNumber = senderAccountNumber
+        member _.SenderName = senderName
+        member _.SenderSortCode = senderSortCode
 
     ///
-    and SourceTransactionPaperCheckData = {
+    and SourceTransactionPaperCheckData (?availableAt: string, ?invoices: string) =
 
-        ///Time at which the deposited funds will be available for use. Measured in seconds since the Unix epoch.
-        AvailableAt: string option
-
-        ///Comma-separated list of invoice IDs associated with the paper check.
-        Invoices: string option
-
-    }
+        member _.AvailableAt = availableAt
+        member _.Invoices = invoices
 
     ///
-    and SourceTransactionSepaCreditTransferData = {
-
-        ///Reference associated with the transfer.
-        Reference: string option
-
-        ///Sender's bank account IBAN.
-        SenderIban: string option
-
-        ///Sender's name.
-        SenderName: string option
-
-    }
-
-    and SourceTypeAchCreditTransfer = {
-
-        AccountNumber: string option
-
-        BankName: string option
-
-        Fingerprint: string option
-
-        RefundAccountHolderName: string option
-
-        RefundAccountHolderType: string option
-
-        RefundRoutingNumber: string option
-
-        RoutingNumber: string option
-
-        SwiftCode: string option
-
-    }
-
-    and SourceTypeAchDebit = {
-
-        BankName: string option
-
-        Country: string option
-
-        Fingerprint: string option
-
-        Last4: string option
-
-        RoutingNumber: string option
-
-        Type: string option
-
-    }
-
-    and SourceTypeAcssDebit = {
-
-        BankAddressCity: string option
-
-        BankAddressLine1: string option
-
-        BankAddressLine2: string option
-
-        BankAddressPostalCode: string option
-
-        BankName: string option
-
-        Category: string option
-
-        Country: string option
-
-        Fingerprint: string option
-
-        Last4: string option
-
-        RoutingNumber: string option
-
-    }
-
-    and SourceTypeAlipay = {
-
-        DataString: string option
-
-        NativeUrl: string option
-
-        StatementDescriptor: string option
-
-    }
-
-    and SourceTypeAuBecsDebit = {
-
-        BsbNumber: string option
-
-        Fingerprint: string option
-
-        Last4: string option
-
-    }
-
-    and SourceTypeBancontact = {
-
-        BankCode: string option
-
-        BankName: string option
-
-        Bic: string option
-
-        IbanLast4: string option
-
-        PreferredLanguage: string option
-
-        StatementDescriptor: string option
-
-    }
-
-    and SourceTypeCard = {
-
-        AddressLine1Check: string option
-
-        AddressZipCheck: string option
-
-        Brand: string option
-
-        Country: string option
-
-        CvcCheck: string option
-
-        Description: string option
-
-        DynamicLast4: string option
-
-        ExpMonth: int option
-
-        ExpYear: int option
-
-        Fingerprint: string option
-
-        Funding: string option
-
-        Iin: string option
-
-        Issuer: string option
-
-        Last4: string option
-
-        Name: string option
-
-        ThreeDSecure: string option
-
-        TokenizationMethod: string option
-
-    }
-
-    and SourceTypeCardPresent = {
-
-        ApplicationCryptogram: string option
-
-        ApplicationPreferredName: string option
-
-        AuthorizationCode: string option
-
-        AuthorizationResponseCode: string option
-
-        Brand: string option
-
-        Country: string option
-
-        CvmType: string option
-
-        DataType: string option
-
-        DedicatedFileName: string option
-
-        Description: string option
-
-        EmvAuthData: string option
-
-        EvidenceCustomerSignature: string option
-
-        EvidenceTransactionCertificate: string option
-
-        ExpMonth: int option
-
-        ExpYear: int option
-
-        Fingerprint: string option
-
-        Funding: string option
-
-        Iin: string option
-
-        Issuer: string option
-
-        Last4: string option
-
-        PosDeviceId: string option
-
-        PosEntryMode: string option
-
-        ReadMethod: string option
-
-        Reader: string option
-
-        TerminalVerificationResults: string option
-
-        TransactionStatusInformation: string option
-
-    }
-
-    and SourceTypeEps = {
-
-        Reference: string option
-
-        StatementDescriptor: string option
-
-    }
-
-    and SourceTypeGiropay = {
-
-        BankCode: string option
-
-        BankName: string option
-
-        Bic: string option
-
-        StatementDescriptor: string option
-
-    }
-
-    and SourceTypeIdeal = {
-
-        Bank: string option
-
-        Bic: string option
-
-        IbanLast4: string option
-
-        StatementDescriptor: string option
-
-    }
-
-    and SourceTypeKlarna = {
-
-        BackgroundImageUrl: string option
-
-        ClientToken: string option
-
-        FirstName: string option
-
-        LastName: string option
-
-        Locale: string option
-
-        LogoUrl: string option
-
-        PageTitle: string option
-
-        PayLaterAssetUrlsDescriptive: string option
-
-        PayLaterAssetUrlsStandard: string option
-
-        PayLaterName: string option
-
-        PayLaterRedirectUrl: string option
-
-        PayNowAssetUrlsDescriptive: string option
-
-        PayNowAssetUrlsStandard: string option
-
-        PayNowName: string option
-
-        PayNowRedirectUrl: string option
-
-        PayOverTimeAssetUrlsDescriptive: string option
-
-        PayOverTimeAssetUrlsStandard: string option
-
-        PayOverTimeName: string option
-
-        PayOverTimeRedirectUrl: string option
-
-        PaymentMethodCategories: string option
-
-        PurchaseCountry: string option
-
-        PurchaseType: string option
-
-        RedirectUrl: string option
-
-        ShippingDelay: int option
-
-        ShippingFirstName: string option
-
-        ShippingLastName: string option
-
-    }
-
-    and SourceTypeMultibanco = {
-
-        Entity: string option
-
-        Reference: string option
-
-        RefundAccountHolderAddressCity: string option
-
-        RefundAccountHolderAddressCountry: string option
-
-        RefundAccountHolderAddressLine1: string option
-
-        RefundAccountHolderAddressLine2: string option
-
-        RefundAccountHolderAddressPostalCode: string option
-
-        RefundAccountHolderAddressState: string option
-
-        RefundAccountHolderName: string option
-
-        RefundIban: string option
-
-    }
-
-    and SourceTypeP24 = {
-
-        Reference: string option
-
-    }
-
-    and SourceTypeSepaCreditTransfer = {
-
-        BankName: string option
-
-        Bic: string option
-
-        Iban: string option
-
-        RefundAccountHolderAddressCity: string option
-
-        RefundAccountHolderAddressCountry: string option
-
-        RefundAccountHolderAddressLine1: string option
-
-        RefundAccountHolderAddressLine2: string option
-
-        RefundAccountHolderAddressPostalCode: string option
-
-        RefundAccountHolderAddressState: string option
-
-        RefundAccountHolderName: string option
-
-        RefundIban: string option
-
-    }
-
-    and SourceTypeSepaDebit = {
-
-        BankCode: string option
-
-        BranchCode: string option
-
-        Country: string option
-
-        Fingerprint: string option
-
-        Last4: string option
-
-        MandateReference: string option
-
-        MandateUrl: string option
-
-    }
-
-    and SourceTypeSofort = {
-
-        BankCode: string option
-
-        BankName: string option
-
-        Bic: string option
-
-        Country: string option
-
-        IbanLast4: string option
-
-        PreferredLanguage: string option
-
-        StatementDescriptor: string option
-
-    }
-
-    and SourceTypeThreeDSecure = {
-
-        AddressLine1Check: string option
-
-        AddressZipCheck: string option
-
-        Authenticated: bool option
-
-        Brand: string option
-
-        Card: string option
-
-        Country: string option
-
-        Customer: string option
-
-        CvcCheck: string option
-
-        Description: string option
-
-        DynamicLast4: string option
-
-        ExpMonth: int option
-
-        ExpYear: int option
-
-        Fingerprint: string option
-
-        Funding: string option
-
-        Iin: string option
-
-        Issuer: string option
-
-        Last4: string option
-
-        Name: string option
-
-        ThreeDSecure: string option
-
-        TokenizationMethod: string option
-
-    }
-
-    and SourceTypeWechat = {
-
-        PrepayId: string option
-
-        QrCodeUrl: string option
-
-        StatementDescriptor: string option
-
-    }
+    and SourceTransactionSepaCreditTransferData (?reference: string, ?senderIban: string, ?senderName: string) =
+
+        member _.Reference = reference
+        member _.SenderIban = senderIban
+        member _.SenderName = senderName
+
+    and SourceTypeAchCreditTransfer (?accountNumber: string option, ?bankName: string option, ?fingerprint: string option, ?refundAccountHolderName: string option, ?refundAccountHolderType: string option, ?refundRoutingNumber: string option, ?routingNumber: string option, ?swiftCode: string option) =
+
+        member _.AccountNumber = accountNumber |> Option.flatten
+        member _.BankName = bankName |> Option.flatten
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+        member _.RefundAccountHolderType = refundAccountHolderType |> Option.flatten
+        member _.RefundRoutingNumber = refundRoutingNumber |> Option.flatten
+        member _.RoutingNumber = routingNumber |> Option.flatten
+        member _.SwiftCode = swiftCode |> Option.flatten
+
+    and SourceTypeAchDebit (?bankName: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option, ?``type``: string option) =
+
+        member _.BankName = bankName |> Option.flatten
+        member _.Country = country |> Option.flatten
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.Last4 = last4 |> Option.flatten
+        member _.RoutingNumber = routingNumber |> Option.flatten
+        member _.Type = ``type`` |> Option.flatten
+
+    and SourceTypeAcssDebit (?bankAddressCity: string option, ?bankAddressLine1: string option, ?bankAddressLine2: string option, ?bankAddressPostalCode: string option, ?bankName: string option, ?category: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option) =
+
+        member _.BankAddressCity = bankAddressCity |> Option.flatten
+        member _.BankAddressLine1 = bankAddressLine1 |> Option.flatten
+        member _.BankAddressLine2 = bankAddressLine2 |> Option.flatten
+        member _.BankAddressPostalCode = bankAddressPostalCode |> Option.flatten
+        member _.BankName = bankName |> Option.flatten
+        member _.Category = category |> Option.flatten
+        member _.Country = country |> Option.flatten
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.Last4 = last4 |> Option.flatten
+        member _.RoutingNumber = routingNumber |> Option.flatten
+
+    and SourceTypeAlipay (?dataString: string option, ?nativeUrl: string option, ?statementDescriptor: string option) =
+
+        member _.DataString = dataString |> Option.flatten
+        member _.NativeUrl = nativeUrl |> Option.flatten
+        member _.StatementDescriptor = statementDescriptor |> Option.flatten
+
+    and SourceTypeAuBecsDebit (?bsbNumber: string option, ?fingerprint: string option, ?last4: string option) =
+
+        member _.BsbNumber = bsbNumber |> Option.flatten
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.Last4 = last4 |> Option.flatten
+
+    and SourceTypeBancontact (?bankCode: string option, ?bankName: string option, ?bic: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
+
+        member _.BankCode = bankCode |> Option.flatten
+        member _.BankName = bankName |> Option.flatten
+        member _.Bic = bic |> Option.flatten
+        member _.IbanLast4 = ibanLast4 |> Option.flatten
+        member _.PreferredLanguage = preferredLanguage |> Option.flatten
+        member _.StatementDescriptor = statementDescriptor |> Option.flatten
+
+    and SourceTypeCard (?addressLine1Check: string option, ?addressZipCheck: string option, ?brand: string option, ?country: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+
+        member _.AddressLine1Check = addressLine1Check |> Option.flatten
+        member _.AddressZipCheck = addressZipCheck |> Option.flatten
+        member _.Brand = brand |> Option.flatten
+        member _.Country = country |> Option.flatten
+        member _.CvcCheck = cvcCheck |> Option.flatten
+        member _.Description = description
+        member _.DynamicLast4 = dynamicLast4 |> Option.flatten
+        member _.ExpMonth = expMonth |> Option.flatten
+        member _.ExpYear = expYear |> Option.flatten
+        member _.Fingerprint = fingerprint
+        member _.Funding = funding |> Option.flatten
+        member _.Iin = iin
+        member _.Issuer = issuer
+        member _.Last4 = last4 |> Option.flatten
+        member _.Name = name |> Option.flatten
+        member _.ThreeDSecure = threeDSecure
+        member _.TokenizationMethod = tokenizationMethod |> Option.flatten
+
+    and SourceTypeCardPresent (?applicationCryptogram: string, ?applicationPreferredName: string, ?authorizationCode: string option, ?authorizationResponseCode: string, ?brand: string option, ?country: string option, ?cvmType: string, ?dataType: string option, ?dedicatedFileName: string, ?description: string, ?emvAuthData: string, ?evidenceCustomerSignature: string option, ?evidenceTransactionCertificate: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?posDeviceId: string option, ?posEntryMode: string, ?readMethod: string option, ?reader: string option, ?terminalVerificationResults: string, ?transactionStatusInformation: string) =
+
+        member _.ApplicationCryptogram = applicationCryptogram
+        member _.ApplicationPreferredName = applicationPreferredName
+        member _.AuthorizationCode = authorizationCode |> Option.flatten
+        member _.AuthorizationResponseCode = authorizationResponseCode
+        member _.Brand = brand |> Option.flatten
+        member _.Country = country |> Option.flatten
+        member _.CvmType = cvmType
+        member _.DataType = dataType |> Option.flatten
+        member _.DedicatedFileName = dedicatedFileName
+        member _.Description = description
+        member _.EmvAuthData = emvAuthData
+        member _.EvidenceCustomerSignature = evidenceCustomerSignature |> Option.flatten
+        member _.EvidenceTransactionCertificate = evidenceTransactionCertificate |> Option.flatten
+        member _.ExpMonth = expMonth |> Option.flatten
+        member _.ExpYear = expYear |> Option.flatten
+        member _.Fingerprint = fingerprint
+        member _.Funding = funding |> Option.flatten
+        member _.Iin = iin
+        member _.Issuer = issuer
+        member _.Last4 = last4 |> Option.flatten
+        member _.PosDeviceId = posDeviceId |> Option.flatten
+        member _.PosEntryMode = posEntryMode
+        member _.ReadMethod = readMethod |> Option.flatten
+        member _.Reader = reader |> Option.flatten
+        member _.TerminalVerificationResults = terminalVerificationResults
+        member _.TransactionStatusInformation = transactionStatusInformation
+
+    and SourceTypeEps (?reference: string option, ?statementDescriptor: string option) =
+
+        member _.Reference = reference |> Option.flatten
+        member _.StatementDescriptor = statementDescriptor |> Option.flatten
+
+    and SourceTypeGiropay (?bankCode: string option, ?bankName: string option, ?bic: string option, ?statementDescriptor: string option) =
+
+        member _.BankCode = bankCode |> Option.flatten
+        member _.BankName = bankName |> Option.flatten
+        member _.Bic = bic |> Option.flatten
+        member _.StatementDescriptor = statementDescriptor |> Option.flatten
+
+    and SourceTypeIdeal (?bank: string option, ?bic: string option, ?ibanLast4: string option, ?statementDescriptor: string option) =
+
+        member _.Bank = bank |> Option.flatten
+        member _.Bic = bic |> Option.flatten
+        member _.IbanLast4 = ibanLast4 |> Option.flatten
+        member _.StatementDescriptor = statementDescriptor |> Option.flatten
+
+    and SourceTypeKlarna (?backgroundImageUrl: string, ?clientToken: string option, ?firstName: string, ?lastName: string, ?locale: string, ?logoUrl: string, ?pageTitle: string, ?payLaterAssetUrlsDescriptive: string, ?payLaterAssetUrlsStandard: string, ?payLaterName: string, ?payLaterRedirectUrl: string, ?payNowAssetUrlsDescriptive: string, ?payNowAssetUrlsStandard: string, ?payNowName: string, ?payNowRedirectUrl: string, ?payOverTimeAssetUrlsDescriptive: string, ?payOverTimeAssetUrlsStandard: string, ?payOverTimeName: string, ?payOverTimeRedirectUrl: string, ?paymentMethodCategories: string, ?purchaseCountry: string, ?purchaseType: string, ?redirectUrl: string, ?shippingDelay: int, ?shippingFirstName: string, ?shippingLastName: string) =
+
+        member _.BackgroundImageUrl = backgroundImageUrl
+        member _.ClientToken = clientToken |> Option.flatten
+        member _.FirstName = firstName
+        member _.LastName = lastName
+        member _.Locale = locale
+        member _.LogoUrl = logoUrl
+        member _.PageTitle = pageTitle
+        member _.PayLaterAssetUrlsDescriptive = payLaterAssetUrlsDescriptive
+        member _.PayLaterAssetUrlsStandard = payLaterAssetUrlsStandard
+        member _.PayLaterName = payLaterName
+        member _.PayLaterRedirectUrl = payLaterRedirectUrl
+        member _.PayNowAssetUrlsDescriptive = payNowAssetUrlsDescriptive
+        member _.PayNowAssetUrlsStandard = payNowAssetUrlsStandard
+        member _.PayNowName = payNowName
+        member _.PayNowRedirectUrl = payNowRedirectUrl
+        member _.PayOverTimeAssetUrlsDescriptive = payOverTimeAssetUrlsDescriptive
+        member _.PayOverTimeAssetUrlsStandard = payOverTimeAssetUrlsStandard
+        member _.PayOverTimeName = payOverTimeName
+        member _.PayOverTimeRedirectUrl = payOverTimeRedirectUrl
+        member _.PaymentMethodCategories = paymentMethodCategories
+        member _.PurchaseCountry = purchaseCountry
+        member _.PurchaseType = purchaseType
+        member _.RedirectUrl = redirectUrl
+        member _.ShippingDelay = shippingDelay
+        member _.ShippingFirstName = shippingFirstName
+        member _.ShippingLastName = shippingLastName
+
+    and SourceTypeMultibanco (?entity: string option, ?reference: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+
+        member _.Entity = entity |> Option.flatten
+        member _.Reference = reference |> Option.flatten
+        member _.RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
+        member _.RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
+        member _.RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
+        member _.RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
+        member _.RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
+        member _.RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
+        member _.RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+        member _.RefundIban = refundIban |> Option.flatten
+
+    and SourceTypeP24 (?reference: string option) =
+
+        member _.Reference = reference |> Option.flatten
+
+    and SourceTypeSepaCreditTransfer (?bankName: string option, ?bic: string option, ?iban: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+
+        member _.BankName = bankName |> Option.flatten
+        member _.Bic = bic |> Option.flatten
+        member _.Iban = iban |> Option.flatten
+        member _.RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
+        member _.RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
+        member _.RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
+        member _.RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
+        member _.RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
+        member _.RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
+        member _.RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+        member _.RefundIban = refundIban |> Option.flatten
+
+    and SourceTypeSepaDebit (?bankCode: string option, ?branchCode: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?mandateReference: string option, ?mandateUrl: string option) =
+
+        member _.BankCode = bankCode |> Option.flatten
+        member _.BranchCode = branchCode |> Option.flatten
+        member _.Country = country |> Option.flatten
+        member _.Fingerprint = fingerprint |> Option.flatten
+        member _.Last4 = last4 |> Option.flatten
+        member _.MandateReference = mandateReference |> Option.flatten
+        member _.MandateUrl = mandateUrl |> Option.flatten
+
+    and SourceTypeSofort (?bankCode: string option, ?bankName: string option, ?bic: string option, ?country: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
+
+        member _.BankCode = bankCode |> Option.flatten
+        member _.BankName = bankName |> Option.flatten
+        member _.Bic = bic |> Option.flatten
+        member _.Country = country |> Option.flatten
+        member _.IbanLast4 = ibanLast4 |> Option.flatten
+        member _.PreferredLanguage = preferredLanguage |> Option.flatten
+        member _.StatementDescriptor = statementDescriptor |> Option.flatten
+
+    and SourceTypeThreeDSecure (?addressLine1Check: string option, ?addressZipCheck: string option, ?authenticated: bool option, ?brand: string option, ?card: string option, ?country: string option, ?customer: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+
+        member _.AddressLine1Check = addressLine1Check |> Option.flatten
+        member _.AddressZipCheck = addressZipCheck |> Option.flatten
+        member _.Authenticated = authenticated |> Option.flatten
+        member _.Brand = brand |> Option.flatten
+        member _.Card = card |> Option.flatten
+        member _.Country = country |> Option.flatten
+        member _.Customer = customer |> Option.flatten
+        member _.CvcCheck = cvcCheck |> Option.flatten
+        member _.Description = description
+        member _.DynamicLast4 = dynamicLast4 |> Option.flatten
+        member _.ExpMonth = expMonth |> Option.flatten
+        member _.ExpYear = expYear |> Option.flatten
+        member _.Fingerprint = fingerprint
+        member _.Funding = funding |> Option.flatten
+        member _.Iin = iin
+        member _.Issuer = issuer
+        member _.Last4 = last4 |> Option.flatten
+        member _.Name = name |> Option.flatten
+        member _.ThreeDSecure = threeDSecure
+        member _.TokenizationMethod = tokenizationMethod |> Option.flatten
+
+    and SourceTypeWechat (?prepayId: string, ?qrCodeUrl: string option, ?statementDescriptor: string) =
+
+        member _.PrepayId = prepayId
+        member _.QrCodeUrl = qrCodeUrl |> Option.flatten
+        member _.StatementDescriptor = statementDescriptor
 
     ///
-    and StatusTransitions = {
+    and StatusTransitions (canceled: int option, fulfiled: int option, paid: int option, returned: int option) =
 
-        ///The time that the order was canceled.
-        Canceled: int
-
-        ///The time that the order was fulfilled.
-        Fulfiled: int
-
-        ///The time that the order was paid.
-        Paid: int
-
-        ///The time that the order was returned.
-        Returned: int
-
-    }
+        member _.Canceled = canceled
+        member _.Fulfiled = fulfiled
+        member _.Paid = paid
+        member _.Returned = returned
 
     ///Subscriptions allow you to charge a customer on a recurring basis.
     ///
     ///Related guide: [Creating Subscriptions](https://stripe.com/docs/billing/subscriptions/creating).
-    and Subscription = {
+    and Subscription (applicationFeePercent: decimal option, billingCycleAnchor: int, billingThresholds: SubscriptionBillingThresholdsDU option, cancelAt: int option, cancelAtPeriodEnd: bool, canceledAt: int option, collectionMethod: SubscriptionCollectionMethod option, created: int, currentPeriodEnd: int, currentPeriodStart: int, customer: SubscriptionCustomerDU, daysUntilDue: int option, defaultPaymentMethod: SubscriptionDefaultPaymentMethodDU option, defaultSource: SubscriptionDefaultSourceDU option, discount: SubscriptionDiscountDU option, endedAt: int option, id: string, items: Map<string, string>, latestInvoice: SubscriptionLatestInvoiceDU option, livemode: bool, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: int option, object: SubscriptionObject, pauseCollection: SubscriptionPauseCollectionDU option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemIntervalDU option, pendingSetupIntent: SubscriptionPendingSetupIntentDU option, pendingUpdate: SubscriptionPendingUpdateDU option, schedule: SubscriptionScheduleDU option, startDate: int, status: SubscriptionStatus, transferData: SubscriptionTransferDataDU option, trialEnd: int option, trialStart: int option, ?defaultTaxRates: TaxRate list option) =
 
-        ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account.
-        ApplicationFeePercent: decimal
-
-        ///Determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices.
-        BillingCycleAnchor: int
-
-        ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
-        BillingThresholds: SubscriptionBillingThresholdsDU
-
-        ///A date in the future at which the subscription will automatically get canceled
-        CancelAt: int
-
-        ///If the subscription has been canceled with the `at_period_end` flag set to `true`, `cancel_at_period_end` on the subscription will be true. You can use this attribute to determine whether a subscription that has a status of active is scheduled to be canceled at the end of the current period.
-        CancelAtPeriodEnd: bool
-
-        ///If the subscription has been canceled, the date of that cancellation. If the subscription was canceled with `cancel_at_period_end`, `canceled_at` will reflect the time of the most recent update request, not the end of the subscription period when the subscription is automatically moved to a canceled state.
-        CanceledAt: int
-
-        ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
-        CollectionMethod: SubscriptionCollectionMethod
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///End of the current period that the subscription has been invoiced for. At the end of this period, a new invoice will be created.
-        CurrentPeriodEnd: int
-
-        ///Start of the current period that the subscription has been invoiced for.
-        CurrentPeriodStart: int
-
-        ///ID of the customer who owns the subscription.
-        Customer: SubscriptionCustomerDU
-
-        ///Number of days a customer has to pay invoices generated by this subscription. This value will be `null` for subscriptions where `collection_method=charge_automatically`.
-        DaysUntilDue: int
-
-        ///ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-        DefaultPaymentMethod: SubscriptionDefaultPaymentMethodDU
-
-        ///ID of the default payment source for the subscription. It must belong to the customer associated with the subscription and be in a chargeable state. If `default_payment_method` is also set, `default_payment_method` will take precedence. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-        DefaultSource: SubscriptionDefaultSourceDU
-
-        ///The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription.
-        DefaultTaxRates: TaxRate list
-
-        ///Describes the current discount applied to this subscription, if there is one. When billing, a discount applied to a subscription overrides a discount applied on a customer-wide basis.
-        Discount: SubscriptionDiscountDU
-
-        ///If the subscription has ended, the date the subscription ended.
-        EndedAt: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///List of subscription items, each with an attached price.
-        Items: Map<string, string>
-
-        ///The most recent invoice this subscription has generated.
-        LatestInvoice: SubscriptionLatestInvoiceDU
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///Specifies the approximate timestamp on which any pending invoice items will be billed according to the schedule provided at `pending_invoice_item_interval`.
-        NextPendingInvoiceItemInvoice: int
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SubscriptionObject
-
-        ///If specified, payment collection for this subscription will be paused.
-        PauseCollection: SubscriptionPauseCollectionDU
-
-        ///Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval.
-        PendingInvoiceItemInterval: SubscriptionPendingInvoiceItemIntervalDU
-
-        ///You can use this [SetupIntent](https://stripe.com/docs/api/setup_intents) to collect user authentication when creating a subscription without immediate payment or updating a subscription's payment method, allowing you to optimize for off-session payments. Learn more in the [SCA Migration Guide](https://stripe.com/docs/billing/migration/strong-customer-authentication#scenario-2).
-        PendingSetupIntent: SubscriptionPendingSetupIntentDU
-
-        ///If specified, [pending updates](https://stripe.com/docs/billing/subscriptions/pending-updates) that will be applied to the subscription once the `latest_invoice` has been paid.
-        PendingUpdate: SubscriptionPendingUpdateDU
-
-        ///The schedule attached to the subscription
-        Schedule: SubscriptionScheduleDU
-
-        ///Date when the subscription was first created. The date might differ from the `created` date due to backdating.
-        StartDate: int
-
-        ///Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, or `unpaid`. 
-    ///
-    ///For `collection_method=charge_automatically` a subscription moves into `incomplete` if the initial payment attempt fails. A subscription in this state can only have metadata and default_source updated. Once the first invoice is paid, the subscription moves into an `active` state. If the first invoice is not paid within 23 hours, the subscription transitions to `incomplete_expired`. This is a terminal state, the open invoice will be voided and no further invoices will be generated. 
-    ///
-    ///A subscription that is currently in a trial period is `trialing` and moves to `active` when the trial period is over. 
-    ///
-    ///If subscription `collection_method=charge_automatically` it becomes `past_due` when payment to renew it fails and `canceled` or `unpaid` (depending on your subscriptions settings) when Stripe has exhausted all payment retry attempts. 
-    ///
-    ///If subscription `collection_method=send_invoice` it becomes `past_due` when its invoice is not paid by the due date, and `canceled` or `unpaid` if it is still not paid by an additional deadline after that. Note that when a subscription has a status of `unpaid`, no subsequent invoices will be attempted (invoices will be created, but then immediately automatically closed). After receiving updated payment information from a customer, you may choose to reopen and pay their closed invoices.
-        Status: SubscriptionStatus
-
-        ///The account (if any) the subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
-        TransferData: SubscriptionTransferDataDU
-
-        ///If the subscription has a trial, the end of that trial.
-        TrialEnd: int
-
-        ///If the subscription has a trial, the beginning of that trial.
-        TrialStart: int
-
-    }
+        member _.ApplicationFeePercent = applicationFeePercent
+        member _.BillingCycleAnchor = billingCycleAnchor
+        member _.BillingThresholds = billingThresholds
+        member _.CancelAt = cancelAt
+        member _.CancelAtPeriodEnd = cancelAtPeriodEnd
+        member _.CanceledAt = canceledAt
+        member _.CollectionMethod = collectionMethod
+        member _.Created = created
+        member _.CurrentPeriodEnd = currentPeriodEnd
+        member _.CurrentPeriodStart = currentPeriodStart
+        member _.Customer = customer
+        member _.DaysUntilDue = daysUntilDue
+        member _.DefaultPaymentMethod = defaultPaymentMethod
+        member _.DefaultSource = defaultSource
+        member _.DefaultTaxRates = defaultTaxRates |> Option.flatten
+        member _.Discount = discount
+        member _.EndedAt = endedAt
+        member _.Id = id
+        member _.Items = items
+        member _.LatestInvoice = latestInvoice
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.NextPendingInvoiceItemInvoice = nextPendingInvoiceItemInvoice
+        member _.Object = object
+        member _.PauseCollection = pauseCollection
+        member _.PendingInvoiceItemInterval = pendingInvoiceItemInterval
+        member _.PendingSetupIntent = pendingSetupIntent
+        member _.PendingUpdate = pendingUpdate
+        member _.Schedule = schedule
+        member _.StartDate = startDate
+        member _.Status = status
+        member _.TransferData = transferData
+        member _.TrialEnd = trialEnd
+        member _.TrialStart = trialStart
 
     and SubscriptionCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
+        | SubscriptionCollectionMethod'ChargeAutomatically
+        | SubscriptionCollectionMethod'SendInvoice
 
     and SubscriptionObject =
-        | Subscription
+        | SubscriptionObject'Subscription
 
     and SubscriptionStatus =
-        | Active
-        | Canceled
-        | Incomplete
-        | IncompleteExpired
-        | PastDue
-        | Trialing
-        | Unpaid
+        | SubscriptionStatus'Active
+        | SubscriptionStatus'Canceled
+        | SubscriptionStatus'Incomplete
+        | SubscriptionStatus'IncompleteExpired
+        | SubscriptionStatus'PastDue
+        | SubscriptionStatus'Trialing
+        | SubscriptionStatus'Unpaid
 
     and SubscriptionBillingThresholdsDU =
-        | SubscriptionBillingThresholds of SubscriptionBillingThresholds
+        | SubscriptionBillingThresholdsDU'SubscriptionBillingThresholds of SubscriptionBillingThresholds
 
     and SubscriptionCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | SubscriptionCustomerDU'String of string
+        | SubscriptionCustomerDU'Customer of Customer
+        | SubscriptionCustomerDU'DeletedCustomer of DeletedCustomer
 
     and SubscriptionDefaultPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SubscriptionDefaultPaymentMethodDU'String of string
+        | SubscriptionDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
 
     and SubscriptionDefaultSourceDU =
-        | String of string
-        | PaymentSource of PaymentSource
+        | SubscriptionDefaultSourceDU'String of string
+        | SubscriptionDefaultSourceDU'PaymentSource of PaymentSource
 
     and SubscriptionDiscountDU =
-        | Discount of Discount
+        | SubscriptionDiscountDU'Discount of Discount
 
     and SubscriptionLatestInvoiceDU =
-        | String of string
-        | Invoice of Invoice
+        | SubscriptionLatestInvoiceDU'String of string
+        | SubscriptionLatestInvoiceDU'Invoice of Invoice
 
     and SubscriptionPauseCollectionDU =
-        | SubscriptionsResourcePauseCollection of SubscriptionsResourcePauseCollection
+        | SubscriptionPauseCollectionDU'SubscriptionsResourcePauseCollection of SubscriptionsResourcePauseCollection
 
     and SubscriptionPendingInvoiceItemIntervalDU =
-        | SubscriptionPendingInvoiceItemInterval of SubscriptionPendingInvoiceItemInterval
+        | SubscriptionPendingInvoiceItemIntervalDU'SubscriptionPendingInvoiceItemInterval of SubscriptionPendingInvoiceItemInterval
 
     and SubscriptionPendingSetupIntentDU =
-        | String of string
-        | SetupIntent of SetupIntent
+        | SubscriptionPendingSetupIntentDU'String of string
+        | SubscriptionPendingSetupIntentDU'SetupIntent of SetupIntent
 
     and SubscriptionPendingUpdateDU =
-        | SubscriptionsResourcePendingUpdate of SubscriptionsResourcePendingUpdate
+        | SubscriptionPendingUpdateDU'SubscriptionsResourcePendingUpdate of SubscriptionsResourcePendingUpdate
 
     and SubscriptionScheduleDU =
-        | String of string
-        | SubscriptionSchedule of SubscriptionSchedule
+        | SubscriptionScheduleDU'String of string
+        | SubscriptionScheduleDU'SubscriptionSchedule of SubscriptionSchedule
 
     and SubscriptionTransferDataDU =
-        | SubscriptionTransferData of SubscriptionTransferData
+        | SubscriptionTransferDataDU'SubscriptionTransferData of SubscriptionTransferData
 
     ///
-    and SubscriptionBillingThresholds = {
+    and SubscriptionBillingThresholds (amountGte: int option, resetBillingCycleAnchor: bool option) =
 
-        ///Monetary threshold that triggers the subscription to create an invoice
-        AmountGte: int
-
-        ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged. This value may not be `true` if the subscription contains items with plans that have `aggregate_usage=last_ever`.
-        ResetBillingCycleAnchor: bool
-
-    }
+        member _.AmountGte = amountGte
+        member _.ResetBillingCycleAnchor = resetBillingCycleAnchor
 
     ///Subscription items allow you to create customer subscriptions with more than
     ///one plan, making it easy to represent complex billing relationships.
-    and SubscriptionItem = {
+    and SubscriptionItem (billingThresholds: SubscriptionItemBillingThresholdsDU option, created: int, id: string, metadata: Map<string, string>, object: SubscriptionItemObject, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?quantity: int) =
 
-        ///Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period
-        BillingThresholds: SubscriptionItemBillingThresholdsDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SubscriptionItemObject
-
-        Plan: Plan
-
-        Price: Price
-
-        ///The [quantity](https://stripe.com/docs/subscriptions/quantities) of the plan to which the customer should be subscribed.
-        Quantity: int option
-
-        ///The `subscription` this `subscription_item` belongs to.
-        Subscription: string
-
-        ///The tax rates which apply to this `subscription_item`. When set, the `default_tax_rates` on the subscription do not apply to this `subscription_item`.
-        TaxRates: TaxRate list
-
-    }
+        member _.BillingThresholds = billingThresholds
+        member _.Created = created
+        member _.Id = id
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Plan = plan
+        member _.Price = price
+        member _.Quantity = quantity
+        member _.Subscription = subscription
+        member _.TaxRates = taxRates
 
     and SubscriptionItemObject =
-        | SubscriptionItem
+        | SubscriptionItemObject'SubscriptionItem
 
     and SubscriptionItemBillingThresholdsDU =
-        | SubscriptionItemBillingThresholds of SubscriptionItemBillingThresholds
+        | SubscriptionItemBillingThresholdsDU'SubscriptionItemBillingThresholds of SubscriptionItemBillingThresholds
 
     ///
-    and SubscriptionItemBillingThresholds = {
+    and SubscriptionItemBillingThresholds (usageGte: int option) =
 
-        ///Usage threshold that triggers the subscription to create an invoice
-        UsageGte: int
-
-    }
+        member _.UsageGte = usageGte
 
     ///
-    and SubscriptionPendingInvoiceItemInterval = {
+    and SubscriptionPendingInvoiceItemInterval (interval: SubscriptionPendingInvoiceItemIntervalInterval, intervalCount: int) =
 
-        ///Specifies invoicing frequency. Either `day`, `week`, `month` or `year`.
-        Interval: SubscriptionPendingInvoiceItemIntervalInterval
-
-        ///The number of intervals between invoices. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
-        IntervalCount: int
-
-    }
+        member _.Interval = interval
+        member _.IntervalCount = intervalCount
 
     and SubscriptionPendingInvoiceItemIntervalInterval =
-        | Day
-        | Month
-        | Week
-        | Year
+        | SubscriptionPendingInvoiceItemIntervalInterval'Day
+        | SubscriptionPendingInvoiceItemIntervalInterval'Month
+        | SubscriptionPendingInvoiceItemIntervalInterval'Week
+        | SubscriptionPendingInvoiceItemIntervalInterval'Year
 
     ///A subscription schedule allows you to create and manage the lifecycle of a subscription by predefining expected changes.
     ///
     ///Related guide: [Subscription Schedules](https://stripe.com/docs/billing/subscriptions/subscription-schedules).
-    and SubscriptionSchedule = {
+    and SubscriptionSchedule (canceledAt: int option, completedAt: int option, created: int, currentPhase: SubscriptionScheduleCurrentPhaseDU option, customer: SubscriptionScheduleCustomerDU, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, object: SubscriptionScheduleObject, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: int option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: SubscriptionScheduleSubscriptionDU option) =
 
-        ///Time at which the subscription schedule was canceled. Measured in seconds since the Unix epoch.
-        CanceledAt: int
-
-        ///Time at which the subscription schedule was completed. Measured in seconds since the Unix epoch.
-        CompletedAt: int
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Object representing the start and end dates for the current phase of the subscription schedule, if it is `active`.
-        CurrentPhase: SubscriptionScheduleCurrentPhaseDU
-
-        ///ID of the customer who owns the subscription schedule.
-        Customer: SubscriptionScheduleCustomerDU
-
-        DefaultSettings: SubscriptionSchedulesResourceDefaultSettings
-
-        ///Behavior of the subscription schedule and underlying subscription when it ends. Possible values are `release` and `cancel`.
-        EndBehavior: SubscriptionScheduleEndBehavior
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: SubscriptionScheduleObject
-
-        ///Configuration for the subscription schedule's phases.
-        Phases: SubscriptionSchedulePhaseConfiguration list
-
-        ///Time at which the subscription schedule was released. Measured in seconds since the Unix epoch.
-        ReleasedAt: int
-
-        ///ID of the subscription once managed by the subscription schedule (if it is released).
-        ReleasedSubscription: string
-
-        ///The present status of the subscription schedule. Possible values are `not_started`, `active`, `completed`, `released`, and `canceled`. You can read more about the different states in our [behavior guide](https://stripe.com/docs/billing/subscriptions/subscription-schedules).
-        Status: SubscriptionScheduleStatus
-
-        ///ID of the subscription managed by the subscription schedule.
-        Subscription: SubscriptionScheduleSubscriptionDU
-
-    }
+        member _.CanceledAt = canceledAt
+        member _.CompletedAt = completedAt
+        member _.Created = created
+        member _.CurrentPhase = currentPhase
+        member _.Customer = customer
+        member _.DefaultSettings = defaultSettings
+        member _.EndBehavior = endBehavior
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Phases = phases
+        member _.ReleasedAt = releasedAt
+        member _.ReleasedSubscription = releasedSubscription
+        member _.Status = status
+        member _.Subscription = subscription
 
     and SubscriptionScheduleEndBehavior =
-        | Cancel
-        | None
-        | Release
-        | Renew
+        | SubscriptionScheduleEndBehavior'Cancel
+        | SubscriptionScheduleEndBehavior'None
+        | SubscriptionScheduleEndBehavior'Release
+        | SubscriptionScheduleEndBehavior'Renew
 
     and SubscriptionScheduleObject =
-        | SubscriptionSchedule
+        | SubscriptionScheduleObject'SubscriptionSchedule
 
     and SubscriptionScheduleStatus =
-        | Active
-        | Canceled
-        | Completed
-        | NotStarted
-        | Released
+        | SubscriptionScheduleStatus'Active
+        | SubscriptionScheduleStatus'Canceled
+        | SubscriptionScheduleStatus'Completed
+        | SubscriptionScheduleStatus'NotStarted
+        | SubscriptionScheduleStatus'Released
 
     and SubscriptionScheduleCurrentPhaseDU =
-        | SubscriptionScheduleCurrentPhase of SubscriptionScheduleCurrentPhase
+        | SubscriptionScheduleCurrentPhaseDU'SubscriptionScheduleCurrentPhase of SubscriptionScheduleCurrentPhase
 
     and SubscriptionScheduleCustomerDU =
-        | String of string
-        | Customer of Customer
-        | DeletedCustomer of DeletedCustomer
+        | SubscriptionScheduleCustomerDU'String of string
+        | SubscriptionScheduleCustomerDU'Customer of Customer
+        | SubscriptionScheduleCustomerDU'DeletedCustomer of DeletedCustomer
 
     and SubscriptionScheduleSubscriptionDU =
-        | String of string
-        | Subscription of Subscription
+        | SubscriptionScheduleSubscriptionDU'String of string
+        | SubscriptionScheduleSubscriptionDU'Subscription of Subscription
 
     ///An Add Invoice Item describes the prices and quantities that will be added as pending invoice items when entering a phase.
-    and SubscriptionScheduleAddInvoiceItem = {
+    and SubscriptionScheduleAddInvoiceItem (price: SubscriptionScheduleAddInvoiceItemPriceDU, quantity: int option, ?taxRates: TaxRate list option) =
 
-        ///ID of the price used to generate the invoice item.
-        Price: SubscriptionScheduleAddInvoiceItemPriceDU
-
-        ///The quantity of the invoice item.
-        Quantity: int
-
-        ///The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
-        TaxRates: TaxRate list
-
-    }
+        member _.Price = price
+        member _.Quantity = quantity
+        member _.TaxRates = taxRates |> Option.flatten
 
     and SubscriptionScheduleAddInvoiceItemPriceDU =
-        | String of string
-        | Price of Price
-        | DeletedPrice of DeletedPrice
+        | SubscriptionScheduleAddInvoiceItemPriceDU'String of string
+        | SubscriptionScheduleAddInvoiceItemPriceDU'Price of Price
+        | SubscriptionScheduleAddInvoiceItemPriceDU'DeletedPrice of DeletedPrice
 
     ///A phase item describes the price and quantity of a phase.
-    and SubscriptionScheduleConfigurationItem = {
+    and SubscriptionScheduleConfigurationItem (billingThresholds: SubscriptionScheduleConfigurationItemBillingThresholdsDU option, plan: SubscriptionScheduleConfigurationItemPlanDU, price: SubscriptionScheduleConfigurationItemPriceDU, ?quantity: int, ?taxRates: TaxRate list option) =
 
-        ///Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period
-        BillingThresholds: SubscriptionScheduleConfigurationItemBillingThresholdsDU
-
-        ///ID of the plan to which the customer should be subscribed.
-        Plan: SubscriptionScheduleConfigurationItemPlanDU
-
-        ///ID of the price to which the customer should be subscribed.
-        Price: SubscriptionScheduleConfigurationItemPriceDU
-
-        ///Quantity of the plan to which the customer should be subscribed.
-        Quantity: int option
-
-        ///The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`.
-        TaxRates: TaxRate list
-
-    }
+        member _.BillingThresholds = billingThresholds
+        member _.Plan = plan
+        member _.Price = price
+        member _.Quantity = quantity
+        member _.TaxRates = taxRates |> Option.flatten
 
     and SubscriptionScheduleConfigurationItemBillingThresholdsDU =
-        | SubscriptionItemBillingThresholds of SubscriptionItemBillingThresholds
+        | SubscriptionScheduleConfigurationItemBillingThresholdsDU'SubscriptionItemBillingThresholds of SubscriptionItemBillingThresholds
 
     and SubscriptionScheduleConfigurationItemPlanDU =
-        | String of string
-        | Plan of Plan
-        | DeletedPlan of DeletedPlan
+        | SubscriptionScheduleConfigurationItemPlanDU'String of string
+        | SubscriptionScheduleConfigurationItemPlanDU'Plan of Plan
+        | SubscriptionScheduleConfigurationItemPlanDU'DeletedPlan of DeletedPlan
 
     and SubscriptionScheduleConfigurationItemPriceDU =
-        | String of string
-        | Price of Price
-        | DeletedPrice of DeletedPrice
+        | SubscriptionScheduleConfigurationItemPriceDU'String of string
+        | SubscriptionScheduleConfigurationItemPriceDU'Price of Price
+        | SubscriptionScheduleConfigurationItemPriceDU'DeletedPrice of DeletedPrice
 
     ///
-    and SubscriptionScheduleCurrentPhase = {
+    and SubscriptionScheduleCurrentPhase (endDate: int, startDate: int) =
 
-        ///The end of this phase of the subscription schedule.
-        EndDate: int
-
-        ///The start of this phase of the subscription schedule.
-        StartDate: int
-
-    }
+        member _.EndDate = endDate
+        member _.StartDate = startDate
 
     ///A phase describes the plans, coupon, and trialing status of a subscription for a predefined time period.
-    and SubscriptionSchedulePhaseConfiguration = {
+    and SubscriptionSchedulePhaseConfiguration (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionSchedulePhaseConfigurationBillingThresholdsDU option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, coupon: SubscriptionSchedulePhaseConfigurationCouponDU option, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU option, endDate: int, invoiceSettings: SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU option, items: SubscriptionScheduleConfigurationItem list, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: int, transferData: SubscriptionSchedulePhaseConfigurationTransferDataDU option, trialEnd: int option, ?defaultTaxRates: TaxRate list option) =
 
-        ///A list of prices and quantities that will generate invoice items appended to the first invoice for this phase.
-        AddInvoiceItems: SubscriptionScheduleAddInvoiceItem list
-
-        ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account during this phase of the schedule.
-        ApplicationFeePercent: decimal
-
-        ///Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
-        BillingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor
-
-        ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
-        BillingThresholds: SubscriptionSchedulePhaseConfigurationBillingThresholdsDU
-
-        ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
-        CollectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod
-
-        ///ID of the coupon to use during this phase of the subscription schedule.
-        Coupon: SubscriptionSchedulePhaseConfigurationCouponDU
-
-        ///ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU
-
-        ///The default tax rates to apply to the subscription during this phase of the subscription schedule.
-        DefaultTaxRates: TaxRate list
-
-        ///The end of this phase of the subscription schedule.
-        EndDate: int
-
-        ///The subscription schedule's default invoice settings.
-        InvoiceSettings: SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU
-
-        ///Subscription items to configure the subscription to during this phase of the subscription schedule.
-        Items: SubscriptionScheduleConfigurationItem list
-
-        ///If the subscription schedule will prorate when transitioning to this phase. Possible values are `create_prorations` and `none`.
-        ProrationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior
-
-        ///The start of this phase of the subscription schedule.
-        StartDate: int
-
-        ///The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
-        TransferData: SubscriptionSchedulePhaseConfigurationTransferDataDU
-
-        ///When the trial ends within the phase.
-        TrialEnd: int
-
-    }
+        member _.AddInvoiceItems = addInvoiceItems
+        member _.ApplicationFeePercent = applicationFeePercent
+        member _.BillingCycleAnchor = billingCycleAnchor
+        member _.BillingThresholds = billingThresholds
+        member _.CollectionMethod = collectionMethod
+        member _.Coupon = coupon
+        member _.DefaultPaymentMethod = defaultPaymentMethod
+        member _.DefaultTaxRates = defaultTaxRates |> Option.flatten
+        member _.EndDate = endDate
+        member _.InvoiceSettings = invoiceSettings
+        member _.Items = items
+        member _.ProrationBehavior = prorationBehavior
+        member _.StartDate = startDate
+        member _.TransferData = transferData
+        member _.TrialEnd = trialEnd
 
     and SubscriptionSchedulePhaseConfigurationBillingCycleAnchor =
-        | Automatic
-        | PhaseStart
+        | SubscriptionSchedulePhaseConfigurationBillingCycleAnchor'Automatic
+        | SubscriptionSchedulePhaseConfigurationBillingCycleAnchor'PhaseStart
 
     and SubscriptionSchedulePhaseConfigurationCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
+        | SubscriptionSchedulePhaseConfigurationCollectionMethod'ChargeAutomatically
+        | SubscriptionSchedulePhaseConfigurationCollectionMethod'SendInvoice
 
     and SubscriptionSchedulePhaseConfigurationProrationBehavior =
-        | AlwaysInvoice
-        | CreateProrations
-        | None
+        | SubscriptionSchedulePhaseConfigurationProrationBehavior'AlwaysInvoice
+        | SubscriptionSchedulePhaseConfigurationProrationBehavior'CreateProrations
+        | SubscriptionSchedulePhaseConfigurationProrationBehavior'None
 
     and SubscriptionSchedulePhaseConfigurationBillingThresholdsDU =
-        | SubscriptionBillingThresholds of SubscriptionBillingThresholds
+        | SubscriptionSchedulePhaseConfigurationBillingThresholdsDU'SubscriptionBillingThresholds of SubscriptionBillingThresholds
 
     and SubscriptionSchedulePhaseConfigurationCouponDU =
-        | String of string
-        | Coupon of Coupon
-        | DeletedCoupon of DeletedCoupon
+        | SubscriptionSchedulePhaseConfigurationCouponDU'String of string
+        | SubscriptionSchedulePhaseConfigurationCouponDU'Coupon of Coupon
+        | SubscriptionSchedulePhaseConfigurationCouponDU'DeletedCoupon of DeletedCoupon
 
     and SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU'String of string
+        | SubscriptionSchedulePhaseConfigurationDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
 
     and SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU =
-        | InvoiceSettingSubscriptionScheduleSetting of InvoiceSettingSubscriptionScheduleSetting
+        | SubscriptionSchedulePhaseConfigurationInvoiceSettingsDU'InvoiceSettingSubscriptionScheduleSetting of InvoiceSettingSubscriptionScheduleSetting
 
     and SubscriptionSchedulePhaseConfigurationTransferDataDU =
-        | SubscriptionTransferData of SubscriptionTransferData
+        | SubscriptionSchedulePhaseConfigurationTransferDataDU'SubscriptionTransferData of SubscriptionTransferData
 
     ///
-    and SubscriptionSchedulesResourceDefaultSettings = {
+    and SubscriptionSchedulesResourceDefaultSettings (billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU option, invoiceSettings: SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU option, transferData: SubscriptionSchedulesResourceDefaultSettingsTransferDataDU option) =
 
-        ///Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
-        BillingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor
-
-        ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
-        BillingThresholds: SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU
-
-        ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
-        CollectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod
-
-        ///ID of the default payment method for the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU
-
-        ///The subscription schedule's default invoice settings.
-        InvoiceSettings: SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU
-
-        ///The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
-        TransferData: SubscriptionSchedulesResourceDefaultSettingsTransferDataDU
-
-    }
+        member _.BillingCycleAnchor = billingCycleAnchor
+        member _.BillingThresholds = billingThresholds
+        member _.CollectionMethod = collectionMethod
+        member _.DefaultPaymentMethod = defaultPaymentMethod
+        member _.InvoiceSettings = invoiceSettings
+        member _.TransferData = transferData
 
     and SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor =
-        | Automatic
-        | PhaseStart
+        | SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor'Automatic
+        | SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor'PhaseStart
 
     and SubscriptionSchedulesResourceDefaultSettingsCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
+        | SubscriptionSchedulesResourceDefaultSettingsCollectionMethod'ChargeAutomatically
+        | SubscriptionSchedulesResourceDefaultSettingsCollectionMethod'SendInvoice
 
     and SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU =
-        | SubscriptionBillingThresholds of SubscriptionBillingThresholds
+        | SubscriptionSchedulesResourceDefaultSettingsBillingThresholdsDU'SubscriptionBillingThresholds of SubscriptionBillingThresholds
 
     and SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU =
-        | String of string
-        | PaymentMethod of PaymentMethod
+        | SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU'String of string
+        | SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethodDU'PaymentMethod of PaymentMethod
 
     and SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU =
-        | InvoiceSettingSubscriptionScheduleSetting of InvoiceSettingSubscriptionScheduleSetting
+        | SubscriptionSchedulesResourceDefaultSettingsInvoiceSettingsDU'InvoiceSettingSubscriptionScheduleSetting of InvoiceSettingSubscriptionScheduleSetting
 
     and SubscriptionSchedulesResourceDefaultSettingsTransferDataDU =
-        | SubscriptionTransferData of SubscriptionTransferData
+        | SubscriptionSchedulesResourceDefaultSettingsTransferDataDU'SubscriptionTransferData of SubscriptionTransferData
 
     ///
-    and SubscriptionTransferData = {
+    and SubscriptionTransferData (amountPercent: decimal option, destination: SubscriptionTransferDataDestinationDU) =
 
-        ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
-        AmountPercent: decimal
-
-        ///The account where funds from the payment will be transferred to upon payment success.
-        Destination: SubscriptionTransferDataDestinationDU
-
-    }
+        member _.AmountPercent = amountPercent
+        member _.Destination = destination
 
     and SubscriptionTransferDataDestinationDU =
-        | String of string
-        | Account of Account
+        | SubscriptionTransferDataDestinationDU'String of string
+        | SubscriptionTransferDataDestinationDU'Account of Account
 
     ///The Pause Collection settings determine how we will pause collection for this subscription and for how long the subscription
     ///should be paused.
-    and SubscriptionsResourcePauseCollection = {
+    and SubscriptionsResourcePauseCollection (behavior: SubscriptionsResourcePauseCollectionBehavior, resumesAt: int option) =
 
-        ///The payment collection behavior for this subscription while paused. One of `keep_as_draft`, `mark_uncollectible`, or `void`.
-        Behavior: SubscriptionsResourcePauseCollectionBehavior
-
-        ///The time after which the subscription will resume collecting payments.
-        ResumesAt: int
-
-    }
+        member _.Behavior = behavior
+        member _.ResumesAt = resumesAt
 
     and SubscriptionsResourcePauseCollectionBehavior =
-        | KeepAsDraft
-        | MarkUncollectible
-        | Void
+        | SubscriptionsResourcePauseCollectionBehavior'KeepAsDraft
+        | SubscriptionsResourcePauseCollectionBehavior'MarkUncollectible
+        | SubscriptionsResourcePauseCollectionBehavior'Void
 
     ///Pending Updates store the changes pending from a previous update that will be applied
     ///to the Subscription upon successful payment.
-    and SubscriptionsResourcePendingUpdate = {
+    and SubscriptionsResourcePendingUpdate (billingCycleAnchor: int option, expiresAt: int, subscriptionItems: SubscriptionItem list option, trialEnd: int option, trialFromPlan: bool option) =
 
-        ///If the update is applied, determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices.
-        BillingCycleAnchor: int
-
-        ///The point after which the changes reflected by this update will be discarded and no longer applied.
-        ExpiresAt: int
-
-        ///List of subscription items, each with an attached plan, that will be set if the update is applied.
-        SubscriptionItems: SubscriptionItem list
-
-        ///Unix timestamp representing the end of the trial period the customer will get before being charged for the first time, if the update is applied.
-        TrialEnd: int
-
-        ///Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed.
-        TrialFromPlan: bool
-
-    }
+        member _.BillingCycleAnchor = billingCycleAnchor
+        member _.ExpiresAt = expiresAt
+        member _.SubscriptionItems = subscriptionItems
+        member _.TrialEnd = trialEnd
+        member _.TrialFromPlan = trialFromPlan
 
     ///
-    and TaxDeductedAtSource = {
+    and TaxDeductedAtSource (id: string, object: TaxDeductedAtSourceObject, periodEnd: int, periodStart: int, taxDeductionAccountNumber: string) =
 
-        ///Unique identifier for the object.
-        Id: string
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TaxDeductedAtSourceObject
-
-        ///The end of the invoicing period. This TDS applies to Stripe fees collected during this invoicing period.
-        PeriodEnd: int
-
-        ///The start of the invoicing period. This TDS applies to Stripe fees collected during this invoicing period.
-        PeriodStart: int
-
-        ///The TAN that was supplied to Stripe when TDS was assessed
-        TaxDeductionAccountNumber: string
-
-    }
+        member _.Id = id
+        member _.Object = object
+        member _.PeriodEnd = periodEnd
+        member _.PeriodStart = periodStart
+        member _.TaxDeductionAccountNumber = taxDeductionAccountNumber
 
     and TaxDeductedAtSourceObject =
-        | TaxDeductedAtSource
+        | TaxDeductedAtSourceObject'TaxDeductedAtSource
 
     ///You can add one or multiple tax IDs to a [customer](https://stripe.com/docs/api/customers).
     ///A customer's tax IDs are displayed on invoices and credit notes issued for the customer.
     ///
     ///Related guide: [Customer Tax Identification Numbers](https://stripe.com/docs/billing/taxes/tax-ids).
-    and TaxId = {
+    and TaxId (country: string option, created: int, customer: TaxIdCustomerDU option, id: string, livemode: bool, object: TaxIdObject, ``type``: TaxIdType, value: string, verification: TaxIdVerificationDU option) =
 
-        ///Two-letter ISO code representing the country of the tax ID.
-        Country: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///ID of the customer.
-        Customer: TaxIdCustomerDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TaxIdObject
-
-        ///Type of the tax ID, one of `ae_trn`, `au_abn`, `br_cnpj`, `br_cpf`, `ca_bn`, `ca_qst`, `ch_vat`, `cl_tin`, `es_cif`, `eu_vat`, `hk_br`, `id_npwp`, `in_gst`, `jp_cn`, `jp_rn`, `kr_brn`, `li_uid`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `no_vat`, `nz_gst`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `th_vat`, `tw_vat`, `us_ein`, or `za_vat`. Note that some legacy tax IDs have type `unknown`
-        Type: TaxIdType
-
-        ///Value of the tax ID.
-        Value: string
-
-        ///Tax ID verification information.
-        Verification: TaxIdVerificationDU
-
-    }
+        member _.Country = country
+        member _.Created = created
+        member _.Customer = customer
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Type = ``type``
+        member _.Value = value
+        member _.Verification = verification
 
     and TaxIdObject =
-        | TaxId
+        | TaxIdObject'TaxId
 
     and TaxIdType =
-        | AeTrn
-        | AuAbn
-        | BrCnpj
-        | BrCpf
-        | CaBn
-        | CaQst
-        | ChVat
-        | ClTin
-        | EsCif
-        | EuVat
-        | HkBr
-        | IdNpwp
-        | InGst
-        | JpCn
-        | JpRn
-        | KrBrn
-        | LiUid
-        | MxRfc
-        | MyFrp
-        | MyItn
-        | MySst
-        | NoVat
-        | NzGst
-        | RuInn
-        | RuKpp
-        | SaVat
-        | SgGst
-        | SgUen
-        | ThVat
-        | TwVat
-        | Unknown
-        | UsEin
-        | ZaVat
+        | TaxIdType'AeTrn
+        | TaxIdType'AuAbn
+        | TaxIdType'BrCnpj
+        | TaxIdType'BrCpf
+        | TaxIdType'CaBn
+        | TaxIdType'CaQst
+        | TaxIdType'ChVat
+        | TaxIdType'ClTin
+        | TaxIdType'EsCif
+        | TaxIdType'EuVat
+        | TaxIdType'HkBr
+        | TaxIdType'IdNpwp
+        | TaxIdType'InGst
+        | TaxIdType'JpCn
+        | TaxIdType'JpRn
+        | TaxIdType'KrBrn
+        | TaxIdType'LiUid
+        | TaxIdType'MxRfc
+        | TaxIdType'MyFrp
+        | TaxIdType'MyItn
+        | TaxIdType'MySst
+        | TaxIdType'NoVat
+        | TaxIdType'NzGst
+        | TaxIdType'RuInn
+        | TaxIdType'RuKpp
+        | TaxIdType'SaVat
+        | TaxIdType'SgGst
+        | TaxIdType'SgUen
+        | TaxIdType'ThVat
+        | TaxIdType'TwVat
+        | TaxIdType'Unknown
+        | TaxIdType'UsEin
+        | TaxIdType'ZaVat
 
     and TaxIdCustomerDU =
-        | String of string
-        | Customer of Customer
+        | TaxIdCustomerDU'String of string
+        | TaxIdCustomerDU'Customer of Customer
 
     and TaxIdVerificationDU =
-        | TaxIdVerification of TaxIdVerification
+        | TaxIdVerificationDU'TaxIdVerification of TaxIdVerification
 
     ///
-    and TaxIdVerification = {
+    and TaxIdVerification (status: TaxIdVerificationStatus, verifiedAddress: string option, verifiedName: string option) =
 
-        ///Verification status, one of `pending`, `verified`, `unverified`, or `unavailable`.
-        Status: TaxIdVerificationStatus
-
-        ///Verified address.
-        VerifiedAddress: string
-
-        ///Verified name.
-        VerifiedName: string
-
-    }
+        member _.Status = status
+        member _.VerifiedAddress = verifiedAddress
+        member _.VerifiedName = verifiedName
 
     and TaxIdVerificationStatus =
-        | Pending
-        | Unavailable
-        | Unverified
-        | Verified
+        | TaxIdVerificationStatus'Pending
+        | TaxIdVerificationStatus'Unavailable
+        | TaxIdVerificationStatus'Unverified
+        | TaxIdVerificationStatus'Verified
 
     ///Tax rates can be applied to [invoices](https://stripe.com/docs/billing/invoices/tax-rates), [subscriptions](https://stripe.com/docs/billing/subscriptions/taxes) and [Checkout Sessions](https://stripe.com/docs/payments/checkout/set-up-a-subscription#tax-rates) to collect tax.
     ///
     ///Related guide: [Tax Rates](https://stripe.com/docs/billing/taxes/tax-rates).
-    and TaxRate = {
+    and TaxRate (active: bool, created: int, description: string option, displayName: string, id: string, inclusive: bool, jurisdiction: string option, livemode: bool, metadata: Map<string, string> option, object: TaxRateObject, percentage: decimal) =
 
-        ///Defaults to `true`. When set to `false`, this tax rate cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
-        Active: bool
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
-        Description: string
-
-        ///The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
-        DisplayName: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///This specifies if the tax rate is inclusive or exclusive.
-        Inclusive: bool
-
-        ///The jurisdiction for the tax rate. You can use this label field for tax reporting purposes. It also appears on your customer’s invoice.
-        Jurisdiction: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TaxRateObject
-
-        ///This represents the tax rate percent out of 100.
-        Percentage: decimal
-
-    }
+        member _.Active = active
+        member _.Created = created
+        member _.Description = description
+        member _.DisplayName = displayName
+        member _.Id = id
+        member _.Inclusive = inclusive
+        member _.Jurisdiction = jurisdiction
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Percentage = percentage
 
     and TaxRateObject =
-        | TaxRate
+        | TaxRateObject'TaxRate
 
     ///A Connection Token is used by the Stripe Terminal SDK to connect to a reader.
     ///
     ///Related guide: [Fleet Management](https://stripe.com/docs/terminal/readers/fleet-management#create).
-    and TerminalConnectionToken = {
+    and TerminalConnectionToken (object: TerminalConnectionTokenObject, secret: string, ?location: string) =
 
-        ///The id of the location that this connection token is scoped to.
-        Location: string option
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TerminalConnectionTokenObject
-
-        ///Your application should pass this token to the Stripe Terminal SDK.
-        Secret: string
-
-    }
+        member _.Location = location
+        member _.Object = object
+        member _.Secret = secret
 
     and TerminalConnectionTokenObject =
-        | TerminalConnectionToken
+        | TerminalConnectionTokenObject'TerminalConnectionToken
 
     ///A Location represents a grouping of readers.
     ///
     ///Related guide: [Fleet Management](https://stripe.com/docs/terminal/readers/fleet-management#create).
-    and TerminalLocation = {
+    and TerminalLocation (address: Address, displayName: string, id: string, livemode: bool, metadata: Map<string, string>, object: TerminalLocationObject) =
 
-        Address: Address
-
-        ///The display name of the location.
-        DisplayName: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TerminalLocationObject
-
-    }
+        member _.Address = address
+        member _.DisplayName = displayName
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
 
     and TerminalLocationObject =
-        | TerminalLocation
+        | TerminalLocationObject'TerminalLocation
 
     ///A Reader represents a physical device for accepting payment details.
     ///
     ///Related guide: [Connecting to a Reader](https://stripe.com/docs/terminal/readers/connecting).
-    and TerminalReader = {
+    and TerminalReader (deviceSwVersion: string option, deviceType: TerminalReaderDeviceType, id: string, ipAddress: string option, label: string, livemode: bool, location: string option, metadata: Map<string, string>, object: TerminalReaderObject, serialNumber: string, status: string option) =
 
-        ///The current software version of the reader.
-        DeviceSwVersion: string
-
-        ///Type of reader, one of `bbpos_chipper2x` or `verifone_P400`.
-        DeviceType: TerminalReaderDeviceType
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The local IP address of the reader.
-        IpAddress: string
-
-        ///Custom label given to the reader for easier identification.
-        Label: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///The location identifier of the reader.
-        Location: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TerminalReaderObject
-
-        ///Serial number of the reader.
-        SerialNumber: string
-
-        ///The networking status of the reader.
-        Status: string
-
-    }
+        member _.DeviceSwVersion = deviceSwVersion
+        member _.DeviceType = deviceType
+        member _.Id = id
+        member _.IpAddress = ipAddress
+        member _.Label = label
+        member _.Livemode = livemode
+        member _.Location = location
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.SerialNumber = serialNumber
+        member _.Status = status
 
     and TerminalReaderDeviceType =
-        | BbposChipper2x
-        | VerifoneP400
+        | TerminalReaderDeviceType'BbposChipper2x
+        | TerminalReaderDeviceType'VerifoneP400
 
     and TerminalReaderObject =
-        | TerminalReader
+        | TerminalReaderObject'TerminalReader
 
     ///Cardholder authentication via 3D Secure is initiated by creating a `3D Secure`
     ///object. Once the object has been created, you can use it to authenticate the
     ///cardholder and create a charge.
-    and ThreeDSecure = {
+    and ThreeDSecure (amount: int, authenticated: bool, card: Card, created: int, currency: string, id: string, livemode: bool, object: ThreeDSecureObject, redirectUrl: string option, status: string) =
 
-        ///Amount of the charge that you will create when authentication completes.
-        Amount: int
-
-        ///True if the cardholder went through the authentication flow and their bank indicated that authentication succeeded.
-        Authenticated: bool
-
-        Card: Card
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: ThreeDSecureObject
-
-        ///If present, this is the URL that you should send the cardholder to for authentication. If you are going to use Stripe.js to display the authentication page in an iframe, you should use the value "_callback".
-        RedirectUrl: string
-
-        ///Possible values are `redirect_pending`, `succeeded`, or `failed`. When the cardholder can be authenticated, the object starts with status `redirect_pending`. When liability will be shifted to the cardholder's bank (either because the cardholder was successfully authenticated, or because the bank has not implemented 3D Secure, the object wlil be in status `succeeded`. `failed` indicates that authentication was attempted unsuccessfully.
-        Status: string
-
-    }
+        member _.Amount = amount
+        member _.Authenticated = authenticated
+        member _.Card = card
+        member _.Created = created
+        member _.Currency = currency
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.RedirectUrl = redirectUrl
+        member _.Status = status
 
     and ThreeDSecureObject =
-        | ThreeDSecure
+        | ThreeDSecureObject'ThreeDSecure
 
     ///
-    and ThreeDSecureDetails = {
+    and ThreeDSecureDetails (authenticationFlow: ThreeDSecureDetailsAuthenticationFlow option, result: ThreeDSecureDetailsResult, resultReason: ThreeDSecureDetailsResultReason option, version: ThreeDSecureDetailsVersion) =
 
-        ///For authenticated transactions: how the customer was authenticated by
-    ///the issuing bank.
-        AuthenticationFlow: ThreeDSecureDetailsAuthenticationFlow
-
-        ///Indicates the outcome of 3D Secure authentication.
-        Result: ThreeDSecureDetailsResult
-
-        ///Additional information about why 3D Secure succeeded or failed based
-    ///on the `result`.
-        ResultReason: ThreeDSecureDetailsResultReason
-
-        ///The version of 3D Secure that was used.
-        Version: ThreeDSecureDetailsVersion
-
-    }
+        member _.AuthenticationFlow = authenticationFlow
+        member _.Result = result
+        member _.ResultReason = resultReason
+        member _.Version = version
 
     and ThreeDSecureDetailsAuthenticationFlow =
-        | Challenge
-        | Frictionless
+        | ThreeDSecureDetailsAuthenticationFlow'Challenge
+        | ThreeDSecureDetailsAuthenticationFlow'Frictionless
 
     and ThreeDSecureDetailsResult =
-        | AttemptAcknowledged
-        | Authenticated
-        | Failed
-        | NotSupported
-        | ProcessingError
+        | ThreeDSecureDetailsResult'AttemptAcknowledged
+        | ThreeDSecureDetailsResult'Authenticated
+        | ThreeDSecureDetailsResult'Failed
+        | ThreeDSecureDetailsResult'NotSupported
+        | ThreeDSecureDetailsResult'ProcessingError
 
     and ThreeDSecureDetailsResultReason =
-        | Abandoned
-        | Bypassed
-        | Canceled
-        | CardNotEnrolled
-        | NetworkNotSupported
-        | ProtocolError
-        | Rejected
+        | ThreeDSecureDetailsResultReason'Abandoned
+        | ThreeDSecureDetailsResultReason'Bypassed
+        | ThreeDSecureDetailsResultReason'Canceled
+        | ThreeDSecureDetailsResultReason'CardNotEnrolled
+        | ThreeDSecureDetailsResultReason'NetworkNotSupported
+        | ThreeDSecureDetailsResultReason'ProtocolError
+        | ThreeDSecureDetailsResultReason'Rejected
 
     and ThreeDSecureDetailsVersion =
-        | [<JsonUnionCase("1.0.2")>] Numeric102
-        | [<JsonUnionCase("2.1.0")>] Numeric210
-        | [<JsonUnionCase("2.2.0")>] Numeric220
+        | [<JsonUnionCase("1.0.2")>] ThreeDSecureDetailsVersion'102
+        | [<JsonUnionCase("2.1.0")>] ThreeDSecureDetailsVersion'210
+        | [<JsonUnionCase("2.2.0")>] ThreeDSecureDetailsVersion'220
 
     ///
-    and ThreeDSecureUsage = {
+    and ThreeDSecureUsage (supported: bool) =
 
-        ///Whether 3D Secure is supported on this card.
-        Supported: bool
-
-    }
+        member _.Supported = supported
 
     ///Tokenization is the process Stripe uses to collect sensitive card or bank
     ///account details, or personally identifiable information (PII), directly from
@@ -13796,107 +8991,58 @@ module StripeModel =
     ///supports only integrations that use client-side tokenization.
     ///
     ///Related guide: [Accept a payment](https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token)
-    and Token = {
+    and Token (clientIp: string option, created: int, id: string, livemode: bool, object: TokenObject, ``type``: string, used: bool, ?bankAccount: BankAccount, ?card: Card) =
 
-        BankAccount: BankAccount option
-
-        Card: Card option
-
-        ///IP address of the client that generated the token.
-        ClientIp: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TokenObject
-
-        ///Type of the token: `account`, `bank_account`, `card`, or `pii`.
-        Type: string
-
-        ///Whether this token has already been used (tokens can be used only once).
-        Used: bool
-
-    }
+        member _.BankAccount = bankAccount
+        member _.Card = card
+        member _.ClientIp = clientIp
+        member _.Created = created
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Type = ``type``
+        member _.Used = used
 
     and TokenObject =
-        | Token
+        | TokenObject'Token
 
     ///To top up your Stripe balance, you create a top-up object. You can retrieve
     ///individual top-ups, as well as list all top-ups. Top-ups are identified by a
     ///unique, random ID.
     ///
     ///Related guide: [Topping Up your Platform Account](https://stripe.com/docs/connect/top-ups).
-    and Topup = {
+    and Topup (amount: int, balanceTransaction: TopupBalanceTransactionDU option, created: int, currency: string, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string>, object: TopupObject, source: Source, statementDescriptor: string option, status: TopupStatus, transferGroup: string option) =
 
-        ///Amount transferred.
-        Amount: int
-
-        ///ID of the balance transaction that describes the impact of this top-up on your account balance. May not be specified depending on status of top-up.
-        BalanceTransaction: TopupBalanceTransactionDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///Date the funds are expected to arrive in your Stripe account for payouts. This factors in delays like weekends or bank holidays. May not be specified depending on status of top-up.
-        ExpectedAvailabilityDate: int
-
-        ///Error code explaining reason for top-up failure if available (see [the errors section](https://stripe.com/docs/api#errors) for a list of codes).
-        FailureCode: string
-
-        ///Message to user further explaining reason for top-up failure if available.
-        FailureMessage: string
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TopupObject
-
-        Source: Source
-
-        ///Extra information about a top-up. This will appear on your source's bank statement. It must contain at least one letter.
-        StatementDescriptor: string
-
-        ///The status of the top-up is either `canceled`, `failed`, `pending`, `reversed`, or `succeeded`.
-        Status: TopupStatus
-
-        ///A string that identifies this top-up as part of a group.
-        TransferGroup: string
-
-    }
+        member _.Amount = amount
+        member _.BalanceTransaction = balanceTransaction
+        member _.Created = created
+        member _.Currency = currency
+        member _.Description = description
+        member _.ExpectedAvailabilityDate = expectedAvailabilityDate
+        member _.FailureCode = failureCode
+        member _.FailureMessage = failureMessage
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Source = source
+        member _.StatementDescriptor = statementDescriptor
+        member _.Status = status
+        member _.TransferGroup = transferGroup
 
     and TopupObject =
-        | Topup
+        | TopupObject'Topup
 
     and TopupStatus =
-        | Canceled
-        | Failed
-        | Pending
-        | Reversed
-        | Succeeded
+        | TopupStatus'Canceled
+        | TopupStatus'Failed
+        | TopupStatus'Pending
+        | TopupStatus'Reversed
+        | TopupStatus'Succeeded
 
     and TopupBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | TopupBalanceTransactionDU'String of string
+        | TopupBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     ///A `Transfer` object is created when you move funds between Stripe accounts as
     ///part of Connect.
@@ -13908,96 +9054,54 @@ module StripeModel =
     ///[transfer/payout split](https://stripe.com/docs/transfer-payout-split).
     ///
     ///Related guide: [Creating Separate Charges and Transfers](https://stripe.com/docs/connect/charges-transfers).
-    and Transfer = {
+    and Transfer (amount: int, amountReversed: int, balanceTransaction: TransferBalanceTransactionDU option, created: int, currency: string, description: string option, destination: TransferDestinationDU option, id: string, livemode: bool, metadata: Map<string, string>, object: TransferObject, reversals: Map<string, string>, reversed: bool, sourceTransaction: TransferSourceTransactionDU option, sourceType: string option, transferGroup: string option, ?destinationPayment: TransferDestinationPaymentDU) =
 
-        ///Amount in %s to be transferred.
-        Amount: int
-
-        ///Amount in %s reversed (can be less than the amount attribute on the transfer if a partial reversal was issued).
-        AmountReversed: int
-
-        ///Balance transaction that describes the impact of this transfer on your account balance.
-        BalanceTransaction: TransferBalanceTransactionDU
-
-        ///Time that this record of the transfer was first created.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string
-
-        ///ID of the Stripe account the transfer was sent to.
-        Destination: TransferDestinationDU
-
-        ///If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer.
-        DestinationPayment: TransferDestinationPaymentDU option
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TransferObject
-
-        ///A list of reversals that have been applied to the transfer.
-        Reversals: Map<string, string>
-
-        ///Whether the transfer has been fully reversed. If the transfer is only partially reversed, this attribute will still be false.
-        Reversed: bool
-
-        ///ID of the charge or payment that was used to fund the transfer. If null, the transfer was funded from the available balance.
-        SourceTransaction: TransferSourceTransactionDU
-
-        ///The source balance this transfer came from. One of `card`, `fpx`, or `bank_account`.
-        SourceType: string
-
-        ///A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
-        TransferGroup: string
-
-    }
+        member _.Amount = amount
+        member _.AmountReversed = amountReversed
+        member _.BalanceTransaction = balanceTransaction
+        member _.Created = created
+        member _.Currency = currency
+        member _.Description = description
+        member _.Destination = destination
+        member _.DestinationPayment = destinationPayment
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Reversals = reversals
+        member _.Reversed = reversed
+        member _.SourceTransaction = sourceTransaction
+        member _.SourceType = sourceType
+        member _.TransferGroup = transferGroup
 
     and TransferObject =
-        | Transfer
+        | TransferObject'Transfer
 
     and TransferBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | TransferBalanceTransactionDU'String of string
+        | TransferBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and TransferDestinationDU =
-        | String of string
-        | Account of Account
+        | TransferDestinationDU'String of string
+        | TransferDestinationDU'Account of Account
 
     and TransferDestinationPaymentDU =
-        | String of string
-        | Charge of Charge
+        | TransferDestinationPaymentDU'String of string
+        | TransferDestinationPaymentDU'Charge of Charge
 
     and TransferSourceTransactionDU =
-        | String of string
-        | Charge of Charge
+        | TransferSourceTransactionDU'String of string
+        | TransferSourceTransactionDU'Charge of Charge
 
     ///
-    and TransferData = {
+    and TransferData (destination: TransferDataDestinationDU, ?amount: int) =
 
-        ///Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
-        Amount: int option
-
-        ///The account (if any) the payment will be attributed to for tax
-    ///reporting, and where funds from the payment will be transferred to upon
-    ///payment success.
-        Destination: TransferDataDestinationDU
-
-    }
+        member _.Amount = amount
+        member _.Destination = destination
 
     and TransferDataDestinationDU =
-        | String of string
-        | Account of Account
+        | TransferDataDestinationDU'String of string
+        | TransferDataDestinationDU'Account of Account
 
     ///[Stripe Connect](https://stripe.com/docs/connect) platforms can reverse transfers made to a
     ///connected account, either entirely or partially, and can also specify whether
@@ -14012,162 +9116,95 @@ module StripeModel =
     ///reversal.
     ///
     ///Related guide: [Reversing Transfers](https://stripe.com/docs/connect/charges-transfers#reversing-transfers).
-    and TransferReversal = {
+    and TransferReversal (amount: int, balanceTransaction: TransferReversalBalanceTransactionDU option, created: int, currency: string, destinationPaymentRefund: TransferReversalDestinationPaymentRefundDU option, id: string, metadata: Map<string, string> option, object: TransferReversalObject, sourceRefund: TransferReversalSourceRefundDU option, transfer: TransferReversalTransferDU) =
 
-        ///Amount, in %s.
-        Amount: int
-
-        ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: TransferReversalBalanceTransactionDU
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-
-        ///Linked payment refund for the transfer reversal.
-        DestinationPaymentRefund: TransferReversalDestinationPaymentRefundDU
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: TransferReversalObject
-
-        ///ID of the refund responsible for the transfer reversal.
-        SourceRefund: TransferReversalSourceRefundDU
-
-        ///ID of the transfer that was reversed.
-        Transfer: TransferReversalTransferDU
-
-    }
+        member _.Amount = amount
+        member _.BalanceTransaction = balanceTransaction
+        member _.Created = created
+        member _.Currency = currency
+        member _.DestinationPaymentRefund = destinationPaymentRefund
+        member _.Id = id
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.SourceRefund = sourceRefund
+        member _.Transfer = transfer
 
     and TransferReversalObject =
-        | TransferReversal
+        | TransferReversalObject'TransferReversal
 
     and TransferReversalBalanceTransactionDU =
-        | String of string
-        | BalanceTransaction of BalanceTransaction
+        | TransferReversalBalanceTransactionDU'String of string
+        | TransferReversalBalanceTransactionDU'BalanceTransaction of BalanceTransaction
 
     and TransferReversalDestinationPaymentRefundDU =
-        | String of string
-        | Refund of Refund
+        | TransferReversalDestinationPaymentRefundDU'String of string
+        | TransferReversalDestinationPaymentRefundDU'Refund of Refund
 
     and TransferReversalSourceRefundDU =
-        | String of string
-        | Refund of Refund
+        | TransferReversalSourceRefundDU'String of string
+        | TransferReversalSourceRefundDU'Refund of Refund
 
     and TransferReversalTransferDU =
-        | String of string
-        | Transfer of Transfer
+        | TransferReversalTransferDU'String of string
+        | TransferReversalTransferDU'Transfer of Transfer
 
     ///
-    and TransferSchedule = {
+    and TransferSchedule (delayDays: int, interval: string, ?monthlyAnchor: int, ?weeklyAnchor: string) =
 
-        ///The number of days charges for the account will be held before being paid out.
-        DelayDays: int
-
-        ///How frequently funds will be paid out. One of `manual` (payouts only created via API call), `daily`, `weekly`, or `monthly`.
-        Interval: string
-
-        ///The day of the month funds will be paid out. Only shown if `interval` is monthly. Payouts scheduled between the 29th and 31st of the month are sent on the last day of shorter months.
-        MonthlyAnchor: int option
-
-        ///The day of the week funds will be paid out, of the style 'monday', 'tuesday', etc. Only shown if `interval` is weekly.
-        WeeklyAnchor: string option
-
-    }
+        member _.DelayDays = delayDays
+        member _.Interval = interval
+        member _.MonthlyAnchor = monthlyAnchor
+        member _.WeeklyAnchor = weeklyAnchor
 
     ///
-    and TransformQuantity = {
+    and TransformQuantity (divideBy: int, round: TransformQuantityRound) =
 
-        ///Divide usage by this number.
-        DivideBy: int
-
-        ///After division, either round the result `up` or `down`.
-        Round: TransformQuantityRound
-
-    }
+        member _.DivideBy = divideBy
+        member _.Round = round
 
     and TransformQuantityRound =
-        | Down
-        | Up
+        | TransformQuantityRound'Down
+        | TransformQuantityRound'Up
 
     ///
-    and TransformUsage = {
+    and TransformUsage (divideBy: int, round: TransformUsageRound) =
 
-        ///Divide usage by this number.
-        DivideBy: int
-
-        ///After division, either round the result `up` or `down`.
-        Round: TransformUsageRound
-
-    }
+        member _.DivideBy = divideBy
+        member _.Round = round
 
     and TransformUsageRound =
-        | Down
-        | Up
+        | TransformUsageRound'Down
+        | TransformUsageRound'Up
 
     ///Usage records allow you to report customer usage and metrics to Stripe for
     ///metered billing of subscription prices.
     ///
     ///Related guide: [Metered Billing](https://stripe.com/docs/billing/subscriptions/metered-billing).
-    and UsageRecord = {
+    and UsageRecord (id: string, livemode: bool, object: UsageRecordObject, quantity: int, subscriptionItem: string, timestamp: int) =
 
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: UsageRecordObject
-
-        ///The usage quantity for the specified date.
-        Quantity: int
-
-        ///The ID of the subscription item this usage record contains data for.
-        SubscriptionItem: string
-
-        ///The timestamp when this usage occurred.
-        Timestamp: int
-
-    }
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Quantity = quantity
+        member _.SubscriptionItem = subscriptionItem
+        member _.Timestamp = timestamp
 
     and UsageRecordObject =
-        | UsageRecord
+        | UsageRecordObject'UsageRecord
 
     ///
-    and UsageRecordSummary = {
+    and UsageRecordSummary (id: string, invoice: string option, livemode: bool, object: UsageRecordSummaryObject, period: Period, subscriptionItem: string, totalUsage: int) =
 
-        ///Unique identifier for the object.
-        Id: string
-
-        ///The invoice in which this usage period has been billed for.
-        Invoice: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: UsageRecordSummaryObject
-
-        Period: Period
-
-        ///The ID of the subscription item this summary is describing.
-        SubscriptionItem: string
-
-        ///The total usage within this usage period.
-        TotalUsage: int
-
-    }
+        member _.Id = id
+        member _.Invoice = invoice
+        member _.Livemode = livemode
+        member _.Object = object
+        member _.Period = period
+        member _.SubscriptionItem = subscriptionItem
+        member _.TotalUsage = totalUsage
 
     and UsageRecordSummaryObject =
-        | UsageRecordSummary
+        | UsageRecordSummaryObject'UsageRecordSummary
 
     ///You can configure [webhook endpoints](https://stripe.com/docs/webhooks/) via the API to be
     ///notified about events that happen in your Stripe account or connected
@@ -14176,46 +9213,21 @@ module StripeModel =
     ///Most users configure webhooks from [the dashboard](https://dashboard.stripe.com/webhooks), which provides a user interface for registering and testing your webhook endpoints.
     ///
     ///Related guide: [Setting up Webhooks](https://stripe.com/docs/webhooks/configure).
-    and WebhookEndpoint = {
+    and WebhookEndpoint (apiVersion: string option, application: string option, created: int, description: string option, enabledEvents: string list, id: string, livemode: bool, metadata: Map<string, string>, object: WebhookEndpointObject, status: string, url: string, ?secret: string) =
 
-        ///The API version events are rendered as for this webhook endpoint.
-        ApiVersion: string
-
-        ///The ID of the associated Connect application.
-        Application: string
-
-        ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: int
-
-        ///An optional description of what the webhook is used for.
-        Description: string
-
-        ///The list of events to enable for this endpoint. `['*']` indicates that all events are enabled, except those that require explicit selection.
-        EnabledEvents: string list
-
-        ///Unique identifier for the object.
-        Id: string
-
-        ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-
-        ///String representing the object's type. Objects of the same type share the same value.
-        Object: WebhookEndpointObject
-
-        ///The endpoint's secret, used to generate [webhook signatures](https://stripe.com/docs/webhooks/signatures). Only returned at creation.
-        Secret: string option
-
-        ///The status of the webhook. It can be `enabled` or `disabled`.
-        Status: string
-
-        ///The URL of the webhook endpoint.
-        Url: string
-
-    }
+        member _.ApiVersion = apiVersion
+        member _.Application = application
+        member _.Created = created
+        member _.Description = description
+        member _.EnabledEvents = enabledEvents
+        member _.Id = id
+        member _.Livemode = livemode
+        member _.Metadata = metadata
+        member _.Object = object
+        member _.Secret = secret
+        member _.Status = status
+        member _.Url = url
 
     and WebhookEndpointObject =
-        | WebhookEndpoint
+        | WebhookEndpointObject'WebhookEndpoint
 

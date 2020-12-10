@@ -10,6 +10,7 @@
     <Compile Include="StripeModel.fs" />
     <Compile Include="StripeService.fs" />
     <Compile Include="ModelBuilder.fs" />
+    <Compile Include="ModelBuilder2.fs" />
     <Compile Include="ServiceBuilder.fs" />
   </ItemGroup>
   <ItemGroup>

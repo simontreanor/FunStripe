@@ -31,18 +31,19 @@ module ModelBuilder =
     let clean (s: string) =
         s.Replace("-", "").Replace(" ", "")
 
-    let casify (s: string) =
-        let convertCase s = Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
+    let pascalCasify (s: string) =
+        Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
+    let escapeForJson s =
         if Regex.IsMatch(s, @"^\p{Lu}") then
-            $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> convertCase}"
+            $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify}"
         else
             if Regex.IsMatch(s, @"^\d") then
-                $@"[<JsonUnionCase(""{s}"")>] Numeric{s |> clean |> convertCase}"
+                $@"[<JsonUnionCase(""{s}"")>] Numeric{s |> clean |> pascalCasify}"
             elif s.Contains("-") || s.Contains(" ") then
-                $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> convertCase}"
+                $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify}"
             else
-                s |> clean |> convertCase
+                s |> clean |> pascalCasify
 
     let parseRef (s: string) =
         let m = Regex.Match(s, "/([^/]+)$")
@@ -75,7 +76,7 @@ module ModelBuilder =
         let s = 
             ("", 
                 jvv
-                |> Array.map(fun jv -> $"\t\t| {jv.AsString() |> casify}\n")
+                |> Array.map(fun jv -> $"\t\t| {jv.AsString() |> escapeForJson}\n")
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
@@ -83,7 +84,7 @@ module ModelBuilder =
         let s = 
             ("", 
                 ss
-                |> Seq.map(fun s -> $"\t\t| {s |> casify}\n")
+                |> Seq.map(fun s -> $"\t\t| {s |> escapeForJson}\n")
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
@@ -106,12 +107,12 @@ module ModelBuilder =
                     let props = jv |> getProperties
                     match props.Type' with
                     | Some t ->
-                        $"\t\t| {t |> casify} of {t}\n"
+                        $"\t\t| {t |> escapeForJson} of {t}\n"
                     | _ ->
                     
                         match props.Ref with
                         | Some r ->
-                            let refName = (r |> parseRef |> casify)
+                            let refName = (r |> parseRef |> pascalCasify)
                             $"\t\t| {refName} of {refName}\n"
                         | None ->
                             ""
@@ -140,7 +141,7 @@ module ModelBuilder =
         sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule StripeModel =\n"
         
         for (key, value) in schemas.Properties do
-            let name = key |> casify
+            let name = key |> pascalCasify
             let record = value |> getProperties
 
             match record.Description with
@@ -174,18 +175,13 @@ module ModelBuilder =
                 else
                     properties.Properties
                     |> Array.iter (fun (k1, v1) ->
-                        let k1' = k1 |> casify
+                        let k1' = k1 |> pascalCasify
                         let props = v1 |> getProperties
         
-                        let opt = if required |> Array.exists (fun r -> r = k1) then "" else " option"
+                        //let opt = if required |> Array.exists (fun r -> r = k1) then "" else " option"
                         
                         //// to do: the following is nullable fields but the preceding is optional create params
-                        // let opt =
-                        //     match props.Nullable with
-                        //     | Some true ->
-                        //         " option"
-                        //     | _ ->
-                        //         ""
+                        let opt = props.Nullable |> function | Some true -> " option" | _ -> ""
 
                         match props.Description with
                         | Some d when (String.IsNullOrWhiteSpace d |> not) ->
@@ -226,7 +222,7 @@ module ModelBuilder =
                                         let itemProps = i |> getProperties
                                         match itemProps.Ref with
                                         | Some r ->
-                                            sb |> write $"\t\t{k1'}: {r |> parseRef |> casify} list\n"
+                                            sb |> write $"\t\t{k1'}: {r |> parseRef |> pascalCasify} list\n"
                                         | None ->
                                             match itemProps.Enum with
                                             | Some ee ->
@@ -259,7 +255,7 @@ module ModelBuilder =
                                 
                                     match props.Ref with
                                     | Some r ->
-                                        sb |> write $"\t\t{k1'}: {r |> parseRef |> casify}{opt}\n"
+                                        sb |> write $"\t\t{k1'}: {r |> parseRef |> pascalCasify}{opt}\n"
                                     | None ->
                                         ()
                     )
