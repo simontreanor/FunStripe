@@ -6,13 +6,7 @@ open StripeModel
 
 module StripeService =
 
-    type DeleteResult = {
-        Id: string
-        Object: string
-        Deleted: bool
-    }
-
-    and AccountService(?apiKey: string) = 
+    type AccountService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
@@ -48,7 +42,7 @@ module StripeService =
         ///If you want to delete your own account, use the <a href="https://dashboard.stripe.com/account">account information tab in your account settings</a> instead.</p>
         member this.Delete (account: string) =
             $"/v1/accounts/{account}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedAccount>
 
         ///<p>With <a href="/docs/connect">Connect</a>, you may flag accounts as suspicious.
         ///Test-mode Custom and Express accounts can be rejected at any time. Accounts created using live-mode keys may only be rejected once all balances are zero.</p>
@@ -59,7 +53,7 @@ module StripeService =
         ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
         member this.Capabilities (account: string, ?expand: string list) =
             $"/v1/accounts/{account}/capabilities"
-            |> this.RestApiClient.GetAsync<Account>
+            |> this.RestApiClient.GetAsync<Capability>
 
     and AccountLinkService(?apiKey: string) = 
 
@@ -92,7 +86,7 @@ module StripeService =
         ///<p>Delete an apple pay domain.</p>
         member this.Delete (domain: string) =
             $"/v1/apple_pay/domains/{domain}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedApplePayDomain>
 
     and ApplicationFeeService(?apiKey: string) = 
 
@@ -141,12 +135,12 @@ module StripeService =
         ///<p>Update a specified source for a given customer.</p>
         member this.UpdateForCustomer (customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
-            |> this.RestApiClient.PostAsync<_, BankAccount>
+            |> this.RestApiClient.PostAsync<_, Card>
 
         ///<p>Delete a specified source for a given customer.</p>
         member this.DeleteForCustomer (customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<PaymentSource>
 
         ///<p>Verify a specified bank account for a given customer.</p>
         member this.VerifyForCustomer (customer: string, id: string) =
@@ -157,12 +151,12 @@ module StripeService =
         ///You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>
         member this.UpdateForAccount (account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.PostAsync<_, BankAccount>
+            |> this.RestApiClient.PostAsync<_, ExternalAccount>
 
         ///<p>Delete a specified external account for a given account.</p>
         member this.DeleteForAccount (account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedExternalAccount>
 
     and BillingPortalSessionService(?apiKey: string) = 
 
@@ -227,18 +221,18 @@ module StripeService =
         ///<p>Delete a specified source for a given customer.</p>
         member this.DeleteForCustomer (customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<PaymentSource>
 
         ///<p>Updates the metadata, account holder name, and account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.
         ///You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>
         member this.UpdateForAccount (account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.PostAsync<_, Card>
+            |> this.RestApiClient.PostAsync<_, ExternalAccount>
 
         ///<p>Delete a specified external account for a given account.</p>
         member this.DeleteForAccount (account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedExternalAccount>
 
     and ChargeService(?apiKey: string) = 
 
@@ -331,7 +325,7 @@ module StripeService =
         ///<p>You can delete coupons via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can’t redeem the coupon. You can also delete coupons via the API.</p>
         member this.Delete (coupon: string) =
             $"/v1/coupons/{coupon}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedCoupon>
 
     and CreditNoteService(?apiKey: string) = 
 
@@ -380,7 +374,7 @@ module StripeService =
         ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
         member this.PreviewLines (invoice: string, ?amount: int, ?creditAmount: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?lines: string list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: string, ?refund: string, ?refundAmount: int, ?startingAfter: string) =
             $"/v1/credit_notes/preview/lines"
-            |> this.RestApiClient.GetAsync<CreditNote>
+            |> this.RestApiClient.GetAsync<CreditNoteLineItem>
 
     and CreditNoteLineItemService(?apiKey: string) = 
 
@@ -419,12 +413,12 @@ module StripeService =
         ///<p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
         member this.Delete (customer: string) =
             $"/v1/customers/{customer}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedCustomer>
 
         ///<p>Removes the currently applied discount on a customer.</p>
         member this.DeleteDiscount (customer: string) =
             $"/v1/customers/{customer}/discount"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedDiscount>
 
     and CustomerBalanceTransactionService(?apiKey: string) = 
 
@@ -488,7 +482,7 @@ module StripeService =
         ///<p>Invalidates a short-lived API key for a given resource.</p>
         member this.Delete (key: string) =
             $"/v1/ephemeral_keys/{key}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<EphemeralKey>
 
     and EventService(?apiKey: string) = 
 
@@ -546,7 +540,7 @@ module StripeService =
         ///<p>Delete a specified external account for a given account.</p>
         member this.DeleteForAccount (account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedExternalAccount>
 
     and FeeRefundService(?apiKey: string) = 
 
@@ -661,7 +655,7 @@ module StripeService =
         ///<p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="#void_invoice">voided</a>.</p>
         member this.Delete (invoice: string) =
             $"/v1/invoices/{invoice}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedInvoice>
 
         ///<p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
         member this.Pay (invoice: string) =
@@ -676,7 +670,7 @@ module StripeService =
         ///<p>When retrieving an upcoming invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.UpcomingLines (?coupon: string, ?subscriptionStartDate: int, ?subscriptionProrationDate: int, ?subscriptionProrationBehavior: string, ?subscriptionItems: string list, ?subscriptionDefaultTaxRates: string list, ?subscriptionCancelNow: bool, ?subscriptionCancelAtPeriodEnd: bool, ?subscriptionCancelAt: int, ?subscriptionTrialEnd: string, ?subscriptionBillingCycleAnchor: string, ?startingAfter: string, ?schedule: string, ?limit: int, ?invoiceItems: string list, ?expand: string list, ?endingBefore: string, ?discounts: string list, ?customer: string, ?subscription: string, ?subscriptionTrialFromPlan: bool) =
             $"/v1/invoices/upcoming/lines"
-            |> this.RestApiClient.GetAsync<Invoice>
+            |> this.RestApiClient.GetAsync<LineItem>
 
         ///<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.
         ///Requests made in test-mode result in no emails being sent, despite sending an <code>invoice.sent</code> event.</p>
@@ -721,7 +715,7 @@ module StripeService =
         ///<p>Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they’re not attached to invoices, or if it’s attached to a draft invoice.</p>
         member this.Delete (invoiceitem: string) =
             $"/v1/invoiceitems/{invoiceitem}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedInvoiceitem>
 
     and IssuerFraudRecordService(?apiKey: string) = 
 
@@ -932,7 +926,7 @@ module StripeService =
         ///<p>Return all or part of an order. The order must have a status of <code>paid</code> or <code>fulfilled</code> before it can be returned. Once all items have been returned, the order will become <code>canceled</code> or <code>returned</code> depending on which status the order started in.</p>
         member this.ReturnOrder (id: string) =
             $"/v1/orders/{id}/returns"
-            |> this.RestApiClient.PostAsync<_, Order>
+            |> this.RestApiClient.PostAsync<_, OrderReturn>
 
     and OrderReturnService(?apiKey: string) = 
 
@@ -1153,7 +1147,7 @@ module StripeService =
         ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>account_opener</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
         member this.DeleteForAccount (account: string, person: string) =
             $"/v1/accounts/{account}/persons/{person}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedPerson>
 
     and PlanService(?apiKey: string) = 
 
@@ -1182,7 +1176,7 @@ module StripeService =
         ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>
         member this.Delete (plan: string) =
             $"/v1/plans/{plan}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedPlan>
 
     and PriceService(?apiKey: string) = 
 
@@ -1235,7 +1229,7 @@ module StripeService =
         ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
         member this.Delete (id: string) =
             $"/v1/products/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedProduct>
 
     and PromotionCodeService(?apiKey: string) = 
 
@@ -1303,7 +1297,7 @@ module StripeService =
         ///<p>Deletes a <code>ValueList</code> object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.</p>
         member this.Delete (valueList: string) =
             $"/v1/radar/value_lists/{valueList}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedRadarValueList>
 
     and RadarValueListItemService(?apiKey: string) = 
 
@@ -1327,7 +1321,7 @@ module StripeService =
         ///<p>Deletes a <code>ValueListItem</code> object, removing it from its parent value list.</p>
         member this.Delete (item: string) =
             $"/v1/radar/value_list_items/{item}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedRadarValueListItem>
 
     and RecipientService(?apiKey: string) = 
 
@@ -1360,7 +1354,7 @@ module StripeService =
         ///<p>Permanently deletes a recipient. It cannot be undone.</p>
         member this.Delete (id: string) =
             $"/v1/recipients/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedRecipient>
 
     and RefundService(?apiKey: string) = 
 
@@ -1539,7 +1533,7 @@ module StripeService =
         ///<p>Delete a SKU. Deleting a SKU is only possible until it has been used in an order.</p>
         member this.Delete (id: string) =
             $"/v1/skus/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedSku>
 
     and SourceService(?apiKey: string) = 
 
@@ -1548,7 +1542,7 @@ module StripeService =
         ///<p>Delete a specified source for a given customer.</p>
         member this.DetachForCustomer (customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<PaymentSource>
 
         ///<p>Retrieves an existing source object. Supply the unique source ID from a source creation request and Stripe will return the corresponding up-to-date source object information.</p>
         member this.Retrieve (source: string, ?expand: string list, ?clientSecret: string) =
@@ -1574,7 +1568,7 @@ module StripeService =
         ///<p>List source transactions for a given source.</p>
         member this.SourceTransactions (source: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/sources/{source}/source_transactions"
-            |> this.RestApiClient.GetAsync<Source>
+            |> this.RestApiClient.GetAsync<SourceTransaction>
 
     and SubscriptionService(?apiKey: string) = 
 
@@ -1605,12 +1599,12 @@ module StripeService =
         ///By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
         member this.Cancel (subscriptionExposedId: string) =
             $"/v1/subscriptions/{subscriptionExposedId}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<Subscription>
 
         ///<p>Removes the currently applied discount on a subscription.</p>
         member this.DeleteDiscount (subscriptionExposedId: string) =
             $"/v1/subscriptions/{subscriptionExposedId}/discount"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedDiscount>
 
     and SubscriptionItemService(?apiKey: string) = 
 
@@ -1639,13 +1633,13 @@ module StripeService =
         ///<p>Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.</p>
         member this.Delete (item: string) =
             $"/v1/subscription_items/{item}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedSubscriptionItem>
 
         ///<p>For the specified subscription item, returns a list of summary objects. Each object in the list provides usage information that’s been summarized from multiple usage records and over a subscription billing period (e.g., 15 usage records in the month of September).
         ///The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
         member this.UsageRecordSummaries (subscriptionItem: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/subscription_items/{subscriptionItem}/usage_record_summaries"
-            |> this.RestApiClient.GetAsync<SubscriptionItem>
+            |> this.RestApiClient.GetAsync<UsageRecordSummary>
 
     and SubscriptionScheduleService(?apiKey: string) = 
 
@@ -1703,7 +1697,7 @@ module StripeService =
         ///<p>Deletes an existing <code>TaxID</code> object.</p>
         member this.DeleteForCustomer (customer: string, id: string) =
             $"/v1/customers/{customer}/tax_ids/{id}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedTaxId>
 
     and TaxRateService(?apiKey: string) = 
 
@@ -1765,7 +1759,7 @@ module StripeService =
         ///<p>Deletes a <code>Location</code> object.</p>
         member this.Delete (location: string) =
             $"/v1/terminal/locations/{location}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedTerminalLocation>
 
     and TerminalReaderService(?apiKey: string) = 
 
@@ -1794,7 +1788,7 @@ module StripeService =
         ///<p>Deletes a <code>Reader</code> object.</p>
         member this.Delete (reader: string) =
             $"/v1/terminal/readers/{reader}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedTerminalReader>
 
     and ThreeDSecureService(?apiKey: string) = 
 
@@ -1955,5 +1949,5 @@ module StripeService =
         ///<p>You can also delete webhook endpoints via the <a href="https://dashboard.stripe.com/account/webhooks">webhook endpoint management</a> page of the Stripe dashboard.</p>
         member this.Delete (webhookEndpoint: string) =
             $"/v1/webhook_endpoints/{webhookEndpoint}"
-            |> this.RestApiClient.DeleteAsync<DeleteResult>
+            |> this.RestApiClient.DeleteAsync<DeletedWebhookEndpoint>
 

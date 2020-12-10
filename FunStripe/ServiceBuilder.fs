@@ -80,6 +80,13 @@ module ServiceBuilder =
     let singularise (s: string) =
         Regex.Replace(s, "s$", "")
 
+    let parseRef (s: string) =
+        let m = Regex.Match(s, "/([^/]+)$")
+        if m.Success then
+            m.Groups.[1].Value
+        else
+            failwith $"Unparsable reference: {s}"
+
     let parseService filePath =
 
         let root = __SOURCE_DIRECTORY__
@@ -111,15 +118,23 @@ module ServiceBuilder =
 
         let sb = Text.StringBuilder()
 
+        let mutable isFirstOccurrence = true
+
         sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nopen StripeModel\n\nmodule StripeService =\n"
-        sb |> write "\ttype DeleteResult = {\n\t\tId: string\n\t\tObject: string\n\t\tDeleted: bool\n\t}\n"
 
         servicePaths
         |> Array.iter (fun (name, methodOperationPaths) ->
 
             let name' = name |> pascalCasify
 
-            sb |> write $"\tand {name'}Service(?apiKey: string) = \n"
+            let keyword =
+                if isFirstOccurrence then
+                    isFirstOccurrence <- false
+                    "type"
+                else
+                    "and"
+
+            sb |> write $"\t{keyword} {name'}Service(?apiKey: string) = \n"
             sb |> write "\t\tmember _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)\n"
 
             methodOperationPaths
@@ -148,19 +163,36 @@ module ServiceBuilder =
                     sb |> write $"\t\tmember this.{method' |> pascalCasify} ({parametersString}) ="
                     sb |> write $"\t\t\t$\"{path |> formatPathParams}\""
 
+                    let responseSchema = v.GetProperty("responses").GetProperty("200").GetProperty("content").GetProperty("application/json").GetProperty("schema")
+                    let responseType =
+                        match responseSchema.TryGetProperty("$ref") with
+                        | Some jv ->
+                            jv.AsString()
+                        | None ->
+                            match responseSchema.TryGetProperty("anyOf") with
+                            | Some jv when jv.AsArray() |> Array.isEmpty |> not ->
+                                (jv.AsArray() |> Array.head).GetProperty("$ref").AsString()
+                            | _ ->
+                                match responseSchema.TryGetProperty("properties") with
+                                | Some jv ->
+                                    jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
+                                | _ ->
+                                    failwith $"Unhandled response type: {name'} %A{responseSchema}"
+                        |> parseRef |> pascalCasify
+
                     match verb with
                     | "get" when formParameters.Any() ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {name'}>\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {responseType}>\n"
                     | "get" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.GetAsync<{name'}>\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.GetAsync<{responseType}>\n"
                     | "post" when formParameters.Any() |> not ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.PostWithoutAsync<{name'}>\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.PostWithoutAsync<{responseType}>\n"
                     | "post" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {name'}>\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {responseType}>\n"
                     | "delete" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.DeleteAsync<DeleteResult>\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.DeleteAsync<{responseType}>\n"
                     | _ ->
-                        failwith $"Error: Unhandled verb: {verb}"
+                        failwith $"Unhandled verb: {verb}"
 
                 )
             )
