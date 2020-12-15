@@ -4,12 +4,15 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Option.fs" />
     <Compile Include="JsonUtil.fs" />
     <Compile Include="FormUtil.fs" />
     <Compile Include="RestApi.fs" />
     <Compile Include="StripeModel.fs" />
+    <Compile Include="StripeRequest.fs" />
     <Compile Include="StripeService.fs" />
     <Compile Include="ModelBuilder.fs" />
+    <Compile Include="RequestBuilder.fs" />
     <Compile Include="ServiceBuilder.fs" />
   </ItemGroup>
   <ItemGroup>

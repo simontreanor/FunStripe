@@ -28,26 +28,6 @@ module ServiceBuilder =
         | _ ->
             name
 
-    type Parameter (description: string, name: string, ``type``: string) =
-
-        member _.Description = description
-        member _.Name = name
-        member _.Type = ``type``
-
-        member this.ToParameterString() =
-            $"{this.Name |> camelCasify |> escapeReservedName}: {this.Type}"
-
-        member this.ToPropertyString() =
-            $"\t\tmember _.{this.Name |> camelCasify |> escapeReservedName} = {this.Name |> camelCasify |> escapeReservedName}"
-
-    let getTypeDefinition (name: string) (parameters: Parameter array) =
-        if parameters |> Array.isEmpty then
-            ""
-        else
-            let parametersString = String.Join (", ", parameters |> Array.map(fun p -> p.ToParameterString()))
-            let propertiesString = String.Join ("\n", parameters |> Array.map(fun p -> p.ToPropertyString()))
-            $"\tand {name} ({parametersString}) =\n{propertiesString}\n"
-
     let commentify (s: string) = 
         let s' = s.Replace("<p>", "").Replace("</p>", "").Replace("\n\n", "\n").Replace("\n", "\n\t\t///")
         $"<p>{s'}</p>"
@@ -63,12 +43,6 @@ module ServiceBuilder =
         | "array" -> "string list"
         | "object" -> "Map<string, string>"
         | _ -> s
-
-    let formatParams (ss: string array) =
-        (", ", 
-            ss
-            |> Array.map camelCasify
-        ) |> String.Join
 
     let formatParametersString (parameters: JsonValue array) =
         (
@@ -140,7 +114,7 @@ module ServiceBuilder =
 
         let mutable isFirstOccurrence = true
 
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nopen StripeModel\n\nmodule StripeService =\n"
+        sb |> write "namespace FunStripe\n\nopen FSharp.Json\nopen StripeModel\nopen StripeRequest\n\nmodule StripeService =\n"
 
         let typeDefinitions = Collections.Generic.List<string>()
 
@@ -187,50 +161,6 @@ module ServiceBuilder =
                     sb |> write $"\t\tmember this.{method' |> pascalCasify} ({parametersString}) ="
                     sb |> write $"\t\t\t$\"{path |> formatPathParams}\""
 
-                    //get form values
-                    if formParameters.Any() then
-                        let rec getParams (fpp: (string * JsonValue) array) prefix =
-                            fpp
-                            |> Array.map (fun (k, v) ->
-                                let desc = v.TryGetProperty("description") |> function | Some jv -> jv.AsString() | None -> ""
-                                let type' = v.TryGetProperty("type") |> function | Some jv -> jv.AsString() |> Some | None -> None
-                                match type' with
-                                | Some t when t = "object" ->
-                                    let name = v.TryGetProperty("title") |> function | Some jv -> jv.AsString() |> Some | None -> None
-                                    match name with
-                                    | Some n ->
-                                        let n' = $"{k}_param"
-                                        let props = v.GetProperty("properties").Properties
-                                        typeDefinitions.Add(getTypeDefinition $"{prefix}{n' |> pascalCasify}" (getParams props prefix))
-                                        Parameter(desc, k, n' |> pascalCasify)
-                                    | None ->
-                                        Parameter(desc, k, "Map<string, string>")
-                                | Some t ->
-                                    Parameter(desc, k, t |> mapType)
-                                | None ->
-                                    let anyOf = v.TryGetProperty("anyOf")
-                                    match anyOf with
-                                    | Some jv ->
-                                        let jv0 = jv.AsArray().First()
-                                        let t0 = jv0.GetProperty("type").AsString()
-                                        match t0 with
-                                        | "object" ->
-                                            let name = jv0.TryGetProperty("title") |> function | Some jv -> jv.AsString() |> Some | None -> None
-                                            match name with
-                                            | Some n ->
-                                                let n' = $"{k}_param"
-                                                let props = jv0.GetProperty("properties").Properties
-                                                typeDefinitions.Add(getTypeDefinition $"{prefix}{n' |> pascalCasify}" (getParams props prefix))
-                                                Parameter(desc, k, n' |> pascalCasify)
-                                            | None ->
-                                                Parameter(desc, k, "Map<string, string>")
-                                        | _ ->
-                                            Parameter(desc, k, t0 |> mapType)
-                                    | None ->
-                                        failwith $"Unhandled form parameter type: %A{v}"
-                            )
-                        typeDefinitions.Add(getTypeDefinition topLevelParamsType (getParams formParameters operationId))
-
                     //get response type
                     let responseSchema = v.GetProperty("responses").GetProperty("200").GetProperty("content").GetProperty("application/json").GetProperty("schema")
                     let responseType =
@@ -268,11 +198,6 @@ module ServiceBuilder =
             )
         )
 
-        typeDefinitions
-        |> Seq.cast<string>
-        |> Seq.distinct
-        |> Seq.iter (fun s -> sb |> write (s.ToString()))
-            
         sb.ToString().Replace("\t", "    ")
 
 #if INTERACTIVE
