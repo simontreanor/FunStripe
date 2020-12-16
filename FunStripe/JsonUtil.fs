@@ -1,8 +1,7 @@
 namespace FunStripe
 
 open FSharp.Json
-//open Newtonsoft.Json
-//open Newtonsoft.Json.Serialization
+open System.Linq
 
 module JsonUtil =
     
@@ -17,10 +16,13 @@ module JsonUtil =
     let toSnakeCase =
         Json.snakeCase
 
-    // let contractResolver = DefaultContractResolver(NamingStrategy = SnakeCaseNamingStrategy())
-
-    // let serialise data =
-    //     JsonConvert.SerializeObject (data, JsonSerializerSettings(ContractResolver = contractResolver))
-
-    // let deserialise<'a> data =
-    //     JsonConvert.DeserializeObject<'a> (data, JsonSerializerSettings(ContractResolver = contractResolver))
+    let getJsonUnionCaseName (value: obj) =
+        let key = value |> string
+        let pi = value.GetType().UnderlyingSystemType.GetProperty(key)
+        let name =
+            pi.GetMethod.GetCustomAttributes(typeof<JsonUnionCase>, false).Cast<JsonUnionCase>()
+            |> Seq.map(fun juc -> juc.Case)
+            |> Seq.tryExactlyOne
+        match name with
+        | Some n -> n
+        | None -> config.jsonFieldNaming key

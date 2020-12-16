@@ -66,15 +66,7 @@ module ModelBuilder =
         s.Replace("-", "").Replace(" ", "")
 
     let escapeForJson prefix s =
-        if Regex.IsMatch(s, @"^\p{Lu}") then
-            $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
-        else
-            if Regex.IsMatch(s, @"^\d") then
-                $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
-            elif s.Contains("-") || s.Contains(" ") then
-                $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
-            else
-                $"{prefix}{s |> clean |> pascalCasify}"
+        $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
 
     let parseRef (s: string) =
         let m = Regex.Match(s, "/([^/]+)$")

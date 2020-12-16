@@ -22,9 +22,9 @@ module StripeService =
 
         ///<p>Updates a connected <a href="/docs/connect/accounts">Express or Custom account</a> by setting the values of the parameters passed. Any parameters not provided are left unchanged. Most parameters can be changed only for Custom accounts. (These are marked <strong>Custom Only</strong> below.) Parameters marked <strong>Custom and Express</strong> are supported by both account types.
         ///To update your own account, use the <a href="https://dashboard.stripe.com/account">Dashboard</a>. Refer to our <a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>
-        member this.Update ((``params``: PostAccountsAccountParams), account: string) =
+        member this.Update ((parameters: PostAccountsAccountParams), account: string) =
             $"/v1/accounts/{account}"
-            |> this.RestApiClient.PostAsync<_, Account> ``params``
+            |> this.RestApiClient.PostAsync<_, Account> parameters
 
         ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -33,9 +33,9 @@ module StripeService =
 
         ///<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
         ///To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
-        member this.Create ((``params``: PostAccountsParams)) =
+        member this.Create ((parameters: PostAccountsParams)) =
             $"/v1/accounts"
-            |> this.RestApiClient.PostAsync<_, Account> ``params``
+            |> this.RestApiClient.PostAsync<_, Account> parameters
 
         ///<p>With <a href="/docs/connect">Connect</a>, you can delete Custom or Express accounts you manage.
         ///Accounts created using test-mode keys can be deleted at any time. Accounts created using live-mode keys can only be deleted once all balances are zero.
@@ -46,9 +46,9 @@ module StripeService =
 
         ///<p>With <a href="/docs/connect">Connect</a>, you may flag accounts as suspicious.
         ///Test-mode Custom and Express accounts can be rejected at any time. Accounts created using live-mode keys may only be rejected once all balances are zero.</p>
-        member this.Reject ((``params``: PostAccountsAccountRejectParams), account: string) =
+        member this.Reject ((parameters: PostAccountsAccountRejectParams), account: string) =
             $"/v1/accounts/{account}/reject"
-            |> this.RestApiClient.PostAsync<_, Account> ``params``
+            |> this.RestApiClient.PostAsync<_, Account> parameters
 
         ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
         member this.Capabilities (account: string, ?expand: string list) =
@@ -60,9 +60,9 @@ module StripeService =
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
-        member this.Create ((``params``: PostAccountLinksParams)) =
+        member this.Create ((parameters: PostAccountLinksParams)) =
             $"/v1/account_links"
-            |> this.RestApiClient.PostAsync<_, AccountLink> ``params``
+            |> this.RestApiClient.PostAsync<_, AccountLink> parameters
 
     and ApplePayDomainService(?apiKey: string) = 
 
@@ -74,9 +74,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<ApplePayDomain>
 
         ///<p>Create an apple pay domain.</p>
-        member this.Create ((``params``: PostApplePayDomainsParams)) =
+        member this.Create ((parameters: PostApplePayDomainsParams)) =
             $"/v1/apple_pay/domains"
-            |> this.RestApiClient.PostAsync<_, ApplePayDomain> ``params``
+            |> this.RestApiClient.PostAsync<_, ApplePayDomain> parameters
 
         ///<p>Retrieve an apple pay domain.</p>
         member this.Retrieve (domain: string, ?expand: string list) =
@@ -133,25 +133,25 @@ module StripeService =
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Update a specified source for a given customer.</p>
-        member this.UpdateForCustomer ((``params``: PostCustomersCustomerSourcesIdParams), customer: string, id: string) =
+        member this.UpdateForCustomer ((parameters: PostCustomersCustomerSourcesIdParams), customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
-            |> this.RestApiClient.PostAsync<_, Card> ``params``
+            |> this.RestApiClient.PostAsync<_, Card> parameters
 
         ///<p>Delete a specified source for a given customer.</p>
-        member this.DeleteForCustomer ((``params``: DeleteCustomersCustomerSourcesIdParams), customer: string, id: string) =
+        member this.DeleteForCustomer ((parameters: DeleteCustomersCustomerSourcesIdParams), customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
             |> this.RestApiClient.DeleteAsync<PaymentSource>
 
         ///<p>Verify a specified bank account for a given customer.</p>
-        member this.VerifyForCustomer ((``params``: PostCustomersCustomerSourcesIdVerifyParams), customer: string, id: string) =
+        member this.VerifyForCustomer ((parameters: PostCustomersCustomerSourcesIdVerifyParams), customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}/verify"
-            |> this.RestApiClient.PostAsync<_, BankAccount> ``params``
+            |> this.RestApiClient.PostAsync<_, BankAccount> parameters
 
         ///<p>Updates the metadata, account holder name, and account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.
         ///You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>
-        member this.UpdateForAccount ((``params``: PostAccountsAccountExternalAccountsIdParams), account: string, id: string) =
+        member this.UpdateForAccount ((parameters: PostAccountsAccountExternalAccountsIdParams), account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.PostAsync<_, ExternalAccount> ``params``
+            |> this.RestApiClient.PostAsync<_, ExternalAccount> parameters
 
         ///<p>Delete a specified external account for a given account.</p>
         member this.DeleteForAccount (account: string, id: string) =
@@ -163,9 +163,9 @@ module StripeService =
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Creates a session of the customer portal.</p>
-        member this.Create ((``params``: PostBillingPortalSessionsParams)) =
+        member this.Create ((parameters: PostBillingPortalSessionsParams)) =
             $"/v1/billing_portal/sessions"
-            |> this.RestApiClient.PostAsync<_, BillingPortalSession> ``params``
+            |> this.RestApiClient.PostAsync<_, BillingPortalSession> parameters
 
     and BitcoinReceiverService(?apiKey: string) = 
 
@@ -205,29 +205,29 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Capability>
 
         ///<p>Updates an existing Account Capability.</p>
-        member this.UpdateForAccount ((``params``: PostAccountsAccountCapabilitiesCapabilityParams), account: string, capability: string) =
+        member this.UpdateForAccount ((parameters: PostAccountsAccountCapabilitiesCapabilityParams), account: string, capability: string) =
             $"/v1/accounts/{account}/capabilities/{capability}"
-            |> this.RestApiClient.PostAsync<_, Capability> ``params``
+            |> this.RestApiClient.PostAsync<_, Capability> parameters
 
     and CardService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Update a specified source for a given customer.</p>
-        member this.UpdateForCustomer ((``params``: PostCustomersCustomerSourcesIdParams), customer: string, id: string) =
+        member this.UpdateForCustomer ((parameters: PostCustomersCustomerSourcesIdParams), customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
-            |> this.RestApiClient.PostAsync<_, Card> ``params``
+            |> this.RestApiClient.PostAsync<_, Card> parameters
 
         ///<p>Delete a specified source for a given customer.</p>
-        member this.DeleteForCustomer ((``params``: DeleteCustomersCustomerSourcesIdParams), customer: string, id: string) =
+        member this.DeleteForCustomer ((parameters: DeleteCustomersCustomerSourcesIdParams), customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
             |> this.RestApiClient.DeleteAsync<PaymentSource>
 
         ///<p>Updates the metadata, account holder name, and account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.
         ///You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>
-        member this.UpdateForAccount ((``params``: PostAccountsAccountExternalAccountsIdParams), account: string, id: string) =
+        member this.UpdateForAccount ((parameters: PostAccountsAccountExternalAccountsIdParams), account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.PostAsync<_, ExternalAccount> ``params``
+            |> this.RestApiClient.PostAsync<_, ExternalAccount> parameters
 
         ///<p>Delete a specified external account for a given account.</p>
         member this.DeleteForAccount (account: string, id: string) =
@@ -244,9 +244,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Charge>
 
         ///<p>To charge a credit card or other payment source, you create a <code>Charge</code> object. If your API key is in test mode, the supplied payment source (e.g., card) won’t actually be charged, although everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).</p>
-        member this.Create ((``params``: PostChargesParams)) =
+        member this.Create ((parameters: PostChargesParams)) =
             $"/v1/charges"
-            |> this.RestApiClient.PostAsync<_, Charge> ``params``
+            |> this.RestApiClient.PostAsync<_, Charge> parameters
 
         ///<p>Retrieves the details of a charge that has previously been created. Supply the unique charge ID that was returned from your previous request, and Stripe will return the corresponding charge information. The same information is returned when creating or refunding the charge.</p>
         member this.Retrieve (charge: string, ?expand: string list) =
@@ -254,15 +254,15 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Charge>
 
         ///<p>Updates the specified charge by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostChargesChargeParams), charge: string) =
+        member this.Update ((parameters: PostChargesChargeParams), charge: string) =
             $"/v1/charges/{charge}"
-            |> this.RestApiClient.PostAsync<_, Charge> ``params``
+            |> this.RestApiClient.PostAsync<_, Charge> parameters
 
         ///<p>Capture the payment of an existing, uncaptured, charge. This is the second half of the two-step payment flow, where first you <a href="#create_charge">created a charge</a> with the capture option set to false.
         ///Uncaptured payments expire exactly seven days after they are created. If they are not captured by that point in time, they will be marked as refunded and will no longer be capturable.</p>
-        member this.Capture ((``params``: PostChargesChargeCaptureParams), charge: string) =
+        member this.Capture ((parameters: PostChargesChargeCaptureParams), charge: string) =
             $"/v1/charges/{charge}/capture"
-            |> this.RestApiClient.PostAsync<_, Charge> ``params``
+            |> this.RestApiClient.PostAsync<_, Charge> parameters
 
     and CheckoutSessionService(?apiKey: string) = 
 
@@ -279,9 +279,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<CheckoutSession>
 
         ///<p>Creates a Session object.</p>
-        member this.Create ((``params``: PostCheckoutSessionsParams)) =
+        member this.Create ((parameters: PostCheckoutSessionsParams)) =
             $"/v1/checkout/sessions"
-            |> this.RestApiClient.PostAsync<_, CheckoutSession> ``params``
+            |> this.RestApiClient.PostAsync<_, CheckoutSession> parameters
 
     and CountrySpecService(?apiKey: string) = 
 
@@ -308,9 +308,9 @@ module StripeService =
 
         ///<p>You can create coupons easily via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. Coupon creation is also accessible via the API if you need to create coupons on the fly.
         ///A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and <code>currency</code>. If you set an <code>amount_off</code>, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of <currency>100</currency> will have a final total of <currency>0</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it and an invoice with a subtotal of <currency>300</currency> will have a final total of <currency>100</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it.</p>
-        member this.Create ((``params``: PostCouponsParams)) =
+        member this.Create ((parameters: PostCouponsParams)) =
             $"/v1/coupons"
-            |> this.RestApiClient.PostAsync<_, Coupon> ``params``
+            |> this.RestApiClient.PostAsync<_, Coupon> parameters
 
         ///<p>Retrieves the coupon with the given ID.</p>
         member this.Retrieve (coupon: string, ?expand: string list) =
@@ -318,9 +318,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Coupon>
 
         ///<p>Updates the metadata of a coupon. Other coupon details (currency, duration, amount_off) are, by design, not editable.</p>
-        member this.Update ((``params``: PostCouponsCouponParams), coupon: string) =
+        member this.Update ((parameters: PostCouponsCouponParams), coupon: string) =
             $"/v1/coupons/{coupon}"
-            |> this.RestApiClient.PostAsync<_, Coupon> ``params``
+            |> this.RestApiClient.PostAsync<_, Coupon> parameters
 
         ///<p>You can delete coupons via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can’t redeem the coupon. You can also delete coupons via the API.</p>
         member this.Delete (coupon: string) =
@@ -342,9 +342,9 @@ module StripeService =
         ///For post-payment credit notes the sum of the refund, credit and outside of Stripe amounts must equal the credit note total.
         ///You may issue multiple credit notes for an invoice. Each credit note will increment the invoice’s <code>pre_payment_credit_notes_amount</code>
         ///or <code>post_payment_credit_notes_amount</code> depending on its <code>status</code> at the time of credit note creation.</p>
-        member this.Create ((``params``: PostCreditNotesParams)) =
+        member this.Create ((parameters: PostCreditNotesParams)) =
             $"/v1/credit_notes"
-            |> this.RestApiClient.PostAsync<_, CreditNote> ``params``
+            |> this.RestApiClient.PostAsync<_, CreditNote> parameters
 
         ///<p>Get a preview of a credit note without creating it.</p>
         member this.Preview (invoice: string, ?amount: int, ?creditAmount: int, ?expand: string list, ?lines: string list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: string, ?refund: string, ?refundAmount: int) =
@@ -362,14 +362,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<CreditNote>
 
         ///<p>Updates an existing credit note.</p>
-        member this.Update ((``params``: PostCreditNotesIdParams), id: string) =
+        member this.Update ((parameters: PostCreditNotesIdParams), id: string) =
             $"/v1/credit_notes/{id}"
-            |> this.RestApiClient.PostAsync<_, CreditNote> ``params``
+            |> this.RestApiClient.PostAsync<_, CreditNote> parameters
 
         ///<p>Marks a credit note as void. Learn more about <a href="/docs/billing/invoices/credit-notes#voiding">voiding credit notes</a>.</p>
-        member this.VoidCreditNote ((``params``: PostCreditNotesIdVoidParams), id: string) =
+        member this.VoidCreditNote ((parameters: PostCreditNotesIdVoidParams), id: string) =
             $"/v1/credit_notes/{id}/void"
-            |> this.RestApiClient.PostAsync<_, CreditNote> ``params``
+            |> this.RestApiClient.PostAsync<_, CreditNote> parameters
 
         ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
         member this.PreviewLines (invoice: string, ?amount: int, ?creditAmount: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?lines: string list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: string, ?refund: string, ?refundAmount: int, ?startingAfter: string) =
@@ -395,9 +395,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Customer>
 
         ///<p>Creates a new customer object.</p>
-        member this.Create ((``params``: PostCustomersParams)) =
+        member this.Create ((parameters: PostCustomersParams)) =
             $"/v1/customers"
-            |> this.RestApiClient.PostAsync<_, Customer> ``params``
+            |> this.RestApiClient.PostAsync<_, Customer> parameters
 
         ///<p>Retrieves the details of an existing customer. You need only supply the unique customer identifier that was returned upon customer creation.</p>
         member this.Retrieve (customer: string, ?expand: string list) =
@@ -406,9 +406,9 @@ module StripeService =
 
         ///<p>Updates the specified customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged. For example, if you pass the <strong>source</strong> parameter, that becomes the customer’s active source (e.g., a card) to be used for all charges in the future. When you update a customer to a new valid card source by passing the <strong>source</strong> parameter: for each of the customer’s current subscriptions, if the subscription bills automatically and is in the <code>past_due</code> state, then the latest open invoice for the subscription with automatic collection enabled will be retried. This retry will not count as an automatic retry, and will not affect the next regularly scheduled payment for the invoice. Changing the <strong>default_source</strong> for a customer will not trigger this behavior.
         ///This request accepts mostly the same arguments as the customer creation call.</p>
-        member this.Update ((``params``: PostCustomersCustomerParams), customer: string) =
+        member this.Update ((parameters: PostCustomersCustomerParams), customer: string) =
             $"/v1/customers/{customer}"
-            |> this.RestApiClient.PostAsync<_, Customer> ``params``
+            |> this.RestApiClient.PostAsync<_, Customer> parameters
 
         ///<p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
         member this.Delete (customer: string) =
@@ -435,14 +435,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<CustomerBalanceTransaction>
 
         ///<p>Creates an immutable transaction that updates the customer’s credit <a href="/docs/billing/customer/balance">balance</a>.</p>
-        member this.Create ((``params``: PostCustomersCustomerBalanceTransactionsParams), customer: string) =
+        member this.Create ((parameters: PostCustomersCustomerBalanceTransactionsParams), customer: string) =
             $"/v1/customers/{customer}/balance_transactions"
-            |> this.RestApiClient.PostAsync<_, CustomerBalanceTransaction> ``params``
+            |> this.RestApiClient.PostAsync<_, CustomerBalanceTransaction> parameters
 
         ///<p>Most credit balance transaction fields are immutable, but you may update its <code>description</code> and <code>metadata</code>.</p>
-        member this.Update ((``params``: PostCustomersCustomerBalanceTransactionsTransactionParams), customer: string, transaction: string) =
+        member this.Update ((parameters: PostCustomersCustomerBalanceTransactionsTransactionParams), customer: string, transaction: string) =
             $"/v1/customers/{customer}/balance_transactions/{transaction}"
-            |> this.RestApiClient.PostAsync<_, CustomerBalanceTransaction> ``params``
+            |> this.RestApiClient.PostAsync<_, CustomerBalanceTransaction> parameters
 
     and DisputeService(?apiKey: string) = 
 
@@ -460,27 +460,27 @@ module StripeService =
 
         ///<p>When you get a dispute, contacting your customer is always the best first step. If that doesn’t work, you can submit evidence to help us resolve the dispute in your favor. You can do this in your <a href="https://dashboard.stripe.com/disputes">dashboard</a>, but if you prefer, you can use the API to submit evidence programmatically.
         ///Depending on your dispute type, different evidence fields will give you a better chance of winning your dispute. To figure out which evidence fields to provide, see our <a href="/docs/disputes/categories">guide to dispute types</a>.</p>
-        member this.Update ((``params``: PostDisputesDisputeParams), dispute: string) =
+        member this.Update ((parameters: PostDisputesDisputeParams), dispute: string) =
             $"/v1/disputes/{dispute}"
-            |> this.RestApiClient.PostAsync<_, Dispute> ``params``
+            |> this.RestApiClient.PostAsync<_, Dispute> parameters
 
         ///<p>Closing the dispute for a charge indicates that you do not have any evidence to submit and are essentially dismissing the dispute, acknowledging it as lost.
         ///The status of the dispute will change from <code>needs_response</code> to <code>lost</code>. <em>Closing a dispute is irreversible</em>.</p>
-        member this.Close ((``params``: PostDisputesDisputeCloseParams), dispute: string) =
+        member this.Close ((parameters: PostDisputesDisputeCloseParams), dispute: string) =
             $"/v1/disputes/{dispute}/close"
-            |> this.RestApiClient.PostAsync<_, Dispute> ``params``
+            |> this.RestApiClient.PostAsync<_, Dispute> parameters
 
     and EphemeralKeyService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Creates a short-lived API key for a given resource.</p>
-        member this.Create ((``params``: PostEphemeralKeysParams)) =
+        member this.Create ((parameters: PostEphemeralKeysParams)) =
             $"/v1/ephemeral_keys"
-            |> this.RestApiClient.PostAsync<_, EphemeralKey> ``params``
+            |> this.RestApiClient.PostAsync<_, EphemeralKey> parameters
 
         ///<p>Invalidates a short-lived API key for a given resource.</p>
-        member this.Delete ((``params``: DeleteEphemeralKeysKeyParams), key: string) =
+        member this.Delete ((parameters: DeleteEphemeralKeysKeyParams), key: string) =
             $"/v1/ephemeral_keys/{key}"
             |> this.RestApiClient.DeleteAsync<EphemeralKey>
 
@@ -527,15 +527,15 @@ module StripeService =
             |> this.RestApiClient.GetAsync<ExternalAccount>
 
         ///<p>Create an external account for a given account.</p>
-        member this.CreateForAccount ((``params``: PostAccountsAccountExternalAccountsParams), account: string) =
+        member this.CreateForAccount ((parameters: PostAccountsAccountExternalAccountsParams), account: string) =
             $"/v1/accounts/{account}/external_accounts"
-            |> this.RestApiClient.PostAsync<_, ExternalAccount> ``params``
+            |> this.RestApiClient.PostAsync<_, ExternalAccount> parameters
 
         ///<p>Updates the metadata, account holder name, and account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.
         ///You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>
-        member this.UpdateForAccount ((``params``: PostAccountsAccountExternalAccountsIdParams), account: string, id: string) =
+        member this.UpdateForAccount ((parameters: PostAccountsAccountExternalAccountsIdParams), account: string, id: string) =
             $"/v1/accounts/{account}/external_accounts/{id}"
-            |> this.RestApiClient.PostAsync<_, ExternalAccount> ``params``
+            |> this.RestApiClient.PostAsync<_, ExternalAccount> parameters
 
         ///<p>Delete a specified external account for a given account.</p>
         member this.DeleteForAccount (account: string, id: string) =
@@ -553,9 +553,9 @@ module StripeService =
         ///Once entirely refunded, an application fee can’t be refunded again.
         ///This method will raise an error when called on an already-refunded application fee,
         ///or when trying to refund more money than is left on an application fee.</p>
-        member this.CreateForApplicationFee ((``params``: PostApplicationFeesIdRefundsParams), id: string) =
+        member this.CreateForApplicationFee ((parameters: PostApplicationFeesIdRefundsParams), id: string) =
             $"/v1/application_fees/{id}/refunds"
-            |> this.RestApiClient.PostAsync<_, FeeRefund> ``params``
+            |> this.RestApiClient.PostAsync<_, FeeRefund> parameters
 
         ///<p>You can see a list of the refunds belonging to a specific application fee. Note that the 10 most recent refunds are always available by default on the application fee object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
         member this.ListForApplicationFee (id: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -569,9 +569,9 @@ module StripeService =
 
         ///<p>Updates the specified application fee refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts metadata as an argument.</p>
-        member this.UpdateForApplicationFee ((``params``: PostApplicationFeesFeeRefundsIdParams), fee: string, id: string) =
+        member this.UpdateForApplicationFee ((parameters: PostApplicationFeesFeeRefundsIdParams), fee: string, id: string) =
             $"/v1/application_fees/{fee}/refunds/{id}"
-            |> this.RestApiClient.PostAsync<_, FeeRefund> ``params``
+            |> this.RestApiClient.PostAsync<_, FeeRefund> parameters
 
     and FileService(?apiKey: string) = 
 
@@ -603,14 +603,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<FileLink>
 
         ///<p>Creates a new file link object.</p>
-        member this.Create ((``params``: PostFileLinksParams)) =
+        member this.Create ((parameters: PostFileLinksParams)) =
             $"/v1/file_links"
-            |> this.RestApiClient.PostAsync<_, FileLink> ``params``
+            |> this.RestApiClient.PostAsync<_, FileLink> parameters
 
         ///<p>Updates an existing file link object. Expired links can no longer be updated.</p>
-        member this.Update ((``params``: PostFileLinksLinkParams), link: string) =
+        member this.Update ((parameters: PostFileLinksLinkParams), link: string) =
             $"/v1/file_links/{link}"
-            |> this.RestApiClient.PostAsync<_, FileLink> ``params``
+            |> this.RestApiClient.PostAsync<_, FileLink> parameters
 
         ///<p>Returns a list of file links.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?expired: bool, ?file: string, ?limit: int, ?startingAfter: string) =
@@ -634,9 +634,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Invoice>
 
         ///<p>This endpoint creates a draft invoice for a given customer. The draft invoice created pulls in all pending invoice items on that customer, including prorations. The invoice remains a draft until you <a href="#finalize_invoice">finalize</a> the invoice, which allows you to <a href="#pay_invoice">pay</a> or <a href="#send_invoice">send</a> the invoice to your customers.</p>
-        member this.Create ((``params``: PostInvoicesParams)) =
+        member this.Create ((parameters: PostInvoicesParams)) =
             $"/v1/invoices"
-            |> this.RestApiClient.PostAsync<_, Invoice> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
         ///<p>Retrieves the invoice with the given ID.</p>
         member this.Retrieve (invoice: string, ?expand: string list) =
@@ -648,9 +648,9 @@ module StripeService =
         ///If you would like to stop the Stripe Billing engine from automatically finalizing, reattempting payments on,
         ///sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automatically reconciling</a> invoices, pass
         ///<code>auto_advance=false</code>.</p>
-        member this.Update ((``params``: PostInvoicesInvoiceParams), invoice: string) =
+        member this.Update ((parameters: PostInvoicesInvoiceParams), invoice: string) =
             $"/v1/invoices/{invoice}"
-            |> this.RestApiClient.PostAsync<_, Invoice> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
         ///<p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="#void_invoice">voided</a>.</p>
         member this.Delete (invoice: string) =
@@ -658,14 +658,14 @@ module StripeService =
             |> this.RestApiClient.DeleteAsync<DeletedInvoice>
 
         ///<p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
-        member this.Pay ((``params``: PostInvoicesInvoicePayParams), invoice: string) =
+        member this.Pay ((parameters: PostInvoicesInvoicePayParams), invoice: string) =
             $"/v1/invoices/{invoice}/pay"
-            |> this.RestApiClient.PostAsync<_, Invoice> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
         ///<p>Stripe automatically finalizes drafts before sending and attempting payment on invoices. However, if you’d like to finalize a draft invoice manually, you can do so using this method.</p>
-        member this.FinalizeInvoice ((``params``: PostInvoicesInvoiceFinalizeParams), invoice: string) =
+        member this.FinalizeInvoice ((parameters: PostInvoicesInvoiceFinalizeParams), invoice: string) =
             $"/v1/invoices/{invoice}/finalize"
-            |> this.RestApiClient.PostAsync<_, Invoice> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
         ///<p>When retrieving an upcoming invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.UpcomingLines (?coupon: string, ?subscriptionStartDate: int, ?subscriptionProrationDate: int, ?subscriptionProrationBehavior: string, ?subscriptionItems: string list, ?subscriptionDefaultTaxRates: string list, ?subscriptionCancelNow: bool, ?subscriptionCancelAtPeriodEnd: bool, ?subscriptionCancelAt: int, ?subscriptionTrialEnd: string, ?subscriptionBillingCycleAnchor: string, ?startingAfter: string, ?schedule: string, ?limit: int, ?invoiceItems: string list, ?expand: string list, ?endingBefore: string, ?discounts: string list, ?customer: string, ?subscription: string, ?subscriptionTrialFromPlan: bool) =
@@ -674,19 +674,19 @@ module StripeService =
 
         ///<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.
         ///Requests made in test-mode result in no emails being sent, despite sending an <code>invoice.sent</code> event.</p>
-        member this.SendInvoice ((``params``: PostInvoicesInvoiceSendParams), invoice: string) =
+        member this.SendInvoice ((parameters: PostInvoicesInvoiceSendParams), invoice: string) =
             $"/v1/invoices/{invoice}/send"
-            |> this.RestApiClient.PostAsync<_, Invoice> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
         ///<p>Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes.</p>
-        member this.MarkUncollectible ((``params``: PostInvoicesInvoiceMarkUncollectibleParams), invoice: string) =
+        member this.MarkUncollectible ((parameters: PostInvoicesInvoiceMarkUncollectibleParams), invoice: string) =
             $"/v1/invoices/{invoice}/mark_uncollectible"
-            |> this.RestApiClient.PostAsync<_, Invoice> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
         ///<p>Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is similar to <a href="#delete_invoice">deletion</a>, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found.</p>
-        member this.VoidInvoice ((``params``: PostInvoicesInvoiceVoidParams), invoice: string) =
+        member this.VoidInvoice ((parameters: PostInvoicesInvoiceVoidParams), invoice: string) =
             $"/v1/invoices/{invoice}/void"
-            |> this.RestApiClient.PostAsync<_, Invoice> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
     and InvoiceitemService(?apiKey: string) = 
 
@@ -698,9 +698,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Invoiceitem>
 
         ///<p>Creates an item to be added to a draft invoice (up to 250 items per invoice). If no invoice is specified, the item will be on the next invoice created for the customer specified.</p>
-        member this.Create ((``params``: PostInvoiceitemsParams)) =
+        member this.Create ((parameters: PostInvoiceitemsParams)) =
             $"/v1/invoiceitems"
-            |> this.RestApiClient.PostAsync<_, Invoiceitem> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoiceitem> parameters
 
         ///<p>Retrieves the invoice item with the given ID.</p>
         member this.Retrieve (invoiceitem: string, ?expand: string list) =
@@ -708,9 +708,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Invoiceitem>
 
         ///<p>Updates the amount or description of an invoice item on an upcoming invoice. Updating an invoice item is only possible before the invoice it’s attached to is closed.</p>
-        member this.Update ((``params``: PostInvoiceitemsInvoiceitemParams), invoiceitem: string) =
+        member this.Update ((parameters: PostInvoiceitemsInvoiceitemParams), invoiceitem: string) =
             $"/v1/invoiceitems/{invoiceitem}"
-            |> this.RestApiClient.PostAsync<_, Invoiceitem> ``params``
+            |> this.RestApiClient.PostAsync<_, Invoiceitem> parameters
 
         ///<p>Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they’re not attached to invoices, or if it’s attached to a draft invoice.</p>
         member this.Delete (invoiceitem: string) =
@@ -747,19 +747,19 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingAuthorization>
 
         ///<p>Updates the specified Issuing <code>Authorization</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostIssuingAuthorizationsAuthorizationParams), authorization: string) =
+        member this.Update ((parameters: PostIssuingAuthorizationsAuthorizationParams), authorization: string) =
             $"/v1/issuing/authorizations/{authorization}"
-            |> this.RestApiClient.PostAsync<_, IssuingAuthorization> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingAuthorization> parameters
 
         ///<p>Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.</p>
-        member this.Approve ((``params``: PostIssuingAuthorizationsAuthorizationApproveParams), authorization: string) =
+        member this.Approve ((parameters: PostIssuingAuthorizationsAuthorizationApproveParams), authorization: string) =
             $"/v1/issuing/authorizations/{authorization}/approve"
-            |> this.RestApiClient.PostAsync<_, IssuingAuthorization> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingAuthorization> parameters
 
         ///<p>Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.</p>
-        member this.Decline ((``params``: PostIssuingAuthorizationsAuthorizationDeclineParams), authorization: string) =
+        member this.Decline ((parameters: PostIssuingAuthorizationsAuthorizationDeclineParams), authorization: string) =
             $"/v1/issuing/authorizations/{authorization}/decline"
-            |> this.RestApiClient.PostAsync<_, IssuingAuthorization> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingAuthorization> parameters
 
     and IssuingCardService(?apiKey: string) = 
 
@@ -771,9 +771,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingCard>
 
         ///<p>Creates an Issuing <code>Card</code> object.</p>
-        member this.Create ((``params``: PostIssuingCardsParams)) =
+        member this.Create ((parameters: PostIssuingCardsParams)) =
             $"/v1/issuing/cards"
-            |> this.RestApiClient.PostAsync<_, IssuingCard> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingCard> parameters
 
         ///<p>Retrieves an Issuing <code>Card</code> object.</p>
         member this.Retrieve (card: string, ?expand: string list) =
@@ -781,9 +781,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingCard>
 
         ///<p>Updates the specified Issuing <code>Card</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostIssuingCardsCardParams), card: string) =
+        member this.Update ((parameters: PostIssuingCardsCardParams), card: string) =
             $"/v1/issuing/cards/{card}"
-            |> this.RestApiClient.PostAsync<_, IssuingCard> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingCard> parameters
 
     and IssuingCardholderService(?apiKey: string) = 
 
@@ -795,9 +795,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingCardholder>
 
         ///<p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p>
-        member this.Create ((``params``: PostIssuingCardholdersParams)) =
+        member this.Create ((parameters: PostIssuingCardholdersParams)) =
             $"/v1/issuing/cardholders"
-            |> this.RestApiClient.PostAsync<_, IssuingCardholder> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingCardholder> parameters
 
         ///<p>Retrieves an Issuing <code>Cardholder</code> object.</p>
         member this.Retrieve (cardholder: string, ?expand: string list) =
@@ -805,9 +805,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingCardholder>
 
         ///<p>Updates the specified Issuing <code>Cardholder</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostIssuingCardholdersCardholderParams), cardholder: string) =
+        member this.Update ((parameters: PostIssuingCardholdersCardholderParams), cardholder: string) =
             $"/v1/issuing/cardholders/{cardholder}"
-            |> this.RestApiClient.PostAsync<_, IssuingCardholder> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingCardholder> parameters
 
     and IssuingDisputeService(?apiKey: string) = 
 
@@ -819,14 +819,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingDispute>
 
         ///<p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p>
-        member this.Create ((``params``: PostIssuingDisputesParams)) =
+        member this.Create ((parameters: PostIssuingDisputesParams)) =
             $"/v1/issuing/disputes"
-            |> this.RestApiClient.PostAsync<_, IssuingDispute> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingDispute> parameters
 
         ///<p>Updates the specified Issuing <code>Dispute</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Properties on the <code>evidence</code> object can be unset by passing in an empty string.</p>
-        member this.Update ((``params``: PostIssuingDisputesDisputeParams), dispute: string) =
+        member this.Update ((parameters: PostIssuingDisputesDisputeParams), dispute: string) =
             $"/v1/issuing/disputes/{dispute}"
-            |> this.RestApiClient.PostAsync<_, IssuingDispute> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingDispute> parameters
 
         ///<p>Retrieves an Issuing <code>Dispute</code> object.</p>
         member this.Retrieve (dispute: string, ?expand: string list) =
@@ -834,9 +834,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingDispute>
 
         ///<p>Submits an Issuing <code>Dispute</code> to the card network. Stripe validates that all evidence fields required for the dispute’s reason are present. For more details, see <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a>.</p>
-        member this.Submit ((``params``: PostIssuingDisputesDisputeSubmitParams), dispute: string) =
+        member this.Submit ((parameters: PostIssuingDisputesDisputeSubmitParams), dispute: string) =
             $"/v1/issuing/disputes/{dispute}/submit"
-            |> this.RestApiClient.PostAsync<_, IssuingDispute> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingDispute> parameters
 
     and IssuingTransactionService(?apiKey: string) = 
 
@@ -853,9 +853,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<IssuingTransaction>
 
         ///<p>Updates the specified Issuing <code>Transaction</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostIssuingTransactionsTransactionParams), transaction: string) =
+        member this.Update ((parameters: PostIssuingTransactionsTransactionParams), transaction: string) =
             $"/v1/issuing/transactions/{transaction}"
-            |> this.RestApiClient.PostAsync<_, IssuingTransaction> ``params``
+            |> this.RestApiClient.PostAsync<_, IssuingTransaction> parameters
 
     and ItemService(?apiKey: string) = 
 
@@ -881,9 +881,9 @@ module StripeService =
 
         ///<p>Creates a single-use login link for an Express account to access their Stripe dashboard.
         ///<strong>You may only create login links for <a href="/docs/connect/express-accounts">Express accounts</a> connected to your platform</strong>.</p>
-        member this.CreateForAccount ((``params``: PostAccountsAccountLoginLinksParams), account: string) =
+        member this.CreateForAccount ((parameters: PostAccountsAccountLoginLinksParams), account: string) =
             $"/v1/accounts/{account}/login_links"
-            |> this.RestApiClient.PostAsync<_, LoginLink> ``params``
+            |> this.RestApiClient.PostAsync<_, LoginLink> parameters
 
     and MandateService(?apiKey: string) = 
 
@@ -899,9 +899,9 @@ module StripeService =
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Creates a new order object.</p>
-        member this.Create ((``params``: PostOrdersParams)) =
+        member this.Create ((parameters: PostOrdersParams)) =
             $"/v1/orders"
-            |> this.RestApiClient.PostAsync<_, Order> ``params``
+            |> this.RestApiClient.PostAsync<_, Order> parameters
 
         ///<p>Returns a list of your orders. The orders are returned sorted by creation date, with the most recently created orders appearing first.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?ids: string list, ?limit: int, ?startingAfter: string, ?status: string, ?statusTransitions: Map<string, string>, ?upstreamIds: string list) =
@@ -914,19 +914,19 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Order>
 
         ///<p>Updates the specific order by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostOrdersIdParams), id: string) =
+        member this.Update ((parameters: PostOrdersIdParams), id: string) =
             $"/v1/orders/{id}"
-            |> this.RestApiClient.PostAsync<_, Order> ``params``
+            |> this.RestApiClient.PostAsync<_, Order> parameters
 
         ///<p>Pay an order by providing a <code>source</code> to create a payment.</p>
-        member this.Pay ((``params``: PostOrdersIdPayParams), id: string) =
+        member this.Pay ((parameters: PostOrdersIdPayParams), id: string) =
             $"/v1/orders/{id}/pay"
-            |> this.RestApiClient.PostAsync<_, Order> ``params``
+            |> this.RestApiClient.PostAsync<_, Order> parameters
 
         ///<p>Return all or part of an order. The order must have a status of <code>paid</code> or <code>fulfilled</code> before it can be returned. Once all items have been returned, the order will become <code>canceled</code> or <code>returned</code> depending on which status the order started in.</p>
-        member this.ReturnOrder ((``params``: PostOrdersIdReturnsParams), id: string) =
+        member this.ReturnOrder ((parameters: PostOrdersIdReturnsParams), id: string) =
             $"/v1/orders/{id}/returns"
-            |> this.RestApiClient.PostAsync<_, OrderReturn> ``params``
+            |> this.RestApiClient.PostAsync<_, OrderReturn> parameters
 
     and OrderReturnService(?apiKey: string) = 
 
@@ -954,9 +954,9 @@ module StripeService =
         ///and confirming the PaymentIntent in the same call. You may use any parameters
         ///available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when <code>confirm=true</code>
         ///is supplied.</p>
-        member this.Create ((``params``: PostPaymentIntentsParams)) =
+        member this.Create ((parameters: PostPaymentIntentsParams)) =
             $"/v1/payment_intents"
-            |> this.RestApiClient.PostAsync<_, PaymentIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentIntent> parameters
 
         ///<p>Returns a list of PaymentIntents.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -976,9 +976,9 @@ module StripeService =
         ///always require you to confirm the PaymentIntent again. If you prefer to
         ///update and confirm at the same time, we recommend updating properties via
         ///the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>
-        member this.Update ((``params``: PostPaymentIntentsIntentParams), intent: string) =
+        member this.Update ((parameters: PostPaymentIntentsIntentParams), intent: string) =
             $"/v1/payment_intents/{intent}"
-            |> this.RestApiClient.PostAsync<_, PaymentIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentIntent> parameters
 
         ///<p>Confirm that your customer intends to pay with current or provided
         ///payment method. Upon confirmation, the PaymentIntent will attempt to initiate
@@ -1002,31 +1002,31 @@ module StripeService =
         ///explicitly re-confirm the PaymentIntent to initiate the next payment
         ///attempt. Read the <a href="/docs/payments/payment-intents/web-manual">expanded documentation</a>
         ///to learn more about manual confirmation.</p>
-        member this.Confirm ((``params``: PostPaymentIntentsIntentConfirmParams), intent: string) =
+        member this.Confirm ((parameters: PostPaymentIntentsIntentConfirmParams), intent: string) =
             $"/v1/payment_intents/{intent}/confirm"
-            |> this.RestApiClient.PostAsync<_, PaymentIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentIntent> parameters
 
         ///<p>A PaymentIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_capture</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. 
         ///Once canceled, no additional charges will be made by the PaymentIntent and any operations on the PaymentIntent will fail with an error. For PaymentIntents with <code>status=’requires_capture’</code>, the remaining <code>amount_capturable</code> will automatically be refunded.</p>
-        member this.Cancel ((``params``: PostPaymentIntentsIntentCancelParams), intent: string) =
+        member this.Cancel ((parameters: PostPaymentIntentsIntentCancelParams), intent: string) =
             $"/v1/payment_intents/{intent}/cancel"
-            |> this.RestApiClient.PostAsync<_, PaymentIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentIntent> parameters
 
         ///<p>Capture the funds of an existing uncaptured PaymentIntent when its status is <code>requires_capture</code>.
         ///Uncaptured PaymentIntents will be canceled exactly seven days after they are created.
         ///Learn more about <a href="/docs/payments/capture-later">separate authorization and capture</a>.</p>
-        member this.Capture ((``params``: PostPaymentIntentsIntentCaptureParams), intent: string) =
+        member this.Capture ((parameters: PostPaymentIntentsIntentCaptureParams), intent: string) =
             $"/v1/payment_intents/{intent}/capture"
-            |> this.RestApiClient.PostAsync<_, PaymentIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentIntent> parameters
 
     and PaymentMethodService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
-        member this.Create ((``params``: PostPaymentMethodsParams)) =
+        member this.Create ((parameters: PostPaymentMethodsParams)) =
             $"/v1/payment_methods"
-            |> this.RestApiClient.PostAsync<_, PaymentMethod> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentMethod> parameters
 
         ///<p>Retrieves a PaymentMethod object.</p>
         member this.Retrieve (paymentMethod: string, ?expand: string list) =
@@ -1034,9 +1034,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<PaymentMethod>
 
         ///<p>Updates a PaymentMethod object. A PaymentMethod must be attached a customer to be updated.</p>
-        member this.Update ((``params``: PostPaymentMethodsPaymentMethodParams), paymentMethod: string) =
+        member this.Update ((parameters: PostPaymentMethodsPaymentMethodParams), paymentMethod: string) =
             $"/v1/payment_methods/{paymentMethod}"
-            |> this.RestApiClient.PostAsync<_, PaymentMethod> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentMethod> parameters
 
         ///<p>Returns a list of PaymentMethods for a given Customer</p>
         member this.List (customer: string, ``type``: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1052,14 +1052,14 @@ module StripeService =
         ///To use this PaymentMethod as the default for invoice or subscription payments,
         ///set <a href="/docs/api/customers/update#update_customer-invoice_settings-default_payment_method"><code>invoice_settings.default_payment_method</code></a>,
         ///on the Customer to the PaymentMethod’s ID.</p>
-        member this.Attach ((``params``: PostPaymentMethodsPaymentMethodAttachParams), paymentMethod: string) =
+        member this.Attach ((parameters: PostPaymentMethodsPaymentMethodAttachParams), paymentMethod: string) =
             $"/v1/payment_methods/{paymentMethod}/attach"
-            |> this.RestApiClient.PostAsync<_, PaymentMethod> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentMethod> parameters
 
         ///<p>Detaches a PaymentMethod object from a Customer.</p>
-        member this.Detach ((``params``: PostPaymentMethodsPaymentMethodDetachParams), paymentMethod: string) =
+        member this.Detach ((parameters: PostPaymentMethodsPaymentMethodDetachParams), paymentMethod: string) =
             $"/v1/payment_methods/{paymentMethod}/detach"
-            |> this.RestApiClient.PostAsync<_, PaymentMethod> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentMethod> parameters
 
     and PaymentSourceService(?apiKey: string) = 
 
@@ -1079,9 +1079,9 @@ module StripeService =
         ///If the card’s owner has no default card, then the new card will become the default.
         ///However, if the owner already has a default, then it will not change.
         ///To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>
-        member this.CreateForCustomer ((``params``: PostCustomersCustomerSourcesParams), customer: string) =
+        member this.CreateForCustomer ((parameters: PostCustomersCustomerSourcesParams), customer: string) =
             $"/v1/customers/{customer}/sources"
-            |> this.RestApiClient.PostAsync<_, PaymentSource> ``params``
+            |> this.RestApiClient.PostAsync<_, PaymentSource> parameters
 
     and PayoutService(?apiKey: string) = 
 
@@ -1100,25 +1100,25 @@ module StripeService =
         ///<p>To send funds to your own bank account, you create a new payout object. Your <a href="#balance">Stripe balance</a> must be able to cover the payout amount, or you’ll receive an “Insufficient Funds” error.
         ///If your API key is in test mode, money won’t actually be sent, though everything else will occur as if in live mode.
         ///If you are creating a manual payout on a Stripe account that uses multiple payment source types, you’ll need to specify the source type balance that the payout should draw from. The <a href="#balance_object">balance object</a> details available and pending amounts by source type.</p>
-        member this.Create ((``params``: PostPayoutsParams)) =
+        member this.Create ((parameters: PostPayoutsParams)) =
             $"/v1/payouts"
-            |> this.RestApiClient.PostAsync<_, Payout> ``params``
+            |> this.RestApiClient.PostAsync<_, Payout> parameters
 
         ///<p>Updates the specified payout by setting the values of the parameters passed. Any parameters not provided will be left unchanged. This request accepts only the metadata as arguments.</p>
-        member this.Update ((``params``: PostPayoutsPayoutParams), payout: string) =
+        member this.Update ((parameters: PostPayoutsPayoutParams), payout: string) =
             $"/v1/payouts/{payout}"
-            |> this.RestApiClient.PostAsync<_, Payout> ``params``
+            |> this.RestApiClient.PostAsync<_, Payout> parameters
 
         ///<p>A previously created payout can be canceled if it has not yet been paid out. Funds will be refunded to your available balance. You may not cancel automatic Stripe payouts.</p>
-        member this.Cancel ((``params``: PostPayoutsPayoutCancelParams), payout: string) =
+        member this.Cancel ((parameters: PostPayoutsPayoutCancelParams), payout: string) =
             $"/v1/payouts/{payout}/cancel"
-            |> this.RestApiClient.PostAsync<_, Payout> ``params``
+            |> this.RestApiClient.PostAsync<_, Payout> parameters
 
         ///<p>Reverses a payout by debiting the destination bank account. Only payouts for connected accounts to US bank accounts may be reversed at this time. If the payout is in the <code>pending</code> status, <code>/v1/payouts/:id/cancel</code> should be used instead.
         ///By requesting a reversal via <code>/v1/payouts/:id/reverse</code>, you confirm that the authorized signatory of the selected bank account has authorized the debit on the bank account and that no other authorization is required.</p>
-        member this.Reverse ((``params``: PostPayoutsPayoutReverseParams), payout: string) =
+        member this.Reverse ((parameters: PostPayoutsPayoutReverseParams), payout: string) =
             $"/v1/payouts/{payout}/reverse"
-            |> this.RestApiClient.PostAsync<_, Payout> ``params``
+            |> this.RestApiClient.PostAsync<_, Payout> parameters
 
     and PersonService(?apiKey: string) = 
 
@@ -1135,14 +1135,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Person>
 
         ///<p>Creates a new person.</p>
-        member this.CreateForAccount ((``params``: PostAccountsAccountPersonsParams), account: string) =
+        member this.CreateForAccount ((parameters: PostAccountsAccountPersonsParams), account: string) =
             $"/v1/accounts/{account}/persons"
-            |> this.RestApiClient.PostAsync<_, Person> ``params``
+            |> this.RestApiClient.PostAsync<_, Person> parameters
 
         ///<p>Updates an existing person.</p>
-        member this.UpdateForAccount ((``params``: PostAccountsAccountPersonsPersonParams), account: string, person: string) =
+        member this.UpdateForAccount ((parameters: PostAccountsAccountPersonsPersonParams), account: string, person: string) =
             $"/v1/accounts/{account}/persons/{person}"
-            |> this.RestApiClient.PostAsync<_, Person> ``params``
+            |> this.RestApiClient.PostAsync<_, Person> parameters
 
         ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>account_opener</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
         member this.DeleteForAccount (account: string, person: string) =
@@ -1159,9 +1159,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Plan>
 
         ///<p>You can now model subscriptions more flexibly using the <a href="#prices">Prices API</a>. It replaces the Plans API and is backwards compatible to simplify your migration.</p>
-        member this.Create ((``params``: PostPlansParams)) =
+        member this.Create ((parameters: PostPlansParams)) =
             $"/v1/plans"
-            |> this.RestApiClient.PostAsync<_, Plan> ``params``
+            |> this.RestApiClient.PostAsync<_, Plan> parameters
 
         ///<p>Retrieves the plan with the given ID.</p>
         member this.Retrieve (plan: string, ?expand: string list) =
@@ -1169,9 +1169,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Plan>
 
         ///<p>Updates the specified plan by setting the values of the parameters passed. Any parameters not provided are left unchanged. By design, you cannot change a plan’s ID, amount, currency, or billing cycle.</p>
-        member this.Update ((``params``: PostPlansPlanParams), plan: string) =
+        member this.Update ((parameters: PostPlansPlanParams), plan: string) =
             $"/v1/plans/{plan}"
-            |> this.RestApiClient.PostAsync<_, Plan> ``params``
+            |> this.RestApiClient.PostAsync<_, Plan> parameters
 
         ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>
         member this.Delete (plan: string) =
@@ -1188,9 +1188,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Price>
 
         ///<p>Creates a new price for an existing product. The price can be recurring or one-time.</p>
-        member this.Create ((``params``: PostPricesParams)) =
+        member this.Create ((parameters: PostPricesParams)) =
             $"/v1/prices"
-            |> this.RestApiClient.PostAsync<_, Price> ``params``
+            |> this.RestApiClient.PostAsync<_, Price> parameters
 
         ///<p>Retrieves the price with the given ID.</p>
         member this.Retrieve (price: string, ?expand: string list) =
@@ -1198,18 +1198,18 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Price>
 
         ///<p>Updates the specified price by setting the values of the parameters passed. Any parameters not provided are left unchanged.</p>
-        member this.Update ((``params``: PostPricesPriceParams), price: string) =
+        member this.Update ((parameters: PostPricesPriceParams), price: string) =
             $"/v1/prices/{price}"
-            |> this.RestApiClient.PostAsync<_, Price> ``params``
+            |> this.RestApiClient.PostAsync<_, Price> parameters
 
     and ProductService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Creates a new product object.</p>
-        member this.Create ((``params``: PostProductsParams)) =
+        member this.Create ((parameters: PostProductsParams)) =
             $"/v1/products"
-            |> this.RestApiClient.PostAsync<_, Product> ``params``
+            |> this.RestApiClient.PostAsync<_, Product> parameters
 
         ///<p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -1217,9 +1217,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Product>
 
         ///<p>Updates the specific product by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostProductsIdParams), id: string) =
+        member this.Update ((parameters: PostProductsIdParams), id: string) =
             $"/v1/products/{id}"
-            |> this.RestApiClient.PostAsync<_, Product> ``params``
+            |> this.RestApiClient.PostAsync<_, Product> parameters
 
         ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
         member this.List (?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?ids: string list, ?limit: int, ?shippable: bool, ?startingAfter: string, ?``type``: string, ?url: string) =
@@ -1241,14 +1241,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<PromotionCode>
 
         ///<p>A promotion code points to a coupon. You can optionally restrict the code to a specific customer, redemption limit, and expiration date.</p>
-        member this.Create ((``params``: PostPromotionCodesParams)) =
+        member this.Create ((parameters: PostPromotionCodesParams)) =
             $"/v1/promotion_codes"
-            |> this.RestApiClient.PostAsync<_, PromotionCode> ``params``
+            |> this.RestApiClient.PostAsync<_, PromotionCode> parameters
 
         ///<p>Updates the specified promotion code by setting the values of the parameters passed. Most fields are, by design, not editable.</p>
-        member this.Update ((``params``: PostPromotionCodesPromotionCodeParams), promotionCode: string) =
+        member this.Update ((parameters: PostPromotionCodesPromotionCodeParams), promotionCode: string) =
             $"/v1/promotion_codes/{promotionCode}"
-            |> this.RestApiClient.PostAsync<_, PromotionCode> ``params``
+            |> this.RestApiClient.PostAsync<_, PromotionCode> parameters
 
         ///<p>Returns a list of your promotion codes.</p>
         member this.List (?active: bool, ?code: string, ?coupon: string, ?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1285,14 +1285,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<RadarValueList>
 
         ///<p>Creates a new <code>ValueList</code> object, which can then be referenced in rules.</p>
-        member this.Create ((``params``: PostRadarValueListsParams)) =
+        member this.Create ((parameters: PostRadarValueListsParams)) =
             $"/v1/radar/value_lists"
-            |> this.RestApiClient.PostAsync<_, RadarValueList> ``params``
+            |> this.RestApiClient.PostAsync<_, RadarValueList> parameters
 
         ///<p>Updates a <code>ValueList</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Note that <code>item_type</code> is immutable.</p>
-        member this.Update ((``params``: PostRadarValueListsValueListParams), valueList: string) =
+        member this.Update ((parameters: PostRadarValueListsValueListParams), valueList: string) =
             $"/v1/radar/value_lists/{valueList}"
-            |> this.RestApiClient.PostAsync<_, RadarValueList> ``params``
+            |> this.RestApiClient.PostAsync<_, RadarValueList> parameters
 
         ///<p>Deletes a <code>ValueList</code> object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.</p>
         member this.Delete (valueList: string) =
@@ -1314,9 +1314,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<RadarValueListItem>
 
         ///<p>Creates a new <code>ValueListItem</code> object, which is added to the specified parent value list.</p>
-        member this.Create ((``params``: PostRadarValueListItemsParams)) =
+        member this.Create ((parameters: PostRadarValueListItemsParams)) =
             $"/v1/radar/value_list_items"
-            |> this.RestApiClient.PostAsync<_, RadarValueListItem> ``params``
+            |> this.RestApiClient.PostAsync<_, RadarValueListItem> parameters
 
         ///<p>Deletes a <code>ValueListItem</code> object, removing it from its parent value list.</p>
         member this.Delete (item: string) =
@@ -1334,9 +1334,9 @@ module StripeService =
 
         ///<p>Creates a new <code>Recipient</code> object and verifies the recipient’s identity.
         ///Also verifies the recipient’s bank account information or debit card, if either is provided.</p>
-        member this.Create ((``params``: PostRecipientsParams)) =
+        member this.Create ((parameters: PostRecipientsParams)) =
             $"/v1/recipients"
-            |> this.RestApiClient.PostAsync<_, Recipient> ``params``
+            |> this.RestApiClient.PostAsync<_, Recipient> parameters
 
         ///<p>Retrieves the details of an existing recipient. You need only supply the unique recipient identifier that was returned upon recipient creation.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -1347,9 +1347,9 @@ module StripeService =
         ///Any parameters not provided will be left unchanged.
         ///If you update the name or tax ID, the identity verification will automatically be rerun.
         ///If you update the bank account, the bank account validation will automatically be rerun.</p>
-        member this.Update ((``params``: PostRecipientsIdParams), id: string) =
+        member this.Update ((parameters: PostRecipientsIdParams), id: string) =
             $"/v1/recipients/{id}"
-            |> this.RestApiClient.PostAsync<_, Recipient> ``params``
+            |> this.RestApiClient.PostAsync<_, Recipient> parameters
 
         ///<p>Permanently deletes a recipient. It cannot be undone.</p>
         member this.Delete (id: string) =
@@ -1366,9 +1366,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Refund>
 
         ///<p>Create a refund.</p>
-        member this.Create ((``params``: PostRefundsParams)) =
+        member this.Create ((parameters: PostRefundsParams)) =
             $"/v1/refunds"
-            |> this.RestApiClient.PostAsync<_, Refund> ``params``
+            |> this.RestApiClient.PostAsync<_, Refund> parameters
 
         ///<p>Retrieves the details of an existing refund.</p>
         member this.Retrieve (refund: string, ?expand: string list) =
@@ -1377,9 +1377,9 @@ module StripeService =
 
         ///<p>Updates the specified refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts <code>metadata</code> as an argument.</p>
-        member this.Update ((``params``: PostRefundsRefundParams), refund: string) =
+        member this.Update ((parameters: PostRefundsRefundParams), refund: string) =
             $"/v1/refunds/{refund}"
-            |> this.RestApiClient.PostAsync<_, Refund> ``params``
+            |> this.RestApiClient.PostAsync<_, Refund> parameters
 
     and ReportingReportRunService(?apiKey: string) = 
 
@@ -1391,9 +1391,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<ReportingReportRun>
 
         ///<p>Creates a new object and begin running the report. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
-        member this.Create ((``params``: PostReportingReportRunsParams)) =
+        member this.Create ((parameters: PostReportingReportRunsParams)) =
             $"/v1/reporting/report_runs"
-            |> this.RestApiClient.PostAsync<_, ReportingReportRun> ``params``
+            |> this.RestApiClient.PostAsync<_, ReportingReportRun> parameters
 
         ///<p>Returns a list of Report Runs, with the most recent appearing first. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1429,9 +1429,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Review>
 
         ///<p>Approves a <code>Review</code> object, closing it and removing it from the list of reviews.</p>
-        member this.Approve ((``params``: PostReviewsReviewApproveParams), review: string) =
+        member this.Approve ((parameters: PostReviewsReviewApproveParams), review: string) =
             $"/v1/reviews/{review}/approve"
-            |> this.RestApiClient.PostAsync<_, Review> ``params``
+            |> this.RestApiClient.PostAsync<_, Review> parameters
 
     and ScheduledQueryRunService(?apiKey: string) = 
 
@@ -1463,9 +1463,9 @@ module StripeService =
         ///<p>Creates a SetupIntent object.
         ///After the SetupIntent is created, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
         ///to collect any required permissions to charge the payment method later.</p>
-        member this.Create ((``params``: PostSetupIntentsParams)) =
+        member this.Create ((parameters: PostSetupIntentsParams)) =
             $"/v1/setup_intents"
-            |> this.RestApiClient.PostAsync<_, SetupIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, SetupIntent> parameters
 
         ///<p>Returns a list of SetupIntents.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentMethod: string, ?startingAfter: string) =
@@ -1480,9 +1480,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<SetupIntent>
 
         ///<p>Updates a SetupIntent object.</p>
-        member this.Update ((``params``: PostSetupIntentsIntentParams), intent: string) =
+        member this.Update ((parameters: PostSetupIntentsIntentParams), intent: string) =
             $"/v1/setup_intents/{intent}"
-            |> this.RestApiClient.PostAsync<_, SetupIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, SetupIntent> parameters
 
         ///<p>Confirm that your customer intends to set up the current or
         ///provided payment method. For example, you would confirm a SetupIntent
@@ -1495,15 +1495,15 @@ module StripeService =
         ///suggest additional actions via <code>next_action</code>. If setup fails,
         ///the SetupIntent will transition to the
         ///<code>requires_payment_method</code> status.</p>
-        member this.Confirm ((``params``: PostSetupIntentsIntentConfirmParams), intent: string) =
+        member this.Confirm ((parameters: PostSetupIntentsIntentConfirmParams), intent: string) =
             $"/v1/setup_intents/{intent}/confirm"
-            |> this.RestApiClient.PostAsync<_, SetupIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, SetupIntent> parameters
 
         ///<p>A SetupIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. 
         ///Once canceled, setup is abandoned and any operations on the SetupIntent will fail with an error.</p>
-        member this.Cancel ((``params``: PostSetupIntentsIntentCancelParams), intent: string) =
+        member this.Cancel ((parameters: PostSetupIntentsIntentCancelParams), intent: string) =
             $"/v1/setup_intents/{intent}/cancel"
-            |> this.RestApiClient.PostAsync<_, SetupIntent> ``params``
+            |> this.RestApiClient.PostAsync<_, SetupIntent> parameters
 
     and SkuService(?apiKey: string) = 
 
@@ -1521,14 +1521,14 @@ module StripeService =
 
         ///<p>Updates the specific SKU by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///Note that a SKU’s <code>attributes</code> are not editable. Instead, you would need to deactivate the existing SKU and create a new one with the new attribute values.</p>
-        member this.Update ((``params``: PostSkusIdParams), id: string) =
+        member this.Update ((parameters: PostSkusIdParams), id: string) =
             $"/v1/skus/{id}"
-            |> this.RestApiClient.PostAsync<_, Sku> ``params``
+            |> this.RestApiClient.PostAsync<_, Sku> parameters
 
         ///<p>Creates a new SKU associated with a product.</p>
-        member this.Create ((``params``: PostSkusParams)) =
+        member this.Create ((parameters: PostSkusParams)) =
             $"/v1/skus"
-            |> this.RestApiClient.PostAsync<_, Sku> ``params``
+            |> this.RestApiClient.PostAsync<_, Sku> parameters
 
         ///<p>Delete a SKU. Deleting a SKU is only possible until it has been used in an order.</p>
         member this.Delete (id: string) =
@@ -1540,7 +1540,7 @@ module StripeService =
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Delete a specified source for a given customer.</p>
-        member this.DetachForCustomer ((``params``: DeleteCustomersCustomerSourcesIdParams), customer: string, id: string) =
+        member this.DetachForCustomer ((parameters: DeleteCustomersCustomerSourcesIdParams), customer: string, id: string) =
             $"/v1/customers/{customer}/sources/{id}"
             |> this.RestApiClient.DeleteAsync<PaymentSource>
 
@@ -1550,20 +1550,20 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Source>
 
         ///<p>Creates a new source object.</p>
-        member this.Create ((``params``: PostSourcesParams)) =
+        member this.Create ((parameters: PostSourcesParams)) =
             $"/v1/sources"
-            |> this.RestApiClient.PostAsync<_, Source> ``params``
+            |> this.RestApiClient.PostAsync<_, Source> parameters
 
         ///<p>Updates the specified source by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request accepts the <code>metadata</code> and <code>owner</code> as arguments. It is also possible to update type specific information for selected payment methods. Please refer to our <a href="/docs/sources">payment method guides</a> for more detail.</p>
-        member this.Update ((``params``: PostSourcesSourceParams), source: string) =
+        member this.Update ((parameters: PostSourcesSourceParams), source: string) =
             $"/v1/sources/{source}"
-            |> this.RestApiClient.PostAsync<_, Source> ``params``
+            |> this.RestApiClient.PostAsync<_, Source> parameters
 
         ///<p>Verify a given source.</p>
-        member this.Verify ((``params``: PostSourcesSourceVerifyParams), source: string) =
+        member this.Verify ((parameters: PostSourcesSourceVerifyParams), source: string) =
             $"/v1/sources/{source}/verify"
-            |> this.RestApiClient.PostAsync<_, Source> ``params``
+            |> this.RestApiClient.PostAsync<_, Source> parameters
 
         ///<p>List source transactions for a given source.</p>
         member this.SourceTransactions (source: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1580,14 +1580,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Subscription>
 
         ///<p>Creates a new subscription on an existing customer. Each customer can have up to 500 active or scheduled subscriptions.</p>
-        member this.Create ((``params``: PostSubscriptionsParams)) =
+        member this.Create ((parameters: PostSubscriptionsParams)) =
             $"/v1/subscriptions"
-            |> this.RestApiClient.PostAsync<_, Subscription> ``params``
+            |> this.RestApiClient.PostAsync<_, Subscription> parameters
 
         ///<p>Updates an existing subscription on a customer to match the specified parameters. When changing plans or quantities, we will optionally prorate the price we charge next month to make up for any price changes. To preview how the proration will be calculated, use the <a href="#upcoming_invoice">upcoming invoice</a> endpoint.</p>
-        member this.Update ((``params``: PostSubscriptionsSubscriptionExposedIdParams), subscriptionExposedId: string) =
+        member this.Update ((parameters: PostSubscriptionsSubscriptionExposedIdParams), subscriptionExposedId: string) =
             $"/v1/subscriptions/{subscriptionExposedId}"
-            |> this.RestApiClient.PostAsync<_, Subscription> ``params``
+            |> this.RestApiClient.PostAsync<_, Subscription> parameters
 
         ///<p>Retrieves the subscription with the given ID.</p>
         member this.Retrieve (subscriptionExposedId: string, ?expand: string list) =
@@ -1597,7 +1597,7 @@ module StripeService =
         ///<p>Cancels a customer’s subscription immediately. The customer will not be charged again for the subscription.
         ///Note, however, that any pending invoice items that you’ve created will still be charged for at the end of the period, unless manually <a href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations will also be left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations will be removed.
         ///By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
-        member this.Cancel ((``params``: DeleteSubscriptionsSubscriptionExposedIdParams), subscriptionExposedId: string) =
+        member this.Cancel ((parameters: DeleteSubscriptionsSubscriptionExposedIdParams), subscriptionExposedId: string) =
             $"/v1/subscriptions/{subscriptionExposedId}"
             |> this.RestApiClient.DeleteAsync<Subscription>
 
@@ -1621,17 +1621,17 @@ module StripeService =
             |> this.RestApiClient.GetAsync<SubscriptionItem>
 
         ///<p>Adds a new item to an existing subscription. No existing items will be changed or replaced.</p>
-        member this.Create ((``params``: PostSubscriptionItemsParams)) =
+        member this.Create ((parameters: PostSubscriptionItemsParams)) =
             $"/v1/subscription_items"
-            |> this.RestApiClient.PostAsync<_, SubscriptionItem> ``params``
+            |> this.RestApiClient.PostAsync<_, SubscriptionItem> parameters
 
         ///<p>Updates the plan or quantity of an item on a current subscription.</p>
-        member this.Update ((``params``: PostSubscriptionItemsItemParams), item: string) =
+        member this.Update ((parameters: PostSubscriptionItemsItemParams), item: string) =
             $"/v1/subscription_items/{item}"
-            |> this.RestApiClient.PostAsync<_, SubscriptionItem> ``params``
+            |> this.RestApiClient.PostAsync<_, SubscriptionItem> parameters
 
         ///<p>Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.</p>
-        member this.Delete ((``params``: DeleteSubscriptionItemsItemParams), item: string) =
+        member this.Delete ((parameters: DeleteSubscriptionItemsItemParams), item: string) =
             $"/v1/subscription_items/{item}"
             |> this.RestApiClient.DeleteAsync<DeletedSubscriptionItem>
 
@@ -1651,9 +1651,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<SubscriptionSchedule>
 
         ///<p>Creates a new subscription schedule object. Each customer can have up to 500 active or scheduled subscriptions.</p>
-        member this.Create ((``params``: PostSubscriptionSchedulesParams)) =
+        member this.Create ((parameters: PostSubscriptionSchedulesParams)) =
             $"/v1/subscription_schedules"
-            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> ``params``
+            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> parameters
 
         ///<p>Retrieves the details of an existing subscription schedule. You only need to supply the unique subscription schedule identifier that was returned upon subscription schedule creation.</p>
         member this.Retrieve (schedule: string, ?expand: string list) =
@@ -1661,28 +1661,28 @@ module StripeService =
             |> this.RestApiClient.GetAsync<SubscriptionSchedule>
 
         ///<p>Updates an existing subscription schedule.</p>
-        member this.Update ((``params``: PostSubscriptionSchedulesScheduleParams), schedule: string) =
+        member this.Update ((parameters: PostSubscriptionSchedulesScheduleParams), schedule: string) =
             $"/v1/subscription_schedules/{schedule}"
-            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> ``params``
+            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> parameters
 
         ///<p>Cancels a subscription schedule and its associated subscription immediately (if the subscription schedule has an active subscription). A subscription schedule can only be canceled if its status is <code>not_started</code> or <code>active</code>.</p>
-        member this.Cancel ((``params``: PostSubscriptionSchedulesScheduleCancelParams), schedule: string) =
+        member this.Cancel ((parameters: PostSubscriptionSchedulesScheduleCancelParams), schedule: string) =
             $"/v1/subscription_schedules/{schedule}/cancel"
-            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> ``params``
+            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> parameters
 
         ///<p>Releases the subscription schedule immediately, which will stop scheduling of its phases, but leave any existing subscription in place. A schedule can only be released if its status is <code>not_started</code> or <code>active</code>. If the subscription schedule is currently associated with a subscription, releasing it will remove its <code>subscription</code> property and set the subscription’s ID to the <code>released_subscription</code> property.</p>
-        member this.Release ((``params``: PostSubscriptionSchedulesScheduleReleaseParams), schedule: string) =
+        member this.Release ((parameters: PostSubscriptionSchedulesScheduleReleaseParams), schedule: string) =
             $"/v1/subscription_schedules/{schedule}/release"
-            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> ``params``
+            |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> parameters
 
     and TaxIdService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Creates a new <code>TaxID</code> object for a customer.</p>
-        member this.CreateForCustomer ((``params``: PostCustomersCustomerTaxIdsParams), customer: string) =
+        member this.CreateForCustomer ((parameters: PostCustomersCustomerTaxIdsParams), customer: string) =
             $"/v1/customers/{customer}/tax_ids"
-            |> this.RestApiClient.PostAsync<_, TaxId> ``params``
+            |> this.RestApiClient.PostAsync<_, TaxId> parameters
 
         ///<p>Retrieves the <code>TaxID</code> object with the given identifier.</p>
         member this.RetrieveForCustomer (customer: string, id: string, ?expand: string list) =
@@ -1714,23 +1714,23 @@ module StripeService =
             |> this.RestApiClient.GetAsync<TaxRate>
 
         ///<p>Creates a new tax rate.</p>
-        member this.Create ((``params``: PostTaxRatesParams)) =
+        member this.Create ((parameters: PostTaxRatesParams)) =
             $"/v1/tax_rates"
-            |> this.RestApiClient.PostAsync<_, TaxRate> ``params``
+            |> this.RestApiClient.PostAsync<_, TaxRate> parameters
 
         ///<p>Updates an existing tax rate.</p>
-        member this.Update ((``params``: PostTaxRatesTaxRateParams), taxRate: string) =
+        member this.Update ((parameters: PostTaxRatesTaxRateParams), taxRate: string) =
             $"/v1/tax_rates/{taxRate}"
-            |> this.RestApiClient.PostAsync<_, TaxRate> ``params``
+            |> this.RestApiClient.PostAsync<_, TaxRate> parameters
 
     and TerminalConnectionTokenService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.</p>
-        member this.Create ((``params``: PostTerminalConnectionTokensParams)) =
+        member this.Create ((parameters: PostTerminalConnectionTokensParams)) =
             $"/v1/terminal/connection_tokens"
-            |> this.RestApiClient.PostAsync<_, TerminalConnectionToken> ``params``
+            |> this.RestApiClient.PostAsync<_, TerminalConnectionToken> parameters
 
     and TerminalLocationService(?apiKey: string) = 
 
@@ -1742,14 +1742,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<TerminalLocation>
 
         ///<p>Creates a new <code>Location</code> object.</p>
-        member this.Create ((``params``: PostTerminalLocationsParams)) =
+        member this.Create ((parameters: PostTerminalLocationsParams)) =
             $"/v1/terminal/locations"
-            |> this.RestApiClient.PostAsync<_, TerminalLocation> ``params``
+            |> this.RestApiClient.PostAsync<_, TerminalLocation> parameters
 
         ///<p>Updates a <code>Location</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostTerminalLocationsLocationParams), location: string) =
+        member this.Update ((parameters: PostTerminalLocationsLocationParams), location: string) =
             $"/v1/terminal/locations/{location}"
-            |> this.RestApiClient.PostAsync<_, TerminalLocation> ``params``
+            |> this.RestApiClient.PostAsync<_, TerminalLocation> parameters
 
         ///<p>Returns a list of <code>Location</code> objects.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1766,9 +1766,9 @@ module StripeService =
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Updates a <code>Reader</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        member this.Update ((``params``: PostTerminalReadersReaderParams), reader: string) =
+        member this.Update ((parameters: PostTerminalReadersReaderParams), reader: string) =
             $"/v1/terminal/readers/{reader}"
-            |> this.RestApiClient.PostAsync<_, TerminalReader> ``params``
+            |> this.RestApiClient.PostAsync<_, TerminalReader> parameters
 
         ///<p>Retrieves a <code>Reader</code> object.</p>
         member this.Retrieve (reader: string, ?expand: string list) =
@@ -1776,9 +1776,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<TerminalReader>
 
         ///<p>Creates a new <code>Reader</code> object.</p>
-        member this.Create ((``params``: PostTerminalReadersParams)) =
+        member this.Create ((parameters: PostTerminalReadersParams)) =
             $"/v1/terminal/readers"
-            |> this.RestApiClient.PostAsync<_, TerminalReader> ``params``
+            |> this.RestApiClient.PostAsync<_, TerminalReader> parameters
 
         ///<p>Returns a list of <code>Reader</code> objects.</p>
         member this.List (?deviceType: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?location: string, ?startingAfter: string, ?status: string) =
@@ -1800,9 +1800,9 @@ module StripeService =
             |> this.RestApiClient.GetAsync<ThreeDSecure>
 
         ///<p>Initiate 3D Secure authentication.</p>
-        member this.Create ((``params``: Post3dSecureParams)) =
+        member this.Create ((parameters: Post3dSecureParams)) =
             $"/v1/3d_secure"
-            |> this.RestApiClient.PostAsync<_, ThreeDSecure> ``params``
+            |> this.RestApiClient.PostAsync<_, ThreeDSecure> parameters
 
     and TokenService(?apiKey: string) = 
 
@@ -1815,18 +1815,18 @@ module StripeService =
 
         ///<p>Creates a single-use token that represents a bank account’s details.
         ///This token can be used with any API method in place of a bank account dictionary. This token can be used only once, by attaching it to a <a href="#accounts">Custom account</a>.</p>
-        member this.Create ((``params``: PostTokensParams)) =
+        member this.Create ((parameters: PostTokensParams)) =
             $"/v1/tokens"
-            |> this.RestApiClient.PostAsync<_, Token> ``params``
+            |> this.RestApiClient.PostAsync<_, Token> parameters
 
     and TopupService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>Top up the balance of an account</p>
-        member this.Create ((``params``: PostTopupsParams)) =
+        member this.Create ((parameters: PostTopupsParams)) =
             $"/v1/topups"
-            |> this.RestApiClient.PostAsync<_, Topup> ``params``
+            |> this.RestApiClient.PostAsync<_, Topup> parameters
 
         ///<p>Returns a list of top-ups.</p>
         member this.List (?amount: int, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
@@ -1839,23 +1839,23 @@ module StripeService =
             |> this.RestApiClient.GetAsync<Topup>
 
         ///<p>Updates the metadata of a top-up. Other top-up details are not editable by design.</p>
-        member this.Update ((``params``: PostTopupsTopupParams), topup: string) =
+        member this.Update ((parameters: PostTopupsTopupParams), topup: string) =
             $"/v1/topups/{topup}"
-            |> this.RestApiClient.PostAsync<_, Topup> ``params``
+            |> this.RestApiClient.PostAsync<_, Topup> parameters
 
         ///<p>Cancels a top-up. Only pending top-ups can be canceled.</p>
-        member this.Cancel ((``params``: PostTopupsTopupCancelParams), topup: string) =
+        member this.Cancel ((parameters: PostTopupsTopupCancelParams), topup: string) =
             $"/v1/topups/{topup}/cancel"
-            |> this.RestApiClient.PostAsync<_, Topup> ``params``
+            |> this.RestApiClient.PostAsync<_, Topup> parameters
 
     and TransferService(?apiKey: string) = 
 
         member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
 
         ///<p>To send funds from your Stripe account to a connected account, you create a new transfer object. Your <a href="#balance">Stripe balance</a> must be able to cover the transfer amount, or you’ll receive an “Insufficient Funds” error.</p>
-        member this.Create ((``params``: PostTransfersParams)) =
+        member this.Create ((parameters: PostTransfersParams)) =
             $"/v1/transfers"
-            |> this.RestApiClient.PostAsync<_, Transfer> ``params``
+            |> this.RestApiClient.PostAsync<_, Transfer> parameters
 
         ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
         member this.List (?created: int, ?destination: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?transferGroup: string) =
@@ -1869,9 +1869,9 @@ module StripeService =
 
         ///<p>Updates the specified transfer by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request accepts only metadata as an argument.</p>
-        member this.Update ((``params``: PostTransfersTransferParams), transfer: string) =
+        member this.Update ((parameters: PostTransfersTransferParams), transfer: string) =
             $"/v1/transfers/{transfer}"
-            |> this.RestApiClient.PostAsync<_, Transfer> ``params``
+            |> this.RestApiClient.PostAsync<_, Transfer> parameters
 
     and TransferReversalService(?apiKey: string) = 
 
@@ -1880,9 +1880,9 @@ module StripeService =
         ///<p>When you create a new reversal, you must specify a transfer to create it on.
         ///When reversing transfers, you can optionally reverse part of the transfer. You can do so as many times as you wish until the entire transfer has been reversed.
         ///Once entirely reversed, a transfer can’t be reversed again. This method will return an error when called on an already-reversed transfer, or when trying to reverse more money than is left on a transfer.</p>
-        member this.Create ((``params``: PostTransfersIdReversalsParams), id: string) =
+        member this.Create ((parameters: PostTransfersIdReversalsParams), id: string) =
             $"/v1/transfers/{id}/reversals"
-            |> this.RestApiClient.PostAsync<_, TransferReversal> ``params``
+            |> this.RestApiClient.PostAsync<_, TransferReversal> parameters
 
         ///<p>You can see a list of the reversals belonging to a specific transfer. Note that the 10 most recent reversals are always available by default on the transfer object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional reversals.</p>
         member this.List (id: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1896,9 +1896,9 @@ module StripeService =
 
         ///<p>Updates the specified reversal by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts metadata and description as arguments.</p>
-        member this.Update ((``params``: PostTransfersTransferReversalsIdParams), id: string, transfer: string) =
+        member this.Update ((parameters: PostTransfersTransferReversalsIdParams), id: string, transfer: string) =
             $"/v1/transfers/{transfer}/reversals/{id}"
-            |> this.RestApiClient.PostAsync<_, TransferReversal> ``params``
+            |> this.RestApiClient.PostAsync<_, TransferReversal> parameters
 
     and UsageRecordService(?apiKey: string) = 
 
@@ -1908,9 +1908,9 @@ module StripeService =
         ///Usage records provide <code>quantity</code> information that Stripe uses to track how much a customer is using your service. With usage information and the pricing model set up by the <a href="https://stripe.com/docs/billing/subscriptions/metered-billing">metered billing</a> plan, Stripe helps you send accurate invoices to your customers.
         ///The default calculation for usage is to add up all the <code>quantity</code> values of the usage records within a billing period. You can change this default behavior with the billing plan’s <code>aggregate_usage</code> <a href="/docs/api/plans/create#create_plan-aggregate_usage">parameter</a>. When there is more than one usage record with the same timestamp, Stripe adds the <code>quantity</code> values together. In most cases, this is the desired resolution, however, you can change this behavior with the <code>action</code> parameter.
         ///The default pricing model for metered billing is <a href="/docs/api/plans/object#plan_object-billing_scheme">per-unit pricing</a>. For finer granularity, you can configure metered billing to have a <a href="https://stripe.com/docs/billing/subscriptions/tiers">tiered pricing</a> model.</p>
-        member this.CreateForSubscriptionItem ((``params``: PostSubscriptionItemsSubscriptionItemUsageRecordsParams), subscriptionItem: string) =
+        member this.CreateForSubscriptionItem ((parameters: PostSubscriptionItemsSubscriptionItemUsageRecordsParams), subscriptionItem: string) =
             $"/v1/subscription_items/{subscriptionItem}/usage_records"
-            |> this.RestApiClient.PostAsync<_, UsageRecord> ``params``
+            |> this.RestApiClient.PostAsync<_, UsageRecord> parameters
 
     and UsageRecordSummaryService(?apiKey: string) = 
 
@@ -1937,14 +1937,14 @@ module StripeService =
             |> this.RestApiClient.GetAsync<WebhookEndpoint>
 
         ///<p>A webhook endpoint must have a <code>url</code> and a list of <code>enabled_events</code>. You may optionally specify the Boolean <code>connect</code> parameter. If set to true, then a Connect webhook endpoint that notifies the specified <code>url</code> about events from all connected accounts is created; otherwise an account webhook endpoint that notifies the specified <code>url</code> only about events from your account is created. You can also create webhook endpoints in the <a href="https://dashboard.stripe.com/account/webhooks">webhooks settings</a> section of the Dashboard.</p>
-        member this.Create ((``params``: PostWebhookEndpointsParams)) =
+        member this.Create ((parameters: PostWebhookEndpointsParams)) =
             $"/v1/webhook_endpoints"
-            |> this.RestApiClient.PostAsync<_, WebhookEndpoint> ``params``
+            |> this.RestApiClient.PostAsync<_, WebhookEndpoint> parameters
 
         ///<p>Updates the webhook endpoint. You may edit the <code>url</code>, the list of <code>enabled_events</code>, and the status of your endpoint.</p>
-        member this.Update ((``params``: PostWebhookEndpointsWebhookEndpointParams), webhookEndpoint: string) =
+        member this.Update ((parameters: PostWebhookEndpointsWebhookEndpointParams), webhookEndpoint: string) =
             $"/v1/webhook_endpoints/{webhookEndpoint}"
-            |> this.RestApiClient.PostAsync<_, WebhookEndpoint> ``params``
+            |> this.RestApiClient.PostAsync<_, WebhookEndpoint> parameters
 
         ///<p>You can also delete webhook endpoints via the <a href="https://dashboard.stripe.com/account/webhooks">webhook endpoint management</a> page of the Stripe dashboard.</p>
         member this.Delete (webhookEndpoint: string) =

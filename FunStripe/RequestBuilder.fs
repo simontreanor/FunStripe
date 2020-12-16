@@ -66,18 +66,13 @@ module RequestBuilder =
         s.Replace("*", "Asterix").Replace("GMT+", "GMTplus").Replace("GMT-", "GMTminus").Replace("/", "").Replace("-", "").Replace(" ", "")
 
     let escapeForJson prefix s =
-        if Regex.IsMatch(s, @"^\p{Lu}") then
-            $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
-        else
-            if Regex.IsMatch(s, @"^\d") then
-                $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
-            elif s.Contains("*") || s.Contains("-") || s.Contains(" ") then
-                $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
-            else
-                $"{prefix}{s |> clean |> pascalCasify}"
+        $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
 
     let fixOperationId (operationId: string) =
         operationId.Replace("-", "")
+
+    let fixTitle (title: string) =
+        Regex.Replace(title, "_param$", "")
 
     type Parameter (description: string, name: string, ``type``: string) =
 
@@ -90,19 +85,6 @@ module RequestBuilder =
 
         member this.ToPropertyString() =
             "\t\tmember _." + (this.Name |> camelCasify |> escapeReservedName) + " = " + (this.Name |> camelCasify |> escapeReservedName)
-
-    type TypeDefinition (name: string, parameters: Parameter list) =
-
-        member _.Name = name
-        member _.Parameters = parameters
-
-    let getTypeDefinition (name: string) (parameters: Parameter array) =
-        if parameters |> Array.isEmpty then
-            ""
-        else
-            let parametersString = String.Join (", ", parameters |> Array.map(fun p -> p.ToParameterString()))
-            let propertiesString = String.Join ("\n", parameters |> Array.map(fun p -> p.ToPropertyString()))
-            "\tand " + name + " (" + parametersString + ") =\n" + propertiesString + "\n"
 
     let commentify (s: string) = 
         s.Replace("\n\n", "\n").Replace("\n", "\n\t\t///")
@@ -171,7 +153,7 @@ module RequestBuilder =
                         | Some t when t = "object" ->
                             match so.Title with
                             | Some title ->
-                                let prefix' = if isChoice then $"{prefix}{name'}{title |> pascalCasify}" else $"{prefix}{name'}"
+                                let prefix' = if isChoice then $"{prefix}{name'}{title |> fixTitle |> pascalCasify}" else $"{prefix}{name'}"
                                 let sv = so.Properties.Properties |> Array.map(fun (k, v) -> v |> parseValue prefix' k false false)
                                 if sv |> Array.isEmpty then
                                     { Description = desc; Name = name; Required = req; Type = "string"; EnumValues = None; SubValues = None }

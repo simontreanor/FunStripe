@@ -151,7 +151,7 @@ module ServiceBuilder =
                     let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> JsonValue.Null
                     let formParameters = schema.TryGetProperty("properties") |> function | Some jv -> jv.Properties | None -> [||]
                     let topLevelParamsType = $"{operationId}Params"
-                    let formParam = if formParameters.Any() then $"(``params``: {topLevelParamsType})" else ""
+                    let formParam = if formParameters.Any() then $"(parameters: {topLevelParamsType})" else ""
 
                     //get request method
                     let description = v.GetProperty("description").AsString()
@@ -182,13 +182,13 @@ module ServiceBuilder =
                     //set API method
                     match verb with
                     | "get" when formParameters.Any() ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {responseType}> ``params``\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {responseType}> parameters\n"
                     | "get" ->
                         sb |> write $"\t\t\t|> this.RestApiClient.GetAsync<{responseType}>\n"
                     | "post" when formParameters.Any() |> not ->
                         sb |> write $"\t\t\t|> this.RestApiClient.PostWithoutAsync<{responseType}>\n"
                     | "post" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {responseType}> ``params``\n"
+                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {responseType}> parameters\n"
                     | "delete" ->
                         sb |> write $"\t\t\t|> this.RestApiClient.DeleteAsync<{responseType}>\n"
                     | _ ->

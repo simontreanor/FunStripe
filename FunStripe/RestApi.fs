@@ -27,7 +27,7 @@ module RestApi =
             printf "%s" s
             s
 
-        member private _.parseResponse<'a> (r: HttpResponse) =
+        member private _.ParseResponse<'a> (r: HttpResponse) =
             match r.StatusCode with
             | sc when sc >= 200 && sc <= 299 ->
                 r.Body
@@ -45,33 +45,33 @@ module RestApi =
             async {
                 let! response =
                     Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ])
-                return response |> x.parseResponse<'a>
+                return response |> x.ParseResponse<'a>
             }
 
         member x.GetWithAsync<'a, 'b> (data: 'a) (url: string) =
             async {
                 let! response =
                     Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
-                return response |> x.parseResponse<'b>
+                return response |> x.ParseResponse<'b>
             }
 
         member x.PostAsync<'a, 'b> (data: 'a) (url: string) = 
             async {
                 let! response =
                     Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
-                return response |> x.parseResponse<'b>
+                return response |> x.ParseResponse<'b>
             }
 
         member x.PostWithoutAsync<'a> (url: string) = 
             async {
                 let! response =
                     Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Post)
-                return response |> x.parseResponse<'a>
+                return response |> x.ParseResponse<'a>
             }
 
         member x.DeleteAsync<'a> (url: string) =
             async {
                 let! response =
                     Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Delete)
-                return response |> x.parseResponse<'a> //to do: check if response should be unit
+                return response |> x.ParseResponse<'a> //to do: check if response should be unit
             }
