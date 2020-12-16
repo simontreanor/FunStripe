@@ -122,7 +122,7 @@ module RequestBuilder =
     let parseRequest filePath =
         let root = __SOURCE_DIRECTORY__
 
-        let filePath' = defaultArg filePath $@"{root}/res/spec3.sdk.json"
+        let filePath' = defaultArg filePath $"{root}/res/spec3.sdk.json"
         let json = File.ReadAllText(filePath')
 
         let root = JsonValue.Parse json
@@ -142,7 +142,7 @@ module RequestBuilder =
         
                     let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> failwith "No schema present"
 
-                    let rec parseValue prefix name req (jv: JsonValue) =
+                    let rec parseValue prefix name req isChoice (jv: JsonValue) =
                         let name' = name |> pascalCasify
                         let so = jv |> getSchemaObject
                         let desc = so.Description
@@ -150,8 +150,11 @@ module RequestBuilder =
                         | Some t when t = "string" ->
                             match so.Enum with
                             | Some e ->
-                                let ev = e |> Array.map(fun v -> v |> parseValue $"{prefix}{name'}" name false) |> Array.map(fun v -> v.Name) |> Array.toList
-                                { Description = desc; Name = name; Required = req; Type = $"{prefix}{name'}"; EnumValues = Some ev; SubValues = None }
+                                let ev = e |> Array.map((fun v -> v |> parseValue $"{prefix}" name false false) >> (fun v -> v.Name)) |> Array.filter((<>) "") |> Array.toList
+                                if ev |> List.isEmpty then
+                                    { Description = desc; Name = name; Required = req; Type = "string"; EnumValues = None; SubValues = None }
+                                else
+                                    { Description = desc; Name = name; Required = req; Type = $"{prefix}{name'}"; EnumValues = Some ev; SubValues = None }
                             | None ->
                                 { Description = desc; Name = name; Required = req; Type = t; EnumValues = None; SubValues = None }
                         | Some t when t = "array" ->
@@ -161,18 +164,19 @@ module RequestBuilder =
                                 | "expand" ->
                                     { Description = desc; Name = name; Required = req; Type = "string list"; EnumValues = None; SubValues = None }
                                 | _ ->
-                                    let sv = i |> parseValue $"{prefix}{name'}" name false
+                                    let sv = i |> parseValue $"{prefix}" name false false
                                     { Description = desc; Name = name; Required = req; Type = $"{sv.Type} list"; EnumValues = None; SubValues = Some [| sv |] }
                             | None ->
                                 failwith "This never fails (to amuse me) #1"
                         | Some t when t = "object" ->
                             match so.Title with
-                            | Some t ->
-                                let sv = so.Properties.Properties |> Array.map(fun (k, v) -> v |> parseValue $"{prefix}{name'}" k false)
+                            | Some title ->
+                                let prefix' = if isChoice then $"{prefix}{name'}{title |> pascalCasify}" else $"{prefix}{name'}"
+                                let sv = so.Properties.Properties |> Array.map(fun (k, v) -> v |> parseValue prefix' k false false)
                                 if sv |> Array.isEmpty then
                                     { Description = desc; Name = name; Required = req; Type = "string"; EnumValues = None; SubValues = None }
                                 else
-                                    { Description = desc; Name = name; Required = req; Type = $"{prefix}{name'}{t |> pascalCasify}"; EnumValues = None; SubValues = Some sv }
+                                    { Description = desc; Name = name; Required = req; Type = prefix'; EnumValues = None; SubValues = Some sv }
                             | None ->
                                 match name with
                                 | "attributes"
@@ -189,7 +193,7 @@ module RequestBuilder =
                                 | "metadata" ->
                                     { Description = desc; Name = name; Required = req; Type = "Map<string, string>"; EnumValues = None; SubValues = None }
                                 | _ ->
-                                    let sv = ao |> Array.map(fun v -> v |> parseValue $"{prefix}{name'}" name false)
+                                    let sv = ao |> Array.map(fun v -> v |> parseValue $"{prefix}" name false true)
                                     let choices = sv |> Array.map(fun v -> v.Type) |> Array.toList
                                     { Description = desc; Name = name; Required = req; Type = "Choice<" + String.Join(",", choices) + ">"; EnumValues = None; SubValues = Some sv }
                             | None ->
@@ -200,7 +204,7 @@ module RequestBuilder =
                     (operationId + "Params",
                         schemaObject.Properties.Properties
                         |> Array.map(fun (k, v) ->
-                            v |> parseValue operationId k (required.Contains(k))
+                            v |> parseValue operationId k (required.Contains(k)) false
                         )
                     )
                 )
