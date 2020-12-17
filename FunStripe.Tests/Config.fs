@@ -1,4 +1,9 @@
+#if INTERACTIVE
+    #r "nuget: Microsoft.Extensions.Configuration";;
+    #r "nuget: Microsoft.Extensions.Configuration.UserSecrets";;
+#else
 namespace FunStripe
+#endif
 
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Configuration.UserSecrets

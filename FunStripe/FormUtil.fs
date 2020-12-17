@@ -2,6 +2,7 @@ namespace FunStripe
 
 open FSharp.Reflection
 open System
+open System.Linq
 open System.Globalization
 open System.Text.RegularExpressions
 
@@ -9,9 +10,8 @@ module FormUtil =
 
     let unwrap t (value: obj) =
         let _, fields = FSharpValue.GetUnionFields(value, t)
-        match fields.Length with
-        | 1 -> Some fields.[0]
-        | _ -> None
+        fields.Cast<obj>()
+        |> Seq.tryExactlyOne
 
     let snake (s: string) =
         Regex.Replace (s, @"\w+", (fun m -> m.Value |> JsonUtil.toSnakeCase))
@@ -29,7 +29,7 @@ module FormUtil =
                 | None ->
                     Seq.empty
             | _ ->
-                seq {key, $"{value |> JsonUtil.getJsonUnionCaseName}" |> box}
+                seq {key, $"{value |> JsonUtil.getJsonName}" |> box}
         | _ when FSharpType.IsRecord (value.GetType()) ->
             FSharpType.GetRecordFields (value.GetType())
             |> Array.map (fun pi -> format $"{key}[{pi.Name}]" (pi.GetValue(value, [||])))
