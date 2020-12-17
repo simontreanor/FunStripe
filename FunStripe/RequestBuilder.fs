@@ -63,10 +63,16 @@ module RequestBuilder =
             name
 
     let clean (s: string) =
-        s.Replace("*", "Asterix").Replace("GMT+", "GMTplus").Replace("GMT-", "GMTminus").Replace("/", "").Replace("-", "").Replace(" ", "")
+        s.Replace("*", "Asterix").Replace("GMT+", "GMTplus").Replace("GMT-", "GMTminus").Replace("/", "").Replace("-", "").Replace(" ", "").Replace("none", "none'")
 
-    let escapeForJson prefix s =
-        $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
+    let escapeNumeric s =
+        Regex.Replace(s, @"^(\d)", "Numeric$1")
+
+    let escapeForJson s =
+        if Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
+            $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
+        else
+            s |> clean |> pascalCasify
 
     let fixOperationId (operationId: string) =
         operationId.Replace("-", "")
@@ -198,11 +204,10 @@ module RequestBuilder =
         sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule StripeRequest =\n"
 
         let writeEnum (name: string) values =
-            let prefix = name.Replace("'", "") + "'"
             let valuesString =
                 ("\n",
                     values
-                    |> List.map(fun s -> $"\t\t| {s |> escapeForJson prefix}")
+                    |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
                 ) |> String.Join
             sb |> write $"\tand {name} =\n{valuesString}\n"
 

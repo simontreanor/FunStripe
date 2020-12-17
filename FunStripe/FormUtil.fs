@@ -13,8 +13,8 @@ module FormUtil =
         fields.Cast<obj>()
         |> Seq.tryExactlyOne
 
-    let snake (s: string) =
-        Regex.Replace (s, @"\w+", (fun m -> m.Value |> JsonUtil.toSnakeCase))
+    let formatFieldName (s: string) =
+        Regex.Replace (s, @"\w+", (fun m -> m.Value |> JsonUtil.getJsonFieldName))
 
     let rec format (key: string) (value: obj) =
         match value with
@@ -29,7 +29,7 @@ module FormUtil =
                 | None ->
                     Seq.empty
             | _ ->
-                seq {key, $"{value |> JsonUtil.getJsonName}" |> box}
+                seq {key, $"{value |> JsonUtil.getJsonUnionCaseName}" |> box}
         | _ when FSharpType.IsRecord (value.GetType()) ->
             FSharpType.GetRecordFields (value.GetType())
             |> Array.map (fun pi -> format $"{key}[{pi.Name}]" (pi.GetValue(value, [||])))
@@ -59,9 +59,9 @@ module FormUtil =
     let serialiseRecord<'a> (parameters:'a) =
         FSharpType.GetRecordFields typeof<'a>
         |> Array.map (fun pi -> format (pi.Name) (Some (pi.GetValue(parameters, [||])))) |> Seq.concat
-        |> Seq.map (fun (k, v) -> (k |> snake, v |> string))
+        |> Seq.map (fun (k, v) -> (k |> formatFieldName, v |> string))
 
     let serialise<'a> (parameters:'a) =
         typeof<'a>.GetProperties()
         |> Array.map (fun pi -> format (pi.Name) (Some (pi.GetValue(parameters, [||])))) |> Seq.concat
-        |> Seq.map (fun (k, v) -> (k |> snake, v |> string))
+        |> Seq.map (fun (k, v) -> (k |> formatFieldName, v |> string))

@@ -2,47 +2,44 @@ namespace FunStripe
 
 open FSharp.Json
 open System.Linq
-// open Newtonsoft.Json
-// open Newtonsoft.Json.Serialization
-//open System.Text.RegularExpressions
 
 module JsonUtil =
     
     let config = JsonConfig.create(jsonFieldNaming = Json.snakeCase)
 
-    // let settings = JsonSerializerSettings()
-    // let resolver = DefaultContractResolver()
-    // resolver.NamingStrategy <- SnakeCaseNamingStrategy()
-    // settings.ContractResolver <- resolver
-
     let serialise data =
         Json.serializeEx config data
-        // JsonConvert.SerializeObject(data, settings)
 
     let deserialise<'a> data =
-        Json.deserializeEx<'a> config data
-        // JsonConvert.DeserializeObject<'a>(data, settings)
+        //printfn "%A" data //uncomment this to view the raw API response if tests fail
+        let o = Json.deserializeEx<'a> config data
+        //printfn "%A" o //uncomment this to view the parsed API response if tests fail
+        o
 
-    let toSnakeCase (s: string) =
-        Json.snakeCase s
-        // Regex.Replace(s, @"\p{Lu}", fun (m: Match) -> $"_{m.Value.ToLowerInvariant()}").TrimStart('_')
-
-    let getJsonName (value: obj) =
+    let getJsonUnionCaseName (value: obj) =
         let key = value |> string
-        let pi = value.GetType().UnderlyingSystemType.GetProperty(key)
-        let name =
-            pi.GetMethod.GetCustomAttributes(typeof<JsonUnionCase>, false).Cast<JsonUnionCase>()
-            |> Seq.map(fun juc -> juc.Case)
-            |> Seq.tryExactlyOne
-        match name with
-        | Some n -> n
-        | None -> config.jsonFieldNaming key
-        // let key = value |> string
-        // let pi = value.GetType().UnderlyingSystemType.GetProperty(key)
-        // let name =
-        //     pi.GetMethod.GetCustomAttributes(typeof<JsonPropertyAttribute>, false).Cast<JsonPropertyAttribute>()
-        //     |> Seq.map(fun jp -> jp.PropertyName)
-        //     |> Seq.tryExactlyOne
-        // match name with
-        // | Some n -> n
-        // | None -> key |> toSnakeCase
+        match value.GetType().UnderlyingSystemType.GetProperty(key) with
+        | null ->
+            config.jsonFieldNaming key
+        | pi ->
+            let name =
+                pi.GetMethod.GetCustomAttributes(typeof<JsonUnionCase>, false).Cast<JsonUnionCase>()
+                |> Seq.map(fun juc -> juc.Case)
+                |> Seq.tryExactlyOne
+            match name with
+            | Some n -> n
+            | None -> config.jsonFieldNaming key
+
+    let getJsonFieldName (value: obj) =
+        let key = value |> string
+        match value.GetType().UnderlyingSystemType.GetProperty(key) with
+        | null ->
+            config.jsonFieldNaming key
+        | pi ->
+            let name =
+                pi.GetMethod.GetCustomAttributes(typeof<JsonField>, false).Cast<JsonField>()
+                |> Seq.map(fun jf -> jf.Name)
+                |> Seq.tryExactlyOne
+            match name with
+            | Some n -> n
+            | None -> config.jsonFieldNaming key

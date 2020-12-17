@@ -16,17 +16,11 @@ module ModelBuilder =
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-    let camelCasifyPascal (s: string) =
-        Regex.Replace(s, @"^.", fun (m: Match) -> m.Value.ToLower())
-
-    let escapeReservedName name =
-        match name with
-        | "end"
-        | "open"
-        | "type" ->
-            $"``{name}``"
-        | _ ->
-            name
+    let fixJsonNaming name =
+        if Regex.IsMatch(name, @"(?<!_)\d") then
+            $"[<JsonField(\"{name}\")>]{name |> pascalCasify}"
+        else
+            name |> pascalCasify
 
     type Parameter (description: string, optional: bool, name: string, ``type``: string, nullable: bool, ?staticValue: string) =
 
@@ -37,15 +31,13 @@ module ModelBuilder =
         member _.Nullable = nullable
         member _.StaticValue = staticValue
 
-        member this.ToParameterString() =
-            let o = if this.Optional then "?" else ""
-            let n = if this.Nullable then " option" else ""
-            $"{o}{this.Name |> camelCasifyPascal |> escapeReservedName}: {this.Type}{n}"
-
         member this.ToPropertyString() =
-            let flatten = if this.Optional && this.Nullable then " |> Option.flatten" else ""
-            let value = this.StaticValue |> function | Some v -> $@"""{v}""" | None -> this.Name |> camelCasifyPascal |> escapeReservedName
-            $"\t\tmember _.{this.Name |> escapeReservedName} = {value}{flatten}"
+            match this.StaticValue with
+            | Some sv ->
+                $"\t\tmember _.{this.Name |> fixJsonNaming} = \"{sv}\""
+            | None ->
+                let o = if this.Optional || this.Nullable then " option" else ""
+                $"\t\t\t{this.Name |> fixJsonNaming}: {this.Type}{o}"
 
     type Property = {
         AnyOf: JsonValue array option
@@ -63,10 +55,16 @@ module ModelBuilder =
         s.Replace("\n", "\n\t///")
 
     let clean (s: string) =
-        s.Replace("-", "").Replace(" ", "")
+        s.Replace("-", "").Replace(" ", "").Replace("none", "none'")
 
-    let escapeForJson prefix s =
-        $@"[<JsonUnionCase(""{s}"")>] {prefix}{s |> clean |> pascalCasify}"
+    let escapeNumeric s =
+        Regex.Replace(s, @"^(\d)", "Numeric$1")
+
+    let escapeForJson s =
+        if Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
+            $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
+        else
+            s |> clean |> pascalCasify
 
     let parseRef (s: string) =
         let m = Regex.Match(s, "/([^/]+)$")
@@ -96,20 +94,18 @@ module ModelBuilder =
         }
 
     let createEnum name (jvv: JsonValue array) =
-        let prefix = $"{name}'"
         let s = 
             ("", 
                 jvv
-                |> Array.map(fun jv -> $"\t\t| {jv.AsString() |> escapeForJson prefix}\n")
+                |> Array.map(fun jv -> $"\t\t| {jv.AsString() |> escapeForJson}\n")
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
     let createEnum2 name (ss: string seq) =
-        let prefix = $"{name}'"
         let s = 
             ("", 
                 ss
-                |> Seq.map(fun s -> $"\t\t| {s |> escapeForJson prefix}\n")
+                |> Seq.map(fun s -> $"\t\t| {s |> escapeForJson}\n")
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
@@ -144,24 +140,24 @@ module ModelBuilder =
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
-    let createChoice (jvv: JsonValue array) =
-        let s =
-            (", ",
-                jvv
-                |> Array.map(fun jv ->
-                    let props = jv |> getProperties
-                    match props.Type' with
-                    | Some t ->
-                        t |> mapType
-                    | _ ->
-                        match props.Ref with
-                        | Some r ->
-                            r |> parseRef |> pascalCasify
-                        | None ->
-                            failwith "Error: Unparsable choice: %A{jv}"
-                )
-            ) |> String.Join
-        $"Choice<{s}>"
+    // let createChoice (jvv: JsonValue array) =
+    //     let s =
+    //         (", ",
+    //             jvv
+    //             |> Array.map(fun jv ->
+    //                 let props = jv |> getProperties
+    //                 match props.Type' with
+    //                 | Some t ->
+    //                     t |> mapType
+    //                 | _ ->
+    //                     match props.Ref with
+    //                     | Some r ->
+    //                         r |> parseRef |> pascalCasify
+    //                     | None ->
+    //                         failwith "Error: Unparsable choice: %A{jv}"
+    //             )
+    //         ) |> String.Join
+    //     $"Choice<{s}>"
 
     let write s (sb: Text.StringBuilder) =
         sb.AppendLine s |> ignore
@@ -184,7 +180,6 @@ module ModelBuilder =
         sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule StripeModel =\n"
         
         for (key, value) in schemas.Properties do
-            let name = key |> pascalCasify
             let record = value |> getProperties
 
             match record.Description with
@@ -195,7 +190,7 @@ module ModelBuilder =
 
             match record.AnyOf with
             | Some aoo ->
-                sb |> write (createAnyOf name aoo)
+                sb |> write (createAnyOf (key |> pascalCasify) aoo)
             | None ->
 
                 let keyword =
@@ -216,11 +211,10 @@ module ModelBuilder =
                         yield Parameter("///[no properties given in specification]", true, "Undefined", "string list", false)
                     else
                         for (k1, v1) in properties.Properties do
-                            let k1' = k1 |> pascalCasify
                             let props = v1 |> getProperties
             
                             let optional = required |> Array.exists (fun r -> r = k1) |> not
-                            let nullable = props.Nullable |> function | Some b when b = true -> true | _ -> false
+                            let nullable = props.Nullable |> function | Some b when b -> true | _ -> false
 
                             let description =
                                 match props.Description with
@@ -232,19 +226,19 @@ module ModelBuilder =
                             match props.Enum with
                             | Some ee ->
                                 if k1 = "object" then
-                                    yield Parameter(description, optional, k1', "string", nullable, key)
+                                    yield Parameter(description, optional, k1, "string", nullable, key)
                                 else
-                                    let enumName = $"{name}{k1'}"
+                                    let enumName = $"{key |> pascalCasify}{k1 |> pascalCasify}"
                                     enums.Add (createEnum enumName ee)
-                                    yield Parameter(description, optional, k1', enumName, nullable)
+                                    yield Parameter(description, optional, k1, enumName, nullable)
                             | None ->
                                 match props.Description with
                                 | Some d when (String.IsNullOrWhiteSpace d |> not) && (d.Contains("Can be `")) ->
                                     match d |> parseStringEnum with
                                     | Some ee ->
-                                        let enumName = $"{name}{k1'}"
+                                        let enumName = $"{key |> pascalCasify}{k1 |> pascalCasify}"
                                         enums.Add (createEnum2 enumName ee)
-                                        yield Parameter(description, optional, k1', enumName, nullable)
+                                        yield Parameter(description, optional, k1, enumName, nullable)
                                     | None ->
                                         ()
                                 | _ ->
@@ -255,11 +249,12 @@ module ModelBuilder =
                                     let ref' = ((aoo |> Array.exactlyOne) |> getProperties).Ref
                                     match ref' with
                                     | Some r ->
-                                        yield Parameter(description, optional, k1', $"{r |> parseRef |> pascalCasify}", nullable)
+                                        yield Parameter(description, optional, k1, $"{r |> parseRef |> pascalCasify}", nullable)
                                     | None ->
                                         ()
                                 | Some aoo ->
-                                    yield Parameter(description, optional, k1', (createChoice aoo), nullable)
+                                    // yield Parameter(description, optional, k1, (createChoice aoo), nullable)
+                                    yield Parameter(description, optional, k1, "string", nullable)
                                 | None ->
             
                                     match props.Type' with
@@ -269,60 +264,64 @@ module ModelBuilder =
                                             let itemProps = i |> getProperties
                                             match itemProps.Ref with
                                             | Some r ->
-                                                yield Parameter(description, optional, k1', $"{r |> parseRef |> pascalCasify} list", nullable)
+                                                yield Parameter(description, optional, k1, $"{r |> parseRef |> pascalCasify} list", nullable)
                                             | None ->
                                                 match itemProps.Enum with
                                                 | Some ee ->
-                                                    let enumName = $"{name}{k1'}"
+                                                    let enumName = $"{key |> pascalCasify}{k1 |> pascalCasify}"
                                                     enums.Add(createEnum enumName ee)
-                                                    yield Parameter(description, optional, k1', $"{enumName} list", nullable)
+                                                    yield Parameter(description, optional, k1, $"{enumName} list", nullable)
                                                 | None ->
                                                     match itemProps.Type' with
                                                     | Some t ->
-                                                        yield Parameter(description, optional, k1', $"{t} list", nullable)
+                                                        yield Parameter(description, optional, k1, $"{t} list", nullable)
                                                     | None ->
                                                         match itemProps.AnyOf with
                                                         | Some aoo when aoo |> Array.length = 1 ->
                                                             let ref' = ((aoo |> Array.exactlyOne) |> getProperties).Ref
                                                             match ref' with
                                                             | Some r ->
-                                                                yield Parameter(description, optional, k1', $"{r |> parseRef |> pascalCasify} list", nullable)
+                                                                yield Parameter(description, optional, k1, $"{r |> parseRef |> pascalCasify} list", nullable)
                                                             | None ->
                                                                 ()
                                                         | Some aoo ->
-                                                            yield Parameter(description, optional, k1', $"{createChoice aoo} list", nullable)
+                                                            // yield Parameter(description, optional, k1, $"{createChoice aoo} list", nullable)
+                                                            yield Parameter(description, optional, k1, $"string list", nullable)
                                                         | None ->
                                                             failwith $"Error: unhandled property: %A{i}"
                                         | None ->
-                                            yield Parameter(description, optional, k1', $"{t} list", nullable)
+                                            yield Parameter(description, optional, k1, $"{t} list", nullable)
                                     | Some t when t = "object" ->
-                                        yield Parameter(description, optional, k1', "Map<string, string>", nullable)
+                                        yield Parameter(description, false, k1, "Map<string, string>", false)
                                     | Some t ->
                                         match props.Description with
                                         | Some d when (String.IsNullOrWhiteSpace d |> not) && (d.Contains("Can be `")) ->
                                             ()
                                         | _ ->
-                                            yield Parameter(description, optional, k1', t, nullable)
+                                            yield Parameter(description, optional, k1, t, nullable)
                                     | _ ->
                                         match props.Ref with
                                         | Some r ->
-                                            yield Parameter(description, optional, k1', $"{r |> parseRef |> pascalCasify}", nullable)
+                                            yield Parameter(description, optional, k1, $"{r |> parseRef |> pascalCasify}", nullable)
                                         | None ->
                                             ()
                 ]
-            
-                let parameterString =
-                    let pp =
-                        parameters
-                        |> List.filter (fun p -> p.StaticValue.IsNone)
-                        |> List.sortBy (fun p -> p.Optional)
-                        |> List.map (fun p -> p.ToParameterString())
-                    String.Join (", ", pp)
 
-                sb |> write $"\t{keyword} {name} ({parameterString}) =\n"
+                sb |> write $"\t{keyword} {key |> pascalCasify} =\n\t\t{{"
 
-                for p in parameters do
+                parameters.Cast<Parameter>()
+                |> Seq.filter(fun p -> p.StaticValue.IsNone)
+                |> Seq.iter(fun p ->
                     sb |> write (p.ToPropertyString())
+                )
+
+                sb |> write "\t\t}"
+
+                parameters.Cast<Parameter>()
+                |> Seq.filter(fun p -> p.StaticValue.IsSome)
+                |> Seq.iter(fun p ->
+                    sb |> write (p.ToPropertyString())
+                )
 
                 sb |> write ""
                 

@@ -20,13 +20,13 @@ module Tests =
                 number = "4242424242424242"
             )
 
-        let getNewPaymentMethod =
+        let getNewPaymentMethod () =
             let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
             asyncResult {
                 let parameters = 
                     PostPaymentMethodsParams(
                         card = Choice1Of2 defaultCard,
-                        ``type`` = PostPaymentMethodsType'Card
+                        ``type`` = PostPaymentMethodsType.Card
                     )
                 return! pms.Create(parameters)
             }
@@ -42,36 +42,41 @@ module Tests =
             }
 
         let defaultPaymentMethod =
-            let address = Address(None, None, None, None, None, None)
-            let billingDetails = BillingDetails (Some address, None, None, None)
-            let checks = PaymentMethodCardChecks(None, None, None)
-            let networks = Networks(["Visa"], None)
-            let threeDSecureUsage = ThreeDSecureUsage(true)
-            let card =
-                PaymentMethodCard (
-                    brand = PaymentMethodCardBrand'Visa,
-                    checks = Some checks,
-                    country = Some "US",
-                    expMonth = 10L,
-                    expYear = 2021L,
-                    fingerprint = Some "YfQddCBRsntX6npu",
-                    funding = PaymentMethodCardFunding'Credit,
-                    last4 = "4242",
-                    networks = Some networks,
-                    threeDSecureUsage = Some threeDSecureUsage,
-                    wallet = None
-                )
-            
-            PaymentMethod(
-                billingDetails = billingDetails,
-                card = card,
-                created = 1604075742L,
-                customer = None,
-                id = "IgnoreThisId",
-                livemode = false,
-                metadata = None,
-                ``type`` = PaymentMethodType'Card
-            )
+            let address = { City = None; Country = None; Line1 = None; Line2 = None; PostalCode = None; State = None }
+            let billingDetails = { Address = Some address; Email = None; Name = None; Phone = None }
+            let paymentMethodCardChecks = { PaymentMethodCardChecks.AddressLine1Check = None; AddressPostalCodeCheck = None; CvcCheck = None }
+            let networks = { Available = ["Visa"]; Preferred = None }
+            let threeDSecureUsage = { Supported = true }
+            let paymentMethodCard = {
+                Brand = PaymentMethodCardBrand.Visa
+                Checks = Some paymentMethodCardChecks
+                Country = Some "US"
+                Description = None
+                ExpMonth = 10L
+                ExpYear = 2021L
+                Fingerprint = Some "YfQddCBRsntX6npu"
+                Funding = PaymentMethodCardFunding.Credit
+                Iin = None
+                Issuer = None
+                Last4 = "4242"
+                Networks = Some networks
+                ThreeDSecureUsage = Some threeDSecureUsage
+                Wallet = None
+            }
+            let paymentMethod = {
+                BillingDetails = billingDetails
+                Card = Some paymentMethodCard
+                CardPresent = None
+                Created = 1604075742L
+                Customer = None
+                Id = "IgnoreThisId"
+                Livemode = false
+                Metadata = Map.empty
+                Type = PaymentMethodType.Card
+                Alipay = None; AuBecsDebit = None; BacsDebit = None; Bancontact = None; Eps = None; Fpx = None; Giropay = None
+                Grabpay = None; Ideal = None; InteracPresent = None; Oxxo = None; P24 = None; SepaDebit = None; Sofort = None
+            }
+            paymentMethod
 
         [<Test>]
         member _.``test JSON to x-www-form-urlencoded conversion``() =
@@ -87,23 +92,23 @@ module Tests =
             let actual = 
                 PostPaymentMethodsParams(
                     card = Choice1Of2 defaultCard,
-                    ``type`` = PostPaymentMethodsType'Card
+                    ``type`` = PostPaymentMethodsType.Card
                 )
                 |> FormUtil.serialise
                 |> Seq.sortBy fst
-            Assert.AreEqual (expected, actual)
+            Assert.AreEqual(expected, actual)
 
         [<Test>]
         member _.``test payment method creation``() =
             asyncResult {
                 let expected = defaultPaymentMethod
-                let! actual = getNewPaymentMethod
+                let! actual = getNewPaymentMethod()
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual (expected.BillingDetails, actual.BillingDetails)
-                    Assert.AreEqual (expected.Customer, actual.Customer)
-                    Assert.AreEqual (expected.Livemode, actual.Livemode)
-                    Assert.AreEqual (expected.Metadata, actual.Metadata)
-                    Assert.AreEqual (expected.Type, actual.Type)
+                    Assert.AreEqual(expected.BillingDetails, actual.BillingDetails)
+                    Assert.AreEqual(expected.Customer, actual.Customer)
+                    Assert.AreEqual(expected.Livemode, actual.Livemode)
+                    Assert.AreEqual(expected.Metadata, actual.Metadata)
+                    Assert.AreEqual(expected.Type, actual.Type)
                 )
             }
             |> Async.RunSynchronously
@@ -112,13 +117,13 @@ module Tests =
         [<Test>]
         member _.``test payment method retrieval``() =
             asyncResult {
-                let! expected = getNewPaymentMethod
+                let! expected = getNewPaymentMethod()
 
                 let! actual =
                     let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
                     pms.Retrieve(expected.Id)
 
-                Assert.AreEqual (expected, actual)
+                Assert.AreEqual(expected, actual)
             }
             |> Async.RunSynchronously
             |> ignore
@@ -126,7 +131,7 @@ module Tests =
         [<Test>]
         member _.``test payment method update``() =
             asyncResult {
-                let! expected = getNewPaymentMethod
+                let! expected = getNewPaymentMethod()
                 let! newPM = attachCustomer expected.Id
 
                 let! actual =
@@ -138,49 +143,51 @@ module Tests =
                     pms.Update(parameters, newPM.Id)
 
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual (testCustomer, actual.Id)
-                    Assert.AreEqual (newPM.Id, actual.Id)
-                    Assert.AreEqual ([("order_id", "6735")] |> Map.ofList, actual.Metadata)
+                    Assert.AreEqual(Some testCustomer, actual.Customer)
+                    Assert.AreEqual(newPM.Id, actual.Id)
+                    Assert.AreEqual([("order_id", "6735")] |> Map.ofList, actual.Metadata)
                 )
             }
             |> Async.RunSynchronously
             |> ignore
 
-        // [<Test>]
-        // member _.``test attaching customer to payment method``() =
-        //     asyncResult {
-        //         let! pm = getNewPaymentMethod
+        [<Test>]
+        member _.``test attaching customer to payment method``() =
+            asyncResult {
+                let! expected = getNewPaymentMethod()
+                let! actual =
+                    let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+                    let parameters =
+                        PostPaymentMethodsPaymentMethodAttachParams(
+                            customer = testCustomer
+                        )
+                    pms.Attach(parameters, expected.Id)
 
-        //         let expected = { pm with Customer = Some testCustomer; Card = None }
+                let actual' = { actual with Card = None } //ignore card as updating can change CvcCheck value
 
-        //         let! actual =
-        //             let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
-        //             { Customer = testCustomer }
-        //             |> pms.Attach pm.Id
+                Assert.Multiple(fun () ->
+                    Assert.AreEqual(Some testCustomer, actual.Customer)
+                    Assert.AreEqual(expected.Id, actual.Id)
+                )
+            }
+            |> Async.RunSynchronously
+            |> ignore
 
-        //         let actual' = { actual with Card = None } //ignore card as updating can change CvcCheck value
+        [<Test>]
+        member _.``test detaching customer from payment method``() =
+            asyncResult {
+                let! expected = getNewPaymentMethod()
+                let! newPM = attachCustomer expected.Id
 
-        //         Assert.AreEqual (expected, actual')
-        //     }
-        //     |> Async.RunSynchronously
-        //     |> ignore
+                let! actual =
+                    let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+                    let parameters = PostPaymentMethodsPaymentMethodDetachParams()
+                    pms.Detach(parameters, newPM.Id)
 
-        // [<Test>]
-        // member _.``test detaching customer from payment method``() =
-        //     asyncResult {
-        //         let! pm = getNewPaymentMethod
-
-        //         let! newPM = attachCustomer pm.Id
-
-        //         let expected = { pm with Id = newPM.Id; Customer = None; Card = None }
-
-        //         let! actual =
-        //             let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
-        //             pms.Detach newPM.Id
-
-        //         let actual' = { actual with Card = None } //ignore card as updating can change CvcCheck value
-
-        //         Assert.AreEqual (expected, actual')
-        //     }
-        //     |> Async.RunSynchronously
-        //     |> ignore
+                Assert.Multiple(fun () ->
+                    Assert.AreEqual(None, actual.Customer)
+                    Assert.AreEqual(expected.Id, actual.Id)
+                )
+            }
+            |> Async.RunSynchronously
+            |> ignore
