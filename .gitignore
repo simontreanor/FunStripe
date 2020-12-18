@@ -52,4 +52,3 @@ temp/
 database/database.dbmdl
 /.vscode/settings.json
 .ionide/
-FunStripe/RestApi.fsx

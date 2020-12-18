@@ -17,11 +17,11 @@ module RestApi =
 
     type RestApiClient(?baseUrl: string, ?apiKey: string) =
 
-        let BaseUrl = defaultArg baseUrl "https://api.stripe.com"
+        let baseUrl = defaultArg baseUrl "https://api.stripe.com"
 
-        let ApiKey = defaultArg apiKey "<enter stripe secret key here>"
+        let apiKey = defaultArg apiKey "<enter stripe secret key here>"
 
-        let AuthHeader = HttpRequestHeaders.BasicAuth ApiKey ""
+        let authHeader = HttpRequestHeaders.BasicAuth apiKey ""
 
         let outputToConsole (s: string) =
             printf "%s" s
@@ -39,39 +39,38 @@ module RestApi =
                 |> function Text t -> t | Binary _ -> ""
                 |> JsonUtil.deserialise<ErrorResponse>
                 |> Error
-        
-            
+                    
         member x.GetAsync<'a> (url: string) =
             async {
                 let! response =
-                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ])
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = [ authHeader ])
                 return response |> x.ParseResponse<'a>
             }
 
         member x.GetWithAsync<'a, 'b> (data: 'a) (url: string) =
             async {
                 let! response =
-                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = [ authHeader ], body = FormValues (data |> FormUtil.serialise))
                 return response |> x.ParseResponse<'b>
             }
 
         member x.PostAsync<'a, 'b> (data: 'a) (url: string) = 
             async {
                 let! response =
-                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], body = FormValues (data |> FormUtil.serialise))
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = [ authHeader ], body = FormValues (data |> FormUtil.serialise))
                 return response |> x.ParseResponse<'b>
             }
 
         member x.PostWithoutAsync<'a> (url: string) = 
             async {
                 let! response =
-                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Post)
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = [ authHeader ], httpMethod = HttpMethod.Post)
                 return response |> x.ParseResponse<'a>
             }
 
         member x.DeleteAsync<'a> (url: string) =
             async {
                 let! response =
-                    Http.AsyncRequest ($"{BaseUrl}{url}", headers = [ AuthHeader ], httpMethod = HttpMethod.Delete)
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = [ authHeader ], httpMethod = HttpMethod.Delete)
                 return response |> x.ParseResponse<'a> //to do: check if response should be unit
             }
