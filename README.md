@@ -21,7 +21,7 @@ let defaultCard =
         number = "4242424242424242"
     )
 
-let getNewPaymentMethod () =
+let createNewPaymentMethod () =
     let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
     asyncResult {
         let parameters = 
