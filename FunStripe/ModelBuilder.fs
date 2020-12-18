@@ -11,26 +11,36 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
+///Select the entire text of this module and press ```Alt + Enter``` to generate the ```StripeModel.fs``` file
 module ModelBuilder =
 
+    ///Convert ```snake_case``` to ```PascalCase```
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
+    ///Ensure JSON field names can round-trip successfully, as Stripe is inconsistent in the snake-casing of fields containing numbers
     let fixJsonNaming name =
         if Regex.IsMatch(name, @"(?<!_)\d") then
             $"[<JsonField(\"{name}\")>]{name |> pascalCasify}"
         else
             name |> pascalCasify
 
+    ///Class for parameters/properties of types
     type Parameter (description: string, optional: bool, name: string, ``type``: string, nullable: bool, ?staticValue: string) =
-
+        ///Comment describing the parameter/property
         member _.Description = description
+        ///Whether a parameter is optional in a constructor
         member _.Optional = optional
+        ///Name of the parameter/property
         member _.Name = name
+        ///Type of the parameter/property
         member _.Type = ``type``
+        ///Whether a property is nullable (```Option``` in F#)
         member _.Nullable = nullable
+        ///A optional fixed value to apply to a property, typically used for setting the Object property to a string representing the object type
         member _.StaticValue = staticValue
 
+        ///Format property declaration
         member this.ToPropertyString() =
             match this.StaticValue with
             | Some sv ->
@@ -39,7 +49,8 @@ module ModelBuilder =
                 let o = if this.Optional || this.Nullable then " option" else ""
                 $"\t\t\t{this.Name |> fixJsonNaming}: {this.Type}{o}"
 
-    type Property = {
+    ///Record for OpenAPI schema object
+    type SchemaObject = {
         AnyOf: JsonValue array option
         Description: string option
         Enum: JsonValue array option
@@ -51,21 +62,26 @@ module ModelBuilder =
         Type': string option
     }
 
+    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line
     let commentify (s: string) = 
         s.Replace("\n", "\n\t///")
 
+    ///Remove/replace problematic chars/strings from discriminated-union names
     let clean (s: string) =
         s.Replace("-", "").Replace(" ", "").Replace("none", "none'")
 
+    ///Prepend ```Numeric``` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =
         Regex.Replace(s, @"^(\d)", "Numeric$1")
 
+    ///Add ```JsonUnionCase``` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
     let escapeForJson s =
         if Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         else
             s |> clean |> pascalCasify
 
+    ///Extract a type name from a JSON reference field
     let parseRef (s: string) =
         let m = Regex.Match(s, "/([^/]+)$")
         if m.Success then
@@ -73,6 +89,7 @@ module ModelBuilder =
         else
             failwith $"Error: unparsable reference: {s}"
 
+    ///Map JSON types to F# types
     let mapType (s: string) =
         match s with
         | "boolean" -> "bool"
@@ -80,7 +97,8 @@ module ModelBuilder =
         | "number" -> "decimal"
         | _ -> s
 
-    let getProperties (jv: JsonValue) =
+    ///Parse a ```JsonValue``` into a OpenAPI schema-object record
+    let getSchemaObject (jv: JsonValue) =
         {
             AnyOf = jv.TryGetProperty("anyOf") |> function | Some v -> v.AsArray() |> Some | None -> None
             Description = jv.TryGetProperty("description") |> function | Some v -> v.AsString() |> Some | None -> None
@@ -93,6 +111,7 @@ module ModelBuilder =
             Type' = jv.TryGetProperty("type") |> function | Some v -> v.AsString() |> mapType |> Some | None -> None
         }
 
+    ///Format an enumeration based on an array of fields
     let createEnum name (jvv: JsonValue array) =
         let s = 
             ("", 
@@ -101,6 +120,7 @@ module ModelBuilder =
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
+    ///Format an enumeration based on a sequence of strings
     let createEnum2 name (ss: string seq) =
         let s = 
             ("", 
@@ -109,6 +129,7 @@ module ModelBuilder =
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
+    ///Parses an enumeration from values specified in the description (where the enumeration is not specified explicitly in fields)
     let parseStringEnum desc =
         let m = Regex.Match(desc, @"Can be `([^`]+)`(?:[^,]*?, `([^`]+)`)*[^,]*?,? or (?:`([^`]+)`|null).")
         if m.Success then
@@ -119,12 +140,14 @@ module ModelBuilder =
             |> Some
         else
             None
+
+    ///Create a discriminated union to represent alternative parameters/properties
     let createAnyOf name (jvv: JsonValue array) =
         let s =
             ("", 
                 jvv
                 |> Array.map(fun jv ->
-                    let props = jv |> getProperties
+                    let props = jv |> getSchemaObject
                     match props.Type' with
                     | Some t ->
                         $"\t\t| {t |> escapeForJson} of {t}\n"
@@ -140,28 +163,11 @@ module ModelBuilder =
             ) |> String.Join
         $"\tand {name} =\n{s}"
 
-    // let createChoice (jvv: JsonValue array) =
-    //     let s =
-    //         (", ",
-    //             jvv
-    //             |> Array.map(fun jv ->
-    //                 let props = jv |> getProperties
-    //                 match props.Type' with
-    //                 | Some t ->
-    //                     t |> mapType
-    //                 | _ ->
-    //                     match props.Ref with
-    //                     | Some r ->
-    //                         r |> parseRef |> pascalCasify
-    //                     | None ->
-    //                         failwith "Error: Unparsable choice: %A{jv}"
-    //             )
-    //         ) |> String.Join
-    //     $"Choice<{s}>"
-
+    ///Utility function for appending lines to a StringBuilder
     let write s (sb: Text.StringBuilder) =
         sb.AppendLine s |> ignore
 
+    ///Parses the Stripe OpenAPI specification, outputting an F# module specifying the object model for all Stripe objects
     let parseModel filePath =
 
         let root = __SOURCE_DIRECTORY__
@@ -180,7 +186,7 @@ module ModelBuilder =
         sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule StripeModel =\n"
         
         for (key, value) in schemas.Properties do
-            let record = value |> getProperties
+            let record = value |> getSchemaObject
 
             match record.Description with
             | Some d ->
@@ -211,7 +217,7 @@ module ModelBuilder =
                         yield Parameter("///[no properties given in specification]", true, "Undefined", "string list", false)
                     else
                         for (k1, v1) in properties.Properties do
-                            let props = v1 |> getProperties
+                            let props = v1 |> getSchemaObject
             
                             let optional = required |> Array.exists (fun r -> r = k1) |> not
                             let nullable = props.Nullable |> function | Some b when b -> true | _ -> false
@@ -246,7 +252,7 @@ module ModelBuilder =
 
                                 match props.AnyOf with
                                 | Some aoo when aoo |> Array.length = 1 ->
-                                    let ref' = ((aoo |> Array.exactlyOne) |> getProperties).Ref
+                                    let ref' = ((aoo |> Array.exactlyOne) |> getSchemaObject).Ref
                                     match ref' with
                                     | Some r ->
                                         yield Parameter(description, optional, k1, $"{r |> parseRef |> pascalCasify}", nullable)
@@ -261,7 +267,7 @@ module ModelBuilder =
                                     | Some t when t = "array" ->
                                         match props.Items with
                                         | Some i ->
-                                            let itemProps = i |> getProperties
+                                            let itemProps = i |> getSchemaObject
                                             match itemProps.Ref with
                                             | Some r ->
                                                 yield Parameter(description, optional, k1, $"{r |> parseRef |> pascalCasify} list", nullable)
@@ -278,7 +284,7 @@ module ModelBuilder =
                                                     | None ->
                                                         match itemProps.AnyOf with
                                                         | Some aoo when aoo |> Array.length = 1 ->
-                                                            let ref' = ((aoo |> Array.exactlyOne) |> getProperties).Ref
+                                                            let ref' = ((aoo |> Array.exactlyOne) |> getSchemaObject).Ref
                                                             match ref' with
                                                             | Some r ->
                                                                 yield Parameter(description, optional, k1, $"{r |> parseRef |> pascalCasify} list", nullable)

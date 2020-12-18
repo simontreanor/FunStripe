@@ -22,7 +22,7 @@ let defaultCard =
     )
 
 let getNewPaymentMethod () =
-    let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
     asyncResult {
         let parameters = 
             PostPaymentMethodsParams(
@@ -45,7 +45,7 @@ By cloning the source repository, as a developer you can use ```ModelBuilder.fs`
 
 Using Visual Studio Code, you simply select all the text in each document and hit ```Alt + Enter``` to send the code to F# Interactive. This will overwrite the contents of the target modules.
 
-The Stripe Open API specification is stored locally as ```/res/spec3.sdk.json```. See the references below for the link to the latest online version.
+The Stripe OpenAPI specification is stored locally as ```/res/spec3.sdk.json```. See the references below for the link to the latest online version.
 
 By replacing the local copy with the latest one from online, you can regenerate the source code and build it to get the latest changes.
 
@@ -61,5 +61,5 @@ You could also customise how the source code is represented by editing the build
 
 [Official Stripe .NET Library](https://github.com/stripe/stripe-dotnet)
 
-[Stripe Open API Specification](https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json)
+[Stripe OpenAPI Specification](https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json)
 

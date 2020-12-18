@@ -11,8 +11,10 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
+///Select the entire text of this module and press ```Alt + Enter``` to generate the ```StripeRequest.fs``` file
 module RequestBuilder =
 
+    ///Record for OpenAPI schema object
     type SchemaObject = {
         AnyOf: JsonValue array option
         Description: string
@@ -26,6 +28,7 @@ module RequestBuilder =
         Type: string option
     }
 
+    ///Map JSON types to F# types
     let mapType (s: string) =
         match s with
         | "boolean" -> "bool"
@@ -33,6 +36,7 @@ module RequestBuilder =
         | "number" -> "decimal"
         | _ -> s
 
+    ///Parse a ```JsonValue``` into an OpenAPI schema-object record
     let getSchemaObject (jv: JsonValue) =
         {
             AnyOf = jv.TryGetProperty("anyOf") |> function | Some v -> v.AsArray() |> Some | None -> None
@@ -47,12 +51,15 @@ module RequestBuilder =
             Type = jv.TryGetProperty("type") |> function | Some v -> v.AsString() |> mapType |> Some | None -> None
         }
 
+    ///Convert ```snake_case``` to ```PascalCase```
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.| |-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
+    ///Convert ```snake_case``` to ```camelCase```
     let camelCasify (s: string) =
         Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
+    ///Escape certain reserved names used in camel-case parameters
     let escapeReservedName name =
         match name with
         | "end"
@@ -62,26 +69,31 @@ module RequestBuilder =
         | _ ->
             name
 
+    ///Remove/replace problematic chars/strings from discriminated-union names
     let clean (s: string) =
         s.Replace("*", "Asterix").Replace("GMT+", "GMTplus").Replace("GMT-", "GMTminus").Replace("/", "").Replace("-", "").Replace(" ", "").Replace("none", "none'")
 
+    ///Prepend ```Numeric``` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =
         Regex.Replace(s, @"^(\d)", "Numeric$1")
 
+    ///Add ```JsonUnionCase``` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
     let escapeForJson s =
         if Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         else
             s |> clean |> pascalCasify
 
+    ///Correct Stripe operation IDs that breach naming conventions
     let fixOperationId (operationId: string) =
         operationId.Replace("-", "")
 
+    ///Remove unnecessary suffix from object titles to prevent wordiness in property naming
     let fixTitle (title: string) =
         Regex.Replace(title, "_param$", "")
 
+    ///Class for formatting parameters/properties of types
     type Parameter (description: string, name: string, ``type``: string) =
-
         member _.Description = description
         member _.Name = name
         member _.Type = ``type``
@@ -92,9 +104,11 @@ module RequestBuilder =
         member this.ToPropertyString() =
             "\t\tmember _." + (this.Name |> camelCasify |> escapeReservedName) + " = " + (this.Name |> camelCasify |> escapeReservedName)
 
+    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line
     let commentify (s: string) = 
         s.Replace("\n\n", "\n").Replace("\n", "\n\t\t///")
 
+    ///Recursive record for holding type definitions
     type Value = {
         Description: string
         Name: string
@@ -104,9 +118,11 @@ module RequestBuilder =
         SubValues: Value array option
     }
 
+    ///Utility function for appending lines to a StringBuilder
     let write s (sb: Text.StringBuilder) =
         sb.AppendLine s |> ignore
 
+    ///Parses the Stripe OpenAPI specification, outputting an F# module specifying the object model for all body form parameters in Stripe API requests
     let parseRequest filePath =
         let root = __SOURCE_DIRECTORY__
 

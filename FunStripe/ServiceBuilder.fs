@@ -11,14 +11,18 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
+///Select the entire text of this module and press ```Alt + Enter``` to generate the ```StripeService.fs``` file
 module ServiceBuilder =
 
+    ///Convert ```snake_case``` to ```PascalCase```
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.| |-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
+    ///Convert ```snake_case``` to ```camelCase```
     let camelCasify (s: string) =
         Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
+    ///Escape certain reserved names used in camel-case parameters
     let escapeReservedName name =
         match name with
         | "end"
@@ -28,13 +32,16 @@ module ServiceBuilder =
         | _ ->
             name
 
+    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line, and also formatting the HTML to display all paragraphs correctly
     let commentify (s: string) = 
         let s' = s.Replace("<p>", "").Replace("</p>", "").Replace("\n\n", "\n").Replace("\n", "\n\t\t///")
         $"<p>{s'}</p>"
 
+    ///Utility function for appending lines to a StringBuilder
     let write s (sb: Text.StringBuilder) =
         sb.AppendLine s |> ignore
 
+    ///Map JSON types to F# types
     let mapType (s: string) =
         match s with
         | "boolean" -> "bool"
@@ -44,6 +51,7 @@ module ServiceBuilder =
         | "object" -> "Map<string, string>"
         | _ -> s
 
+    ///Format parameters of a type
     let formatParametersString (parameters: JsonValue array) =
         (
             ", ",
@@ -68,12 +76,15 @@ module ServiceBuilder =
             )
         ) |> String.Join
 
+    ///Format request path to allow string interpolation of inline parameters
     let formatPathParams (path: string) =
         Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{{m.Groups.[1].Value |> escapeReservedName |> camelCasify}}}")
 
+    ///Get singular form of plural term for grouping requests into services
     let singularise (s: string) =
         Regex.Replace(s, "s$", "")
 
+    ///Extract a type name from a JSON reference field
     let parseRef (s: string) =
         let m = Regex.Match(s, "/([^/]+)$")
         if m.Success then
@@ -81,6 +92,7 @@ module ServiceBuilder =
         else
             failwith $"Unparsable reference: {s}"
 
+    ///Parses the Stripe OpenAPI specification, outputting an F# module specifying services (request groups) and requests
     let parseService filePath =
 
         let root = __SOURCE_DIRECTORY__

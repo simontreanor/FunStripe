@@ -21,7 +21,7 @@ module Tests =
             )
 
         let getNewPaymentMethod () =
-            let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+            let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
             asyncResult {
                 let parameters = 
                     PostPaymentMethodsParams(
@@ -32,7 +32,7 @@ module Tests =
             }
 
         let attachCustomer paymentMethodId =
-            let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+            let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
             asyncResult {
                 let parameters = 
                     PostPaymentMethodsPaymentMethodAttachParams(
@@ -120,7 +120,7 @@ module Tests =
                 let! expected = getNewPaymentMethod()
 
                 let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                     pms.Retrieve(expected.Id)
 
                 Assert.AreEqual(expected, actual)
@@ -135,7 +135,7 @@ module Tests =
                 let! newPM = attachCustomer expected.Id
 
                 let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                     let parameters =
                         PostPaymentMethodsPaymentMethodParams(
                             metadata = ([("OrderId", "6735")] |> Map.ofList)
@@ -156,7 +156,7 @@ module Tests =
             asyncResult {
                 let! expected = getNewPaymentMethod()
                 let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                     let parameters =
                         PostPaymentMethodsPaymentMethodAttachParams(
                             customer = testCustomer
@@ -180,7 +180,7 @@ module Tests =
                 let! newPM = attachCustomer expected.Id
 
                 let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.GetStripeTestApiKey)
+                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                     let parameters = PostPaymentMethodsPaymentMethodDetachParams()
                     pms.Detach(parameters, newPM.Id)
 

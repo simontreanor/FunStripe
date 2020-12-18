@@ -1,10 +1,10 @@
 namespace FunStripe
-
+///Defines an ```AsyncResult``` as a ```Result``` wrapped in an ```Async```
 type AsyncResult<'ok,'error> = Async<Result<'ok,'error>>
 
 [<AutoOpen>]
 module AsyncResultCE =
-
+    ///Builds the ```AsyncResult``` computation expression
     type AsyncResultBuilder() = 
 
         member _.Return(x) : AsyncResult<_, _> =
@@ -28,5 +28,6 @@ module AsyncResultCE =
         member this.Zero() =
             this.Return ()
 
+    ///Instantiates the ```AsyncResult``` computation expression
     let asyncResult = AsyncResultBuilder()
     

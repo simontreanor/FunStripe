@@ -3,7 +3,6 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Option.fs" />
     <Compile Include="JsonUtil.fs" />
     <Compile Include="FormUtil.fs" />
     <Compile Include="RestApi.fs" />
