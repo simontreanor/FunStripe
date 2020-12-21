@@ -16,6 +16,7 @@ module RequestBuilder =
 
     ///Record for OpenAPI schema object
     type SchemaObject = {
+
         AnyOf: JsonValue array option
         Description: string
         Enum: JsonValue array option
@@ -39,6 +40,7 @@ module RequestBuilder =
     ///Parse a ```JsonValue``` into an OpenAPI schema-object record
     let getSchemaObject (jv: JsonValue) =
         {
+
             AnyOf = jv.TryGetProperty("anyOf") |> function | Some v -> v.AsArray() |> Some | None -> None
             Description = jv.TryGetProperty("description") |> function | Some v -> v.AsString() | None -> ""
             Enum = jv.TryGetProperty("enum") |> function | Some v -> v.AsArray() |> Some | None -> None
@@ -92,6 +94,13 @@ module RequestBuilder =
     let fixTitle (title: string) =
         Regex.Replace(title, "_param$", "")
 
+
+
+
+
+
+
+
     ///Class for formatting parameters/properties of types
     type Parameter (description: string, name: string, ``type``: string) =
         member _.Description = description
@@ -104,9 +113,42 @@ module RequestBuilder =
         member this.ToPropertyString() =
             "\t\tmember _." + (this.Name |> camelCasify |> escapeReservedName) + " = " + (this.Name |> camelCasify |> escapeReservedName)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line
     let commentify (s: string) = 
         s.Replace("\n\n", "\n").Replace("\n", "\n\t\t///")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     ///Recursive record for holding type definitions
     type Value = {
@@ -131,6 +173,7 @@ module RequestBuilder =
 
         let root = JsonValue.Parse json
         let paths = root.Item "paths"
+
 
         let methods =
             paths.Properties
@@ -160,6 +203,13 @@ module RequestBuilder =
                                 else
                                     { Description = desc; Name = name; Required = req; Type = $"{prefix}{name'}"; EnumValues = Some ev; SubValues = None }
                             | None ->
+
+
+
+
+
+
+
                                 { Description = desc; Name = name; Required = req; Type = t; EnumValues = None; SubValues = None }
                         | Some t when t = "array" ->
                             match so.Items with
@@ -187,6 +237,10 @@ module RequestBuilder =
                                 | "metadata" ->
                                     { Description = desc; Name = name; Required = req; Type = "Map<string, string>"; EnumValues = None; SubValues = None }
                                 | _ ->
+
+
+
+
                                     failwith "This never fails (to amuse me) #2"
                         | Some t ->
                             { Description = desc; Name = name; Required = req; Type = t; EnumValues = None; SubValues = None }
@@ -201,6 +255,10 @@ module RequestBuilder =
                                     let choices = sv |> Array.map(fun v -> v.Type) |> Array.toList
                                     { Description = desc; Name = name; Required = req; Type = "Choice<" + String.Join(",", choices) + ">"; EnumValues = None; SubValues = Some sv }
                             | None ->
+
+
+
+
                                 { Description = desc; Name = jv.AsString(); Required = req; Type = "CATCH-ALL"; EnumValues = None; SubValues = None }
 
                     let schemaObject = schema |> getSchemaObject
@@ -247,6 +305,7 @@ module RequestBuilder =
                         values
                         |> Array.map(fun v ->
                             let comment = v.Description |> commentify
+
                             $"\t\t///{comment}\n\t\tmember _.{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}"
                         )
                     ) |> String.Join

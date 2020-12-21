@@ -2,14 +2,25 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PackageId>FunStripeLib</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Simon Treanor</Authors>
+    <Company>Fund Ourselves</Company>
+    <PackageDescription>F# Stripe Library</PackageDescription>
+    <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="JsonUtil.fs" />
     <Compile Include="FormUtil.fs" />
     <Compile Include="RestApi.fs" />
     <Compile Include="StripeModel.fs" />
+    <Compile Include="StripeModel2.fs" />
     <Compile Include="StripeRequest.fs" />
     <Compile Include="StripeService.fs" />
     <Compile Include="ModelBuilder.fs" />
+    <Compile Include="ModelBuilder2.fs" />
     <Compile Include="RequestBuilder.fs" />
     <Compile Include="ServiceBuilder.fs" />
   </ItemGroup>
