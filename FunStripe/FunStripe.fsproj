@@ -16,11 +16,9 @@
     <Compile Include="FormUtil.fs" />
     <Compile Include="RestApi.fs" />
     <Compile Include="StripeModel.fs" />
-    <Compile Include="StripeModel2.fs" />
     <Compile Include="StripeRequest.fs" />
     <Compile Include="StripeService.fs" />
     <Compile Include="ModelBuilder.fs" />
-    <Compile Include="ModelBuilder2.fs" />
     <Compile Include="RequestBuilder.fs" />
     <Compile Include="ServiceBuilder.fs" />
   </ItemGroup>
