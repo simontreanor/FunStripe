@@ -6312,10 +6312,14 @@ module StripeModel =
         OxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails option
         RedirectToUrl: PaymentIntentNextActionRedirectToUrl option
         ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
-        Type: string
+        Type: PaymentIntentNextActionType
         ///When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
         UseStripeSdk: obj option
     }
+
+    and PaymentIntentNextActionType =
+        | RedirectToUrl
+        | UseStripeSdk
 
     and PaymentIntentNextActionAlipayHandleRedirect = {
         ///The native data to be used with Alipay SDK you must redirect your customer to in order to authenticate the payment in an Android App.
@@ -6521,12 +6525,30 @@ module StripeModel =
 
     and PaymentMethodCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField("address_line1_check")>]AddressLine1Check: string option
+        [<JsonField("address_line1_check")>]AddressLine1Check: PaymentMethodCardChecksAddressLine1Check option
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressPostalCodeCheck: string option
+        AddressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        CvcCheck: string option
+        CvcCheck: PaymentMethodCardChecksCvcCheck option
     }
+
+    and PaymentMethodCardChecksAddressLine1Check =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    and PaymentMethodCardChecksAddressPostalCodeCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    and PaymentMethodCardChecksCvcCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
 
     and PaymentMethodCardPresent = {
         PaymentMethodCardPresent: string option
@@ -6618,9 +6640,28 @@ module StripeModel =
         ///The type of transaction-specific details of the payment method used in the payment, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `au_becs_debit`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `klarna`, `multibanco`, `p24`, `sepa_debit`, `sofort`, `stripe_account`, or `wechat`.
     ///An additional hash is included on `payment_method_details` with a name matching this value.
     ///It contains information specific to the payment method.
-        Type: string
+        Type: PaymentMethodDetailsType
         Wechat: PaymentMethodDetailsWechat option
     }
+
+    and PaymentMethodDetailsType =
+        | AchCreditTransfer
+        | AchDebit
+        | Alipay
+        | AuBecsDebit
+        | Bancontact
+        | Card
+        | CardPresent
+        | Eps
+        | Giropay
+        | Ideal
+        | Klarna
+        | Multibanco
+        | P24
+        | SepaDebit
+        | Sofort
+        | StripeAccount
+        | Wechat
 
     and PaymentMethodDetailsAchCreditTransfer = {
         ///Account number to transfer funds to.
@@ -6790,12 +6831,30 @@ module StripeModel =
 
     and PaymentMethodDetailsCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField("address_line1_check")>]AddressLine1Check: string option
+        [<JsonField("address_line1_check")>]AddressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressPostalCodeCheck: string option
+        AddressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        CvcCheck: string option
+        CvcCheck: PaymentMethodDetailsCardChecksCvcCheck option
     }
+
+    and PaymentMethodDetailsCardChecksAddressLine1Check =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    and PaymentMethodDetailsCardChecksAddressPostalCodeCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    and PaymentMethodDetailsCardChecksCvcCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
 
     and PaymentMethodDetailsCardInstallments = {
         ///Installment plan selected for the payment.
@@ -8319,7 +8378,7 @@ module StripeModel =
         Name: string option
         RolledBackFrom: RecipientRolledBackFrom'AnyOf option
         ///Type of the recipient, one of `individual` or `corporation`.
-        Type: string
+        Type: RecipientType
         ///Whether the recipient has been verified. This field is non-standard, and maybe removed in the future
         Verified: bool
     }
@@ -8338,6 +8397,10 @@ module StripeModel =
     and RecipientRolledBackFrom'AnyOf =
         | String of string
         | Account of Account
+
+    and RecipientType =
+        | Individual
+        | Corporation
 
     and RecipientCards = {
         Data: Card list
@@ -8653,9 +8716,9 @@ module StripeModel =
         ///ID of the SetupIntent that this attempt belongs to.
         SetupIntent: SetupAttemptSetupIntent'AnyOf
         ///Status of this SetupAttempt, one of `requires_confirmation`, `requires_action`, `processing`, `succeeded`, `failed`, or `abandoned`.
-        Status: string
+        Status: SetupAttemptStatus
         ///The value of [usage](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-usage) on the SetupIntent at the time of this confirmation, one of `off_session` or `on_session`.
-        Usage: string
+        Usage: SetupAttemptUsage
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -8681,6 +8744,18 @@ module StripeModel =
     and SetupAttemptSetupIntent'AnyOf =
         | String of string
         | SetupIntent of SetupIntent
+
+    and SetupAttemptStatus =
+        | RequiresConfirmation
+        | RequiresAction
+        | Processing
+        | Succeeded
+        | Failed
+        | Abandoned
+
+    and SetupAttemptUsage =
+        | OffSession
+        | OnSession
 
     and SetupAttemptPaymentMethodDetails = {
         Bancontact: SetupAttemptPaymentMethodDetailsBancontact option
@@ -8930,10 +9005,14 @@ module StripeModel =
     and SetupIntentNextAction = {
         RedirectToUrl: SetupIntentNextActionRedirectToUrl option
         ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
-        Type: string
+        Type: SetupIntentNextActionType
         ///When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
         UseStripeSdk: obj option
     }
+
+    and SetupIntentNextActionType =
+        | RedirectToUrl
+        | UseStripeSdk
 
     and SetupIntentNextActionRedirectToUrl = {
         ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
@@ -9086,7 +9165,7 @@ module StripeModel =
         ///Extra information about a source. This will appear on your customer's statement every time you charge the source.
         StatementDescriptor: string option
         ///The status of the source, one of `canceled`, `chargeable`, `consumed`, `failed`, or `pending`. Only `chargeable` sources can be used to create a charge.
-        Status: string
+        Status: SourceStatus
         ThreeDSecure: SourceTypeThreeDSecure option
         ///The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://stripe.com/docs/sources) used.
         Type: SourceType
@@ -9097,6 +9176,13 @@ module StripeModel =
     with
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source"
+
+    and SourceStatus =
+        | Canceled
+        | Chargeable
+        | Consumed
+        | Failed
+        | Pending
 
     and SourceType =
         | AchCreditTransfer
@@ -9228,10 +9314,20 @@ module StripeModel =
         ///The total amount that was returned to the customer. The amount returned is expressed in the source's currency.
         AmountReturned: int64
         ///Type of refund attribute method, one of `email`, `manual`, or `none`.
-        RefundAttributesMethod: string
+        RefundAttributesMethod: SourceReceiverFlowRefundAttributesMethod
         ///Type of refund attribute status, one of `missing`, `requested`, or `available`.
-        RefundAttributesStatus: string
+        RefundAttributesStatus: SourceReceiverFlowRefundAttributesStatus
     }
+
+    and SourceReceiverFlowRefundAttributesMethod =
+        | Email
+        | Manual
+        | None'
+
+    and SourceReceiverFlowRefundAttributesStatus =
+        | Missing
+        | Requested
+        | Available
 
     and SourceRedirectFlow = {
         ///The failure reason for the redirect, either `user_abort` (the customer aborted or dropped out of the redirect flow), `declined` (the authentication failed or the transaction was declined), or `processing_error` (the redirect failed due to a technical error). Present only if the redirect status is `failed`.
@@ -9267,13 +9363,18 @@ module StripeModel =
         ///The ID of the source this transaction is attached to.
         Source: string
         ///The status of the transaction, one of `succeeded`, `pending`, or `failed`.
-        Status: string
+        Status: SourceTransactionStatus
         ///The type of source this transaction is attached to.
         Type: SourceTransactionType
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source_transaction"
+
+    and SourceTransactionStatus =
+        | Succeeded
+        | Pending
+        | Failed
 
     and SourceTransactionType =
         | AchCreditTransfer

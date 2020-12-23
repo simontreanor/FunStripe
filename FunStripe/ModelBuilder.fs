@@ -100,7 +100,7 @@ module ModelBuilder =
 
     ///Parses an enumeration from values specified in the description (where the enumeration is not specified explicitly in fields)
     let parseStringEnum desc =
-        let m = Regex.Match(desc, @"(Can be|one of:) `([^`]+)`(?:[^,]*?, `([^`]+)`)*[^,]*?,? or (?:`([^`]+)`|null).")
+        let m = Regex.Match(desc, @"(Can be|one of:?) `([^`]+)`(?:[^,]*?, `([^`]+)`)*[^,]*?,? or (?:`([^`]+)`|null)\.")
         if m.Success then
             m.Groups.Cast<Group>()
             |> Seq.skip 2
@@ -144,7 +144,7 @@ module ModelBuilder =
                     | None ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"{prefix}{name'}"; EnumValues = Some ev; SubValues = None; StaticValue = None }
             | None ->
-                if (desc |> String.IsNullOrWhiteSpace |> not) && (Regex.IsMatch(desc, "(Can be|one of:) `")) then
+                if (desc |> String.IsNullOrWhiteSpace |> not) && (Regex.IsMatch(desc, "(Can be|one of:?) `")) then
                     match desc |> parseStringEnum with
                     | Some ee ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"{prefix}{name'}"; EnumValues = ee |> List.ofSeq |> Some; SubValues = None; StaticValue = None }
