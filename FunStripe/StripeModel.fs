@@ -264,7 +264,7 @@ module StripeModel =
         ///The fields that need to be collected to keep the capability enabled. If not collected by the `current_deadline`, these fields appear in `past_due` as well, and the capability is disabled.
         CurrentlyDue: string list
         ///If the capability is disabled, this string describes why. Possible values are `requirement.fields_needed`, `pending.onboarding`, `pending.review`, `rejected_fraud`, or `rejected.other`.
-        DisabledReason: string option
+        DisabledReason: AccountCapabilityRequirementsDisabledReason option
         ///The fields that are `currently_due` and need to be collected again because validation or verification failed for some reason.
         Errors: AccountRequirementsError list
         ///The fields that need to be collected assuming all volume thresholds are reached. As they become required, these fields appear in `currently_due` as well, and the `current_deadline` is set.
@@ -274,6 +274,13 @@ module StripeModel =
         ///Fields that may become required depending on the results of verification or review. An empty array unless an asynchronous verification is pending. If verification fails, the fields in this array become required and move to `currently_due` or `past_due`.
         PendingVerification: string list
     }
+
+    and AccountCapabilityRequirementsDisabledReason =
+        | [<JsonUnionCase("requirement.fields_needed")>] RequirementFieldsNeeded
+        | [<JsonUnionCase("pending.onboarding")>] PendingOnboarding
+        | [<JsonUnionCase("pending.review")>] PendingReview
+        | RejectedFraud
+        | [<JsonUnionCase("rejected.other")>] RejectedOther
 
     and AccountCardPaymentsSettings = {
         DeclineOn: AccountDeclineChargeOn option
@@ -345,12 +352,12 @@ module StripeModel =
     }
 
     and AccountRequirementsDisabledReason =
-        | RequirementsPastDue
-        | RequirementsPendingVerification
-        | RejectedFraud
-        | RejectedTermsOfService
-        | RejectedListed
-        | RejectedOther
+        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
+        | [<JsonUnionCase("requirements.pending_verification")>] RequirementsPendingVerification
+        | [<JsonUnionCase("rejected.fraud")>] RejectedFraud
+        | [<JsonUnionCase("rejected.terms_of_service")>] RejectedTermsOfService
+        | [<JsonUnionCase("rejected.listed")>] RejectedListed
+        | [<JsonUnionCase("rejected.other")>] RejectedOther
         | Listed
         | UnderReview
         | Other
@@ -685,7 +692,7 @@ module StripeModel =
         ///The Stripe object to which this transaction is related.
         Source: BalanceTransactionSource'AnyOf option
         ///If the transaction's net funds are available in the Stripe balance yet. Either `available` or `pending`.
-        Status: string
+        Status: BalanceTransactionStatus
         ///Transaction type: `adjustment`, `advance`, `advance_funding`, `anticipation_repayment`, `application_fee`, `application_fee_refund`, `charge`, `connect_collection_transfer`, `contribution`, `issuing_authorization_hold`, `issuing_authorization_release`, `issuing_dispute`, `issuing_transaction`, `payment`, `payment_failure_refund`, `payment_refund`, `payout`, `payout_cancel`, `payout_failure`, `refund`, `refund_failure`, `reserve_transaction`, `reserved_funds`, `stripe_fee`, `stripe_fx_fee`, `tax_fee`, `topup`, `topup_reversal`, `transfer`, `transfer_cancel`, `transfer_failure`, or `transfer_refund`. [Learn more](https://stripe.com/docs/reports/balance-transaction-types) about balance transaction types and what they represent. If you are looking to classify transactions for accounting purposes, you might want to consider `reporting_category` instead.
         Type: BalanceTransactionType
     }
@@ -696,6 +703,10 @@ module StripeModel =
     and BalanceTransactionSource'AnyOf =
         | String of string
         | BalanceTransactionSource of BalanceTransactionSource
+
+    and BalanceTransactionStatus =
+        | Available
+        | Pending
 
     and BalanceTransactionType =
         | Adjustment
@@ -760,7 +771,7 @@ module StripeModel =
         ///The name of the person or business that owns the bank account.
         AccountHolderName: string option
         ///The type of entity that holds the account. This can be either `individual` or `company`.
-        AccountHolderType: string option
+        AccountHolderType: BankAccountAccountHolderType option
         ///A set of available payout methods for this bank account. Only values from this set should be passed as the `method` when creating a payout.
         AvailablePayoutMethods: BankAccountAvailablePayoutMethods list option
         ///Name of the bank associated with the routing number (e.g., `WELLS FARGO`).
@@ -785,7 +796,7 @@ module StripeModel =
         RoutingNumber: string option
         ///For bank accounts, possible values are `new`, `validated`, `verified`, `verification_failed`, or `errored`. A bank account that hasn't had any activity or validation performed is `new`. If Stripe can determine that the bank account exists, its status will be `validated`. Note that there often isn’t enough information to know (e.g., for smaller credit unions), and the validation is not always run. If customer bank account verification has succeeded, the bank account status will be `verified`. If the verification failed for any reason, such as microdeposit failure, the status will be `verification_failed`. If a transfer sent to this bank account fails, we'll set the status to `errored` and will not continue to send transfers until the bank details are updated.
     ///For external accounts, possible values are `new` and `errored`. Validations aren't run against external accounts because they're only used for payouts. This means the other statuses don't apply. If a transfer fails, the status is set to `errored` and transfers are stopped until account details are updated.
-        Status: string
+        Status: BankAccountStatus
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -795,10 +806,21 @@ module StripeModel =
         | String of string
         | Account of Account
 
+    and BankAccountAccountHolderType =
+        | Individual
+        | Company
+
     and BankAccountCustomer'AnyOf =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
+
+    and BankAccountStatus =
+        | New
+        | Validated
+        | Verified
+        | VerificationFailed
+        | Errored
 
     and BankAccountAvailablePayoutMethods =
         | Instant
@@ -962,7 +984,7 @@ module StripeModel =
         ///Address line 1 (Street address/PO Box/Company name).
         [<JsonField("address_line1")>]AddressLine1: string option
         ///If `address_line1` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField("address_line1_check")>]AddressLine1Check: string option
+        [<JsonField("address_line1_check")>]AddressLine1Check: CardAddressLine1Check option
         ///Address line 2 (Apartment/Suite/Unit/Building).
         [<JsonField("address_line2")>]AddressLine2: string option
         ///State/County/Province/Region.
@@ -970,7 +992,7 @@ module StripeModel =
         ///ZIP or postal code.
         AddressZip: string option
         ///If `address_zip` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        AddressZipCheck: string option
+        AddressZipCheck: CardAddressZipCheck option
         ///A set of available payout methods for this card. Only values from this set should be passed as the `method` when creating a payout.
         AvailablePayoutMethods: CardAvailablePayoutMethods list option
         ///Card brand. Can be `American Express`, `Diners Club`, `Discover`, `JCB`, `MasterCard`, `UnionPay`, `Visa`, or `Unknown`.
@@ -982,7 +1004,7 @@ module StripeModel =
         ///The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead.
         Customer: CardCustomer'AnyOf option
         ///If a CVC was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. A result of unchecked indicates that CVC was provided but hasn't been checked yet. Checks are typically performed when attaching a card to a Customer object, or when creating a charge. For more details, see [Check if a card is valid without a charge](https://support.stripe.com/questions/check-if-a-card-is-valid-without-a-charge).
-        CvcCheck: string option
+        CvcCheck: CardCvcCheck option
         ///Whether this card is the default external account for its currency.
         DefaultForCurrency: bool option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
@@ -1022,6 +1044,18 @@ module StripeModel =
         | String of string
         | Account of Account
 
+    and CardAddressLine1Check =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    and CardAddressZipCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
     and CardBrand =
         | [<JsonUnionCase("American Express")>] AmericanExpress
         | [<JsonUnionCase("Diners Club")>] DinersClub
@@ -1036,6 +1070,12 @@ module StripeModel =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
+
+    and CardCvcCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
 
     and CardFunding =
         | Credit
@@ -1154,7 +1194,7 @@ module StripeModel =
         ///Provides information about the charge that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
         StatementDescriptorSuffix: string option
         ///The status of the payment is either `succeeded`, `pending`, or `failed`.
-        Status: string
+        Status: ChargeStatus
         ///ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter).
         Transfer: ChargeTransfer'AnyOf option
         ///An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.
@@ -1215,6 +1255,11 @@ module StripeModel =
         | String of string
         | Transfer of Transfer
 
+    and ChargeStatus =
+        | Succeeded
+        | Pending
+        | Failed
+
     and ChargeTransfer'AnyOf =
         | String of string
         | Transfer of Transfer
@@ -1236,12 +1281,16 @@ module StripeModel =
         ///Assessments from Stripe. If set, the value is `fraudulent`.
         StripeReport: string option
         ///Assessments reported by you. If set, possible values of are `safe` and `fraudulent`.
-        UserReport: string option
+        UserReport: ChargeFraudDetailsUserReport option
     }
+
+    and ChargeFraudDetailsUserReport =
+        | Safe
+        | Fraudulent
 
     and ChargeOutcome = {
         ///Possible values are `approved_by_network`, `declined_by_network`, `not_sent_to_network`, and `reversed_after_approval`. The value `reversed_after_approval` indicates the payment was [blocked by Stripe](https://stripe.com/docs/declines#blocked-payments) after bank authorization, and may temporarily appear as "pending" on a cardholder's statement.
-        NetworkStatus: string option
+        NetworkStatus: ChargeOutcomeNetworkStatus option
         ///An enumerated value providing a more detailed explanation of the outcome's `type`. Charges blocked by Radar's default block rule have the value `highest_risk_level`. Charges placed in review by Radar's default review rule have the value `elevated_risk_level`. Charges authorized, blocked, or placed in review by custom rules have the value `rule`. See [understanding declines](https://stripe.com/docs/declines) for more details.
         Reason: string option
         ///Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are `normal`, `elevated`, `highest`. For non-card payments, and card-based payments predating the public assignment of risk levels, this field will have the value `not_assessed`. In the event of an error in the evaluation, this field will have the value `unknown`. This field is only available with Radar.
@@ -1253,12 +1302,25 @@ module StripeModel =
         ///A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer.
         SellerMessage: string option
         ///Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://stripe.com/docs/declines) and [Radar reviews](https://stripe.com/docs/radar/reviews) for details.
-        Type: string
+        Type: ChargeOutcomeType
     }
+
+    and ChargeOutcomeNetworkStatus =
+        | ApprovedByNetwork
+        | DeclinedByNetwork
+        | NotSentToNetwork
+        | ReversedAfterApproval
 
     and ChargeOutcomeRule'AnyOf =
         | String of string
         | Rule of Rule
+
+    and ChargeOutcomeType =
+        | Authorized
+        | ManualReview
+        | IssuerDeclined
+        | Blocked
+        | Invalid
 
     and ChargeTransferData = {
         ///The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
@@ -2158,8 +2220,12 @@ module StripeModel =
         ///If `type` is `"range"`, `latest` will be the latest delivery date in the format YYYY-MM-DD.
         Latest: string option
         ///The type of estimate. Must be either `"range"` or `"exact"`.
-        Type: string
+        Type: DeliveryEstimateType
     }
+
+    and DeliveryEstimateType =
+        | Range
+        | Exact
 
     ///A discount represents the actual application of a coupon to a particular
     ///customer. It contains information about when the discount began and when it
@@ -2243,7 +2309,7 @@ module StripeModel =
         ///ID of the PaymentIntent that was disputed.
         PaymentIntent: DisputePaymentIntent'AnyOf option
         ///Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Read more about [dispute reasons](https://stripe.com/docs/disputes/categories).
-        Reason: string
+        Reason: DisputeReason
         ///Current status of dispute. Possible values are `warning_needs_response`, `warning_under_review`, `warning_closed`, `needs_response`, `under_review`, `charge_refunded`, `won`, or `lost`.
         Status: DisputeStatus
     }
@@ -2258,6 +2324,22 @@ module StripeModel =
     and DisputePaymentIntent'AnyOf =
         | String of string
         | PaymentIntent of PaymentIntent
+
+    and DisputeReason =
+        | BankCannotProcess
+        | CheckReturned
+        | CreditNotProcessed
+        | CustomerInitiated
+        | DebitNotAuthorized
+        | Duplicate
+        | Fraudulent
+        | General
+        | IncorrectAccountDetails
+        | InsufficientFunds
+        | ProductNotReceived
+        | ProductUnacceptable
+        | SubscriptionCanceled
+        | Unrecognized
 
     and DisputeStatus =
         | ChargeRefunded
@@ -2616,17 +2698,31 @@ module StripeModel =
         ///Category of balance transactions to be included in the report run.
         ReportingCategory: string option
         ///Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
-        Timezone: string option
+        Timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
     }
+
+    and FinancialReportingFinanceReportRunRunParametersTimezone =
+        | IntervalStart
+        | IntervalEnd
 
     and Inventory = {
         ///The count of inventory available. Will be present if and only if `type` is `finite`.
         Quantity: int64 option
         ///Inventory type. Possible values are `finite`, `bucket` (not quantified), and `infinite`.
-        Type: string
+        Type: InventoryType
         ///An indicator of the inventory available. Possible values are `in_stock`, `limited`, and `out_of_stock`. Will be present if and only if `type` is `bucket`.
-        Value: string option
+        Value: InventoryValue option
     }
+
+    and InventoryType =
+        | Finite
+        | Bucket
+        | Infinite
+
+    and InventoryValue =
+        | InStock
+        | Limited
+        | OutOfStock
 
     ///Invoices are statements of amounts owed by a customer, and are either
     ///generated one-off, or generated periodically from a subscription.
@@ -3124,7 +3220,7 @@ module StripeModel =
         Transactions: IssuingTransaction list
         VerificationData: IssuingAuthorizationVerificationData
         ///What, if any, digital wallet was used for this authorization. One of `apple_pay`, `google_pay`, or `samsung_pay`.
-        Wallet: string option
+        Wallet: IssuingAuthorizationWallet option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -3145,6 +3241,11 @@ module StripeModel =
         | Closed
         | Pending
         | Reversed
+
+    and IssuingAuthorizationWallet =
+        | ApplePay
+        | GooglePay
+        | SamsungPay
 
     ///You can [create physical or virtual cards](https://stripe.com/docs/issuing/cards) that are issued to cardholders.
     and IssuingCard = {
@@ -5052,17 +5153,17 @@ module StripeModel =
 
     and IssuingCardholderRequirementsDisabledReason =
         | Listed
-        | RejectedListed
+        | [<JsonUnionCase("rejected.listed")>] RejectedListed
         | UnderReview
 
     and IssuingCardholderRequirementsPastDue =
-        | CompanyTaxId
-        | IndividualDobDay
-        | IndividualDobMonth
-        | IndividualDobYear
-        | IndividualFirstName
-        | IndividualLastName
-        | IndividualVerificationDocument
+        | [<JsonUnionCase("company.tax_id")>] CompanyTaxId
+        | [<JsonUnionCase("individual.dob.day")>] IndividualDobDay
+        | [<JsonUnionCase("individual.dob.month")>] IndividualDobMonth
+        | [<JsonUnionCase("individual.dob.year")>] IndividualDobYear
+        | [<JsonUnionCase("individual.first_name")>] IndividualFirstName
+        | [<JsonUnionCase("individual.last_name")>] IndividualLastName
+        | [<JsonUnionCase("individual.verification.document")>] IndividualVerificationDocument
 
     and IssuingCardholderSpendingLimit = {
         ///Maximum amount allowed to spend per interval.
@@ -5589,14 +5690,25 @@ module StripeModel =
 
     and IssuingTransactionFuelData = {
         ///The type of fuel that was purchased. One of `diesel`, `unleaded_plus`, `unleaded_regular`, `unleaded_super`, or `other`.
-        Type: string
+        Type: IssuingTransactionFuelDataType
         ///The units for `volume_decimal`. One of `us_gallon` or `liter`.
-        Unit: string
+        Unit: IssuingTransactionFuelDataUnit
         ///The cost in cents per each unit of fuel, represented as a decimal string with at most 12 decimal places.
         UnitCostDecimal: string
         ///The volume of the fuel that was pumped, represented as a decimal string with at most 12 decimal places.
         VolumeDecimal: string option
     }
+
+    and IssuingTransactionFuelDataType =
+        | Diesel
+        | UnleadedPlus
+        | UnleadedRegular
+        | UnleadedSuper
+        | Other
+
+    and IssuingTransactionFuelDataUnit =
+        | UsGallon
+        | Liter
 
     and IssuingTransactionLodgingData = {
         ///The time of checking into the lodging.
@@ -5712,7 +5824,7 @@ module StripeModel =
         ///A user-displayable string describing the verification state of this document.
         Details: string option
         ///One of `document_corrupt`, `document_expired`, `document_failed_copy`, `document_failed_greyscale`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_not_readable`, `document_not_uploaded`, `document_type_not_supported`, or `document_too_large`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: string option
+        DetailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option
         ///The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
         Front: LegalEntityCompanyVerificationDocumentFront'AnyOf option
     }
@@ -5720,6 +5832,22 @@ module StripeModel =
     and LegalEntityCompanyVerificationDocumentBack'AnyOf =
         | String of string
         | File of File
+
+    and LegalEntityCompanyVerificationDocumentDetailsCode =
+        | DocumentCorrupt
+        | DocumentExpired
+        | DocumentFailedCopy
+        | DocumentFailedGreyscale
+        | DocumentFailedOther
+        | DocumentFailedTestMode
+        | DocumentFraudulent
+        | DocumentIncomplete
+        | DocumentInvalid
+        | DocumentManipulated
+        | DocumentNotReadable
+        | DocumentNotUploaded
+        | DocumentTypeNotSupported
+        | DocumentTooLarge
 
     and LegalEntityCompanyVerificationDocumentFront'AnyOf =
         | String of string
@@ -5757,11 +5885,26 @@ module StripeModel =
         ///A user-displayable string describing the verification state for the person. For example, this may say "Provided identity information could not be verified".
         Details: string option
         ///One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person.
-        DetailsCode: string option
+        DetailsCode: LegalEntityPersonVerificationDetailsCode option
         Document: LegalEntityPersonVerificationDocument option
         ///The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`.
-        Status: string
+        Status: LegalEntityPersonVerificationStatus
     }
+
+    and LegalEntityPersonVerificationDetailsCode =
+        | DocumentAddressMismatch
+        | DocumentDobMismatch
+        | DocumentDuplicateType
+        | DocumentIdNumberMismatch
+        | DocumentNameMismatch
+        | DocumentNationalityMismatch
+        | FailedKeyedIdentity
+        | FailedOther
+
+    and LegalEntityPersonVerificationStatus =
+        | Unverified
+        | Pending
+        | Verified
 
     and LegalEntityPersonVerificationDocument = {
         ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
@@ -5769,7 +5912,7 @@ module StripeModel =
         ///A user-displayable string describing the verification state of this document. For example, if a document is uploaded and the picture is too fuzzy, this may say "Identity document is too unclear to read".
         Details: string option
         ///One of `document_corrupt`, `document_country_not_supported`, `document_expired`, `document_failed_copy`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_failed_greyscale`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_missing_back`, `document_missing_front`, `document_not_readable`, `document_not_uploaded`, `document_photo_mismatch`, `document_too_large`, or `document_type_not_supported`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: string option
+        DetailsCode: LegalEntityPersonVerificationDocumentDetailsCode option
         ///The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
         Front: LegalEntityPersonVerificationDocumentFront'AnyOf option
     }
@@ -5777,6 +5920,26 @@ module StripeModel =
     and LegalEntityPersonVerificationDocumentBack'AnyOf =
         | String of string
         | File of File
+
+    and LegalEntityPersonVerificationDocumentDetailsCode =
+        | DocumentCorrupt
+        | DocumentCountryNotSupported
+        | DocumentExpired
+        | DocumentFailedCopy
+        | DocumentFailedOther
+        | DocumentFailedTestMode
+        | DocumentFraudulent
+        | DocumentFailedGreyscale
+        | DocumentIncomplete
+        | DocumentInvalid
+        | DocumentManipulated
+        | DocumentMissingBack
+        | DocumentMissingFront
+        | DocumentNotReadable
+        | DocumentNotUploaded
+        | DocumentPhotoMismatch
+        | DocumentTooLarge
+        | DocumentTypeNotSupported
 
     and LegalEntityPersonVerificationDocumentFront'AnyOf =
         | String of string
@@ -6030,7 +6193,7 @@ module StripeModel =
         ///A list of supported shipping methods for this order. The desired shipping method can be specified either by updating the order, or when paying it.
         ShippingMethods: ShippingMethod list option
         ///Current order status. One of `created`, `paid`, `canceled`, `fulfilled`, or `returned`. More details in the [Orders Guide](https://stripe.com/docs/orders/guide#understanding-order-statuses).
-        Status: string
+        Status: OrderStatus
         ///The timestamps at which the order status was updated.
         StatusTransitions: StatusTransitions option
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
@@ -6050,6 +6213,13 @@ module StripeModel =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
+
+    and OrderStatus =
+        | Created
+        | Paid
+        | Canceled
+        | Fulfilled
+        | Returned
 
     ///A list of returns that have taken place for this order.
     and OrderReturns = {
@@ -6079,7 +6249,7 @@ module StripeModel =
         ///A positive integer representing the number of instances of `parent` that are included in this order item. Applicable/present only if `type` is `sku`.
         Quantity: int64 option
         ///The type of line item. One of `sku`, `tax`, `shipping`, or `discount`.
-        Type: string
+        Type: OrderItemType
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -6088,6 +6258,12 @@ module StripeModel =
     and OrderItemParent'AnyOf =
         | String of string
         | Sku of Sku
+
+    and OrderItemType =
+        | Sku
+        | Tax
+        | Shipping
+        | Discount
 
     ///A return represents the full or partial return of a number of [order items](https://stripe.com/docs/api#order_items).
     ///Returns always belong to an order, and may optionally contain a refund.
@@ -7822,17 +7998,17 @@ module StripeModel =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///The method used to send this payout, which can be `standard` or `instant`. `instant` is only supported for payouts to debit cards. (See [Instant payouts for marketplaces](https://stripe.com/blog/instant-payouts-for-marketplaces) for more information.)
-        Method: string
+        Method: PayoutMethod
         ///If the payout reverses another, this is the ID of the original payout.
         OriginalPayout: PayoutOriginalPayout'AnyOf option
         ///If the payout was reversed, this is the ID of the payout that reverses this payout.
         ReversedBy: PayoutReversedBy'AnyOf option
         ///The source balance this payout came from. One of `card`, `fpx`, or `bank_account`.
-        SourceType: string
+        SourceType: PayoutSourceType
         ///Extra information about a payout to be displayed on the user's bank statement.
         StatementDescriptor: string option
         ///Current status of the payout: `paid`, `pending`, `in_transit`, `canceled` or `failed`. A payout is `pending` until it is submitted to the bank, when it becomes `in_transit`. The status then changes to `paid` if the transaction goes through, or to `failed` or `canceled` (within 5 business days). Some failed payouts may initially show as `paid` but then change to `failed`.
-        Status: string
+        Status: PayoutStatus
         ///Can be `bank_account` or `card`.
         Type: PayoutType
     }
@@ -7853,6 +8029,10 @@ module StripeModel =
         | String of string
         | BalanceTransaction of BalanceTransaction
 
+    and PayoutMethod =
+        | Standard
+        | Instant
+
     and PayoutOriginalPayout'AnyOf =
         | String of string
         | Payout of Payout
@@ -7860,6 +8040,18 @@ module StripeModel =
     and PayoutReversedBy'AnyOf =
         | String of string
         | Payout of Payout
+
+    and PayoutSourceType =
+        | Card
+        | Fpx
+        | BankAccount
+
+    and PayoutStatus =
+        | Paid
+        | Pending
+        | InTransit
+        | Canceled
+        | Failed
 
     and PayoutType =
         | BankAccount
@@ -8462,7 +8654,7 @@ module StripeModel =
         ///If the refund failed, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction.
         FailureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf option
         ///If the refund failed, the reason for refund failure if known. Possible values are `lost_or_stolen_card`, `expired_or_canceled_card`, or `unknown`.
-        FailureReason: string option
+        FailureReason: RefundFailureReason option
         ///Unique identifier for the object.
         Id: string
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -8476,7 +8668,7 @@ module StripeModel =
         ///The transfer reversal that is associated with the refund. Only present if the charge came from another Stripe account. See the Connect documentation for details.
         SourceTransferReversal: RefundSourceTransferReversal'AnyOf option
         ///Status of the refund. For credit card refunds, this can be `pending`, `succeeded`, or `failed`. For other types of refunds, it can be `pending`, `succeeded`, `failed`, or `canceled`. Refer to our [refunds](https://stripe.com/docs/refunds#failed-refunds) documentation for more details.
-        Status: string option
+        Status: RefundStatus option
         ///If the accompanying transfer was reversed, the transfer reversal object. Only applicable if the charge was created using the destination parameter.
         TransferReversal: RefundTransferReversal'AnyOf option
     }
@@ -8496,6 +8688,11 @@ module StripeModel =
         | String of string
         | BalanceTransaction of BalanceTransaction
 
+    and RefundFailureReason =
+        | LostOrStolenCard
+        | ExpiredOrCanceledCard
+        | Unknown
+
     and RefundPaymentIntent'AnyOf =
         | String of string
         | PaymentIntent of PaymentIntent
@@ -8503,6 +8700,11 @@ module StripeModel =
     and RefundSourceTransferReversal'AnyOf =
         | String of string
         | TransferReversal of TransferReversal
+
+    and RefundStatus =
+        | Pending
+        | Succeeded
+        | Failed
 
     and RefundTransferReversal'AnyOf =
         | String of string
@@ -8612,7 +8814,7 @@ module StripeModel =
         ///The PaymentIntent ID associated with this review, if one exists.
         PaymentIntent: ReviewPaymentIntent'AnyOf option
         ///The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, or `disputed`.
-        Reason: string
+        Reason: ReviewReason
         ///Information related to the browsing session of the user who initiated the payment.
         Session: RadarReviewResourceSession option
     }
@@ -8637,6 +8839,14 @@ module StripeModel =
     and ReviewPaymentIntent'AnyOf =
         | String of string
         | PaymentIntent of PaymentIntent
+
+    and ReviewReason =
+        | Rule
+        | Manual
+        | Approved
+        | Refunded
+        | RefundedAsFraud
+        | Disputed
 
     and Rule = {
         ///The action taken on the payment.
@@ -9170,7 +9380,7 @@ module StripeModel =
         ///The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://stripe.com/docs/sources) used.
         Type: SourceType
         ///Either `reusable` or `single_use`. Whether this source should be reusable or not. Some source types may or may not be reusable by construction, while others may leave the option at creation. If an incompatible value is passed, an error will be returned.
-        Usage: string option
+        Usage: SourceUsage option
         Wechat: SourceTypeWechat option
     }
     with
@@ -9205,6 +9415,10 @@ module StripeModel =
         | ThreeDSecure
         | Wechat
 
+    and SourceUsage =
+        | Reusable
+        | SingleUse
+
     and SourceCodeVerificationFlow = {
         ///The number of attempts remaining to authenticate the source object with a verification code.
         AttemptsRemaining: int64
@@ -9227,17 +9441,25 @@ module StripeModel =
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///The reason of the mandate notification. Valid reasons are `mandate_confirmed` or `debit_initiated`.
-        Reason: string
+        Reason: SourceMandateNotificationReason
         SepaDebit: SourceMandateNotificationSepaDebitData option
         Source: Source
         ///The status of the mandate notification. Valid statuses are `pending` or `submitted`.
-        Status: string
+        Status: SourceMandateNotificationStatus
         ///The type of source this mandate notification is attached to. Should be the source type identifier code for the payment method, such as `three_d_secure`.
         Type: string
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source_mandate_notification"
+
+    and SourceMandateNotificationReason =
+        | MandateConfirmed
+        | DebitInitiated
+
+    and SourceMandateNotificationStatus =
+        | Pending
+        | Submitted
 
     and SourceMandateNotificationAcssDebitData = {
         ///The statement descriptor associate with the debit.
@@ -9282,8 +9504,13 @@ module StripeModel =
         ///The quantity of this order item. When type is `sku`, this is the number of instances of the SKU to be ordered.
         Quantity: int64 option
         ///The type of this order item. Must be `sku`, `tax`, or `shipping`.
-        Type: string option
+        Type: SourceOrderItemType option
     }
+
+    and SourceOrderItemType =
+        | Sku
+        | Tax
+        | Shipping
 
     and SourceOwner = {
         ///Owner's address.
@@ -10301,11 +10528,16 @@ module StripeModel =
         ///If present, this is the URL that you should send the cardholder to for authentication. If you are going to use Stripe.js to display the authentication page in an iframe, you should use the value "_callback".
         RedirectUrl: string option
         ///Possible values are `redirect_pending`, `succeeded`, or `failed`. When the cardholder can be authenticated, the object starts with status `redirect_pending`. When liability will be shifted to the cardholder's bank (either because the cardholder was successfully authenticated, or because the bank has not implemented 3D Secure, the object wlil be in status `succeeded`. `failed` indicates that authentication was attempted unsuccessfully.
-        Status: string
+        Status: ThreeDSecureStatus
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "three_d_secure"
+
+    and ThreeDSecureStatus =
+        | RedirectPending
+        | Succeeded
+        | Failed
 
     and ThreeDSecureDetails = {
         ///For authenticated transactions: how the customer was authenticated by
@@ -10381,13 +10613,19 @@ module StripeModel =
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///Type of the token: `account`, `bank_account`, `card`, or `pii`.
-        Type: string
+        Type: TokenType
         ///Whether this token has already been used (tokens can be used only once).
         Used: bool
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "token"
+
+    and TokenType =
+        | Account
+        | BankAccount
+        | Card
+        | Pii
 
     ///To top up your Stripe balance, you create a top-up object. You can retrieve
     ///individual top-ups, as well as list all top-ups. Top-ups are identified by a
@@ -10477,7 +10715,7 @@ module StripeModel =
         ///ID of the charge or payment that was used to fund the transfer. If null, the transfer was funded from the available balance.
         SourceTransaction: TransferSourceTransaction'AnyOf option
         ///The source balance this transfer came from. One of `card`, `fpx`, or `bank_account`.
-        SourceType: string option
+        SourceType: TransferSourceType option
         ///A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
         TransferGroup: string option
     }
@@ -10500,6 +10738,11 @@ module StripeModel =
     and TransferSourceTransaction'AnyOf =
         | String of string
         | Charge of Charge
+
+    and TransferSourceType =
+        | Card
+        | Fpx
+        | BankAccount
 
     ///A list of reversals that have been applied to the transfer.
     and TransferReversals = {
@@ -10582,12 +10825,18 @@ module StripeModel =
         ///The number of days charges for the account will be held before being paid out.
         DelayDays: int64
         ///How frequently funds will be paid out. One of `manual` (payouts only created via API call), `daily`, `weekly`, or `monthly`.
-        Interval: string
+        Interval: TransferScheduleInterval
         ///The day of the month funds will be paid out. Only shown if `interval` is monthly. Payouts scheduled between the 29th and 31st of the month are sent on the last day of shorter months.
         MonthlyAnchor: int64 option
         ///The day of the week funds will be paid out, of the style 'monday', 'tuesday', etc. Only shown if `interval` is weekly.
         WeeklyAnchor: string option
     }
+
+    and TransferScheduleInterval =
+        | Manual
+        | Daily
+        | Weekly
+        | Monthly
 
     and TransformQuantity = {
         ///Divide usage by this number.
@@ -10672,11 +10921,15 @@ module StripeModel =
         ///The endpoint's secret, used to generate [webhook signatures](https://stripe.com/docs/webhooks/signatures). Only returned at creation.
         Secret: string option
         ///The status of the webhook. It can be `enabled` or `disabled`.
-        Status: string
+        Status: WebhookEndpointStatus
         ///The URL of the webhook endpoint.
         Url: string
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "webhook_endpoint"
+
+    and WebhookEndpointStatus =
+        | Enabled
+        | Disabled
 

@@ -73,7 +73,7 @@ module ModelBuilder =
     let escapeForJson (s: string) =
         if s.Contains(" of ") then
             s
-        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
+        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         else
             s |> clean |> pascalCasify
@@ -98,14 +98,17 @@ module ModelBuilder =
         else
             s
 
+    ///Regular expression to match enumerations specified in the description
+    let enumRegex = @"`([\w "".]+)`(?:(?: \([^)]+\))?,? `([\w "".]+)`)*(?: \([^)]+\))?,? (?:and|or) (?:`([\w ""\.]+)`|null)\."
+
     ///Parses an enumeration from values specified in the description (where the enumeration is not specified explicitly in fields)
     let parseStringEnum desc =
-        let m = Regex.Match(desc, @"(Can be|one of:?) `([^`]+)`(?:[^,]*?, `([^`]+)`)*[^,]*?,? or (?:`([^`]+)`|null)\.")
+        let m = Regex.Match(desc, enumRegex)
         if m.Success then
             m.Groups.Cast<Group>()
-            |> Seq.skip 2
+            |> Seq.skip 1
             |> Seq.collect(fun g -> g.Captures.Cast<Capture>())
-            |> Seq.map(fun c -> c.Value)
+            |> Seq.map(fun c -> c.Value.Trim('"'))
             |> Some
         else
             None
@@ -144,7 +147,7 @@ module ModelBuilder =
                     | None ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"{prefix}{name'}"; EnumValues = Some ev; SubValues = None; StaticValue = None }
             | None ->
-                if (desc |> String.IsNullOrWhiteSpace |> not) && (Regex.IsMatch(desc, "(Can be|one of:?) `")) then
+                if (desc |> String.IsNullOrWhiteSpace |> not) && (Regex.IsMatch(desc, enumRegex)) then
                     match desc |> parseStringEnum with
                     | Some ee ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"{prefix}{name'}"; EnumValues = ee |> List.ofSeq |> Some; SubValues = None; StaticValue = None }
