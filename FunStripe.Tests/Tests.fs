@@ -71,7 +71,7 @@ module Tests =
                 Customer = None
                 Id = "IgnoreThisId"
                 Livemode = false
-                Metadata = Map.empty
+                Metadata = Some Map.empty
                 Type = PaymentMethodType.Card
                 Alipay = None; AuBecsDebit = None; BacsDebit = None; Bancontact = None; Eps = None; Fpx = None; Giropay = None
                 Grabpay = None; Ideal = None; InteracPresent = None; Oxxo = None; P24 = None; SepaDebit = None; Sofort = None
