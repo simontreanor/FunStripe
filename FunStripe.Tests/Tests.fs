@@ -1,5 +1,6 @@
 namespace FunStripe
 
+open FunStripe.AsyncResultCE
 open NUnit.Framework
 open StripeModel
 open StripeRequest

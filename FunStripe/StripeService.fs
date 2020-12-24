@@ -6,9 +6,9 @@ open StripeRequest
 
 module StripeService =
 
-    type AccountService(?apiKey: string) = 
+    type AccountService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the details of an account.</p>
         member this.Retrieve (?expand: string list) =
@@ -55,18 +55,18 @@ module StripeService =
             $"/v1/accounts/{account}/capabilities"
             |> this.RestApiClient.GetAsync<Capability>
 
-    and AccountLinkService(?apiKey: string) = 
+    and AccountLinkService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
         member this.Create ((parameters: PostAccountLinksParams)) =
             $"/v1/account_links"
             |> this.RestApiClient.PostAsync<_, AccountLink> parameters
 
-    and ApplePayDomainService(?apiKey: string) = 
+    and ApplePayDomainService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>List apple pay domains.</p>
         member this.List (?domainName: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -88,9 +88,9 @@ module StripeService =
             $"/v1/apple_pay/domains/{domain}"
             |> this.RestApiClient.DeleteAsync<DeletedApplePayDomain>
 
-    and ApplicationFeeService(?apiKey: string) = 
+    and ApplicationFeeService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
         member this.List (?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -102,9 +102,9 @@ module StripeService =
             $"/v1/application_fees/{id}"
             |> this.RestApiClient.GetAsync<ApplicationFee>
 
-    and BalanceService(?apiKey: string) = 
+    and BalanceService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the current account balance, based on the authentication that was used to make the request.
         /// For a sample request, see <a href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting for negative balances</a>.</p>
@@ -112,9 +112,9 @@ module StripeService =
             $"/v1/balance"
             |> this.RestApiClient.GetAsync<Balance>
 
-    and BalanceTransactionService(?apiKey: string) = 
+    and BalanceTransactionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.
         ///Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>
@@ -128,9 +128,9 @@ module StripeService =
             $"/v1/balance_transactions/{id}"
             |> this.RestApiClient.GetAsync<BalanceTransaction>
 
-    and BankAccountService(?apiKey: string) = 
+    and BankAccountService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Update a specified source for a given customer.</p>
         member this.UpdateForCustomer ((parameters: PostCustomersCustomerSourcesIdParams), customer: string, id: string) =
@@ -158,18 +158,18 @@ module StripeService =
             $"/v1/accounts/{account}/external_accounts/{id}"
             |> this.RestApiClient.DeleteAsync<DeletedExternalAccount>
 
-    and BillingPortalSessionService(?apiKey: string) = 
+    and BillingPortalSessionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a session of the customer portal.</p>
         member this.Create ((parameters: PostBillingPortalSessionsParams)) =
             $"/v1/billing_portal/sessions"
             |> this.RestApiClient.PostAsync<_, BillingPortalSession> parameters
 
-    and BitcoinReceiverService(?apiKey: string) = 
+    and BitcoinReceiverService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your receivers. Receivers are returned sorted by creation date, with the most recently created receivers appearing first.</p>
         member this.List (?active: bool, ?endingBefore: string, ?expand: string list, ?filled: bool, ?limit: int, ?startingAfter: string, ?uncapturedFunds: bool) =
@@ -181,18 +181,18 @@ module StripeService =
             $"/v1/bitcoin/receivers/{id}"
             |> this.RestApiClient.GetAsync<BitcoinReceiver>
 
-    and BitcoinTransactionService(?apiKey: string) = 
+    and BitcoinTransactionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>List bitcoin transacitons for a given receiver.</p>
         member this.List (receiver: string, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/bitcoin/receivers/{receiver}/transactions"
             |> this.RestApiClient.GetAsync<BitcoinTransaction>
 
-    and CapabilityService(?apiKey: string) = 
+    and CapabilityService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
         member this.ListForAccount (account: string, ?expand: string list) =
@@ -209,9 +209,9 @@ module StripeService =
             $"/v1/accounts/{account}/capabilities/{capability}"
             |> this.RestApiClient.PostAsync<_, Capability> parameters
 
-    and CardService(?apiKey: string) = 
+    and CardService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Update a specified source for a given customer.</p>
         member this.UpdateForCustomer ((parameters: PostCustomersCustomerSourcesIdParams), customer: string, id: string) =
@@ -234,9 +234,9 @@ module StripeService =
             $"/v1/accounts/{account}/external_accounts/{id}"
             |> this.RestApiClient.DeleteAsync<DeletedExternalAccount>
 
-    and ChargeService(?apiKey: string) = 
+    and ChargeService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string, ?transferGroup: string) =
@@ -264,9 +264,9 @@ module StripeService =
             $"/v1/charges/{charge}/capture"
             |> this.RestApiClient.PostAsync<_, Charge> parameters
 
-    and CheckoutSessionService(?apiKey: string) = 
+    and CheckoutSessionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of Checkout Sessions.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string, ?subscription: string) =
@@ -283,9 +283,9 @@ module StripeService =
             $"/v1/checkout/sessions"
             |> this.RestApiClient.PostAsync<_, CheckoutSession> parameters
 
-    and CountrySpecService(?apiKey: string) = 
+    and CountrySpecService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Lists all Country Spec objects available in the API.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -297,9 +297,9 @@ module StripeService =
             $"/v1/country_specs/{country}"
             |> this.RestApiClient.GetAsync<CountrySpec>
 
-    and CouponService(?apiKey: string) = 
+    and CouponService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your coupons.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -327,9 +327,9 @@ module StripeService =
             $"/v1/coupons/{coupon}"
             |> this.RestApiClient.DeleteAsync<DeletedCoupon>
 
-    and CreditNoteService(?apiKey: string) = 
+    and CreditNoteService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Issue a credit note to adjust the amount of a finalized invoice. For a <code>status=open</code> invoice, a credit note reduces
         ///its <code>amount_due</code>. For a <code>status=paid</code> invoice, a credit note does not affect its <code>amount_due</code>. Instead, it can result
@@ -376,18 +376,18 @@ module StripeService =
             $"/v1/credit_notes/preview/lines"
             |> this.RestApiClient.GetAsync<CreditNoteLineItem>
 
-    and CreditNoteLineItemService(?apiKey: string) = 
+    and CreditNoteLineItemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>When retrieving a credit note, you’ll get a <strong>lines</strong> property containing the the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.List (creditNote: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/credit_notes/{creditNote}/lines"
             |> this.RestApiClient.GetAsync<CreditNoteLineItem>
 
-    and CustomerService(?apiKey: string) = 
+    and CustomerService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
         member this.List (?created: int, ?email: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -420,9 +420,9 @@ module StripeService =
             $"/v1/customers/{customer}/discount"
             |> this.RestApiClient.DeleteAsync<DeletedDiscount>
 
-    and CustomerBalanceTransactionService(?apiKey: string) = 
+    and CustomerBalanceTransactionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves a specific customer balance transaction that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
         member this.Retrieve (customer: string, transaction: string, ?expand: string list) =
@@ -444,9 +444,9 @@ module StripeService =
             $"/v1/customers/{customer}/balance_transactions/{transaction}"
             |> this.RestApiClient.PostAsync<_, CustomerBalanceTransaction> parameters
 
-    and DisputeService(?apiKey: string) = 
+    and DisputeService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your disputes.</p>
         member this.List (?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string) =
@@ -470,9 +470,9 @@ module StripeService =
             $"/v1/disputes/{dispute}/close"
             |> this.RestApiClient.PostAsync<_, Dispute> parameters
 
-    and EphemeralKeyService(?apiKey: string) = 
+    and EphemeralKeyService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a short-lived API key for a given resource.</p>
         member this.Create ((parameters: PostEphemeralKeysParams)) =
@@ -484,9 +484,9 @@ module StripeService =
             $"/v1/ephemeral_keys/{key}"
             |> this.RestApiClient.DeleteAsync<EphemeralKey>
 
-    and EventService(?apiKey: string) = 
+    and EventService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="/docs/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header).</p>
         member this.List (?created: int, ?deliverySuccess: bool, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?``type``: string, ?types: string list) =
@@ -498,9 +498,9 @@ module StripeService =
             $"/v1/events/{id}"
             |> this.RestApiClient.GetAsync<Event>
 
-    and ExchangeRateService(?apiKey: string) = 
+    and ExchangeRateService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of objects that contain the rates at which foreign currencies are converted to one another. Only shows the currencies for which Stripe supports.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -512,9 +512,9 @@ module StripeService =
             $"/v1/exchange_rates/{rateId}"
             |> this.RestApiClient.GetAsync<ExchangeRate>
 
-    and ExternalAccountService(?apiKey: string) = 
+    and ExternalAccountService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>List external accounts for an account.</p>
         member this.ListForAccount (account: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -542,9 +542,9 @@ module StripeService =
             $"/v1/accounts/{account}/external_accounts/{id}"
             |> this.RestApiClient.DeleteAsync<DeletedExternalAccount>
 
-    and FeeRefundService(?apiKey: string) = 
+    and FeeRefundService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Refunds an application fee that has previously been collected but not yet refunded.
         ///Funds will be refunded to the Stripe account from which the fee was originally collected.
@@ -573,9 +573,9 @@ module StripeService =
             $"/v1/application_fees/{fee}/refunds/{id}"
             |> this.RestApiClient.PostAsync<_, FeeRefund> parameters
 
-    and FileService(?apiKey: string) = 
+    and FileService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of the files that your account has access to. The files are returned sorted by creation date, with the most recently created files appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?purpose: string, ?startingAfter: string) =
@@ -593,9 +593,9 @@ module StripeService =
             $"/v1/files"
             |> this.RestApiClient.PostWithoutAsync<File>
 
-    and FileLinkService(?apiKey: string) = 
+    and FileLinkService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the file link with the given ID.</p>
         member this.Retrieve (link: string, ?expand: string list) =
@@ -617,9 +617,9 @@ module StripeService =
             $"/v1/file_links"
             |> this.RestApiClient.GetAsync<FileLink>
 
-    and InvoiceService(?apiKey: string) = 
+    and InvoiceService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
         member this.List (?collectionMethod: string, ?created: int, ?customer: string, ?dueDate: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?subscription: string) =
@@ -688,9 +688,9 @@ module StripeService =
             $"/v1/invoices/{invoice}/void"
             |> this.RestApiClient.PostAsync<_, Invoice> parameters
 
-    and InvoiceitemService(?apiKey: string) = 
+    and InvoiceitemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?invoice: string, ?limit: int, ?pending: bool, ?startingAfter: string) =
@@ -717,9 +717,9 @@ module StripeService =
             $"/v1/invoiceitems/{invoiceitem}"
             |> this.RestApiClient.DeleteAsync<DeletedInvoiceitem>
 
-    and IssuerFraudRecordService(?apiKey: string) = 
+    and IssuerFraudRecordService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of issuer fraud records.</p>
         member this.List (?charge: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -732,9 +732,9 @@ module StripeService =
             $"/v1/issuer_fraud_records/{issuerFraudRecord}"
             |> this.RestApiClient.GetAsync<IssuerFraudRecord>
 
-    and IssuingAuthorizationService(?apiKey: string) = 
+    and IssuingAuthorizationService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
@@ -761,9 +761,9 @@ module StripeService =
             $"/v1/issuing/authorizations/{authorization}/decline"
             |> this.RestApiClient.PostAsync<_, IssuingAuthorization> parameters
 
-    and IssuingCardService(?apiKey: string) = 
+    and IssuingCardService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?cardholder: string, ?created: int, ?endingBefore: string, ?expMonth: int, ?expYear: int, ?expand: string list, ?last4: string, ?limit: int, ?startingAfter: string, ?status: string, ?``type``: string) =
@@ -785,9 +785,9 @@ module StripeService =
             $"/v1/issuing/cards/{card}"
             |> this.RestApiClient.PostAsync<_, IssuingCard> parameters
 
-    and IssuingCardholderService(?apiKey: string) = 
+    and IssuingCardholderService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?created: int, ?email: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?phoneNumber: string, ?startingAfter: string, ?status: string, ?``type``: string) =
@@ -809,9 +809,9 @@ module StripeService =
             $"/v1/issuing/cardholders/{cardholder}"
             |> this.RestApiClient.PostAsync<_, IssuingCardholder> parameters
 
-    and IssuingDisputeService(?apiKey: string) = 
+    and IssuingDisputeService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?transaction: string) =
@@ -838,9 +838,9 @@ module StripeService =
             $"/v1/issuing/disputes/{dispute}/submit"
             |> this.RestApiClient.PostAsync<_, IssuingDispute> parameters
 
-    and IssuingTransactionService(?apiKey: string) = 
+    and IssuingTransactionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -857,27 +857,27 @@ module StripeService =
             $"/v1/issuing/transactions/{transaction}"
             |> this.RestApiClient.PostAsync<_, IssuingTransaction> parameters
 
-    and ItemService(?apiKey: string) = 
+    and ItemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>When retrieving a Checkout Session, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.ListForCheckout (session: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/checkout/sessions/{session}/line_items"
             |> this.RestApiClient.GetAsync<Item>
 
-    and LineItemService(?apiKey: string) = 
+    and LineItemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>When retrieving an invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.ListForInvoice (invoice: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/invoices/{invoice}/lines"
             |> this.RestApiClient.GetAsync<LineItem>
 
-    and LoginLinkService(?apiKey: string) = 
+    and LoginLinkService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a single-use login link for an Express account to access their Stripe dashboard.
         ///<strong>You may only create login links for <a href="/docs/connect/express-accounts">Express accounts</a> connected to your platform</strong>.</p>
@@ -885,18 +885,18 @@ module StripeService =
             $"/v1/accounts/{account}/login_links"
             |> this.RestApiClient.PostAsync<_, LoginLink> parameters
 
-    and MandateService(?apiKey: string) = 
+    and MandateService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves a Mandate object.</p>
         member this.Retrieve (mandate: string, ?expand: string list) =
             $"/v1/mandates/{mandate}"
             |> this.RestApiClient.GetAsync<Mandate>
 
-    and OrderService(?apiKey: string) = 
+    and OrderService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a new order object.</p>
         member this.Create ((parameters: PostOrdersParams)) =
@@ -928,9 +928,9 @@ module StripeService =
             $"/v1/orders/{id}/returns"
             |> this.RestApiClient.PostAsync<_, OrderReturn> parameters
 
-    and OrderReturnService(?apiKey: string) = 
+    and OrderReturnService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your order returns. The returns are returned sorted by creation date, with the most recently created return appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?order: string, ?startingAfter: string) =
@@ -942,9 +942,9 @@ module StripeService =
             $"/v1/order_returns/{id}"
             |> this.RestApiClient.GetAsync<OrderReturn>
 
-    and PaymentIntentService(?apiKey: string) = 
+    and PaymentIntentService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a PaymentIntent object.
         ///After the PaymentIntent is created, attach a payment method and <a href="/docs/api/payment_intents/confirm">confirm</a>
@@ -1019,9 +1019,9 @@ module StripeService =
             $"/v1/payment_intents/{intent}/capture"
             |> this.RestApiClient.PostAsync<_, PaymentIntent> parameters
 
-    and PaymentMethodService(?apiKey: string) = 
+    and PaymentMethodService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
         member this.Create ((parameters: PostPaymentMethodsParams)) =
@@ -1061,9 +1061,9 @@ module StripeService =
             $"/v1/payment_methods/{paymentMethod}/detach"
             |> this.RestApiClient.PostAsync<_, PaymentMethod> parameters
 
-    and PaymentSourceService(?apiKey: string) = 
+    and PaymentSourceService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>List sources for a specified customer.</p>
         member this.ListForCustomer (customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?object: string, ?startingAfter: string) =
@@ -1083,9 +1083,9 @@ module StripeService =
             $"/v1/customers/{customer}/sources"
             |> this.RestApiClient.PostAsync<_, PaymentSource> parameters
 
-    and PayoutService(?apiKey: string) = 
+    and PayoutService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the details of an existing payout. Supply the unique payout ID from either a payout creation request or the payout list, and Stripe will return the corresponding payout information.</p>
         member this.Retrieve (payout: string, ?expand: string list) =
@@ -1120,9 +1120,9 @@ module StripeService =
             $"/v1/payouts/{payout}/reverse"
             |> this.RestApiClient.PostAsync<_, Payout> parameters
 
-    and PersonService(?apiKey: string) = 
+    and PersonService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
         member this.ListForAccount (account: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?relationship: Map<string, string>, ?startingAfter: string) =
@@ -1149,9 +1149,9 @@ module StripeService =
             $"/v1/accounts/{account}/persons/{person}"
             |> this.RestApiClient.DeleteAsync<DeletedPerson>
 
-    and PlanService(?apiKey: string) = 
+    and PlanService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your plans.</p>
         member this.List (?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?product: string, ?startingAfter: string) =
@@ -1178,9 +1178,9 @@ module StripeService =
             $"/v1/plans/{plan}"
             |> this.RestApiClient.DeleteAsync<DeletedPlan>
 
-    and PriceService(?apiKey: string) = 
+    and PriceService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your prices.</p>
         member this.List (?active: bool, ?created: int, ?currency: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKeys: string list, ?product: string, ?recurring: Map<string, string>, ?startingAfter: string, ?``type``: string) =
@@ -1202,9 +1202,9 @@ module StripeService =
             $"/v1/prices/{price}"
             |> this.RestApiClient.PostAsync<_, Price> parameters
 
-    and ProductService(?apiKey: string) = 
+    and ProductService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a new product object.</p>
         member this.Create ((parameters: PostProductsParams)) =
@@ -1231,9 +1231,9 @@ module StripeService =
             $"/v1/products/{id}"
             |> this.RestApiClient.DeleteAsync<DeletedProduct>
 
-    and PromotionCodeService(?apiKey: string) = 
+    and PromotionCodeService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the promotion code with the given ID.</p>
         member this.Retrieve (promotionCode: string, ?expand: string list) =
@@ -1255,9 +1255,9 @@ module StripeService =
             $"/v1/promotion_codes"
             |> this.RestApiClient.GetAsync<PromotionCode>
 
-    and RadarEarlyFraudWarningService(?apiKey: string) = 
+    and RadarEarlyFraudWarningService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of early fraud warnings.</p>
         member this.List (?charge: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1270,9 +1270,9 @@ module StripeService =
             $"/v1/radar/early_fraud_warnings/{earlyFraudWarning}"
             |> this.RestApiClient.GetAsync<RadarEarlyFraudWarning>
 
-    and RadarValueListService(?apiKey: string) = 
+    and RadarValueListService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?alias: string, ?contains: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1299,9 +1299,9 @@ module StripeService =
             $"/v1/radar/value_lists/{valueList}"
             |> this.RestApiClient.DeleteAsync<DeletedRadarValueList>
 
-    and RadarValueListItemService(?apiKey: string) = 
+    and RadarValueListItemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (valueList: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?value: string) =
@@ -1323,9 +1323,9 @@ module StripeService =
             $"/v1/radar/value_list_items/{item}"
             |> this.RestApiClient.DeleteAsync<DeletedRadarValueListItem>
 
-    and RecipientService(?apiKey: string) = 
+    and RecipientService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your recipients. The recipients are returned sorted by creation date, with the most recently created recipients appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?``type``: string, ?verified: bool) =
@@ -1356,9 +1356,9 @@ module StripeService =
             $"/v1/recipients/{id}"
             |> this.RestApiClient.DeleteAsync<DeletedRecipient>
 
-    and RefundService(?apiKey: string) = 
+    and RefundService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of all refunds you’ve previously created. The refunds are returned in sorted order, with the most recent refunds appearing first. For convenience, the 10 most recent refunds are always available by default on the charge object.</p>
         member this.List (?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string) =
@@ -1381,9 +1381,9 @@ module StripeService =
             $"/v1/refunds/{refund}"
             |> this.RestApiClient.PostAsync<_, Refund> parameters
 
-    and ReportingReportRunService(?apiKey: string) = 
+    and ReportingReportRunService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the details of an existing Report Run. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         member this.Retrieve (reportRun: string, ?expand: string list) =
@@ -1400,9 +1400,9 @@ module StripeService =
             $"/v1/reporting/report_runs"
             |> this.RestApiClient.GetAsync<ReportingReportRun>
 
-    and ReportingReportTypeService(?apiKey: string) = 
+    and ReportingReportTypeService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the details of a Report Type. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         member this.Retrieve (reportType: string, ?expand: string list) =
@@ -1414,9 +1414,9 @@ module StripeService =
             $"/v1/reporting/report_types"
             |> this.RestApiClient.GetAsync<ReportingReportType>
 
-    and ReviewService(?apiKey: string) = 
+    and ReviewService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1433,9 +1433,9 @@ module StripeService =
             $"/v1/reviews/{review}/approve"
             |> this.RestApiClient.PostAsync<_, Review> parameters
 
-    and ScheduledQueryRunService(?apiKey: string) = 
+    and ScheduledQueryRunService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of scheduled query runs.</p>
         member this.ListForSigma (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1447,18 +1447,18 @@ module StripeService =
             $"/v1/sigma/scheduled_query_runs/{scheduledQueryRun}"
             |> this.RestApiClient.GetAsync<ScheduledQueryRun>
 
-    and SetupAttemptService(?apiKey: string) = 
+    and SetupAttemptService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of SetupAttempts associated with a provided SetupIntent.</p>
         member this.List (setupIntent: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/setup_attempts"
             |> this.RestApiClient.GetAsync<SetupAttempt>
 
-    and SetupIntentService(?apiKey: string) = 
+    and SetupIntentService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a SetupIntent object.
         ///After the SetupIntent is created, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
@@ -1505,9 +1505,9 @@ module StripeService =
             $"/v1/setup_intents/{intent}/cancel"
             |> this.RestApiClient.PostAsync<_, SetupIntent> parameters
 
-    and SkuService(?apiKey: string) = 
+    and SkuService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the details of an existing SKU. Supply the unique SKU identifier from either a SKU creation request or from the product, and Stripe will return the corresponding SKU information.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -1535,9 +1535,9 @@ module StripeService =
             $"/v1/skus/{id}"
             |> this.RestApiClient.DeleteAsync<DeletedSku>
 
-    and SourceService(?apiKey: string) = 
+    and SourceService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Delete a specified source for a given customer.</p>
         member this.DetachForCustomer ((parameters: DeleteCustomersCustomerSourcesIdParams), customer: string, id: string) =
@@ -1570,9 +1570,9 @@ module StripeService =
             $"/v1/sources/{source}/source_transactions"
             |> this.RestApiClient.GetAsync<SourceTransaction>
 
-    and SubscriptionService(?apiKey: string) = 
+    and SubscriptionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
         member this.List (?collectionMethod: string, ?created: int, ?currentPeriodEnd: int, ?currentPeriodStart: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?plan: string, ?price: string, ?startingAfter: string, ?status: string) =
@@ -1606,9 +1606,9 @@ module StripeService =
             $"/v1/subscriptions/{subscriptionExposedId}/discount"
             |> this.RestApiClient.DeleteAsync<DeletedDiscount>
 
-    and SubscriptionItemService(?apiKey: string) = 
+    and SubscriptionItemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your subscription items for a given subscription.</p>
         member this.List (subscription: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
@@ -1641,9 +1641,9 @@ module StripeService =
             $"/v1/subscription_items/{subscriptionItem}/usage_record_summaries"
             |> this.RestApiClient.GetAsync<UsageRecordSummary>
 
-    and SubscriptionScheduleService(?apiKey: string) = 
+    and SubscriptionScheduleService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the list of your subscription schedules.</p>
         member this.List (?canceledAt: int, ?completedAt: int, ?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?releasedAt: int, ?scheduled: bool, ?startingAfter: string) =
@@ -1675,9 +1675,9 @@ module StripeService =
             $"/v1/subscription_schedules/{schedule}/release"
             |> this.RestApiClient.PostAsync<_, SubscriptionSchedule> parameters
 
-    and TaxIdService(?apiKey: string) = 
+    and TaxIdService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a new <code>TaxID</code> object for a customer.</p>
         member this.CreateForCustomer ((parameters: PostCustomersCustomerTaxIdsParams), customer: string) =
@@ -1699,9 +1699,9 @@ module StripeService =
             $"/v1/customers/{customer}/tax_ids/{id}"
             |> this.RestApiClient.DeleteAsync<DeletedTaxId>
 
-    and TaxRateService(?apiKey: string) = 
+    and TaxRateService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.</p>
         member this.List (?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?inclusive: bool, ?limit: int, ?startingAfter: string) =
@@ -1723,18 +1723,18 @@ module StripeService =
             $"/v1/tax_rates/{taxRate}"
             |> this.RestApiClient.PostAsync<_, TaxRate> parameters
 
-    and TerminalConnectionTokenService(?apiKey: string) = 
+    and TerminalConnectionTokenService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.</p>
         member this.Create ((parameters: PostTerminalConnectionTokensParams)) =
             $"/v1/terminal/connection_tokens"
             |> this.RestApiClient.PostAsync<_, TerminalConnectionToken> parameters
 
-    and TerminalLocationService(?apiKey: string) = 
+    and TerminalLocationService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves a <code>Location</code> object.</p>
         member this.Retrieve (location: string, ?expand: string list) =
@@ -1761,9 +1761,9 @@ module StripeService =
             $"/v1/terminal/locations/{location}"
             |> this.RestApiClient.DeleteAsync<DeletedTerminalLocation>
 
-    and TerminalReaderService(?apiKey: string) = 
+    and TerminalReaderService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Updates a <code>Reader</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         member this.Update ((parameters: PostTerminalReadersReaderParams), reader: string) =
@@ -1790,9 +1790,9 @@ module StripeService =
             $"/v1/terminal/readers/{reader}"
             |> this.RestApiClient.DeleteAsync<DeletedTerminalReader>
 
-    and ThreeDSecureService(?apiKey: string) = 
+    and ThreeDSecureService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves a 3D Secure object.</p>
         member this.RetrieveFor3dSecure (threeDSecure: string, ?expand: string list) =
@@ -1804,9 +1804,9 @@ module StripeService =
             $"/v1/3d_secure"
             |> this.RestApiClient.PostAsync<_, ThreeDSecure> parameters
 
-    and TokenService(?apiKey: string) = 
+    and TokenService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Retrieves the token with the given ID.</p>
         member this.Retrieve (token: string, ?expand: string list) =
@@ -1819,9 +1819,9 @@ module StripeService =
             $"/v1/tokens"
             |> this.RestApiClient.PostAsync<_, Token> parameters
 
-    and TopupService(?apiKey: string) = 
+    and TopupService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Top up the balance of an account</p>
         member this.Create ((parameters: PostTopupsParams)) =
@@ -1848,9 +1848,9 @@ module StripeService =
             $"/v1/topups/{topup}/cancel"
             |> this.RestApiClient.PostAsync<_, Topup> parameters
 
-    and TransferService(?apiKey: string) = 
+    and TransferService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>To send funds from your Stripe account to a connected account, you create a new transfer object. Your <a href="#balance">Stripe balance</a> must be able to cover the transfer amount, or you’ll receive an “Insufficient Funds” error.</p>
         member this.Create ((parameters: PostTransfersParams)) =
@@ -1873,9 +1873,9 @@ module StripeService =
             $"/v1/transfers/{transfer}"
             |> this.RestApiClient.PostAsync<_, Transfer> parameters
 
-    and TransferReversalService(?apiKey: string) = 
+    and TransferReversalService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>When you create a new reversal, you must specify a transfer to create it on.
         ///When reversing transfers, you can optionally reverse part of the transfer. You can do so as many times as you wish until the entire transfer has been reversed.
@@ -1900,9 +1900,9 @@ module StripeService =
             $"/v1/transfers/{transfer}/reversals/{id}"
             |> this.RestApiClient.PostAsync<_, TransferReversal> parameters
 
-    and UsageRecordService(?apiKey: string) = 
+    and UsageRecordService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Creates a usage record for a specified subscription item and date, and fills it with a quantity.
         ///Usage records provide <code>quantity</code> information that Stripe uses to track how much a customer is using your service. With usage information and the pricing model set up by the <a href="https://stripe.com/docs/billing/subscriptions/metered-billing">metered billing</a> plan, Stripe helps you send accurate invoices to your customers.
@@ -1912,9 +1912,9 @@ module StripeService =
             $"/v1/subscription_items/{subscriptionItem}/usage_records"
             |> this.RestApiClient.PostAsync<_, UsageRecord> parameters
 
-    and UsageRecordSummaryService(?apiKey: string) = 
+    and UsageRecordSummaryService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>For the specified subscription item, returns a list of summary objects. Each object in the list provides usage information that’s been summarized from multiple usage records and over a subscription billing period (e.g., 15 usage records in the month of September).
         ///The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
@@ -1922,9 +1922,9 @@ module StripeService =
             $"/v1/subscription_items/{subscriptionItem}/usage_record_summaries"
             |> this.RestApiClient.GetAsync<UsageRecordSummary>
 
-    and WebhookEndpointService(?apiKey: string) = 
+    and WebhookEndpointService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
-        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)
+        member _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)
 
         ///<p>Returns a list of your webhook endpoints.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =

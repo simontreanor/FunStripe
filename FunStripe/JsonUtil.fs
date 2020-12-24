@@ -1,6 +1,7 @@
 namespace FunStripe
 
 open FSharp.Json
+open Microsoft.FSharp.Reflection
 open System.Linq
 
 module JsonUtil =
@@ -48,3 +49,23 @@ module JsonUtil =
             match name with
             | Some n -> n
             | None -> config.jsonFieldNaming key
+
+    let getUnionCaseFromString<'a> (value: string) =
+        typeof<'a>.UnderlyingSystemType.GetProperties()
+        |> Array.map(fun pi ->
+            pi.GetMethod.GetCustomAttributes(typeof<JsonField>, false).Cast<JsonField>()
+            |> Seq.map(fun jf -> (pi.Name, jf.Name))
+            |> Seq.tryExactlyOne
+        )
+        |> Array.choose id
+        |> Array.tryFind(fun (_, jsonFieldName) -> jsonFieldName = value)
+        |> Option.bind(fun (propertyName, _) ->
+            match FSharpType.GetUnionCases typeof<'a> |> Array.filter (fun c -> c.Name = propertyName) with
+            | [|c|] -> Some (FSharpValue.MakeUnion(c, [||]) :?> 'a)
+            | _ -> None
+        )
+ 
+    ///Converts a string option to a strongly-typed union case, or a default strongly-typed value
+    let optionToUnionCaseOr<'a> (defaultValue: 'a) (s: string option) =
+        s |> Option.bind getUnionCaseFromString<'a> |> Option.defaultValue (defaultValue)
+

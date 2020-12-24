@@ -7,7 +7,6 @@
     <ProjectReference Include="..\FunStripe\FunStripe.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncResult.fs" />
     <Compile Include="Config.fs" />
     <Compile Include="Tests.fs" />
   </ItemGroup>

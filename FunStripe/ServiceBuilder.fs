@@ -142,8 +142,8 @@ module ServiceBuilder =
                 else
                     "and"
 
-            sb |> write $"\t{keyword} {name'}Service(?apiKey: string) = \n"
-            sb |> write "\t\tmember _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey)\n"
+            sb |> write $"\t{keyword} {name'}Service(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = \n"
+            sb |> write "\t\tmember _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)\n"
 
             methodOperationPaths
             |> Array.iter (fun (method, operation, path) ->
