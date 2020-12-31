@@ -2,6 +2,8 @@ namespace FunStripe
 
 open FSharp.Json
 
+open FunStripe.JsonUtil
+
 module StripeModel =
 
     ///This is an object representing a Stripe account. You can retrieve it to see
@@ -79,9 +81,9 @@ module StripeModel =
 
     and AccountBrandingSettings = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px.
-        Icon: AccountBrandingSettingsIcon'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<AccountBrandingSettingsIcon'AnyOf>>)>]Icon: AccountBrandingSettingsIcon'AnyOf option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A logo for the account that will be used in Checkout instead of the icon and without the account's name next to it if provided. Must be at least 128px x 128px.
-        Logo: AccountBrandingSettingsLogo'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<AccountBrandingSettingsLogo'AnyOf>>)>]Logo: AccountBrandingSettingsLogo'AnyOf option
         ///A CSS hex color value representing the primary branding color for this account
         PrimaryColor: string option
         ///A CSS hex color value representing the secondary branding color for this account
@@ -145,15 +147,15 @@ module StripeModel =
         ///The status of the OXXO payments capability of the account, or whether the account can directly process OXXO charges.
         OxxoPayments: AccountCapabilitiesOxxoPayments option
         ///The status of the P24 payments capability of the account, or whether the account can directly process P24 charges.
-        [<JsonField("p24_payments")>]P24Payments: AccountCapabilitiesP24Payments option
+        [<JsonField(Name="p24_payments")>]P24Payments: AccountCapabilitiesP24Payments option
         ///The status of the SEPA Direct Debits payments capability of the account, or whether the account can directly process SEPA Direct Debits charges.
         SepaDebitPayments: AccountCapabilitiesSepaDebitPayments option
         ///The status of the Sofort payments capability of the account, or whether the account can directly process Sofort charges.
         SofortPayments: AccountCapabilitiesSofortPayments option
         ///The status of the tax reporting 1099-K (US) capability of the account.
-        [<JsonField("tax_reporting_us_1099_k")>]TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
+        [<JsonField(Name="tax_reporting_us_1099_k")>]TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
         ///The status of the tax reporting 1099-MISC (US) capability of the account.
-        [<JsonField("tax_reporting_us_1099_misc")>]TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
+        [<JsonField(Name="tax_reporting_us_1099_misc")>]TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
         ///The status of the transfers capability of the account, or whether your platform can transfer funds to the account.
         Transfers: AccountCapabilitiesTransfers option
     }
@@ -447,9 +449,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: string option
         ///Address line 1 (e.g., street, PO Box, or company name).
-        [<JsonField("line1")>]Line1: string option
+        [<JsonField(Name="line1")>]Line1: string option
         ///Address line 2 (e.g., apartment, suite, unit, or building).
-        [<JsonField("line2")>]Line2: string option
+        [<JsonField(Name="line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///State, county, province, or region.
@@ -460,7 +462,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The ID of the customer associated with this Alipay Account.
-        Customer: AlipayAccountCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<AlipayAccountCustomer'AnyOf>>)>]Customer: AlipayAccountCustomer'AnyOf option
         ///Uniquely identifies the account and will be the same across all Alipay account objects that are linked to the same Alipay account.
         Fingerprint: string
         ///Unique identifier for the object.
@@ -553,17 +555,17 @@ module StripeModel =
 
     and ApplicationFee = {
         ///ID of the Stripe account this fee was taken from.
-        Account: ApplicationFeeAccount'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<ApplicationFeeAccount'AnyOf>>)>]Account: ApplicationFeeAccount'AnyOf
         ///Amount earned, in %s.
         Amount: int64
         ///Amount in %s refunded (can be less than the amount attribute on the fee if a partial refund was issued)
         AmountRefunded: int64
         ///ID of the Connect application that earned the fee.
-        Application: ApplicationFeeApplication'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<ApplicationFeeApplication'AnyOf>>)>]Application: ApplicationFeeApplication'AnyOf
         ///Balance transaction that describes the impact of this collected application fee on your account balance (not including refunds).
-        BalanceTransaction: ApplicationFeeBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ApplicationFeeBalanceTransaction'AnyOf>>)>]BalanceTransaction: ApplicationFeeBalanceTransaction'AnyOf option
         ///ID of the charge that the application fee was taken from.
-        Charge: ApplicationFeeCharge'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<ApplicationFeeCharge'AnyOf>>)>]Charge: ApplicationFeeCharge'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -573,7 +575,7 @@ module StripeModel =
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///ID of the corresponding charge on the platform account, if this fee was the result of a charge using the `destination` parameter.
-        OriginatingTransaction: ApplicationFeeOriginatingTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ApplicationFeeOriginatingTransaction'AnyOf>>)>]OriginatingTransaction: ApplicationFeeOriginatingTransaction'AnyOf option
         ///Whether the fee has been fully refunded. If the fee is only partially refunded, this attribute will still be false.
         Refunded: bool
         ///A list of refunds that have been applied to the fee.
@@ -690,7 +692,7 @@ module StripeModel =
         ///[Learn more](https://stripe.com/docs/reports/reporting-categories) about how reporting categories can help you understand balance transactions from an accounting perspective.
         ReportingCategory: string
         ///The Stripe object to which this transaction is related.
-        Source: BalanceTransactionSource'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<BalanceTransactionSource'AnyOf>>)>]Source: BalanceTransactionSource'AnyOf option
         ///If the transaction's net funds are available in the Stripe balance yet. Either `available` or `pending`.
         Status: BalanceTransactionStatus
         ///Transaction type: `adjustment`, `advance`, `advance_funding`, `anticipation_repayment`, `application_fee`, `application_fee_refund`, `charge`, `connect_collection_transfer`, `contribution`, `issuing_authorization_hold`, `issuing_authorization_release`, `issuing_dispute`, `issuing_transaction`, `payment`, `payment_failure_refund`, `payment_refund`, `payout`, `payout_cancel`, `payout_failure`, `refund`, `refund_failure`, `reserve_transaction`, `reserved_funds`, `stripe_fee`, `stripe_fx_fee`, `tax_fee`, `topup`, `topup_reversal`, `transfer`, `transfer_cancel`, `transfer_failure`, or `transfer_refund`. [Learn more](https://stripe.com/docs/reports/balance-transaction-types) about balance transaction types and what they represent. If you are looking to classify transactions for accounting purposes, you might want to consider `reporting_category` instead.
@@ -767,7 +769,7 @@ module StripeModel =
     ///Related guide: [Bank Debits and Transfers](https://stripe.com/docs/payments/bank-debits-transfers).
     and BankAccount = {
         ///The ID of the account that the bank account is associated with.
-        Account: BankAccountAccount'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<BankAccountAccount'AnyOf>>)>]Account: BankAccountAccount'AnyOf option
         ///The name of the person or business that owns the bank account.
         AccountHolderName: string option
         ///The type of entity that holds the account. This can be either `individual` or `company`.
@@ -781,7 +783,7 @@ module StripeModel =
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
         Currency: string
         ///The ID of the customer that the bank account is associated with.
-        Customer: BankAccountCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<BankAccountCustomer'AnyOf>>)>]Customer: BankAccountCustomer'AnyOf option
         ///Whether this bank account is the default external account for its currency.
         DefaultForCurrency: bool option
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
@@ -789,7 +791,7 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The last four digits of the bank account number.
-        [<JsonField("last4")>]Last4: string
+        [<JsonField(Name="last4")>]Last4: string
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///The routing transit number for the bank account.
@@ -944,7 +946,7 @@ module StripeModel =
     ///Related guide: [Account capabilities](https://stripe.com/docs/connect/account-capabilities).
     and Capability = {
         ///The account for which the capability enables functionality.
-        Account: CapabilityAccount'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<CapabilityAccount'AnyOf>>)>]Account: CapabilityAccount'AnyOf
         ///The identifier for the capability.
         Id: string
         ///Whether the capability has been requested.
@@ -976,17 +978,17 @@ module StripeModel =
     ///Related guide: [Card Payments with Sources](https://stripe.com/docs/sources/cards).
     and Card = {
         ///The account this card belongs to. This attribute will not be in the card object if the card belongs to a customer or recipient instead.
-        Account: CardAccount'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CardAccount'AnyOf>>)>]Account: CardAccount'AnyOf option
         ///City/District/Suburb/Town/Village.
         AddressCity: string option
         ///Billing address country, if provided when creating card.
         AddressCountry: string option
         ///Address line 1 (Street address/PO Box/Company name).
-        [<JsonField("address_line1")>]AddressLine1: string option
+        [<JsonField(Name="address_line1")>]AddressLine1: string option
         ///If `address_line1` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField("address_line1_check")>]AddressLine1Check: CardAddressLine1Check option
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: CardAddressLine1Check option
         ///Address line 2 (Apartment/Suite/Unit/Building).
-        [<JsonField("address_line2")>]AddressLine2: string option
+        [<JsonField(Name="address_line2")>]AddressLine2: string option
         ///State/County/Province/Region.
         AddressState: string option
         ///ZIP or postal code.
@@ -1002,7 +1004,7 @@ module StripeModel =
         ///Three-letter [ISO code for currency](https://stripe.com/docs/payouts). Only applicable on accounts (not customers or recipients). The card can be used as a transfer destination for funds in this currency.
         Currency: string option
         ///The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead.
-        Customer: CardCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CardCustomer'AnyOf>>)>]Customer: CardCustomer'AnyOf option
         ///If a CVC was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. A result of unchecked indicates that CVC was provided but hasn't been checked yet. Checks are typically performed when attaching a card to a Customer object, or when creating a charge. For more details, see [Check if a card is valid without a charge](https://support.stripe.com/questions/check-if-a-card-is-valid-without-a-charge).
         CvcCheck: CardCvcCheck option
         ///Whether this card is the default external account for its currency.
@@ -1010,7 +1012,7 @@ module StripeModel =
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        [<JsonField("dynamic_last4")>]DynamicLast4: string option
+        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
         ///Two-digit number representing the card's expiration month.
         ExpMonth: int64
         ///Four-digit number representing the card's expiration year.
@@ -1026,13 +1028,13 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField("last4")>]Last4: string
+        [<JsonField(Name="last4")>]Last4: string
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///Cardholder name.
         Name: string option
         ///The recipient that this card belongs to. This attribute will not be in the card object if the card belongs to a customer or account instead.
-        Recipient: CardRecipient'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CardRecipient'AnyOf>>)>]Recipient: CardRecipient'AnyOf option
         ///If the card number is tokenized, this is the method that was used. Can be `android_pay` (includes Google Pay), `apple_pay`, `masterpass`, `visa_checkout`, or null.
         TokenizationMethod: CardTokenizationMethod option
     }
@@ -1114,15 +1116,15 @@ module StripeModel =
         ///Amount in %s refunded (can be less than the amount attribute on the charge if a partial refund was issued).
         AmountRefunded: int64
         ///ID of the Connect application that created the charge.
-        Application: ChargeApplication'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeApplication'AnyOf>>)>]Application: ChargeApplication'AnyOf option
         ///The application fee (if any) for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees) for details.
-        ApplicationFee: ChargeApplicationFee'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeApplicationFee'AnyOf>>)>]ApplicationFee: ChargeApplicationFee'AnyOf option
         ///The amount of the application fee (if any) requested for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees) for details.
         ApplicationFeeAmount: int64 option
         ///Authorization code on the charge.
         AuthorizationCode: string option
         ///ID of the balance transaction that describes the impact of this charge on your account balance (not including refunds or disputes).
-        BalanceTransaction: ChargeBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeBalanceTransaction'AnyOf>>)>]BalanceTransaction: ChargeBalanceTransaction'AnyOf option
         BillingDetails: BillingDetails
         ///The full statement descriptor that is passed to card networks, and that is displayed on your customers' credit card and bank statements. Allows you to see what the statement descriptor looks like after the static and dynamic portions are combined.
         CalculatedStatementDescriptor: string option
@@ -1133,13 +1135,13 @@ module StripeModel =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///ID of the customer this charge is for if one exists.
-        Customer: ChargeCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeCustomer'AnyOf>>)>]Customer: ChargeCustomer'AnyOf option
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.
-        Destination: ChargeDestination'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeDestination'AnyOf>>)>]Destination: ChargeDestination'AnyOf option
         ///Details about the dispute if the charge has been disputed.
-        Dispute: ChargeDispute'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeDispute'AnyOf>>)>]Dispute: ChargeDispute'AnyOf option
         ///Whether the charge has been disputed.
         Disputed: bool
         ///Error code explaining reason for charge failure if available (see [the errors section](https://stripe.com/docs/api#errors) for a list of codes).
@@ -1151,22 +1153,22 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///ID of the invoice this charge is for if one exists.
-        Invoice: ChargeInvoice'AnyOf option
-        [<JsonField("level3")>]Level3: Level3 option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeInvoice'AnyOf>>)>]Invoice: ChargeInvoice'AnyOf option
+        [<JsonField(Name="level3")>]Level3: Level3 option
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
         ///The account (if any) the charge was made on behalf of without triggering an automatic transfer. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers) for details.
-        OnBehalfOf: ChargeOnBehalfOf'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeOnBehalfOf'AnyOf>>)>]OnBehalfOf: ChargeOnBehalfOf'AnyOf option
         ///ID of the order this charge is for if one exists.
-        Order: ChargeOrder'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeOrder'AnyOf>>)>]Order: ChargeOrder'AnyOf option
         ///Details about whether the payment was accepted, and why. See [understanding declines](https://stripe.com/docs/declines) for details.
         Outcome: ChargeOutcome option
         ///`true` if the charge succeeded, or was successfully authorized for later capture.
         Paid: bool
         ///ID of the PaymentIntent associated with this charge, if one exists.
-        PaymentIntent: ChargePaymentIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargePaymentIntent'AnyOf>>)>]PaymentIntent: ChargePaymentIntent'AnyOf option
         ///ID of the payment method used in this charge.
         PaymentMethod: string option
         ///Details about the payment method at the time of the transaction.
@@ -1182,13 +1184,13 @@ module StripeModel =
         ///A list of refunds that have been applied to the charge.
         Refunds: ChargeRefunds
         ///ID of the review associated with this charge if one exists.
-        Review: ChargeReview'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeReview'AnyOf>>)>]Review: ChargeReview'AnyOf option
         ///Shipping information for the charge.
         Shipping: Shipping option
         ///This is a legacy field that will be removed in the future. It contains the Source, Card, or BankAccount object used for the charge. For details about the payment method used for this charge, refer to `payment_method` or `payment_method_details` instead.
         Source: PaymentSource option
         ///The transfer ID which created this charge. Only present if the charge came from another Stripe account. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.
-        SourceTransfer: ChargeSourceTransfer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeSourceTransfer'AnyOf>>)>]SourceTransfer: ChargeSourceTransfer'AnyOf option
         ///For card charges, use `statement_descriptor_suffix` instead. Otherwise, you can use this value as the complete description of a charge on your customers’ statements. Must contain at least one letter, maximum 22 characters.
         StatementDescriptor: string option
         ///Provides information about the charge that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
@@ -1196,7 +1198,7 @@ module StripeModel =
         ///The status of the payment is either `succeeded`, `pending`, or `failed`.
         Status: ChargeStatus
         ///ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter).
-        Transfer: ChargeTransfer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeTransfer'AnyOf>>)>]Transfer: ChargeTransfer'AnyOf option
         ///An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.
         TransferData: ChargeTransferData option
         ///A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
@@ -1298,7 +1300,7 @@ module StripeModel =
         ///Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are between 0 and 100. For non-card payments, card-based payments predating the public assignment of risk scores, or in the event of an error during evaluation, this field will not be present. This field is only available with Radar for Fraud Teams.
         RiskScore: int64 option
         ///The ID of the Radar rule that matched the payment, if applicable.
-        Rule: ChargeOutcomeRule'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeOutcomeRule'AnyOf>>)>]Rule: ChargeOutcomeRule'AnyOf option
         ///A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer.
         SellerMessage: string option
         ///Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://stripe.com/docs/declines) and [Radar reviews](https://stripe.com/docs/radar/reviews) for details.
@@ -1326,7 +1328,7 @@ module StripeModel =
         ///The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
         Amount: int64 option
         ///ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.
-        Destination: ChargeTransferDataDestination'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<ChargeTransferDataDestination'AnyOf>>)>]Destination: ChargeTransferDataDestination'AnyOf
     }
 
     and ChargeTransferDataDestination'AnyOf =
@@ -1365,7 +1367,7 @@ module StripeModel =
     ///will create a new customer object based on information provided
     ///during the session unless an existing customer was provided when
     ///the session was created.
-        Customer: CheckoutSessionCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CheckoutSessionCustomer'AnyOf>>)>]Customer: CheckoutSessionCustomer'AnyOf option
         ///If provided, this value will be used when the Customer object is created.
     ///If not provided, customers will be asked to enter their email address.
     ///Use this parameter to prefill customer data if you already have an email
@@ -1386,7 +1388,7 @@ module StripeModel =
         ///The mode of the Checkout Session.
         Mode: CheckoutSessionMode
         ///The ID of the PaymentIntent for Checkout Sessions in `payment` mode.
-        PaymentIntent: CheckoutSessionPaymentIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CheckoutSessionPaymentIntent'AnyOf>>)>]PaymentIntent: CheckoutSessionPaymentIntent'AnyOf option
         ///A list of the types of payment methods (e.g. card) this Checkout
     ///Session is allowed to accept.
         PaymentMethodTypes: string list
@@ -1394,7 +1396,7 @@ module StripeModel =
     ///You can use this value to decide when to fulfill your customer's order.
         PaymentStatus: CheckoutSessionPaymentStatus
         ///The ID of the SetupIntent for Checkout Sessions in `setup` mode.
-        SetupIntent: CheckoutSessionSetupIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CheckoutSessionSetupIntent'AnyOf>>)>]SetupIntent: CheckoutSessionSetupIntent'AnyOf option
         ///Shipping information for this Checkout Session.
         Shipping: Shipping option
         ///When set, provides configuration for Checkout to collect a shipping address from a customer.
@@ -1405,7 +1407,7 @@ module StripeModel =
     ///in `subscription` or `setup` mode.
         SubmitType: CheckoutSessionSubmitType option
         ///The ID of the subscription for Checkout Sessions in `subscription` mode.
-        Subscription: CheckoutSessionSubscription'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CheckoutSessionSubscription'AnyOf>>)>]Subscription: CheckoutSessionSubscription'AnyOf option
         ///The URL the customer will be directed to after the payment or
     ///subscription creation is successful.
         SuccessUrl: string
@@ -1510,7 +1512,7 @@ module StripeModel =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///ID of the account that funds are being collected for.
-        Destination: ConnectCollectionTransferDestination'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<ConnectCollectionTransferDestination'AnyOf>>)>]Destination: ConnectCollectionTransferDestination'AnyOf
         ///Unique identifier for the object.
         Id: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -1618,9 +1620,9 @@ module StripeModel =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///ID of the customer.
-        Customer: CreditNoteCustomer'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<CreditNoteCustomer'AnyOf>>)>]Customer: CreditNoteCustomer'AnyOf
         ///Customer balance transaction related to this credit note.
-        CustomerBalanceTransaction: CreditNoteCustomerBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CreditNoteCustomerBalanceTransaction'AnyOf>>)>]CustomerBalanceTransaction: CreditNoteCustomerBalanceTransaction'AnyOf option
         ///The integer amount in %s representing the total amount of discount that was credited.
         DiscountAmount: int64
         ///The aggregate amounts calculated per discount for all line items.
@@ -1628,7 +1630,7 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///ID of the invoice.
-        Invoice: CreditNoteInvoice'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<CreditNoteInvoice'AnyOf>>)>]Invoice: CreditNoteInvoice'AnyOf
         ///Line items that make up the credit note
         Lines: CreditNoteLines
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -1646,7 +1648,7 @@ module StripeModel =
         ///Reason for issuing this credit note, one of `duplicate`, `fraudulent`, `order_change`, or `product_unsatisfactory`
         Reason: CreditNoteReason option
         ///Refund related to this credit note.
-        Refund: CreditNoteRefund'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CreditNoteRefund'AnyOf>>)>]Refund: CreditNoteRefund'AnyOf option
         ///Status of this credit note, one of `issued` or `void`. Learn more about [voiding credit notes](https://stripe.com/docs/billing/invoices/credit-notes#voiding).
         Status: CreditNoteStatus
         ///The integer amount in %s representing the amount of the credit note, excluding tax and invoice level discounts.
@@ -1750,7 +1752,7 @@ module StripeModel =
         ///Whether this tax amount is inclusive or exclusive.
         Inclusive: bool
         ///The tax rate that was applied to get this tax amount.
-        TaxRate: CreditNoteTaxAmountTaxRate'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<CreditNoteTaxAmountTaxRate'AnyOf>>)>]TaxRate: CreditNoteTaxAmountTaxRate'AnyOf
     }
 
     and CreditNoteTaxAmountTaxRate'AnyOf =
@@ -1773,7 +1775,7 @@ module StripeModel =
         Currency: string option
         ///ID of the default payment source for the customer.
     ///If you are using payment methods created via the PaymentMethods API, see the [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) field instead.
-        DefaultSource: CustomerDefaultSource'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CustomerDefaultSource'AnyOf>>)>]DefaultSource: CustomerDefaultSource'AnyOf option
         ///When the customer's latest invoice is billed by charging automatically, `delinquent` is `true` if the invoice's latest charge failed. When the customer's latest invoice is billed by sending an invoice, `delinquent` is `true` if the invoice isn't paid by its due date.
     ///If an invoice is marked uncollectible by [dunning](https://stripe.com/docs/billing/automatic-collection), `delinquent` doesn't get reset to `false`.
         Delinquent: bool option
@@ -1887,11 +1889,11 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The ID of the credit note (if any) related to the transaction.
-        CreditNote: CustomerBalanceTransactionCreditNote'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CustomerBalanceTransactionCreditNote'AnyOf>>)>]CreditNote: CustomerBalanceTransactionCreditNote'AnyOf option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///The ID of the customer the transaction belongs to.
-        Customer: CustomerBalanceTransactionCustomer'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<CustomerBalanceTransactionCustomer'AnyOf>>)>]Customer: CustomerBalanceTransactionCustomer'AnyOf
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///The customer's `balance` after the transaction was applied. A negative value decreases the amount due on the customer's next invoice. A positive value increases the amount due on the customer's next invoice.
@@ -1899,7 +1901,7 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The ID of the invoice (if any) related to the transaction.
-        Invoice: CustomerBalanceTransactionInvoice'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<CustomerBalanceTransactionInvoice'AnyOf>>)>]Invoice: CustomerBalanceTransactionInvoice'AnyOf option
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -2023,7 +2025,7 @@ module StripeModel =
         CheckoutSession: string option
         Coupon: Coupon
         ///The ID of the customer associated with this discount.
-        Customer: DeletedDiscountCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DeletedDiscountCustomer'AnyOf>>)>]Customer: DeletedDiscountCustomer'AnyOf option
         ///Always true for a deleted object
         Deleted: bool
         ///The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
@@ -2033,7 +2035,7 @@ module StripeModel =
         ///The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
         InvoiceItem: string option
         ///The promotion code applied to create this discount.
-        PromotionCode: DeletedDiscountPromotionCode'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DeletedDiscountPromotionCode'AnyOf>>)>]PromotionCode: DeletedDiscountPromotionCode'AnyOf option
         ///Date that the coupon was applied.
         Start: int64
         ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
@@ -2236,7 +2238,7 @@ module StripeModel =
         CheckoutSession: string option
         Coupon: Coupon
         ///The ID of the customer associated with this discount.
-        Customer: DiscountCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DiscountCustomer'AnyOf>>)>]Customer: DiscountCustomer'AnyOf option
         ///If the coupon has a duration of `repeating`, the date that this discount will end. If the coupon has a duration of `once` or `forever`, this attribute will be null.
         End: int64 option
         ///The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
@@ -2246,7 +2248,7 @@ module StripeModel =
         ///The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
         InvoiceItem: string option
         ///The promotion code applied to create this discount.
-        PromotionCode: DiscountPromotionCode'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DiscountPromotionCode'AnyOf>>)>]PromotionCode: DiscountPromotionCode'AnyOf option
         ///Date that the coupon was applied.
         Start: int64
         ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
@@ -2269,7 +2271,7 @@ module StripeModel =
         ///The amount, in %s, of the discount.
         Amount: int64
         ///The discount that was applied to get this discount amount.
-        Discount: DiscountsResourceDiscountAmountDiscount'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<DiscountsResourceDiscountAmountDiscount'AnyOf>>)>]Discount: DiscountsResourceDiscountAmountDiscount'AnyOf
     }
 
     and DiscountsResourceDiscountAmountDiscount'AnyOf =
@@ -2289,7 +2291,7 @@ module StripeModel =
         ///List of zero, one, or two balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute.
         BalanceTransactions: BalanceTransaction list
         ///ID of the charge that was disputed.
-        Charge: DisputeCharge'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeCharge'AnyOf>>)>]Charge: DisputeCharge'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -2307,7 +2309,7 @@ module StripeModel =
         ///Network-dependent reason code for the dispute.
         NetworkReasonCode: string option
         ///ID of the PaymentIntent that was disputed.
-        PaymentIntent: DisputePaymentIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputePaymentIntent'AnyOf>>)>]PaymentIntent: DisputePaymentIntent'AnyOf option
         ///Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Read more about [dispute reasons](https://stripe.com/docs/disputes/categories).
         Reason: DisputeReason
         ///Current status of dispute. Possible values are `warning_needs_response`, `warning_under_review`, `warning_closed`, `needs_response`, `under_review`, `charge_refunded`, `won`, or `lost`.
@@ -2357,13 +2359,13 @@ module StripeModel =
         ///The billing address provided by the customer.
         BillingAddress: string option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your subscription cancellation policy, as shown to the customer.
-        CancellationPolicy: DisputeEvidenceCancellationPolicy'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceCancellationPolicy'AnyOf>>)>]CancellationPolicy: DisputeEvidenceCancellationPolicy'AnyOf option
         ///An explanation of how and when the customer was shown your refund policy prior to purchase.
         CancellationPolicyDisclosure: string option
         ///A justification for why the customer's subscription was not canceled.
         CancellationRebuttal: string option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any communication with the customer that you feel is relevant to your case. Examples include emails proving that the customer received the product or service, or demonstrating their use of or satisfaction with the product or service.
-        CustomerCommunication: DisputeEvidenceCustomerCommunication'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceCustomerCommunication'AnyOf>>)>]CustomerCommunication: DisputeEvidenceCustomerCommunication'AnyOf option
         ///The email address of the customer.
         CustomerEmailAddress: string option
         ///The name of the customer.
@@ -2371,9 +2373,9 @@ module StripeModel =
         ///The IP address that the customer used when making the purchase.
         CustomerPurchaseIp: string option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A relevant document or contract showing the customer's signature.
-        CustomerSignature: DisputeEvidenceCustomerSignature'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceCustomerSignature'AnyOf>>)>]CustomerSignature: DisputeEvidenceCustomerSignature'AnyOf option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation for the prior charge that can uniquely identify the charge, such as a receipt, shipping label, work order, etc. This document should be paired with a similar document from the disputed payment that proves the two payments are separate.
-        DuplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceDuplicateChargeDocumentation'AnyOf>>)>]DuplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentation'AnyOf option
         ///An explanation of the difference between the disputed charge versus the prior charge that appears to be a duplicate.
         DuplicateChargeExplanation: string option
         ///The Stripe ID for the prior charge which appears to be a duplicate of the disputed charge.
@@ -2381,9 +2383,9 @@ module StripeModel =
         ///A description of the product or service that was sold.
         ProductDescription: string option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any receipt or message sent to the customer notifying them of the charge.
-        Receipt: DisputeEvidenceReceipt'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceReceipt'AnyOf>>)>]Receipt: DisputeEvidenceReceipt'AnyOf option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your refund policy, as shown to the customer.
-        RefundPolicy: DisputeEvidenceRefundPolicy'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceRefundPolicy'AnyOf>>)>]RefundPolicy: DisputeEvidenceRefundPolicy'AnyOf option
         ///Documentation demonstrating that the customer was shown your refund policy prior to purchase.
         RefundPolicyDisclosure: string option
         ///A justification for why the customer is not entitled to a refund.
@@ -2391,7 +2393,7 @@ module StripeModel =
         ///The date on which the customer received or began receiving the purchased service, in a clear human-readable format.
         ServiceDate: string option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a service was provided to the customer. This could include a copy of a signed contract, work order, or other form of written agreement.
-        ServiceDocumentation: DisputeEvidenceServiceDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceServiceDocumentation'AnyOf>>)>]ServiceDocumentation: DisputeEvidenceServiceDocumentation'AnyOf option
         ///The address to which a physical product was shipped. You should try to include as complete address information as possible.
         ShippingAddress: string option
         ///The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc. If multiple carriers were used for this purchase, please separate them with commas.
@@ -2399,11 +2401,11 @@ module StripeModel =
         ///The date on which a physical product began its route to the shipping address, in a clear human-readable format.
         ShippingDate: string option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a product was shipped to the customer at the same address the customer provided to you. This could include a copy of the shipment receipt, shipping label, etc. It should show the customer's full shipping address, if possible.
-        ShippingDocumentation: DisputeEvidenceShippingDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceShippingDocumentation'AnyOf>>)>]ShippingDocumentation: DisputeEvidenceShippingDocumentation'AnyOf option
         ///The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas.
         ShippingTrackingNumber: string option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any additional evidence or statements.
-        UncategorizedFile: DisputeEvidenceUncategorizedFile'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<DisputeEvidenceUncategorizedFile'AnyOf>>)>]UncategorizedFile: DisputeEvidenceUncategorizedFile'AnyOf option
         ///Any additional evidence or statements.
         UncategorizedText: string option
     }
@@ -2574,13 +2576,13 @@ module StripeModel =
         ///Amount, in %s.
         Amount: int64
         ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: FeeRefundBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<FeeRefundBalanceTransaction'AnyOf>>)>]BalanceTransaction: FeeRefundBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///ID of the application fee that was refunded.
-        Fee: FeeRefundFee'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<FeeRefundFee'AnyOf>>)>]Fee: FeeRefundFee'AnyOf
         ///Unique identifier for the object.
         Id: string
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -2664,7 +2666,7 @@ module StripeModel =
         ///Time at which the link expires.
         ExpiresAt: int64 option
         ///The file object this link points to.
-        File: FileLinkFile'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<FileLinkFile'AnyOf>>)>]File: FileLinkFile'AnyOf
         ///Unique identifier for the object.
         Id: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -2774,7 +2776,7 @@ module StripeModel =
         ///Indicates the reason why the invoice was created. `subscription_cycle` indicates an invoice created by a subscription advancing into a new period. `subscription_create` indicates an invoice created due to creating a subscription. `subscription_update` indicates an invoice created due to updating a subscription. `subscription` is set for all old invoices to indicate either a change to a subscription or a period advancement. `manual` is set for all invoices unrelated to a subscription (for example: created via the invoice editor). The `upcoming` value is reserved for simulated invoices per the upcoming invoice endpoint. `subscription_threshold` indicates an invoice created due to a billing threshold being reached.
         BillingReason: InvoiceBillingReason option
         ///ID of the latest charge generated for this invoice, if any.
-        Charge: InvoiceCharge'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceCharge'AnyOf>>)>]Charge: InvoiceCharge'AnyOf option
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this invoice using the default source attached to the customer. When sending an invoice, Stripe will email this invoice to the customer with payment instructions.
         CollectionMethod: InvoiceCollectionMethod option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -2784,7 +2786,7 @@ module StripeModel =
         ///Custom fields displayed on the invoice.
         CustomFields: InvoiceSettingCustomField list option
         ///The ID of the customer who will be billed.
-        Customer: InvoiceCustomer'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceCustomer'AnyOf>>)>]Customer: InvoiceCustomer'AnyOf
         ///The customer's address. Until the invoice is finalized, this field will equal `customer.address`. Once the invoice is finalized, this field will no longer be updated.
         CustomerAddress: Address option
         ///The customer's email. Until the invoice is finalized, this field will equal `customer.email`. Once the invoice is finalized, this field will no longer be updated.
@@ -2800,9 +2802,9 @@ module StripeModel =
         ///The customer's tax IDs. Until the invoice is finalized, this field will contain the same tax IDs as `customer.tax_ids`. Once the invoice is finalized, this field will no longer be updated.
         CustomerTaxIds: InvoicesResourceInvoiceTaxId list option
         ///ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceDefaultPaymentMethod'AnyOf>>)>]DefaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option
         ///ID of the default payment source for the invoice. It must belong to the customer associated with the invoice and be in a chargeable state. If not set, defaults to the subscription's default source, if any, or to the customer's default source.
-        DefaultSource: InvoiceDefaultSource'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceDefaultSource'AnyOf>>)>]DefaultSource: InvoiceDefaultSource'AnyOf option
         ///The tax rates applied to this invoice, if any.
         DefaultTaxRates: TaxRate list
         ///An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard.
@@ -2838,7 +2840,7 @@ module StripeModel =
         ///Whether payment was successfully collected for this invoice. An invoice can be paid (most commonly) with a charge or with credit from the customer's account balance.
         Paid: bool
         ///The PaymentIntent associated with this invoice. The PaymentIntent is generated when the invoice is finalized, and can then be used to pay the invoice. Note that voiding an invoice will cancel the PaymentIntent.
-        PaymentIntent: InvoicePaymentIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoicePaymentIntent'AnyOf>>)>]PaymentIntent: InvoicePaymentIntent'AnyOf option
         ///End of the usage period during which invoice items were added to this invoice.
         PeriodEnd: int64
         ///Start of the usage period during which invoice items were added to this invoice.
@@ -2857,7 +2859,7 @@ module StripeModel =
         Status: InvoiceStatus option
         StatusTransitions: InvoicesStatusTransitions
         ///The subscription that this invoice was prepared for, if any.
-        Subscription: InvoiceSubscription'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceSubscription'AnyOf>>)>]Subscription: InvoiceSubscription'AnyOf option
         ///Only set for upcoming invoices that preview prorations. The time used to calculate prorations.
         SubscriptionProrationDate: int64 option
         ///Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied. Item discounts are already incorporated
@@ -2980,7 +2982,7 @@ module StripeModel =
         ///Default custom fields to be displayed on invoices for this customer.
         CustomFields: InvoiceSettingCustomField list option
         ///ID of a payment method that's attached to the customer, to be used as the customer's default payment method for subscriptions and invoices.
-        DefaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethod'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceSettingCustomerSettingDefaultPaymentMethod'AnyOf>>)>]DefaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethod'AnyOf option
         ///Default footer to be displayed on invoices for this customer.
         Footer: string option
     }
@@ -3000,7 +3002,7 @@ module StripeModel =
         ///Whether this tax amount is inclusive or exclusive.
         Inclusive: bool
         ///The tax rate that was applied to get this tax amount.
-        TaxRate: InvoiceTaxAmountTaxRate'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceTaxAmountTaxRate'AnyOf>>)>]TaxRate: InvoiceTaxAmountTaxRate'AnyOf
     }
 
     and InvoiceTaxAmountTaxRate'AnyOf =
@@ -3018,7 +3020,7 @@ module StripeModel =
         ///The amount in %s that will be transferred to the destination account when the invoice is paid. By default, the entire amount is transferred to the destination.
         Amount: int64 option
         ///The account where funds from the payment will be transferred to upon payment success.
-        Destination: InvoiceTransferDataDestination'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceTransferDataDestination'AnyOf>>)>]Destination: InvoiceTransferDataDestination'AnyOf
     }
 
     and InvoiceTransferDataDestination'AnyOf =
@@ -3037,7 +3039,7 @@ module StripeModel =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///The ID of the customer who will be billed when this invoice item is billed.
-        Customer: InvoiceitemCustomer'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceitemCustomer'AnyOf>>)>]Customer: InvoiceitemCustomer'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Date: int64
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -3049,7 +3051,7 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The ID of the invoice this invoice item belongs to.
-        Invoice: InvoiceitemInvoice'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceitemInvoice'AnyOf>>)>]Invoice: InvoiceitemInvoice'AnyOf option
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -3064,7 +3066,7 @@ module StripeModel =
         ///Quantity of units for the invoice item. If the invoice item is a proration, the quantity of the subscription that the proration was computed for.
         Quantity: int64
         ///The subscription that this invoice item has been created for, if any.
-        Subscription: InvoiceitemSubscription'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<InvoiceitemSubscription'AnyOf>>)>]Subscription: InvoiceitemSubscription'AnyOf option
         ///The subscription item that this invoice item has been created for, if any.
         SubscriptionItem: string option
         ///The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item.
@@ -3155,7 +3157,7 @@ module StripeModel =
         ///An IFR is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an IFR, in order to avoid receiving a dispute later.
         Actionable: bool
         ///ID of the charge this issuer fraud record is for, optionally expanded.
-        Charge: IssuerFraudRecordCharge'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuerFraudRecordCharge'AnyOf>>)>]Charge: IssuerFraudRecordCharge'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
@@ -3194,7 +3196,7 @@ module StripeModel =
         BalanceTransactions: BalanceTransaction list
         Card: IssuingCard
         ///The cardholder to whom this authorization belongs.
-        Cardholder: IssuingAuthorizationCardholder'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingAuthorizationCardholder'AnyOf>>)>]Cardholder: IssuingAuthorizationCardholder'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -3267,7 +3269,7 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The last 4 digits of the card number.
-        [<JsonField("last4")>]Last4: string
+        [<JsonField(Name="last4")>]Last4: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -3275,9 +3277,9 @@ module StripeModel =
         ///The full unredacted card number. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
         Number: string option
         ///The latest card that replaces this card, if any.
-        ReplacedBy: IssuingCardReplacedBy'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingCardReplacedBy'AnyOf>>)>]ReplacedBy: IssuingCardReplacedBy'AnyOf option
         ///The card this card replaces, if any.
-        ReplacementFor: IssuingCardReplacementFor'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingCardReplacementFor'AnyOf>>)>]ReplacementFor: IssuingCardReplacementFor'AnyOf option
         ///The reason why the previous card needed to be replaced.
         ReplacementReason: IssuingCardReplacementReason option
         ///Where and how the card will be shipped.
@@ -3383,7 +3385,7 @@ module StripeModel =
         ///Current status of the dispute.
         Status: IssuingDisputeStatus option
         ///The transaction being disputed.
-        Transaction: IssuingDisputeTransaction'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeTransaction'AnyOf>>)>]Transaction: IssuingDisputeTransaction'AnyOf
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -3410,19 +3412,19 @@ module StripeModel =
         ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
         AmountDetails: IssuingTransactionAmountDetails option
         ///The `Authorization` object that led to this transaction.
-        Authorization: IssuingTransactionAuthorization'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingTransactionAuthorization'AnyOf>>)>]Authorization: IssuingTransactionAuthorization'AnyOf option
         ///ID of the [balance transaction](https://stripe.com/docs/api/balance_transactions) associated with this transaction.
-        BalanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingTransactionBalanceTransaction'AnyOf>>)>]BalanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option
         ///The card used to make this transaction.
-        Card: IssuingTransactionCard'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingTransactionCard'AnyOf>>)>]Card: IssuingTransactionCard'AnyOf
         ///The cardholder to whom this transaction belongs.
-        Cardholder: IssuingTransactionCardholder'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingTransactionCardholder'AnyOf>>)>]Cardholder: IssuingTransactionCardholder'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///If you've disputed the transaction, the ID of the dispute.
-        Dispute: IssuingTransactionDispute'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingTransactionDispute'AnyOf>>)>]Dispute: IssuingTransactionDispute'AnyOf option
         ///Unique identifier for the object.
         Id: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -3541,7 +3543,7 @@ module StripeModel =
 
     and IssuingAuthorizationVerificationData = {
         ///Whether the cardholder provided an address first line and if it matched the cardholder’s `billing.address.line1`.
-        [<JsonField("address_line1_check")>]AddressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check
         ///Whether the cardholder provided a postal code and if it matched the cardholder’s `billing.address.postal_code`.
         AddressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck
         ///Whether the cardholder provided a CVC and if it matched Stripe’s record.
@@ -5111,9 +5113,9 @@ module StripeModel =
 
     and IssuingCardholderIdDocument = {
         ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Back: IssuingCardholderIdDocumentBack'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingCardholderIdDocumentBack'AnyOf>>)>]Back: IssuingCardholderIdDocumentBack'AnyOf option
         ///The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Front: IssuingCardholderIdDocumentFront'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingCardholderIdDocumentFront'AnyOf>>)>]Front: IssuingCardholderIdDocumentFront'AnyOf option
     }
 
     and IssuingCardholderIdDocumentBack'AnyOf =
@@ -5479,7 +5481,7 @@ module StripeModel =
 
     and IssuingDisputeCanceledEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf>>)>]AdditionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf option
         ///Date when order was canceled.
         CanceledAt: int64 option
         ///Whether the cardholder was provided with a cancellation policy.
@@ -5514,13 +5516,13 @@ module StripeModel =
 
     and IssuingDisputeDuplicateEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeDuplicateEvidenceAdditionalDocumentation'AnyOf>>)>]AdditionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentation'AnyOf option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.
-        CardStatement: IssuingDisputeDuplicateEvidenceCardStatement'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeDuplicateEvidenceCardStatement'AnyOf>>)>]CardStatement: IssuingDisputeDuplicateEvidenceCardStatement'AnyOf option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.
-        CashReceipt: IssuingDisputeDuplicateEvidenceCashReceipt'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeDuplicateEvidenceCashReceipt'AnyOf>>)>]CashReceipt: IssuingDisputeDuplicateEvidenceCashReceipt'AnyOf option
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.
-        CheckImage: IssuingDisputeDuplicateEvidenceCheckImage'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeDuplicateEvidenceCheckImage'AnyOf>>)>]CheckImage: IssuingDisputeDuplicateEvidenceCheckImage'AnyOf option
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         ///Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.
@@ -5566,7 +5568,7 @@ module StripeModel =
 
     and IssuingDisputeFraudulentEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeFraudulentEvidenceAdditionalDocumentation'AnyOf>>)>]AdditionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentation'AnyOf option
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
     }
@@ -5577,7 +5579,7 @@ module StripeModel =
 
     and IssuingDisputeMerchandiseNotAsDescribedEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentation'AnyOf>>)>]AdditionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         ///Date when the product was received.
@@ -5600,7 +5602,7 @@ module StripeModel =
 
     and IssuingDisputeNotReceivedEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf>>)>]AdditionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf option
         ///Date when the cardholder expected to receive the product.
         ExpectedAt: int64 option
         ///Explanation of why the cardholder is disputing this transaction.
@@ -5621,7 +5623,7 @@ module StripeModel =
 
     and IssuingDisputeOtherEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf>>)>]AdditionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf option
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         ///Description of the merchandise or service that was purchased.
@@ -5640,7 +5642,7 @@ module StripeModel =
 
     and IssuingDisputeServiceNotAsDescribedEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf>>)>]AdditionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option
         ///Date when order was canceled.
         CanceledAt: int64 option
         ///Reason for canceling the order.
@@ -5820,13 +5822,13 @@ module StripeModel =
 
     and LegalEntityCompanyVerificationDocument = {
         ///The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
-        Back: LegalEntityCompanyVerificationDocumentBack'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<LegalEntityCompanyVerificationDocumentBack'AnyOf>>)>]Back: LegalEntityCompanyVerificationDocumentBack'AnyOf option
         ///A user-displayable string describing the verification state of this document.
         Details: string option
         ///One of `document_corrupt`, `document_expired`, `document_failed_copy`, `document_failed_greyscale`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_not_readable`, `document_not_uploaded`, `document_type_not_supported`, or `document_too_large`. A machine-readable code specifying the verification state for this document.
         DetailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option
         ///The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.
-        Front: LegalEntityCompanyVerificationDocumentFront'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<LegalEntityCompanyVerificationDocumentFront'AnyOf>>)>]Front: LegalEntityCompanyVerificationDocumentFront'AnyOf option
     }
 
     and LegalEntityCompanyVerificationDocumentBack'AnyOf =
@@ -5868,9 +5870,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: string option
         ///Block/Building number.
-        [<JsonField("line1")>]Line1: string option
+        [<JsonField(Name="line1")>]Line1: string option
         ///Building details.
-        [<JsonField("line2")>]Line2: string option
+        [<JsonField(Name="line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///Prefecture.
@@ -5908,13 +5910,13 @@ module StripeModel =
 
     and LegalEntityPersonVerificationDocument = {
         ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Back: LegalEntityPersonVerificationDocumentBack'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<LegalEntityPersonVerificationDocumentBack'AnyOf>>)>]Back: LegalEntityPersonVerificationDocumentBack'AnyOf option
         ///A user-displayable string describing the verification state of this document. For example, if a document is uploaded and the picture is too fuzzy, this may say "Identity document is too unclear to read".
         Details: string option
         ///One of `document_corrupt`, `document_country_not_supported`, `document_expired`, `document_failed_copy`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_failed_greyscale`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_missing_back`, `document_missing_front`, `document_not_readable`, `document_not_uploaded`, `document_photo_mismatch`, `document_too_large`, or `document_type_not_supported`. A machine-readable code specifying the verification state for this document.
         DetailsCode: LegalEntityPersonVerificationDocumentDetailsCode option
         ///The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
-        Front: LegalEntityPersonVerificationDocumentFront'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<LegalEntityPersonVerificationDocumentFront'AnyOf>>)>]Front: LegalEntityPersonVerificationDocumentFront'AnyOf option
     }
 
     and LegalEntityPersonVerificationDocumentBack'AnyOf =
@@ -6047,7 +6049,7 @@ module StripeModel =
         Livemode: bool
         MultiUse: MandateMultiUse option
         ///ID of the payment method associated with this mandate.
-        PaymentMethod: MandatePaymentMethod'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<MandatePaymentMethod'AnyOf>>)>]PaymentMethod: MandatePaymentMethod'AnyOf
         PaymentMethodDetails: MandatePaymentMethodDetails
         SingleUse: MandateSingleUse option
         ///The status of the mandate, which indicates whether it can be used to initiate a payment.
@@ -6165,13 +6167,13 @@ module StripeModel =
         ///A fee in cents that will be applied to the order and transferred to the application owner’s Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees documentation.
         ApplicationFee: int64 option
         ///The ID of the payment used to pay for the order. Present if the order status is `paid`, `fulfilled`, or `refunded`.
-        Charge: OrderCharge'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<OrderCharge'AnyOf>>)>]Charge: OrderCharge'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///The customer used for the order.
-        Customer: OrderCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<OrderCustomer'AnyOf>>)>]Customer: OrderCustomer'AnyOf option
         ///The email address of the customer placing the order.
         Email: string option
         ///External coupon code to load for this order.
@@ -6245,7 +6247,7 @@ module StripeModel =
         ///Description of the line item, meant to be displayable to the user (e.g., `"Express shipping"`).
         Description: string
         ///The ID of the associated object for this line item. Expandable if not null (e.g., expandable to a SKU).
-        Parent: OrderItemParent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<OrderItemParent'AnyOf>>)>]Parent: OrderItemParent'AnyOf option
         ///A positive integer representing the number of instances of `parent` that are included in this order item. Applicable/present only if `type` is `sku`.
         Quantity: int64 option
         ///The type of line item. One of `sku`, `tax`, `shipping`, or `discount`.
@@ -6282,9 +6284,9 @@ module StripeModel =
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///The order that this return includes items from.
-        Order: OrderReturnOrder'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<OrderReturnOrder'AnyOf>>)>]Order: OrderReturnOrder'AnyOf option
         ///The ID of the refund issued for this return.
-        Refund: OrderReturnRefund'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<OrderReturnRefund'AnyOf>>)>]Refund: OrderReturnRefund'AnyOf option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -6337,7 +6339,7 @@ module StripeModel =
         ///Amount that was collected by this PaymentIntent.
         AmountReceived: int64
         ///ID of the Connect application that created the PaymentIntent.
-        Application: PaymentIntentApplication'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentIntentApplication'AnyOf>>)>]Application: PaymentIntentApplication'AnyOf option
         ///The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).
         ApplicationFeeAmount: int64 option
         ///Populated when `status` is `canceled`, this is the time at which the PaymentIntent was canceled. Measured in seconds since the Unix epoch.
@@ -6360,13 +6362,13 @@ module StripeModel =
         ///ID of the Customer this PaymentIntent belongs to, if one exists.
     ///Payment methods attached to other Customers cannot be used with this PaymentIntent.
     ///If present in combination with [setup_future_usage](https://stripe.com/docs/api#payment_intent_object-setup_future_usage), this PaymentIntent's payment method will be attached to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete.
-        Customer: PaymentIntentCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentIntentCustomer'AnyOf>>)>]Customer: PaymentIntentCustomer'AnyOf option
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///Unique identifier for the object.
         Id: string
         ///ID of the invoice that created this PaymentIntent, if it exists.
-        Invoice: PaymentIntentInvoice'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentIntentInvoice'AnyOf>>)>]Invoice: PaymentIntentInvoice'AnyOf option
         ///The payment error encountered in the previous PaymentIntent confirmation. It will be cleared if the PaymentIntent is later updated for any reason.
         LastPaymentError: ApiErrors option
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -6376,9 +6378,9 @@ module StripeModel =
         ///If present, this property tells you what actions you need to take in order for your customer to fulfill a payment using the provided source.
         NextAction: PaymentIntentNextAction option
         ///The account (if any) for which the funds of the PaymentIntent are intended. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.
-        OnBehalfOf: PaymentIntentOnBehalfOf'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentIntentOnBehalfOf'AnyOf>>)>]OnBehalfOf: PaymentIntentOnBehalfOf'AnyOf option
         ///ID of the payment method used in this PaymentIntent.
-        PaymentMethod: PaymentIntentPaymentMethod'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentIntentPaymentMethod'AnyOf>>)>]PaymentMethod: PaymentIntentPaymentMethod'AnyOf option
         ///Payment-method-specific configuration for this PaymentIntent.
         PaymentMethodOptions: PaymentIntentPaymentMethodOptions option
         ///The list of payment method types (e.g. card) that this PaymentIntent is allowed to use.
@@ -6386,7 +6388,7 @@ module StripeModel =
         ///Email address that the receipt for the resulting payment will be sent to. If `receipt_email` is specified for a payment in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
         ReceiptEmail: string option
         ///ID of the review associated with this PaymentIntent, if any.
-        Review: PaymentIntentReview'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentIntentReview'AnyOf>>)>]Review: PaymentIntentReview'AnyOf option
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
     ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
     ///When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
@@ -6394,7 +6396,7 @@ module StripeModel =
         ///Shipping information for this PaymentIntent.
         Shipping: Shipping option
         ///This is a legacy field that will be removed in the future. It is the ID of the Source object that is associated with this PaymentIntent, if one was supplied.
-        Source: PaymentIntentSource'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentIntentSource'AnyOf>>)>]Source: PaymentIntentSource'AnyOf option
         ///For non-card charges, you can use this value as the complete description that appears on your customers’ statements. Must contain at least one letter, maximum 22 characters.
         StatementDescriptor: string option
         ///Provides information about a card payment that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
@@ -6529,7 +6531,7 @@ module StripeModel =
         Bancontact: PaymentMethodOptionsBancontact option
         Card: PaymentIntentPaymentMethodOptionsCard option
         Oxxo: PaymentMethodOptionsOxxo option
-        [<JsonField("p24")>]P24: PaymentMethodOptionsP24 option
+        [<JsonField(Name="p24")>]P24: PaymentMethodOptionsP24 option
         SepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit option
         Sofort: PaymentMethodOptionsSofort option
     }
@@ -6584,7 +6586,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.
-        Customer: PaymentMethodCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentMethodCustomer'AnyOf>>)>]Customer: PaymentMethodCustomer'AnyOf option
         Eps: PaymentMethodEps option
         Fpx: PaymentMethodFpx option
         Giropay: PaymentMethodGiropay option
@@ -6598,7 +6600,7 @@ module StripeModel =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         Oxxo: PaymentMethodOxxo option
-        [<JsonField("p24")>]P24: PaymentMethodP24 option
+        [<JsonField(Name="p24")>]P24: PaymentMethodP24 option
         SepaDebit: PaymentMethodSepaDebit option
         Sofort: PaymentMethodSofort option
         ///The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.
@@ -6636,14 +6638,14 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
     }
 
     and PaymentMethodBacsDebit = {
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///Sort code of the bank account. (e.g., `10-20-30`)
         SortCode: string option
     }
@@ -6674,7 +6676,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField("last4")>]Last4: string
+        [<JsonField(Name="last4")>]Last4: string
         ///Contains information about card networks that can be used to process the payment.
         Networks: Networks option
         ///Contains details on how this Card maybe be used for 3D Secure authentication.
@@ -6701,7 +6703,7 @@ module StripeModel =
 
     and PaymentMethodCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField("address_line1_check")>]AddressLine1Check: PaymentMethodCardChecksAddressLine1Check option
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: PaymentMethodCardChecksAddressLine1Check option
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -6734,7 +6736,7 @@ module StripeModel =
         AmexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout option
         ApplePay: PaymentMethodCardWalletApplePay option
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        [<JsonField("dynamic_last4")>]DynamicLast4: string option
+        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
         GooglePay: PaymentMethodCardWalletGooglePay option
         Masterpass: PaymentMethodCardWalletMasterpass option
         SamsungPay: PaymentMethodCardWalletSamsungPay option
@@ -6808,7 +6810,7 @@ module StripeModel =
         Klarna: PaymentMethodDetailsKlarna option
         Multibanco: PaymentMethodDetailsMultibanco option
         Oxxo: PaymentMethodDetailsOxxo option
-        [<JsonField("p24")>]P24: PaymentMethodDetailsP24 option
+        [<JsonField(Name="p24")>]P24: PaymentMethodDetailsP24 option
         SepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer option
         SepaDebit: PaymentMethodDetailsSepaDebit option
         Sofort: PaymentMethodDetailsSofort option
@@ -6860,7 +6862,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///Routing transit number of the bank account.
         RoutingNumber: string option
     }
@@ -6877,7 +6879,7 @@ module StripeModel =
         ///Institution number of the bank account
         InstitutionNumber: string option
         ///Last four digits of the bank account number.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
         ///Transit number of the bank account.
@@ -6890,7 +6892,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
     }
@@ -6899,7 +6901,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
         ///Sort code of the bank account. (e.g., `10-20-30`)
@@ -6914,11 +6916,11 @@ module StripeModel =
         ///Bank Identifier Code of the bank associated with the bank account.
         Bic: string option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf>>)>]GeneratedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf>>)>]GeneratedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
     ///Can be one of `en`, `de`, `fr`, or `nl`
         PreferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option
@@ -6966,7 +6968,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///True if this payment was marked as MOTO and out of scope for SCA.
         Moto: bool option
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -7007,7 +7009,7 @@ module StripeModel =
 
     and PaymentMethodDetailsCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField("address_line1_check")>]AddressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -7074,7 +7076,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
         Network: PaymentMethodDetailsCardPresentNetwork option
         ///How card details were read in this transaction.
@@ -7149,7 +7151,7 @@ module StripeModel =
         AmexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout option
         ApplePay: PaymentMethodDetailsCardWalletApplePay option
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        [<JsonField("dynamic_last4")>]DynamicLast4: string option
+        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
         GooglePay: PaymentMethodDetailsCardWalletGooglePay option
         Masterpass: PaymentMethodDetailsCardWalletMasterpass option
         SamsungPay: PaymentMethodDetailsCardWalletSamsungPay option
@@ -7270,11 +7272,11 @@ module StripeModel =
         ///The Bank Identifier Code of the customer's bank.
         Bic: PaymentMethodDetailsIdealBic option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf>>)>]GeneratedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf>>)>]GeneratedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         ///Owner's verified full name. Values are verified or provided by iDEAL directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
         VerifiedName: string option
@@ -7342,7 +7344,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
         Network: PaymentMethodDetailsInteracPresentNetwork option
         ///EMV tag 5F2D. Preferred languages specified by the integrated circuit chip.
@@ -7453,7 +7455,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four characters of the IBAN.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
     }
@@ -7468,11 +7470,11 @@ module StripeModel =
         ///Two-letter ISO code representing the country the bank account is located in.
         Country: string option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf>>)>]GeneratedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf>>)>]GeneratedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         ///Preferred language of the SOFORT authorization page that the customer is redirected to.
     ///Can be one of `de`, `en`, `es`, `fr`, `it`, `nl`, or `pl`
         PreferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option
@@ -7620,7 +7622,7 @@ module StripeModel =
     }
 
     and PaymentMethodOptionsP24 = {
-        [<JsonField("payment_method_options_p24")>]PaymentMethodOptionsP24: string option
+        [<JsonField(Name="payment_method_options_p24")>]PaymentMethodOptionsP24: string option
     }
 
     and PaymentMethodOptionsSofort = {
@@ -7685,7 +7687,7 @@ module StripeModel =
         ///Information about the object that generated this PaymentMethod.
         GeneratedFrom: SepaDebitGeneratedFrom option
         ///Last four characters of the IBAN.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
     }
 
     and PaymentMethodSofort = {
@@ -7976,7 +7978,7 @@ module StripeModel =
         ///Returns `true` if the payout was created by an [automated payout schedule](https://stripe.com/docs/payouts#payout-schedule), and `false` if it was [requested manually](https://stripe.com/docs/payouts#manual-payouts).
         Automatic: bool
         ///ID of the balance transaction that describes the impact of this payout on your account balance.
-        BalanceTransaction: PayoutBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PayoutBalanceTransaction'AnyOf>>)>]BalanceTransaction: PayoutBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -7984,9 +7986,9 @@ module StripeModel =
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///ID of the bank account or card the payout was sent to.
-        Destination: PayoutDestination'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PayoutDestination'AnyOf>>)>]Destination: PayoutDestination'AnyOf option
         ///If the payout failed or was canceled, this will be the ID of the balance transaction that reversed the initial balance transaction, and puts the funds from the failed payout back in your balance.
-        FailureBalanceTransaction: PayoutFailureBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PayoutFailureBalanceTransaction'AnyOf>>)>]FailureBalanceTransaction: PayoutFailureBalanceTransaction'AnyOf option
         ///Error code explaining reason for payout failure if available. See [Types of payout failures](https://stripe.com/docs/api#payout_failures) for a list of failure codes.
         FailureCode: string option
         ///Message to user further explaining reason for payout failure if available.
@@ -8000,9 +8002,9 @@ module StripeModel =
         ///The method used to send this payout, which can be `standard` or `instant`. `instant` is only supported for payouts to debit cards. (See [Instant payouts for marketplaces](https://stripe.com/blog/instant-payouts-for-marketplaces) for more information.)
         Method: PayoutMethod
         ///If the payout reverses another, this is the ID of the original payout.
-        OriginalPayout: PayoutOriginalPayout'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PayoutOriginalPayout'AnyOf>>)>]OriginalPayout: PayoutOriginalPayout'AnyOf option
         ///If the payout was reversed, this is the ID of the payout that reverses this payout.
-        ReversedBy: PayoutReversedBy'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PayoutReversedBy'AnyOf>>)>]ReversedBy: PayoutReversedBy'AnyOf option
         ///The source balance this payout came from. One of `card`, `fpx`, or `bank_account`.
         SourceType: PayoutSourceType
         ///Extra information about a payout to be displayed on the user's bank statement.
@@ -8181,7 +8183,7 @@ module StripeModel =
         ///A brief description of the plan, hidden from customers.
         Nickname: string option
         ///The product whose pricing this plan determines.
-        Product: PlanProduct'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PlanProduct'AnyOf>>)>]Product: PlanProduct'AnyOf option
         ///Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
         Tiers: PlanTier list option
         ///Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
@@ -8277,7 +8279,7 @@ module StripeModel =
         ///A brief description of the plan, hidden from customers.
         Nickname: string option
         ///The ID of the product this price is associated with.
-        Product: PriceProduct'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<PriceProduct'AnyOf>>)>]Product: PriceProduct'AnyOf
         ///The recurring components of a price such as `interval` and `usage_type`.
         Recurring: Recurring option
         ///Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
@@ -8388,7 +8390,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The customer that this promotion code can be used by.
-        Customer: PromotionCodeCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<PromotionCodeCustomer'AnyOf>>)>]Customer: PromotionCodeCustomer'AnyOf option
         ///Date at which the promotion code can no longer be redeemed.
         ExpiresAt: int64 option
         ///Unique identifier for the object.
@@ -8428,7 +8430,7 @@ module StripeModel =
         ///An EFW is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an EFW, in order to avoid receiving a dispute later.
         Actionable: bool
         ///ID of the charge this early fraud warning is for, optionally expanded.
-        Charge: RadarEarlyFraudWarningCharge'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<RadarEarlyFraudWarningCharge'AnyOf>>)>]Charge: RadarEarlyFraudWarningCharge'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
@@ -8554,7 +8556,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The default card to use for creating transfers to this recipient.
-        DefaultCard: RecipientDefaultCard'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RecipientDefaultCard'AnyOf>>)>]DefaultCard: RecipientDefaultCard'AnyOf option
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         Email: string option
@@ -8565,10 +8567,10 @@ module StripeModel =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
         ///The ID of the [Custom account](https://stripe.com/docs/connect/custom-accounts) this recipient was migrated to. If set, the recipient can no longer be updated, nor can transfers be made to it: use the Custom account instead.
-        MigratedTo: RecipientMigratedTo'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RecipientMigratedTo'AnyOf>>)>]MigratedTo: RecipientMigratedTo'AnyOf option
         ///Full, legal name of the recipient.
         Name: string option
-        RolledBackFrom: RecipientRolledBackFrom'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RecipientRolledBackFrom'AnyOf>>)>]RolledBackFrom: RecipientRolledBackFrom'AnyOf option
         ///Type of the recipient, one of `individual` or `corporation`.
         Type: RecipientType
         ///Whether the recipient has been verified. This field is non-standard, and maybe removed in the future
@@ -8642,9 +8644,9 @@ module StripeModel =
         ///Amount, in %s.
         Amount: int64
         ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: RefundBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RefundBalanceTransaction'AnyOf>>)>]BalanceTransaction: RefundBalanceTransaction'AnyOf option
         ///ID of the charge that was refunded.
-        Charge: RefundCharge'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RefundCharge'AnyOf>>)>]Charge: RefundCharge'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -8652,7 +8654,7 @@ module StripeModel =
         ///An arbitrary string attached to the object. Often useful for displaying to users. (Available on non-card refunds only)
         Description: string option
         ///If the refund failed, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction.
-        FailureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RefundFailureBalanceTransaction'AnyOf>>)>]FailureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf option
         ///If the refund failed, the reason for refund failure if known. Possible values are `lost_or_stolen_card`, `expired_or_canceled_card`, or `unknown`.
         FailureReason: RefundFailureReason option
         ///Unique identifier for the object.
@@ -8660,17 +8662,17 @@ module StripeModel =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///ID of the PaymentIntent that was refunded.
-        PaymentIntent: RefundPaymentIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RefundPaymentIntent'AnyOf>>)>]PaymentIntent: RefundPaymentIntent'AnyOf option
         ///Reason for the refund, either user-provided (`duplicate`, `fraudulent`, or `requested_by_customer`) or generated by Stripe internally (`expired_uncaptured_charge`).
         Reason: string option
         ///This is the transaction number that appears on email receipts sent for this refund.
         ReceiptNumber: string option
         ///The transfer reversal that is associated with the refund. Only present if the charge came from another Stripe account. See the Connect documentation for details.
-        SourceTransferReversal: RefundSourceTransferReversal'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RefundSourceTransferReversal'AnyOf>>)>]SourceTransferReversal: RefundSourceTransferReversal'AnyOf option
         ///Status of the refund. For credit card refunds, this can be `pending`, `succeeded`, or `failed`. For other types of refunds, it can be `pending`, `succeeded`, `failed`, or `canceled`. Refer to our [refunds](https://stripe.com/docs/refunds#failed-refunds) documentation for more details.
         Status: RefundStatus option
         ///If the accompanying transfer was reversed, the transfer reversal object. Only applicable if the charge was created using the destination parameter.
-        TransferReversal: RefundTransferReversal'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<RefundTransferReversal'AnyOf>>)>]TransferReversal: RefundTransferReversal'AnyOf option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -8794,7 +8796,7 @@ module StripeModel =
         ///The ZIP or postal code of the card used, if applicable.
         BillingZip: string option
         ///The charge associated with this review.
-        Charge: ReviewCharge'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ReviewCharge'AnyOf>>)>]Charge: ReviewCharge'AnyOf option
         ///The reason the review was closed, or null if it has not yet been closed. One of `approved`, `refunded`, `refunded_as_fraud`, or `disputed`.
         ClosedReason: ReviewClosedReason option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -8812,7 +8814,7 @@ module StripeModel =
         ///The reason the review was opened. One of `rule` or `manual`.
         OpenedReason: ReviewOpenedReason
         ///The PaymentIntent ID associated with this review, if one exists.
-        PaymentIntent: ReviewPaymentIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<ReviewPaymentIntent'AnyOf>>)>]PaymentIntent: ReviewPaymentIntent'AnyOf option
         ///The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, or `disputed`.
         Reason: ReviewReason
         ///Information related to the browsing session of the user who initiated the payment.
@@ -8888,9 +8890,9 @@ module StripeModel =
 
     and SepaDebitGeneratedFrom = {
         ///The ID of the Charge that generated this PaymentMethod, if any.
-        Charge: SepaDebitGeneratedFromCharge'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SepaDebitGeneratedFromCharge'AnyOf>>)>]Charge: SepaDebitGeneratedFromCharge'AnyOf option
         ///The ID of the SetupAttempt that generated this PaymentMethod, if any.
-        SetupAttempt: SepaDebitGeneratedFromSetupAttempt'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SepaDebitGeneratedFromSetupAttempt'AnyOf>>)>]SetupAttempt: SepaDebitGeneratedFromSetupAttempt'AnyOf option
     }
 
     and SepaDebitGeneratedFromCharge'AnyOf =
@@ -8907,24 +8909,24 @@ module StripeModel =
     ///payment method using a SetupIntent.
     and SetupAttempt = {
         ///The value of [application](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-application) on the SetupIntent at the time of this confirmation.
-        Application: SetupAttemptApplication'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptApplication'AnyOf>>)>]Application: SetupAttemptApplication'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///The value of [customer](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-customer) on the SetupIntent at the time of this confirmation.
-        Customer: SetupAttemptCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptCustomer'AnyOf>>)>]Customer: SetupAttemptCustomer'AnyOf option
         ///Unique identifier for the object.
         Id: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///The value of [on_behalf_of](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-on_behalf_of) on the SetupIntent at the time of this confirmation.
-        OnBehalfOf: SetupAttemptOnBehalfOf'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptOnBehalfOf'AnyOf>>)>]OnBehalfOf: SetupAttemptOnBehalfOf'AnyOf option
         ///ID of the payment method used with this SetupAttempt.
-        PaymentMethod: SetupAttemptPaymentMethod'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptPaymentMethod'AnyOf>>)>]PaymentMethod: SetupAttemptPaymentMethod'AnyOf
         PaymentMethodDetails: SetupAttemptPaymentMethodDetails
         ///The error encountered during this attempt to confirm the SetupIntent, if any.
         SetupError: ApiErrors option
         ///ID of the SetupIntent that this attempt belongs to.
-        SetupIntent: SetupAttemptSetupIntent'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptSetupIntent'AnyOf>>)>]SetupIntent: SetupAttemptSetupIntent'AnyOf
         ///Status of this SetupAttempt, one of `requires_confirmation`, `requires_action`, `processing`, `succeeded`, `failed`, or `abandoned`.
         Status: SetupAttemptStatus
         ///The value of [usage](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-usage) on the SetupIntent at the time of this confirmation, one of `off_session` or `on_session`.
@@ -8984,11 +8986,11 @@ module StripeModel =
         ///Bank Identifier Code of the bank associated with the bank account.
         Bic: string option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf>>)>]GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf>>)>]GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
     ///Can be one of `en`, `de`, `fr`, or `nl`
         PreferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option
@@ -9022,11 +9024,11 @@ module StripeModel =
         ///The Bank Identifier Code of the customer's bank.
         Bic: SetupAttemptPaymentMethodDetailsIdealBic option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf>>)>]GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf>>)>]GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         ///Owner's verified full name. Values are verified or provided by iDEAL directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
         VerifiedName: string option
@@ -9076,11 +9078,11 @@ module StripeModel =
         ///Bank Identifier Code of the bank associated with the bank account.
         Bic: string option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf>>)>]GeneratedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
-        GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf>>)>]GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         ///Preferred language of the Sofort authorization page that the customer is redirected to.
     ///Can be one of `en`, `de`, `fr`, or `nl`
         PreferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option
@@ -9123,7 +9125,7 @@ module StripeModel =
     ///Related guide: [Setup Intents API](https://stripe.com/docs/payments/setup-intents).
     and SetupIntent = {
         ///ID of the Connect application that created the SetupIntent.
-        Application: SetupIntentApplication'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupIntentApplication'AnyOf>>)>]Application: SetupIntentApplication'AnyOf option
         ///Reason for cancellation of this SetupIntent, one of `abandoned`, `requested_by_customer`, or `duplicate`.
         CancellationReason: SetupIntentCancellationReason option
         ///The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
@@ -9133,7 +9135,7 @@ module StripeModel =
         Created: int64
         ///ID of the Customer this SetupIntent belongs to, if one exists.
     ///If present, the SetupIntent's payment method will be attached to the Customer on successful setup. Payment methods attached to other Customers cannot be used with this SetupIntent.
-        Customer: SetupIntentCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupIntentCustomer'AnyOf>>)>]Customer: SetupIntentCustomer'AnyOf option
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///Unique identifier for the object.
@@ -9141,25 +9143,25 @@ module StripeModel =
         ///The error encountered in the previous SetupIntent confirmation.
         LastSetupError: ApiErrors option
         ///The most recent SetupAttempt for this SetupIntent.
-        LatestAttempt: SetupIntentLatestAttempt'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupIntentLatestAttempt'AnyOf>>)>]LatestAttempt: SetupIntentLatestAttempt'AnyOf option
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///ID of the multi use Mandate generated by the SetupIntent.
-        Mandate: SetupIntentMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupIntentMandate'AnyOf>>)>]Mandate: SetupIntentMandate'AnyOf option
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///If present, this property tells you what actions you need to take in order for your customer to continue payment setup.
         NextAction: SetupIntentNextAction option
         ///The account (if any) for which the setup is intended.
-        OnBehalfOf: SetupIntentOnBehalfOf'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupIntentOnBehalfOf'AnyOf>>)>]OnBehalfOf: SetupIntentOnBehalfOf'AnyOf option
         ///ID of the payment method used with this SetupIntent.
-        PaymentMethod: SetupIntentPaymentMethod'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupIntentPaymentMethod'AnyOf>>)>]PaymentMethod: SetupIntentPaymentMethod'AnyOf option
         ///Payment-method-specific configuration for this SetupIntent.
         PaymentMethodOptions: SetupIntentPaymentMethodOptions option
         ///The list of payment method types (e.g. card) that this SetupIntent is allowed to set up.
         PaymentMethodTypes: string list
         ///ID of the single_use Mandate generated by the SetupIntent.
-        SingleUseMandate: SetupIntentSingleUseMandate'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SetupIntentSingleUseMandate'AnyOf>>)>]SingleUseMandate: SetupIntentSingleUseMandate'AnyOf option
         ///[Status](https://stripe.com/docs/payments/intents#intent-statuses) of this SetupIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `canceled`, or `succeeded`.
         Status: SetupIntentStatus
         ///Indicates how the payment method is intended to be used in the future.
@@ -9313,7 +9315,7 @@ module StripeModel =
         ///The cost of the item as a positive integer in the smallest currency unit (that is, 100 cents to charge $1.00, or 100 to charge ¥100, Japanese Yen being a zero-decimal currency).
         Price: int64
         ///The ID of the product this SKU is associated with. The product must be currently active.
-        Product: SkuProduct'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SkuProduct'AnyOf>>)>]Product: SkuProduct'AnyOf
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
         Updated: int64
     }
@@ -9365,7 +9367,7 @@ module StripeModel =
         Multibanco: SourceTypeMultibanco option
         ///Information about the owner of the payment instrument that may be used or required by particular source types.
         Owner: SourceOwner option
-        [<JsonField("p24")>]P24: SourceTypeP24 option
+        [<JsonField(Name="p24")>]P24: SourceTypeP24 option
         Receiver: SourceReceiverFlow option
         Redirect: SourceRedirectFlow option
         SepaCreditTransfer: SourceTypeSepaCreditTransfer option
@@ -9468,14 +9470,14 @@ module StripeModel =
 
     and SourceMandateNotificationBacsDebitData = {
         ///Last 4 digits of the account number associated with the debit.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
     }
 
     and SourceMandateNotificationSepaDebitData = {
         ///SEPA creditor ID.
         CreditorIdentifier: string option
         ///Last 4 digits of the account number associated with the debit.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///Mandate reference associated with the debit.
         MandateReference: string option
     }
@@ -9627,7 +9629,7 @@ module StripeModel =
         ///Bank account fingerprint associated with the transfer.
         Fingerprint: string option
         ///Last 4 digits of the account number associated with the transfer.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///Routing number associated with the transfer.
         RoutingNumber: string option
     }
@@ -9638,7 +9640,7 @@ module StripeModel =
         ///Sender's country address.
         SenderAddressCountry: string option
         ///Sender's line 1 address.
-        [<JsonField("sender_address_line1")>]SenderAddressLine1: string option
+        [<JsonField(Name="sender_address_line1")>]SenderAddressLine1: string option
         ///Sender's bank account IBAN.
         SenderIban: string option
         ///Sender's name.
@@ -9651,7 +9653,7 @@ module StripeModel =
         ///The credit transfer rails the sender used to push this transfer. The possible rails are: Faster Payments, BACS, CHAPS, and wire transfers. Currently only Faster Payments is supported.
         FundingMethod: string option
         ///Last 4 digits of sender account number associated with the transfer.
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         ///Sender entered arbitrary information about the transfer.
         Reference: string option
         ///Sender account number associated with the transfer.
@@ -9693,7 +9695,7 @@ module StripeModel =
         BankName: string option
         Country: string option
         Fingerprint: string option
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         RoutingNumber: string option
         Type: string option
     }
@@ -9707,7 +9709,7 @@ module StripeModel =
         Category: string option
         Country: string option
         Fingerprint: string option
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         RoutingNumber: string option
     }
 
@@ -9720,33 +9722,33 @@ module StripeModel =
     and SourceTypeAuBecsDebit = {
         BsbNumber: string option
         Fingerprint: string option
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
     }
 
     and SourceTypeBancontact = {
         BankCode: string option
         BankName: string option
         Bic: string option
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         PreferredLanguage: string option
         StatementDescriptor: string option
     }
 
     and SourceTypeCard = {
-        [<JsonField("address_line1_check")>]AddressLine1Check: string option
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
         AddressZipCheck: string option
         Brand: string option
         Country: string option
         CvcCheck: string option
         Description: string option
-        [<JsonField("dynamic_last4")>]DynamicLast4: string option
+        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
         ExpMonth: int64 option
         ExpYear: int64 option
         Fingerprint: string option
         Funding: string option
         Iin: string option
         Issuer: string option
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         Name: string option
         ThreeDSecure: string option
         TokenizationMethod: string option
@@ -9772,7 +9774,7 @@ module StripeModel =
         Funding: string option
         Iin: string option
         Issuer: string option
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         PosDeviceId: string option
         PosEntryMode: string option
         ReadMethod: string option
@@ -9796,7 +9798,7 @@ module StripeModel =
     and SourceTypeIdeal = {
         Bank: string option
         Bic: string option
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         StatementDescriptor: string option
     }
 
@@ -9834,8 +9836,8 @@ module StripeModel =
         Reference: string option
         RefundAccountHolderAddressCity: string option
         RefundAccountHolderAddressCountry: string option
-        [<JsonField("refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
-        [<JsonField("refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
+        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
+        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
         RefundAccountHolderAddressPostalCode: string option
         RefundAccountHolderAddressState: string option
         RefundAccountHolderName: string option
@@ -9852,8 +9854,8 @@ module StripeModel =
         Iban: string option
         RefundAccountHolderAddressCity: string option
         RefundAccountHolderAddressCountry: string option
-        [<JsonField("refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
-        [<JsonField("refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
+        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
+        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
         RefundAccountHolderAddressPostalCode: string option
         RefundAccountHolderAddressState: string option
         RefundAccountHolderName: string option
@@ -9865,7 +9867,7 @@ module StripeModel =
         BranchCode: string option
         Country: string option
         Fingerprint: string option
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         MandateReference: string option
         MandateUrl: string option
     }
@@ -9875,13 +9877,13 @@ module StripeModel =
         BankName: string option
         Bic: string option
         Country: string option
-        [<JsonField("iban_last4")>]IbanLast4: string option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
         PreferredLanguage: string option
         StatementDescriptor: string option
     }
 
     and SourceTypeThreeDSecure = {
-        [<JsonField("address_line1_check")>]AddressLine1Check: string option
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
         AddressZipCheck: string option
         Authenticated: bool option
         Brand: string option
@@ -9890,14 +9892,14 @@ module StripeModel =
         Customer: string option
         CvcCheck: string option
         Description: string option
-        [<JsonField("dynamic_last4")>]DynamicLast4: string option
+        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
         ExpMonth: int64 option
         ExpYear: int64 option
         Fingerprint: string option
         Funding: string option
         Iin: string option
         Issuer: string option
-        [<JsonField("last4")>]Last4: string option
+        [<JsonField(Name="last4")>]Last4: string option
         Name: string option
         ThreeDSecure: string option
         TokenizationMethod: string option
@@ -9944,13 +9946,13 @@ module StripeModel =
         ///Start of the current period that the subscription has been invoiced for.
         CurrentPeriodStart: int64
         ///ID of the customer who owns the subscription.
-        Customer: SubscriptionCustomer'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionCustomer'AnyOf>>)>]Customer: SubscriptionCustomer'AnyOf
         ///Number of days a customer has to pay invoices generated by this subscription. This value will be `null` for subscriptions where `collection_method=charge_automatically`.
         DaysUntilDue: int64 option
         ///ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-        DefaultPaymentMethod: SubscriptionDefaultPaymentMethod'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionDefaultPaymentMethod'AnyOf>>)>]DefaultPaymentMethod: SubscriptionDefaultPaymentMethod'AnyOf option
         ///ID of the default payment source for the subscription. It must belong to the customer associated with the subscription and be in a chargeable state. If `default_payment_method` is also set, `default_payment_method` will take precedence. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-        DefaultSource: SubscriptionDefaultSource'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionDefaultSource'AnyOf>>)>]DefaultSource: SubscriptionDefaultSource'AnyOf option
         ///The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription.
         DefaultTaxRates: TaxRate list option
         ///Describes the current discount applied to this subscription, if there is one. When billing, a discount applied to a subscription overrides a discount applied on a customer-wide basis.
@@ -9962,7 +9964,7 @@ module StripeModel =
         ///List of subscription items, each with an attached price.
         Items: SubscriptionItems
         ///The most recent invoice this subscription has generated.
-        LatestInvoice: SubscriptionLatestInvoice'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionLatestInvoice'AnyOf>>)>]LatestInvoice: SubscriptionLatestInvoice'AnyOf option
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -9974,11 +9976,11 @@ module StripeModel =
         ///Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval.
         PendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option
         ///You can use this [SetupIntent](https://stripe.com/docs/api/setup_intents) to collect user authentication when creating a subscription without immediate payment or updating a subscription's payment method, allowing you to optimize for off-session payments. Learn more in the [SCA Migration Guide](https://stripe.com/docs/billing/migration/strong-customer-authentication#scenario-2).
-        PendingSetupIntent: SubscriptionPendingSetupIntent'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionPendingSetupIntent'AnyOf>>)>]PendingSetupIntent: SubscriptionPendingSetupIntent'AnyOf option
         ///If specified, [pending updates](https://stripe.com/docs/billing/subscriptions/pending-updates) that will be applied to the subscription once the `latest_invoice` has been paid.
         PendingUpdate: SubscriptionsResourcePendingUpdate option
         ///The schedule attached to the subscription
-        Schedule: SubscriptionSchedule'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionSchedule'AnyOf>>)>]Schedule: SubscriptionSchedule'AnyOf option
         ///Date when the subscription was first created. The date might differ from the `created` date due to backdating.
         StartDate: int64
         ///Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, or `unpaid`. 
@@ -10110,7 +10112,7 @@ module StripeModel =
         ///Object representing the start and end dates for the current phase of the subscription schedule, if it is `active`.
         CurrentPhase: SubscriptionScheduleCurrentPhase option
         ///ID of the customer who owns the subscription schedule.
-        Customer: SubscriptionScheduleCustomer'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionScheduleCustomer'AnyOf>>)>]Customer: SubscriptionScheduleCustomer'AnyOf
         DefaultSettings: SubscriptionSchedulesResourceDefaultSettings
         ///Behavior of the subscription schedule and underlying subscription when it ends. Possible values are `release` and `cancel`.
         EndBehavior: SubscriptionScheduleEndBehavior
@@ -10129,7 +10131,7 @@ module StripeModel =
         ///The present status of the subscription schedule. Possible values are `not_started`, `active`, `completed`, `released`, and `canceled`. You can read more about the different states in our [behavior guide](https://stripe.com/docs/billing/subscriptions/subscription-schedules).
         Status: SubscriptionScheduleStatus
         ///ID of the subscription managed by the subscription schedule.
-        Subscription: SubscriptionScheduleSubscription'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionScheduleSubscription'AnyOf>>)>]Subscription: SubscriptionScheduleSubscription'AnyOf option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -10160,7 +10162,7 @@ module StripeModel =
     ///An Add Invoice Item describes the prices and quantities that will be added as pending invoice items when entering a phase.
     and SubscriptionScheduleAddInvoiceItem = {
         ///ID of the price used to generate the invoice item.
-        Price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionScheduleAddInvoiceItemPrice'AnyOf>>)>]Price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf
         ///The quantity of the invoice item.
         Quantity: int64 option
         ///The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
@@ -10177,9 +10179,9 @@ module StripeModel =
         ///Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period
         BillingThresholds: SubscriptionItemBillingThresholds option
         ///ID of the plan to which the customer should be subscribed.
-        Plan: SubscriptionScheduleConfigurationItemPlan'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionScheduleConfigurationItemPlan'AnyOf>>)>]Plan: SubscriptionScheduleConfigurationItemPlan'AnyOf
         ///ID of the price to which the customer should be subscribed.
-        Price: SubscriptionScheduleConfigurationItemPrice'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionScheduleConfigurationItemPrice'AnyOf>>)>]Price: SubscriptionScheduleConfigurationItemPrice'AnyOf
         ///Quantity of the plan to which the customer should be subscribed.
         Quantity: int64 option
         ///The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`.
@@ -10216,9 +10218,9 @@ module StripeModel =
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
         CollectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option
         ///ID of the coupon to use during this phase of the subscription schedule.
-        Coupon: SubscriptionSchedulePhaseConfigurationCoupon'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionSchedulePhaseConfigurationCoupon'AnyOf>>)>]Coupon: SubscriptionSchedulePhaseConfigurationCoupon'AnyOf option
         ///ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf>>)>]DefaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option
         ///The default tax rates to apply to the subscription during this phase of the subscription schedule.
         DefaultTaxRates: TaxRate list option
         ///The end of this phase of the subscription schedule.
@@ -10267,7 +10269,7 @@ module StripeModel =
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions.
         CollectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option
         ///ID of the default payment method for the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf>>)>]DefaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf option
         ///The subscription schedule's default invoice settings.
         InvoiceSettings: InvoiceSettingSubscriptionScheduleSetting option
         ///The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
@@ -10290,7 +10292,7 @@ module StripeModel =
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
         AmountPercent: decimal option
         ///The account where funds from the payment will be transferred to upon payment success.
-        Destination: SubscriptionTransferDataDestination'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<SubscriptionTransferDataDestination'AnyOf>>)>]Destination: SubscriptionTransferDataDestination'AnyOf
     }
 
     and SubscriptionTransferDataDestination'AnyOf =
@@ -10349,7 +10351,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///ID of the customer.
-        Customer: TaxIdCustomer'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TaxIdCustomer'AnyOf>>)>]Customer: TaxIdCustomer'AnyOf option
         ///Unique identifier for the object.
         Id: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -10635,7 +10637,7 @@ module StripeModel =
         ///Amount transferred.
         Amount: int64
         ///ID of the balance transaction that describes the impact of this top-up on your account balance. May not be specified depending on status of top-up.
-        BalanceTransaction: TopupBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TopupBalanceTransaction'AnyOf>>)>]BalanceTransaction: TopupBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -10691,7 +10693,7 @@ module StripeModel =
         ///Amount in %s reversed (can be less than the amount attribute on the transfer if a partial reversal was issued).
         AmountReversed: int64
         ///Balance transaction that describes the impact of this transfer on your account balance.
-        BalanceTransaction: TransferBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferBalanceTransaction'AnyOf>>)>]BalanceTransaction: TransferBalanceTransaction'AnyOf option
         ///Time that this record of the transfer was first created.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -10699,9 +10701,9 @@ module StripeModel =
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///ID of the Stripe account the transfer was sent to.
-        Destination: TransferDestination'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferDestination'AnyOf>>)>]Destination: TransferDestination'AnyOf option
         ///If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer.
-        DestinationPayment: TransferDestinationPayment'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferDestinationPayment'AnyOf>>)>]DestinationPayment: TransferDestinationPayment'AnyOf option
         ///Unique identifier for the object.
         Id: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -10713,7 +10715,7 @@ module StripeModel =
         ///Whether the transfer has been fully reversed. If the transfer is only partially reversed, this attribute will still be false.
         Reversed: bool
         ///ID of the charge or payment that was used to fund the transfer. If null, the transfer was funded from the available balance.
-        SourceTransaction: TransferSourceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferSourceTransaction'AnyOf>>)>]SourceTransaction: TransferSourceTransaction'AnyOf option
         ///The source balance this transfer came from. One of `card`, `fpx`, or `bank_account`.
         SourceType: TransferSourceType option
         ///A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
@@ -10763,7 +10765,7 @@ module StripeModel =
         ///The account (if any) the payment will be attributed to for tax
     ///reporting, and where funds from the payment will be transferred to upon
     ///payment success.
-        Destination: TransferDataDestination'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferDataDestination'AnyOf>>)>]Destination: TransferDataDestination'AnyOf
     }
 
     and TransferDataDestination'AnyOf =
@@ -10785,21 +10787,21 @@ module StripeModel =
         ///Amount, in %s.
         Amount: int64
         ///Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: TransferReversalBalanceTransaction'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferReversalBalanceTransaction'AnyOf>>)>]BalanceTransaction: TransferReversalBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int64
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string
         ///Linked payment refund for the transfer reversal.
-        DestinationPaymentRefund: TransferReversalDestinationPaymentRefund'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferReversalDestinationPaymentRefund'AnyOf>>)>]DestinationPaymentRefund: TransferReversalDestinationPaymentRefund'AnyOf option
         ///Unique identifier for the object.
         Id: string
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///ID of the refund responsible for the transfer reversal.
-        SourceRefund: TransferReversalSourceRefund'AnyOf option
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferReversalSourceRefund'AnyOf>>)>]SourceRefund: TransferReversalSourceRefund'AnyOf option
         ///ID of the transfer that was reversed.
-        Transfer: TransferReversalTransfer'AnyOf
+        [<JsonField(Transform=typeof<AnyOfTransform<TransferReversalTransfer'AnyOf>>)>]Transfer: TransferReversalTransfer'AnyOf
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.

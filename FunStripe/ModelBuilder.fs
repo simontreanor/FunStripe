@@ -79,12 +79,17 @@ module ModelBuilder =
             s |> clean |> pascalCasify
 
     ///Ensure JSON field names can round-trip successfully, as Stripe is inconsistent in the snake-casing of fields containing numbers
-    let fixJsonNaming infix name =
+    let fixJsonNaming transformType infix name =
         let infix' = infix |> Option.defaultValue ""
-        if Regex.IsMatch(name, @"(?<!_)\d") then
-            $"[<JsonField(\"{name}\")>]{infix'}{name |> pascalCasify}"
-        else
+        let nameProperty = if Regex.IsMatch(name, @"(?<!_)\d") then Some $"Name=\"{name}\"" else None
+        let transformProperty = transformType |> Option.fold (fun _ v -> Some $"Transform=typeof<AnyOfTransform<%s{v}>>") None
+        let properties = [nameProperty; transformProperty] |> List.choose id
+        match properties with
+        | [] ->
             $"{infix'}{name |> pascalCasify}"
+        | _ ->
+            let propertiesString = String.Join(", ", properties)
+            $"[<JsonField({propertiesString})>]{infix'}{name |> pascalCasify}"
 
     ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line
     let commentify (s: string) = 
@@ -236,7 +241,7 @@ module ModelBuilder =
                 //parse schema into type definition
                 let typeDefinition =
 
-                    //if schema object has no properties then it is an anyOf
+                    //if schema object has no properties then it is an `anyOf`
                     if schemaObject.Properties = JsonValue.Null then
                         //parse anyOf into discriminated union; the container will later be hidden for simplicity
                         ($"{key} hide", schemaObject.Description,
@@ -271,7 +276,7 @@ module ModelBuilder =
         let sb = Text.StringBuilder()
 
         //write the namespace, references and module title
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule StripeModel =\n"
+        sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nopen FunStripe.JsonUtil\n\nmodule StripeModel =\n"
 
         //creates and formats a discriminated union
         let writeEnum (name: string) values =
@@ -306,11 +311,12 @@ module ModelBuilder =
                         |> Array.map(fun v ->
                             let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify}\n"
                             let req = if v.Required && (v.Nullable |> not) then "" else " option"
-                            $"{comment}\t\t{v.Name |> fixJsonNaming None}: {v.Type}{req}"
+                            let transform = if v.Type.EndsWith "'AnyOf" then Some v.Type else None
+                            $"{comment}\t\t{v.Name |> fixJsonNaming transform None}: {v.Type}{req}"
                         )
                     ) |> String.Join
 
-                //get the type's static properties; this is typically an Object: string property with a value set to the name of the type
+                //get the type's static properties; this is typically an `Object: string` property with a value set to the name of the type
                 let staticPropertiesString =
 
                     //get a string list of formatted properties
@@ -320,7 +326,7 @@ module ModelBuilder =
                             |> Array.filter(fun v -> v.StaticValue.IsSome)
                             |> Array.map(fun v ->
                                 let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify}\n"
-                                let name' = v.Name |> fixJsonNaming (Some "member _.")
+                                let name' = v.Name |> fixJsonNaming None (Some "member _.")
                                 $"{comment}\t\t{name'} = \"{v.StaticValue.Value}\""
                             )
                         ) |> String.Join

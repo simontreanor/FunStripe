@@ -159,12 +159,14 @@ module Tests =
                 let! actual =
                     let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                     let parameters =
+                        // PostPaymentMethodsPaymentMethodAttachParams(
+                        //     customer = testCustomer,
+                        //     expand = [nameof(Customer)]
+                        // )
                         PostPaymentMethodsPaymentMethodAttachParams(
                             customer = testCustomer
                         )
                     pms.Attach(parameters, expected.Id)
-
-                let actual' = { actual with Card = None } //ignore card as updating can change CvcCheck value
 
                 Assert.Multiple(fun () ->
                     Assert.AreEqual(Some testCustomer, actual.Customer)
