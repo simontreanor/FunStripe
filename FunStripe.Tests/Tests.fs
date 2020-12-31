@@ -144,9 +144,9 @@ module Tests =
                     pms.Update(parameters, newPM.Id)
 
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(Some testCustomer, actual.Customer)
+                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some , actual.Customer)
                     Assert.AreEqual(newPM.Id, actual.Id)
-                    Assert.AreEqual([("order_id", "6735")] |> Map.ofList, actual.Metadata)
+                    Assert.AreEqual([("order_id", "6735")] |> Map.ofList |> Some, actual.Metadata)
                 )
             }
             |> Async.RunSynchronously
@@ -169,7 +169,7 @@ module Tests =
                     pms.Attach(parameters, expected.Id)
 
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(Some testCustomer, actual.Customer)
+                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, actual.Customer)
                     Assert.AreEqual(expected.Id, actual.Id)
                 )
             }

@@ -9,7 +9,7 @@ open System.Reflection
 module JsonUtil =
     
     ///JSON setting for snake-case formatting (Stripe uses snake-case, F# prefers pascal/camel case)
-    let config = JsonConfig.create(jsonFieldNaming = Json.snakeCase)
+    let config = JsonConfig.create(allowUntyped = true, jsonFieldNaming = Json.snakeCase)
 
     ///Convert F# objects to JSON strings
     let serialise data =
