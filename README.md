@@ -16,8 +16,8 @@ Here's an example of how to create a new payment method:
 let defaultCard =
     PostPaymentMethodsCardCardDetailsParams(
         cvc = "314",
-        expMonth = 10L,
-        expYear = 2021L,
+        expMonth = 10,
+        expYear = 2021,
         number = "4242424242424242"
     )
 
