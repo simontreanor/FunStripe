@@ -131,7 +131,7 @@ module JsonUtil =
                             elif o.GetType() = typeof<decimal> && ut.FullName = "System.Int64" then
                                 o
                                 |> unbox
-                                |> (fun (m: decimal) -> Convert.ToInt64 m)
+                                |> (fun (m: decimal) -> Convert.ToInt32 m)
                                 |> wrap<'a> (t.Name)
                             else
                                 try

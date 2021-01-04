@@ -1,10 +1,11 @@
 namespace FunStripe
 
 open FSharp.Json
+open System
 
 module StripeRequest =
 
-    type Post3dSecureParams (amount: int64, currency: string, returnUrl: string, ?card: string, ?customer: string, ?expand: string list) =
+    type Post3dSecureParams (amount: int, currency: string, returnUrl: string, ?card: string, ?customer: string, ?expand: string list) =
         ///Amount of the charge that you will create when authentication completes.
         member _.Amount = amount
         ///The ID of a card token, or the ID of a card belonging to the given customer.
@@ -436,7 +437,7 @@ module StripeRequest =
         ///Town or cho-me.
         member _.Town = town
 
-    and PostAccountsIndividualDobDateOfBirthSpecs (?day: int64, ?month: int64, ?year: int64) =
+    and PostAccountsIndividualDobDateOfBirthSpecs (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -510,7 +511,7 @@ module StripeRequest =
         ///The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard.
         member _.StatementDescriptor = statementDescriptor
 
-    and PostAccountsSettingsPayoutsSchedule (?delayDays: Choice<PostAccountsSettingsPayoutsScheduleDelayDays,int64>, ?interval: PostAccountsSettingsPayoutsScheduleInterval, ?monthlyAnchor: int64, ?weeklyAnchor: PostAccountsSettingsPayoutsScheduleWeeklyAnchor) =
+    and PostAccountsSettingsPayoutsSchedule (?delayDays: Choice<PostAccountsSettingsPayoutsScheduleDelayDays,int>, ?interval: PostAccountsSettingsPayoutsScheduleInterval, ?monthlyAnchor: int, ?weeklyAnchor: PostAccountsSettingsPayoutsScheduleWeeklyAnchor) =
         ///The number of days charge funds are held before being paid out. May also be set to `minimum`, representing the lowest available value for the account country. Default is `minimum`. The `delay_days` parameter does not apply when the `interval` is `manual`.
         member _.DelayDays = delayDays
         ///How frequently available funds are paid out. One of: `daily`, `manual`, `weekly`, or `monthly`. Default is `daily`.
@@ -538,7 +539,7 @@ module StripeRequest =
     and PostAccountsSettingsPayoutsScheduleDelayDays =
         | Minimum
 
-    and PostAccountsTosAcceptance (?date: int64, ?ip: string, ?serviceAgreement: string, ?userAgent: string) =
+    and PostAccountsTosAcceptance (?date: DateTime, ?ip: string, ?serviceAgreement: string, ?userAgent: string) =
         ///The Unix timestamp marking when the account representative accepted their service agreement.
         member _.Date = date
         ///The IP address from which the account representative accepted their service agreement.
@@ -933,7 +934,7 @@ module StripeRequest =
         ///Town or cho-me.
         member _.Town = town
 
-    and PostAccountsAccountIndividualDobDateOfBirthSpecs (?day: int64, ?month: int64, ?year: int64) =
+    and PostAccountsAccountIndividualDobDateOfBirthSpecs (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -1007,7 +1008,7 @@ module StripeRequest =
         ///The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard.
         member _.StatementDescriptor = statementDescriptor
 
-    and PostAccountsAccountSettingsPayoutsSchedule (?delayDays: Choice<PostAccountsAccountSettingsPayoutsScheduleDelayDays,int64>, ?interval: PostAccountsAccountSettingsPayoutsScheduleInterval, ?monthlyAnchor: int64, ?weeklyAnchor: PostAccountsAccountSettingsPayoutsScheduleWeeklyAnchor) =
+    and PostAccountsAccountSettingsPayoutsSchedule (?delayDays: Choice<PostAccountsAccountSettingsPayoutsScheduleDelayDays,int>, ?interval: PostAccountsAccountSettingsPayoutsScheduleInterval, ?monthlyAnchor: int, ?weeklyAnchor: PostAccountsAccountSettingsPayoutsScheduleWeeklyAnchor) =
         ///The number of days charge funds are held before being paid out. May also be set to `minimum`, representing the lowest available value for the account country. Default is `minimum`. The `delay_days` parameter does not apply when the `interval` is `manual`.
         member _.DelayDays = delayDays
         ///How frequently available funds are paid out. One of: `daily`, `manual`, `weekly`, or `monthly`. Default is `daily`.
@@ -1035,7 +1036,7 @@ module StripeRequest =
     and PostAccountsAccountSettingsPayoutsScheduleDelayDays =
         | Minimum
 
-    and PostAccountsAccountTosAcceptance (?date: int64, ?ip: string, ?serviceAgreement: string, ?userAgent: string) =
+    and PostAccountsAccountTosAcceptance (?date: DateTime, ?ip: string, ?serviceAgreement: string, ?userAgent: string) =
         ///The Unix timestamp marking when the account representative accepted their service agreement.
         member _.Date = date
         ///The IP address from which the account representative accepted their service agreement.
@@ -1193,7 +1194,7 @@ module StripeRequest =
         ///Town or cho-me.
         member _.Town = town
 
-    and PostAccountsAccountPersonsDobDateOfBirthSpecs (?day: int64, ?month: int64, ?year: int64) =
+    and PostAccountsAccountPersonsDobDateOfBirthSpecs (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -1325,7 +1326,7 @@ module StripeRequest =
         ///Town or cho-me.
         member _.Town = town
 
-    and PostAccountsAccountPersonsPersonDobDateOfBirthSpecs (?day: int64, ?month: int64, ?year: int64) =
+    and PostAccountsAccountPersonsPersonDobDateOfBirthSpecs (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -1425,7 +1426,7 @@ module StripeRequest =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
         member _.Metadata = metadata
 
-    and PostApplicationFeesIdRefundsParams (?amount: int64, ?expand: string list, ?metadata: Map<string, string>) =
+    and PostApplicationFeesIdRefundsParams (?amount: int, ?expand: string list, ?metadata: Map<string, string>) =
         ///A positive integer, in _%s_, representing how much of this fee to refund. Can refund only up to the remaining unrefunded amount of the fee.
         member _.Amount = amount
         ///Specifies which fields in the response should be expanded.
@@ -1441,7 +1442,7 @@ module StripeRequest =
         ///The URL to which Stripe should send customers when they click on the link to return to your website. This field is required if a default return URL has not been configured for the portal.
         member _.ReturnUrl = returnUrl
 
-    and PostChargesParams (?amount: int64, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?source: string, ?shipping: PostChargesShipping, ?receiptEmail: string, ?onBehalfOf: string, ?metadata: Map<string, string>, ?expand: string list, ?destination: PostChargesDestination, ?description: string, ?customer: string, ?currency: string, ?capture: bool, ?applicationFeeAmount: int64, ?applicationFee: int64, ?transferData: PostChargesTransferData, ?transferGroup: string) =
+    and PostChargesParams (?amount: int, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?source: string, ?shipping: PostChargesShipping, ?receiptEmail: string, ?onBehalfOf: string, ?metadata: Map<string, string>, ?expand: string list, ?destination: PostChargesDestination, ?description: string, ?customer: string, ?currency: string, ?capture: bool, ?applicationFeeAmount: int, ?applicationFee: int, ?transferData: PostChargesTransferData, ?transferGroup: string) =
         ///Amount intended to be collected by this payment. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
         member _.Amount = amount
         ///
@@ -1479,7 +1480,7 @@ module StripeRequest =
         ///A string that identifies this transaction as part of a group. For details, see [Grouping transactions](https://stripe.com/docs/connect/charges-transfers#transfer-options).
         member _.TransferGroup = transferGroup
 
-    and PostChargesDestination (?account: string, ?amount: int64) =
+    and PostChargesDestination (?account: string, ?amount: int) =
         ///ID of an existing, connected Stripe account.
         member _.Account = account
         ///The amount to transfer to the destination account without creating an `Application Fee` object. Cannot be combined with the `application_fee` parameter. Must be less than or equal to the charge amount.
@@ -1511,7 +1512,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostChargesTransferData (?amount: int64, ?destination: string) =
+    and PostChargesTransferData (?amount: int, ?destination: string) =
         ///The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
         member _.Amount = amount
         ///ID of an existing, connected Stripe account.
@@ -1569,7 +1570,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostChargesChargeCaptureParams (?amount: int64, ?applicationFee: int64, ?applicationFeeAmount: int64, ?expand: string list, ?receiptEmail: string, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: PostChargesChargeCaptureTransferData, ?transferGroup: string) =
+    and PostChargesChargeCaptureParams (?amount: int, ?applicationFee: int, ?applicationFeeAmount: int, ?expand: string list, ?receiptEmail: string, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: PostChargesChargeCaptureTransferData, ?transferGroup: string) =
         ///The amount to capture, which must be less than or equal to the original amount. Any additional amount will be automatically refunded.
         member _.Amount = amount
         ///An application fee to add on to this charge.
@@ -1589,7 +1590,7 @@ module StripeRequest =
         ///A string that identifies this transaction as part of a group. `transfer_group` may only be provided if it has not been set. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details.
         member _.TransferGroup = transferGroup
 
-    and PostChargesChargeCaptureTransferData (?amount: int64) =
+    and PostChargesChargeCaptureTransferData (?amount: int) =
         ///The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
         member _.Amount = amount
 
@@ -1718,7 +1719,7 @@ module StripeRequest =
         ///The ID of a promotion code to apply to this session.
         member _.PromotionCode = promotionCode
 
-    and PostCheckoutSessionsLineItems (?amount: int64, ?currency: string, ?description: string, ?images: string list, ?name: string, ?price: string, ?priceData: PostCheckoutSessionsLineItemsPriceData, ?quantity: int64, ?taxRates: string list) =
+    and PostCheckoutSessionsLineItems (?amount: int, ?currency: string, ?description: string, ?images: string list, ?name: string, ?price: string, ?priceData: PostCheckoutSessionsLineItemsPriceData, ?quantity: int, ?taxRates: string list) =
         ///The amount to be collected per unit of the line item. If specified, must also pass `currency` and `name`.
         member _.Amount = amount
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). Required if `amount` is passed.
@@ -1739,7 +1740,7 @@ module StripeRequest =
         ///The [tax rates](https://stripe.com/docs/api/tax_rates) which apply to this line item. This is only allowed in subscription mode.
         member _.TaxRates = taxRates
 
-    and PostCheckoutSessionsLineItemsPriceData (?currency: string, ?product: string, ?productData: PostCheckoutSessionsLineItemsPriceDataProductData, ?recurring: PostCheckoutSessionsLineItemsPriceDataRecurring, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostCheckoutSessionsLineItemsPriceData (?currency: string, ?product: string, ?productData: PostCheckoutSessionsLineItemsPriceDataProductData, ?recurring: PostCheckoutSessionsLineItemsPriceDataRecurring, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to. One of `product` or `product_data` is required.
@@ -1763,7 +1764,7 @@ module StripeRequest =
         ///The product's name, meant to be displayable to the customer. Whenever this product is sold via a subscription, name will show up on associated invoice line item descriptions.
         member _.Name = name
 
-    and PostCheckoutSessionsLineItemsPriceDataRecurring (?interval: PostCheckoutSessionsLineItemsPriceDataRecurringInterval, ?intervalCount: int64) =
+    and PostCheckoutSessionsLineItemsPriceDataRecurring (?interval: PostCheckoutSessionsLineItemsPriceDataRecurringInterval, ?intervalCount: int) =
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -1775,7 +1776,7 @@ module StripeRequest =
         | Week
         | Year
 
-    and PostCheckoutSessionsPaymentIntentData (?applicationFeeAmount: int64, ?captureMethod: PostCheckoutSessionsPaymentIntentDataCaptureMethod, ?description: string, ?metadata: Map<string, string>, ?onBehalfOf: string, ?receiptEmail: string, ?setupFutureUsage: PostCheckoutSessionsPaymentIntentDataSetupFutureUsage, ?shipping: PostCheckoutSessionsPaymentIntentDataShipping, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: PostCheckoutSessionsPaymentIntentDataTransferData, ?transferGroup: string) =
+    and PostCheckoutSessionsPaymentIntentData (?applicationFeeAmount: int, ?captureMethod: PostCheckoutSessionsPaymentIntentDataCaptureMethod, ?description: string, ?metadata: Map<string, string>, ?onBehalfOf: string, ?receiptEmail: string, ?setupFutureUsage: PostCheckoutSessionsPaymentIntentDataSetupFutureUsage, ?shipping: PostCheckoutSessionsPaymentIntentDataShipping, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: PostCheckoutSessionsPaymentIntentDataTransferData, ?transferGroup: string) =
         ///The amount of the application fee (if any) that will be requested to be applied to the payment and
         ///transferred to the application owner's Stripe account. The amount of the application fee collected
         ///will be capped at the total payment amount. To use an application fee, the request must be made on
@@ -1852,7 +1853,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostCheckoutSessionsPaymentIntentDataTransferData (?amount: int64, ?destination: string) =
+    and PostCheckoutSessionsPaymentIntentDataTransferData (?amount: int, ?destination: string) =
         ///The amount that will be transferred automatically when a charge succeeds.
         member _.Amount = amount
         ///If specified, successful charges will be attributed to the destination
@@ -2127,7 +2128,7 @@ module StripeRequest =
         | [<JsonUnionCase("ZW")>] ZW
         | [<JsonUnionCase("ZZ")>] ZZ
 
-    and PostCheckoutSessionsSubscriptionData (?applicationFeePercent: decimal, ?coupon: string, ?defaultTaxRates: string list, ?items: PostCheckoutSessionsSubscriptionDataItems list, ?metadata: Map<string, string>, ?trialEnd: int64, ?trialFromPlan: bool, ?trialPeriodDays: int64) =
+    and PostCheckoutSessionsSubscriptionData (?applicationFeePercent: decimal, ?coupon: string, ?defaultTaxRates: string list, ?items: PostCheckoutSessionsSubscriptionDataItems list, ?metadata: Map<string, string>, ?trialEnd: DateTime, ?trialFromPlan: bool, ?trialPeriodDays: int) =
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. To use an application fee percent, the request must be made on behalf of another account, using the `Stripe-Account` header or an OAuth key. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
         member _.ApplicationFeePercent = applicationFeePercent
         ///The ID of the coupon to apply to this subscription. A coupon applied to a subscription will only affect invoices created for that particular subscription.
@@ -2150,7 +2151,7 @@ module StripeRequest =
         ///customer is charged for the first time. Has to be at least 1.
         member _.TrialPeriodDays = trialPeriodDays
 
-    and PostCheckoutSessionsSubscriptionDataItems (?plan: string, ?quantity: int64, ?taxRates: string list) =
+    and PostCheckoutSessionsSubscriptionDataItems (?plan: string, ?quantity: int, ?taxRates: string list) =
         ///Plan ID for this item.
         member _.Plan = plan
         ///Quantity for this item.
@@ -2159,7 +2160,7 @@ module StripeRequest =
         ///on `subscription_data` do not apply to this item.
         member _.TaxRates = taxRates
 
-    and PostCouponsParams (duration: PostCouponsDuration, ?amountOff: int64, ?appliesTo: PostCouponsAppliesTo, ?currency: string, ?durationInMonths: int64, ?expand: string list, ?id: string, ?maxRedemptions: int64, ?metadata: Map<string, string>, ?name: string, ?percentOff: decimal, ?redeemBy: int64) =
+    and PostCouponsParams (duration: PostCouponsDuration, ?amountOff: int, ?appliesTo: PostCouponsAppliesTo, ?currency: string, ?durationInMonths: int, ?expand: string list, ?id: string, ?maxRedemptions: int, ?metadata: Map<string, string>, ?name: string, ?percentOff: decimal, ?redeemBy: DateTime) =
         ///A positive integer representing the amount to subtract from an invoice total (required if `percent_off` is not passed).
         member _.AmountOff = amountOff
         ///A hash containing directions for what this Coupon will apply discounts to.
@@ -2202,7 +2203,7 @@ module StripeRequest =
         ///Name of the coupon displayed to customers on, for instance invoices, or receipts. By default the `id` is shown if `name` is not set.
         member _.Name = name
 
-    and PostCreditNotesParams (invoice: string, ?amount: int64, ?creditAmount: int64, ?expand: string list, ?lines: PostCreditNotesLines list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int64, ?reason: PostCreditNotesReason, ?refund: string, ?refundAmount: int64) =
+    and PostCreditNotesParams (invoice: string, ?amount: int, ?creditAmount: int, ?expand: string list, ?lines: PostCreditNotesLines list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: PostCreditNotesReason, ?refund: string, ?refundAmount: int) =
         ///The integer amount in %s representing the total amount of the credit note.
         member _.Amount = amount
         ///The integer amount in %s representing the amount to credit the customer's balance, which will be automatically applied to their next invoice.
@@ -2232,7 +2233,7 @@ module StripeRequest =
         | OrderChange
         | ProductUnsatisfactory
 
-    and PostCreditNotesLines (?amount: int64, ?description: string, ?invoiceLineItem: string, ?quantity: int64, ?taxRates: Choice<string list,string>, ?``type``: PostCreditNotesLinesType, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostCreditNotesLines (?amount: int, ?description: string, ?invoiceLineItem: string, ?quantity: int, ?taxRates: Choice<string list,string>, ?``type``: PostCreditNotesLinesType, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///The line item amount to credit. Only valid when `type` is `invoice_line_item` and the referenced invoice line item does not have a quantity, only an amount.
         member _.Amount = amount
         ///The description of the credit note line item. Only valid when the `type` is `custom_line_item`.
@@ -2266,7 +2267,7 @@ module StripeRequest =
         ///Specifies which fields in the response should be expanded.
         member _.Expand = expand
 
-    and PostCustomersParams (?address: Choice<PostCustomersAddressAddress,string>, ?source: string, ?shipping: Choice<PostCustomersShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?paymentMethod: string, ?nextInvoiceSequence: int64, ?taxExempt: PostCustomersTaxExempt, ?name: string, ?invoiceSettings: PostCustomersInvoiceSettings, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?coupon: string, ?balance: int64, ?metadata: Map<string, string>, ?taxIdData: PostCustomersTaxIdData list) =
+    and PostCustomersParams (?address: Choice<PostCustomersAddressAddress,string>, ?source: string, ?shipping: Choice<PostCustomersShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?paymentMethod: string, ?nextInvoiceSequence: int, ?taxExempt: PostCustomersTaxExempt, ?name: string, ?invoiceSettings: PostCustomersInvoiceSettings, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?coupon: string, ?balance: int, ?metadata: Map<string, string>, ?taxIdData: PostCustomersTaxIdData list) =
         ///The customer's address.
         member _.Address = address
         ///An integer amount in %s that represents the customer's current balance, which affect the customer's future invoices. A negative amount represents a credit that decreases the amount due on an invoice; a positive amount increases the amount due on an invoice.
@@ -2401,7 +2402,7 @@ module StripeRequest =
         | UsEin
         | ZaVat
 
-    and PostCustomersCustomerParams (?address: Choice<PostCustomersCustomerAddressAddress,string>, ?source: string, ?shipping: Choice<PostCustomersCustomerShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?nextInvoiceSequence: int64, ?name: string, ?taxExempt: PostCustomersCustomerTaxExempt, ?metadata: Map<string, string>, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?defaultSource: string, ?coupon: string, ?balance: int64, ?invoiceSettings: PostCustomersCustomerInvoiceSettings, ?trialEnd: Choice<PostCustomersCustomerTrialEnd,int64>) =
+    and PostCustomersCustomerParams (?address: Choice<PostCustomersCustomerAddressAddress,string>, ?source: string, ?shipping: Choice<PostCustomersCustomerShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?nextInvoiceSequence: int, ?name: string, ?taxExempt: PostCustomersCustomerTaxExempt, ?metadata: Map<string, string>, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?defaultSource: string, ?coupon: string, ?balance: int, ?invoiceSettings: PostCustomersCustomerInvoiceSettings, ?trialEnd: Choice<PostCustomersCustomerTrialEnd,DateTime>) =
         ///The customer's address.
         member _.Address = address
         ///An integer amount in %s that represents the customer's current balance, which affect the customer's future invoices. A negative amount represents a credit that decreases the amount due on an invoice; a positive amount increases the amount due on an invoice.
@@ -2501,7 +2502,7 @@ module StripeRequest =
     and PostCustomersCustomerTrialEnd =
         | Now
 
-    and PostCustomersCustomerBalanceTransactionsParams (amount: int64, currency: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
+    and PostCustomersCustomerBalanceTransactionsParams (amount: int, currency: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
         ///The integer amount in **%s** to apply to the customer's credit balance.
         member _.Amount = amount
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). If the customer's [`currency`](https://stripe.com/docs/api/customers/object#customer_object-currency) is set, this value must match it. If the customer's `currency` is not set, it will be updated to this value.
@@ -2591,7 +2592,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostCustomersCustomerSourcesIdVerifyParams (?amounts: int64 list, ?expand: string list) =
+    and PostCustomersCustomerSourcesIdVerifyParams (?amounts: int list, ?expand: string list) =
         ///Two positive integers, in *cents*, equal to the values of the microdeposits sent to the bank account.
         member _.Amounts = amounts
         ///Specifies which fields in the response should be expanded.
@@ -2759,7 +2760,7 @@ module StripeRequest =
         ///Specifies which fields in the response should be expanded.
         member _.Expand = expand
 
-    and PostFileLinksParams (file: string, ?expand: string list, ?expiresAt: int64, ?metadata: Map<string, string>) =
+    and PostFileLinksParams (file: string, ?expand: string list, ?expiresAt: DateTime, ?metadata: Map<string, string>) =
         ///Specifies which fields in the response should be expanded.
         member _.Expand = expand
         ///A future timestamp after which the link will no longer be usable.
@@ -2769,7 +2770,7 @@ module StripeRequest =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
         member _.Metadata = metadata
 
-    and PostFileLinksLinkParams (?expand: string list, ?expiresAt: Choice<PostFileLinksLinkExpiresAt,int64,string>, ?metadata: Map<string, string>) =
+    and PostFileLinksLinkParams (?expand: string list, ?expiresAt: Choice<PostFileLinksLinkExpiresAt,DateTime,string>, ?metadata: Map<string, string>) =
         ///Specifies which fields in the response should be expanded.
         member _.Expand = expand
         ///A future timestamp after which the link will no longer be usable, or `now` to expire the link immediately.
@@ -2800,7 +2801,7 @@ module StripeRequest =
         | PciDocument
         | TaxDocumentUserUpload
 
-    and PostFilesFileLinkData (?create: bool, ?expiresAt: int64, ?metadata: Map<string, string>) =
+    and PostFilesFileLinkData (?create: bool, ?expiresAt: DateTime, ?metadata: Map<string, string>) =
         ///Set this to `true` to create a file link for the newly created file. Creating a link is only possible when the file's `purpose` is one of the following: `business_icon`, `business_logo`, `customer_signature`, `dispute_evidence`, `pci_document`, or `tax_document_user_upload`.
         member _.Create = create
         ///A future timestamp after which the link will no longer be usable.
@@ -2808,7 +2809,7 @@ module StripeRequest =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
         member _.Metadata = metadata
 
-    and PostInvoiceitemsParams (customer: string, ?amount: int64, ?taxRates: string list, ?subscription: string, ?quantity: int64, ?priceData: PostInvoiceitemsPriceData, ?price: string, ?period: PostInvoiceitemsPeriod, ?metadata: Map<string, string>, ?invoice: string, ?expand: string list, ?discounts: Choice<PostInvoiceitemsDiscounts list,string>, ?discountable: bool, ?description: string, ?currency: string, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostInvoiceitemsParams (customer: string, ?amount: int, ?taxRates: string list, ?subscription: string, ?quantity: int, ?priceData: PostInvoiceitemsPriceData, ?price: string, ?period: PostInvoiceitemsPeriod, ?metadata: Map<string, string>, ?invoice: string, ?expand: string list, ?discounts: Choice<PostInvoiceitemsDiscounts list,string>, ?discountable: bool, ?description: string, ?currency: string, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///The integer amount in %s of the charge to be applied to the upcoming invoice. Passing in a negative `amount` will reduce the `amount_due` on the invoice.
         member _.Amount = amount
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -2850,13 +2851,13 @@ module StripeRequest =
         ///ID of an existing discount on the object (or one of its ancestors) to reuse.
         member _.Discount = discount
 
-    and PostInvoiceitemsPeriod (?``end``: int64, ?start: int64) =
+    and PostInvoiceitemsPeriod (?``end``: DateTime, ?start: DateTime) =
         ///The end of the period, which must be greater than or equal to the start.
         member _.End = ``end``
         ///The start of the period.
         member _.Start = start
 
-    and PostInvoiceitemsPriceData (?currency: string, ?product: string, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostInvoiceitemsPriceData (?currency: string, ?product: string, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -2866,7 +2867,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostInvoiceitemsInvoiceitemParams (?amount: int64, ?description: string, ?discountable: bool, ?discounts: Choice<PostInvoiceitemsInvoiceitemDiscounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?period: PostInvoiceitemsInvoiceitemPeriod, ?price: string, ?priceData: PostInvoiceitemsInvoiceitemPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostInvoiceitemsInvoiceitemParams (?amount: int, ?description: string, ?discountable: bool, ?discounts: Choice<PostInvoiceitemsInvoiceitemDiscounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?period: PostInvoiceitemsInvoiceitemPeriod, ?price: string, ?priceData: PostInvoiceitemsInvoiceitemPriceData, ?quantity: int, ?taxRates: Choice<string list,string>, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///The integer amount in %s of the charge to be applied to the upcoming invoice. If you want to apply a credit to the customer's account, pass a negative amount.
         member _.Amount = amount
         ///An arbitrary string which you can attach to the invoice item. The description is displayed in the invoice for easy tracking.
@@ -2900,13 +2901,13 @@ module StripeRequest =
         ///ID of an existing discount on the object (or one of its ancestors) to reuse.
         member _.Discount = discount
 
-    and PostInvoiceitemsInvoiceitemPeriod (?``end``: int64, ?start: int64) =
+    and PostInvoiceitemsInvoiceitemPeriod (?``end``: DateTime, ?start: DateTime) =
         ///The end of the period, which must be greater than or equal to the start.
         member _.End = ``end``
         ///The start of the period.
         member _.Start = start
 
-    and PostInvoiceitemsInvoiceitemPriceData (?currency: string, ?product: string, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostInvoiceitemsInvoiceitemPriceData (?currency: string, ?product: string, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -2916,7 +2917,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostInvoicesParams (customer: string, ?accountTaxIds: Choice<string list,string>, ?statementDescriptor: string, ?metadata: Map<string, string>, ?footer: string, ?expand: string list, ?dueDate: int64, ?discounts: Choice<PostInvoicesDiscounts list,string>, ?description: string, ?defaultTaxRates: string list, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int64, ?customFields: Choice<PostInvoicesCustomFields list,string>, ?collectionMethod: PostInvoicesCollectionMethod, ?autoAdvance: bool, ?applicationFeeAmount: int64, ?subscription: string, ?transferData: PostInvoicesTransferData) =
+    and PostInvoicesParams (customer: string, ?accountTaxIds: Choice<string list,string>, ?statementDescriptor: string, ?metadata: Map<string, string>, ?footer: string, ?expand: string list, ?dueDate: DateTime, ?discounts: Choice<PostInvoicesDiscounts list,string>, ?description: string, ?defaultTaxRates: string list, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?customFields: Choice<PostInvoicesCustomFields list,string>, ?collectionMethod: PostInvoicesCollectionMethod, ?autoAdvance: bool, ?applicationFeeAmount: int, ?subscription: string, ?transferData: PostInvoicesTransferData) =
         ///The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
         member _.AccountTaxIds = accountTaxIds
         ///A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#invoices).
@@ -2972,13 +2973,13 @@ module StripeRequest =
         ///ID of an existing discount on the object (or one of its ancestors) to reuse.
         member _.Discount = discount
 
-    and PostInvoicesTransferData (?amount: int64, ?destination: string) =
+    and PostInvoicesTransferData (?amount: int, ?destination: string) =
         ///The amount that will be transferred automatically when the invoice is paid. If no amount is set, the full amount is transferred.
         member _.Amount = amount
         ///ID of an existing, connected Stripe account.
         member _.Destination = destination
 
-    and PostInvoicesInvoiceParams (?accountTaxIds: Choice<string list,string>, ?metadata: Map<string, string>, ?footer: string, ?expand: string list, ?dueDate: int64, ?discounts: Choice<PostInvoicesInvoiceDiscounts list,string>, ?description: string, ?statementDescriptor: string, ?defaultTaxRates: Choice<string list,string>, ?defaultPaymentMethod: string, ?daysUntilDue: int64, ?customFields: Choice<PostInvoicesInvoiceCustomFields list,string>, ?collectionMethod: PostInvoicesInvoiceCollectionMethod, ?autoAdvance: bool, ?applicationFeeAmount: int64, ?defaultSource: string, ?transferData: Choice<PostInvoicesInvoiceTransferDataTransferDataSpecs,string>) =
+    and PostInvoicesInvoiceParams (?accountTaxIds: Choice<string list,string>, ?metadata: Map<string, string>, ?footer: string, ?expand: string list, ?dueDate: DateTime, ?discounts: Choice<PostInvoicesInvoiceDiscounts list,string>, ?description: string, ?statementDescriptor: string, ?defaultTaxRates: Choice<string list,string>, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?customFields: Choice<PostInvoicesInvoiceCustomFields list,string>, ?collectionMethod: PostInvoicesInvoiceCollectionMethod, ?autoAdvance: bool, ?applicationFeeAmount: int, ?defaultSource: string, ?transferData: Choice<PostInvoicesInvoiceTransferDataTransferDataSpecs,string>) =
         ///The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
         member _.AccountTaxIds = accountTaxIds
         ///A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#invoices).
@@ -3030,7 +3031,7 @@ module StripeRequest =
         ///ID of an existing discount on the object (or one of its ancestors) to reuse.
         member _.Discount = discount
 
-    and PostInvoicesInvoiceTransferDataTransferDataSpecs (?amount: int64, ?destination: string) =
+    and PostInvoicesInvoiceTransferDataTransferDataSpecs (?amount: int, ?destination: string) =
         ///The amount that will be transferred automatically when the invoice is paid. If no amount is set, the full amount is transferred.
         member _.Amount = amount
         ///ID of an existing, connected Stripe account.
@@ -3075,7 +3076,7 @@ module StripeRequest =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
         member _.Metadata = metadata
 
-    and PostIssuingAuthorizationsAuthorizationApproveParams (?amount: int64, ?expand: string list, ?metadata: Map<string, string>) =
+    and PostIssuingAuthorizationsAuthorizationApproveParams (?amount: int, ?expand: string list, ?metadata: Map<string, string>) =
         ///If the authorization's `pending_request.is_amount_controllable` property is `true`, you may provide this value to control how much to hold for the authorization. Must be positive (use [`decline`](https://stripe.com/docs/api/issuing/authorizations/decline) to decline an authorization request).
         member _.Amount = amount
         ///Specifies which fields in the response should be expanded.
@@ -3153,7 +3154,7 @@ module StripeRequest =
         ///Government-issued ID document for this cardholder.
         member _.Verification = verification
 
-    and PostIssuingCardholdersIndividualDob (?day: int64, ?month: int64, ?year: int64) =
+    and PostIssuingCardholdersIndividualDob (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -3761,7 +3762,7 @@ module StripeRequest =
         | WomensReadyToWearStores
         | WreckingAndSalvageYards
 
-    and PostIssuingCardholdersSpendingControlsSpendingLimits (?amount: int64, ?categories: PostIssuingCardholdersSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardholdersSpendingControlsSpendingLimitsInterval) =
+    and PostIssuingCardholdersSpendingControlsSpendingLimits (?amount: int, ?categories: PostIssuingCardholdersSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardholdersSpendingControlsSpendingLimitsInterval) =
         ///Maximum amount allowed to spend per interval.
         member _.Amount = amount
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
@@ -4123,7 +4124,7 @@ module StripeRequest =
         ///Government-issued ID document for this cardholder.
         member _.Verification = verification
 
-    and PostIssuingCardholdersCardholderIndividualDob (?day: int64, ?month: int64, ?year: int64) =
+    and PostIssuingCardholdersCardholderIndividualDob (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -4731,7 +4732,7 @@ module StripeRequest =
         | WomensReadyToWearStores
         | WreckingAndSalvageYards
 
-    and PostIssuingCardholdersCardholderSpendingControlsSpendingLimits (?amount: int64, ?categories: PostIssuingCardholdersCardholderSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardholdersCardholderSpendingControlsSpendingLimitsInterval) =
+    and PostIssuingCardholdersCardholderSpendingControlsSpendingLimits (?amount: int, ?categories: PostIssuingCardholdersCardholderSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardholdersCardholderSpendingControlsSpendingLimitsInterval) =
         ///Maximum amount allowed to spend per interval.
         member _.Amount = amount
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
@@ -5694,7 +5695,7 @@ module StripeRequest =
         | WomensReadyToWearStores
         | WreckingAndSalvageYards
 
-    and PostIssuingCardsSpendingControlsSpendingLimits (?amount: int64, ?categories: PostIssuingCardsSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardsSpendingControlsSpendingLimitsInterval) =
+    and PostIssuingCardsSpendingControlsSpendingLimits (?amount: int, ?categories: PostIssuingCardsSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardsSpendingControlsSpendingLimitsInterval) =
         ///Maximum amount allowed to spend per interval.
         member _.Amount = amount
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
@@ -6609,7 +6610,7 @@ module StripeRequest =
         | WomensReadyToWearStores
         | WreckingAndSalvageYards
 
-    and PostIssuingCardsCardSpendingControlsSpendingLimits (?amount: int64, ?categories: PostIssuingCardsCardSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardsCardSpendingControlsSpendingLimitsInterval) =
+    and PostIssuingCardsCardSpendingControlsSpendingLimits (?amount: int, ?categories: PostIssuingCardsCardSpendingControlsSpendingLimitsCategories list, ?interval: PostIssuingCardsCardSpendingControlsSpendingLimitsInterval) =
         ///Maximum amount allowed to spend per interval.
         member _.Amount = amount
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
@@ -6952,7 +6953,7 @@ module StripeRequest =
         | Other
         | ServiceNotAsDescribed
 
-    and PostIssuingDisputesEvidenceCanceledCanceled (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<int64,string>, ?cancellationPolicyProvided: Choice<bool,string>, ?cancellationReason: string, ?expectedAt: Choice<int64,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesEvidenceCanceledCanceledProductType, ?returnStatus: PostIssuingDisputesEvidenceCanceledCanceledReturnStatus, ?returnedAt: Choice<int64,string>) =
+    and PostIssuingDisputesEvidenceCanceledCanceled (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationPolicyProvided: Choice<bool,string>, ?cancellationReason: string, ?expectedAt: Choice<DateTime,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesEvidenceCanceledCanceledProductType, ?returnStatus: PostIssuingDisputesEvidenceCanceledCanceledReturnStatus, ?returnedAt: Choice<DateTime,string>) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Date when order was canceled.
@@ -7002,7 +7003,7 @@ module StripeRequest =
         ///Explanation of why the cardholder is disputing this transaction.
         member _.Explanation = explanation
 
-    and PostIssuingDisputesEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?explanation: string, ?receivedAt: Choice<int64,string>, ?returnDescription: string, ?returnStatus: PostIssuingDisputesEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus, ?returnedAt: Choice<int64,string>) =
+    and PostIssuingDisputesEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?explanation: string, ?receivedAt: Choice<DateTime,string>, ?returnDescription: string, ?returnStatus: PostIssuingDisputesEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus, ?returnedAt: Choice<DateTime,string>) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Explanation of why the cardholder is disputing this transaction.
@@ -7020,7 +7021,7 @@ module StripeRequest =
         | MerchantRejected
         | Successful
 
-    and PostIssuingDisputesEvidenceNotReceivedNotReceived (?additionalDocumentation: Choice<string,string>, ?expectedAt: Choice<int64,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesEvidenceNotReceivedNotReceivedProductType) =
+    and PostIssuingDisputesEvidenceNotReceivedNotReceived (?additionalDocumentation: Choice<string,string>, ?expectedAt: Choice<DateTime,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesEvidenceNotReceivedNotReceivedProductType) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Date when the cardholder expected to receive the product.
@@ -7050,7 +7051,7 @@ module StripeRequest =
         | Merchandise
         | Service
 
-    and PostIssuingDisputesEvidenceServiceNotAsDescribedServiceNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<int64,string>, ?cancellationReason: string, ?explanation: string, ?receivedAt: Choice<int64,string>) =
+    and PostIssuingDisputesEvidenceServiceNotAsDescribedServiceNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationReason: string, ?explanation: string, ?receivedAt: Choice<DateTime,string>) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Date when order was canceled.
@@ -7097,7 +7098,7 @@ module StripeRequest =
         | Other
         | ServiceNotAsDescribed
 
-    and PostIssuingDisputesDisputeEvidenceCanceledCanceled (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<int64,string>, ?cancellationPolicyProvided: Choice<bool,string>, ?cancellationReason: string, ?expectedAt: Choice<int64,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesDisputeEvidenceCanceledCanceledProductType, ?returnStatus: PostIssuingDisputesDisputeEvidenceCanceledCanceledReturnStatus, ?returnedAt: Choice<int64,string>) =
+    and PostIssuingDisputesDisputeEvidenceCanceledCanceled (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationPolicyProvided: Choice<bool,string>, ?cancellationReason: string, ?expectedAt: Choice<DateTime,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesDisputeEvidenceCanceledCanceledProductType, ?returnStatus: PostIssuingDisputesDisputeEvidenceCanceledCanceledReturnStatus, ?returnedAt: Choice<DateTime,string>) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Date when order was canceled.
@@ -7147,7 +7148,7 @@ module StripeRequest =
         ///Explanation of why the cardholder is disputing this transaction.
         member _.Explanation = explanation
 
-    and PostIssuingDisputesDisputeEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?explanation: string, ?receivedAt: Choice<int64,string>, ?returnDescription: string, ?returnStatus: PostIssuingDisputesDisputeEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus, ?returnedAt: Choice<int64,string>) =
+    and PostIssuingDisputesDisputeEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?explanation: string, ?receivedAt: Choice<DateTime,string>, ?returnDescription: string, ?returnStatus: PostIssuingDisputesDisputeEvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus, ?returnedAt: Choice<DateTime,string>) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Explanation of why the cardholder is disputing this transaction.
@@ -7165,7 +7166,7 @@ module StripeRequest =
         | MerchantRejected
         | Successful
 
-    and PostIssuingDisputesDisputeEvidenceNotReceivedNotReceived (?additionalDocumentation: Choice<string,string>, ?expectedAt: Choice<int64,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesDisputeEvidenceNotReceivedNotReceivedProductType) =
+    and PostIssuingDisputesDisputeEvidenceNotReceivedNotReceived (?additionalDocumentation: Choice<string,string>, ?expectedAt: Choice<DateTime,string>, ?explanation: string, ?productDescription: string, ?productType: PostIssuingDisputesDisputeEvidenceNotReceivedNotReceivedProductType) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Date when the cardholder expected to receive the product.
@@ -7195,7 +7196,7 @@ module StripeRequest =
         | Merchandise
         | Service
 
-    and PostIssuingDisputesDisputeEvidenceServiceNotAsDescribedServiceNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<int64,string>, ?cancellationReason: string, ?explanation: string, ?receivedAt: Choice<int64,string>) =
+    and PostIssuingDisputesDisputeEvidenceServiceNotAsDescribedServiceNotAsDescribed (?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationReason: string, ?explanation: string, ?receivedAt: Choice<DateTime,string>) =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         member _.AdditionalDocumentation = additionalDocumentation
         ///Date when order was canceled.
@@ -7237,7 +7238,7 @@ module StripeRequest =
         ///Shipping address for the order. Required if any of the SKUs are for products that have `shippable` set to true.
         member _.Shipping = shipping
 
-    and PostOrdersItems (?amount: int64, ?currency: string, ?description: string, ?parent: string, ?quantity: int64, ?``type``: PostOrdersItemsType) =
+    and PostOrdersItems (?amount: int, ?currency: string, ?description: string, ?parent: string, ?quantity: int, ?``type``: PostOrdersItemsType) =
         ///
         member _.Amount = amount
         ///
@@ -7306,7 +7307,7 @@ module StripeRequest =
         ///The tracking number provided by the carrier.
         member _.TrackingNumber = trackingNumber
 
-    and PostOrdersIdPayParams (?applicationFee: int64, ?customer: string, ?email: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string) =
+    and PostOrdersIdPayParams (?applicationFee: int, ?customer: string, ?email: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string) =
         ///A fee in %s that will be applied to the order and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the `Stripe-Account` header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees).
         member _.ApplicationFee = applicationFee
         ///The ID of an existing customer that will be charged for this order. If no customer was attached to the order at creation, either `source` or `customer` is required. Otherwise, the specified customer will be charged instead of the one attached to the order.
@@ -7326,7 +7327,7 @@ module StripeRequest =
         ///List of items to return.
         member _.Items = items
 
-    and PostOrdersIdReturnsItems (?amount: int64, ?description: string, ?parent: string, ?quantity: int64, ?``type``: PostOrdersIdReturnsItemsType) =
+    and PostOrdersIdReturnsItems (?amount: int, ?description: string, ?parent: string, ?quantity: int, ?``type``: PostOrdersIdReturnsItemsType) =
         ///The amount (price) for this order item to return.
         member _.Amount = amount
         ///If returning a `tax` item, use description to disambiguate which one to return.
@@ -7344,7 +7345,7 @@ module StripeRequest =
         | Sku
         | Tax
 
-    and PostPaymentIntentsParams (amount: int64, currency: string, ?transferData: PostPaymentIntentsTransferData, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: PostPaymentIntentsShipping, ?setupFutureUsage: PostPaymentIntentsSetupFutureUsage, ?returnUrl: string, ?receiptEmail: string, ?paymentMethodTypes: string list, ?paymentMethodOptions: PostPaymentIntentsPaymentMethodOptions, ?paymentMethodData: PostPaymentIntentsPaymentMethodData, ?paymentMethod: string, ?onBehalfOf: string, ?offSession: Choice<bool,PostPaymentIntentsOffSession>, ?metadata: Map<string, string>, ?mandateData: PostPaymentIntentsMandateData, ?mandate: string, ?expand: string list, ?errorOnRequiresAction: bool, ?description: string, ?customer: string, ?confirmationMethod: PostPaymentIntentsConfirmationMethod, ?confirm: bool, ?captureMethod: PostPaymentIntentsCaptureMethod, ?applicationFeeAmount: int64, ?transferGroup: string, ?useStripeSdk: bool) =
+    and PostPaymentIntentsParams (amount: int, currency: string, ?transferData: PostPaymentIntentsTransferData, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: PostPaymentIntentsShipping, ?setupFutureUsage: PostPaymentIntentsSetupFutureUsage, ?returnUrl: string, ?receiptEmail: string, ?paymentMethodTypes: string list, ?paymentMethodOptions: PostPaymentIntentsPaymentMethodOptions, ?paymentMethodData: PostPaymentIntentsPaymentMethodData, ?paymentMethod: string, ?onBehalfOf: string, ?offSession: Choice<bool,PostPaymentIntentsOffSession>, ?metadata: Map<string, string>, ?mandateData: PostPaymentIntentsMandateData, ?mandate: string, ?expand: string list, ?errorOnRequiresAction: bool, ?description: string, ?customer: string, ?confirmationMethod: PostPaymentIntentsConfirmationMethod, ?confirm: bool, ?captureMethod: PostPaymentIntentsCaptureMethod, ?applicationFeeAmount: int, ?transferGroup: string, ?useStripeSdk: bool) =
         ///Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
         member _.Amount = amount
         ///The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).
@@ -7426,7 +7427,7 @@ module StripeRequest =
         ///This hash contains details about the customer acceptance of the Mandate.
         member _.CustomerAcceptance = customerAcceptance
 
-    and PostPaymentIntentsMandateDataCustomerAcceptance (?acceptedAt: int64, ?offline: string, ?online: PostPaymentIntentsMandateDataCustomerAcceptanceOnline, ?``type``: PostPaymentIntentsMandateDataCustomerAcceptanceType) =
+    and PostPaymentIntentsMandateDataCustomerAcceptance (?acceptedAt: DateTime, ?offline: string, ?online: PostPaymentIntentsMandateDataCustomerAcceptanceOnline, ?``type``: PostPaymentIntentsMandateDataCustomerAcceptanceType) =
         ///The time at which the customer accepted the Mandate.
         member _.AcceptedAt = acceptedAt
         ///If this is a Mandate accepted offline, this hash contains details about the offline acceptance.
@@ -7700,7 +7701,7 @@ module StripeRequest =
         ///This parameter can only be provided during confirmation.
         member _.Plan = plan
 
-    and PostPaymentIntentsPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlan (?count: int64, ?interval: PostPaymentIntentsPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanInterval, ?``type``: PostPaymentIntentsPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType) =
+    and PostPaymentIntentsPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlan (?count: int, ?interval: PostPaymentIntentsPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanInterval, ?``type``: PostPaymentIntentsPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType) =
         ///For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
         member _.Count = count
         ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
@@ -7715,7 +7716,7 @@ module StripeRequest =
     and PostPaymentIntentsPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType =
         | FixedCount
 
-    and PostPaymentIntentsPaymentMethodOptionsOxxoPaymentMethodOptions (?expiresAfterDays: int64) =
+    and PostPaymentIntentsPaymentMethodOptionsOxxoPaymentMethodOptions (?expiresAfterDays: int) =
         ///The number of calendar days before an OXXO voucher expires. For example, if you create an OXXO voucher on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
         member _.ExpiresAfterDays = expiresAfterDays
 
@@ -7762,7 +7763,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostPaymentIntentsTransferData (?amount: int64, ?destination: string) =
+    and PostPaymentIntentsTransferData (?amount: int, ?destination: string) =
         ///The amount that will be transferred automatically when a charge succeeds.
         ///The amount is capped at the total transaction amount and if no amount is set,
         ///the full amount is transferred.
@@ -7776,7 +7777,7 @@ module StripeRequest =
         ///returned on the successful charge's `transfer` field.
         member _.Destination = destination
 
-    and PostPaymentIntentsIntentParams (?amount: int64, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: Choice<PostPaymentIntentsIntentShippingShipping,string>, ?setupFutureUsage: PostPaymentIntentsIntentSetupFutureUsage, ?receiptEmail: Choice<string,string>, ?paymentMethodTypes: string list, ?paymentMethodOptions: PostPaymentIntentsIntentPaymentMethodOptions, ?paymentMethodData: PostPaymentIntentsIntentPaymentMethodData, ?paymentMethod: string, ?metadata: Map<string, string>, ?expand: string list, ?description: string, ?customer: string, ?currency: string, ?applicationFeeAmount: Choice<int64,string>, ?transferData: PostPaymentIntentsIntentTransferData, ?transferGroup: string) =
+    and PostPaymentIntentsIntentParams (?amount: int, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: Choice<PostPaymentIntentsIntentShippingShipping,string>, ?setupFutureUsage: PostPaymentIntentsIntentSetupFutureUsage, ?receiptEmail: Choice<string,string>, ?paymentMethodTypes: string list, ?paymentMethodOptions: PostPaymentIntentsIntentPaymentMethodOptions, ?paymentMethodData: PostPaymentIntentsIntentPaymentMethodData, ?paymentMethod: string, ?metadata: Map<string, string>, ?expand: string list, ?description: string, ?customer: string, ?currency: string, ?applicationFeeAmount: Choice<int,string>, ?transferData: PostPaymentIntentsIntentTransferData, ?transferGroup: string) =
         ///Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
         member _.Amount = amount
         ///The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).
@@ -8075,7 +8076,7 @@ module StripeRequest =
         ///This parameter can only be provided during confirmation.
         member _.Plan = plan
 
-    and PostPaymentIntentsIntentPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlan (?count: int64, ?interval: PostPaymentIntentsIntentPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanInterval, ?``type``: PostPaymentIntentsIntentPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType) =
+    and PostPaymentIntentsIntentPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlan (?count: int, ?interval: PostPaymentIntentsIntentPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanInterval, ?``type``: PostPaymentIntentsIntentPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType) =
         ///For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
         member _.Count = count
         ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
@@ -8090,7 +8091,7 @@ module StripeRequest =
     and PostPaymentIntentsIntentPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType =
         | FixedCount
 
-    and PostPaymentIntentsIntentPaymentMethodOptionsOxxoPaymentMethodOptions (?expiresAfterDays: int64) =
+    and PostPaymentIntentsIntentPaymentMethodOptionsOxxoPaymentMethodOptions (?expiresAfterDays: int) =
         ///The number of calendar days before an OXXO voucher expires. For example, if you create an OXXO voucher on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
         member _.ExpiresAfterDays = expiresAfterDays
 
@@ -8137,7 +8138,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostPaymentIntentsIntentTransferData (?amount: int64) =
+    and PostPaymentIntentsIntentTransferData (?amount: int) =
         ///The amount that will be transferred automatically when a charge succeeds.
         member _.Amount = amount
 
@@ -8153,7 +8154,7 @@ module StripeRequest =
         | Fraudulent
         | RequestedByCustomer
 
-    and PostPaymentIntentsIntentCaptureParams (?amountToCapture: int64, ?applicationFeeAmount: int64, ?expand: string list, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: PostPaymentIntentsIntentCaptureTransferData) =
+    and PostPaymentIntentsIntentCaptureParams (?amountToCapture: int, ?applicationFeeAmount: int, ?expand: string list, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: PostPaymentIntentsIntentCaptureTransferData) =
         ///The amount to capture from the PaymentIntent, which must be less than or equal to the original amount. Any additional amount will be automatically refunded. Defaults to the full `amount_capturable` if not provided.
         member _.AmountToCapture = amountToCapture
         ///The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).
@@ -8168,7 +8169,7 @@ module StripeRequest =
         ///is captured. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).
         member _.TransferData = transferData
 
-    and PostPaymentIntentsIntentCaptureTransferData (?amount: int64) =
+    and PostPaymentIntentsIntentCaptureTransferData (?amount: int) =
         ///The amount that will be transferred automatically when a charge succeeds.
         member _.Amount = amount
 
@@ -8215,7 +8216,7 @@ module StripeRequest =
         ///This hash contains details about the customer acceptance of the Mandate.
         member _.CustomerAcceptance = customerAcceptance
 
-    and PostPaymentIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptance (?acceptedAt: int64, ?offline: string, ?online: PostPaymentIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceOnline, ?``type``: PostPaymentIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceType) =
+    and PostPaymentIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptance (?acceptedAt: DateTime, ?offline: string, ?online: PostPaymentIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceOnline, ?``type``: PostPaymentIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceType) =
         ///The time at which the customer accepted the Mandate.
         member _.AcceptedAt = acceptedAt
         ///If this is a Mandate accepted offline, this hash contains details about the offline acceptance.
@@ -8508,7 +8509,7 @@ module StripeRequest =
         ///This parameter can only be provided during confirmation.
         member _.Plan = plan
 
-    and PostPaymentIntentsIntentConfirmPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlan (?count: int64, ?interval: PostPaymentIntentsIntentConfirmPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanInterval, ?``type``: PostPaymentIntentsIntentConfirmPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType) =
+    and PostPaymentIntentsIntentConfirmPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlan (?count: int, ?interval: PostPaymentIntentsIntentConfirmPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanInterval, ?``type``: PostPaymentIntentsIntentConfirmPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType) =
         ///For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
         member _.Count = count
         ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
@@ -8523,7 +8524,7 @@ module StripeRequest =
     and PostPaymentIntentsIntentConfirmPaymentMethodOptionsCardPaymentIntentInstallmentsPlanInstallmentPlanType =
         | FixedCount
 
-    and PostPaymentIntentsIntentConfirmPaymentMethodOptionsOxxoPaymentMethodOptions (?expiresAfterDays: int64) =
+    and PostPaymentIntentsIntentConfirmPaymentMethodOptionsOxxoPaymentMethodOptions (?expiresAfterDays: int) =
         ///The number of calendar days before an OXXO voucher expires. For example, if you create an OXXO voucher on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
         member _.ExpiresAfterDays = expiresAfterDays
 
@@ -8666,7 +8667,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostPaymentMethodsCardCardDetailsParams (?cvc: string, ?expMonth: int64, ?expYear: int64, ?number: string) =
+    and PostPaymentMethodsCardCardDetailsParams (?cvc: string, ?expMonth: int, ?expYear: int, ?number: string) =
         ///The card's CVC. It is highly recommended to always include this value.
         member _.Cvc = cvc
         ///Two-digit number representing the card's expiration month.
@@ -8815,7 +8816,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostPaymentMethodsPaymentMethodCard (?expMonth: int64, ?expYear: int64) =
+    and PostPaymentMethodsPaymentMethodCard (?expMonth: int, ?expYear: int) =
         ///Two-digit number representing the card's expiration month.
         member _.ExpMonth = expMonth
         ///Four-digit number representing the card's expiration year.
@@ -8831,7 +8832,7 @@ module StripeRequest =
         ///Specifies which fields in the response should be expanded.
         member _.Expand = expand
 
-    and PostPayoutsParams (amount: int64, currency: string, ?description: string, ?destination: string, ?expand: string list, ?metadata: Map<string, string>, ?method: PostPayoutsMethod, ?sourceType: PostPayoutsSourceType, ?statementDescriptor: string) =
+    and PostPayoutsParams (amount: int, currency: string, ?description: string, ?destination: string, ?expand: string list, ?metadata: Map<string, string>, ?method: PostPayoutsMethod, ?sourceType: PostPayoutsSourceType, ?statementDescriptor: string) =
         ///A positive integer in cents representing how much to payout.
         member _.Amount = amount
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -8876,7 +8877,7 @@ module StripeRequest =
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
         member _.Metadata = metadata
 
-    and PostPlansParams (interval: PostPlansInterval, currency: string, ?transformUsage: PostPlansTransformUsage, ?tiersMode: PostPlansTiersMode, ?tiers: PostPlansTiers list, ?product: Choice<PostPlansProductInlineProductParams,string>, ?nickname: string, ?metadata: Map<string, string>, ?intervalCount: int64, ?active: bool, ?id: string, ?expand: string list, ?billingScheme: PostPlansBillingScheme, ?amountDecimal: string, ?amount: int64, ?aggregateUsage: PostPlansAggregateUsage, ?trialPeriodDays: int64, ?usageType: PostPlansUsageType) =
+    and PostPlansParams (interval: PostPlansInterval, currency: string, ?transformUsage: PostPlansTransformUsage, ?tiersMode: PostPlansTiersMode, ?tiers: PostPlansTiers list, ?product: Choice<PostPlansProductInlineProductParams,string>, ?nickname: string, ?metadata: Map<string, string>, ?intervalCount: int, ?active: bool, ?id: string, ?expand: string list, ?billingScheme: PostPlansBillingScheme, ?amountDecimal: string, ?amount: int, ?aggregateUsage: PostPlansAggregateUsage, ?trialPeriodDays: int, ?usageType: PostPlansUsageType) =
         ///Whether the plan is currently available for new subscriptions. Defaults to `true`.
         member _.Active = active
         ///Specifies a usage aggregation strategy for plans of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
@@ -8953,7 +8954,7 @@ module StripeRequest =
         ///A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions.
         member _.UnitLabel = unitLabel
 
-    and PostPlansTiers (?flatAmount: int64, ?flatAmountDecimal: string, ?unitAmount: int64, ?unitAmountDecimal: string, ?upTo: Choice<PostPlansTiersUpTo,int64>) =
+    and PostPlansTiers (?flatAmount: int, ?flatAmountDecimal: string, ?unitAmount: int, ?unitAmountDecimal: string, ?upTo: Choice<PostPlansTiersUpTo,int>) =
         ///The flat billing amount for an entire tier, regardless of the number of units in the tier.
         member _.FlatAmount = flatAmount
         ///Same as `flat_amount`, but accepts a decimal value representing an integer in the minor units of the currency. Only one of `flat_amount` and `flat_amount_decimal` can be set.
@@ -8968,7 +8969,7 @@ module StripeRequest =
     and PostPlansTiersUpTo =
         | Inf
 
-    and PostPlansTransformUsage (?divideBy: int64, ?round: PostPlansTransformUsageRound) =
+    and PostPlansTransformUsage (?divideBy: int, ?round: PostPlansTransformUsageRound) =
         ///Divide usage by this number.
         member _.DivideBy = divideBy
         ///After division, either round the result `up` or `down`.
@@ -8978,7 +8979,7 @@ module StripeRequest =
         | Down
         | Up
 
-    and PostPlansPlanParams (?active: bool, ?expand: string list, ?metadata: Map<string, string>, ?nickname: string, ?product: string, ?trialPeriodDays: int64) =
+    and PostPlansPlanParams (?active: bool, ?expand: string list, ?metadata: Map<string, string>, ?nickname: string, ?product: string, ?trialPeriodDays: int) =
         ///Whether the plan is currently available for new subscriptions.
         member _.Active = active
         ///Specifies which fields in the response should be expanded.
@@ -8992,7 +8993,7 @@ module StripeRequest =
         ///Default number of trial days when subscribing a customer to this plan using [`trial_from_plan=true`](https://stripe.com/docs/api#create_subscription-trial_from_plan).
         member _.TrialPeriodDays = trialPeriodDays
 
-    and PostPricesParams (currency: string, ?active: bool, ?billingScheme: PostPricesBillingScheme, ?expand: string list, ?lookupKey: string, ?metadata: Map<string, string>, ?nickname: string, ?product: string, ?productData: PostPricesProductData, ?recurring: PostPricesRecurring, ?tiers: PostPricesTiers list, ?tiersMode: PostPricesTiersMode, ?transferLookupKey: bool, ?transformQuantity: PostPricesTransformQuantity, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostPricesParams (currency: string, ?active: bool, ?billingScheme: PostPricesBillingScheme, ?expand: string list, ?lookupKey: string, ?metadata: Map<string, string>, ?nickname: string, ?product: string, ?productData: PostPricesProductData, ?recurring: PostPricesRecurring, ?tiers: PostPricesTiers list, ?tiersMode: PostPricesTiersMode, ?transferLookupKey: bool, ?transformQuantity: PostPricesTransformQuantity, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Whether the price can be used for new purchases. Defaults to `true`.
         member _.Active = active
         ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `unit_amount` or `unit_amount_decimal`) will be charged per unit in `quantity` (for prices with `usage_type=licensed`), or per unit of total usage (for prices with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
@@ -9049,7 +9050,7 @@ module StripeRequest =
         ///A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions.
         member _.UnitLabel = unitLabel
 
-    and PostPricesRecurring (?aggregateUsage: PostPricesRecurringAggregateUsage, ?interval: PostPricesRecurringInterval, ?intervalCount: int64, ?trialPeriodDays: int64, ?usageType: PostPricesRecurringUsageType) =
+    and PostPricesRecurring (?aggregateUsage: PostPricesRecurringAggregateUsage, ?interval: PostPricesRecurringInterval, ?intervalCount: int, ?trialPeriodDays: int, ?usageType: PostPricesRecurringUsageType) =
         ///Specifies a usage aggregation strategy for prices of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
         member _.AggregateUsage = aggregateUsage
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
@@ -9077,7 +9078,7 @@ module StripeRequest =
         | Licensed
         | Metered
 
-    and PostPricesTiers (?flatAmount: int64, ?flatAmountDecimal: string, ?unitAmount: int64, ?unitAmountDecimal: string, ?upTo: Choice<PostPricesTiersUpTo,int64>) =
+    and PostPricesTiers (?flatAmount: int, ?flatAmountDecimal: string, ?unitAmount: int, ?unitAmountDecimal: string, ?upTo: Choice<PostPricesTiersUpTo,int>) =
         ///The flat billing amount for an entire tier, regardless of the number of units in the tier.
         member _.FlatAmount = flatAmount
         ///Same as `flat_amount`, but accepts a decimal value representing an integer in the minor units of the currency. Only one of `flat_amount` and `flat_amount_decimal` can be set.
@@ -9092,7 +9093,7 @@ module StripeRequest =
     and PostPricesTiersUpTo =
         | Inf
 
-    and PostPricesTransformQuantity (?divideBy: int64, ?round: PostPricesTransformQuantityRound) =
+    and PostPricesTransformQuantity (?divideBy: int, ?round: PostPricesTransformQuantityRound) =
         ///Divide usage by this number.
         member _.DivideBy = divideBy
         ///After division, either round the result `up` or `down`.
@@ -9118,7 +9119,7 @@ module StripeRequest =
         ///If set to true, will atomically remove the lookup key from the existing price, and assign it to this price.
         member _.TransferLookupKey = transferLookupKey
 
-    and PostPricesPriceRecurringUpdateRecurringParams (?trialPeriodDays: int64) =
+    and PostPricesPriceRecurringUpdateRecurringParams (?trialPeriodDays: int) =
         ///Default number of trial days when subscribing a customer to this plan using [`trial_from_plan=true`](https://stripe.com/docs/api#create_subscription-trial_from_plan).
         member _.TrialPeriodDays = trialPeriodDays
 
@@ -9214,7 +9215,7 @@ module StripeRequest =
         ///Width, in inches. Maximum precision is 2 decimal places.
         member _.Width = width
 
-    and PostPromotionCodesParams (coupon: string, ?active: bool, ?code: string, ?customer: string, ?expand: string list, ?expiresAt: int64, ?maxRedemptions: int64, ?metadata: Map<string, string>, ?restrictions: PostPromotionCodesRestrictions) =
+    and PostPromotionCodesParams (coupon: string, ?active: bool, ?code: string, ?customer: string, ?expand: string list, ?expiresAt: DateTime, ?maxRedemptions: int, ?metadata: Map<string, string>, ?restrictions: PostPromotionCodesRestrictions) =
         ///Whether the promotion code is currently active.
         member _.Active = active
         ///The customer-facing code. Regardless of case, this code must be unique across all active promotion codes for a specific customer. If left blank, we will generate one automatically.
@@ -9234,7 +9235,7 @@ module StripeRequest =
         ///Settings that restrict the redemption of the promotion code.
         member _.Restrictions = restrictions
 
-    and PostPromotionCodesRestrictions (?firstTimeTransaction: bool, ?minimumAmount: int64, ?minimumAmountCurrency: string) =
+    and PostPromotionCodesRestrictions (?firstTimeTransaction: bool, ?minimumAmount: int, ?minimumAmountCurrency: string) =
         ///A Boolean indicating if the Promotion Code should only be redeemed for Customers without any successful payments or invoices
         member _.FirstTimeTransaction = firstTimeTransaction
         ///Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
@@ -9329,7 +9330,7 @@ module StripeRequest =
         ///The recipient's tax ID, as a string. For type `individual`, the full SSN; for type `corporation`, the full EIN.
         member _.TaxId = taxId
 
-    and PostRefundsParams (?amount: int64, ?charge: string, ?expand: string list, ?metadata: Map<string, string>, ?paymentIntent: string, ?reason: PostRefundsReason, ?refundApplicationFee: bool, ?reverseTransfer: bool) =
+    and PostRefundsParams (?amount: int, ?charge: string, ?expand: string list, ?metadata: Map<string, string>, ?paymentIntent: string, ?reason: PostRefundsReason, ?refundApplicationFee: bool, ?reverseTransfer: bool) =
         ///
         member _.Amount = amount
         ///
@@ -9366,7 +9367,7 @@ module StripeRequest =
         ///The ID of the [report type](https://stripe.com/docs/reporting/statements/api#report-types) to run, such as `"balance.summary.1"`.
         member _.ReportType = reportType
 
-    and PostReportingReportRunsParameters (?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: int64, ?intervalStart: int64, ?payout: string, ?reportingCategory: PostReportingReportRunsParametersReportingCategory, ?timezone: PostReportingReportRunsParametersTimezone) =
+    and PostReportingReportRunsParameters (?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: PostReportingReportRunsParametersReportingCategory, ?timezone: PostReportingReportRunsParametersTimezone) =
         ///The set of report columns to include in the report output. If omitted, the Report Type is run with its default column set.
         member _.Columns = columns
         ///Connected account ID to filter for in the report run.
@@ -10057,7 +10058,7 @@ module StripeRequest =
         ///This hash contains details about the customer acceptance of the Mandate.
         member _.CustomerAcceptance = customerAcceptance
 
-    and PostSetupIntentsMandateDataCustomerAcceptance (?acceptedAt: int64, ?offline: string, ?online: PostSetupIntentsMandateDataCustomerAcceptanceOnline, ?``type``: PostSetupIntentsMandateDataCustomerAcceptanceType) =
+    and PostSetupIntentsMandateDataCustomerAcceptance (?acceptedAt: DateTime, ?offline: string, ?online: PostSetupIntentsMandateDataCustomerAcceptanceOnline, ?``type``: PostSetupIntentsMandateDataCustomerAcceptanceType) =
         ///The time at which the customer accepted the Mandate.
         member _.AcceptedAt = acceptedAt
         ///If this is a Mandate accepted offline, this hash contains details about the offline acceptance.
@@ -10099,7 +10100,7 @@ module StripeRequest =
         ///Additional fields for Mandate creation
         member _.MandateOptions = mandateOptions
 
-    and PostSetupIntentsSingleUse (?amount: int64, ?currency: string) =
+    and PostSetupIntentsSingleUse (?amount: int, ?currency: string) =
         ///Amount the customer is granting permission to collect later. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
         member _.Amount = amount
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -10173,7 +10174,7 @@ module StripeRequest =
         ///This hash contains details about the customer acceptance of the Mandate.
         member _.CustomerAcceptance = customerAcceptance
 
-    and PostSetupIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptance (?acceptedAt: int64, ?offline: string, ?online: PostSetupIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceOnline, ?``type``: PostSetupIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceType) =
+    and PostSetupIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptance (?acceptedAt: DateTime, ?offline: string, ?online: PostSetupIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceOnline, ?``type``: PostSetupIntentsIntentConfirmMandateDataSecretKeyCustomerAcceptanceType) =
         ///The time at which the customer accepted the Mandate.
         member _.AcceptedAt = acceptedAt
         ///If this is a Mandate accepted offline, this hash contains details about the offline acceptance.
@@ -10234,7 +10235,7 @@ module StripeRequest =
         ///Additional fields for Mandate creation
         member _.MandateOptions = mandateOptions
 
-    and PostSkusParams (currency: string, inventory: PostSkusInventory, price: int64, product: string, ?active: bool, ?attributes: Map<string, string>, ?expand: string list, ?id: string, ?image: string, ?metadata: Map<string, string>, ?packageDimensions: PostSkusPackageDimensions) =
+    and PostSkusParams (currency: string, inventory: PostSkusInventory, price: int, product: string, ?active: bool, ?attributes: Map<string, string>, ?expand: string list, ?id: string, ?image: string, ?metadata: Map<string, string>, ?packageDimensions: PostSkusPackageDimensions) =
         ///Whether the SKU is available for purchase. Default to `true`.
         member _.Active = active
         ///A dictionary of attributes and values for the attributes defined by the product. If, for example, a product's attributes are `["size", "gender"]`, a valid SKU has the following dictionary of attributes: `{"size": "Medium", "gender": "Unisex"}`.
@@ -10258,7 +10259,7 @@ module StripeRequest =
         ///The ID of the product this SKU is associated with. Must be a product with type `good`.
         member _.Product = product
 
-    and PostSkusInventory (?quantity: int64, ?``type``: PostSkusInventoryType, ?value: PostSkusInventoryValue) =
+    and PostSkusInventory (?quantity: int, ?``type``: PostSkusInventoryType, ?value: PostSkusInventoryValue) =
         ///The count of inventory available. Required if `type` is `finite`.
         member _.Quantity = quantity
         ///Inventory type. Possible values are `finite`, `bucket` (not quantified), and `infinite`.
@@ -10286,7 +10287,7 @@ module StripeRequest =
         ///Width, in inches. Maximum precision is 2 decimal places.
         member _.Width = width
 
-    and PostSkusIdParams (?active: bool, ?attributes: Map<string, string>, ?currency: string, ?expand: string list, ?image: string, ?inventory: PostSkusIdInventory, ?metadata: Map<string, string>, ?packageDimensions: Choice<PostSkusIdPackageDimensionsPackageDimensionsSpecs,string>, ?price: int64, ?product: string) =
+    and PostSkusIdParams (?active: bool, ?attributes: Map<string, string>, ?currency: string, ?expand: string list, ?image: string, ?inventory: PostSkusIdInventory, ?metadata: Map<string, string>, ?packageDimensions: Choice<PostSkusIdPackageDimensionsPackageDimensionsSpecs,string>, ?price: int, ?product: string) =
         ///Whether this SKU is available for purchase.
         member _.Active = active
         ///A dictionary of attributes and values for the attributes defined by the product. When specified, `attributes` will partially update the existing attributes dictionary on the product, with the postcondition that a value must be present for each attribute key on the product.
@@ -10308,7 +10309,7 @@ module StripeRequest =
         ///The ID of the product that this SKU should belong to. The product must exist, have the same set of attribute names as the SKU's current product, and be of type `good`.
         member _.Product = product
 
-    and PostSkusIdInventory (?quantity: int64, ?``type``: PostSkusIdInventoryType, ?value: PostSkusIdInventoryValue) =
+    and PostSkusIdInventory (?quantity: int, ?``type``: PostSkusIdInventoryType, ?value: PostSkusIdInventoryValue) =
         ///The count of inventory available. Required if `type` is `finite`.
         member _.Quantity = quantity
         ///Inventory type. Possible values are `finite`, `bucket` (not quantified), and `infinite`.
@@ -10336,7 +10337,7 @@ module StripeRequest =
         ///Width, in inches. Maximum precision is 2 decimal places.
         member _.Width = width
 
-    and PostSourcesParams (?amount: int64, ?currency: string, ?customer: string, ?expand: string list, ?flow: PostSourcesFlow, ?mandate: PostSourcesMandate, ?metadata: Map<string, string>, ?originalSource: string, ?owner: PostSourcesOwner, ?receiver: PostSourcesReceiver, ?redirect: PostSourcesRedirect, ?sourceOrder: PostSourcesSourceOrder, ?statementDescriptor: string, ?token: string, ?``type``: string, ?usage: PostSourcesUsage) =
+    and PostSourcesParams (?amount: int, ?currency: string, ?customer: string, ?expand: string list, ?flow: PostSourcesFlow, ?mandate: PostSourcesMandate, ?metadata: Map<string, string>, ?originalSource: string, ?owner: PostSourcesOwner, ?receiver: PostSourcesReceiver, ?redirect: PostSourcesRedirect, ?sourceOrder: PostSourcesSourceOrder, ?statementDescriptor: string, ?token: string, ?``type``: string, ?usage: PostSourcesUsage) =
         ///Amount associated with the source. This is the amount for which the source will be chargeable once ready. Required for `single_use` sources. Not supported for `receiver` type sources, where charge amount may not be specified until funds land.
         member _.Amount = amount
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready.
@@ -10380,7 +10381,7 @@ module StripeRequest =
         | Reusable
         | SingleUse
 
-    and PostSourcesMandate (?acceptance: PostSourcesMandateAcceptance, ?amount: Choice<int64,string>, ?currency: string, ?interval: PostSourcesMandateInterval, ?notificationMethod: PostSourcesMandateNotificationMethod) =
+    and PostSourcesMandate (?acceptance: PostSourcesMandateAcceptance, ?amount: Choice<int,string>, ?currency: string, ?interval: PostSourcesMandateInterval, ?notificationMethod: PostSourcesMandateNotificationMethod) =
         ///The parameters required to notify Stripe of a mandate acceptance or refusal by the customer.
         member _.Acceptance = acceptance
         ///The amount specified by the mandate. (Leave null for a mandate covering all amounts)
@@ -10404,7 +10405,7 @@ module StripeRequest =
         | None'
         | StripeEmail
 
-    and PostSourcesMandateAcceptance (?date: int64, ?ip: string, ?offline: PostSourcesMandateAcceptanceOffline, ?online: PostSourcesMandateAcceptanceOnline, ?status: PostSourcesMandateAcceptanceStatus, ?``type``: PostSourcesMandateAcceptanceType, ?userAgent: string) =
+    and PostSourcesMandateAcceptance (?date: DateTime, ?ip: string, ?offline: PostSourcesMandateAcceptanceOffline, ?online: PostSourcesMandateAcceptanceOnline, ?status: PostSourcesMandateAcceptanceStatus, ?``type``: PostSourcesMandateAcceptanceType, ?userAgent: string) =
         ///The Unix timestamp (in seconds) when the mandate was accepted or refused by the customer.
         member _.Date = date
         ///The IP address from which the mandate was accepted or refused by the customer.
@@ -10434,7 +10435,7 @@ module StripeRequest =
         ///An email to contact you with if a copy of the mandate is requested, required if `type` is `offline`.
         member _.ContactEmail = contactEmail
 
-    and PostSourcesMandateAcceptanceOnline (?date: int64, ?ip: string, ?userAgent: string) =
+    and PostSourcesMandateAcceptanceOnline (?date: DateTime, ?ip: string, ?userAgent: string) =
         ///The Unix timestamp (in seconds) when the mandate was accepted or refused by the customer.
         member _.Date = date
         ///The IP address from which the mandate was accepted or refused by the customer.
@@ -10485,7 +10486,7 @@ module StripeRequest =
         ///Shipping address for the order. Required if any of the SKUs are for products that have `shippable` set to true.
         member _.Shipping = shipping
 
-    and PostSourcesSourceOrderItems (?amount: int64, ?currency: string, ?description: string, ?parent: string, ?quantity: int64, ?``type``: PostSourcesSourceOrderItemsType) =
+    and PostSourcesSourceOrderItems (?amount: int, ?currency: string, ?description: string, ?parent: string, ?quantity: int, ?``type``: PostSourcesSourceOrderItemsType) =
         ///
         member _.Amount = amount
         ///
@@ -10531,7 +10532,7 @@ module StripeRequest =
         ///State, county, province, or region.
         member _.State = state
 
-    and PostSourcesSourceParams (?amount: int64, ?expand: string list, ?mandate: PostSourcesSourceMandate, ?metadata: Map<string, string>, ?owner: PostSourcesSourceOwner, ?sourceOrder: PostSourcesSourceSourceOrder) =
+    and PostSourcesSourceParams (?amount: int, ?expand: string list, ?mandate: PostSourcesSourceMandate, ?metadata: Map<string, string>, ?owner: PostSourcesSourceOwner, ?sourceOrder: PostSourcesSourceSourceOrder) =
         ///Amount associated with the source.
         member _.Amount = amount
         ///Specifies which fields in the response should be expanded.
@@ -10545,7 +10546,7 @@ module StripeRequest =
         ///Information about the items and shipping associated with the source. Required for transactional credit (for example Klarna) sources before you can charge it.
         member _.SourceOrder = sourceOrder
 
-    and PostSourcesSourceMandate (?acceptance: PostSourcesSourceMandateAcceptance, ?amount: Choice<int64,string>, ?currency: string, ?interval: PostSourcesSourceMandateInterval, ?notificationMethod: PostSourcesSourceMandateNotificationMethod) =
+    and PostSourcesSourceMandate (?acceptance: PostSourcesSourceMandateAcceptance, ?amount: Choice<int,string>, ?currency: string, ?interval: PostSourcesSourceMandateInterval, ?notificationMethod: PostSourcesSourceMandateNotificationMethod) =
         ///The parameters required to notify Stripe of a mandate acceptance or refusal by the customer.
         member _.Acceptance = acceptance
         ///The amount specified by the mandate. (Leave null for a mandate covering all amounts)
@@ -10569,7 +10570,7 @@ module StripeRequest =
         | None'
         | StripeEmail
 
-    and PostSourcesSourceMandateAcceptance (?date: int64, ?ip: string, ?offline: PostSourcesSourceMandateAcceptanceOffline, ?online: PostSourcesSourceMandateAcceptanceOnline, ?status: PostSourcesSourceMandateAcceptanceStatus, ?``type``: PostSourcesSourceMandateAcceptanceType, ?userAgent: string) =
+    and PostSourcesSourceMandateAcceptance (?date: DateTime, ?ip: string, ?offline: PostSourcesSourceMandateAcceptanceOffline, ?online: PostSourcesSourceMandateAcceptanceOnline, ?status: PostSourcesSourceMandateAcceptanceStatus, ?``type``: PostSourcesSourceMandateAcceptanceType, ?userAgent: string) =
         ///The Unix timestamp (in seconds) when the mandate was accepted or refused by the customer.
         member _.Date = date
         ///The IP address from which the mandate was accepted or refused by the customer.
@@ -10599,7 +10600,7 @@ module StripeRequest =
         ///An email to contact you with if a copy of the mandate is requested, required if `type` is `offline`.
         member _.ContactEmail = contactEmail
 
-    and PostSourcesSourceMandateAcceptanceOnline (?date: int64, ?ip: string, ?userAgent: string) =
+    and PostSourcesSourceMandateAcceptanceOnline (?date: DateTime, ?ip: string, ?userAgent: string) =
         ///The Unix timestamp (in seconds) when the mandate was accepted or refused by the customer.
         member _.Date = date
         ///The IP address from which the mandate was accepted or refused by the customer.
@@ -10637,7 +10638,7 @@ module StripeRequest =
         ///Shipping address for the order. Required if any of the SKUs are for products that have `shippable` set to true.
         member _.Shipping = shipping
 
-    and PostSourcesSourceSourceOrderItems (?amount: int64, ?currency: string, ?description: string, ?parent: string, ?quantity: int64, ?``type``: PostSourcesSourceSourceOrderItemsType) =
+    and PostSourcesSourceSourceOrderItems (?amount: int, ?currency: string, ?description: string, ?parent: string, ?quantity: int, ?``type``: PostSourcesSourceSourceOrderItemsType) =
         ///
         member _.Amount = amount
         ///
@@ -10689,7 +10690,7 @@ module StripeRequest =
         ///The values needed to verify the source.
         member _.Values = values
 
-    and PostSubscriptionItemsParams (subscription: string, ?billingThresholds: Choice<PostSubscriptionItemsBillingThresholdsItemBillingThresholds,string>, ?expand: string list, ?metadata: Map<string, string>, ?paymentBehavior: PostSubscriptionItemsPaymentBehavior, ?plan: string, ?price: string, ?priceData: PostSubscriptionItemsPriceData, ?prorationBehavior: PostSubscriptionItemsProrationBehavior, ?prorationDate: int64, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionItemsParams (subscription: string, ?billingThresholds: Choice<PostSubscriptionItemsBillingThresholdsItemBillingThresholds,string>, ?expand: string list, ?metadata: Map<string, string>, ?paymentBehavior: PostSubscriptionItemsPaymentBehavior, ?plan: string, ?price: string, ?priceData: PostSubscriptionItemsPriceData, ?prorationBehavior: PostSubscriptionItemsProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
         member _.BillingThresholds = billingThresholds
         ///Specifies which fields in the response should be expanded.
@@ -10729,11 +10730,11 @@ module StripeRequest =
         | CreateProrations
         | None'
 
-    and PostSubscriptionItemsBillingThresholdsItemBillingThresholds (?usageGte: int64) =
+    and PostSubscriptionItemsBillingThresholdsItemBillingThresholds (?usageGte: int) =
         ///Usage threshold that triggers the subscription to advance to a new billing period
         member _.UsageGte = usageGte
 
-    and PostSubscriptionItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionItemsPriceDataRecurring, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionItemsPriceDataRecurring, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -10745,7 +10746,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionItemsPriceDataRecurring (?interval: PostSubscriptionItemsPriceDataRecurringInterval, ?intervalCount: int64) =
+    and PostSubscriptionItemsPriceDataRecurring (?interval: PostSubscriptionItemsPriceDataRecurringInterval, ?intervalCount: int) =
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -10757,7 +10758,7 @@ module StripeRequest =
         | Week
         | Year
 
-    and DeleteSubscriptionItemsItemParams (?clearUsage: bool, ?prorationBehavior: DeleteSubscriptionItemsItemProrationBehavior, ?prorationDate: int64) =
+    and DeleteSubscriptionItemsItemParams (?clearUsage: bool, ?prorationBehavior: DeleteSubscriptionItemsItemProrationBehavior, ?prorationDate: DateTime) =
         ///Delete all usage for the given subscription item. Allowed only when the current plan's `usage_type` is `metered`.
         member _.ClearUsage = clearUsage
         ///Determines how to handle [prorations](https://stripe.com/docs/subscriptions/billing-cycle#prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. Valid values are `create_prorations`, `none`, or `always_invoice`.
@@ -10772,7 +10773,7 @@ module StripeRequest =
         | CreateProrations
         | None'
 
-    and PostSubscriptionItemsItemParams (?billingThresholds: Choice<PostSubscriptionItemsItemBillingThresholdsItemBillingThresholds,string>, ?expand: string list, ?metadata: Map<string, string>, ?offSession: bool, ?paymentBehavior: PostSubscriptionItemsItemPaymentBehavior, ?plan: string, ?price: string, ?priceData: PostSubscriptionItemsItemPriceData, ?prorationBehavior: PostSubscriptionItemsItemProrationBehavior, ?prorationDate: int64, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionItemsItemParams (?billingThresholds: Choice<PostSubscriptionItemsItemBillingThresholdsItemBillingThresholds,string>, ?expand: string list, ?metadata: Map<string, string>, ?offSession: bool, ?paymentBehavior: PostSubscriptionItemsItemPaymentBehavior, ?plan: string, ?price: string, ?priceData: PostSubscriptionItemsItemPriceData, ?prorationBehavior: PostSubscriptionItemsItemProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
         member _.BillingThresholds = billingThresholds
         ///Specifies which fields in the response should be expanded.
@@ -10812,11 +10813,11 @@ module StripeRequest =
         | CreateProrations
         | None'
 
-    and PostSubscriptionItemsItemBillingThresholdsItemBillingThresholds (?usageGte: int64) =
+    and PostSubscriptionItemsItemBillingThresholdsItemBillingThresholds (?usageGte: int) =
         ///Usage threshold that triggers the subscription to advance to a new billing period
         member _.UsageGte = usageGte
 
-    and PostSubscriptionItemsItemPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionItemsItemPriceDataRecurring, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionItemsItemPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionItemsItemPriceDataRecurring, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -10828,7 +10829,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionItemsItemPriceDataRecurring (?interval: PostSubscriptionItemsItemPriceDataRecurringInterval, ?intervalCount: int64) =
+    and PostSubscriptionItemsItemPriceDataRecurring (?interval: PostSubscriptionItemsItemPriceDataRecurringInterval, ?intervalCount: int) =
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -10840,7 +10841,7 @@ module StripeRequest =
         | Week
         | Year
 
-    and PostSubscriptionItemsSubscriptionItemUsageRecordsParams (quantity: int64, timestamp: int64, ?action: PostSubscriptionItemsSubscriptionItemUsageRecordsAction, ?expand: string list) =
+    and PostSubscriptionItemsSubscriptionItemUsageRecordsParams (quantity: int, timestamp: int, ?action: PostSubscriptionItemsSubscriptionItemUsageRecordsAction, ?expand: string list) =
         ///Valid values are `increment` (default) or `set`. When using `increment` the specified `quantity` will be added to the usage at the specified timestamp. The `set` action will overwrite the usage quantity at that timestamp. If the subscription has [billing thresholds](https://stripe.com/docs/api/subscriptions/object#subscription_object-billing_thresholds), `increment` is the only allowed value.
         member _.Action = action
         ///Specifies which fields in the response should be expanded.
@@ -10854,7 +10855,7 @@ module StripeRequest =
         | Increment
         | Set
 
-    and PostSubscriptionSchedulesParams (?customer: string, ?defaultSettings: PostSubscriptionSchedulesDefaultSettings, ?endBehavior: PostSubscriptionSchedulesEndBehavior, ?expand: string list, ?fromSubscription: string, ?metadata: Map<string, string>, ?phases: PostSubscriptionSchedulesPhases list, ?startDate: Choice<int64,PostSubscriptionSchedulesStartDate>) =
+    and PostSubscriptionSchedulesParams (?customer: string, ?defaultSettings: PostSubscriptionSchedulesDefaultSettings, ?endBehavior: PostSubscriptionSchedulesEndBehavior, ?expand: string list, ?fromSubscription: string, ?metadata: Map<string, string>, ?phases: PostSubscriptionSchedulesPhases list, ?startDate: Choice<int,PostSubscriptionSchedulesStartDate>) =
         ///The identifier of the customer to create the subscription schedule for.
         member _.Customer = customer
         ///Object representing the subscription schedule's default settings.
@@ -10900,13 +10901,13 @@ module StripeRequest =
         | ChargeAutomatically
         | SendInvoice
 
-    and PostSubscriptionSchedulesDefaultSettingsBillingThresholdsBillingThresholds (?amountGte: int64, ?resetBillingCycleAnchor: bool) =
+    and PostSubscriptionSchedulesDefaultSettingsBillingThresholdsBillingThresholds (?amountGte: int, ?resetBillingCycleAnchor: bool) =
         ///Monetary threshold that triggers the subscription to advance to a new billing period
         member _.AmountGte = amountGte
         ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged.
         member _.ResetBillingCycleAnchor = resetBillingCycleAnchor
 
-    and PostSubscriptionSchedulesDefaultSettingsInvoiceSettings (?daysUntilDue: int64) =
+    and PostSubscriptionSchedulesDefaultSettingsInvoiceSettings (?daysUntilDue: int) =
         ///Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         member _.DaysUntilDue = daysUntilDue
 
@@ -10916,7 +10917,7 @@ module StripeRequest =
         ///ID of an existing, connected Stripe account.
         member _.Destination = destination
 
-    and PostSubscriptionSchedulesPhases (?addInvoiceItems: PostSubscriptionSchedulesPhasesAddInvoiceItems list, ?applicationFeePercent: decimal, ?billingCycleAnchor: PostSubscriptionSchedulesPhasesBillingCycleAnchor, ?billingThresholds: Choice<PostSubscriptionSchedulesPhasesBillingThresholdsBillingThresholds,string>, ?collectionMethod: PostSubscriptionSchedulesPhasesCollectionMethod, ?coupon: string, ?defaultPaymentMethod: string, ?defaultTaxRates: Choice<string list,string>, ?endDate: int64, ?invoiceSettings: PostSubscriptionSchedulesPhasesInvoiceSettings, ?items: PostSubscriptionSchedulesPhasesItems list, ?iterations: int64, ?prorationBehavior: PostSubscriptionSchedulesPhasesProrationBehavior, ?transferData: PostSubscriptionSchedulesPhasesTransferData, ?trial: bool, ?trialEnd: int64) =
+    and PostSubscriptionSchedulesPhases (?addInvoiceItems: PostSubscriptionSchedulesPhasesAddInvoiceItems list, ?applicationFeePercent: decimal, ?billingCycleAnchor: PostSubscriptionSchedulesPhasesBillingCycleAnchor, ?billingThresholds: Choice<PostSubscriptionSchedulesPhasesBillingThresholdsBillingThresholds,string>, ?collectionMethod: PostSubscriptionSchedulesPhasesCollectionMethod, ?coupon: string, ?defaultPaymentMethod: string, ?defaultTaxRates: Choice<string list,string>, ?endDate: DateTime, ?invoiceSettings: PostSubscriptionSchedulesPhasesInvoiceSettings, ?items: PostSubscriptionSchedulesPhasesItems list, ?iterations: int, ?prorationBehavior: PostSubscriptionSchedulesPhasesProrationBehavior, ?transferData: PostSubscriptionSchedulesPhasesTransferData, ?trial: bool, ?trialEnd: DateTime) =
         ///A list of prices and quantities that will generate invoice items appended to the next invoice. You may pass up to 10 items.
         member _.AddInvoiceItems = addInvoiceItems
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
@@ -10963,7 +10964,7 @@ module StripeRequest =
         | CreateProrations
         | None'
 
-    and PostSubscriptionSchedulesPhasesAddInvoiceItems (?price: string, ?priceData: PostSubscriptionSchedulesPhasesAddInvoiceItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionSchedulesPhasesAddInvoiceItems (?price: string, ?priceData: PostSubscriptionSchedulesPhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///The ID of the price object.
         member _.Price = price
         ///Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline.
@@ -10973,7 +10974,7 @@ module StripeRequest =
         ///The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionSchedulesPhasesAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionSchedulesPhasesAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -10983,17 +10984,17 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionSchedulesPhasesBillingThresholdsBillingThresholds (?amountGte: int64, ?resetBillingCycleAnchor: bool) =
+    and PostSubscriptionSchedulesPhasesBillingThresholdsBillingThresholds (?amountGte: int, ?resetBillingCycleAnchor: bool) =
         ///Monetary threshold that triggers the subscription to advance to a new billing period
         member _.AmountGte = amountGte
         ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged.
         member _.ResetBillingCycleAnchor = resetBillingCycleAnchor
 
-    and PostSubscriptionSchedulesPhasesInvoiceSettings (?daysUntilDue: int64) =
+    and PostSubscriptionSchedulesPhasesInvoiceSettings (?daysUntilDue: int) =
         ///Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         member _.DaysUntilDue = daysUntilDue
 
-    and PostSubscriptionSchedulesPhasesItems (?billingThresholds: Choice<PostSubscriptionSchedulesPhasesItemsBillingThresholdsItemBillingThresholds,string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionSchedulesPhasesItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionSchedulesPhasesItems (?billingThresholds: Choice<PostSubscriptionSchedulesPhasesItemsBillingThresholdsItemBillingThresholds,string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionSchedulesPhasesItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
         member _.BillingThresholds = billingThresholds
         ///The plan ID to subscribe to. You may specify the same ID in `plan` and `price`.
@@ -11007,11 +11008,11 @@ module StripeRequest =
         ///A list of [Tax Rate](https://stripe.com/docs/api/tax_rates) ids. These Tax Rates will override the [`default_tax_rates`](https://stripe.com/docs/api/subscriptions/create#create_subscription-default_tax_rates) on the Subscription. When updating, pass an empty string to remove previously-defined tax rates.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionSchedulesPhasesItemsBillingThresholdsItemBillingThresholds (?usageGte: int64) =
+    and PostSubscriptionSchedulesPhasesItemsBillingThresholdsItemBillingThresholds (?usageGte: int) =
         ///Usage threshold that triggers the subscription to advance to a new billing period
         member _.UsageGte = usageGte
 
-    and PostSubscriptionSchedulesPhasesItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionSchedulesPhasesItemsPriceDataRecurring, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionSchedulesPhasesItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionSchedulesPhasesItemsPriceDataRecurring, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -11023,7 +11024,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionSchedulesPhasesItemsPriceDataRecurring (?interval: PostSubscriptionSchedulesPhasesItemsPriceDataRecurringInterval, ?intervalCount: int64) =
+    and PostSubscriptionSchedulesPhasesItemsPriceDataRecurring (?interval: PostSubscriptionSchedulesPhasesItemsPriceDataRecurringInterval, ?intervalCount: int) =
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -11091,13 +11092,13 @@ module StripeRequest =
         | ChargeAutomatically
         | SendInvoice
 
-    and PostSubscriptionSchedulesScheduleDefaultSettingsBillingThresholdsBillingThresholds (?amountGte: int64, ?resetBillingCycleAnchor: bool) =
+    and PostSubscriptionSchedulesScheduleDefaultSettingsBillingThresholdsBillingThresholds (?amountGte: int, ?resetBillingCycleAnchor: bool) =
         ///Monetary threshold that triggers the subscription to advance to a new billing period
         member _.AmountGte = amountGte
         ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged.
         member _.ResetBillingCycleAnchor = resetBillingCycleAnchor
 
-    and PostSubscriptionSchedulesScheduleDefaultSettingsInvoiceSettings (?daysUntilDue: int64) =
+    and PostSubscriptionSchedulesScheduleDefaultSettingsInvoiceSettings (?daysUntilDue: int) =
         ///Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         member _.DaysUntilDue = daysUntilDue
 
@@ -11107,7 +11108,7 @@ module StripeRequest =
         ///ID of an existing, connected Stripe account.
         member _.Destination = destination
 
-    and PostSubscriptionSchedulesSchedulePhases (?addInvoiceItems: PostSubscriptionSchedulesSchedulePhasesAddInvoiceItems list, ?transferData: PostSubscriptionSchedulesSchedulePhasesTransferData, ?startDate: Choice<int64,PostSubscriptionSchedulesSchedulePhasesStartDate>, ?prorationBehavior: PostSubscriptionSchedulesSchedulePhasesProrationBehavior, ?iterations: int64, ?items: PostSubscriptionSchedulesSchedulePhasesItems list, ?invoiceSettings: PostSubscriptionSchedulesSchedulePhasesInvoiceSettings, ?trial: bool, ?endDate: Choice<int64,PostSubscriptionSchedulesSchedulePhasesEndDate>, ?defaultPaymentMethod: string, ?coupon: string, ?collectionMethod: PostSubscriptionSchedulesSchedulePhasesCollectionMethod, ?billingThresholds: Choice<PostSubscriptionSchedulesSchedulePhasesBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: PostSubscriptionSchedulesSchedulePhasesBillingCycleAnchor, ?applicationFeePercent: decimal, ?defaultTaxRates: Choice<string list,string>, ?trialEnd: Choice<int64,PostSubscriptionSchedulesSchedulePhasesTrialEnd>) =
+    and PostSubscriptionSchedulesSchedulePhases (?addInvoiceItems: PostSubscriptionSchedulesSchedulePhasesAddInvoiceItems list, ?transferData: PostSubscriptionSchedulesSchedulePhasesTransferData, ?startDate: Choice<int,PostSubscriptionSchedulesSchedulePhasesStartDate>, ?prorationBehavior: PostSubscriptionSchedulesSchedulePhasesProrationBehavior, ?iterations: int, ?items: PostSubscriptionSchedulesSchedulePhasesItems list, ?invoiceSettings: PostSubscriptionSchedulesSchedulePhasesInvoiceSettings, ?trial: bool, ?endDate: Choice<int,PostSubscriptionSchedulesSchedulePhasesEndDate>, ?defaultPaymentMethod: string, ?coupon: string, ?collectionMethod: PostSubscriptionSchedulesSchedulePhasesCollectionMethod, ?billingThresholds: Choice<PostSubscriptionSchedulesSchedulePhasesBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: PostSubscriptionSchedulesSchedulePhasesBillingCycleAnchor, ?applicationFeePercent: decimal, ?defaultTaxRates: Choice<string list,string>, ?trialEnd: Choice<int,PostSubscriptionSchedulesSchedulePhasesTrialEnd>) =
         ///A list of prices and quantities that will generate invoice items appended to the next invoice. You may pass up to 10 items.
         member _.AddInvoiceItems = addInvoiceItems
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
@@ -11156,7 +11157,7 @@ module StripeRequest =
         | CreateProrations
         | None'
 
-    and PostSubscriptionSchedulesSchedulePhasesAddInvoiceItems (?price: string, ?priceData: PostSubscriptionSchedulesSchedulePhasesAddInvoiceItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionSchedulesSchedulePhasesAddInvoiceItems (?price: string, ?priceData: PostSubscriptionSchedulesSchedulePhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///The ID of the price object.
         member _.Price = price
         ///Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline.
@@ -11166,7 +11167,7 @@ module StripeRequest =
         ///The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionSchedulesSchedulePhasesAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionSchedulesSchedulePhasesAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -11176,7 +11177,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionSchedulesSchedulePhasesBillingThresholdsBillingThresholds (?amountGte: int64, ?resetBillingCycleAnchor: bool) =
+    and PostSubscriptionSchedulesSchedulePhasesBillingThresholdsBillingThresholds (?amountGte: int, ?resetBillingCycleAnchor: bool) =
         ///Monetary threshold that triggers the subscription to advance to a new billing period
         member _.AmountGte = amountGte
         ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged.
@@ -11185,11 +11186,11 @@ module StripeRequest =
     and PostSubscriptionSchedulesSchedulePhasesEndDate =
         | Now
 
-    and PostSubscriptionSchedulesSchedulePhasesInvoiceSettings (?daysUntilDue: int64) =
+    and PostSubscriptionSchedulesSchedulePhasesInvoiceSettings (?daysUntilDue: int) =
         ///Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         member _.DaysUntilDue = daysUntilDue
 
-    and PostSubscriptionSchedulesSchedulePhasesItems (?billingThresholds: Choice<PostSubscriptionSchedulesSchedulePhasesItemsBillingThresholdsItemBillingThresholds,string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionSchedulesSchedulePhasesItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionSchedulesSchedulePhasesItems (?billingThresholds: Choice<PostSubscriptionSchedulesSchedulePhasesItemsBillingThresholdsItemBillingThresholds,string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionSchedulesSchedulePhasesItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
         member _.BillingThresholds = billingThresholds
         ///The plan ID to subscribe to. You may specify the same ID in `plan` and `price`.
@@ -11203,11 +11204,11 @@ module StripeRequest =
         ///A list of [Tax Rate](https://stripe.com/docs/api/tax_rates) ids. These Tax Rates will override the [`default_tax_rates`](https://stripe.com/docs/api/subscriptions/create#create_subscription-default_tax_rates) on the Subscription. When updating, pass an empty string to remove previously-defined tax rates.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionSchedulesSchedulePhasesItemsBillingThresholdsItemBillingThresholds (?usageGte: int64) =
+    and PostSubscriptionSchedulesSchedulePhasesItemsBillingThresholdsItemBillingThresholds (?usageGte: int) =
         ///Usage threshold that triggers the subscription to advance to a new billing period
         member _.UsageGte = usageGte
 
-    and PostSubscriptionSchedulesSchedulePhasesItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionSchedulesSchedulePhasesItemsPriceDataRecurring, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionSchedulesSchedulePhasesItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionSchedulesSchedulePhasesItemsPriceDataRecurring, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -11219,7 +11220,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionSchedulesSchedulePhasesItemsPriceDataRecurring (?interval: PostSubscriptionSchedulesSchedulePhasesItemsPriceDataRecurringInterval, ?intervalCount: int64) =
+    and PostSubscriptionSchedulesSchedulePhasesItemsPriceDataRecurring (?interval: PostSubscriptionSchedulesSchedulePhasesItemsPriceDataRecurringInterval, ?intervalCount: int) =
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -11257,7 +11258,7 @@ module StripeRequest =
         ///Keep any cancellation on the subscription that the schedule has set
         member _.PreserveCancelDate = preserveCancelDate
 
-    and PostSubscriptionsParams (customer: string, ?addInvoiceItems: PostSubscriptionsAddInvoiceItems list, ?trialEnd: Choice<PostSubscriptionsTrialEnd,int64>, ?transferData: PostSubscriptionsTransferData, ?prorationBehavior: PostSubscriptionsProrationBehavior, ?promotionCode: string, ?pendingInvoiceItemInterval: Choice<PostSubscriptionsPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?paymentBehavior: PostSubscriptionsPaymentBehavior, ?offSession: bool, ?metadata: Map<string, string>, ?items: PostSubscriptionsItems list, ?expand: string list, ?defaultTaxRates: Choice<string list,string>, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int64, ?coupon: string, ?collectionMethod: PostSubscriptionsCollectionMethod, ?cancelAtPeriodEnd: bool, ?cancelAt: int64, ?billingThresholds: Choice<PostSubscriptionsBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: int64, ?backdateStartDate: int64, ?applicationFeePercent: decimal, ?trialFromPlan: bool, ?trialPeriodDays: int64) =
+    and PostSubscriptionsParams (customer: string, ?addInvoiceItems: PostSubscriptionsAddInvoiceItems list, ?trialEnd: Choice<PostSubscriptionsTrialEnd,DateTime>, ?transferData: PostSubscriptionsTransferData, ?prorationBehavior: PostSubscriptionsProrationBehavior, ?promotionCode: string, ?pendingInvoiceItemInterval: Choice<PostSubscriptionsPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?paymentBehavior: PostSubscriptionsPaymentBehavior, ?offSession: bool, ?metadata: Map<string, string>, ?items: PostSubscriptionsItems list, ?expand: string list, ?defaultTaxRates: Choice<string list,string>, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?coupon: string, ?collectionMethod: PostSubscriptionsCollectionMethod, ?cancelAtPeriodEnd: bool, ?cancelAt: DateTime, ?billingThresholds: Choice<PostSubscriptionsBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: DateTime, ?backdateStartDate: DateTime, ?applicationFeePercent: decimal, ?trialFromPlan: bool, ?trialPeriodDays: int) =
         ///A list of prices and quantities that will generate invoice items appended to the first invoice for this subscription. You may pass up to 10 items.
         member _.AddInvoiceItems = addInvoiceItems
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
@@ -11328,7 +11329,7 @@ module StripeRequest =
         | CreateProrations
         | None'
 
-    and PostSubscriptionsAddInvoiceItems (?price: string, ?priceData: PostSubscriptionsAddInvoiceItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionsAddInvoiceItems (?price: string, ?priceData: PostSubscriptionsAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///The ID of the price object.
         member _.Price = price
         ///Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline.
@@ -11338,7 +11339,7 @@ module StripeRequest =
         ///The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionsAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionsAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -11348,13 +11349,13 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionsBillingThresholdsBillingThresholds (?amountGte: int64, ?resetBillingCycleAnchor: bool) =
+    and PostSubscriptionsBillingThresholdsBillingThresholds (?amountGte: int, ?resetBillingCycleAnchor: bool) =
         ///Monetary threshold that triggers the subscription to advance to a new billing period
         member _.AmountGte = amountGte
         ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged.
         member _.ResetBillingCycleAnchor = resetBillingCycleAnchor
 
-    and PostSubscriptionsItems (?billingThresholds: Choice<PostSubscriptionsItemsBillingThresholdsItemBillingThresholds,string>, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionsItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionsItems (?billingThresholds: Choice<PostSubscriptionsItemsBillingThresholdsItemBillingThresholds,string>, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionsItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
         member _.BillingThresholds = billingThresholds
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
@@ -11370,11 +11371,11 @@ module StripeRequest =
         ///A list of [Tax Rate](https://stripe.com/docs/api/tax_rates) ids. These Tax Rates will override the [`default_tax_rates`](https://stripe.com/docs/api/subscriptions/create#create_subscription-default_tax_rates) on the Subscription. When updating, pass an empty string to remove previously-defined tax rates.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionsItemsBillingThresholdsItemBillingThresholds (?usageGte: int64) =
+    and PostSubscriptionsItemsBillingThresholdsItemBillingThresholds (?usageGte: int) =
         ///Usage threshold that triggers the subscription to advance to a new billing period
         member _.UsageGte = usageGte
 
-    and PostSubscriptionsItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionsItemsPriceDataRecurring, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionsItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionsItemsPriceDataRecurring, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -11386,7 +11387,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionsItemsPriceDataRecurring (?interval: PostSubscriptionsItemsPriceDataRecurringInterval, ?intervalCount: int64) =
+    and PostSubscriptionsItemsPriceDataRecurring (?interval: PostSubscriptionsItemsPriceDataRecurringInterval, ?intervalCount: int) =
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -11398,7 +11399,7 @@ module StripeRequest =
         | Week
         | Year
 
-    and PostSubscriptionsPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams (?interval: PostSubscriptionsPendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval, ?intervalCount: int64) =
+    and PostSubscriptionsPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams (?interval: PostSubscriptionsPendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval, ?intervalCount: int) =
         ///Specifies invoicing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between invoices. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -11427,7 +11428,7 @@ module StripeRequest =
         ///Will generate a proration invoice item that credits remaining unused time until the subscription period end.
         member _.Prorate = prorate
 
-    and PostSubscriptionsSubscriptionExposedIdParams (?addInvoiceItems: PostSubscriptionsSubscriptionExposedIdAddInvoiceItems list, ?transferData: Choice<PostSubscriptionsSubscriptionExposedIdTransferDataTransferDataSpecs,string>, ?prorationDate: int64, ?prorationBehavior: PostSubscriptionsSubscriptionExposedIdProrationBehavior, ?promotionCode: string, ?pendingInvoiceItemInterval: Choice<PostSubscriptionsSubscriptionExposedIdPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?paymentBehavior: PostSubscriptionsSubscriptionExposedIdPaymentBehavior, ?pauseCollection: Choice<PostSubscriptionsSubscriptionExposedIdPauseCollectionPauseCollection,string>, ?offSession: bool, ?metadata: Map<string, string>, ?items: PostSubscriptionsSubscriptionExposedIdItems list, ?trialEnd: Choice<PostSubscriptionsSubscriptionExposedIdTrialEnd,int64>, ?expand: string list, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int64, ?coupon: string, ?collectionMethod: PostSubscriptionsSubscriptionExposedIdCollectionMethod, ?cancelAtPeriodEnd: bool, ?cancelAt: Choice<int64,string>, ?billingThresholds: Choice<PostSubscriptionsSubscriptionExposedIdBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: PostSubscriptionsSubscriptionExposedIdBillingCycleAnchor, ?applicationFeePercent: decimal, ?defaultTaxRates: Choice<string list,string>, ?trialFromPlan: bool) =
+    and PostSubscriptionsSubscriptionExposedIdParams (?addInvoiceItems: PostSubscriptionsSubscriptionExposedIdAddInvoiceItems list, ?transferData: Choice<PostSubscriptionsSubscriptionExposedIdTransferDataTransferDataSpecs,string>, ?prorationDate: DateTime, ?prorationBehavior: PostSubscriptionsSubscriptionExposedIdProrationBehavior, ?promotionCode: string, ?pendingInvoiceItemInterval: Choice<PostSubscriptionsSubscriptionExposedIdPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?paymentBehavior: PostSubscriptionsSubscriptionExposedIdPaymentBehavior, ?pauseCollection: Choice<PostSubscriptionsSubscriptionExposedIdPauseCollectionPauseCollection,string>, ?offSession: bool, ?metadata: Map<string, string>, ?items: PostSubscriptionsSubscriptionExposedIdItems list, ?trialEnd: Choice<PostSubscriptionsSubscriptionExposedIdTrialEnd,DateTime>, ?expand: string list, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?coupon: string, ?collectionMethod: PostSubscriptionsSubscriptionExposedIdCollectionMethod, ?cancelAtPeriodEnd: bool, ?cancelAt: Choice<DateTime,string>, ?billingThresholds: Choice<PostSubscriptionsSubscriptionExposedIdBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: PostSubscriptionsSubscriptionExposedIdBillingCycleAnchor, ?applicationFeePercent: decimal, ?defaultTaxRates: Choice<string list,string>, ?trialFromPlan: bool) =
         ///A list of prices and quantities that will generate invoice items appended to the first invoice for this subscription. You may pass up to 10 items.
         member _.AddInvoiceItems = addInvoiceItems
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
@@ -11501,7 +11502,7 @@ module StripeRequest =
         | CreateProrations
         | None'
 
-    and PostSubscriptionsSubscriptionExposedIdAddInvoiceItems (?price: string, ?priceData: PostSubscriptionsSubscriptionExposedIdAddInvoiceItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionsSubscriptionExposedIdAddInvoiceItems (?price: string, ?priceData: PostSubscriptionsSubscriptionExposedIdAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///The ID of the price object.
         member _.Price = price
         ///Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline.
@@ -11511,7 +11512,7 @@ module StripeRequest =
         ///The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionsSubscriptionExposedIdAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionsSubscriptionExposedIdAddInvoiceItemsPriceData (?currency: string, ?product: string, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -11521,13 +11522,13 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionsSubscriptionExposedIdBillingThresholdsBillingThresholds (?amountGte: int64, ?resetBillingCycleAnchor: bool) =
+    and PostSubscriptionsSubscriptionExposedIdBillingThresholdsBillingThresholds (?amountGte: int, ?resetBillingCycleAnchor: bool) =
         ///Monetary threshold that triggers the subscription to advance to a new billing period
         member _.AmountGte = amountGte
         ///Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged.
         member _.ResetBillingCycleAnchor = resetBillingCycleAnchor
 
-    and PostSubscriptionsSubscriptionExposedIdItems (?billingThresholds: Choice<PostSubscriptionsSubscriptionExposedIdItemsBillingThresholdsItemBillingThresholds,string>, ?clearUsage: bool, ?deleted: bool, ?id: string, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionsSubscriptionExposedIdItemsPriceData, ?quantity: int64, ?taxRates: Choice<string list,string>) =
+    and PostSubscriptionsSubscriptionExposedIdItems (?billingThresholds: Choice<PostSubscriptionsSubscriptionExposedIdItemsBillingThresholdsItemBillingThresholds,string>, ?clearUsage: bool, ?deleted: bool, ?id: string, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: PostSubscriptionsSubscriptionExposedIdItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
         member _.BillingThresholds = billingThresholds
         ///Delete all usage for a given subscription item. Allowed only when `deleted` is set to `true` and the current plan's `usage_type` is `metered`.
@@ -11549,11 +11550,11 @@ module StripeRequest =
         ///A list of [Tax Rate](https://stripe.com/docs/api/tax_rates) ids. These Tax Rates will override the [`default_tax_rates`](https://stripe.com/docs/api/subscriptions/create#create_subscription-default_tax_rates) on the Subscription. When updating, pass an empty string to remove previously-defined tax rates.
         member _.TaxRates = taxRates
 
-    and PostSubscriptionsSubscriptionExposedIdItemsBillingThresholdsItemBillingThresholds (?usageGte: int64) =
+    and PostSubscriptionsSubscriptionExposedIdItemsBillingThresholdsItemBillingThresholds (?usageGte: int) =
         ///Usage threshold that triggers the subscription to advance to a new billing period
         member _.UsageGte = usageGte
 
-    and PostSubscriptionsSubscriptionExposedIdItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionsSubscriptionExposedIdItemsPriceDataRecurring, ?unitAmount: int64, ?unitAmountDecimal: string) =
+    and PostSubscriptionsSubscriptionExposedIdItemsPriceData (?currency: string, ?product: string, ?recurring: PostSubscriptionsSubscriptionExposedIdItemsPriceDataRecurring, ?unitAmount: int, ?unitAmountDecimal: string) =
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         member _.Currency = currency
         ///The ID of the product that this price will belong to.
@@ -11565,7 +11566,7 @@ module StripeRequest =
         ///Same as `unit_amount`, but accepts a decimal value in %s with at most 12 decimal places. Only one of `unit_amount` and `unit_amount_decimal` can be set.
         member _.UnitAmountDecimal = unitAmountDecimal
 
-    and PostSubscriptionsSubscriptionExposedIdItemsPriceDataRecurring (?interval: PostSubscriptionsSubscriptionExposedIdItemsPriceDataRecurringInterval, ?intervalCount: int64) =
+    and PostSubscriptionsSubscriptionExposedIdItemsPriceDataRecurring (?interval: PostSubscriptionsSubscriptionExposedIdItemsPriceDataRecurringInterval, ?intervalCount: int) =
         ///Specifies billing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -11577,7 +11578,7 @@ module StripeRequest =
         | Week
         | Year
 
-    and PostSubscriptionsSubscriptionExposedIdPauseCollectionPauseCollection (?behavior: PostSubscriptionsSubscriptionExposedIdPauseCollectionPauseCollectionBehavior, ?resumesAt: int64) =
+    and PostSubscriptionsSubscriptionExposedIdPauseCollectionPauseCollection (?behavior: PostSubscriptionsSubscriptionExposedIdPauseCollectionPauseCollectionBehavior, ?resumesAt: DateTime) =
         ///The payment collection behavior for this subscription while paused. One of `keep_as_draft`, `mark_uncollectible`, or `void`.
         member _.Behavior = behavior
         ///The time after which the subscription will resume collecting payments.
@@ -11588,7 +11589,7 @@ module StripeRequest =
         | MarkUncollectible
         | Void
 
-    and PostSubscriptionsSubscriptionExposedIdPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams (?interval: PostSubscriptionsSubscriptionExposedIdPendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval, ?intervalCount: int64) =
+    and PostSubscriptionsSubscriptionExposedIdPendingInvoiceItemIntervalPendingInvoiceItemIntervalParams (?interval: PostSubscriptionsSubscriptionExposedIdPendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval, ?intervalCount: int) =
         ///Specifies invoicing frequency. Either `day`, `week`, `month` or `year`.
         member _.Interval = interval
         ///The number of intervals between invoices. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
@@ -11946,7 +11947,7 @@ module StripeRequest =
         ///Town or cho-me.
         member _.Town = town
 
-    and PostTokensAccountIndividualDobDateOfBirthSpecs (?day: int64, ?month: int64, ?year: int64) =
+    and PostTokensAccountIndividualDobDateOfBirthSpecs (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -12108,7 +12109,7 @@ module StripeRequest =
         ///Town or cho-me.
         member _.Town = town
 
-    and PostTokensPersonDobDateOfBirthSpecs (?day: int64, ?month: int64, ?year: int64) =
+    and PostTokensPersonDobDateOfBirthSpecs (?day: int, ?month: int, ?year: int) =
         ///The day of birth, between 1 and 31.
         member _.Day = day
         ///The month of birth, between 1 and 12.
@@ -12152,7 +12153,7 @@ module StripeRequest =
         ///The `id_number` for the PII, in string form.
         member _.IdNumber = idNumber
 
-    and PostTopupsParams (amount: int64, currency: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string, ?statementDescriptor: string, ?transferGroup: string) =
+    and PostTopupsParams (amount: int, currency: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string, ?statementDescriptor: string, ?transferGroup: string) =
         ///A positive integer representing how much to transfer.
         member _.Amount = amount
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -12182,7 +12183,7 @@ module StripeRequest =
         ///Specifies which fields in the response should be expanded.
         member _.Expand = expand
 
-    and PostTransfersParams (currency: string, destination: string, ?amount: int64, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?sourceTransaction: string, ?sourceType: PostTransfersSourceType, ?transferGroup: string) =
+    and PostTransfersParams (currency: string, destination: string, ?amount: int, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?sourceTransaction: string, ?sourceType: PostTransfersSourceType, ?transferGroup: string) =
         ///A positive integer in %s representing how much to transfer.
         member _.Amount = amount
         ///3-letter [ISO code for currency](https://stripe.com/docs/payouts).
@@ -12207,7 +12208,7 @@ module StripeRequest =
         | Card
         | Fpx
 
-    and PostTransfersIdReversalsParams (?amount: int64, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?refundApplicationFee: bool) =
+    and PostTransfersIdReversalsParams (?amount: int, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?refundApplicationFee: bool) =
         ///A positive integer in %s representing how much of this transfer to reverse. Can only reverse up to the unreversed amount remaining of the transfer. Partial transfer reversals are only allowed for transfers to Stripe Accounts. Defaults to the entire transfer amount.
         member _.Amount = amount
         ///An arbitrary string which you can attach to a reversal object. It is displayed alongside the reversal in the Dashboard. This will be unset if you POST an empty value.

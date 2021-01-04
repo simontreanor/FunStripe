@@ -5,6 +5,7 @@ open NUnit.Framework
 open StripeModel
 open StripeRequest
 open StripeService
+open System
 
 module Tests =
 
@@ -16,8 +17,8 @@ module Tests =
         let defaultCard =
             PostPaymentMethodsCardCardDetailsParams(
                 cvc = "314",
-                expMonth = 10L,
-                expYear = 2021L,
+                expMonth = 10,
+                expYear = 2021,
                 number = "4242424242424242"
             )
 
@@ -48,35 +49,31 @@ module Tests =
             let paymentMethodCardChecks = { PaymentMethodCardChecks.AddressLine1Check = None; AddressPostalCodeCheck = None; CvcCheck = None }
             let networks = { Available = ["Visa"]; Preferred = None }
             let threeDSecureUsage = { Supported = true }
-            let paymentMethodCard = {
-                Brand = PaymentMethodCardBrand.Visa
-                Checks = Some paymentMethodCardChecks
-                Country = Some "US"
-                Description = None
-                ExpMonth = 10L
-                ExpYear = 2021L
-                Fingerprint = Some "YfQddCBRsntX6npu"
-                Funding = PaymentMethodCardFunding.Credit
-                Iin = None
-                Issuer = None
-                Last4 = "4242"
-                Networks = Some networks
-                ThreeDSecureUsage = Some threeDSecureUsage
-                Wallet = None
-            }
-            let paymentMethod = {
-                BillingDetails = billingDetails
-                Card = Some paymentMethodCard
-                CardPresent = None
-                Created = 1604075742L
-                Customer = None
-                Id = "IgnoreThisId"
-                Livemode = false
-                Metadata = Some Map.empty
-                Type = PaymentMethodType.Card
-                Alipay = None; AuBecsDebit = None; BacsDebit = None; Bancontact = None; Eps = None; Fpx = None; Giropay = None
-                Grabpay = None; Ideal = None; InteracPresent = None; Oxxo = None; P24 = None; SepaDebit = None; Sofort = None
-            }
+            let paymentMethodCard =
+                PaymentMethodCard.Create(
+                    brand = PaymentMethodCardBrand.Visa,
+                    checks = Some paymentMethodCardChecks,
+                    country = Some "US",
+                    expMonth = 10,
+                    expYear = 2021,
+                    fingerprint = Some "YfQddCBRsntX6npu",
+                    funding = PaymentMethodCardFunding.Credit,
+                    last4 = "4242",
+                    networks = Some networks,
+                    threeDSecureUsage = Some threeDSecureUsage,
+                    wallet = None
+                )
+            let paymentMethod =
+                PaymentMethod.Create(
+                    billingDetails = billingDetails,
+                    card = paymentMethodCard,
+                    created = DateTime(2020, 10, 30, 16, 35, 0),
+                    customer = None,
+                    id = "IgnoreThisId",
+                    livemode = false,
+                    metadata = Some Map.empty,
+                    ``type`` = PaymentMethodType.Card
+                )
             paymentMethod
 
         [<Test>]

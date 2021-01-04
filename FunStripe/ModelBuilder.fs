@@ -20,6 +20,7 @@ module ModelBuilder =
         AnyOf: JsonValue array option
         Description: string
         Enum: JsonValue array option
+        Format: string option
         Items: JsonValue
         Nullable: bool option
         Properties: JsonValue
@@ -33,7 +34,7 @@ module ModelBuilder =
     let mapType (s: string) =
         match s with
         | "boolean" -> "bool"
-        | "integer" -> "int64"
+        | "integer" -> "int"
         | "number" -> "decimal"
         | _ -> s
 
@@ -44,6 +45,7 @@ module ModelBuilder =
             AnyOf = jv.TryGetProperty("anyOf") |> function | Some v -> v.AsArray() |> Some | None -> None
             Description = jv.TryGetProperty("description") |> function | Some v -> v.AsString() | None -> ""
             Enum = jv.TryGetProperty("enum") |> function | Some v -> v.AsArray() |> Some | None -> None
+            Format = jv.TryGetProperty("format") |> function | Some v -> v.AsString() |> Some | None -> None
             Items = jv.TryGetProperty("items") |> function | Some v -> v | None -> JsonValue.Null
             Nullable = jv.TryGetProperty("nullable") |> function | Some v -> v.AsBoolean() |> Some | None -> None
             Properties = jv.TryGetProperty("properties") |> function | Some v -> v | None -> JsonValue.Null
@@ -57,9 +59,19 @@ module ModelBuilder =
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-    // ///Convert ```PascalCase``` to ```snake_case```
-    // let snakeCasify (s: string) =
-    //     Regex.Replace(s, @"\p{Lu}", fun (m: Match) -> $"_{m.Value.ToLower()}").TrimStart('_')
+    ///Convert ```snake_case``` to ```camelCase```
+    let camelCasify (s: string) =
+        Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
+
+    ///Escape certain reserved names used in camel-case parameters
+    let escapeReservedName name =
+        match name with
+        | "end"
+        | "open"
+        | "type" ->
+            $"``{name}``"
+        | _ ->
+            name
 
     ///Remove/replace problematic chars/strings from discriminated-union names
     let clean (s: string) =
@@ -82,7 +94,7 @@ module ModelBuilder =
     let fixJsonNaming transformType infix name =
         let infix' = infix |> Option.defaultValue ""
         let nameProperty = if Regex.IsMatch(name, @"(?<!_)\d") then Some $"Name=\"{name}\"" else None
-        let transformProperty = transformType |> Option.fold (fun _ v -> Some $"Transform=typeof<AnyOfTransform<%s{v}>>") None
+        let transformProperty = transformType |> Option.fold (fun _ v -> Some $"Transform=typeof<%s{v}>") None
         let properties = [nameProperty; transformProperty] |> List.choose id
         match properties with
         | [] ->
@@ -183,6 +195,12 @@ module ModelBuilder =
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "Map<string, string list>"; EnumValues = None; SubValues = None; StaticValue = None }
                     | None ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "obj"; EnumValues = None; SubValues = None; StaticValue = None }
+        | Some t when t = "int" ->
+            match so.Format with
+            | Some "unix-time" ->
+                { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "DateTime"; EnumValues = None; SubValues = None; StaticValue = None }
+            | _ ->
+                { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
         | Some t ->
             { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
         | None ->
@@ -276,7 +294,7 @@ module ModelBuilder =
         let sb = Text.StringBuilder()
 
         //write the namespace, references and module title
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nopen FunStripe.JsonUtil\n\nmodule StripeModel =\n"
+        sb |> write "namespace FunStripe\n\nopen FSharp.Json\nopen FunStripe.JsonUtil\nopen System\n\nmodule StripeModel =\n"
 
         //creates and formats a discriminated union
         let writeEnum (name: string) values =
@@ -311,7 +329,13 @@ module ModelBuilder =
                         |> Array.map(fun v ->
                             let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify}\n"
                             let req = if v.Required && (v.Nullable |> not) then "" else " option"
-                            let transform = if v.Type.EndsWith "'AnyOf" then Some v.Type else None
+                            let transform =
+                                if v.Type.EndsWith "'AnyOf" then 
+                                    Some $"AnyOfTransform<{v.Type}>"
+                                elif v.Type = "DateTime" then
+                                    Some "Transforms.DateTimeEpoch"
+                                else
+                                    None
                             $"{comment}\t\t{v.Name |> fixJsonNaming transform None}: {v.Type}{req}"
                         )
                     ) |> String.Join
@@ -332,13 +356,48 @@ module ModelBuilder =
                         ) |> String.Join
 
                     //if there are any static properties, prefix them with `with`
-                    if props |> String.IsNullOrWhiteSpace then "" else $"\n\twith\n{props}"
+                    if props |> String.IsNullOrWhiteSpace then "" else $"\n\twith\n{props}\n"
+
+                //add a static `create` function with optional parameters to simplify record creation
+                let createFunction =
+
+                    //format parameters
+                    let parameters =
+                        (", ",
+                            values
+                            |> Array.filter(fun v -> v.StaticValue.IsNone)
+                            |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
+                            |> Array.map(fun v ->
+                                let o = if v.Required then "" else "?"
+                                let n = if v.Nullable then " option" else ""
+                                $"{o}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}{n}"
+                            )
+                        ) |> String.Join
+
+                    //format property initialisers
+                    let properties =
+                        ("\n",
+                            values
+                            |> Array.filter(fun v -> v.StaticValue.IsNone)
+                            |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
+                            |> Array.map(fun v ->
+                                let flatten = if (v.Required |> not) && v.Nullable then " |> Option.flatten" else ""
+                                let comment = if v.Required then " //required" else ""
+                                $"\t\t\t\t{name |> pascalCasify}.{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}{flatten}{comment}"
+                            )
+                        ) |> String.Join
+
+                    //if there are no static properties, prefix `create` function with `with`
+                    let withPrefix = if staticPropertiesString |> String.IsNullOrWhiteSpace then $"\n\twith\n" else ""
+
+                    //compose `create` function
+                    $"{withPrefix}\n\t\tstatic member Create ({parameters}) =\n\t\t\t{{\n{properties}\n\t\t\t}}"
 
                 //if there is a description, format it using comments
                 let desc = if description |> String.IsNullOrWhiteSpace then "" else $"\t///{description |> commentify}\n"
                     
                 //write the type definition and properties of the type
-                sb |> write $"{desc}\t{keyword} {name |> pascalCasify} = {{\n{propertiesString}\n\t}}{staticPropertiesString}\n"
+                sb |> write $"{desc}\t{keyword} {name |> pascalCasify} = {{\n{propertiesString}\n\t}}{staticPropertiesString}{createFunction}\n"
 
             //write out any enumerations
             values

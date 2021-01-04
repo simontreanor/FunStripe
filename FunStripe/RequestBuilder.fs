@@ -20,6 +20,7 @@ module RequestBuilder =
         AnyOf: JsonValue array option
         Description: string
         Enum: JsonValue array option
+        Format: string option
         Items: JsonValue option
         Nullable: bool option
         Properties: JsonValue
@@ -33,7 +34,7 @@ module RequestBuilder =
     let mapType (s: string) =
         match s with
         | "boolean" -> "bool"
-        | "integer" -> "int64"
+        | "integer" -> "int"
         | "number" -> "decimal"
         | _ -> s
 
@@ -41,16 +42,17 @@ module RequestBuilder =
     let getSchemaObject (jv: JsonValue) =
         {
 
-            AnyOf = jv.TryGetProperty("anyOf") |> function | Some v -> v.AsArray() |> Some | None -> None
-            Description = jv.TryGetProperty("description") |> function | Some v -> v.AsString() | None -> ""
-            Enum = jv.TryGetProperty("enum") |> function | Some v -> v.AsArray() |> Some | None -> None
-            Items = jv.TryGetProperty("items") |> function | Some v -> v |> Some | None -> None
-            Nullable = jv.TryGetProperty("nullable") |> function | Some v -> v.AsBoolean() |> Some | None -> None
-            Properties = jv.TryGetProperty("properties") |> function | Some v -> v | None -> JsonValue.Null
-            Ref = jv.TryGetProperty("$ref") |> function | Some v -> v.AsString() |> Some | None -> None
-            Required = jv.TryGetProperty("required") |> function | Some v -> v.AsArray() | None -> [||]
-            Title = jv.TryGetProperty("title") |> function | Some v -> v.AsString() |> Some | None -> None
-            Type = jv.TryGetProperty("type") |> function | Some v -> v.AsString() |> mapType |> Some | None -> None
+            AnyOf = jv.TryGetProperty("anyOf") |> Option.map(fun v -> v.AsArray())
+            Description = jv.TryGetProperty("description") |> Option.map(fun v -> v.AsString()) |> Option.defaultValue ""
+            Enum = jv.TryGetProperty("enum") |> Option.map(fun v -> v.AsArray())
+            Format = jv.TryGetProperty("format") |> Option.map(fun v -> v.AsString())
+            Items = jv.TryGetProperty("items") |> Option.map id
+            Nullable = jv.TryGetProperty("nullable") |> Option.map(fun v -> v.AsBoolean())
+            Properties = jv.TryGetProperty("properties") |> Option.map id |> Option.defaultValue JsonValue.Null
+            Ref = jv.TryGetProperty("$ref") |> Option.map(fun v -> v.AsString())
+            Required = jv.TryGetProperty("required") |> Option.map(fun v -> v.AsArray()) |> Option.defaultValue [||]
+            Title = jv.TryGetProperty("title") |> Option.map(fun v -> v.AsString())
+            Type = jv.TryGetProperty("type") |> Option.map(fun v -> v.AsString() |> mapType)
         }
 
     ///Convert ```snake_case``` to ```PascalCase```
@@ -67,7 +69,7 @@ module RequestBuilder =
         | "end"
         | "open"
         | "type" ->
-            "``" + name + "``"
+            $"``{name}``"
         | _ ->
             name
 
@@ -94,13 +96,6 @@ module RequestBuilder =
     let fixTitle (title: string) =
         Regex.Replace(title, "_param$", "")
 
-
-
-
-
-
-
-
     ///Class for formatting parameters/properties of types
     type Parameter (description: string, name: string, ``type``: string) =
         member _.Description = description
@@ -113,42 +108,9 @@ module RequestBuilder =
         member this.ToPropertyString() =
             "\t\tmember _." + (this.Name |> camelCasify |> escapeReservedName) + " = " + (this.Name |> camelCasify |> escapeReservedName)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line
     let commentify (s: string) = 
         s.Replace("\n\n", "\n").Replace("\n", "\n\t\t///")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     ///Recursive record for holding type definitions
     type Value = {
@@ -203,13 +165,6 @@ module RequestBuilder =
                                 else
                                     { Description = desc; Name = name; Required = req; Type = $"{prefix}{name'}"; EnumValues = Some ev; SubValues = None }
                             | None ->
-
-
-
-
-
-
-
                                 { Description = desc; Name = name; Required = req; Type = t; EnumValues = None; SubValues = None }
                         | Some t when t = "array" ->
                             match so.Items with
@@ -221,7 +176,7 @@ module RequestBuilder =
                                     let sv = i |> parseValue $"{prefix}" name false false
                                     { Description = desc; Name = name; Required = req; Type = $"{sv.Type} list"; EnumValues = None; SubValues = Some [| sv |] }
                             | None ->
-                                failwith "This never fails (to amuse me) #1"
+                                failwith "This `never` fails #1"
                         | Some t when t = "object" ->
                             match so.Title with
                             | Some title ->
@@ -237,11 +192,13 @@ module RequestBuilder =
                                 | "metadata" ->
                                     { Description = desc; Name = name; Required = req; Type = "Map<string, string>"; EnumValues = None; SubValues = None }
                                 | _ ->
-
-
-
-
-                                    failwith "This never fails (to amuse me) #2"
+                                    failwith "This `never` fails #2"
+                        | Some t when t = "int" ->
+                            match so.Format with
+                            | Some "unix-time" ->
+                                { Description = desc; Name = name; Required = req; Type = "DateTime"; EnumValues = None; SubValues = None }
+                            | _ ->
+                                { Description = desc; Name = name; Required = req; Type = t; EnumValues = None; SubValues = None }
                         | Some t ->
                             { Description = desc; Name = name; Required = req; Type = t; EnumValues = None; SubValues = None }
                         | None ->
@@ -255,10 +212,6 @@ module RequestBuilder =
                                     let choices = sv |> Array.map(fun v -> v.Type) |> Array.toList
                                     { Description = desc; Name = name; Required = req; Type = "Choice<" + String.Join(",", choices) + ">"; EnumValues = None; SubValues = Some sv }
                             | None ->
-
-
-
-
                                 { Description = desc; Name = jv.AsString(); Required = req; Type = "CATCH-ALL"; EnumValues = None; SubValues = None }
 
                     let schemaObject = schema |> getSchemaObject
@@ -275,7 +228,7 @@ module RequestBuilder =
 
         let sb = Text.StringBuilder()
 
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\n\nmodule StripeRequest =\n"
+        sb |> write "namespace FunStripe\n\nopen FSharp.Json\nopen System\n\nmodule StripeRequest =\n"
 
         let writeEnum (name: string) values =
             let valuesString =
