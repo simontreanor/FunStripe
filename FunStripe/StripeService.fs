@@ -1,6 +1,6 @@
 namespace FunStripe
 
-open FSharp.Json
+open FunStripe.Json
 open StripeModel
 open StripeRequest
 

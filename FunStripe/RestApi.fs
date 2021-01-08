@@ -48,12 +48,12 @@ module RestApi =
             | sc when sc >= 200 && sc <= 299 ->
                 r.Body
                     |> function Text t -> t | Binary _ -> ""
-                    |> JsonUtil.deserialise<'a>
+                    |> Json.Util.deserialise<'a>
                     |> Ok
             | _ ->
                 r.Body
                 |> function Text t -> t | Binary _ -> ""
-                |> JsonUtil.deserialise<ErrorResponse>
+                |> Json.Util.deserialise<ErrorResponse>
                 |> Error
 
         ///Make a ```GET``` request (without form parameters in the body (default))

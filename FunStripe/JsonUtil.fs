@@ -1,6 +1,5 @@
 namespace FunStripe
 
-open FSharp.Json
 open Microsoft.FSharp.Reflection
 open System
 open System.Linq
@@ -9,7 +8,7 @@ open System.Reflection
 module JsonUtil =
     
     ///JSON setting for snake-case formatting (Stripe uses snake-case, F# prefers pascal/camel case)
-    let config = JsonConfig.create(allowUntyped = true, jsonFieldNaming = Json.snakeCase)
+    let config = JsonConfig.create(allowUntyped = true, jsonFieldNaming = Json.snakeCase, unformatted = true)
 
     ///Convert F# objects to JSON strings
     let serialise data =
@@ -80,9 +79,9 @@ module JsonUtil =
     ///Wrap objects in discriminated-union fields
     let wrap<'a> (s: string) v =
         match FSharpType.GetUnionCases typeof<'a> |> Array.filter (fun uci -> uci.Name = s) with
-        |[| uci |] -> Some(FSharpValue.MakeUnion(uci, [| v |]) :?> 'a)
+        |[| uci |] -> (FSharpValue.MakeUnion(uci, [| v |]) :?> 'a) |> Some
         |_ -> None
-
+        
     ///Get the types and underlying types of a discriminated union
     let getUnderlyingTypes<'a> () =
         typeof<'a>.GetMembers().Cast<MemberInfo>()
@@ -125,13 +124,11 @@ module JsonUtil =
                                 (this is because there is no type info in the Stripe response for polymorphic fields)) *)
                             if o.GetType() = ut then
                                 o
-                                |> unbox
                                 |> wrap<'a> (t.Name)
                             //FSharp.Json converts all numbers except floats to `decimal` internally, so we need to convert back
-                            elif o.GetType() = typeof<decimal> && ut.FullName = "System.Int64" then
+                            elif o.GetType() = typeof<decimal> && ut = typeof<int> then
                                 o
-                                |> unbox
-                                |> (fun (m: decimal) -> Convert.ToInt32 m)
+                                |> Convert.ToInt32
                                 |> wrap<'a> (t.Name)
                             else
                                 try
@@ -140,12 +137,10 @@ module JsonUtil =
                                     o
                                     |> Json.serializeEx config
                                     |> jsonDeserializeEx ut config
-                                    |> unbox
                                     |> wrap<'a> (t.Name)
                                 with
                                     //ignore non-matching types
-                                    | ex ->
-                                            None
+                                    | ex -> None
                         )
                         |> box
                 ) value

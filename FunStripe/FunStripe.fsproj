@@ -13,8 +13,14 @@
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Json/InterfaceTypes.fs" />
+    <Compile Include="Json/JsonValueHelpers.fs" />
+    <Compile Include="Json/Reflection.fs" />
+    <Compile Include="Json/Core.fs" />
+    <Compile Include="Json/Transforms.fs" />
+    <Compile Include="Json/Interface.fs" />
+    <Compile Include="Json/Util.fs" />
     <Compile Include="AsyncResult.fs" />
-    <Compile Include="JsonUtil.fs" />
     <Compile Include="FormUtil.fs" />
     <Compile Include="Util.fs" />
     <Compile Include="RestApi.fs" />
@@ -24,9 +30,9 @@
     <Compile Include="ModelBuilder.fs" />
     <Compile Include="RequestBuilder.fs" />
     <Compile Include="ServiceBuilder.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
-    <PackageReference Include="FSharp.Json" Version="0.4.0" />
   </ItemGroup>
 </Project>

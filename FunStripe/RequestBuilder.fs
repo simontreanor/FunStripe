@@ -228,7 +228,7 @@ module RequestBuilder =
 
         let sb = Text.StringBuilder()
 
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\nopen System\n\nmodule StripeRequest =\n"
+        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen System\n\nmodule StripeRequest =\n"
 
         let writeEnum (name: string) values =
             let valuesString =

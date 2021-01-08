@@ -126,7 +126,7 @@ module ServiceBuilder =
 
         let mutable isFirstOccurrence = true
 
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\nopen StripeModel\nopen StripeRequest\n\nmodule StripeService =\n"
+        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen StripeModel\nopen StripeRequest\n\nmodule StripeService =\n"
 
         let typeDefinitions = Collections.Generic.List<string>()
 

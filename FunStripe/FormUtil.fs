@@ -16,7 +16,7 @@ module FormUtil =
 
     ///Override field names in form key by looking up ```JsonField``` attribute
     let formatFieldName (s: string) =
-        Regex.Replace (s, @"\w+", (fun m -> m.Value |> JsonUtil.getJsonFieldName))
+        Regex.Replace (s, @"\w+", (fun m -> m.Value |> Json.Util.getJsonFieldName))
 
     ///Recurse through record fields / class properties and format as form key/value pairs
     let rec format (key: string) (value: obj) =
@@ -32,7 +32,7 @@ module FormUtil =
                 | None ->
                     Seq.empty
             | _ ->
-                seq {key, $"{value |> JsonUtil.getJsonUnionCaseName}" |> box}
+                seq {key, $"{value |> Json.Util.getJsonUnionCaseName}" |> box}
         | _ when FSharpType.IsRecord (value.GetType()) ->
             FSharpType.GetRecordFields (value.GetType())
             |> Array.map (fun pi -> format $"{key}[{pi.Name}]" (pi.GetValue(value, [||])))

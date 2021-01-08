@@ -73,9 +73,9 @@ module ModelBuilder =
         | _ ->
             name
 
-    ///Remove/replace problematic chars/strings from discriminated-union names
+    ///Remove problematic chars from discriminated-union names
     let clean (s: string) =
-        s.Replace("-", "").Replace(" ", "").Replace("none", "none'")
+        s.Replace("-", "").Replace(" ", "")
 
     ///Prepend ```Numeric``` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =
@@ -85,8 +85,10 @@ module ModelBuilder =
     let escapeForJson (s: string) =
         if s.Contains(" of ") then
             s
-        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") then
+        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".")then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
+        elif s = "none" then
+            $@"[<JsonUnionCase(""{s}"")>] {s|> pascalCasify}'"
         else
             s |> clean |> pascalCasify
 
@@ -294,7 +296,7 @@ module ModelBuilder =
         let sb = Text.StringBuilder()
 
         //write the namespace, references and module title
-        sb |> write "namespace FunStripe\n\nopen FSharp.Json\nopen FunStripe.JsonUtil\nopen System\n\nmodule StripeModel =\n"
+        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Json.Util\nopen System\n\nmodule StripeModel =\n"
 
         //creates and formats a discriminated union
         let writeEnum (name: string) values =
@@ -330,9 +332,7 @@ module ModelBuilder =
                             let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify}\n"
                             let req = if v.Required && (v.Nullable |> not) then "" else " option"
                             let transform =
-                                if v.Type.EndsWith "'AnyOf" then 
-                                    Some $"AnyOfTransform<{v.Type}>"
-                                elif v.Type = "DateTime" then
+                                if v.Type = "DateTime" then
                                     Some "Transforms.DateTimeEpoch"
                                 else
                                     None
