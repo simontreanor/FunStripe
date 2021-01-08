@@ -53,3 +53,6 @@ database/database.dbmdl
 /.vscode/settings.json
 .ionide/
 nuget.config
+.gitattributes
+.editorconfig
+.vscode/

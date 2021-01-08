@@ -6,40 +6,40 @@ module internal Reflection =
     open System.Collections.Concurrent
     open Microsoft.FSharp.Reflection    
 
-    let isOption_ (t: Type): bool =
+    let isOption' (t: Type): bool =
         t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<option<_>>
 
-    let getOptionType_ (t: Type): Type =
+    let getOptionType' (t: Type): Type =
         t.GetGenericArguments().[0]
 
-    let isArray_ (t: Type) =
+    let isArray' (t: Type) =
         t.IsArray
 
-    let isList_ (t: Type) =
+    let isList' (t: Type) =
         t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<List<_>>
 
-    let getListType_ (itemType: Type) =
+    let getListType' (itemType: Type) =
         typedefof<List<_>>.MakeGenericType([| itemType |])
 
-    let getListItemType_ (t: Type) =
+    let getListItemType' (t: Type) =
         t.GetGenericArguments().[0]
 
-    let getListConstructor_ (t: Type) =
+    let getListConstructor' (t: Type) =
         t.GetMethod ("Cons")
 
-    let getListEmptyProperty_ (t: Type) =
+    let getListEmptyProperty' (t: Type) =
         t.GetProperty("Empty")
 
-    let isMap_ (t: Type) =
+    let isMap' (t: Type) =
         t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<Map<_,_>>
 
-    let getMapKeyType_ (t: Type) =
+    let getMapKeyType' (t: Type) =
         t.GetGenericArguments().[0]
 
-    let getMapValueType_ (t: Type) =
+    let getMapValueType' (t: Type) =
         t.GetGenericArguments().[1]
 
-    let getMapKvpTupleType_ (t: Type) =
+    let getMapKvpTupleType' (t: Type) =
         t.GetGenericArguments() |> FSharpType.MakeTupleType
 
     let cacheResult (theFunction:'P -> 'R) =
@@ -56,21 +56,21 @@ module internal Reflection =
     let isTuple: Type -> bool = FSharpType.IsTuple |> cacheResult
     let getTupleElements: Type -> Type [] = FSharpType.GetTupleElements |> cacheResult
 
-    let isOption: Type -> bool = isOption_ |> cacheResult
-    let getOptionType: Type -> Type = getOptionType_ |> cacheResult
+    let isOption: Type -> bool = isOption' |> cacheResult
+    let getOptionType: Type -> Type = getOptionType' |> cacheResult
 
-    let isArray: Type -> bool = isArray_ |> cacheResult
+    let isArray: Type -> bool = isArray' |> cacheResult
 
-    let isList: Type -> bool = isList_ |> cacheResult
-    let getListType: Type -> Type = getListType_ |> cacheResult
-    let getListItemType: Type -> Type = getListItemType_ |> cacheResult
-    let getListConstructor: Type -> MethodInfo = getListConstructor_ |> cacheResult
-    let getListEmptyProperty: Type -> PropertyInfo = getListEmptyProperty_ |> cacheResult
+    let isList: Type -> bool = isList' |> cacheResult
+    let getListType: Type -> Type = getListType' |> cacheResult
+    let getListItemType: Type -> Type = getListItemType' |> cacheResult
+    let getListConstructor: Type -> MethodInfo = getListConstructor' |> cacheResult
+    let getListEmptyProperty: Type -> PropertyInfo = getListEmptyProperty' |> cacheResult
 
-    let isMap: Type -> bool = isMap_ |> cacheResult
-    let getMapKeyType: Type -> Type = getMapKeyType_ |> cacheResult
-    let getMapValueType: Type -> Type = getMapValueType_ |> cacheResult
-    let getMapKvpTupleType: Type -> Type = getMapKvpTupleType_ |> cacheResult
+    let isMap: Type -> bool = isMap' |> cacheResult
+    let getMapKeyType: Type -> Type = getMapKeyType' |> cacheResult
+    let getMapValueType: Type -> Type = getMapValueType' |> cacheResult
+    let getMapKvpTupleType: Type -> Type = getMapKvpTupleType' |> cacheResult
 
     let unwrapOption (t: Type) (value: obj): obj option =
         let _, fields = FSharpValue.GetUnionFields(value, t)

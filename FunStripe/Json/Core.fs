@@ -38,12 +38,12 @@ module internal Core =
 
     let getJsonFieldName (config: JsonConfig) (attribute: JsonField) (prop: PropertyInfo) =
         match attribute.Name with
-        | null -> config.jsonFieldNaming prop.Name
+        | null -> config.JsonFieldNaming prop.Name
         | fieldName -> fieldName
 
     let getJsonUnionCaseName (config: JsonConfig) (jsonUnionCase: JsonUnionCase) (caseInfo: UnionCaseInfo) =
         match jsonUnionCase.Case with
-        | null -> config.jsonFieldNaming caseInfo.Name
+        | null -> config.JsonFieldNaming caseInfo.Name
         | value -> value
 
     let transformToTargetType (t: Type) (value: obj) (transform: Type): (Type*obj) =
@@ -51,14 +51,14 @@ module internal Core =
         | null -> (t, value)
         | converterType ->
             let transform = getTransform converterType
-            let value = transform.toTargetType value
+            let value = transform.ToTargetType value
             let valueType = value.GetType()
             (valueType, value)
 
     let getEnumMode (config: JsonConfig) (jsonField: JsonField) =
         match jsonField.EnumValue with
         | EnumMode.Default ->
-            match config.enumValue with
+            match config.EnumValue with
             | EnumMode.Default -> EnumMode.Name
             | m -> m
         | m -> m 
@@ -91,7 +91,7 @@ module internal Core =
 
         let getUntypedType (t: Type) (value: obj): Type =
             if t = typeof<obj> then
-                if config.allowUntyped then
+                if config.AllowUntyped then
                     value.GetType()
                 else
                     failSerialization <| "Failed to serialize untyped data, allowUntyped set to false"
@@ -158,7 +158,7 @@ module internal Core =
                 match unwrapedValue with
                 | Some value -> Some (serializeNonOption (getOptionType t) jsonField value)
                 | None -> 
-                    match config.serializeNone with
+                    match config.SerializeNone with
                     | Null -> Some JsonValue.Null
                     | Omit -> None
             | _ -> Some (serializeNonOption t jsonField value)
@@ -246,18 +246,18 @@ module internal Core =
             failSerialization msg 
     
     let failDeserialization (path: JsonPath) (message: string) =
-        let message = sprintf "JSON Path: %s. %s" (path.toString()) message
+        let message = sprintf "JSON Path: %s. %s" (path.ToString()) message
         raise (JsonDeserializationError(path, message))
                
     let getTargetType (t: Type) (jsonField: JsonField): Type =
         match jsonField.Transform with
         | null -> t
-        | transformType -> (getTransform transformType).targetType ()
+        | transformType -> (getTransform transformType).TargetType ()
 
     let transformFromTargetType (transform: Type) (value: obj): obj =
         match transform with
         | null -> value
-        | converterType -> (getTransform converterType).fromTargetType value
+        | converterType -> (getTransform converterType).FromTargetType value
 
     let getJsonValueType (jvalue: JsonValue): Type =
         match jvalue with
@@ -295,7 +295,7 @@ module internal Core =
         let getUntypedType (path: JsonPath) (t: Type) (jvalue: JsonValue): Type =
             match t with
             | t when t = typeof<obj> ->
-                if config.allowUntyped then
+                if config.AllowUntyped then
                     getJsonValueType jvalue
                 else
                     failDeserialization path <| sprintf "Failed to deserialize object, allowUntyped set to false"
@@ -364,7 +364,7 @@ module internal Core =
                     | JsonValue.Null -> optionNone t
                     | _ -> deserializeNonOption path (getOptionType t) jsonField jvalue |> optionSome t
                 | None ->
-                    match config.deserializeOption with
+                    match config.DeserializeOption with
                     | RequireNull ->
                         failDeserialization path "Option field is not found while using RequireNull option deserialization"
                     | AllowOmit ->
@@ -386,7 +386,7 @@ module internal Core =
                 |> Array.map (fun field ->
                     let itemName = fst field
                     let itemJsonValue = snd field
-                    let itemPath = JsonPathItem.Field itemName |> path.createNew
+                    let itemPath = JsonPathItem.Field itemName |> path.CreateNew
                     let itemValue = deserializeUnwrapOption itemPath itemValueType JsonField.Default (Some itemJsonValue)
                     (itemName, itemValue)
                 )
@@ -395,7 +395,7 @@ module internal Core =
 
         let deserializeArrayItems (path: JsonPath) (t: Type) (jvalues: JsonValue array) =
             jvalues |> Array.mapi (fun index jvalue ->
-                let itemPath = JsonPathItem.ArrayItem index |> path.createNew
+                let itemPath = JsonPathItem.ArrayItem index |> path.CreateNew
                 deserializeUnwrapOption itemPath t JsonField.Default (Some jvalue)
             )
 
@@ -423,7 +423,7 @@ module internal Core =
                 if types.Length <> values.Length then
                     failDeserialization path "Failed to parse tuple. Number of values in JSON list does not match number of elements in tuple."
                 let tupleValues = (Array.zip types values) |> Array.mapi (fun index (t, value) ->
-                    let itemPath = JsonPathItem.ArrayItem index |> path.createNew
+                    let itemPath = JsonPathItem.ArrayItem index |> path.CreateNew
                     deserializeUnwrapOption itemPath t JsonField.Default (Some value)
                 )
                 tupleValues
@@ -439,7 +439,7 @@ module internal Core =
             let name = getJsonFieldName config jsonField prop
             let field = fields |> Seq.tryFind (fun f -> fst f = name)
             let fieldValue = field |> Option.map snd
-            let propPath = JsonPathItem.Field name |> path.createNew
+            let propPath = JsonPathItem.Field name |> path.CreateNew
             deserializeUnwrapOption propPath prop.PropertyType jsonField fieldValue
 
         let deserializeRecord (path: JsonPath) (t: Type) (jvalue: JsonValue): obj =
@@ -501,7 +501,7 @@ module internal Core =
                 | JsonValue.Record fields ->
                     if fields.Length = 1 then
                         let fieldName, fieldValue = fields.[0]
-                        let casePath = JsonPathItem.Field fieldName |> path.createNew
+                        let casePath = JsonPathItem.Field fieldName |> path.CreateNew
                         let caseInfo = unionCases |> Array.tryFind (fun c -> getJsonUnionCaseName config (getJsonUnionCase c) c = fieldName)
                         let caseInfo =
                             match caseInfo with

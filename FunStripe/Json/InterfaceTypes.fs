@@ -6,11 +6,11 @@ open System.Text
 /// Transformation between types
 type ITypeTransform =
     /// Represents target type to transform to
-    abstract member targetType: unit -> Type
+    abstract member TargetType: unit -> Type
     /// Transform to target type
-    abstract member toTargetType: obj -> obj
+    abstract member ToTargetType: obj -> obj
     /// Transform from target type
-    abstract member fromTargetType: obj -> obj
+    abstract member FromTargetType: obj -> obj
 
 /// Controls Enum serialization
 type EnumMode =
@@ -63,20 +63,20 @@ type JsonPathItem =
 /// Represents path in JSON structure
 type JsonPath = {
     /// Path represented as list of [JsonPathItem].
-    path: JsonPathItem list
+    Path: JsonPathItem list
 }
 with
     /// JSON root path.
-    static member Root = { JsonPath.path = [] }
+    static member Root = { JsonPath.Path = [] }
     /// Creates new path from this by adding item to the end.
-    member this.createNew (item: JsonPathItem) = { JsonPath.path = this.path @ [item] }
+    member this.CreateNew (item: JsonPathItem) = { JsonPath.Path = this.Path @ [item] }
     /// Returns string representing JSON path.
-    member this.toString () =
-        match this.path.Length with
+    override this.ToString () =
+        match this.Path.Length with
         | 0 -> ""
         | _ ->
-            let value = new StringBuilder()
-            this.path |> List.iteri (fun index location ->
+            let value = StringBuilder()
+            this.Path |> List.iteri (fun index location ->
                 match location with
                 | Field theProperty ->
                     if index <> 0 then value.Append "." |> ignore
@@ -115,29 +115,29 @@ type JsonFieldNaming = string -> string
 /// Configuration for JSON serialization/deserialization
 type JsonConfig = {
     /// Generates unformatted JSON if set to true. Default is false.
-    unformatted: bool
+    Unformatted: bool
     /// Controls serialization of option None value. Default is SerializeNone.Null.
-    serializeNone: SerializeNone
+    SerializeNone: SerializeNone
     /// Controls deserialization of option types. Default is DeserializeOption.AllowOmit.
-    deserializeOption: DeserializeOption
+    DeserializeOption: DeserializeOption
     /// Sets JSON fields naming strategy. Default is `id` function.
-    jsonFieldNaming: JsonFieldNaming
+    JsonFieldNaming: JsonFieldNaming
     /// Allows untyped data, like obj. Default is false.
-    allowUntyped: bool
+    AllowUntyped: bool
     /// Controls serialization of enums. Default is EnumMode.Name
-    enumValue: EnumMode
+    EnumValue: EnumMode
 }
 with
     /// Creates customized [JsonConfig], each parameter corresponds to [JsonConfig] record member.
-    static member create (?unformatted, ?serializeNone, ?deserializeOption, ?jsonFieldNaming, ?allowUntyped, ?enumValue) =
+    static member Create (?unformatted, ?serializeNone, ?deserializeOption, ?jsonFieldNaming, ?allowUntyped, ?enumValue) =
         {
-            JsonConfig.unformatted = defaultArg unformatted false
-            JsonConfig.serializeNone = defaultArg serializeNone SerializeNone.Null
-            JsonConfig.deserializeOption = defaultArg deserializeOption DeserializeOption.AllowOmit
-            JsonConfig.jsonFieldNaming = defaultArg jsonFieldNaming id
-            JsonConfig.allowUntyped = defaultArg allowUntyped false
-            JsonConfig.enumValue = defaultArg enumValue EnumMode.Name
+            JsonConfig.Unformatted = defaultArg unformatted false
+            JsonConfig.SerializeNone = defaultArg serializeNone SerializeNone.Null
+            JsonConfig.DeserializeOption = defaultArg deserializeOption DeserializeOption.AllowOmit
+            JsonConfig.JsonFieldNaming = defaultArg jsonFieldNaming id
+            JsonConfig.AllowUntyped = defaultArg allowUntyped false
+            JsonConfig.EnumValue = defaultArg enumValue EnumMode.Name
         }
     /// Default [JsonConfig].
-    static member Default = JsonConfig.create()
+    static member Default = JsonConfig.Create()
     
