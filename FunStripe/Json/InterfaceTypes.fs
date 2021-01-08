@@ -42,26 +42,6 @@ with
     /// Default [JsonField].
     static member Default = JsonField()
 
-/// Attribute customizing serialization of union types
-type UnionMode =
-    /// Serialize union case key as JSON field name.
-    | CaseKeyAsFieldName = 0
-    /// Serialize union case key as JSON field value.
-    | CaseKeyAsFieldValue = 1
-
-/// Attribute customizing serialization of union types
-type JsonUnion () =
-    inherit Attribute()
-    /// Controls how to serialize cases of union type
-    member val public Mode: UnionMode = UnionMode.CaseKeyAsFieldName with get, set
-    /// Field name used for case name. Applicable only when Mode set to CaseKeyAsFieldValue. Default value is "case".
-    member val public CaseKeyField: string = "case" with get, set
-    /// Field name used for case value. Applicable only when Mode set to CaseKeyAsFieldValue. Default value is "value".
-    member val public CaseValueField: string = "value" with get, set
-with
-    /// Default [JsonUnion].
-    static member Default = JsonUnion()
-
 /// Attribute customizing serialization of union cases
 type JsonUnionCase (case: string) =
     inherit Attribute()
@@ -72,7 +52,6 @@ type JsonUnionCase (case: string) =
 with
     /// Default [JsonUnion].
     static member Default = JsonUnionCase()
-
 
 /// Represents one item in [JsonPath]
 type JsonPathItem =
