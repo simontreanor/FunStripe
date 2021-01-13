@@ -29,7 +29,7 @@ module StripeService =
         ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/accounts"
-            |> this.RestApiClient.GetAsync<Account>
+            |> this.RestApiClient.GetAsync<Account list>
 
         ///<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
         ///To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
@@ -53,7 +53,7 @@ module StripeService =
         ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
         member this.Capabilities (account: string, ?expand: string list) =
             $"/v1/accounts/{account}/capabilities"
-            |> this.RestApiClient.GetAsync<Capability>
+            |> this.RestApiClient.GetAsync<Capability list>
 
     and AccountLinkService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -71,7 +71,7 @@ module StripeService =
         ///<p>List apple pay domains.</p>
         member this.List (?domainName: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/apple_pay/domains"
-            |> this.RestApiClient.GetAsync<ApplePayDomain>
+            |> this.RestApiClient.GetAsync<ApplePayDomain list>
 
         ///<p>Create an apple pay domain.</p>
         member this.Create ((parameters: PostApplePayDomainsParams)) =
@@ -95,7 +95,7 @@ module StripeService =
         ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
         member this.List (?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/application_fees"
-            |> this.RestApiClient.GetAsync<ApplicationFee>
+            |> this.RestApiClient.GetAsync<ApplicationFee list>
 
         ///<p>Retrieves the details of an application fee that your account has collected. The same information is returned when refunding the application fee.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -120,7 +120,7 @@ module StripeService =
         ///Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>
         member this.List (?availableOn: int, ?created: int, ?currency: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?payout: string, ?source: string, ?startingAfter: string, ?``type``: string) =
             $"/v1/balance_transactions"
-            |> this.RestApiClient.GetAsync<BalanceTransaction>
+            |> this.RestApiClient.GetAsync<BalanceTransaction list>
 
         ///<p>Retrieves the balance transaction with the given ID.
         ///Note that this endpoint previously used the path <code>/v1/balance/history/:id</code>.</p>
@@ -174,7 +174,7 @@ module StripeService =
         ///<p>Returns a list of your receivers. Receivers are returned sorted by creation date, with the most recently created receivers appearing first.</p>
         member this.List (?active: bool, ?endingBefore: string, ?expand: string list, ?filled: bool, ?limit: int, ?startingAfter: string, ?uncapturedFunds: bool) =
             $"/v1/bitcoin/receivers"
-            |> this.RestApiClient.GetAsync<BitcoinReceiver>
+            |> this.RestApiClient.GetAsync<BitcoinReceiver list>
 
         ///<p>Retrieves the Bitcoin receiver with the given ID.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -188,7 +188,7 @@ module StripeService =
         ///<p>List bitcoin transacitons for a given receiver.</p>
         member this.List (receiver: string, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/bitcoin/receivers/{receiver}/transactions"
-            |> this.RestApiClient.GetAsync<BitcoinTransaction>
+            |> this.RestApiClient.GetAsync<BitcoinTransaction list>
 
     and CapabilityService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -197,7 +197,7 @@ module StripeService =
         ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
         member this.ListForAccount (account: string, ?expand: string list) =
             $"/v1/accounts/{account}/capabilities"
-            |> this.RestApiClient.GetAsync<Capability>
+            |> this.RestApiClient.GetAsync<Capability list>
 
         ///<p>Retrieves information about the specified Account Capability.</p>
         member this.RetrieveForAccount (account: string, capability: string, ?expand: string list) =
@@ -241,7 +241,7 @@ module StripeService =
         ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string, ?transferGroup: string) =
             $"/v1/charges"
-            |> this.RestApiClient.GetAsync<Charge>
+            |> this.RestApiClient.GetAsync<Charge list>
 
         ///<p>To charge a credit card or other payment source, you create a <code>Charge</code> object. If your API key is in test mode, the supplied payment source (e.g., card) won’t actually be charged, although everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).</p>
         member this.Create ((parameters: PostChargesParams)) =
@@ -271,7 +271,7 @@ module StripeService =
         ///<p>Returns a list of Checkout Sessions.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string, ?subscription: string) =
             $"/v1/checkout/sessions"
-            |> this.RestApiClient.GetAsync<CheckoutSession>
+            |> this.RestApiClient.GetAsync<CheckoutSession list>
 
         ///<p>Retrieves a Session object.</p>
         member this.Retrieve (session: string, ?expand: string list) =
@@ -290,7 +290,7 @@ module StripeService =
         ///<p>Lists all Country Spec objects available in the API.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/country_specs"
-            |> this.RestApiClient.GetAsync<CountrySpec>
+            |> this.RestApiClient.GetAsync<CountrySpec list>
 
         ///<p>Returns a Country Spec for a given Country code.</p>
         member this.Retrieve (country: string, ?expand: string list) =
@@ -304,7 +304,7 @@ module StripeService =
         ///<p>Returns a list of your coupons.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/coupons"
-            |> this.RestApiClient.GetAsync<Coupon>
+            |> this.RestApiClient.GetAsync<Coupon list>
 
         ///<p>You can create coupons easily via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. Coupon creation is also accessible via the API if you need to create coupons on the fly.
         ///A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and <code>currency</code>. If you set an <code>amount_off</code>, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of <currency>100</currency> will have a final total of <currency>0</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it and an invoice with a subtotal of <currency>300</currency> will have a final total of <currency>100</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it.</p>
@@ -359,7 +359,7 @@ module StripeService =
         ///<p>Returns a list of credit notes.</p>
         member this.List (?customer: string, ?endingBefore: string, ?expand: string list, ?invoice: string, ?limit: int, ?startingAfter: string) =
             $"/v1/credit_notes"
-            |> this.RestApiClient.GetAsync<CreditNote>
+            |> this.RestApiClient.GetAsync<CreditNote list>
 
         ///<p>Updates an existing credit note.</p>
         member this.Update ((parameters: PostCreditNotesIdParams), id: string) =
@@ -374,7 +374,7 @@ module StripeService =
         ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
         member this.PreviewLines (invoice: string, ?amount: int, ?creditAmount: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?lines: string list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: string, ?refund: string, ?refundAmount: int, ?startingAfter: string) =
             $"/v1/credit_notes/preview/lines"
-            |> this.RestApiClient.GetAsync<CreditNoteLineItem>
+            |> this.RestApiClient.GetAsync<CreditNoteLineItem list>
 
     and CreditNoteLineItemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -383,7 +383,7 @@ module StripeService =
         ///<p>When retrieving a credit note, you’ll get a <strong>lines</strong> property containing the the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.List (creditNote: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/credit_notes/{creditNote}/lines"
-            |> this.RestApiClient.GetAsync<CreditNoteLineItem>
+            |> this.RestApiClient.GetAsync<CreditNoteLineItem list>
 
     and CustomerService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -392,7 +392,7 @@ module StripeService =
         ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
         member this.List (?created: int, ?email: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/customers"
-            |> this.RestApiClient.GetAsync<Customer>
+            |> this.RestApiClient.GetAsync<Customer list>
 
         ///<p>Creates a new customer object.</p>
         member this.Create ((parameters: PostCustomersParams)) =
@@ -432,7 +432,7 @@ module StripeService =
         ///<p>Returns a list of transactions that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
         member this.List (customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/customers/{customer}/balance_transactions"
-            |> this.RestApiClient.GetAsync<CustomerBalanceTransaction>
+            |> this.RestApiClient.GetAsync<CustomerBalanceTransaction list>
 
         ///<p>Creates an immutable transaction that updates the customer’s credit <a href="/docs/billing/customer/balance">balance</a>.</p>
         member this.Create ((parameters: PostCustomersCustomerBalanceTransactionsParams), customer: string) =
@@ -451,7 +451,7 @@ module StripeService =
         ///<p>Returns a list of your disputes.</p>
         member this.List (?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string) =
             $"/v1/disputes"
-            |> this.RestApiClient.GetAsync<Dispute>
+            |> this.RestApiClient.GetAsync<Dispute list>
 
         ///<p>Retrieves the dispute with the given ID.</p>
         member this.Retrieve (dispute: string, ?expand: string list) =
@@ -491,7 +491,7 @@ module StripeService =
         ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="/docs/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header).</p>
         member this.List (?created: int, ?deliverySuccess: bool, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?``type``: string, ?types: string list) =
             $"/v1/events"
-            |> this.RestApiClient.GetAsync<Event>
+            |> this.RestApiClient.GetAsync<Event list>
 
         ///<p>Retrieves the details of an event. Supply the unique identifier of the event, which you might have received in a webhook.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -505,7 +505,7 @@ module StripeService =
         ///<p>Returns a list of objects that contain the rates at which foreign currencies are converted to one another. Only shows the currencies for which Stripe supports.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/exchange_rates"
-            |> this.RestApiClient.GetAsync<ExchangeRate>
+            |> this.RestApiClient.GetAsync<ExchangeRate list>
 
         ///<p>Retrieves the exchange rates from the given currency to every supported currency.</p>
         member this.Retrieve (rateId: string, ?expand: string list) =
@@ -519,7 +519,7 @@ module StripeService =
         ///<p>List external accounts for an account.</p>
         member this.ListForAccount (account: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/accounts/{account}/external_accounts"
-            |> this.RestApiClient.GetAsync<ExternalAccount>
+            |> this.RestApiClient.GetAsync<ExternalAccount list>
 
         ///<p>Retrieve a specified external account for a given account.</p>
         member this.RetrieveForAccount (account: string, id: string, ?expand: string list) =
@@ -560,7 +560,7 @@ module StripeService =
         ///<p>You can see a list of the refunds belonging to a specific application fee. Note that the 10 most recent refunds are always available by default on the application fee object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
         member this.ListForApplicationFee (id: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/application_fees/{id}/refunds"
-            |> this.RestApiClient.GetAsync<FeeRefund>
+            |> this.RestApiClient.GetAsync<FeeRefund list>
 
         ///<p>By default, you can see the 10 most recent refunds stored directly on the application fee object, but you can also retrieve details about a specific refund stored on the application fee.</p>
         member this.RetrieveForApplicationFee (fee: string, id: string, ?expand: string list) =
@@ -580,7 +580,7 @@ module StripeService =
         ///<p>Returns a list of the files that your account has access to. The files are returned sorted by creation date, with the most recently created files appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?purpose: string, ?startingAfter: string) =
             $"/v1/files"
-            |> this.RestApiClient.GetAsync<File>
+            |> this.RestApiClient.GetAsync<File list>
 
         ///<p>Retrieves the details of an existing file object. Supply the unique file ID from a file, and Stripe will return the corresponding file object. To access file contents, see the <a href="/docs/file-upload#download-file-contents">File Upload Guide</a>.</p>
         member this.Retrieve (file: string, ?expand: string list) =
@@ -615,7 +615,7 @@ module StripeService =
         ///<p>Returns a list of file links.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?expired: bool, ?file: string, ?limit: int, ?startingAfter: string) =
             $"/v1/file_links"
-            |> this.RestApiClient.GetAsync<FileLink>
+            |> this.RestApiClient.GetAsync<FileLink list>
 
     and InvoiceService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -624,7 +624,7 @@ module StripeService =
         ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
         member this.List (?collectionMethod: string, ?created: int, ?customer: string, ?dueDate: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?subscription: string) =
             $"/v1/invoices"
-            |> this.RestApiClient.GetAsync<Invoice>
+            |> this.RestApiClient.GetAsync<Invoice list>
 
         ///<p>At any time, you can preview the upcoming invoice for a customer. This will show you all the charges that are pending, including subscription renewal charges, invoice item charges, etc. It will also show you any discounts that are applicable to the invoice.
         ///Note that when you are viewing an upcoming invoice, you are simply viewing a preview – the invoice has not yet been created. As such, the upcoming invoice will not show up in invoice listing calls, and you cannot use the API to pay or edit the invoice. If you want to change the amount that your customer will be billed, you can add, remove, or update pending invoice items, or update the customer’s discount.
@@ -670,7 +670,7 @@ module StripeService =
         ///<p>When retrieving an upcoming invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.UpcomingLines (?coupon: string, ?subscriptionStartDate: int, ?subscriptionProrationDate: int, ?subscriptionProrationBehavior: string, ?subscriptionItems: string list, ?subscriptionDefaultTaxRates: string list, ?subscriptionCancelNow: bool, ?subscriptionCancelAtPeriodEnd: bool, ?subscriptionCancelAt: int, ?subscriptionTrialEnd: string, ?subscriptionBillingCycleAnchor: string, ?startingAfter: string, ?schedule: string, ?limit: int, ?invoiceItems: string list, ?expand: string list, ?endingBefore: string, ?discounts: string list, ?customer: string, ?subscription: string, ?subscriptionTrialFromPlan: bool) =
             $"/v1/invoices/upcoming/lines"
-            |> this.RestApiClient.GetAsync<LineItem>
+            |> this.RestApiClient.GetAsync<LineItem list>
 
         ///<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.
         ///Requests made in test-mode result in no emails being sent, despite sending an <code>invoice.sent</code> event.</p>
@@ -695,7 +695,7 @@ module StripeService =
         ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?invoice: string, ?limit: int, ?pending: bool, ?startingAfter: string) =
             $"/v1/invoiceitems"
-            |> this.RestApiClient.GetAsync<Invoiceitem>
+            |> this.RestApiClient.GetAsync<Invoiceitem list>
 
         ///<p>Creates an item to be added to a draft invoice (up to 250 items per invoice). If no invoice is specified, the item will be on the next invoice created for the customer specified.</p>
         member this.Create ((parameters: PostInvoiceitemsParams)) =
@@ -724,7 +724,7 @@ module StripeService =
         ///<p>Returns a list of issuer fraud records.</p>
         member this.List (?charge: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/issuer_fraud_records"
-            |> this.RestApiClient.GetAsync<IssuerFraudRecord>
+            |> this.RestApiClient.GetAsync<IssuerFraudRecord list>
 
         ///<p>Retrieves the details of an issuer fraud record that has previously been created. 
         ///Please refer to the <a href="#issuer_fraud_record_object">issuer fraud record</a> object reference for more details.</p>
@@ -739,7 +739,7 @@ module StripeService =
         ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
             $"/v1/issuing/authorizations"
-            |> this.RestApiClient.GetAsync<IssuingAuthorization>
+            |> this.RestApiClient.GetAsync<IssuingAuthorization list>
 
         ///<p>Retrieves an Issuing <code>Authorization</code> object.</p>
         member this.Retrieve (authorization: string, ?expand: string list) =
@@ -768,7 +768,7 @@ module StripeService =
         ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?cardholder: string, ?created: int, ?endingBefore: string, ?expMonth: int, ?expYear: int, ?expand: string list, ?last4: string, ?limit: int, ?startingAfter: string, ?status: string, ?``type``: string) =
             $"/v1/issuing/cards"
-            |> this.RestApiClient.GetAsync<IssuingCard>
+            |> this.RestApiClient.GetAsync<IssuingCard list>
 
         ///<p>Creates an Issuing <code>Card</code> object.</p>
         member this.Create ((parameters: PostIssuingCardsParams)) =
@@ -792,7 +792,7 @@ module StripeService =
         ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?created: int, ?email: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?phoneNumber: string, ?startingAfter: string, ?status: string, ?``type``: string) =
             $"/v1/issuing/cardholders"
-            |> this.RestApiClient.GetAsync<IssuingCardholder>
+            |> this.RestApiClient.GetAsync<IssuingCardholder list>
 
         ///<p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p>
         member this.Create ((parameters: PostIssuingCardholdersParams)) =
@@ -816,7 +816,7 @@ module StripeService =
         ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?transaction: string) =
             $"/v1/issuing/disputes"
-            |> this.RestApiClient.GetAsync<IssuingDispute>
+            |> this.RestApiClient.GetAsync<IssuingDispute list>
 
         ///<p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p>
         member this.Create ((parameters: PostIssuingDisputesParams)) =
@@ -845,7 +845,7 @@ module StripeService =
         ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/issuing/transactions"
-            |> this.RestApiClient.GetAsync<IssuingTransaction>
+            |> this.RestApiClient.GetAsync<IssuingTransaction list>
 
         ///<p>Retrieves an Issuing <code>Transaction</code> object.</p>
         member this.Retrieve (transaction: string, ?expand: string list) =
@@ -864,7 +864,7 @@ module StripeService =
         ///<p>When retrieving a Checkout Session, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.ListForCheckout (session: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/checkout/sessions/{session}/line_items"
-            |> this.RestApiClient.GetAsync<Item>
+            |> this.RestApiClient.GetAsync<Item list>
 
     and LineItemService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -873,7 +873,7 @@ module StripeService =
         ///<p>When retrieving an invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         member this.ListForInvoice (invoice: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/invoices/{invoice}/lines"
-            |> this.RestApiClient.GetAsync<LineItem>
+            |> this.RestApiClient.GetAsync<LineItem list>
 
     and LoginLinkService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -906,7 +906,7 @@ module StripeService =
         ///<p>Returns a list of your orders. The orders are returned sorted by creation date, with the most recently created orders appearing first.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?ids: string list, ?limit: int, ?startingAfter: string, ?status: string, ?statusTransitions: Map<string, string>, ?upstreamIds: string list) =
             $"/v1/orders"
-            |> this.RestApiClient.GetAsync<Order>
+            |> this.RestApiClient.GetAsync<Order list>
 
         ///<p>Retrieves the details of an existing order. Supply the unique order ID from either an order creation request or the order list, and Stripe will return the corresponding order information.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -935,7 +935,7 @@ module StripeService =
         ///<p>Returns a list of your order returns. The returns are returned sorted by creation date, with the most recently created return appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?order: string, ?startingAfter: string) =
             $"/v1/order_returns"
-            |> this.RestApiClient.GetAsync<OrderReturn>
+            |> this.RestApiClient.GetAsync<OrderReturn list>
 
         ///<p>Retrieves the details of an existing order return. Supply the unique order ID from either an order return creation request or the order return list, and Stripe will return the corresponding order information.</p>
         member this.Retrieve (id: string, ?expand: string list) =
@@ -961,7 +961,7 @@ module StripeService =
         ///<p>Returns a list of PaymentIntents.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/payment_intents"
-            |> this.RestApiClient.GetAsync<PaymentIntent>
+            |> this.RestApiClient.GetAsync<PaymentIntent list>
 
         ///<p>Retrieves the details of a PaymentIntent that has previously been created. 
         ///Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. 
@@ -1041,7 +1041,7 @@ module StripeService =
         ///<p>Returns a list of PaymentMethods for a given Customer</p>
         member this.List (customer: string, ``type``: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/payment_methods"
-            |> this.RestApiClient.GetAsync<PaymentMethod>
+            |> this.RestApiClient.GetAsync<PaymentMethod list>
 
         ///<p>Attaches a PaymentMethod object to a Customer.
         ///To attach a new PaymentMethod to a customer for future payments, we recommend you use a <a href="/docs/api/setup_intents">SetupIntent</a>
@@ -1068,7 +1068,7 @@ module StripeService =
         ///<p>List sources for a specified customer.</p>
         member this.ListForCustomer (customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?object: string, ?startingAfter: string) =
             $"/v1/customers/{customer}/sources"
-            |> this.RestApiClient.GetAsync<PaymentSource>
+            |> this.RestApiClient.GetAsync<PaymentSource list>
 
         ///<p>Retrieve a specified source for a given customer.</p>
         member this.RetrieveForCustomer (customer: string, id: string, ?expand: string list) =
@@ -1095,7 +1095,7 @@ module StripeService =
         ///<p>Returns a list of existing payouts sent to third-party bank accounts or that Stripe has sent you. The payouts are returned in sorted order, with the most recently created payouts appearing first.</p>
         member this.List (?arrivalDate: int, ?created: int, ?destination: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
             $"/v1/payouts"
-            |> this.RestApiClient.GetAsync<Payout>
+            |> this.RestApiClient.GetAsync<Payout list>
 
         ///<p>To send funds to your own bank account, you create a new payout object. Your <a href="#balance">Stripe balance</a> must be able to cover the payout amount, or you’ll receive an “Insufficient Funds” error.
         ///If your API key is in test mode, money won’t actually be sent, though everything else will occur as if in live mode.
@@ -1127,7 +1127,7 @@ module StripeService =
         ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
         member this.ListForAccount (account: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?relationship: Map<string, string>, ?startingAfter: string) =
             $"/v1/accounts/{account}/persons"
-            |> this.RestApiClient.GetAsync<Person>
+            |> this.RestApiClient.GetAsync<Person list>
 
         ///<p>Retrieves an existing person.</p>
         member this.RetrieveForAccount (account: string, person: string, ?expand: string list) =
@@ -1156,7 +1156,7 @@ module StripeService =
         ///<p>Returns a list of your plans.</p>
         member this.List (?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?product: string, ?startingAfter: string) =
             $"/v1/plans"
-            |> this.RestApiClient.GetAsync<Plan>
+            |> this.RestApiClient.GetAsync<Plan list>
 
         ///<p>You can now model subscriptions more flexibly using the <a href="#prices">Prices API</a>. It replaces the Plans API and is backwards compatible to simplify your migration.</p>
         member this.Create ((parameters: PostPlansParams)) =
@@ -1185,7 +1185,7 @@ module StripeService =
         ///<p>Returns a list of your prices.</p>
         member this.List (?active: bool, ?created: int, ?currency: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKeys: string list, ?product: string, ?recurring: Map<string, string>, ?startingAfter: string, ?``type``: string) =
             $"/v1/prices"
-            |> this.RestApiClient.GetAsync<Price>
+            |> this.RestApiClient.GetAsync<Price list>
 
         ///<p>Creates a new price for an existing product. The price can be recurring or one-time.</p>
         member this.Create ((parameters: PostPricesParams)) =
@@ -1224,7 +1224,7 @@ module StripeService =
         ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
         member this.List (?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?ids: string list, ?limit: int, ?shippable: bool, ?startingAfter: string, ?``type``: string, ?url: string) =
             $"/v1/products"
-            |> this.RestApiClient.GetAsync<Product>
+            |> this.RestApiClient.GetAsync<Product list>
 
         ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
         member this.Delete (id: string) =
@@ -1253,7 +1253,7 @@ module StripeService =
         ///<p>Returns a list of your promotion codes.</p>
         member this.List (?active: bool, ?code: string, ?coupon: string, ?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/promotion_codes"
-            |> this.RestApiClient.GetAsync<PromotionCode>
+            |> this.RestApiClient.GetAsync<PromotionCode list>
 
     and RadarEarlyFraudWarningService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -1262,7 +1262,7 @@ module StripeService =
         ///<p>Returns a list of early fraud warnings.</p>
         member this.List (?charge: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/radar/early_fraud_warnings"
-            |> this.RestApiClient.GetAsync<RadarEarlyFraudWarning>
+            |> this.RestApiClient.GetAsync<RadarEarlyFraudWarning list>
 
         ///<p>Retrieves the details of an early fraud warning that has previously been created. 
         ///Please refer to the <a href="#early_fraud_warning_object">early fraud warning</a> object reference for more details.</p>
@@ -1277,7 +1277,7 @@ module StripeService =
         ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?alias: string, ?contains: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/radar/value_lists"
-            |> this.RestApiClient.GetAsync<RadarValueList>
+            |> this.RestApiClient.GetAsync<RadarValueList list>
 
         ///<p>Retrieves a <code>ValueList</code> object.</p>
         member this.Retrieve (valueList: string, ?expand: string list) =
@@ -1306,7 +1306,7 @@ module StripeService =
         ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (valueList: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?value: string) =
             $"/v1/radar/value_list_items"
-            |> this.RestApiClient.GetAsync<RadarValueListItem>
+            |> this.RestApiClient.GetAsync<RadarValueListItem list>
 
         ///<p>Retrieves a <code>ValueListItem</code> object.</p>
         member this.Retrieve (item: string, ?expand: string list) =
@@ -1330,7 +1330,7 @@ module StripeService =
         ///<p>Returns a list of your recipients. The recipients are returned sorted by creation date, with the most recently created recipients appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?``type``: string, ?verified: bool) =
             $"/v1/recipients"
-            |> this.RestApiClient.GetAsync<Recipient>
+            |> this.RestApiClient.GetAsync<Recipient list>
 
         ///<p>Creates a new <code>Recipient</code> object and verifies the recipient’s identity.
         ///Also verifies the recipient’s bank account information or debit card, if either is provided.</p>
@@ -1363,7 +1363,7 @@ module StripeService =
         ///<p>Returns a list of all refunds you’ve previously created. The refunds are returned in sorted order, with the most recent refunds appearing first. For convenience, the 10 most recent refunds are always available by default on the charge object.</p>
         member this.List (?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string) =
             $"/v1/refunds"
-            |> this.RestApiClient.GetAsync<Refund>
+            |> this.RestApiClient.GetAsync<Refund list>
 
         ///<p>Create a refund.</p>
         member this.Create ((parameters: PostRefundsParams)) =
@@ -1398,7 +1398,7 @@ module StripeService =
         ///<p>Returns a list of Report Runs, with the most recent appearing first. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/reporting/report_runs"
-            |> this.RestApiClient.GetAsync<ReportingReportRun>
+            |> this.RestApiClient.GetAsync<ReportingReportRun list>
 
     and ReportingReportTypeService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -1412,7 +1412,7 @@ module StripeService =
         ///<p>Returns a full list of Report Types. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         member this.List (?expand: string list) =
             $"/v1/reporting/report_types"
-            |> this.RestApiClient.GetAsync<ReportingReportType>
+            |> this.RestApiClient.GetAsync<ReportingReportType list>
 
     and ReviewService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -1421,7 +1421,7 @@ module StripeService =
         ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         member this.List (?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/reviews"
-            |> this.RestApiClient.GetAsync<Review>
+            |> this.RestApiClient.GetAsync<Review list>
 
         ///<p>Retrieves a <code>Review</code> object.</p>
         member this.Retrieve (review: string, ?expand: string list) =
@@ -1440,7 +1440,7 @@ module StripeService =
         ///<p>Returns a list of scheduled query runs.</p>
         member this.ListForSigma (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/sigma/scheduled_query_runs"
-            |> this.RestApiClient.GetAsync<ScheduledQueryRun>
+            |> this.RestApiClient.GetAsync<ScheduledQueryRun list>
 
         ///<p>Retrieves the details of an scheduled query run.</p>
         member this.RetrieveForSigma (scheduledQueryRun: string, ?expand: string list) =
@@ -1454,7 +1454,7 @@ module StripeService =
         ///<p>Returns a list of SetupAttempts associated with a provided SetupIntent.</p>
         member this.List (setupIntent: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/setup_attempts"
-            |> this.RestApiClient.GetAsync<SetupAttempt>
+            |> this.RestApiClient.GetAsync<SetupAttempt list>
 
     and SetupIntentService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -1470,7 +1470,7 @@ module StripeService =
         ///<p>Returns a list of SetupIntents.</p>
         member this.List (?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentMethod: string, ?startingAfter: string) =
             $"/v1/setup_intents"
-            |> this.RestApiClient.GetAsync<SetupIntent>
+            |> this.RestApiClient.GetAsync<SetupIntent list>
 
         ///<p>Retrieves the details of a SetupIntent that has previously been created. 
         ///Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. 
@@ -1517,7 +1517,7 @@ module StripeService =
         ///<p>Returns a list of your SKUs. The SKUs are returned sorted by creation date, with the most recently created SKUs appearing first.</p>
         member this.List (?active: bool, ?attributes: Map<string, string>, ?endingBefore: string, ?expand: string list, ?ids: string list, ?inStock: bool, ?limit: int, ?product: string, ?startingAfter: string) =
             $"/v1/skus"
-            |> this.RestApiClient.GetAsync<Sku>
+            |> this.RestApiClient.GetAsync<Sku list>
 
         ///<p>Updates the specific SKU by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///Note that a SKU’s <code>attributes</code> are not editable. Instead, you would need to deactivate the existing SKU and create a new one with the new attribute values.</p>
@@ -1568,7 +1568,7 @@ module StripeService =
         ///<p>List source transactions for a given source.</p>
         member this.SourceTransactions (source: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/sources/{source}/source_transactions"
-            |> this.RestApiClient.GetAsync<SourceTransaction>
+            |> this.RestApiClient.GetAsync<SourceTransaction list>
 
     and SubscriptionService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -1577,7 +1577,7 @@ module StripeService =
         ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
         member this.List (?collectionMethod: string, ?created: int, ?currentPeriodEnd: int, ?currentPeriodStart: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?plan: string, ?price: string, ?startingAfter: string, ?status: string) =
             $"/v1/subscriptions"
-            |> this.RestApiClient.GetAsync<Subscription>
+            |> this.RestApiClient.GetAsync<Subscription list>
 
         ///<p>Creates a new subscription on an existing customer. Each customer can have up to 500 active or scheduled subscriptions.</p>
         member this.Create ((parameters: PostSubscriptionsParams)) =
@@ -1613,7 +1613,7 @@ module StripeService =
         ///<p>Returns a list of your subscription items for a given subscription.</p>
         member this.List (subscription: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/subscription_items"
-            |> this.RestApiClient.GetAsync<SubscriptionItem>
+            |> this.RestApiClient.GetAsync<SubscriptionItem list>
 
         ///<p>Retrieves the subscription item with the given ID.</p>
         member this.Retrieve (item: string, ?expand: string list) =
@@ -1639,7 +1639,7 @@ module StripeService =
         ///The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
         member this.UsageRecordSummaries (subscriptionItem: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/subscription_items/{subscriptionItem}/usage_record_summaries"
-            |> this.RestApiClient.GetAsync<UsageRecordSummary>
+            |> this.RestApiClient.GetAsync<UsageRecordSummary list>
 
     and SubscriptionScheduleService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -1648,7 +1648,7 @@ module StripeService =
         ///<p>Retrieves the list of your subscription schedules.</p>
         member this.List (?canceledAt: int, ?completedAt: int, ?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?releasedAt: int, ?scheduled: bool, ?startingAfter: string) =
             $"/v1/subscription_schedules"
-            |> this.RestApiClient.GetAsync<SubscriptionSchedule>
+            |> this.RestApiClient.GetAsync<SubscriptionSchedule list>
 
         ///<p>Creates a new subscription schedule object. Each customer can have up to 500 active or scheduled subscriptions.</p>
         member this.Create ((parameters: PostSubscriptionSchedulesParams)) =
@@ -1692,7 +1692,7 @@ module StripeService =
         ///<p>Returns a list of tax IDs for a customer.</p>
         member this.ListForCustomer (customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/customers/{customer}/tax_ids"
-            |> this.RestApiClient.GetAsync<TaxId>
+            |> this.RestApiClient.GetAsync<TaxId list>
 
         ///<p>Deletes an existing <code>TaxID</code> object.</p>
         member this.DeleteForCustomer (customer: string, id: string) =
@@ -1706,7 +1706,7 @@ module StripeService =
         ///<p>Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.</p>
         member this.List (?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?inclusive: bool, ?limit: int, ?startingAfter: string) =
             $"/v1/tax_rates"
-            |> this.RestApiClient.GetAsync<TaxRate>
+            |> this.RestApiClient.GetAsync<TaxRate list>
 
         ///<p>Retrieves a tax rate with the given ID</p>
         member this.Retrieve (taxRate: string, ?expand: string list) =
@@ -1754,7 +1754,7 @@ module StripeService =
         ///<p>Returns a list of <code>Location</code> objects.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/terminal/locations"
-            |> this.RestApiClient.GetAsync<TerminalLocation>
+            |> this.RestApiClient.GetAsync<TerminalLocation list>
 
         ///<p>Deletes a <code>Location</code> object.</p>
         member this.Delete (location: string) =
@@ -1783,7 +1783,7 @@ module StripeService =
         ///<p>Returns a list of <code>Reader</code> objects.</p>
         member this.List (?deviceType: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?location: string, ?startingAfter: string, ?status: string) =
             $"/v1/terminal/readers"
-            |> this.RestApiClient.GetAsync<TerminalReader>
+            |> this.RestApiClient.GetAsync<TerminalReader list>
 
         ///<p>Deletes a <code>Reader</code> object.</p>
         member this.Delete (reader: string) =
@@ -1831,7 +1831,7 @@ module StripeService =
         ///<p>Returns a list of top-ups.</p>
         member this.List (?amount: int, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
             $"/v1/topups"
-            |> this.RestApiClient.GetAsync<Topup>
+            |> this.RestApiClient.GetAsync<Topup list>
 
         ///<p>Retrieves the details of a top-up that has previously been created. Supply the unique top-up ID that was returned from your previous request, and Stripe will return the corresponding top-up information.</p>
         member this.Retrieve (topup: string, ?expand: string list) =
@@ -1860,7 +1860,7 @@ module StripeService =
         ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
         member this.List (?created: int, ?destination: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?transferGroup: string) =
             $"/v1/transfers"
-            |> this.RestApiClient.GetAsync<Transfer>
+            |> this.RestApiClient.GetAsync<Transfer list>
 
         ///<p>Retrieves the details of an existing transfer. Supply the unique transfer ID from either a transfer creation request or the transfer list, and Stripe will return the corresponding transfer information.</p>
         member this.Retrieve (transfer: string, ?expand: string list) =
@@ -1887,7 +1887,7 @@ module StripeService =
         ///<p>You can see a list of the reversals belonging to a specific transfer. Note that the 10 most recent reversals are always available by default on the transfer object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional reversals.</p>
         member this.List (id: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/transfers/{id}/reversals"
-            |> this.RestApiClient.GetAsync<TransferReversal>
+            |> this.RestApiClient.GetAsync<TransferReversal list>
 
         ///<p>By default, you can see the 10 most recent reversals stored directly on the transfer object, but you can also retrieve details about a specific reversal stored on the transfer.</p>
         member this.Retrieve (id: string, transfer: string, ?expand: string list) =
@@ -1920,7 +1920,7 @@ module StripeService =
         ///The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
         member this.ListForSubscriptionItem (subscriptionItem: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/subscription_items/{subscriptionItem}/usage_record_summaries"
-            |> this.RestApiClient.GetAsync<UsageRecordSummary>
+            |> this.RestApiClient.GetAsync<UsageRecordSummary list>
 
     and WebhookEndpointService(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = 
 
@@ -1929,7 +1929,7 @@ module StripeService =
         ///<p>Returns a list of your webhook endpoints.</p>
         member this.List (?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             $"/v1/webhook_endpoints"
-            |> this.RestApiClient.GetAsync<WebhookEndpoint>
+            |> this.RestApiClient.GetAsync<WebhookEndpoint list>
 
         ///<p>Retrieves the webhook endpoint with the given ID.</p>
         member this.Retrieve (webhookEndpoint: string, ?expand: string list) =

@@ -179,17 +179,19 @@ module ServiceBuilder =
                         match responseSchema.TryGetProperty("$ref") with
                         | Some jv ->
                             jv.AsString()
+                            |> parseRef |> pascalCasify
                         | None ->
                             match responseSchema.TryGetProperty("anyOf") with
                             | Some jv when jv.AsArray() |> Array.isEmpty |> not ->
                                 (jv.AsArray() |> Array.head).GetProperty("$ref").AsString()
+                                |> parseRef |> pascalCasify
                             | _ ->
                                 match responseSchema.TryGetProperty("properties") with
                                 | Some jv ->
-                                    jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
+                                    let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
+                                    $"{listType |> parseRef |> pascalCasify} list"
                                 | _ ->
                                     failwith $"Unhandled response type: {name'} %A{responseSchema}"
-                        |> parseRef |> pascalCasify
 
                     //set API method
                     match verb with
