@@ -99,99 +99,118 @@ module Tests =
 
         [<Test>]
         member _.``test payment method creation``() =
-            asyncResult {
-                let expected = defaultPaymentMethod
-                let! actual = getNewPaymentMethod()
+            let result =
+                asyncResult {
+                    let expected = defaultPaymentMethod
+                    let! actual = getNewPaymentMethod()
+                    return expected, actual
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(expected.BillingDetails, actual.BillingDetails)
-                    Assert.AreEqual(expected.Customer, actual.Customer)
-                    Assert.AreEqual(expected.Livemode, actual.Livemode)
-                    Assert.AreEqual(expected.Metadata, actual.Metadata)
-                    Assert.AreEqual(expected.Type, actual.Type)
+                    Assert.AreEqual(exp.BillingDetails, act.BillingDetails)
+                    Assert.AreEqual(exp.Customer, act.Customer)
+                    Assert.AreEqual(exp.Livemode, act.Livemode)
+                    Assert.AreEqual(exp.Metadata, act.Metadata)
+                    Assert.AreEqual(exp.Type, act.Type)
                 )
-            }
-            |> Async.RunSynchronously
-            |> ignore
+            | Error e ->
+                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
 
         [<Test>]
         member _.``test payment method retrieval``() =
-            asyncResult {
-                let! expected = getNewPaymentMethod()
+            let result =
+                asyncResult {
+                    let! expected = getNewPaymentMethod()
+                    let! actual =
+                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
+                        pms.Retrieve(expected.Id)
+                    return expected, actual
 
-                let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
-                    pms.Retrieve(expected.Id)
-
-                Assert.AreEqual(expected, actual)
-            }
-            |> Async.RunSynchronously
-            |> ignore
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok (exp, act) ->
+                Assert.AreEqual(exp, act)
+            | Error e ->
+                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
 
         [<Test>]
         member _.``test payment method update``() =
-            asyncResult {
-                let! expected = getNewPaymentMethod()
-                let! newPM = attachCustomer expected.Id
-
-                let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
-                    let parameters =
-                        PostPaymentMethodsPaymentMethodParams(
-                            metadata = ([("OrderId", "6735")] |> Map.ofList)
-                        )
-                    pms.Update(parameters, newPM.Id)
-
+            let result =
+                asyncResult {
+                    let! expected = getNewPaymentMethod()
+                    let! newPM = attachCustomer expected.Id
+                    let! actual =
+                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
+                        let parameters =
+                            PostPaymentMethodsPaymentMethodParams(
+                                metadata = ([("OrderId", "6735")] |> Map.ofList)
+                            )
+                        pms.Update(parameters, newPM.Id)
+                    return expected, newPM, actual
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok (exp, pm, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some , actual.Customer)
-                    Assert.AreEqual(newPM.Id, actual.Id)
-                    Assert.AreEqual([("order_id", "6735")] |> Map.ofList |> Some, actual.Metadata)
+                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some , act.Customer)
+                    Assert.AreEqual(pm.Id, act.Id)
+                    Assert.AreEqual([("order_id", "6735")] |> Map.ofList |> Some, act.Metadata)
                 )
-            }
-            |> Async.RunSynchronously
-            |> ignore
+            | Error e ->
+                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
 
         [<Test>]
         member _.``test attaching customer to payment method``() =
-            asyncResult {
-                let! expected = getNewPaymentMethod()
-                let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
-                    let parameters =
-                        // PostPaymentMethodsPaymentMethodAttachParams(
-                        //     customer = testCustomer,
-                        //     expand = [nameof(Customer)]
-                        // )
-                        PostPaymentMethodsPaymentMethodAttachParams(
-                            customer = testCustomer
-                        )
-                    pms.Attach(parameters, expected.Id)
-
+            let result =
+                asyncResult {
+                    let! expected = getNewPaymentMethod()
+                    let! actual =
+                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
+                        let parameters =
+                            PostPaymentMethodsPaymentMethodAttachParams(
+                                customer = testCustomer,
+                                expand = [nameof(Customer)]
+                            )
+                            // PostPaymentMethodsPaymentMethodAttachParams(
+                            //     customer = testCustomer
+                            // )
+                        pms.Attach(parameters, expected.Id)
+                    return expected, actual
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, actual.Customer)
-                    Assert.AreEqual(expected.Id, actual.Id)
+                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, act.Customer)
+                    Assert.AreEqual(exp.Id, act.Id)
                 )
-            }
-            |> Async.RunSynchronously
-            |> ignore
+            | Error e ->
+                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
 
         [<Test>]
         member _.``test detaching customer from payment method``() =
-            asyncResult {
-                let! expected = getNewPaymentMethod()
-                let! newPM = attachCustomer expected.Id
-
-                let! actual =
-                    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
-                    let parameters = PostPaymentMethodsPaymentMethodDetachParams()
-                    pms.Detach(parameters, newPM.Id)
-
+            let result =
+                asyncResult {
+                    let! expected = getNewPaymentMethod()
+                    let! newPM = attachCustomer expected.Id
+                    let! actual =
+                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
+                        let parameters = PostPaymentMethodsPaymentMethodDetachParams()
+                        pms.Detach(parameters, newPM.Id)
+                    return expected, actual
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(None, actual.Customer)
-                    Assert.AreEqual(expected.Id, actual.Id)
+                    Assert.AreEqual(None, act.Customer)
+                    Assert.AreEqual(exp.Id, act.Id)
                 )
-            }
-            |> Async.RunSynchronously
-            |> ignore
+            | Error e ->
+                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
 
         [<Test>]
         member _.``test parsing customer object``() =

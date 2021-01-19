@@ -23,6 +23,14 @@ module FormUtil =
         match value with
         | :? (obj option) as o when Option.isNone o ->
             Seq.empty
+        | _ when value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() = typedefof<List<string>> ->
+            value
+            |> unbox
+            |> Seq.cast<string>
+            |> Seq.mapi (fun i s ->
+                format $"{key}[{i |> string}]" (s |> Json.Util.snakeCase |> box)
+            )
+            |> Seq.concat
         | _ when FSharpType.IsUnion (value.GetType()) ->
             match value.GetType().Name with
             | n when n.StartsWith "FSharpOption" || Regex.IsMatch(n, @"Choice\d+Of\d+") ->
@@ -62,11 +70,11 @@ module FormUtil =
     ///Serialise F# record
     let serialiseRecord<'a> (parameters:'a) =
         FSharpType.GetRecordFields typeof<'a>
-        |> Array.map (fun pi -> format (pi.Name) (Some (pi.GetValue(parameters, [||])))) |> Seq.concat
+        |> Array.map (fun pi -> format (pi.Name) (pi.GetValue(parameters, [||]))) |> Seq.concat
         |> Seq.map (fun (k, v) -> (k |> formatFieldName, v |> string))
 
     ///Serialise F# class
     let serialise<'a> (parameters:'a) =
         typeof<'a>.GetProperties()
-        |> Array.map (fun pi -> format (pi.Name) (Some (pi.GetValue(parameters, [||])))) |> Seq.concat
+        |> Array.map (fun pi -> format (pi.Name) (pi.GetValue(parameters, [||]))) |> Seq.concat
         |> Seq.map (fun (k, v) -> (k |> formatFieldName, v |> string))

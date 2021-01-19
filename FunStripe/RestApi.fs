@@ -108,7 +108,7 @@ module RestApi =
         member x.GetAsync<'a> (url: string) =
             async {
                 let! response =
-                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders))
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), silentHttpErrors = true, httpMethod = HttpMethod.Get)
                 return response |> x.ParseResponse<'a>
             }
 
@@ -116,7 +116,7 @@ module RestApi =
         member x.GetWithAsync<'a, 'b> (data: 'a) (url: string) =
             async {
                 let! response =
-                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), body = FormValues (data |> FormUtil.serialise))
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), silentHttpErrors = true, httpMethod = HttpMethod.Get, body = FormValues (data |> FormUtil.serialise))
                 return response |> x.ParseResponse<'b>
             }
 
@@ -124,7 +124,7 @@ module RestApi =
         member x.PostAsync<'a, 'b> (data: 'a) (url: string) = 
             async {
                 let! response =
-                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), body = FormValues (data |> FormUtil.serialise))
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), silentHttpErrors = true, httpMethod = HttpMethod.Post, body = FormValues (data |> FormUtil.serialise))
                 return response |> x.ParseResponse<'b>
             }
 
@@ -132,7 +132,7 @@ module RestApi =
         member x.PostWithoutAsync<'a> (url: string) = 
             async {
                 let! response =
-                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), httpMethod = HttpMethod.Post)
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), silentHttpErrors = true, httpMethod = HttpMethod.Post)
                 return response |> x.ParseResponse<'a>
             }
 
@@ -140,6 +140,6 @@ module RestApi =
         member x.DeleteAsync<'a> (url: string) =
             async {
                 let! response =
-                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), httpMethod = HttpMethod.Delete)
+                    Http.AsyncRequest ($"{baseUrl}{url}", headers = (authHeader :: stripeHeaders), silentHttpErrors = true, httpMethod = HttpMethod.Delete)
                 return response |> x.ParseResponse<'a> //to do: check if response should be unit
             }
