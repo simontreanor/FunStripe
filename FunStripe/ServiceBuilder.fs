@@ -51,38 +51,76 @@ module ServiceBuilder =
         | "object" -> "Map<string, string>"
         | _ -> s
 
+    let mapParameters (parameters: JsonValue array) =
+        parameters
+        |> Array.map (fun jv ->
+            let name'' = jv.GetProperty("name").AsString()
+            let in' = jv.GetProperty("in").AsString()
+            let required = jv.GetProperty("required").AsBoolean()
+            let schema' = jv.GetProperty("schema")
+            let type' =
+                schema'.TryGetProperty("type") |> function
+                | Some jv -> jv.AsString()
+                | None ->
+                    schema'.TryGetProperty("anyOf") |> function
+                    | Some jv -> jv.AsArray() |> Array.find (fun jv' -> jv'.GetProperty("type").AsString() <> "object") |> fun jv' -> jv'.GetProperty("type").AsString()
+                    | None -> ""
+            (name'', in', required, type')
+        )
+
+    ///Format properties of a type
+    let formatPropertiesString mappedParameters =
+        (
+            "\n\t\t\t",
+            mappedParameters
+            |> Array.sortBy (fun (n, in', req, t) -> if req then 0 else 1)
+            |> Array.map (fun (n, in', req, t) ->
+                let opt = if req then "" else " option"
+                $"{n |> escapeReservedName |> pascalCasify}: {t |> mapType}{opt}"
+            )
+        ) |> String.Join
+
     ///Format parameters of a type
-    let formatParametersString (parameters: JsonValue array) =
+    let formatParametersString mappedParameters =
         (
             ", ",
-            parameters
-            |> Array.map (fun jv ->
-                let name'' = jv.GetProperty("name").AsString()
-                let required = jv.GetProperty("required").AsBoolean()
-                let schema' = jv.GetProperty("schema")
-                let type' =
-                    schema'.TryGetProperty("type") |> function
-                    | Some jv -> jv.AsString()
-                    | None ->
-                        schema'.TryGetProperty("anyOf") |> function
-                        | Some jv -> jv.AsArray() |> Array.find (fun jv' -> jv'.GetProperty("type").AsString() <> "object") |> fun jv' -> jv'.GetProperty("type").AsString()
-                        | None -> ""
-                (name'', required, type')
-            )
-            |> Array.sortBy (fun (n, req, t) -> if req then 0 else 1)
-            |> Array.map (fun (n, req, t) ->
+            mappedParameters
+            |> Array.sortBy (fun (n, in', req, t) -> if req then 0 else 1)
+            |> Array.map (fun (n, in', req, t) ->
                 let opt = if req then "" else "?"
                 $"{opt}{n |> escapeReservedName |> camelCasify}: {t |> mapType}"
             )
         ) |> String.Join
 
+    ///Format parameters assignments for the static `Create` method
+    let formatParameterAssignments mappedParameters =
+        (
+            "\n\t\t\t\t\t",
+            mappedParameters
+            |> Array.sortBy (fun (n, in', req, t) -> if req then 0 else 1)
+            |> Array.map (fun (n, in', req, t) ->
+                let escapedName = n |> escapeReservedName
+                $"{escapedName |> pascalCasify} = {escapedName |> camelCasify}"
+            )
+        ) |> String.Join
+
+    ///Format querystring for path
+    let formatQueryString mappedParameters =
+        let queryString =
+            (
+                "&",
+                mappedParameters
+                |> Array.filter (fun (_, in', _, _) -> in' = "query")
+                |> Array.sortBy (fun (_, _, req, _) -> if req then 0 else 1)
+                |> Array.map (fun (n, _, _, _) ->
+                    $"{n}={{queryParameters.{n |> escapeReservedName |> pascalCasify}}}"
+                )
+            ) |> String.Join
+        if queryString |> String.IsNullOrWhiteSpace then "" else $"?{queryString}"
+
     ///Format request path to allow string interpolation of inline parameters
     let formatPathParams (path: string) =
-        Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{{m.Groups.[1].Value |> escapeReservedName |> camelCasify}}}")
-
-    ///Get singular form of plural term for grouping requests into services
-    let singularise (s: string) =
-        Regex.Replace(s, "s$", "")
+        Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{queryParameters.{m.Groups.[1].Value |> escapeReservedName |> pascalCasify}}}")
 
     ///Extract a type name from a JSON reference field
     let parseRef (s: string) =
@@ -117,39 +155,53 @@ module ServiceBuilder =
                     v.Properties
                     |> Array.filter(fun (k, _) -> k = "x-stripeOperations")
                     |> Array.collect(fun (_, v) -> v.AsArray())
-                    |> Array.filter(fun jv -> jv.TryGetProperty("method_on") |> function | Some p -> p.AsString() = "service" | _ -> false)
+                    |> Array.filter(fun jv -> jv.TryGetProperty("method_on") |> function | Some p -> p.AsString() = "collection" || p.AsString() = "service" | _ -> false)
                     |> Array.map(fun jv -> (jv.GetProperty("method_name").AsString(), jv.GetProperty("operation").AsString(), jv.GetProperty("path").AsString()))
                 )
             )
 
+        let paths =
+            operationPaths.Properties
+            |> Array.filter(fun (path, _) -> path.Contains("x-stripe") |> not)
+            |> Array.map(fun (path, operations) ->
+                let pathRoot =
+                    ("",
+                        Regex.Split(path, "/")
+                        |> Array.mapi(fun i p ->
+                            match (i, p) with
+                            | 0, _ | 1, _ -> None
+                            | _, p when Regex.IsMatch(p, "^\{.+\}$") -> None
+                            | _, p -> Some (p |> pascalCasify)
+                        )
+                        |> Array.choose id
+                    ) |> String.Join
+
+                let methodOperationPaths = operations.Properties |> Array.choose(fun (operation, _) ->
+                    servicePaths
+                    |> Array.collect snd
+                    |> Array.tryFind(fun (_, o, p) -> o = operation && p = path)
+                    |> Option.map(fun (m, _, _) -> (m, operation, path))
+                )
+                (pathRoot, methodOperationPaths)
+            )
+            |> Array.groupBy fst
+            |> Array.map(fun (k, v) -> k, v |> Array.collect(fun(_, v') -> v'))
+
         let sb = Text.StringBuilder()
 
-        let mutable isFirstOccurrence = true
+        sb |> write "namespace FunStripe\n\nopen StripeModel\nopen StripeRequest\n\nmodule StripeService =\n"
 
-        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen StripeModel\nopen StripeRequest\n\nmodule StripeService =\n"
-
-        let typeDefinitions = Collections.Generic.List<string>()
-
-        servicePaths
+        paths
         |> Array.iter (fun (name, methodOperationPaths) ->
 
-            let name' = name |> pascalCasify
+            let name' = name |> fun s -> Regex.Replace(s, "^3d", "ThreeD")
 
-            let keyword =
-                if isFirstOccurrence then
-                    isFirstOccurrence <- false
-                    "type"
-                else
-                    "and"
-
-            sb |> write $"\t{keyword} {name'}Service(?apiKey: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) = \n"
-            sb |> write "\t\tmember _.RestApiClient = RestApi.RestApiClient(?apiKey = apiKey, ?idempotencyKey = idempotencyKey, ?stripeAccount = stripeAccount, ?stripeVersion = stripeVersion)\n"
+            sb |> write $"\tmodule {name'}Service =\n"
 
             methodOperationPaths
             |> Array.iter (fun (method, operation, path) ->
 
-                let pathRoot = Regex.Match(path, @"^/v[^/]+/([^/]+)/").Groups.[1].Value |> pascalCasify |> singularise
-                let method' = if name'.StartsWith pathRoot then method else $"{method}For{pathRoot}"
+                let method' = method |> pascalCasify
 
                 operationPaths.Properties
                 |> Array.find (fun (p, _) -> p = path)
@@ -162,16 +214,29 @@ module ServiceBuilder =
                     let form = v.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function | Some jv -> jv | None -> JsonValue.Null
                     let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> JsonValue.Null
                     let formParameters = schema.TryGetProperty("properties") |> function | Some jv -> jv.Properties | None -> [||]
-                    let topLevelParamsType = $"{operationId}Params"
-                    let formParam = if formParameters.Any() then $"(parameters: {topLevelParamsType})" else ""
+                    let formParamsType = $"{operationId}Params"
+                    let formParam = if formParameters.Any() then $" (formParameters: {formParamsType})" else ""
 
                     //get request method
                     let description = v.GetProperty("description").AsString()
-                    let parameters = v.TryGetProperty("parameters") |> function | Some jv -> jv.AsArray() | None -> [||]
-                    let parametersString = String.Join(", ", [formParam; (parameters |> formatParametersString)] |> List.filter ((<>) ""))
+                    let queryParameters = v.TryGetProperty("parameters") |> function | Some jv -> jv.AsArray() | None -> [||]
+                    let mappedParameters = queryParameters |> mapParameters
+                    let queryParamsType = $"{method'}QueryParams"
+                    let queryParam = if queryParameters.Any() then $" (queryParameters: {queryParamsType})" else ""
+
+                    if queryParameters |> Array.isEmpty |> not then
+                        sb |> write $"\t\ttype {queryParamsType} = {{"
+                        sb |> write $"\t\t\t{(mappedParameters |> formatPropertiesString)}"
+                        sb |> write $"\t\t}}"
+                        sb |> write $"\t\twith"
+                        sb |> write $"\t\t\tstatic member Create ({mappedParameters |> formatParametersString}) ="
+                        sb |> write $"\t\t\t\t{{"
+                        sb |> write $"\t\t\t\t\t{(mappedParameters |> formatParameterAssignments)}"
+                        sb |> write $"\t\t\t\t}}\n"
+
                     sb |> write $"\t\t///{description |> commentify}"
-                    sb |> write $"\t\tmember this.{method' |> pascalCasify} ({parametersString}) ="
-                    sb |> write $"\t\t\t$\"{path |> formatPathParams}\""
+                    sb |> write $"\t\tlet {method'} settings{formParam}{queryParam} ="
+                    sb |> write $"\t\t\t$\"{path |> formatPathParams}{mappedParameters |> formatQueryString}\""
 
                     //get response type
                     let responseSchema = v.GetProperty("responses").GetProperty("200").GetProperty("content").GetProperty("application/json").GetProperty("schema")
@@ -196,15 +261,15 @@ module ServiceBuilder =
                     //set API method
                     match verb with
                     | "get" when formParameters.Any() ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.GetWithAsync<_, {responseType}> parameters\n"
+                        sb |> write $"\t\t\t|> RestApi.getWithAsync<_, {responseType}> settings formParameters\n"
                     | "get" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.GetAsync<{responseType}>\n"
+                        sb |> write $"\t\t\t|> RestApi.getAsync<{responseType}> settings\n"
                     | "post" when formParameters.Any() |> not ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.PostWithoutAsync<{responseType}>\n"
+                        sb |> write $"\t\t\t|> RestApi.postWithoutAsync<{responseType}> settings\n"
                     | "post" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.PostAsync<_, {responseType}> parameters\n"
+                        sb |> write $"\t\t\t|> RestApi.postAsync<_, {responseType}> settings formParameters\n"
                     | "delete" ->
-                        sb |> write $"\t\t\t|> this.RestApiClient.DeleteAsync<{responseType}>\n"
+                        sb |> write $"\t\t\t|> RestApi.deleteAsync<{responseType}> settings\n"
                     | _ ->
                         failwith $"Unhandled verb: {verb}"
 

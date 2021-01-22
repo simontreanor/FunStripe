@@ -17,15 +17,16 @@ let defaultCard =
         number = "4242424242424242"
     )
 
+let settings = RestApi.StripeApiSettings.Create(apiKey = Config.getStripeTestApiKey())
+
 let getNewPaymentMethod () =
-    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
     asyncResult {
         let parameters = 
             PostPaymentMethodsParams(
                 card = Choice1Of2 defaultCard,
                 ``type`` = PostPaymentMethodsType.Card
             )
-        return! pms.Create(parameters)
+        return! PaymentMethodsService.Create settings parameters
     }
 
 let test() =
@@ -33,7 +34,6 @@ let test() =
         asyncResult {
             let! expected = getNewPaymentMethod()
             let! actual =
-                let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                 let parameters =
                     // PostPaymentMethodsPaymentMethodAttachParams(
                     //     customer = testCustomer,
@@ -42,7 +42,8 @@ let test() =
                     PostPaymentMethodsPaymentMethodAttachParams(
                         customer = testCustomer
                     )
-                pms.Attach(parameters, expected.Id)
+                let queryParameters = { PaymentMethodsAttachService.AttachQueryParams.PaymentMethod = expected.Id }
+                PaymentMethodsAttachService.Attach settings parameters queryParameters
             return expected, actual
         }
         |> Async.RunSynchronously

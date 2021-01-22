@@ -23,6 +23,7 @@
     <Compile Include="AsyncResult.fs" />
     <Compile Include="FormUtil.fs" />
     <Compile Include="StripeModel.fs" />
+    <Compile Include="StripeError.fs" />
     <Compile Include="RestApi.fs" />
     <Compile Include="StripeRequest.fs" />
     <Compile Include="StripeService.fs" />
