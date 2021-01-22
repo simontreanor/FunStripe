@@ -26,7 +26,7 @@ let getNewPaymentMethod () =
                 card = Choice1Of2 defaultCard,
                 ``type`` = PostPaymentMethodsType.Card
             )
-        return! PaymentMethodsService.Create settings parameters
+        return! PaymentMethods.Create settings parameters
     }
 
 let test() =
@@ -42,8 +42,8 @@ let test() =
                     PostPaymentMethodsPaymentMethodAttachParams(
                         customer = testCustomer
                     )
-                let queryParameters = { PaymentMethodsAttachService.AttachQueryParams.PaymentMethod = expected.Id }
-                PaymentMethodsAttachService.Attach settings parameters queryParameters
+                let queryParameters = { PaymentMethodsAttach.AttachQueryParams.PaymentMethod = expected.Id }
+                PaymentMethodsAttach.Attach settings parameters queryParameters
             return expected, actual
         }
         |> Async.RunSynchronously

@@ -196,7 +196,7 @@ module ServiceBuilder =
 
             let name' = name |> fun s -> Regex.Replace(s, "^3d", "ThreeD")
 
-            sb |> write $"\tmodule {name'}Service =\n"
+            sb |> write $"\tmodule {name'} =\n"
 
             methodOperationPaths
             |> Array.iter (fun (method, operation, path) ->

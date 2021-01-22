@@ -5,7 +5,7 @@ open StripeRequest
 
 module StripeService =
 
-    module ThreeDSecureService =
+    module ThreeDSecure =
 
         ///<p>Initiate 3D Secure authentication.</p>
         let Create settings (formParameters: Post3dSecureParams) =
@@ -28,7 +28,7 @@ module StripeService =
             $"/v1/3d_secure/{queryParameters.ThreeDSecure}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<ThreeDSecure> settings
 
-    module AccountService =
+    module Account =
 
         type RetrieveQueryParams = {
             Expand: string list option
@@ -44,14 +44,14 @@ module StripeService =
             $"/v1/account?expand={queryParameters.Expand}"
             |> RestApi.getAsync<Account> settings
 
-    module AccountLinksService =
+    module AccountLinks =
 
         ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
         let Create settings (formParameters: PostAccountLinksParams) =
             $"/v1/account_links"
             |> RestApi.postAsync<_, AccountLink> settings formParameters
 
-    module AccountsService =
+    module Accounts =
 
         type ListQueryParams = {
             Created: int option
@@ -128,7 +128,7 @@ module StripeService =
             $"/v1/accounts/{queryParameters.Account}"
             |> RestApi.postAsync<_, Account> settings formParameters
 
-    module AccountsCapabilitiesService =
+    module AccountsCapabilities =
 
         type CapabilitiesQueryParams = {
             Account: string
@@ -180,7 +180,7 @@ module StripeService =
             $"/v1/accounts/{queryParameters.Account}/capabilities/{queryParameters.Capability}"
             |> RestApi.postAsync<_, Capability> settings formParameters
 
-    module AccountsExternalAccountsService =
+    module AccountsExternalAccounts =
 
         type ListQueryParams = {
             Account: string
@@ -269,7 +269,7 @@ module StripeService =
             $"/v1/accounts/{queryParameters.Account}/external_accounts/{queryParameters.Id}"
             |> RestApi.postAsync<_, ExternalAccount> settings formParameters
 
-    module AccountsLoginLinksService =
+    module AccountsLoginLinks =
 
         type CreateQueryParams = {
             Account: string
@@ -286,7 +286,7 @@ module StripeService =
             $"/v1/accounts/{queryParameters.Account}/login_links"
             |> RestApi.postAsync<_, LoginLink> settings formParameters
 
-    module AccountsPersonsService =
+    module AccountsPersons =
 
         type ListQueryParams = {
             Account: string
@@ -376,7 +376,7 @@ module StripeService =
             $"/v1/accounts/{queryParameters.Account}/persons/{queryParameters.Person}"
             |> RestApi.postAsync<_, Person> settings formParameters
 
-    module AccountsRejectService =
+    module AccountsReject =
 
         type RejectQueryParams = {
             Account: string
@@ -393,7 +393,7 @@ module StripeService =
             $"/v1/accounts/{queryParameters.Account}/reject"
             |> RestApi.postAsync<_, Account> settings formParameters
 
-    module ApplePayDomainsService =
+    module ApplePayDomains =
 
         type ListQueryParams = {
             DomainName: string option
@@ -452,7 +452,7 @@ module StripeService =
             $"/v1/apple_pay/domains/{queryParameters.Domain}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<ApplePayDomain> settings
 
-    module ApplicationFeesService =
+    module ApplicationFees =
 
         type ListQueryParams = {
             Charge: string option
@@ -494,7 +494,7 @@ module StripeService =
             $"/v1/application_fees/{queryParameters.Id}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<ApplicationFee> settings
 
-    module ApplicationFeesRefundsService =
+    module ApplicationFeesRefunds =
 
         type RetrieveQueryParams = {
             Fee: string
@@ -573,7 +573,7 @@ module StripeService =
             $"/v1/application_fees/{queryParameters.Id}/refunds"
             |> RestApi.postAsync<_, FeeRefund> settings formParameters
 
-    module BalanceService =
+    module Balance =
 
         type RetrieveQueryParams = {
             Expand: string list option
@@ -590,7 +590,7 @@ module StripeService =
             $"/v1/balance?expand={queryParameters.Expand}"
             |> RestApi.getAsync<Balance> settings
 
-    module BalanceTransactionsService =
+    module BalanceTransactions =
 
         type ListQueryParams = {
             AvailableOn: int option
@@ -642,14 +642,14 @@ module StripeService =
             $"/v1/balance_transactions/{queryParameters.Id}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<BalanceTransaction> settings
 
-    module BillingPortalSessionsService =
+    module BillingPortalSessions =
 
         ///<p>Creates a session of the customer portal.</p>
         let Create settings (formParameters: PostBillingPortalSessionsParams) =
             $"/v1/billing_portal/sessions"
             |> RestApi.postAsync<_, BillingPortalSession> settings formParameters
 
-    module BitcoinReceiversService =
+    module BitcoinReceivers =
 
         type ListQueryParams = {
             Active: bool option
@@ -693,7 +693,7 @@ module StripeService =
             $"/v1/bitcoin/receivers/{queryParameters.Id}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<BitcoinReceiver> settings
 
-    module BitcoinReceiversTransactionsService =
+    module BitcoinReceiversTransactions =
 
         type ListQueryParams = {
             Receiver: string
@@ -719,7 +719,7 @@ module StripeService =
             $"/v1/bitcoin/receivers/{queryParameters.Receiver}/transactions?customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<BitcoinTransaction list> settings
 
-    module ChargesService =
+    module Charges =
 
         type ListQueryParams = {
             Created: int option
@@ -784,7 +784,7 @@ module StripeService =
             $"/v1/charges/{queryParameters.Charge}"
             |> RestApi.postAsync<_, Charge> settings formParameters
 
-    module ChargesCaptureService =
+    module ChargesCapture =
 
         type CaptureQueryParams = {
             Charge: string
@@ -801,7 +801,7 @@ module StripeService =
             $"/v1/charges/{queryParameters.Charge}/capture"
             |> RestApi.postAsync<_, Charge> settings formParameters
 
-    module ChargesRefundsService =
+    module ChargesRefunds =
 
         type ListQueryParams = {
             Charge: string
@@ -843,7 +843,7 @@ module StripeService =
             $"/v1/charges/{queryParameters.Charge}/refunds/{queryParameters.Refund}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<Refund> settings
 
-    module CheckoutSessionsService =
+    module CheckoutSessions =
 
         type ListQueryParams = {
             EndingBefore: string option
@@ -890,7 +890,7 @@ module StripeService =
             $"/v1/checkout/sessions/{queryParameters.Session}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<CheckoutSession> settings
 
-    module CheckoutSessionsLineItemsService =
+    module CheckoutSessionsLineItems =
 
         type ListQueryParams = {
             Session: string
@@ -914,7 +914,7 @@ module StripeService =
             $"/v1/checkout/sessions/{queryParameters.Session}/line_items?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<Item list> settings
 
-    module CountrySpecsService =
+    module CountrySpecs =
 
         type ListQueryParams = {
             EndingBefore: string option
@@ -952,7 +952,7 @@ module StripeService =
             $"/v1/country_specs/{queryParameters.Country}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<CountrySpec> settings
 
-    module CouponsService =
+    module Coupons =
 
         type ListQueryParams = {
             Created: int option
@@ -1026,7 +1026,7 @@ module StripeService =
             $"/v1/coupons/{queryParameters.Coupon}"
             |> RestApi.postAsync<_, Coupon> settings formParameters
 
-    module CreditNotesService =
+    module CreditNotes =
 
         type ListQueryParams = {
             Customer: string option
@@ -1097,7 +1097,7 @@ module StripeService =
             $"/v1/credit_notes/{queryParameters.Id}"
             |> RestApi.postAsync<_, CreditNote> settings formParameters
 
-    module CreditNotesPreviewService =
+    module CreditNotesPreview =
 
         type PreviewQueryParams = {
             Invoice: string
@@ -1133,7 +1133,7 @@ module StripeService =
             $"/v1/credit_notes/preview?invoice={queryParameters.Invoice}&amount={queryParameters.Amount}&credit_amount={queryParameters.CreditAmount}&expand={queryParameters.Expand}&lines={queryParameters.Lines}&memo={queryParameters.Memo}&metadata={queryParameters.Metadata}&out_of_band_amount={queryParameters.OutOfBandAmount}&reason={queryParameters.Reason}&refund={queryParameters.Refund}&refund_amount={queryParameters.RefundAmount}"
             |> RestApi.getAsync<CreditNote> settings
 
-    module CreditNotesPreviewLinesService =
+    module CreditNotesPreviewLines =
 
         type PreviewLinesQueryParams = {
             Invoice: string
@@ -1175,7 +1175,7 @@ module StripeService =
             $"/v1/credit_notes/preview/lines?invoice={queryParameters.Invoice}&amount={queryParameters.Amount}&credit_amount={queryParameters.CreditAmount}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&lines={queryParameters.Lines}&memo={queryParameters.Memo}&metadata={queryParameters.Metadata}&out_of_band_amount={queryParameters.OutOfBandAmount}&reason={queryParameters.Reason}&refund={queryParameters.Refund}&refund_amount={queryParameters.RefundAmount}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<CreditNoteLineItem list> settings
 
-    module CreditNotesLinesService =
+    module CreditNotesLines =
 
         type ListQueryParams = {
             CreditNote: string
@@ -1199,7 +1199,7 @@ module StripeService =
             $"/v1/credit_notes/{queryParameters.CreditNote}/lines?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<CreditNoteLineItem list> settings
 
-    module CreditNotesVoidService =
+    module CreditNotesVoid =
 
         type VoidCreditNoteQueryParams = {
             Id: string
@@ -1215,7 +1215,7 @@ module StripeService =
             $"/v1/credit_notes/{queryParameters.Id}/void"
             |> RestApi.postAsync<_, CreditNote> settings formParameters
 
-    module CustomersService =
+    module Customers =
 
         type ListQueryParams = {
             Created: int option
@@ -1291,7 +1291,7 @@ module StripeService =
             $"/v1/customers/{queryParameters.Customer}"
             |> RestApi.postAsync<_, Customer> settings formParameters
 
-    module CustomersBalanceTransactionsService =
+    module CustomersBalanceTransactions =
 
         type ListQueryParams = {
             Customer: string
@@ -1363,7 +1363,7 @@ module StripeService =
             $"/v1/customers/{queryParameters.Customer}/balance_transactions/{queryParameters.Transaction}"
             |> RestApi.postAsync<_, CustomerBalanceTransaction> settings formParameters
 
-    module CustomersDiscountService =
+    module CustomersDiscount =
 
         type DeleteDiscountQueryParams = {
             Customer: string
@@ -1379,7 +1379,7 @@ module StripeService =
             $"/v1/customers/{queryParameters.Customer}/discount"
             |> RestApi.deleteAsync<DeletedDiscount> settings
 
-    module CustomersSourcesService =
+    module CustomersSources =
 
         type ListQueryParams = {
             Customer: string
@@ -1472,7 +1472,7 @@ module StripeService =
             $"/v1/customers/{queryParameters.Customer}/sources/{queryParameters.Id}"
             |> RestApi.postAsync<_, Card> settings formParameters
 
-    module CustomersSourcesVerifyService =
+    module CustomersSourcesVerify =
 
         type VerifyQueryParams = {
             Customer: string
@@ -1490,7 +1490,7 @@ module StripeService =
             $"/v1/customers/{queryParameters.Customer}/sources/{queryParameters.Id}/verify"
             |> RestApi.postAsync<_, BankAccount> settings formParameters
 
-    module CustomersTaxIdsService =
+    module CustomersTaxIds =
 
         type ListQueryParams = {
             Customer: string
@@ -1562,7 +1562,7 @@ module StripeService =
             $"/v1/customers/{queryParameters.Customer}/tax_ids/{queryParameters.Id}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<TaxId> settings
 
-    module DisputesService =
+    module Disputes =
 
         type ListQueryParams = {
             Charge: string option
@@ -1621,7 +1621,7 @@ module StripeService =
             $"/v1/disputes/{queryParameters.Dispute}"
             |> RestApi.postAsync<_, Dispute> settings formParameters
 
-    module DisputesCloseService =
+    module DisputesClose =
 
         type CloseQueryParams = {
             Dispute: string
@@ -1638,7 +1638,7 @@ module StripeService =
             $"/v1/disputes/{queryParameters.Dispute}/close"
             |> RestApi.postAsync<_, Dispute> settings formParameters
 
-    module EphemeralKeysService =
+    module EphemeralKeys =
 
         ///<p>Creates a short-lived API key for a given resource.</p>
         let Create settings (formParameters: PostEphemeralKeysParams) =
@@ -1659,7 +1659,7 @@ module StripeService =
             $"/v1/ephemeral_keys/{queryParameters.Key}"
             |> RestApi.deleteAsync<EphemeralKey> settings
 
-    module EventsService =
+    module Events =
 
         type ListQueryParams = {
             Created: int option
@@ -1705,7 +1705,7 @@ module StripeService =
             $"/v1/events/{queryParameters.Id}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<Event> settings
 
-    module ExchangeRatesService =
+    module ExchangeRates =
 
         type ListQueryParams = {
             EndingBefore: string option
@@ -1743,7 +1743,7 @@ module StripeService =
             $"/v1/exchange_rates/{queryParameters.RateId}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<ExchangeRate> settings
 
-    module FileLinksService =
+    module FileLinks =
 
         type ListQueryParams = {
             Created: int option
@@ -1806,7 +1806,7 @@ module StripeService =
             $"/v1/file_links/{queryParameters.Link}"
             |> RestApi.postAsync<_, FileLink> settings formParameters
 
-    module FilesService =
+    module Files =
 
         type ListQueryParams = {
             Created: int option
@@ -1854,7 +1854,7 @@ module StripeService =
             $"/v1/files/{queryParameters.File}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<File> settings
 
-    module InvoiceitemsService =
+    module Invoiceitems =
 
         type ListQueryParams = {
             Created: int option
@@ -1933,7 +1933,7 @@ module StripeService =
             $"/v1/invoiceitems/{queryParameters.Invoiceitem}"
             |> RestApi.postAsync<_, Invoiceitem> settings formParameters
 
-    module InvoicesService =
+    module Invoices =
 
         type ListQueryParams = {
             CollectionMethod: string option
@@ -2020,7 +2020,7 @@ module StripeService =
             $"/v1/invoices/{queryParameters.Invoice}"
             |> RestApi.postAsync<_, Invoice> settings formParameters
 
-    module InvoicesUpcomingService =
+    module InvoicesUpcoming =
 
         type UpcomingQueryParams = {
             Coupon: string option
@@ -2072,7 +2072,7 @@ module StripeService =
             $"/v1/invoices/upcoming?coupon={queryParameters.Coupon}&subscription_start_date={queryParameters.SubscriptionStartDate}&subscription_proration_date={queryParameters.SubscriptionProrationDate}&subscription_proration_behavior={queryParameters.SubscriptionProrationBehavior}&subscription_items={queryParameters.SubscriptionItems}&subscription_default_tax_rates={queryParameters.SubscriptionDefaultTaxRates}&subscription_cancel_now={queryParameters.SubscriptionCancelNow}&subscription_cancel_at_period_end={queryParameters.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={queryParameters.SubscriptionCancelAt}&subscription_billing_cycle_anchor={queryParameters.SubscriptionBillingCycleAnchor}&subscription={queryParameters.Subscription}&schedule={queryParameters.Schedule}&invoice_items={queryParameters.InvoiceItems}&expand={queryParameters.Expand}&discounts={queryParameters.Discounts}&customer={queryParameters.Customer}&subscription_trial_end={queryParameters.SubscriptionTrialEnd}&subscription_trial_from_plan={queryParameters.SubscriptionTrialFromPlan}"
             |> RestApi.getAsync<Invoice> settings
 
-    module InvoicesUpcomingLinesService =
+    module InvoicesUpcomingLines =
 
         type UpcomingLinesQueryParams = {
             Coupon: string option
@@ -2128,7 +2128,7 @@ module StripeService =
             $"/v1/invoices/upcoming/lines?coupon={queryParameters.Coupon}&subscription_start_date={queryParameters.SubscriptionStartDate}&subscription_proration_date={queryParameters.SubscriptionProrationDate}&subscription_proration_behavior={queryParameters.SubscriptionProrationBehavior}&subscription_items={queryParameters.SubscriptionItems}&subscription_default_tax_rates={queryParameters.SubscriptionDefaultTaxRates}&subscription_cancel_now={queryParameters.SubscriptionCancelNow}&subscription_cancel_at_period_end={queryParameters.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={queryParameters.SubscriptionCancelAt}&subscription_trial_end={queryParameters.SubscriptionTrialEnd}&subscription_billing_cycle_anchor={queryParameters.SubscriptionBillingCycleAnchor}&starting_after={queryParameters.StartingAfter}&schedule={queryParameters.Schedule}&limit={queryParameters.Limit}&invoice_items={queryParameters.InvoiceItems}&expand={queryParameters.Expand}&ending_before={queryParameters.EndingBefore}&discounts={queryParameters.Discounts}&customer={queryParameters.Customer}&subscription={queryParameters.Subscription}&subscription_trial_from_plan={queryParameters.SubscriptionTrialFromPlan}"
             |> RestApi.getAsync<LineItem list> settings
 
-    module InvoicesFinalizeService =
+    module InvoicesFinalize =
 
         type FinalizeInvoiceQueryParams = {
             Invoice: string
@@ -2144,7 +2144,7 @@ module StripeService =
             $"/v1/invoices/{queryParameters.Invoice}/finalize"
             |> RestApi.postAsync<_, Invoice> settings formParameters
 
-    module InvoicesLinesService =
+    module InvoicesLines =
 
         type ListQueryParams = {
             Invoice: string
@@ -2168,7 +2168,7 @@ module StripeService =
             $"/v1/invoices/{queryParameters.Invoice}/lines?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<LineItem list> settings
 
-    module InvoicesMarkUncollectibleService =
+    module InvoicesMarkUncollectible =
 
         type MarkUncollectibleQueryParams = {
             Invoice: string
@@ -2184,7 +2184,7 @@ module StripeService =
             $"/v1/invoices/{queryParameters.Invoice}/mark_uncollectible"
             |> RestApi.postAsync<_, Invoice> settings formParameters
 
-    module InvoicesPayService =
+    module InvoicesPay =
 
         type PayQueryParams = {
             Invoice: string
@@ -2200,7 +2200,7 @@ module StripeService =
             $"/v1/invoices/{queryParameters.Invoice}/pay"
             |> RestApi.postAsync<_, Invoice> settings formParameters
 
-    module InvoicesSendService =
+    module InvoicesSend =
 
         type SendInvoiceQueryParams = {
             Invoice: string
@@ -2217,7 +2217,7 @@ module StripeService =
             $"/v1/invoices/{queryParameters.Invoice}/send"
             |> RestApi.postAsync<_, Invoice> settings formParameters
 
-    module InvoicesVoidService =
+    module InvoicesVoid =
 
         type VoidInvoiceQueryParams = {
             Invoice: string
@@ -2233,7 +2233,7 @@ module StripeService =
             $"/v1/invoices/{queryParameters.Invoice}/void"
             |> RestApi.postAsync<_, Invoice> settings formParameters
 
-    module IssuerFraudRecordsService =
+    module IssuerFraudRecords =
 
         type ListQueryParams = {
             Charge: string option
@@ -2274,7 +2274,7 @@ module StripeService =
             $"/v1/issuer_fraud_records/{queryParameters.IssuerFraudRecord}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<IssuerFraudRecord> settings
 
-    module IssuingAuthorizationsService =
+    module IssuingAuthorizations =
 
         type ListQueryParams = {
             Card: string option
@@ -2334,7 +2334,7 @@ module StripeService =
             $"/v1/issuing/authorizations/{queryParameters.Authorization}"
             |> RestApi.postAsync<_, IssuingAuthorization> settings formParameters
 
-    module IssuingAuthorizationsApproveService =
+    module IssuingAuthorizationsApprove =
 
         type ApproveQueryParams = {
             Authorization: string
@@ -2350,7 +2350,7 @@ module StripeService =
             $"/v1/issuing/authorizations/{queryParameters.Authorization}/approve"
             |> RestApi.postAsync<_, IssuingAuthorization> settings formParameters
 
-    module IssuingAuthorizationsDeclineService =
+    module IssuingAuthorizationsDecline =
 
         type DeclineQueryParams = {
             Authorization: string
@@ -2366,7 +2366,7 @@ module StripeService =
             $"/v1/issuing/authorizations/{queryParameters.Authorization}/decline"
             |> RestApi.postAsync<_, IssuingAuthorization> settings formParameters
 
-    module IssuingCardholdersService =
+    module IssuingCardholders =
 
         type ListQueryParams = {
             Created: int option
@@ -2433,7 +2433,7 @@ module StripeService =
             $"/v1/issuing/cardholders/{queryParameters.Cardholder}"
             |> RestApi.postAsync<_, IssuingCardholder> settings formParameters
 
-    module IssuingCardsService =
+    module IssuingCards =
 
         type ListQueryParams = {
             Cardholder: string option
@@ -2504,7 +2504,7 @@ module StripeService =
             $"/v1/issuing/cards/{queryParameters.Card}"
             |> RestApi.postAsync<_, IssuingCard> settings formParameters
 
-    module IssuingDisputesService =
+    module IssuingDisputes =
 
         type ListQueryParams = {
             Created: int option
@@ -2567,7 +2567,7 @@ module StripeService =
             $"/v1/issuing/disputes/{queryParameters.Dispute}"
             |> RestApi.postAsync<_, IssuingDispute> settings formParameters
 
-    module IssuingDisputesSubmitService =
+    module IssuingDisputesSubmit =
 
         type SubmitQueryParams = {
             Dispute: string
@@ -2583,7 +2583,7 @@ module StripeService =
             $"/v1/issuing/disputes/{queryParameters.Dispute}/submit"
             |> RestApi.postAsync<_, IssuingDispute> settings formParameters
 
-    module IssuingTransactionsService =
+    module IssuingTransactions =
 
         type ListQueryParams = {
             Card: string option
@@ -2641,7 +2641,7 @@ module StripeService =
             $"/v1/issuing/transactions/{queryParameters.Transaction}"
             |> RestApi.postAsync<_, IssuingTransaction> settings formParameters
 
-    module MandatesService =
+    module Mandates =
 
         type RetrieveQueryParams = {
             Mandate: string
@@ -2659,7 +2659,7 @@ module StripeService =
             $"/v1/mandates/{queryParameters.Mandate}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<Mandate> settings
 
-    module OrderReturnsService =
+    module OrderReturns =
 
         type ListQueryParams = {
             Created: int option
@@ -2701,7 +2701,7 @@ module StripeService =
             $"/v1/order_returns/{queryParameters.Id}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<OrderReturn> settings
 
-    module OrdersService =
+    module Orders =
 
         type ListQueryParams = {
             Created: int option
@@ -2770,7 +2770,7 @@ module StripeService =
             $"/v1/orders/{queryParameters.Id}"
             |> RestApi.postAsync<_, Order> settings formParameters
 
-    module OrdersPayService =
+    module OrdersPay =
 
         type PayQueryParams = {
             Id: string
@@ -2786,7 +2786,7 @@ module StripeService =
             $"/v1/orders/{queryParameters.Id}/pay"
             |> RestApi.postAsync<_, Order> settings formParameters
 
-    module OrdersReturnsService =
+    module OrdersReturns =
 
         type ReturnOrderQueryParams = {
             Id: string
@@ -2802,7 +2802,7 @@ module StripeService =
             $"/v1/orders/{queryParameters.Id}/returns"
             |> RestApi.postAsync<_, OrderReturn> settings formParameters
 
-    module PaymentIntentsService =
+    module PaymentIntents =
 
         type ListQueryParams = {
             Created: int option
@@ -2879,7 +2879,7 @@ module StripeService =
             $"/v1/payment_intents/{queryParameters.Intent}"
             |> RestApi.postAsync<_, PaymentIntent> settings formParameters
 
-    module PaymentIntentsCancelService =
+    module PaymentIntentsCancel =
 
         type CancelQueryParams = {
             Intent: string
@@ -2896,7 +2896,7 @@ module StripeService =
             $"/v1/payment_intents/{queryParameters.Intent}/cancel"
             |> RestApi.postAsync<_, PaymentIntent> settings formParameters
 
-    module PaymentIntentsCaptureService =
+    module PaymentIntentsCapture =
 
         type CaptureQueryParams = {
             Intent: string
@@ -2914,7 +2914,7 @@ module StripeService =
             $"/v1/payment_intents/{queryParameters.Intent}/capture"
             |> RestApi.postAsync<_, PaymentIntent> settings formParameters
 
-    module PaymentIntentsConfirmService =
+    module PaymentIntentsConfirm =
 
         type ConfirmQueryParams = {
             Intent: string
@@ -2951,7 +2951,7 @@ module StripeService =
             $"/v1/payment_intents/{queryParameters.Intent}/confirm"
             |> RestApi.postAsync<_, PaymentIntent> settings formParameters
 
-    module PaymentMethodsService =
+    module PaymentMethods =
 
         type ListQueryParams = {
             Customer: string
@@ -3012,7 +3012,7 @@ module StripeService =
             $"/v1/payment_methods/{queryParameters.PaymentMethod}"
             |> RestApi.postAsync<_, PaymentMethod> settings formParameters
 
-    module PaymentMethodsAttachService =
+    module PaymentMethodsAttach =
 
         type AttachQueryParams = {
             PaymentMethod: string
@@ -3036,7 +3036,7 @@ module StripeService =
             $"/v1/payment_methods/{queryParameters.PaymentMethod}/attach"
             |> RestApi.postAsync<_, PaymentMethod> settings formParameters
 
-    module PaymentMethodsDetachService =
+    module PaymentMethodsDetach =
 
         type DetachQueryParams = {
             PaymentMethod: string
@@ -3052,7 +3052,7 @@ module StripeService =
             $"/v1/payment_methods/{queryParameters.PaymentMethod}/detach"
             |> RestApi.postAsync<_, PaymentMethod> settings formParameters
 
-    module PayoutsService =
+    module Payouts =
 
         type ListQueryParams = {
             ArrivalDate: int option
@@ -3119,7 +3119,7 @@ module StripeService =
             $"/v1/payouts/{queryParameters.Payout}"
             |> RestApi.postAsync<_, Payout> settings formParameters
 
-    module PayoutsCancelService =
+    module PayoutsCancel =
 
         type CancelQueryParams = {
             Payout: string
@@ -3135,7 +3135,7 @@ module StripeService =
             $"/v1/payouts/{queryParameters.Payout}/cancel"
             |> RestApi.postAsync<_, Payout> settings formParameters
 
-    module PayoutsReverseService =
+    module PayoutsReverse =
 
         type ReverseQueryParams = {
             Payout: string
@@ -3152,7 +3152,7 @@ module StripeService =
             $"/v1/payouts/{queryParameters.Payout}/reverse"
             |> RestApi.postAsync<_, Payout> settings formParameters
 
-    module PlansService =
+    module Plans =
 
         type ListQueryParams = {
             Active: bool option
@@ -3229,7 +3229,7 @@ module StripeService =
             $"/v1/plans/{queryParameters.Plan}"
             |> RestApi.postAsync<_, Plan> settings formParameters
 
-    module PricesService =
+    module Prices =
 
         type ListQueryParams = {
             Active: bool option
@@ -3300,7 +3300,7 @@ module StripeService =
             $"/v1/prices/{queryParameters.Price}"
             |> RestApi.postAsync<_, Price> settings formParameters
 
-    module ProductsService =
+    module Products =
 
         type ListQueryParams = {
             Active: bool option
@@ -3383,7 +3383,7 @@ module StripeService =
             $"/v1/products/{queryParameters.Id}"
             |> RestApi.postAsync<_, Product> settings formParameters
 
-    module PromotionCodesService =
+    module PromotionCodes =
 
         type ListQueryParams = {
             Active: bool option
@@ -3450,7 +3450,7 @@ module StripeService =
             $"/v1/promotion_codes/{queryParameters.PromotionCode}"
             |> RestApi.postAsync<_, PromotionCode> settings formParameters
 
-    module RadarEarlyFraudWarningsService =
+    module RadarEarlyFraudWarnings =
 
         type ListQueryParams = {
             Charge: string option
@@ -3491,7 +3491,7 @@ module StripeService =
             $"/v1/radar/early_fraud_warnings/{queryParameters.EarlyFraudWarning}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<RadarEarlyFraudWarning> settings
 
-    module RadarValueListItemsService =
+    module RadarValueListItems =
 
         type ListQueryParams = {
             ValueList: string
@@ -3554,7 +3554,7 @@ module StripeService =
             $"/v1/radar/value_list_items/{queryParameters.Item}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<RadarValueListItem> settings
 
-    module RadarValueListsService =
+    module RadarValueLists =
 
         type ListQueryParams = {
             Alias: string option
@@ -3631,7 +3631,7 @@ module StripeService =
             $"/v1/radar/value_lists/{queryParameters.ValueList}"
             |> RestApi.postAsync<_, RadarValueList> settings formParameters
 
-    module RecipientsService =
+    module Recipients =
 
         type ListQueryParams = {
             Created: int option
@@ -3712,7 +3712,7 @@ module StripeService =
             $"/v1/recipients/{queryParameters.Id}"
             |> RestApi.postAsync<_, Recipient> settings formParameters
 
-    module RefundsService =
+    module Refunds =
 
         type ListQueryParams = {
             Charge: string option
@@ -3776,7 +3776,7 @@ module StripeService =
             $"/v1/refunds/{queryParameters.Refund}"
             |> RestApi.postAsync<_, Refund> settings formParameters
 
-    module ReportingReportRunsService =
+    module ReportingReportRuns =
 
         type ListQueryParams = {
             Created: int option
@@ -3821,7 +3821,7 @@ module StripeService =
             $"/v1/reporting/report_runs/{queryParameters.ReportRun}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<ReportingReportRun> settings
 
-    module ReportingReportTypesService =
+    module ReportingReportTypes =
 
         type ListQueryParams = {
             Expand: string list option
@@ -3853,7 +3853,7 @@ module StripeService =
             $"/v1/reporting/report_types/{queryParameters.ReportType}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<ReportingReportType> settings
 
-    module ReviewsService =
+    module Reviews =
 
         type ListQueryParams = {
             Created: int option
@@ -3893,7 +3893,7 @@ module StripeService =
             $"/v1/reviews/{queryParameters.Review}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<Review> settings
 
-    module ReviewsApproveService =
+    module ReviewsApprove =
 
         type ApproveQueryParams = {
             Review: string
@@ -3909,7 +3909,7 @@ module StripeService =
             $"/v1/reviews/{queryParameters.Review}/approve"
             |> RestApi.postAsync<_, Review> settings formParameters
 
-    module SetupAttemptsService =
+    module SetupAttempts =
 
         type ListQueryParams = {
             SetupIntent: string
@@ -3935,7 +3935,7 @@ module StripeService =
             $"/v1/setup_attempts?setup_intent={queryParameters.SetupIntent}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<SetupAttempt list> settings
 
-    module SetupIntentsService =
+    module SetupIntents =
 
         type ListQueryParams = {
             Created: int option
@@ -4004,7 +4004,7 @@ module StripeService =
             $"/v1/setup_intents/{queryParameters.Intent}"
             |> RestApi.postAsync<_, SetupIntent> settings formParameters
 
-    module SetupIntentsCancelService =
+    module SetupIntentsCancel =
 
         type CancelQueryParams = {
             Intent: string
@@ -4021,7 +4021,7 @@ module StripeService =
             $"/v1/setup_intents/{queryParameters.Intent}/cancel"
             |> RestApi.postAsync<_, SetupIntent> settings formParameters
 
-    module SetupIntentsConfirmService =
+    module SetupIntentsConfirm =
 
         type ConfirmQueryParams = {
             Intent: string
@@ -4047,7 +4047,7 @@ module StripeService =
             $"/v1/setup_intents/{queryParameters.Intent}/confirm"
             |> RestApi.postAsync<_, SetupIntent> settings formParameters
 
-    module SigmaScheduledQueryRunsService =
+    module SigmaScheduledQueryRuns =
 
         type ListQueryParams = {
             EndingBefore: string option
@@ -4085,7 +4085,7 @@ module StripeService =
             $"/v1/sigma/scheduled_query_runs/{queryParameters.ScheduledQueryRun}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<ScheduledQueryRun> settings
 
-    module SkusService =
+    module Skus =
 
         type ListQueryParams = {
             Active: bool option
@@ -4167,7 +4167,7 @@ module StripeService =
             $"/v1/skus/{queryParameters.Id}"
             |> RestApi.postAsync<_, Sku> settings formParameters
 
-    module SourcesService =
+    module Sources =
 
         ///<p>Creates a new source object.</p>
         let Create settings (formParameters: PostSourcesParams) =
@@ -4207,7 +4207,7 @@ module StripeService =
             $"/v1/sources/{queryParameters.Source}"
             |> RestApi.postAsync<_, Source> settings formParameters
 
-    module SourcesSourceTransactionsService =
+    module SourcesSourceTransactions =
 
         type SourceTransactionsQueryParams = {
             Source: string
@@ -4231,7 +4231,7 @@ module StripeService =
             $"/v1/sources/{queryParameters.Source}/source_transactions?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<SourceTransaction list> settings
 
-    module SourcesVerifyService =
+    module SourcesVerify =
 
         type VerifyQueryParams = {
             Source: string
@@ -4247,7 +4247,7 @@ module StripeService =
             $"/v1/sources/{queryParameters.Source}/verify"
             |> RestApi.postAsync<_, Source> settings formParameters
 
-    module SubscriptionItemsService =
+    module SubscriptionItems =
 
         type ListQueryParams = {
             Subscription: string
@@ -4320,7 +4320,7 @@ module StripeService =
             $"/v1/subscription_items/{queryParameters.Item}"
             |> RestApi.postAsync<_, SubscriptionItem> settings formParameters
 
-    module SubscriptionItemsUsageRecordSummariesService =
+    module SubscriptionItemsUsageRecordSummaries =
 
         type UsageRecordSummariesQueryParams = {
             SubscriptionItem: string
@@ -4345,7 +4345,7 @@ module StripeService =
             $"/v1/subscription_items/{queryParameters.SubscriptionItem}/usage_record_summaries?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
             |> RestApi.getAsync<UsageRecordSummary list> settings
 
-    module SubscriptionItemsUsageRecordsService =
+    module SubscriptionItemsUsageRecords =
 
         type CreateQueryParams = {
             SubscriptionItem: string
@@ -4364,7 +4364,7 @@ module StripeService =
             $"/v1/subscription_items/{queryParameters.SubscriptionItem}/usage_records"
             |> RestApi.postAsync<_, UsageRecord> settings formParameters
 
-    module SubscriptionSchedulesService =
+    module SubscriptionSchedules =
 
         type ListQueryParams = {
             CanceledAt: int option
@@ -4433,7 +4433,7 @@ module StripeService =
             $"/v1/subscription_schedules/{queryParameters.Schedule}"
             |> RestApi.postAsync<_, SubscriptionSchedule> settings formParameters
 
-    module SubscriptionSchedulesCancelService =
+    module SubscriptionSchedulesCancel =
 
         type CancelQueryParams = {
             Schedule: string
@@ -4449,7 +4449,7 @@ module StripeService =
             $"/v1/subscription_schedules/{queryParameters.Schedule}/cancel"
             |> RestApi.postAsync<_, SubscriptionSchedule> settings formParameters
 
-    module SubscriptionSchedulesReleaseService =
+    module SubscriptionSchedulesRelease =
 
         type ReleaseQueryParams = {
             Schedule: string
@@ -4465,7 +4465,7 @@ module StripeService =
             $"/v1/subscription_schedules/{queryParameters.Schedule}/release"
             |> RestApi.postAsync<_, SubscriptionSchedule> settings formParameters
 
-    module SubscriptionsService =
+    module Subscriptions =
 
         type ListQueryParams = {
             CollectionMethod: string option
@@ -4554,7 +4554,7 @@ module StripeService =
             $"/v1/subscriptions/{queryParameters.SubscriptionExposedId}"
             |> RestApi.postAsync<_, Subscription> settings formParameters
 
-    module SubscriptionsDiscountService =
+    module SubscriptionsDiscount =
 
         type DeleteDiscountQueryParams = {
             SubscriptionExposedId: string
@@ -4570,7 +4570,7 @@ module StripeService =
             $"/v1/subscriptions/{queryParameters.SubscriptionExposedId}/discount"
             |> RestApi.deleteAsync<DeletedDiscount> settings
 
-    module TaxRatesService =
+    module TaxRates =
 
         type ListQueryParams = {
             Active: bool option
@@ -4633,14 +4633,14 @@ module StripeService =
             $"/v1/tax_rates/{queryParameters.TaxRate}"
             |> RestApi.postAsync<_, TaxRate> settings formParameters
 
-    module TerminalConnectionTokensService =
+    module TerminalConnectionTokens =
 
         ///<p>To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.</p>
         let Create settings (formParameters: PostTerminalConnectionTokensParams) =
             $"/v1/terminal/connection_tokens"
             |> RestApi.postAsync<_, TerminalConnectionToken> settings formParameters
 
-    module TerminalLocationsService =
+    module TerminalLocations =
 
         type ListQueryParams = {
             EndingBefore: string option
@@ -4711,7 +4711,7 @@ module StripeService =
             $"/v1/terminal/locations/{queryParameters.Location}"
             |> RestApi.postAsync<_, TerminalLocation> settings formParameters
 
-    module TerminalReadersService =
+    module TerminalReaders =
 
         type ListQueryParams = {
             DeviceType: string option
@@ -4788,7 +4788,7 @@ module StripeService =
             $"/v1/terminal/readers/{queryParameters.Reader}"
             |> RestApi.postAsync<_, TerminalReader> settings formParameters
 
-    module TokensService =
+    module Tokens =
 
         ///<p>Creates a single-use token that represents a bank account’s details.
         ///This token can be used with any API method in place of a bank account dictionary. This token can be used only once, by attaching it to a <a href="#accounts">Custom account</a>.</p>
@@ -4812,7 +4812,7 @@ module StripeService =
             $"/v1/tokens/{queryParameters.Token}?expand={queryParameters.Expand}"
             |> RestApi.getAsync<Token> settings
 
-    module TopupsService =
+    module Topups =
 
         type ListQueryParams = {
             Amount: int option
@@ -4875,7 +4875,7 @@ module StripeService =
             $"/v1/topups/{queryParameters.Topup}"
             |> RestApi.postAsync<_, Topup> settings formParameters
 
-    module TopupsCancelService =
+    module TopupsCancel =
 
         type CancelQueryParams = {
             Topup: string
@@ -4891,7 +4891,7 @@ module StripeService =
             $"/v1/topups/{queryParameters.Topup}/cancel"
             |> RestApi.postAsync<_, Topup> settings formParameters
 
-    module TransfersService =
+    module Transfers =
 
         type ListQueryParams = {
             Created: int option
@@ -4955,7 +4955,7 @@ module StripeService =
             $"/v1/transfers/{queryParameters.Transfer}"
             |> RestApi.postAsync<_, Transfer> settings formParameters
 
-    module TransfersReversalsService =
+    module TransfersReversals =
 
         type ListQueryParams = {
             Id: string
@@ -5030,7 +5030,7 @@ module StripeService =
             $"/v1/transfers/{queryParameters.Transfer}/reversals/{queryParameters.Id}"
             |> RestApi.postAsync<_, TransferReversal> settings formParameters
 
-    module WebhookEndpointsService =
+    module WebhookEndpoints =
 
         type ListQueryParams = {
             EndingBefore: string option
