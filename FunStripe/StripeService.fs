@@ -8,11 +8,11 @@ module StripeService =
     module ThreeDSecure =
 
         ///<p>Initiate 3D Secure authentication.</p>
-        let Create settings (formParameters: Post3dSecureParams) =
+        let Create settings (formOptions: ThreeDSecure'CreateOptions) =
             $"/v1/3d_secure"
-            |> RestApi.postAsync<_, ThreeDSecure> settings formParameters
+            |> RestApi.postAsync<_, ThreeDSecure> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             ThreeDSecure: string
             Expand: string list option
         }
@@ -24,13 +24,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves a 3D Secure object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/3d_secure/{queryParameters.ThreeDSecure}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/3d_secure/{options.ThreeDSecure}?expand={options.Expand}"
             |> RestApi.getAsync<ThreeDSecure> settings
 
     module Account =
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Expand: string list option
         }
         with
@@ -40,20 +40,20 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an account.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/account?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/account?expand={options.Expand}"
             |> RestApi.getAsync<Account> settings
 
     module AccountLinks =
 
         ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
-        let Create settings (formParameters: PostAccountLinksParams) =
+        let Create settings (formOptions: AccountLinks'CreateOptions) =
             $"/v1/account_links"
-            |> RestApi.postAsync<_, AccountLink> settings formParameters
+            |> RestApi.postAsync<_, AccountLink> settings formOptions
 
     module Accounts =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -71,17 +71,17 @@ module StripeService =
                 }
 
         ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/accounts?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/accounts?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Account list> settings
 
         ///<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
         ///To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
-        let Create settings (formParameters: PostAccountsParams) =
+        let Create settings (formOptions: Accounts'CreateOptions) =
             $"/v1/accounts"
-            |> RestApi.postAsync<_, Account> settings formParameters
+            |> RestApi.postAsync<_, Account> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Account: string
         }
         with
@@ -93,11 +93,11 @@ module StripeService =
         ///<p>With <a href="/docs/connect">Connect</a>, you can delete Custom or Express accounts you manage.
         ///Accounts created using test-mode keys can be deleted at any time. Accounts created using live-mode keys can only be deleted once all balances are zero.
         ///If you want to delete your own account, use the <a href="https://dashboard.stripe.com/account">account information tab in your account settings</a> instead.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/accounts/{options.Account}"
             |> RestApi.deleteAsync<DeletedAccount> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Account: string
             Expand: string list option
         }
@@ -109,11 +109,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an account.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/accounts/{options.Account}?expand={options.Expand}"
             |> RestApi.getAsync<Account> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Account: string
         }
         with
@@ -124,13 +124,13 @@ module StripeService =
 
         ///<p>Updates a connected <a href="/docs/connect/accounts">Express or Custom account</a> by setting the values of the parameters passed. Any parameters not provided are left unchanged. Most parameters can be changed only for Custom accounts. (These are marked <strong>Custom Only</strong> below.) Parameters marked <strong>Custom and Express</strong> are supported by both account types.
         ///To update your own account, use the <a href="https://dashboard.stripe.com/account">Dashboard</a>. Refer to our <a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>
-        let Update settings (formParameters: PostAccountsAccountParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}"
-            |> RestApi.postAsync<_, Account> settings formParameters
+        let Update settings (formOptions: Accounts'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/accounts/{options.Account}"
+            |> RestApi.postAsync<_, Account> settings formOptions
 
     module AccountsCapabilities =
 
-        type CapabilitiesQueryParams = {
+        type CapabilitiesOptions = {
             Account: string
             Expand: string list option
         }
@@ -142,11 +142,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
-        let Capabilities settings (queryParameters: CapabilitiesQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/capabilities?expand={queryParameters.Expand}"
+        let Capabilities settings (options: CapabilitiesOptions) =
+            $"/v1/accounts/{options.Account}/capabilities?expand={options.Expand}"
             |> RestApi.getAsync<Capability list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Account: string
             Capability: string
             Expand: string list option
@@ -160,11 +160,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves information about the specified Account Capability.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/capabilities/{queryParameters.Capability}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/accounts/{options.Account}/capabilities/{options.Capability}?expand={options.Expand}"
             |> RestApi.getAsync<Capability> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Account: string
             Capability: string
         }
@@ -176,13 +176,13 @@ module StripeService =
                 }
 
         ///<p>Updates an existing Account Capability.</p>
-        let Update settings (formParameters: PostAccountsAccountCapabilitiesCapabilityParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/capabilities/{queryParameters.Capability}"
-            |> RestApi.postAsync<_, Capability> settings formParameters
+        let Update settings (formOptions: AccountsCapabilities'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/accounts/{options.Account}/capabilities/{options.Capability}"
+            |> RestApi.postAsync<_, Capability> settings formOptions
 
     module AccountsExternalAccounts =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Account: string
             EndingBefore: string option
             Expand: string list option
@@ -200,11 +200,11 @@ module StripeService =
                 }
 
         ///<p>List external accounts for an account.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/external_accounts?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/accounts/{options.Account}/external_accounts?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<ExternalAccount list> settings
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Account: string
         }
         with
@@ -214,11 +214,11 @@ module StripeService =
                 }
 
         ///<p>Create an external account for a given account.</p>
-        let Create settings (formParameters: PostAccountsAccountExternalAccountsParams) (queryParameters: CreateQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/external_accounts"
-            |> RestApi.postAsync<_, ExternalAccount> settings formParameters
+        let Create settings (formOptions: AccountsExternalAccounts'CreateOptions) (options: CreateOptions) =
+            $"/v1/accounts/{options.Account}/external_accounts"
+            |> RestApi.postAsync<_, ExternalAccount> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Account: string
             Id: string
         }
@@ -230,11 +230,11 @@ module StripeService =
                 }
 
         ///<p>Delete a specified external account for a given account.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/external_accounts/{queryParameters.Id}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
             |> RestApi.deleteAsync<DeletedExternalAccount> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Account: string
             Id: string
             Expand: string list option
@@ -248,11 +248,11 @@ module StripeService =
                 }
 
         ///<p>Retrieve a specified external account for a given account.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/external_accounts/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/accounts/{options.Account}/external_accounts/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<ExternalAccount> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Account: string
             Id: string
         }
@@ -265,13 +265,13 @@ module StripeService =
 
         ///<p>Updates the metadata, account holder name, and account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.
         ///You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>
-        let Update settings (formParameters: PostAccountsAccountExternalAccountsIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/external_accounts/{queryParameters.Id}"
-            |> RestApi.postAsync<_, ExternalAccount> settings formParameters
+        let Update settings (formOptions: AccountsExternalAccounts'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
+            |> RestApi.postAsync<_, ExternalAccount> settings formOptions
 
     module AccountsLoginLinks =
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Account: string
         }
         with
@@ -282,13 +282,13 @@ module StripeService =
 
         ///<p>Creates a single-use login link for an Express account to access their Stripe dashboard.
         ///<strong>You may only create login links for <a href="/docs/connect/express-accounts">Express accounts</a> connected to your platform</strong>.</p>
-        let Create settings (formParameters: PostAccountsAccountLoginLinksParams) (queryParameters: CreateQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/login_links"
-            |> RestApi.postAsync<_, LoginLink> settings formParameters
+        let Create settings (formOptions: AccountsLoginLinks'CreateOptions) (options: CreateOptions) =
+            $"/v1/accounts/{options.Account}/login_links"
+            |> RestApi.postAsync<_, LoginLink> settings formOptions
 
     module AccountsPersons =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Account: string
             EndingBefore: string option
             Expand: string list option
@@ -308,11 +308,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/persons?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&relationship={queryParameters.Relationship}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/accounts/{options.Account}/persons?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&relationship={options.Relationship}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Person list> settings
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Account: string
         }
         with
@@ -322,11 +322,11 @@ module StripeService =
                 }
 
         ///<p>Creates a new person.</p>
-        let Create settings (formParameters: PostAccountsAccountPersonsParams) (queryParameters: CreateQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/persons"
-            |> RestApi.postAsync<_, Person> settings formParameters
+        let Create settings (formOptions: AccountsPersons'CreateOptions) (options: CreateOptions) =
+            $"/v1/accounts/{options.Account}/persons"
+            |> RestApi.postAsync<_, Person> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Account: string
             Person: string
         }
@@ -338,11 +338,11 @@ module StripeService =
                 }
 
         ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>account_opener</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/persons/{queryParameters.Person}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/accounts/{options.Account}/persons/{options.Person}"
             |> RestApi.deleteAsync<DeletedPerson> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Account: string
             Person: string
             Expand: string list option
@@ -356,11 +356,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves an existing person.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/persons/{queryParameters.Person}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/accounts/{options.Account}/persons/{options.Person}?expand={options.Expand}"
             |> RestApi.getAsync<Person> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Account: string
             Person: string
         }
@@ -372,13 +372,13 @@ module StripeService =
                 }
 
         ///<p>Updates an existing person.</p>
-        let Update settings (formParameters: PostAccountsAccountPersonsPersonParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/persons/{queryParameters.Person}"
-            |> RestApi.postAsync<_, Person> settings formParameters
+        let Update settings (formOptions: AccountsPersons'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/accounts/{options.Account}/persons/{options.Person}"
+            |> RestApi.postAsync<_, Person> settings formOptions
 
     module AccountsReject =
 
-        type RejectQueryParams = {
+        type RejectOptions = {
             Account: string
         }
         with
@@ -389,13 +389,13 @@ module StripeService =
 
         ///<p>With <a href="/docs/connect">Connect</a>, you may flag accounts as suspicious.
         ///Test-mode Custom and Express accounts can be rejected at any time. Accounts created using live-mode keys may only be rejected once all balances are zero.</p>
-        let Reject settings (formParameters: PostAccountsAccountRejectParams) (queryParameters: RejectQueryParams) =
-            $"/v1/accounts/{queryParameters.Account}/reject"
-            |> RestApi.postAsync<_, Account> settings formParameters
+        let Reject settings (formOptions: AccountsReject'RejectOptions) (options: RejectOptions) =
+            $"/v1/accounts/{options.Account}/reject"
+            |> RestApi.postAsync<_, Account> settings formOptions
 
     module ApplePayDomains =
 
-        type ListQueryParams = {
+        type ListOptions = {
             DomainName: string option
             EndingBefore: string option
             Expand: string list option
@@ -413,16 +413,16 @@ module StripeService =
                 }
 
         ///<p>List apple pay domains.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/apple_pay/domains?domain_name={queryParameters.DomainName}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/apple_pay/domains?domain_name={options.DomainName}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<ApplePayDomain list> settings
 
         ///<p>Create an apple pay domain.</p>
-        let Create settings (formParameters: PostApplePayDomainsParams) =
+        let Create settings (formOptions: ApplePayDomains'CreateOptions) =
             $"/v1/apple_pay/domains"
-            |> RestApi.postAsync<_, ApplePayDomain> settings formParameters
+            |> RestApi.postAsync<_, ApplePayDomain> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Domain: string
         }
         with
@@ -432,11 +432,11 @@ module StripeService =
                 }
 
         ///<p>Delete an apple pay domain.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/apple_pay/domains/{queryParameters.Domain}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/apple_pay/domains/{options.Domain}"
             |> RestApi.deleteAsync<DeletedApplePayDomain> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Domain: string
             Expand: string list option
         }
@@ -448,13 +448,13 @@ module StripeService =
                 }
 
         ///<p>Retrieve an apple pay domain.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/apple_pay/domains/{queryParameters.Domain}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/apple_pay/domains/{options.Domain}?expand={options.Expand}"
             |> RestApi.getAsync<ApplePayDomain> settings
 
     module ApplicationFees =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Charge: string option
             Created: int option
             EndingBefore: string option
@@ -474,11 +474,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/application_fees?charge={queryParameters.Charge}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/application_fees?charge={options.Charge}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<ApplicationFee list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -490,13 +490,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an application fee that your account has collected. The same information is returned when refunding the application fee.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/application_fees/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/application_fees/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<ApplicationFee> settings
 
     module ApplicationFeesRefunds =
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Fee: string
             Id: string
             Expand: string list option
@@ -510,11 +510,11 @@ module StripeService =
                 }
 
         ///<p>By default, you can see the 10 most recent refunds stored directly on the application fee object, but you can also retrieve details about a specific refund stored on the application fee.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/application_fees/{queryParameters.Fee}/refunds/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/application_fees/{options.Fee}/refunds/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<FeeRefund> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Fee: string
             Id: string
         }
@@ -527,11 +527,11 @@ module StripeService =
 
         ///<p>Updates the specified application fee refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts metadata as an argument.</p>
-        let Update settings (formParameters: PostApplicationFeesFeeRefundsIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/application_fees/{queryParameters.Fee}/refunds/{queryParameters.Id}"
-            |> RestApi.postAsync<_, FeeRefund> settings formParameters
+        let Update settings (formOptions: ApplicationFeesRefunds'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/application_fees/{options.Fee}/refunds/{options.Id}"
+            |> RestApi.postAsync<_, FeeRefund> settings formOptions
 
-        type ListQueryParams = {
+        type ListOptions = {
             Id: string
             EndingBefore: string option
             Expand: string list option
@@ -549,11 +549,11 @@ module StripeService =
                 }
 
         ///<p>You can see a list of the refunds belonging to a specific application fee. Note that the 10 most recent refunds are always available by default on the application fee object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/application_fees/{queryParameters.Id}/refunds?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/application_fees/{options.Id}/refunds?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<FeeRefund list> settings
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Id: string
         }
         with
@@ -569,13 +569,13 @@ module StripeService =
         ///Once entirely refunded, an application fee can’t be refunded again.
         ///This method will raise an error when called on an already-refunded application fee,
         ///or when trying to refund more money than is left on an application fee.</p>
-        let Create settings (formParameters: PostApplicationFeesIdRefundsParams) (queryParameters: CreateQueryParams) =
-            $"/v1/application_fees/{queryParameters.Id}/refunds"
-            |> RestApi.postAsync<_, FeeRefund> settings formParameters
+        let Create settings (formOptions: ApplicationFeesRefunds'CreateOptions) (options: CreateOptions) =
+            $"/v1/application_fees/{options.Id}/refunds"
+            |> RestApi.postAsync<_, FeeRefund> settings formOptions
 
     module Balance =
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Expand: string list option
         }
         with
@@ -586,13 +586,13 @@ module StripeService =
 
         ///<p>Retrieves the current account balance, based on the authentication that was used to make the request.
         /// For a sample request, see <a href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting for negative balances</a>.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/balance?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/balance?expand={options.Expand}"
             |> RestApi.getAsync<Balance> settings
 
     module BalanceTransactions =
 
-        type ListQueryParams = {
+        type ListOptions = {
             AvailableOn: int option
             Created: int option
             Currency: string option
@@ -621,11 +621,11 @@ module StripeService =
 
         ///<p>Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.
         ///Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/balance_transactions?available_on={queryParameters.AvailableOn}&created={queryParameters.Created}&currency={queryParameters.Currency}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&payout={queryParameters.Payout}&source={queryParameters.Source}&starting_after={queryParameters.StartingAfter}&type={queryParameters.``type``}"
+        let List settings (options: ListOptions) =
+            $"/v1/balance_transactions?available_on={options.AvailableOn}&created={options.Created}&currency={options.Currency}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payout={options.Payout}&source={options.Source}&starting_after={options.StartingAfter}&type={options.``type``}"
             |> RestApi.getAsync<BalanceTransaction list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -638,20 +638,20 @@ module StripeService =
 
         ///<p>Retrieves the balance transaction with the given ID.
         ///Note that this endpoint previously used the path <code>/v1/balance/history/:id</code>.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/balance_transactions/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/balance_transactions/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<BalanceTransaction> settings
 
     module BillingPortalSessions =
 
         ///<p>Creates a session of the customer portal.</p>
-        let Create settings (formParameters: PostBillingPortalSessionsParams) =
+        let Create settings (formOptions: BillingPortalSessions'CreateOptions) =
             $"/v1/billing_portal/sessions"
-            |> RestApi.postAsync<_, BillingPortalSession> settings formParameters
+            |> RestApi.postAsync<_, BillingPortalSession> settings formOptions
 
     module BitcoinReceivers =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Active: bool option
             EndingBefore: string option
             Expand: string list option
@@ -673,11 +673,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your receivers. Receivers are returned sorted by creation date, with the most recently created receivers appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/bitcoin/receivers?active={queryParameters.Active}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&filled={queryParameters.Filled}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&uncaptured_funds={queryParameters.UncapturedFunds}"
+        let List settings (options: ListOptions) =
+            $"/v1/bitcoin/receivers?active={options.Active}&ending_before={options.EndingBefore}&expand={options.Expand}&filled={options.Filled}&limit={options.Limit}&starting_after={options.StartingAfter}&uncaptured_funds={options.UncapturedFunds}"
             |> RestApi.getAsync<BitcoinReceiver list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -689,13 +689,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the Bitcoin receiver with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/bitcoin/receivers/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/bitcoin/receivers/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<BitcoinReceiver> settings
 
     module BitcoinReceiversTransactions =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Receiver: string
             Customer: string option
             EndingBefore: string option
@@ -715,13 +715,13 @@ module StripeService =
                 }
 
         ///<p>List bitcoin transacitons for a given receiver.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/bitcoin/receivers/{queryParameters.Receiver}/transactions?customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/bitcoin/receivers/{options.Receiver}/transactions?customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<BitcoinTransaction list> settings
 
     module Charges =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Customer: string option
             EndingBefore: string option
@@ -745,16 +745,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/charges?created={queryParameters.Created}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&payment_intent={queryParameters.PaymentIntent}&starting_after={queryParameters.StartingAfter}&transfer_group={queryParameters.TransferGroup}"
+        let List settings (options: ListOptions) =
+            $"/v1/charges?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}&transfer_group={options.TransferGroup}"
             |> RestApi.getAsync<Charge list> settings
 
         ///<p>To charge a credit card or other payment source, you create a <code>Charge</code> object. If your API key is in test mode, the supplied payment source (e.g., card) won’t actually be charged, although everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).</p>
-        let Create settings (formParameters: PostChargesParams) =
+        let Create settings (formOptions: Charges'CreateOptions) =
             $"/v1/charges"
-            |> RestApi.postAsync<_, Charge> settings formParameters
+            |> RestApi.postAsync<_, Charge> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Charge: string
             Expand: string list option
         }
@@ -766,11 +766,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of a charge that has previously been created. Supply the unique charge ID that was returned from your previous request, and Stripe will return the corresponding charge information. The same information is returned when creating or refunding the charge.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/charges/{queryParameters.Charge}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/charges/{options.Charge}?expand={options.Expand}"
             |> RestApi.getAsync<Charge> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Charge: string
         }
         with
@@ -780,13 +780,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified charge by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostChargesChargeParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/charges/{queryParameters.Charge}"
-            |> RestApi.postAsync<_, Charge> settings formParameters
+        let Update settings (formOptions: Charges'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/charges/{options.Charge}"
+            |> RestApi.postAsync<_, Charge> settings formOptions
 
     module ChargesCapture =
 
-        type CaptureQueryParams = {
+        type CaptureOptions = {
             Charge: string
         }
         with
@@ -797,13 +797,13 @@ module StripeService =
 
         ///<p>Capture the payment of an existing, uncaptured, charge. This is the second half of the two-step payment flow, where first you <a href="#create_charge">created a charge</a> with the capture option set to false.
         ///Uncaptured payments expire exactly seven days after they are created. If they are not captured by that point in time, they will be marked as refunded and will no longer be capturable.</p>
-        let Capture settings (formParameters: PostChargesChargeCaptureParams) (queryParameters: CaptureQueryParams) =
-            $"/v1/charges/{queryParameters.Charge}/capture"
-            |> RestApi.postAsync<_, Charge> settings formParameters
+        let Capture settings (formOptions: ChargesCapture'CaptureOptions) (options: CaptureOptions) =
+            $"/v1/charges/{options.Charge}/capture"
+            |> RestApi.postAsync<_, Charge> settings formOptions
 
     module ChargesRefunds =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Charge: string
             EndingBefore: string option
             Expand: string list option
@@ -821,11 +821,11 @@ module StripeService =
                 }
 
         ///<p>You can see a list of the refunds belonging to a specific charge. Note that the 10 most recent refunds are always available by default on the charge object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/charges/{queryParameters.Charge}/refunds?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/charges/{options.Charge}/refunds?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Refund list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Charge: string
             Refund: string
             Expand: string list option
@@ -839,13 +839,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing refund.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/charges/{queryParameters.Charge}/refunds/{queryParameters.Refund}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/charges/{options.Charge}/refunds/{options.Refund}?expand={options.Expand}"
             |> RestApi.getAsync<Refund> settings
 
     module CheckoutSessions =
 
-        type ListQueryParams = {
+        type ListOptions = {
             EndingBefore: string option
             Expand: string list option
             Limit: int option
@@ -865,16 +865,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of Checkout Sessions.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/checkout/sessions?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&payment_intent={queryParameters.PaymentIntent}&starting_after={queryParameters.StartingAfter}&subscription={queryParameters.Subscription}"
+        let List settings (options: ListOptions) =
+            $"/v1/checkout/sessions?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}&subscription={options.Subscription}"
             |> RestApi.getAsync<CheckoutSession list> settings
 
         ///<p>Creates a Session object.</p>
-        let Create settings (formParameters: PostCheckoutSessionsParams) =
+        let Create settings (formOptions: CheckoutSessions'CreateOptions) =
             $"/v1/checkout/sessions"
-            |> RestApi.postAsync<_, CheckoutSession> settings formParameters
+            |> RestApi.postAsync<_, CheckoutSession> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Session: string
             Expand: string list option
         }
@@ -886,13 +886,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves a Session object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/checkout/sessions/{queryParameters.Session}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/checkout/sessions/{options.Session}?expand={options.Expand}"
             |> RestApi.getAsync<CheckoutSession> settings
 
     module CheckoutSessionsLineItems =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Session: string
             EndingBefore: string option
             Expand: string list option
@@ -910,13 +910,13 @@ module StripeService =
                 }
 
         ///<p>When retrieving a Checkout Session, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/checkout/sessions/{queryParameters.Session}/line_items?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/checkout/sessions/{options.Session}/line_items?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Item list> settings
 
     module CountrySpecs =
 
-        type ListQueryParams = {
+        type ListOptions = {
             EndingBefore: string option
             Expand: string list option
             Limit: int option
@@ -932,11 +932,11 @@ module StripeService =
                 }
 
         ///<p>Lists all Country Spec objects available in the API.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/country_specs?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/country_specs?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<CountrySpec list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Country: string
             Expand: string list option
         }
@@ -948,13 +948,13 @@ module StripeService =
                 }
 
         ///<p>Returns a Country Spec for a given Country code.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/country_specs/{queryParameters.Country}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/country_specs/{options.Country}?expand={options.Expand}"
             |> RestApi.getAsync<CountrySpec> settings
 
     module Coupons =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -972,17 +972,17 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your coupons.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/coupons?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/coupons?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Coupon list> settings
 
         ///<p>You can create coupons easily via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. Coupon creation is also accessible via the API if you need to create coupons on the fly.
         ///A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and <code>currency</code>. If you set an <code>amount_off</code>, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of <currency>100</currency> will have a final total of <currency>0</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it and an invoice with a subtotal of <currency>300</currency> will have a final total of <currency>100</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it.</p>
-        let Create settings (formParameters: PostCouponsParams) =
+        let Create settings (formOptions: Coupons'CreateOptions) =
             $"/v1/coupons"
-            |> RestApi.postAsync<_, Coupon> settings formParameters
+            |> RestApi.postAsync<_, Coupon> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Coupon: string
         }
         with
@@ -992,11 +992,11 @@ module StripeService =
                 }
 
         ///<p>You can delete coupons via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can’t redeem the coupon. You can also delete coupons via the API.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/coupons/{queryParameters.Coupon}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/coupons/{options.Coupon}"
             |> RestApi.deleteAsync<DeletedCoupon> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Coupon: string
             Expand: string list option
         }
@@ -1008,11 +1008,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the coupon with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/coupons/{queryParameters.Coupon}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/coupons/{options.Coupon}?expand={options.Expand}"
             |> RestApi.getAsync<Coupon> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Coupon: string
         }
         with
@@ -1022,13 +1022,13 @@ module StripeService =
                 }
 
         ///<p>Updates the metadata of a coupon. Other coupon details (currency, duration, amount_off) are, by design, not editable.</p>
-        let Update settings (formParameters: PostCouponsCouponParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/coupons/{queryParameters.Coupon}"
-            |> RestApi.postAsync<_, Coupon> settings formParameters
+        let Update settings (formOptions: Coupons'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/coupons/{options.Coupon}"
+            |> RestApi.postAsync<_, Coupon> settings formOptions
 
     module CreditNotes =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Customer: string option
             EndingBefore: string option
             Expand: string list option
@@ -1048,8 +1048,8 @@ module StripeService =
                 }
 
         ///<p>Returns a list of credit notes.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/credit_notes?customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&invoice={queryParameters.Invoice}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/credit_notes?customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&invoice={options.Invoice}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<CreditNote list> settings
 
         ///<p>Issue a credit note to adjust the amount of a finalized invoice. For a <code>status=open</code> invoice, a credit note reduces
@@ -1063,11 +1063,11 @@ module StripeService =
         ///For post-payment credit notes the sum of the refund, credit and outside of Stripe amounts must equal the credit note total.
         ///You may issue multiple credit notes for an invoice. Each credit note will increment the invoice’s <code>pre_payment_credit_notes_amount</code>
         ///or <code>post_payment_credit_notes_amount</code> depending on its <code>status</code> at the time of credit note creation.</p>
-        let Create settings (formParameters: PostCreditNotesParams) =
+        let Create settings (formOptions: CreditNotes'CreateOptions) =
             $"/v1/credit_notes"
-            |> RestApi.postAsync<_, CreditNote> settings formParameters
+            |> RestApi.postAsync<_, CreditNote> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -1079,11 +1079,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the credit note object with the given identifier.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/credit_notes/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/credit_notes/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<CreditNote> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Id: string
         }
         with
@@ -1093,13 +1093,13 @@ module StripeService =
                 }
 
         ///<p>Updates an existing credit note.</p>
-        let Update settings (formParameters: PostCreditNotesIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/credit_notes/{queryParameters.Id}"
-            |> RestApi.postAsync<_, CreditNote> settings formParameters
+        let Update settings (formOptions: CreditNotes'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/credit_notes/{options.Id}"
+            |> RestApi.postAsync<_, CreditNote> settings formOptions
 
     module CreditNotesPreview =
 
-        type PreviewQueryParams = {
+        type PreviewOptions = {
             Invoice: string
             Amount: int option
             CreditAmount: int option
@@ -1129,13 +1129,13 @@ module StripeService =
                 }
 
         ///<p>Get a preview of a credit note without creating it.</p>
-        let Preview settings (queryParameters: PreviewQueryParams) =
-            $"/v1/credit_notes/preview?invoice={queryParameters.Invoice}&amount={queryParameters.Amount}&credit_amount={queryParameters.CreditAmount}&expand={queryParameters.Expand}&lines={queryParameters.Lines}&memo={queryParameters.Memo}&metadata={queryParameters.Metadata}&out_of_band_amount={queryParameters.OutOfBandAmount}&reason={queryParameters.Reason}&refund={queryParameters.Refund}&refund_amount={queryParameters.RefundAmount}"
+        let Preview settings (options: PreviewOptions) =
+            $"/v1/credit_notes/preview?invoice={options.Invoice}&amount={options.Amount}&credit_amount={options.CreditAmount}&expand={options.Expand}&lines={options.Lines}&memo={options.Memo}&metadata={options.Metadata}&out_of_band_amount={options.OutOfBandAmount}&reason={options.Reason}&refund={options.Refund}&refund_amount={options.RefundAmount}"
             |> RestApi.getAsync<CreditNote> settings
 
     module CreditNotesPreviewLines =
 
-        type PreviewLinesQueryParams = {
+        type PreviewLinesOptions = {
             Invoice: string
             Amount: int option
             CreditAmount: int option
@@ -1171,13 +1171,13 @@ module StripeService =
                 }
 
         ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
-        let PreviewLines settings (queryParameters: PreviewLinesQueryParams) =
-            $"/v1/credit_notes/preview/lines?invoice={queryParameters.Invoice}&amount={queryParameters.Amount}&credit_amount={queryParameters.CreditAmount}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&lines={queryParameters.Lines}&memo={queryParameters.Memo}&metadata={queryParameters.Metadata}&out_of_band_amount={queryParameters.OutOfBandAmount}&reason={queryParameters.Reason}&refund={queryParameters.Refund}&refund_amount={queryParameters.RefundAmount}&starting_after={queryParameters.StartingAfter}"
+        let PreviewLines settings (options: PreviewLinesOptions) =
+            $"/v1/credit_notes/preview/lines?invoice={options.Invoice}&amount={options.Amount}&credit_amount={options.CreditAmount}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&lines={options.Lines}&memo={options.Memo}&metadata={options.Metadata}&out_of_band_amount={options.OutOfBandAmount}&reason={options.Reason}&refund={options.Refund}&refund_amount={options.RefundAmount}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<CreditNoteLineItem list> settings
 
     module CreditNotesLines =
 
-        type ListQueryParams = {
+        type ListOptions = {
             CreditNote: string
             EndingBefore: string option
             Expand: string list option
@@ -1195,13 +1195,13 @@ module StripeService =
                 }
 
         ///<p>When retrieving a credit note, you’ll get a <strong>lines</strong> property containing the the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/credit_notes/{queryParameters.CreditNote}/lines?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/credit_notes/{options.CreditNote}/lines?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<CreditNoteLineItem list> settings
 
     module CreditNotesVoid =
 
-        type VoidCreditNoteQueryParams = {
+        type VoidCreditNoteOptions = {
             Id: string
         }
         with
@@ -1211,13 +1211,13 @@ module StripeService =
                 }
 
         ///<p>Marks a credit note as void. Learn more about <a href="/docs/billing/invoices/credit-notes#voiding">voiding credit notes</a>.</p>
-        let VoidCreditNote settings (formParameters: PostCreditNotesIdVoidParams) (queryParameters: VoidCreditNoteQueryParams) =
-            $"/v1/credit_notes/{queryParameters.Id}/void"
-            |> RestApi.postAsync<_, CreditNote> settings formParameters
+        let VoidCreditNote settings (formOptions: CreditNotesVoid'VoidCreditNoteOptions) (options: VoidCreditNoteOptions) =
+            $"/v1/credit_notes/{options.Id}/void"
+            |> RestApi.postAsync<_, CreditNote> settings formOptions
 
     module Customers =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Email: string option
             EndingBefore: string option
@@ -1237,16 +1237,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/customers?created={queryParameters.Created}&email={queryParameters.Email}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/customers?created={options.Created}&email={options.Email}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Customer list> settings
 
         ///<p>Creates a new customer object.</p>
-        let Create settings (formParameters: PostCustomersParams) =
+        let Create settings (formOptions: Customers'CreateOptions) =
             $"/v1/customers"
-            |> RestApi.postAsync<_, Customer> settings formParameters
+            |> RestApi.postAsync<_, Customer> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Customer: string
         }
         with
@@ -1256,11 +1256,11 @@ module StripeService =
                 }
 
         ///<p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/customers/{options.Customer}"
             |> RestApi.deleteAsync<DeletedCustomer> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Customer: string
             Expand: string list option
         }
@@ -1272,11 +1272,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing customer. You need only supply the unique customer identifier that was returned upon customer creation.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/customers/{options.Customer}?expand={options.Expand}"
             |> RestApi.getAsync<Customer> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Customer: string
         }
         with
@@ -1287,13 +1287,13 @@ module StripeService =
 
         ///<p>Updates the specified customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged. For example, if you pass the <strong>source</strong> parameter, that becomes the customer’s active source (e.g., a card) to be used for all charges in the future. When you update a customer to a new valid card source by passing the <strong>source</strong> parameter: for each of the customer’s current subscriptions, if the subscription bills automatically and is in the <code>past_due</code> state, then the latest open invoice for the subscription with automatic collection enabled will be retried. This retry will not count as an automatic retry, and will not affect the next regularly scheduled payment for the invoice. Changing the <strong>default_source</strong> for a customer will not trigger this behavior.
         ///This request accepts mostly the same arguments as the customer creation call.</p>
-        let Update settings (formParameters: PostCustomersCustomerParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}"
-            |> RestApi.postAsync<_, Customer> settings formParameters
+        let Update settings (formOptions: Customers'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/customers/{options.Customer}"
+            |> RestApi.postAsync<_, Customer> settings formOptions
 
     module CustomersBalanceTransactions =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Customer: string
             EndingBefore: string option
             Expand: string list option
@@ -1311,11 +1311,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of transactions that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/balance_transactions?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/customers/{options.Customer}/balance_transactions?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<CustomerBalanceTransaction list> settings
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Customer: string
         }
         with
@@ -1325,11 +1325,11 @@ module StripeService =
                 }
 
         ///<p>Creates an immutable transaction that updates the customer’s credit <a href="/docs/billing/customer/balance">balance</a>.</p>
-        let Create settings (formParameters: PostCustomersCustomerBalanceTransactionsParams) (queryParameters: CreateQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/balance_transactions"
-            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings formParameters
+        let Create settings (formOptions: CustomersBalanceTransactions'CreateOptions) (options: CreateOptions) =
+            $"/v1/customers/{options.Customer}/balance_transactions"
+            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Customer: string
             Transaction: string
             Expand: string list option
@@ -1343,11 +1343,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves a specific customer balance transaction that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/balance_transactions/{queryParameters.Transaction}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/customers/{options.Customer}/balance_transactions/{options.Transaction}?expand={options.Expand}"
             |> RestApi.getAsync<CustomerBalanceTransaction> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Customer: string
             Transaction: string
         }
@@ -1359,13 +1359,13 @@ module StripeService =
                 }
 
         ///<p>Most credit balance transaction fields are immutable, but you may update its <code>description</code> and <code>metadata</code>.</p>
-        let Update settings (formParameters: PostCustomersCustomerBalanceTransactionsTransactionParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/balance_transactions/{queryParameters.Transaction}"
-            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings formParameters
+        let Update settings (formOptions: CustomersBalanceTransactions'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/customers/{options.Customer}/balance_transactions/{options.Transaction}"
+            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings formOptions
 
     module CustomersDiscount =
 
-        type DeleteDiscountQueryParams = {
+        type DeleteDiscountOptions = {
             Customer: string
         }
         with
@@ -1375,13 +1375,13 @@ module StripeService =
                 }
 
         ///<p>Removes the currently applied discount on a customer.</p>
-        let DeleteDiscount settings (queryParameters: DeleteDiscountQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/discount"
+        let DeleteDiscount settings (options: DeleteDiscountOptions) =
+            $"/v1/customers/{options.Customer}/discount"
             |> RestApi.deleteAsync<DeletedDiscount> settings
 
     module CustomersSources =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Customer: string
             EndingBefore: string option
             Expand: string list option
@@ -1401,11 +1401,11 @@ module StripeService =
                 }
 
         ///<p>List sources for a specified customer.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/sources?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&object={queryParameters.Object}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/customers/{options.Customer}/sources?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&object={options.Object}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<PaymentSource list> settings
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Customer: string
         }
         with
@@ -1418,11 +1418,11 @@ module StripeService =
         ///If the card’s owner has no default card, then the new card will become the default.
         ///However, if the owner already has a default, then it will not change.
         ///To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>
-        let Create settings (formParameters: PostCustomersCustomerSourcesParams) (queryParameters: CreateQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/sources"
-            |> RestApi.postAsync<_, PaymentSource> settings formParameters
+        let Create settings (formOptions: CustomersSources'CreateOptions) (options: CreateOptions) =
+            $"/v1/customers/{options.Customer}/sources"
+            |> RestApi.postAsync<_, PaymentSource> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Customer: string
             Id: string
         }
@@ -1434,11 +1434,11 @@ module StripeService =
                 }
 
         ///<p>Delete a specified source for a given customer.</p>
-        let Delete settings (formParameters: DeleteCustomersCustomerSourcesIdParams) (queryParameters: DeleteQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/sources/{queryParameters.Id}"
+        let Delete settings (formOptions: CustomersSources'DeleteOptions) (options: DeleteOptions) =
+            $"/v1/customers/{options.Customer}/sources/{options.Id}"
             |> RestApi.deleteAsync<PaymentSource> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Customer: string
             Id: string
             Expand: string list option
@@ -1452,11 +1452,11 @@ module StripeService =
                 }
 
         ///<p>Retrieve a specified source for a given customer.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/sources/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/customers/{options.Customer}/sources/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<PaymentSource> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Customer: string
             Id: string
         }
@@ -1468,13 +1468,13 @@ module StripeService =
                 }
 
         ///<p>Update a specified source for a given customer.</p>
-        let Update settings (formParameters: PostCustomersCustomerSourcesIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/sources/{queryParameters.Id}"
-            |> RestApi.postAsync<_, Card> settings formParameters
+        let Update settings (formOptions: CustomersSources'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/customers/{options.Customer}/sources/{options.Id}"
+            |> RestApi.postAsync<_, Card> settings formOptions
 
     module CustomersSourcesVerify =
 
-        type VerifyQueryParams = {
+        type VerifyOptions = {
             Customer: string
             Id: string
         }
@@ -1486,13 +1486,13 @@ module StripeService =
                 }
 
         ///<p>Verify a specified bank account for a given customer.</p>
-        let Verify settings (formParameters: PostCustomersCustomerSourcesIdVerifyParams) (queryParameters: VerifyQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/sources/{queryParameters.Id}/verify"
-            |> RestApi.postAsync<_, BankAccount> settings formParameters
+        let Verify settings (formOptions: CustomersSourcesVerify'VerifyOptions) (options: VerifyOptions) =
+            $"/v1/customers/{options.Customer}/sources/{options.Id}/verify"
+            |> RestApi.postAsync<_, BankAccount> settings formOptions
 
     module CustomersTaxIds =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Customer: string
             EndingBefore: string option
             Expand: string list option
@@ -1510,11 +1510,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of tax IDs for a customer.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/tax_ids?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/customers/{options.Customer}/tax_ids?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<TaxId list> settings
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Customer: string
         }
         with
@@ -1524,11 +1524,11 @@ module StripeService =
                 }
 
         ///<p>Creates a new <code>TaxID</code> object for a customer.</p>
-        let Create settings (formParameters: PostCustomersCustomerTaxIdsParams) (queryParameters: CreateQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/tax_ids"
-            |> RestApi.postAsync<_, TaxId> settings formParameters
+        let Create settings (formOptions: CustomersTaxIds'CreateOptions) (options: CreateOptions) =
+            $"/v1/customers/{options.Customer}/tax_ids"
+            |> RestApi.postAsync<_, TaxId> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Customer: string
             Id: string
         }
@@ -1540,11 +1540,11 @@ module StripeService =
                 }
 
         ///<p>Deletes an existing <code>TaxID</code> object.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/tax_ids/{queryParameters.Id}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/customers/{options.Customer}/tax_ids/{options.Id}"
             |> RestApi.deleteAsync<DeletedTaxId> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Customer: string
             Id: string
             Expand: string list option
@@ -1558,13 +1558,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the <code>TaxID</code> object with the given identifier.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/customers/{queryParameters.Customer}/tax_ids/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/customers/{options.Customer}/tax_ids/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<TaxId> settings
 
     module Disputes =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Charge: string option
             Created: int option
             EndingBefore: string option
@@ -1586,11 +1586,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your disputes.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/disputes?charge={queryParameters.Charge}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&payment_intent={queryParameters.PaymentIntent}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/disputes?charge={options.Charge}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Dispute list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Dispute: string
             Expand: string list option
         }
@@ -1602,11 +1602,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the dispute with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/disputes/{queryParameters.Dispute}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/disputes/{options.Dispute}?expand={options.Expand}"
             |> RestApi.getAsync<Dispute> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Dispute: string
         }
         with
@@ -1617,13 +1617,13 @@ module StripeService =
 
         ///<p>When you get a dispute, contacting your customer is always the best first step. If that doesn’t work, you can submit evidence to help us resolve the dispute in your favor. You can do this in your <a href="https://dashboard.stripe.com/disputes">dashboard</a>, but if you prefer, you can use the API to submit evidence programmatically.
         ///Depending on your dispute type, different evidence fields will give you a better chance of winning your dispute. To figure out which evidence fields to provide, see our <a href="/docs/disputes/categories">guide to dispute types</a>.</p>
-        let Update settings (formParameters: PostDisputesDisputeParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/disputes/{queryParameters.Dispute}"
-            |> RestApi.postAsync<_, Dispute> settings formParameters
+        let Update settings (formOptions: Disputes'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/disputes/{options.Dispute}"
+            |> RestApi.postAsync<_, Dispute> settings formOptions
 
     module DisputesClose =
 
-        type CloseQueryParams = {
+        type CloseOptions = {
             Dispute: string
         }
         with
@@ -1634,18 +1634,18 @@ module StripeService =
 
         ///<p>Closing the dispute for a charge indicates that you do not have any evidence to submit and are essentially dismissing the dispute, acknowledging it as lost.
         ///The status of the dispute will change from <code>needs_response</code> to <code>lost</code>. <em>Closing a dispute is irreversible</em>.</p>
-        let Close settings (formParameters: PostDisputesDisputeCloseParams) (queryParameters: CloseQueryParams) =
-            $"/v1/disputes/{queryParameters.Dispute}/close"
-            |> RestApi.postAsync<_, Dispute> settings formParameters
+        let Close settings (formOptions: DisputesClose'CloseOptions) (options: CloseOptions) =
+            $"/v1/disputes/{options.Dispute}/close"
+            |> RestApi.postAsync<_, Dispute> settings formOptions
 
     module EphemeralKeys =
 
         ///<p>Creates a short-lived API key for a given resource.</p>
-        let Create settings (formParameters: PostEphemeralKeysParams) =
+        let Create settings (formOptions: EphemeralKeys'CreateOptions) =
             $"/v1/ephemeral_keys"
-            |> RestApi.postAsync<_, EphemeralKey> settings formParameters
+            |> RestApi.postAsync<_, EphemeralKey> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Key: string
         }
         with
@@ -1655,13 +1655,13 @@ module StripeService =
                 }
 
         ///<p>Invalidates a short-lived API key for a given resource.</p>
-        let Delete settings (formParameters: DeleteEphemeralKeysKeyParams) (queryParameters: DeleteQueryParams) =
-            $"/v1/ephemeral_keys/{queryParameters.Key}"
+        let Delete settings (formOptions: EphemeralKeys'DeleteOptions) (options: DeleteOptions) =
+            $"/v1/ephemeral_keys/{options.Key}"
             |> RestApi.deleteAsync<EphemeralKey> settings
 
     module Events =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             DeliverySuccess: bool option
             EndingBefore: string option
@@ -1685,11 +1685,11 @@ module StripeService =
                 }
 
         ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="/docs/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header).</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/events?created={queryParameters.Created}&delivery_success={queryParameters.DeliverySuccess}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&type={queryParameters.``type``}&types={queryParameters.Types}"
+        let List settings (options: ListOptions) =
+            $"/v1/events?created={options.Created}&delivery_success={options.DeliverySuccess}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&type={options.``type``}&types={options.Types}"
             |> RestApi.getAsync<Event list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -1701,13 +1701,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an event. Supply the unique identifier of the event, which you might have received in a webhook.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/events/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/events/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<Event> settings
 
     module ExchangeRates =
 
-        type ListQueryParams = {
+        type ListOptions = {
             EndingBefore: string option
             Expand: string list option
             Limit: int option
@@ -1723,11 +1723,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of objects that contain the rates at which foreign currencies are converted to one another. Only shows the currencies for which Stripe supports.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/exchange_rates?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/exchange_rates?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<ExchangeRate list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             RateId: string
             Expand: string list option
         }
@@ -1739,13 +1739,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the exchange rates from the given currency to every supported currency.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/exchange_rates/{queryParameters.RateId}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/exchange_rates/{options.RateId}?expand={options.Expand}"
             |> RestApi.getAsync<ExchangeRate> settings
 
     module FileLinks =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -1767,16 +1767,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of file links.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/file_links?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&expired={queryParameters.Expired}&file={queryParameters.File}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/file_links?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&expired={options.Expired}&file={options.File}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<FileLink list> settings
 
         ///<p>Creates a new file link object.</p>
-        let Create settings (formParameters: PostFileLinksParams) =
+        let Create settings (formOptions: FileLinks'CreateOptions) =
             $"/v1/file_links"
-            |> RestApi.postAsync<_, FileLink> settings formParameters
+            |> RestApi.postAsync<_, FileLink> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Link: string
             Expand: string list option
         }
@@ -1788,11 +1788,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the file link with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/file_links/{queryParameters.Link}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/file_links/{options.Link}?expand={options.Expand}"
             |> RestApi.getAsync<FileLink> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Link: string
         }
         with
@@ -1802,13 +1802,13 @@ module StripeService =
                 }
 
         ///<p>Updates an existing file link object. Expired links can no longer be updated.</p>
-        let Update settings (formParameters: PostFileLinksLinkParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/file_links/{queryParameters.Link}"
-            |> RestApi.postAsync<_, FileLink> settings formParameters
+        let Update settings (formOptions: FileLinks'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/file_links/{options.Link}"
+            |> RestApi.postAsync<_, FileLink> settings formOptions
 
     module Files =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -1828,17 +1828,17 @@ module StripeService =
                 }
 
         ///<p>Returns a list of the files that your account has access to. The files are returned sorted by creation date, with the most recently created files appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/files?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&purpose={queryParameters.Purpose}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/files?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&purpose={options.Purpose}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<File list> settings
 
         ///<p>To upload a file to Stripe, you’ll need to send a request of type <code>multipart/form-data</code>. The request should contain the file you would like to upload, as well as the parameters for creating a file.
         ///All of Stripe’s officially supported Client libraries should have support for sending <code>multipart/form-data</code>.</p>
-        let Create settings =
+        let Create settings (formOptions: Files'CreateOptions) =
             $"/v1/files"
-            |> RestApi.postWithoutAsync<File> settings
+            |> RestApi.postAsync<_, File> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             File: string
             Expand: string list option
         }
@@ -1850,13 +1850,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing file object. Supply the unique file ID from a file, and Stripe will return the corresponding file object. To access file contents, see the <a href="/docs/file-upload#download-file-contents">File Upload Guide</a>.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/files/{queryParameters.File}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/files/{options.File}?expand={options.Expand}"
             |> RestApi.getAsync<File> settings
 
     module Invoiceitems =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Customer: string option
             EndingBefore: string option
@@ -1880,16 +1880,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/invoiceitems?created={queryParameters.Created}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&invoice={queryParameters.Invoice}&limit={queryParameters.Limit}&pending={queryParameters.Pending}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/invoiceitems?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&invoice={options.Invoice}&limit={options.Limit}&pending={options.Pending}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Invoiceitem list> settings
 
         ///<p>Creates an item to be added to a draft invoice (up to 250 items per invoice). If no invoice is specified, the item will be on the next invoice created for the customer specified.</p>
-        let Create settings (formParameters: PostInvoiceitemsParams) =
+        let Create settings (formOptions: Invoiceitems'CreateOptions) =
             $"/v1/invoiceitems"
-            |> RestApi.postAsync<_, Invoiceitem> settings formParameters
+            |> RestApi.postAsync<_, Invoiceitem> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Invoiceitem: string
         }
         with
@@ -1899,11 +1899,11 @@ module StripeService =
                 }
 
         ///<p>Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they’re not attached to invoices, or if it’s attached to a draft invoice.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/invoiceitems/{queryParameters.Invoiceitem}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/invoiceitems/{options.Invoiceitem}"
             |> RestApi.deleteAsync<DeletedInvoiceitem> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Invoiceitem: string
             Expand: string list option
         }
@@ -1915,11 +1915,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the invoice item with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/invoiceitems/{queryParameters.Invoiceitem}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/invoiceitems/{options.Invoiceitem}?expand={options.Expand}"
             |> RestApi.getAsync<Invoiceitem> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Invoiceitem: string
         }
         with
@@ -1929,13 +1929,13 @@ module StripeService =
                 }
 
         ///<p>Updates the amount or description of an invoice item on an upcoming invoice. Updating an invoice item is only possible before the invoice it’s attached to is closed.</p>
-        let Update settings (formParameters: PostInvoiceitemsInvoiceitemParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/invoiceitems/{queryParameters.Invoiceitem}"
-            |> RestApi.postAsync<_, Invoiceitem> settings formParameters
+        let Update settings (formOptions: Invoiceitems'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/invoiceitems/{options.Invoiceitem}"
+            |> RestApi.postAsync<_, Invoiceitem> settings formOptions
 
     module Invoices =
 
-        type ListQueryParams = {
+        type ListOptions = {
             CollectionMethod: string option
             Created: int option
             Customer: string option
@@ -1963,16 +1963,16 @@ module StripeService =
                 }
 
         ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/invoices?collection_method={queryParameters.CollectionMethod}&created={queryParameters.Created}&customer={queryParameters.Customer}&due_date={queryParameters.DueDate}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}&subscription={queryParameters.Subscription}"
+        let List settings (options: ListOptions) =
+            $"/v1/invoices?collection_method={options.CollectionMethod}&created={options.Created}&customer={options.Customer}&due_date={options.DueDate}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&subscription={options.Subscription}"
             |> RestApi.getAsync<Invoice list> settings
 
         ///<p>This endpoint creates a draft invoice for a given customer. The draft invoice created pulls in all pending invoice items on that customer, including prorations. The invoice remains a draft until you <a href="#finalize_invoice">finalize</a> the invoice, which allows you to <a href="#pay_invoice">pay</a> or <a href="#send_invoice">send</a> the invoice to your customers.</p>
-        let Create settings (formParameters: PostInvoicesParams) =
+        let Create settings (formOptions: Invoices'CreateOptions) =
             $"/v1/invoices"
-            |> RestApi.postAsync<_, Invoice> settings formParameters
+            |> RestApi.postAsync<_, Invoice> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Invoice: string
         }
         with
@@ -1982,11 +1982,11 @@ module StripeService =
                 }
 
         ///<p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="#void_invoice">voided</a>.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/invoices/{options.Invoice}"
             |> RestApi.deleteAsync<DeletedInvoice> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Invoice: string
             Expand: string list option
         }
@@ -1998,11 +1998,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the invoice with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/invoices/{options.Invoice}?expand={options.Expand}"
             |> RestApi.getAsync<Invoice> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Invoice: string
         }
         with
@@ -2016,13 +2016,13 @@ module StripeService =
         ///If you would like to stop the Stripe Billing engine from automatically finalizing, reattempting payments on,
         ///sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automatically reconciling</a> invoices, pass
         ///<code>auto_advance=false</code>.</p>
-        let Update settings (formParameters: PostInvoicesInvoiceParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}"
-            |> RestApi.postAsync<_, Invoice> settings formParameters
+        let Update settings (formOptions: Invoices'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/invoices/{options.Invoice}"
+            |> RestApi.postAsync<_, Invoice> settings formOptions
 
     module InvoicesUpcoming =
 
-        type UpcomingQueryParams = {
+        type UpcomingOptions = {
             Coupon: string option
             SubscriptionStartDate: int option
             SubscriptionProrationDate: int option
@@ -2068,13 +2068,13 @@ module StripeService =
         ///<p>At any time, you can preview the upcoming invoice for a customer. This will show you all the charges that are pending, including subscription renewal charges, invoice item charges, etc. It will also show you any discounts that are applicable to the invoice.
         ///Note that when you are viewing an upcoming invoice, you are simply viewing a preview – the invoice has not yet been created. As such, the upcoming invoice will not show up in invoice listing calls, and you cannot use the API to pay or edit the invoice. If you want to change the amount that your customer will be billed, you can add, remove, or update pending invoice items, or update the customer’s discount.
         ///You can preview the effects of updating a subscription, including a preview of what proration will take place. To ensure that the actual proration is calculated exactly the same as the previewed proration, you should pass a <code>proration_date</code> parameter when doing the actual subscription update. The value passed in should be the same as the <code>subscription_proration_date</code> returned on the upcoming invoice resource. The recommended way to get only the prorations being previewed is to consider only proration line items where <code>period[start]</code> is equal to the <code>subscription_proration_date</code> on the upcoming invoice resource.</p>
-        let Upcoming settings (queryParameters: UpcomingQueryParams) =
-            $"/v1/invoices/upcoming?coupon={queryParameters.Coupon}&subscription_start_date={queryParameters.SubscriptionStartDate}&subscription_proration_date={queryParameters.SubscriptionProrationDate}&subscription_proration_behavior={queryParameters.SubscriptionProrationBehavior}&subscription_items={queryParameters.SubscriptionItems}&subscription_default_tax_rates={queryParameters.SubscriptionDefaultTaxRates}&subscription_cancel_now={queryParameters.SubscriptionCancelNow}&subscription_cancel_at_period_end={queryParameters.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={queryParameters.SubscriptionCancelAt}&subscription_billing_cycle_anchor={queryParameters.SubscriptionBillingCycleAnchor}&subscription={queryParameters.Subscription}&schedule={queryParameters.Schedule}&invoice_items={queryParameters.InvoiceItems}&expand={queryParameters.Expand}&discounts={queryParameters.Discounts}&customer={queryParameters.Customer}&subscription_trial_end={queryParameters.SubscriptionTrialEnd}&subscription_trial_from_plan={queryParameters.SubscriptionTrialFromPlan}"
+        let Upcoming settings (options: UpcomingOptions) =
+            $"/v1/invoices/upcoming?coupon={options.Coupon}&subscription_start_date={options.SubscriptionStartDate}&subscription_proration_date={options.SubscriptionProrationDate}&subscription_proration_behavior={options.SubscriptionProrationBehavior}&subscription_items={options.SubscriptionItems}&subscription_default_tax_rates={options.SubscriptionDefaultTaxRates}&subscription_cancel_now={options.SubscriptionCancelNow}&subscription_cancel_at_period_end={options.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={options.SubscriptionCancelAt}&subscription_billing_cycle_anchor={options.SubscriptionBillingCycleAnchor}&subscription={options.Subscription}&schedule={options.Schedule}&invoice_items={options.InvoiceItems}&expand={options.Expand}&discounts={options.Discounts}&customer={options.Customer}&subscription_trial_end={options.SubscriptionTrialEnd}&subscription_trial_from_plan={options.SubscriptionTrialFromPlan}"
             |> RestApi.getAsync<Invoice> settings
 
     module InvoicesUpcomingLines =
 
-        type UpcomingLinesQueryParams = {
+        type UpcomingLinesOptions = {
             Coupon: string option
             SubscriptionStartDate: int option
             SubscriptionProrationDate: int option
@@ -2124,13 +2124,13 @@ module StripeService =
                 }
 
         ///<p>When retrieving an upcoming invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
-        let UpcomingLines settings (queryParameters: UpcomingLinesQueryParams) =
-            $"/v1/invoices/upcoming/lines?coupon={queryParameters.Coupon}&subscription_start_date={queryParameters.SubscriptionStartDate}&subscription_proration_date={queryParameters.SubscriptionProrationDate}&subscription_proration_behavior={queryParameters.SubscriptionProrationBehavior}&subscription_items={queryParameters.SubscriptionItems}&subscription_default_tax_rates={queryParameters.SubscriptionDefaultTaxRates}&subscription_cancel_now={queryParameters.SubscriptionCancelNow}&subscription_cancel_at_period_end={queryParameters.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={queryParameters.SubscriptionCancelAt}&subscription_trial_end={queryParameters.SubscriptionTrialEnd}&subscription_billing_cycle_anchor={queryParameters.SubscriptionBillingCycleAnchor}&starting_after={queryParameters.StartingAfter}&schedule={queryParameters.Schedule}&limit={queryParameters.Limit}&invoice_items={queryParameters.InvoiceItems}&expand={queryParameters.Expand}&ending_before={queryParameters.EndingBefore}&discounts={queryParameters.Discounts}&customer={queryParameters.Customer}&subscription={queryParameters.Subscription}&subscription_trial_from_plan={queryParameters.SubscriptionTrialFromPlan}"
+        let UpcomingLines settings (options: UpcomingLinesOptions) =
+            $"/v1/invoices/upcoming/lines?coupon={options.Coupon}&subscription_start_date={options.SubscriptionStartDate}&subscription_proration_date={options.SubscriptionProrationDate}&subscription_proration_behavior={options.SubscriptionProrationBehavior}&subscription_items={options.SubscriptionItems}&subscription_default_tax_rates={options.SubscriptionDefaultTaxRates}&subscription_cancel_now={options.SubscriptionCancelNow}&subscription_cancel_at_period_end={options.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={options.SubscriptionCancelAt}&subscription_trial_end={options.SubscriptionTrialEnd}&subscription_billing_cycle_anchor={options.SubscriptionBillingCycleAnchor}&starting_after={options.StartingAfter}&schedule={options.Schedule}&limit={options.Limit}&invoice_items={options.InvoiceItems}&expand={options.Expand}&ending_before={options.EndingBefore}&discounts={options.Discounts}&customer={options.Customer}&subscription={options.Subscription}&subscription_trial_from_plan={options.SubscriptionTrialFromPlan}"
             |> RestApi.getAsync<LineItem list> settings
 
     module InvoicesFinalize =
 
-        type FinalizeInvoiceQueryParams = {
+        type FinalizeInvoiceOptions = {
             Invoice: string
         }
         with
@@ -2140,13 +2140,13 @@ module StripeService =
                 }
 
         ///<p>Stripe automatically finalizes drafts before sending and attempting payment on invoices. However, if you’d like to finalize a draft invoice manually, you can do so using this method.</p>
-        let FinalizeInvoice settings (formParameters: PostInvoicesInvoiceFinalizeParams) (queryParameters: FinalizeInvoiceQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}/finalize"
-            |> RestApi.postAsync<_, Invoice> settings formParameters
+        let FinalizeInvoice settings (formOptions: InvoicesFinalize'FinalizeInvoiceOptions) (options: FinalizeInvoiceOptions) =
+            $"/v1/invoices/{options.Invoice}/finalize"
+            |> RestApi.postAsync<_, Invoice> settings formOptions
 
     module InvoicesLines =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Invoice: string
             EndingBefore: string option
             Expand: string list option
@@ -2164,13 +2164,13 @@ module StripeService =
                 }
 
         ///<p>When retrieving an invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}/lines?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/invoices/{options.Invoice}/lines?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<LineItem list> settings
 
     module InvoicesMarkUncollectible =
 
-        type MarkUncollectibleQueryParams = {
+        type MarkUncollectibleOptions = {
             Invoice: string
         }
         with
@@ -2180,13 +2180,13 @@ module StripeService =
                 }
 
         ///<p>Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes.</p>
-        let MarkUncollectible settings (formParameters: PostInvoicesInvoiceMarkUncollectibleParams) (queryParameters: MarkUncollectibleQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}/mark_uncollectible"
-            |> RestApi.postAsync<_, Invoice> settings formParameters
+        let MarkUncollectible settings (formOptions: InvoicesMarkUncollectible'MarkUncollectibleOptions) (options: MarkUncollectibleOptions) =
+            $"/v1/invoices/{options.Invoice}/mark_uncollectible"
+            |> RestApi.postAsync<_, Invoice> settings formOptions
 
     module InvoicesPay =
 
-        type PayQueryParams = {
+        type PayOptions = {
             Invoice: string
         }
         with
@@ -2196,13 +2196,13 @@ module StripeService =
                 }
 
         ///<p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
-        let Pay settings (formParameters: PostInvoicesInvoicePayParams) (queryParameters: PayQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}/pay"
-            |> RestApi.postAsync<_, Invoice> settings formParameters
+        let Pay settings (formOptions: InvoicesPay'PayOptions) (options: PayOptions) =
+            $"/v1/invoices/{options.Invoice}/pay"
+            |> RestApi.postAsync<_, Invoice> settings formOptions
 
     module InvoicesSend =
 
-        type SendInvoiceQueryParams = {
+        type SendInvoiceOptions = {
             Invoice: string
         }
         with
@@ -2213,13 +2213,13 @@ module StripeService =
 
         ///<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.
         ///Requests made in test-mode result in no emails being sent, despite sending an <code>invoice.sent</code> event.</p>
-        let SendInvoice settings (formParameters: PostInvoicesInvoiceSendParams) (queryParameters: SendInvoiceQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}/send"
-            |> RestApi.postAsync<_, Invoice> settings formParameters
+        let SendInvoice settings (formOptions: InvoicesSend'SendInvoiceOptions) (options: SendInvoiceOptions) =
+            $"/v1/invoices/{options.Invoice}/send"
+            |> RestApi.postAsync<_, Invoice> settings formOptions
 
     module InvoicesVoid =
 
-        type VoidInvoiceQueryParams = {
+        type VoidInvoiceOptions = {
             Invoice: string
         }
         with
@@ -2229,13 +2229,13 @@ module StripeService =
                 }
 
         ///<p>Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is similar to <a href="#delete_invoice">deletion</a>, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found.</p>
-        let VoidInvoice settings (formParameters: PostInvoicesInvoiceVoidParams) (queryParameters: VoidInvoiceQueryParams) =
-            $"/v1/invoices/{queryParameters.Invoice}/void"
-            |> RestApi.postAsync<_, Invoice> settings formParameters
+        let VoidInvoice settings (formOptions: InvoicesVoid'VoidInvoiceOptions) (options: VoidInvoiceOptions) =
+            $"/v1/invoices/{options.Invoice}/void"
+            |> RestApi.postAsync<_, Invoice> settings formOptions
 
     module IssuerFraudRecords =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Charge: string option
             EndingBefore: string option
             Expand: string list option
@@ -2253,11 +2253,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of issuer fraud records.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/issuer_fraud_records?charge={queryParameters.Charge}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/issuer_fraud_records?charge={options.Charge}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<IssuerFraudRecord list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             IssuerFraudRecord: string
             Expand: string list option
         }
@@ -2270,13 +2270,13 @@ module StripeService =
 
         ///<p>Retrieves the details of an issuer fraud record that has previously been created. 
         ///Please refer to the <a href="#issuer_fraud_record_object">issuer fraud record</a> object reference for more details.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/issuer_fraud_records/{queryParameters.IssuerFraudRecord}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/issuer_fraud_records/{options.IssuerFraudRecord}?expand={options.Expand}"
             |> RestApi.getAsync<IssuerFraudRecord> settings
 
     module IssuingAuthorizations =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Card: string option
             Cardholder: string option
             Created: int option
@@ -2300,11 +2300,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/issuing/authorizations?card={queryParameters.Card}&cardholder={queryParameters.Cardholder}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}"
+        let List settings (options: ListOptions) =
+            $"/v1/issuing/authorizations?card={options.Card}&cardholder={options.Cardholder}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}"
             |> RestApi.getAsync<IssuingAuthorization list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Authorization: string
             Expand: string list option
         }
@@ -2316,11 +2316,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves an Issuing <code>Authorization</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/issuing/authorizations/{queryParameters.Authorization}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/issuing/authorizations/{options.Authorization}?expand={options.Expand}"
             |> RestApi.getAsync<IssuingAuthorization> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Authorization: string
         }
         with
@@ -2330,13 +2330,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified Issuing <code>Authorization</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostIssuingAuthorizationsAuthorizationParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/issuing/authorizations/{queryParameters.Authorization}"
-            |> RestApi.postAsync<_, IssuingAuthorization> settings formParameters
+        let Update settings (formOptions: IssuingAuthorizations'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/issuing/authorizations/{options.Authorization}"
+            |> RestApi.postAsync<_, IssuingAuthorization> settings formOptions
 
     module IssuingAuthorizationsApprove =
 
-        type ApproveQueryParams = {
+        type ApproveOptions = {
             Authorization: string
         }
         with
@@ -2346,13 +2346,13 @@ module StripeService =
                 }
 
         ///<p>Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.</p>
-        let Approve settings (formParameters: PostIssuingAuthorizationsAuthorizationApproveParams) (queryParameters: ApproveQueryParams) =
-            $"/v1/issuing/authorizations/{queryParameters.Authorization}/approve"
-            |> RestApi.postAsync<_, IssuingAuthorization> settings formParameters
+        let Approve settings (formOptions: IssuingAuthorizationsApprove'ApproveOptions) (options: ApproveOptions) =
+            $"/v1/issuing/authorizations/{options.Authorization}/approve"
+            |> RestApi.postAsync<_, IssuingAuthorization> settings formOptions
 
     module IssuingAuthorizationsDecline =
 
-        type DeclineQueryParams = {
+        type DeclineOptions = {
             Authorization: string
         }
         with
@@ -2362,13 +2362,13 @@ module StripeService =
                 }
 
         ///<p>Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.</p>
-        let Decline settings (formParameters: PostIssuingAuthorizationsAuthorizationDeclineParams) (queryParameters: DeclineQueryParams) =
-            $"/v1/issuing/authorizations/{queryParameters.Authorization}/decline"
-            |> RestApi.postAsync<_, IssuingAuthorization> settings formParameters
+        let Decline settings (formOptions: IssuingAuthorizationsDecline'DeclineOptions) (options: DeclineOptions) =
+            $"/v1/issuing/authorizations/{options.Authorization}/decline"
+            |> RestApi.postAsync<_, IssuingAuthorization> settings formOptions
 
     module IssuingCardholders =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Email: string option
             EndingBefore: string option
@@ -2394,16 +2394,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/issuing/cardholders?created={queryParameters.Created}&email={queryParameters.Email}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&phone_number={queryParameters.PhoneNumber}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}&type={queryParameters.``type``}"
+        let List settings (options: ListOptions) =
+            $"/v1/issuing/cardholders?created={options.Created}&email={options.Email}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&phone_number={options.PhoneNumber}&starting_after={options.StartingAfter}&status={options.Status}&type={options.``type``}"
             |> RestApi.getAsync<IssuingCardholder list> settings
 
         ///<p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p>
-        let Create settings (formParameters: PostIssuingCardholdersParams) =
+        let Create settings (formOptions: IssuingCardholders'CreateOptions) =
             $"/v1/issuing/cardholders"
-            |> RestApi.postAsync<_, IssuingCardholder> settings formParameters
+            |> RestApi.postAsync<_, IssuingCardholder> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Cardholder: string
             Expand: string list option
         }
@@ -2415,11 +2415,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves an Issuing <code>Cardholder</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/issuing/cardholders/{queryParameters.Cardholder}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/issuing/cardholders/{options.Cardholder}?expand={options.Expand}"
             |> RestApi.getAsync<IssuingCardholder> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Cardholder: string
         }
         with
@@ -2429,13 +2429,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified Issuing <code>Cardholder</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostIssuingCardholdersCardholderParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/issuing/cardholders/{queryParameters.Cardholder}"
-            |> RestApi.postAsync<_, IssuingCardholder> settings formParameters
+        let Update settings (formOptions: IssuingCardholders'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/issuing/cardholders/{options.Cardholder}"
+            |> RestApi.postAsync<_, IssuingCardholder> settings formOptions
 
     module IssuingCards =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Cardholder: string option
             Created: int option
             EndingBefore: string option
@@ -2465,16 +2465,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/issuing/cards?cardholder={queryParameters.Cardholder}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&exp_month={queryParameters.ExpMonth}&exp_year={queryParameters.ExpYear}&expand={queryParameters.Expand}&last4={queryParameters.Last4}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}&type={queryParameters.``type``}"
+        let List settings (options: ListOptions) =
+            $"/v1/issuing/cards?cardholder={options.Cardholder}&created={options.Created}&ending_before={options.EndingBefore}&exp_month={options.ExpMonth}&exp_year={options.ExpYear}&expand={options.Expand}&last4={options.Last4}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&type={options.``type``}"
             |> RestApi.getAsync<IssuingCard list> settings
 
         ///<p>Creates an Issuing <code>Card</code> object.</p>
-        let Create settings (formParameters: PostIssuingCardsParams) =
+        let Create settings (formOptions: IssuingCards'CreateOptions) =
             $"/v1/issuing/cards"
-            |> RestApi.postAsync<_, IssuingCard> settings formParameters
+            |> RestApi.postAsync<_, IssuingCard> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Card: string
             Expand: string list option
         }
@@ -2486,11 +2486,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves an Issuing <code>Card</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/issuing/cards/{queryParameters.Card}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/issuing/cards/{options.Card}?expand={options.Expand}"
             |> RestApi.getAsync<IssuingCard> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Card: string
         }
         with
@@ -2500,13 +2500,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified Issuing <code>Card</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostIssuingCardsCardParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/issuing/cards/{queryParameters.Card}"
-            |> RestApi.postAsync<_, IssuingCard> settings formParameters
+        let Update settings (formOptions: IssuingCards'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/issuing/cards/{options.Card}"
+            |> RestApi.postAsync<_, IssuingCard> settings formOptions
 
     module IssuingDisputes =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -2528,16 +2528,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/issuing/disputes?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}&transaction={queryParameters.Transaction}"
+        let List settings (options: ListOptions) =
+            $"/v1/issuing/disputes?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&transaction={options.Transaction}"
             |> RestApi.getAsync<IssuingDispute list> settings
 
         ///<p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p>
-        let Create settings (formParameters: PostIssuingDisputesParams) =
+        let Create settings (formOptions: IssuingDisputes'CreateOptions) =
             $"/v1/issuing/disputes"
-            |> RestApi.postAsync<_, IssuingDispute> settings formParameters
+            |> RestApi.postAsync<_, IssuingDispute> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Dispute: string
             Expand: string list option
         }
@@ -2549,11 +2549,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves an Issuing <code>Dispute</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/issuing/disputes/{queryParameters.Dispute}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/issuing/disputes/{options.Dispute}?expand={options.Expand}"
             |> RestApi.getAsync<IssuingDispute> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Dispute: string
         }
         with
@@ -2563,13 +2563,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified Issuing <code>Dispute</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Properties on the <code>evidence</code> object can be unset by passing in an empty string.</p>
-        let Update settings (formParameters: PostIssuingDisputesDisputeParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/issuing/disputes/{queryParameters.Dispute}"
-            |> RestApi.postAsync<_, IssuingDispute> settings formParameters
+        let Update settings (formOptions: IssuingDisputes'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/issuing/disputes/{options.Dispute}"
+            |> RestApi.postAsync<_, IssuingDispute> settings formOptions
 
     module IssuingDisputesSubmit =
 
-        type SubmitQueryParams = {
+        type SubmitOptions = {
             Dispute: string
         }
         with
@@ -2579,13 +2579,13 @@ module StripeService =
                 }
 
         ///<p>Submits an Issuing <code>Dispute</code> to the card network. Stripe validates that all evidence fields required for the dispute’s reason are present. For more details, see <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a>.</p>
-        let Submit settings (formParameters: PostIssuingDisputesDisputeSubmitParams) (queryParameters: SubmitQueryParams) =
-            $"/v1/issuing/disputes/{queryParameters.Dispute}/submit"
-            |> RestApi.postAsync<_, IssuingDispute> settings formParameters
+        let Submit settings (formOptions: IssuingDisputesSubmit'SubmitOptions) (options: SubmitOptions) =
+            $"/v1/issuing/disputes/{options.Dispute}/submit"
+            |> RestApi.postAsync<_, IssuingDispute> settings formOptions
 
     module IssuingTransactions =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Card: string option
             Cardholder: string option
             Created: int option
@@ -2607,11 +2607,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/issuing/transactions?card={queryParameters.Card}&cardholder={queryParameters.Cardholder}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/issuing/transactions?card={options.Card}&cardholder={options.Cardholder}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<IssuingTransaction list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Transaction: string
             Expand: string list option
         }
@@ -2623,11 +2623,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves an Issuing <code>Transaction</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/issuing/transactions/{queryParameters.Transaction}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/issuing/transactions/{options.Transaction}?expand={options.Expand}"
             |> RestApi.getAsync<IssuingTransaction> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Transaction: string
         }
         with
@@ -2637,13 +2637,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified Issuing <code>Transaction</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostIssuingTransactionsTransactionParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/issuing/transactions/{queryParameters.Transaction}"
-            |> RestApi.postAsync<_, IssuingTransaction> settings formParameters
+        let Update settings (formOptions: IssuingTransactions'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/issuing/transactions/{options.Transaction}"
+            |> RestApi.postAsync<_, IssuingTransaction> settings formOptions
 
     module Mandates =
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Mandate: string
             Expand: string list option
         }
@@ -2655,13 +2655,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves a Mandate object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/mandates/{queryParameters.Mandate}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/mandates/{options.Mandate}?expand={options.Expand}"
             |> RestApi.getAsync<Mandate> settings
 
     module OrderReturns =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -2681,11 +2681,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your order returns. The returns are returned sorted by creation date, with the most recently created return appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/order_returns?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&order={queryParameters.Order}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/order_returns?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&order={options.Order}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<OrderReturn list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -2697,13 +2697,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing order return. Supply the unique order ID from either an order return creation request or the order return list, and Stripe will return the corresponding order information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/order_returns/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/order_returns/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<OrderReturn> settings
 
     module Orders =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Customer: string option
             EndingBefore: string option
@@ -2731,16 +2731,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your orders. The orders are returned sorted by creation date, with the most recently created orders appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/orders?created={queryParameters.Created}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&ids={queryParameters.Ids}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}&status_transitions={queryParameters.StatusTransitions}&upstream_ids={queryParameters.UpstreamIds}"
+        let List settings (options: ListOptions) =
+            $"/v1/orders?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&ids={options.Ids}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&status_transitions={options.StatusTransitions}&upstream_ids={options.UpstreamIds}"
             |> RestApi.getAsync<Order list> settings
 
         ///<p>Creates a new order object.</p>
-        let Create settings (formParameters: PostOrdersParams) =
+        let Create settings (formOptions: Orders'CreateOptions) =
             $"/v1/orders"
-            |> RestApi.postAsync<_, Order> settings formParameters
+            |> RestApi.postAsync<_, Order> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -2752,11 +2752,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing order. Supply the unique order ID from either an order creation request or the order list, and Stripe will return the corresponding order information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/orders/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/orders/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<Order> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Id: string
         }
         with
@@ -2766,13 +2766,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specific order by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostOrdersIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/orders/{queryParameters.Id}"
-            |> RestApi.postAsync<_, Order> settings formParameters
+        let Update settings (formOptions: Orders'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/orders/{options.Id}"
+            |> RestApi.postAsync<_, Order> settings formOptions
 
     module OrdersPay =
 
-        type PayQueryParams = {
+        type PayOptions = {
             Id: string
         }
         with
@@ -2782,13 +2782,13 @@ module StripeService =
                 }
 
         ///<p>Pay an order by providing a <code>source</code> to create a payment.</p>
-        let Pay settings (formParameters: PostOrdersIdPayParams) (queryParameters: PayQueryParams) =
-            $"/v1/orders/{queryParameters.Id}/pay"
-            |> RestApi.postAsync<_, Order> settings formParameters
+        let Pay settings (formOptions: OrdersPay'PayOptions) (options: PayOptions) =
+            $"/v1/orders/{options.Id}/pay"
+            |> RestApi.postAsync<_, Order> settings formOptions
 
     module OrdersReturns =
 
-        type ReturnOrderQueryParams = {
+        type ReturnOrderOptions = {
             Id: string
         }
         with
@@ -2798,13 +2798,13 @@ module StripeService =
                 }
 
         ///<p>Return all or part of an order. The order must have a status of <code>paid</code> or <code>fulfilled</code> before it can be returned. Once all items have been returned, the order will become <code>canceled</code> or <code>returned</code> depending on which status the order started in.</p>
-        let ReturnOrder settings (formParameters: PostOrdersIdReturnsParams) (queryParameters: ReturnOrderQueryParams) =
-            $"/v1/orders/{queryParameters.Id}/returns"
-            |> RestApi.postAsync<_, OrderReturn> settings formParameters
+        let ReturnOrder settings (formOptions: OrdersReturns'ReturnOrderOptions) (options: ReturnOrderOptions) =
+            $"/v1/orders/{options.Id}/returns"
+            |> RestApi.postAsync<_, OrderReturn> settings formOptions
 
     module PaymentIntents =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Customer: string option
             EndingBefore: string option
@@ -2824,8 +2824,8 @@ module StripeService =
                 }
 
         ///<p>Returns a list of PaymentIntents.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/payment_intents?created={queryParameters.Created}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/payment_intents?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<PaymentIntent list> settings
 
         ///<p>Creates a PaymentIntent object.
@@ -2836,11 +2836,11 @@ module StripeService =
         ///and confirming the PaymentIntent in the same call. You may use any parameters
         ///available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when <code>confirm=true</code>
         ///is supplied.</p>
-        let Create settings (formParameters: PostPaymentIntentsParams) =
+        let Create settings (formOptions: PaymentIntents'CreateOptions) =
             $"/v1/payment_intents"
-            |> RestApi.postAsync<_, PaymentIntent> settings formParameters
+            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Intent: string
             Expand: string list option
             ClientSecret: string option
@@ -2856,11 +2856,11 @@ module StripeService =
         ///<p>Retrieves the details of a PaymentIntent that has previously been created. 
         ///Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. 
         ///When retrieved with a publishable key, only a subset of properties will be returned. Please refer to the <a href="#payment_intent_object">payment intent</a> object reference for more details.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/payment_intents/{queryParameters.Intent}?client_secret={queryParameters.ClientSecret}&expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/payment_intents/{options.Intent}?client_secret={options.ClientSecret}&expand={options.Expand}"
             |> RestApi.getAsync<PaymentIntent> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Intent: string
         }
         with
@@ -2875,13 +2875,13 @@ module StripeService =
         ///always require you to confirm the PaymentIntent again. If you prefer to
         ///update and confirm at the same time, we recommend updating properties via
         ///the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>
-        let Update settings (formParameters: PostPaymentIntentsIntentParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/payment_intents/{queryParameters.Intent}"
-            |> RestApi.postAsync<_, PaymentIntent> settings formParameters
+        let Update settings (formOptions: PaymentIntents'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/payment_intents/{options.Intent}"
+            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
 
     module PaymentIntentsCancel =
 
-        type CancelQueryParams = {
+        type CancelOptions = {
             Intent: string
         }
         with
@@ -2892,13 +2892,13 @@ module StripeService =
 
         ///<p>A PaymentIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_capture</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. 
         ///Once canceled, no additional charges will be made by the PaymentIntent and any operations on the PaymentIntent will fail with an error. For PaymentIntents with <code>status=’requires_capture’</code>, the remaining <code>amount_capturable</code> will automatically be refunded.</p>
-        let Cancel settings (formParameters: PostPaymentIntentsIntentCancelParams) (queryParameters: CancelQueryParams) =
-            $"/v1/payment_intents/{queryParameters.Intent}/cancel"
-            |> RestApi.postAsync<_, PaymentIntent> settings formParameters
+        let Cancel settings (formOptions: PaymentIntentsCancel'CancelOptions) (options: CancelOptions) =
+            $"/v1/payment_intents/{options.Intent}/cancel"
+            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
 
     module PaymentIntentsCapture =
 
-        type CaptureQueryParams = {
+        type CaptureOptions = {
             Intent: string
         }
         with
@@ -2910,13 +2910,13 @@ module StripeService =
         ///<p>Capture the funds of an existing uncaptured PaymentIntent when its status is <code>requires_capture</code>.
         ///Uncaptured PaymentIntents will be canceled exactly seven days after they are created.
         ///Learn more about <a href="/docs/payments/capture-later">separate authorization and capture</a>.</p>
-        let Capture settings (formParameters: PostPaymentIntentsIntentCaptureParams) (queryParameters: CaptureQueryParams) =
-            $"/v1/payment_intents/{queryParameters.Intent}/capture"
-            |> RestApi.postAsync<_, PaymentIntent> settings formParameters
+        let Capture settings (formOptions: PaymentIntentsCapture'CaptureOptions) (options: CaptureOptions) =
+            $"/v1/payment_intents/{options.Intent}/capture"
+            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
 
     module PaymentIntentsConfirm =
 
-        type ConfirmQueryParams = {
+        type ConfirmOptions = {
             Intent: string
         }
         with
@@ -2947,13 +2947,13 @@ module StripeService =
         ///explicitly re-confirm the PaymentIntent to initiate the next payment
         ///attempt. Read the <a href="/docs/payments/payment-intents/web-manual">expanded documentation</a>
         ///to learn more about manual confirmation.</p>
-        let Confirm settings (formParameters: PostPaymentIntentsIntentConfirmParams) (queryParameters: ConfirmQueryParams) =
-            $"/v1/payment_intents/{queryParameters.Intent}/confirm"
-            |> RestApi.postAsync<_, PaymentIntent> settings formParameters
+        let Confirm settings (formOptions: PaymentIntentsConfirm'ConfirmOptions) (options: ConfirmOptions) =
+            $"/v1/payment_intents/{options.Intent}/confirm"
+            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
 
     module PaymentMethods =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Customer: string
             ``type``: string
             EndingBefore: string option
@@ -2973,16 +2973,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of PaymentMethods for a given Customer</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/payment_methods?customer={queryParameters.Customer}&type={queryParameters.``type``}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/payment_methods?customer={options.Customer}&type={options.``type``}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<PaymentMethod list> settings
 
         ///<p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
-        let Create settings (formParameters: PostPaymentMethodsParams) =
+        let Create settings (formOptions: PaymentMethods'CreateOptions) =
             $"/v1/payment_methods"
-            |> RestApi.postAsync<_, PaymentMethod> settings formParameters
+            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             PaymentMethod: string
             Expand: string list option
         }
@@ -2994,11 +2994,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves a PaymentMethod object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/payment_methods/{queryParameters.PaymentMethod}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/payment_methods/{options.PaymentMethod}?expand={options.Expand}"
             |> RestApi.getAsync<PaymentMethod> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             PaymentMethod: string
         }
         with
@@ -3008,13 +3008,13 @@ module StripeService =
                 }
 
         ///<p>Updates a PaymentMethod object. A PaymentMethod must be attached a customer to be updated.</p>
-        let Update settings (formParameters: PostPaymentMethodsPaymentMethodParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/payment_methods/{queryParameters.PaymentMethod}"
-            |> RestApi.postAsync<_, PaymentMethod> settings formParameters
+        let Update settings (formOptions: PaymentMethods'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/payment_methods/{options.PaymentMethod}"
+            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
 
     module PaymentMethodsAttach =
 
-        type AttachQueryParams = {
+        type AttachOptions = {
             PaymentMethod: string
         }
         with
@@ -3032,13 +3032,13 @@ module StripeService =
         ///To use this PaymentMethod as the default for invoice or subscription payments,
         ///set <a href="/docs/api/customers/update#update_customer-invoice_settings-default_payment_method"><code>invoice_settings.default_payment_method</code></a>,
         ///on the Customer to the PaymentMethod’s ID.</p>
-        let Attach settings (formParameters: PostPaymentMethodsPaymentMethodAttachParams) (queryParameters: AttachQueryParams) =
-            $"/v1/payment_methods/{queryParameters.PaymentMethod}/attach"
-            |> RestApi.postAsync<_, PaymentMethod> settings formParameters
+        let Attach settings (formOptions: PaymentMethodsAttach'AttachOptions) (options: AttachOptions) =
+            $"/v1/payment_methods/{options.PaymentMethod}/attach"
+            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
 
     module PaymentMethodsDetach =
 
-        type DetachQueryParams = {
+        type DetachOptions = {
             PaymentMethod: string
         }
         with
@@ -3048,13 +3048,13 @@ module StripeService =
                 }
 
         ///<p>Detaches a PaymentMethod object from a Customer.</p>
-        let Detach settings (formParameters: PostPaymentMethodsPaymentMethodDetachParams) (queryParameters: DetachQueryParams) =
-            $"/v1/payment_methods/{queryParameters.PaymentMethod}/detach"
-            |> RestApi.postAsync<_, PaymentMethod> settings formParameters
+        let Detach settings (formOptions: PaymentMethodsDetach'DetachOptions) (options: DetachOptions) =
+            $"/v1/payment_methods/{options.PaymentMethod}/detach"
+            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
 
     module Payouts =
 
-        type ListQueryParams = {
+        type ListOptions = {
             ArrivalDate: int option
             Created: int option
             Destination: string option
@@ -3078,18 +3078,18 @@ module StripeService =
                 }
 
         ///<p>Returns a list of existing payouts sent to third-party bank accounts or that Stripe has sent you. The payouts are returned in sorted order, with the most recently created payouts appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/payouts?arrival_date={queryParameters.ArrivalDate}&created={queryParameters.Created}&destination={queryParameters.Destination}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}"
+        let List settings (options: ListOptions) =
+            $"/v1/payouts?arrival_date={options.ArrivalDate}&created={options.Created}&destination={options.Destination}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}"
             |> RestApi.getAsync<Payout list> settings
 
         ///<p>To send funds to your own bank account, you create a new payout object. Your <a href="#balance">Stripe balance</a> must be able to cover the payout amount, or you’ll receive an “Insufficient Funds” error.
         ///If your API key is in test mode, money won’t actually be sent, though everything else will occur as if in live mode.
         ///If you are creating a manual payout on a Stripe account that uses multiple payment source types, you’ll need to specify the source type balance that the payout should draw from. The <a href="#balance_object">balance object</a> details available and pending amounts by source type.</p>
-        let Create settings (formParameters: PostPayoutsParams) =
+        let Create settings (formOptions: Payouts'CreateOptions) =
             $"/v1/payouts"
-            |> RestApi.postAsync<_, Payout> settings formParameters
+            |> RestApi.postAsync<_, Payout> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Payout: string
             Expand: string list option
         }
@@ -3101,11 +3101,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing payout. Supply the unique payout ID from either a payout creation request or the payout list, and Stripe will return the corresponding payout information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/payouts/{queryParameters.Payout}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/payouts/{options.Payout}?expand={options.Expand}"
             |> RestApi.getAsync<Payout> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Payout: string
         }
         with
@@ -3115,13 +3115,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified payout by setting the values of the parameters passed. Any parameters not provided will be left unchanged. This request accepts only the metadata as arguments.</p>
-        let Update settings (formParameters: PostPayoutsPayoutParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/payouts/{queryParameters.Payout}"
-            |> RestApi.postAsync<_, Payout> settings formParameters
+        let Update settings (formOptions: Payouts'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/payouts/{options.Payout}"
+            |> RestApi.postAsync<_, Payout> settings formOptions
 
     module PayoutsCancel =
 
-        type CancelQueryParams = {
+        type CancelOptions = {
             Payout: string
         }
         with
@@ -3131,13 +3131,13 @@ module StripeService =
                 }
 
         ///<p>A previously created payout can be canceled if it has not yet been paid out. Funds will be refunded to your available balance. You may not cancel automatic Stripe payouts.</p>
-        let Cancel settings (formParameters: PostPayoutsPayoutCancelParams) (queryParameters: CancelQueryParams) =
-            $"/v1/payouts/{queryParameters.Payout}/cancel"
-            |> RestApi.postAsync<_, Payout> settings formParameters
+        let Cancel settings (formOptions: PayoutsCancel'CancelOptions) (options: CancelOptions) =
+            $"/v1/payouts/{options.Payout}/cancel"
+            |> RestApi.postAsync<_, Payout> settings formOptions
 
     module PayoutsReverse =
 
-        type ReverseQueryParams = {
+        type ReverseOptions = {
             Payout: string
         }
         with
@@ -3148,13 +3148,13 @@ module StripeService =
 
         ///<p>Reverses a payout by debiting the destination bank account. Only payouts for connected accounts to US bank accounts may be reversed at this time. If the payout is in the <code>pending</code> status, <code>/v1/payouts/:id/cancel</code> should be used instead.
         ///By requesting a reversal via <code>/v1/payouts/:id/reverse</code>, you confirm that the authorized signatory of the selected bank account has authorized the debit on the bank account and that no other authorization is required.</p>
-        let Reverse settings (formParameters: PostPayoutsPayoutReverseParams) (queryParameters: ReverseQueryParams) =
-            $"/v1/payouts/{queryParameters.Payout}/reverse"
-            |> RestApi.postAsync<_, Payout> settings formParameters
+        let Reverse settings (formOptions: PayoutsReverse'ReverseOptions) (options: ReverseOptions) =
+            $"/v1/payouts/{options.Payout}/reverse"
+            |> RestApi.postAsync<_, Payout> settings formOptions
 
     module Plans =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Active: bool option
             Created: int option
             EndingBefore: string option
@@ -3176,16 +3176,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your plans.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/plans?active={queryParameters.Active}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&product={queryParameters.Product}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/plans?active={options.Active}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&product={options.Product}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Plan list> settings
 
         ///<p>You can now model subscriptions more flexibly using the <a href="#prices">Prices API</a>. It replaces the Plans API and is backwards compatible to simplify your migration.</p>
-        let Create settings (formParameters: PostPlansParams) =
+        let Create settings (formOptions: Plans'CreateOptions) =
             $"/v1/plans"
-            |> RestApi.postAsync<_, Plan> settings formParameters
+            |> RestApi.postAsync<_, Plan> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Plan: string
         }
         with
@@ -3195,11 +3195,11 @@ module StripeService =
                 }
 
         ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/plans/{queryParameters.Plan}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/plans/{options.Plan}"
             |> RestApi.deleteAsync<DeletedPlan> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Plan: string
             Expand: string list option
         }
@@ -3211,11 +3211,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the plan with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/plans/{queryParameters.Plan}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/plans/{options.Plan}?expand={options.Expand}"
             |> RestApi.getAsync<Plan> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Plan: string
         }
         with
@@ -3225,13 +3225,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified plan by setting the values of the parameters passed. Any parameters not provided are left unchanged. By design, you cannot change a plan’s ID, amount, currency, or billing cycle.</p>
-        let Update settings (formParameters: PostPlansPlanParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/plans/{queryParameters.Plan}"
-            |> RestApi.postAsync<_, Plan> settings formParameters
+        let Update settings (formOptions: Plans'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/plans/{options.Plan}"
+            |> RestApi.postAsync<_, Plan> settings formOptions
 
     module Prices =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Active: bool option
             Created: int option
             Currency: string option
@@ -3261,16 +3261,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your prices.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/prices?active={queryParameters.Active}&created={queryParameters.Created}&currency={queryParameters.Currency}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&lookup_keys={queryParameters.LookupKeys}&product={queryParameters.Product}&recurring={queryParameters.Recurring}&starting_after={queryParameters.StartingAfter}&type={queryParameters.``type``}"
+        let List settings (options: ListOptions) =
+            $"/v1/prices?active={options.Active}&created={options.Created}&currency={options.Currency}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&lookup_keys={options.LookupKeys}&product={options.Product}&recurring={options.Recurring}&starting_after={options.StartingAfter}&type={options.``type``}"
             |> RestApi.getAsync<Price list> settings
 
         ///<p>Creates a new price for an existing product. The price can be recurring or one-time.</p>
-        let Create settings (formParameters: PostPricesParams) =
+        let Create settings (formOptions: Prices'CreateOptions) =
             $"/v1/prices"
-            |> RestApi.postAsync<_, Price> settings formParameters
+            |> RestApi.postAsync<_, Price> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Price: string
             Expand: string list option
         }
@@ -3282,11 +3282,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the price with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/prices/{queryParameters.Price}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/prices/{options.Price}?expand={options.Expand}"
             |> RestApi.getAsync<Price> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Price: string
         }
         with
@@ -3296,13 +3296,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified price by setting the values of the parameters passed. Any parameters not provided are left unchanged.</p>
-        let Update settings (formParameters: PostPricesPriceParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/prices/{queryParameters.Price}"
-            |> RestApi.postAsync<_, Price> settings formParameters
+        let Update settings (formOptions: Prices'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/prices/{options.Price}"
+            |> RestApi.postAsync<_, Price> settings formOptions
 
     module Products =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Active: bool option
             Created: int option
             EndingBefore: string option
@@ -3330,16 +3330,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/products?active={queryParameters.Active}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&ids={queryParameters.Ids}&limit={queryParameters.Limit}&shippable={queryParameters.Shippable}&starting_after={queryParameters.StartingAfter}&type={queryParameters.``type``}&url={queryParameters.Url}"
+        let List settings (options: ListOptions) =
+            $"/v1/products?active={options.Active}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&ids={options.Ids}&limit={options.Limit}&shippable={options.Shippable}&starting_after={options.StartingAfter}&type={options.``type``}&url={options.Url}"
             |> RestApi.getAsync<Product list> settings
 
         ///<p>Creates a new product object.</p>
-        let Create settings (formParameters: PostProductsParams) =
+        let Create settings (formOptions: Products'CreateOptions) =
             $"/v1/products"
-            |> RestApi.postAsync<_, Product> settings formParameters
+            |> RestApi.postAsync<_, Product> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Id: string
         }
         with
@@ -3349,11 +3349,11 @@ module StripeService =
                 }
 
         ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/products/{queryParameters.Id}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/products/{options.Id}"
             |> RestApi.deleteAsync<DeletedProduct> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -3365,11 +3365,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/products/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/products/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<Product> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Id: string
         }
         with
@@ -3379,13 +3379,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specific product by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostProductsIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/products/{queryParameters.Id}"
-            |> RestApi.postAsync<_, Product> settings formParameters
+        let Update settings (formOptions: Products'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/products/{options.Id}"
+            |> RestApi.postAsync<_, Product> settings formOptions
 
     module PromotionCodes =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Active: bool option
             Code: string option
             Coupon: string option
@@ -3411,16 +3411,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your promotion codes.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/promotion_codes?active={queryParameters.Active}&code={queryParameters.Code}&coupon={queryParameters.Coupon}&created={queryParameters.Created}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/promotion_codes?active={options.Active}&code={options.Code}&coupon={options.Coupon}&created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<PromotionCode list> settings
 
         ///<p>A promotion code points to a coupon. You can optionally restrict the code to a specific customer, redemption limit, and expiration date.</p>
-        let Create settings (formParameters: PostPromotionCodesParams) =
+        let Create settings (formOptions: PromotionCodes'CreateOptions) =
             $"/v1/promotion_codes"
-            |> RestApi.postAsync<_, PromotionCode> settings formParameters
+            |> RestApi.postAsync<_, PromotionCode> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             PromotionCode: string
             Expand: string list option
         }
@@ -3432,11 +3432,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the promotion code with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/promotion_codes/{queryParameters.PromotionCode}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/promotion_codes/{options.PromotionCode}?expand={options.Expand}"
             |> RestApi.getAsync<PromotionCode> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             PromotionCode: string
         }
         with
@@ -3446,13 +3446,13 @@ module StripeService =
                 }
 
         ///<p>Updates the specified promotion code by setting the values of the parameters passed. Most fields are, by design, not editable.</p>
-        let Update settings (formParameters: PostPromotionCodesPromotionCodeParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/promotion_codes/{queryParameters.PromotionCode}"
-            |> RestApi.postAsync<_, PromotionCode> settings formParameters
+        let Update settings (formOptions: PromotionCodes'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/promotion_codes/{options.PromotionCode}"
+            |> RestApi.postAsync<_, PromotionCode> settings formOptions
 
     module RadarEarlyFraudWarnings =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Charge: string option
             EndingBefore: string option
             Expand: string list option
@@ -3470,11 +3470,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of early fraud warnings.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/radar/early_fraud_warnings?charge={queryParameters.Charge}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/radar/early_fraud_warnings?charge={options.Charge}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<RadarEarlyFraudWarning list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             EarlyFraudWarning: string
             Expand: string list option
         }
@@ -3487,13 +3487,13 @@ module StripeService =
 
         ///<p>Retrieves the details of an early fraud warning that has previously been created. 
         ///Please refer to the <a href="#early_fraud_warning_object">early fraud warning</a> object reference for more details.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/radar/early_fraud_warnings/{queryParameters.EarlyFraudWarning}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/radar/early_fraud_warnings/{options.EarlyFraudWarning}?expand={options.Expand}"
             |> RestApi.getAsync<RadarEarlyFraudWarning> settings
 
     module RadarValueListItems =
 
-        type ListQueryParams = {
+        type ListOptions = {
             ValueList: string
             Created: int option
             EndingBefore: string option
@@ -3515,16 +3515,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/radar/value_list_items?value_list={queryParameters.ValueList}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&value={queryParameters.Value}"
+        let List settings (options: ListOptions) =
+            $"/v1/radar/value_list_items?value_list={options.ValueList}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&value={options.Value}"
             |> RestApi.getAsync<RadarValueListItem list> settings
 
         ///<p>Creates a new <code>ValueListItem</code> object, which is added to the specified parent value list.</p>
-        let Create settings (formParameters: PostRadarValueListItemsParams) =
+        let Create settings (formOptions: RadarValueListItems'CreateOptions) =
             $"/v1/radar/value_list_items"
-            |> RestApi.postAsync<_, RadarValueListItem> settings formParameters
+            |> RestApi.postAsync<_, RadarValueListItem> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Item: string
         }
         with
@@ -3534,11 +3534,11 @@ module StripeService =
                 }
 
         ///<p>Deletes a <code>ValueListItem</code> object, removing it from its parent value list.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/radar/value_list_items/{queryParameters.Item}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/radar/value_list_items/{options.Item}"
             |> RestApi.deleteAsync<DeletedRadarValueListItem> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Item: string
             Expand: string list option
         }
@@ -3550,13 +3550,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves a <code>ValueListItem</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/radar/value_list_items/{queryParameters.Item}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/radar/value_list_items/{options.Item}?expand={options.Expand}"
             |> RestApi.getAsync<RadarValueListItem> settings
 
     module RadarValueLists =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Alias: string option
             Contains: string option
             Created: int option
@@ -3578,16 +3578,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/radar/value_lists?alias={queryParameters.Alias}&contains={queryParameters.Contains}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/radar/value_lists?alias={options.Alias}&contains={options.Contains}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<RadarValueList list> settings
 
         ///<p>Creates a new <code>ValueList</code> object, which can then be referenced in rules.</p>
-        let Create settings (formParameters: PostRadarValueListsParams) =
+        let Create settings (formOptions: RadarValueLists'CreateOptions) =
             $"/v1/radar/value_lists"
-            |> RestApi.postAsync<_, RadarValueList> settings formParameters
+            |> RestApi.postAsync<_, RadarValueList> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             ValueList: string
         }
         with
@@ -3597,11 +3597,11 @@ module StripeService =
                 }
 
         ///<p>Deletes a <code>ValueList</code> object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/radar/value_lists/{queryParameters.ValueList}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/radar/value_lists/{options.ValueList}"
             |> RestApi.deleteAsync<DeletedRadarValueList> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             ValueList: string
             Expand: string list option
         }
@@ -3613,11 +3613,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves a <code>ValueList</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/radar/value_lists/{queryParameters.ValueList}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/radar/value_lists/{options.ValueList}?expand={options.Expand}"
             |> RestApi.getAsync<RadarValueList> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             ValueList: string
         }
         with
@@ -3627,13 +3627,13 @@ module StripeService =
                 }
 
         ///<p>Updates a <code>ValueList</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Note that <code>item_type</code> is immutable.</p>
-        let Update settings (formParameters: PostRadarValueListsValueListParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/radar/value_lists/{queryParameters.ValueList}"
-            |> RestApi.postAsync<_, RadarValueList> settings formParameters
+        let Update settings (formOptions: RadarValueLists'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/radar/value_lists/{options.ValueList}"
+            |> RestApi.postAsync<_, RadarValueList> settings formOptions
 
     module Recipients =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -3655,17 +3655,17 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your recipients. The recipients are returned sorted by creation date, with the most recently created recipients appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/recipients?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&type={queryParameters.``type``}&verified={queryParameters.Verified}"
+        let List settings (options: ListOptions) =
+            $"/v1/recipients?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&type={options.``type``}&verified={options.Verified}"
             |> RestApi.getAsync<Recipient list> settings
 
         ///<p>Creates a new <code>Recipient</code> object and verifies the recipient’s identity.
         ///Also verifies the recipient’s bank account information or debit card, if either is provided.</p>
-        let Create settings (formParameters: PostRecipientsParams) =
+        let Create settings (formOptions: Recipients'CreateOptions) =
             $"/v1/recipients"
-            |> RestApi.postAsync<_, Recipient> settings formParameters
+            |> RestApi.postAsync<_, Recipient> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Id: string
         }
         with
@@ -3675,11 +3675,11 @@ module StripeService =
                 }
 
         ///<p>Permanently deletes a recipient. It cannot be undone.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/recipients/{queryParameters.Id}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/recipients/{options.Id}"
             |> RestApi.deleteAsync<DeletedRecipient> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -3691,11 +3691,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing recipient. You need only supply the unique recipient identifier that was returned upon recipient creation.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/recipients/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/recipients/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<Recipient> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Id: string
         }
         with
@@ -3708,13 +3708,13 @@ module StripeService =
         ///Any parameters not provided will be left unchanged.
         ///If you update the name or tax ID, the identity verification will automatically be rerun.
         ///If you update the bank account, the bank account validation will automatically be rerun.</p>
-        let Update settings (formParameters: PostRecipientsIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/recipients/{queryParameters.Id}"
-            |> RestApi.postAsync<_, Recipient> settings formParameters
+        let Update settings (formOptions: Recipients'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/recipients/{options.Id}"
+            |> RestApi.postAsync<_, Recipient> settings formOptions
 
     module Refunds =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Charge: string option
             Created: int option
             EndingBefore: string option
@@ -3736,16 +3736,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of all refunds you’ve previously created. The refunds are returned in sorted order, with the most recent refunds appearing first. For convenience, the 10 most recent refunds are always available by default on the charge object.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/refunds?charge={queryParameters.Charge}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&payment_intent={queryParameters.PaymentIntent}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/refunds?charge={options.Charge}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Refund list> settings
 
         ///<p>Create a refund.</p>
-        let Create settings (formParameters: PostRefundsParams) =
+        let Create settings (formOptions: Refunds'CreateOptions) =
             $"/v1/refunds"
-            |> RestApi.postAsync<_, Refund> settings formParameters
+            |> RestApi.postAsync<_, Refund> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Refund: string
             Expand: string list option
         }
@@ -3757,11 +3757,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing refund.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/refunds/{queryParameters.Refund}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/refunds/{options.Refund}?expand={options.Expand}"
             |> RestApi.getAsync<Refund> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Refund: string
         }
         with
@@ -3772,13 +3772,13 @@ module StripeService =
 
         ///<p>Updates the specified refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts <code>metadata</code> as an argument.</p>
-        let Update settings (formParameters: PostRefundsRefundParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/refunds/{queryParameters.Refund}"
-            |> RestApi.postAsync<_, Refund> settings formParameters
+        let Update settings (formOptions: Refunds'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/refunds/{options.Refund}"
+            |> RestApi.postAsync<_, Refund> settings formOptions
 
     module ReportingReportRuns =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -3796,16 +3796,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of Report Runs, with the most recent appearing first. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/reporting/report_runs?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/reporting/report_runs?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<ReportingReportRun list> settings
 
         ///<p>Creates a new object and begin running the report. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
-        let Create settings (formParameters: PostReportingReportRunsParams) =
+        let Create settings (formOptions: ReportingReportRuns'CreateOptions) =
             $"/v1/reporting/report_runs"
-            |> RestApi.postAsync<_, ReportingReportRun> settings formParameters
+            |> RestApi.postAsync<_, ReportingReportRun> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             ReportRun: string
             Expand: string list option
         }
@@ -3817,13 +3817,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing Report Run. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/reporting/report_runs/{queryParameters.ReportRun}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/reporting/report_runs/{options.ReportRun}?expand={options.Expand}"
             |> RestApi.getAsync<ReportingReportRun> settings
 
     module ReportingReportTypes =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Expand: string list option
         }
         with
@@ -3833,11 +3833,11 @@ module StripeService =
                 }
 
         ///<p>Returns a full list of Report Types. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/reporting/report_types?expand={queryParameters.Expand}"
+        let List settings (options: ListOptions) =
+            $"/v1/reporting/report_types?expand={options.Expand}"
             |> RestApi.getAsync<ReportingReportType list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             ReportType: string
             Expand: string list option
         }
@@ -3849,13 +3849,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of a Report Type. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/reporting/report_types/{queryParameters.ReportType}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/reporting/report_types/{options.ReportType}?expand={options.Expand}"
             |> RestApi.getAsync<ReportingReportType> settings
 
     module Reviews =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             EndingBefore: string option
             Expand: string list option
@@ -3873,11 +3873,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/reviews?created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/reviews?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Review list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Review: string
             Expand: string list option
         }
@@ -3889,13 +3889,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves a <code>Review</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/reviews/{queryParameters.Review}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/reviews/{options.Review}?expand={options.Expand}"
             |> RestApi.getAsync<Review> settings
 
     module ReviewsApprove =
 
-        type ApproveQueryParams = {
+        type ApproveOptions = {
             Review: string
         }
         with
@@ -3905,13 +3905,13 @@ module StripeService =
                 }
 
         ///<p>Approves a <code>Review</code> object, closing it and removing it from the list of reviews.</p>
-        let Approve settings (formParameters: PostReviewsReviewApproveParams) (queryParameters: ApproveQueryParams) =
-            $"/v1/reviews/{queryParameters.Review}/approve"
-            |> RestApi.postAsync<_, Review> settings formParameters
+        let Approve settings (formOptions: ReviewsApprove'ApproveOptions) (options: ApproveOptions) =
+            $"/v1/reviews/{options.Review}/approve"
+            |> RestApi.postAsync<_, Review> settings formOptions
 
     module SetupAttempts =
 
-        type ListQueryParams = {
+        type ListOptions = {
             SetupIntent: string
             Created: int option
             EndingBefore: string option
@@ -3931,13 +3931,13 @@ module StripeService =
                 }
 
         ///<p>Returns a list of SetupAttempts associated with a provided SetupIntent.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/setup_attempts?setup_intent={queryParameters.SetupIntent}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/setup_attempts?setup_intent={options.SetupIntent}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<SetupAttempt list> settings
 
     module SetupIntents =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Customer: string option
             EndingBefore: string option
@@ -3959,18 +3959,18 @@ module StripeService =
                 }
 
         ///<p>Returns a list of SetupIntents.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/setup_intents?created={queryParameters.Created}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&payment_method={queryParameters.PaymentMethod}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/setup_intents?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_method={options.PaymentMethod}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<SetupIntent list> settings
 
         ///<p>Creates a SetupIntent object.
         ///After the SetupIntent is created, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
         ///to collect any required permissions to charge the payment method later.</p>
-        let Create settings (formParameters: PostSetupIntentsParams) =
+        let Create settings (formOptions: SetupIntents'CreateOptions) =
             $"/v1/setup_intents"
-            |> RestApi.postAsync<_, SetupIntent> settings formParameters
+            |> RestApi.postAsync<_, SetupIntent> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Intent: string
             Expand: string list option
             ClientSecret: string option
@@ -3986,11 +3986,11 @@ module StripeService =
         ///<p>Retrieves the details of a SetupIntent that has previously been created. 
         ///Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. 
         ///When retrieved with a publishable key, only a subset of properties will be returned. Please refer to the <a href="#setup_intent_object">SetupIntent</a> object reference for more details.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/setup_intents/{queryParameters.Intent}?client_secret={queryParameters.ClientSecret}&expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/setup_intents/{options.Intent}?client_secret={options.ClientSecret}&expand={options.Expand}"
             |> RestApi.getAsync<SetupIntent> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Intent: string
         }
         with
@@ -4000,13 +4000,13 @@ module StripeService =
                 }
 
         ///<p>Updates a SetupIntent object.</p>
-        let Update settings (formParameters: PostSetupIntentsIntentParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/setup_intents/{queryParameters.Intent}"
-            |> RestApi.postAsync<_, SetupIntent> settings formParameters
+        let Update settings (formOptions: SetupIntents'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/setup_intents/{options.Intent}"
+            |> RestApi.postAsync<_, SetupIntent> settings formOptions
 
     module SetupIntentsCancel =
 
-        type CancelQueryParams = {
+        type CancelOptions = {
             Intent: string
         }
         with
@@ -4017,13 +4017,13 @@ module StripeService =
 
         ///<p>A SetupIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. 
         ///Once canceled, setup is abandoned and any operations on the SetupIntent will fail with an error.</p>
-        let Cancel settings (formParameters: PostSetupIntentsIntentCancelParams) (queryParameters: CancelQueryParams) =
-            $"/v1/setup_intents/{queryParameters.Intent}/cancel"
-            |> RestApi.postAsync<_, SetupIntent> settings formParameters
+        let Cancel settings (formOptions: SetupIntentsCancel'CancelOptions) (options: CancelOptions) =
+            $"/v1/setup_intents/{options.Intent}/cancel"
+            |> RestApi.postAsync<_, SetupIntent> settings formOptions
 
     module SetupIntentsConfirm =
 
-        type ConfirmQueryParams = {
+        type ConfirmOptions = {
             Intent: string
         }
         with
@@ -4043,13 +4043,13 @@ module StripeService =
         ///suggest additional actions via <code>next_action</code>. If setup fails,
         ///the SetupIntent will transition to the
         ///<code>requires_payment_method</code> status.</p>
-        let Confirm settings (formParameters: PostSetupIntentsIntentConfirmParams) (queryParameters: ConfirmQueryParams) =
-            $"/v1/setup_intents/{queryParameters.Intent}/confirm"
-            |> RestApi.postAsync<_, SetupIntent> settings formParameters
+        let Confirm settings (formOptions: SetupIntentsConfirm'ConfirmOptions) (options: ConfirmOptions) =
+            $"/v1/setup_intents/{options.Intent}/confirm"
+            |> RestApi.postAsync<_, SetupIntent> settings formOptions
 
     module SigmaScheduledQueryRuns =
 
-        type ListQueryParams = {
+        type ListOptions = {
             EndingBefore: string option
             Expand: string list option
             Limit: int option
@@ -4065,11 +4065,11 @@ module StripeService =
                 }
 
         ///<p>Returns a list of scheduled query runs.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/sigma/scheduled_query_runs?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/sigma/scheduled_query_runs?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<ScheduledQueryRun list> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             ScheduledQueryRun: string
             Expand: string list option
         }
@@ -4081,13 +4081,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an scheduled query run.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/sigma/scheduled_query_runs/{queryParameters.ScheduledQueryRun}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/sigma/scheduled_query_runs/{options.ScheduledQueryRun}?expand={options.Expand}"
             |> RestApi.getAsync<ScheduledQueryRun> settings
 
     module Skus =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Active: bool option
             Attributes: Map<string, string> option
             EndingBefore: string option
@@ -4113,16 +4113,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your SKUs. The SKUs are returned sorted by creation date, with the most recently created SKUs appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/skus?active={queryParameters.Active}&attributes={queryParameters.Attributes}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&ids={queryParameters.Ids}&in_stock={queryParameters.InStock}&limit={queryParameters.Limit}&product={queryParameters.Product}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/skus?active={options.Active}&attributes={options.Attributes}&ending_before={options.EndingBefore}&expand={options.Expand}&ids={options.Ids}&in_stock={options.InStock}&limit={options.Limit}&product={options.Product}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<Sku list> settings
 
         ///<p>Creates a new SKU associated with a product.</p>
-        let Create settings (formParameters: PostSkusParams) =
+        let Create settings (formOptions: Skus'CreateOptions) =
             $"/v1/skus"
-            |> RestApi.postAsync<_, Sku> settings formParameters
+            |> RestApi.postAsync<_, Sku> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Id: string
         }
         with
@@ -4132,11 +4132,11 @@ module StripeService =
                 }
 
         ///<p>Delete a SKU. Deleting a SKU is only possible until it has been used in an order.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/skus/{queryParameters.Id}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/skus/{options.Id}"
             |> RestApi.deleteAsync<DeletedSku> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Expand: string list option
         }
@@ -4148,11 +4148,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing SKU. Supply the unique SKU identifier from either a SKU creation request or from the product, and Stripe will return the corresponding SKU information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/skus/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/skus/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<Sku> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Id: string
         }
         with
@@ -4163,18 +4163,18 @@ module StripeService =
 
         ///<p>Updates the specific SKU by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///Note that a SKU’s <code>attributes</code> are not editable. Instead, you would need to deactivate the existing SKU and create a new one with the new attribute values.</p>
-        let Update settings (formParameters: PostSkusIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/skus/{queryParameters.Id}"
-            |> RestApi.postAsync<_, Sku> settings formParameters
+        let Update settings (formOptions: Skus'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/skus/{options.Id}"
+            |> RestApi.postAsync<_, Sku> settings formOptions
 
     module Sources =
 
         ///<p>Creates a new source object.</p>
-        let Create settings (formParameters: PostSourcesParams) =
+        let Create settings (formOptions: Sources'CreateOptions) =
             $"/v1/sources"
-            |> RestApi.postAsync<_, Source> settings formParameters
+            |> RestApi.postAsync<_, Source> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Source: string
             Expand: string list option
             ClientSecret: string option
@@ -4188,11 +4188,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves an existing source object. Supply the unique source ID from a source creation request and Stripe will return the corresponding up-to-date source object information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/sources/{queryParameters.Source}?client_secret={queryParameters.ClientSecret}&expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/sources/{options.Source}?client_secret={options.ClientSecret}&expand={options.Expand}"
             |> RestApi.getAsync<Source> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Source: string
         }
         with
@@ -4203,13 +4203,13 @@ module StripeService =
 
         ///<p>Updates the specified source by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request accepts the <code>metadata</code> and <code>owner</code> as arguments. It is also possible to update type specific information for selected payment methods. Please refer to our <a href="/docs/sources">payment method guides</a> for more detail.</p>
-        let Update settings (formParameters: PostSourcesSourceParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/sources/{queryParameters.Source}"
-            |> RestApi.postAsync<_, Source> settings formParameters
+        let Update settings (formOptions: Sources'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/sources/{options.Source}"
+            |> RestApi.postAsync<_, Source> settings formOptions
 
     module SourcesSourceTransactions =
 
-        type SourceTransactionsQueryParams = {
+        type SourceTransactionsOptions = {
             Source: string
             EndingBefore: string option
             Expand: string list option
@@ -4227,13 +4227,13 @@ module StripeService =
                 }
 
         ///<p>List source transactions for a given source.</p>
-        let SourceTransactions settings (queryParameters: SourceTransactionsQueryParams) =
-            $"/v1/sources/{queryParameters.Source}/source_transactions?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let SourceTransactions settings (options: SourceTransactionsOptions) =
+            $"/v1/sources/{options.Source}/source_transactions?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<SourceTransaction list> settings
 
     module SourcesVerify =
 
-        type VerifyQueryParams = {
+        type VerifyOptions = {
             Source: string
         }
         with
@@ -4243,13 +4243,13 @@ module StripeService =
                 }
 
         ///<p>Verify a given source.</p>
-        let Verify settings (formParameters: PostSourcesSourceVerifyParams) (queryParameters: VerifyQueryParams) =
-            $"/v1/sources/{queryParameters.Source}/verify"
-            |> RestApi.postAsync<_, Source> settings formParameters
+        let Verify settings (formOptions: SourcesVerify'VerifyOptions) (options: VerifyOptions) =
+            $"/v1/sources/{options.Source}/verify"
+            |> RestApi.postAsync<_, Source> settings formOptions
 
     module SubscriptionItems =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Subscription: string
             EndingBefore: string option
             Expand: string list option
@@ -4267,16 +4267,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your subscription items for a given subscription.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/subscription_items?subscription={queryParameters.Subscription}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/subscription_items?subscription={options.Subscription}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<SubscriptionItem list> settings
 
         ///<p>Adds a new item to an existing subscription. No existing items will be changed or replaced.</p>
-        let Create settings (formParameters: PostSubscriptionItemsParams) =
+        let Create settings (formOptions: SubscriptionItems'CreateOptions) =
             $"/v1/subscription_items"
-            |> RestApi.postAsync<_, SubscriptionItem> settings formParameters
+            |> RestApi.postAsync<_, SubscriptionItem> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Item: string
         }
         with
@@ -4286,11 +4286,11 @@ module StripeService =
                 }
 
         ///<p>Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.</p>
-        let Delete settings (formParameters: DeleteSubscriptionItemsItemParams) (queryParameters: DeleteQueryParams) =
-            $"/v1/subscription_items/{queryParameters.Item}"
+        let Delete settings (formOptions: SubscriptionItems'DeleteOptions) (options: DeleteOptions) =
+            $"/v1/subscription_items/{options.Item}"
             |> RestApi.deleteAsync<DeletedSubscriptionItem> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Item: string
             Expand: string list option
         }
@@ -4302,11 +4302,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the subscription item with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/subscription_items/{queryParameters.Item}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/subscription_items/{options.Item}?expand={options.Expand}"
             |> RestApi.getAsync<SubscriptionItem> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Item: string
         }
         with
@@ -4316,13 +4316,13 @@ module StripeService =
                 }
 
         ///<p>Updates the plan or quantity of an item on a current subscription.</p>
-        let Update settings (formParameters: PostSubscriptionItemsItemParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/subscription_items/{queryParameters.Item}"
-            |> RestApi.postAsync<_, SubscriptionItem> settings formParameters
+        let Update settings (formOptions: SubscriptionItems'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/subscription_items/{options.Item}"
+            |> RestApi.postAsync<_, SubscriptionItem> settings formOptions
 
     module SubscriptionItemsUsageRecordSummaries =
 
-        type UsageRecordSummariesQueryParams = {
+        type UsageRecordSummariesOptions = {
             SubscriptionItem: string
             EndingBefore: string option
             Expand: string list option
@@ -4341,13 +4341,13 @@ module StripeService =
 
         ///<p>For the specified subscription item, returns a list of summary objects. Each object in the list provides usage information that’s been summarized from multiple usage records and over a subscription billing period (e.g., 15 usage records in the month of September).
         ///The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
-        let UsageRecordSummaries settings (queryParameters: UsageRecordSummariesQueryParams) =
-            $"/v1/subscription_items/{queryParameters.SubscriptionItem}/usage_record_summaries?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let UsageRecordSummaries settings (options: UsageRecordSummariesOptions) =
+            $"/v1/subscription_items/{options.SubscriptionItem}/usage_record_summaries?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<UsageRecordSummary list> settings
 
     module SubscriptionItemsUsageRecords =
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             SubscriptionItem: string
         }
         with
@@ -4360,13 +4360,13 @@ module StripeService =
         ///Usage records provide <code>quantity</code> information that Stripe uses to track how much a customer is using your service. With usage information and the pricing model set up by the <a href="https://stripe.com/docs/billing/subscriptions/metered-billing">metered billing</a> plan, Stripe helps you send accurate invoices to your customers.
         ///The default calculation for usage is to add up all the <code>quantity</code> values of the usage records within a billing period. You can change this default behavior with the billing plan’s <code>aggregate_usage</code> <a href="/docs/api/plans/create#create_plan-aggregate_usage">parameter</a>. When there is more than one usage record with the same timestamp, Stripe adds the <code>quantity</code> values together. In most cases, this is the desired resolution, however, you can change this behavior with the <code>action</code> parameter.
         ///The default pricing model for metered billing is <a href="/docs/api/plans/object#plan_object-billing_scheme">per-unit pricing</a>. For finer granularity, you can configure metered billing to have a <a href="https://stripe.com/docs/billing/subscriptions/tiers">tiered pricing</a> model.</p>
-        let Create settings (formParameters: PostSubscriptionItemsSubscriptionItemUsageRecordsParams) (queryParameters: CreateQueryParams) =
-            $"/v1/subscription_items/{queryParameters.SubscriptionItem}/usage_records"
-            |> RestApi.postAsync<_, UsageRecord> settings formParameters
+        let Create settings (formOptions: SubscriptionItemsUsageRecords'CreateOptions) (options: CreateOptions) =
+            $"/v1/subscription_items/{options.SubscriptionItem}/usage_records"
+            |> RestApi.postAsync<_, UsageRecord> settings formOptions
 
     module SubscriptionSchedules =
 
-        type ListQueryParams = {
+        type ListOptions = {
             CanceledAt: int option
             CompletedAt: int option
             Created: int option
@@ -4394,16 +4394,16 @@ module StripeService =
                 }
 
         ///<p>Retrieves the list of your subscription schedules.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/subscription_schedules?canceled_at={queryParameters.CanceledAt}&completed_at={queryParameters.CompletedAt}&created={queryParameters.Created}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&released_at={queryParameters.ReleasedAt}&scheduled={queryParameters.Scheduled}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/subscription_schedules?canceled_at={options.CanceledAt}&completed_at={options.CompletedAt}&created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&released_at={options.ReleasedAt}&scheduled={options.Scheduled}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<SubscriptionSchedule list> settings
 
         ///<p>Creates a new subscription schedule object. Each customer can have up to 500 active or scheduled subscriptions.</p>
-        let Create settings (formParameters: PostSubscriptionSchedulesParams) =
+        let Create settings (formOptions: SubscriptionSchedules'CreateOptions) =
             $"/v1/subscription_schedules"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formParameters
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Schedule: string
             Expand: string list option
         }
@@ -4415,11 +4415,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing subscription schedule. You only need to supply the unique subscription schedule identifier that was returned upon subscription schedule creation.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/subscription_schedules/{queryParameters.Schedule}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/subscription_schedules/{options.Schedule}?expand={options.Expand}"
             |> RestApi.getAsync<SubscriptionSchedule> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Schedule: string
         }
         with
@@ -4429,13 +4429,13 @@ module StripeService =
                 }
 
         ///<p>Updates an existing subscription schedule.</p>
-        let Update settings (formParameters: PostSubscriptionSchedulesScheduleParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/subscription_schedules/{queryParameters.Schedule}"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formParameters
+        let Update settings (formOptions: SubscriptionSchedules'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/subscription_schedules/{options.Schedule}"
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
 
     module SubscriptionSchedulesCancel =
 
-        type CancelQueryParams = {
+        type CancelOptions = {
             Schedule: string
         }
         with
@@ -4445,13 +4445,13 @@ module StripeService =
                 }
 
         ///<p>Cancels a subscription schedule and its associated subscription immediately (if the subscription schedule has an active subscription). A subscription schedule can only be canceled if its status is <code>not_started</code> or <code>active</code>.</p>
-        let Cancel settings (formParameters: PostSubscriptionSchedulesScheduleCancelParams) (queryParameters: CancelQueryParams) =
-            $"/v1/subscription_schedules/{queryParameters.Schedule}/cancel"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formParameters
+        let Cancel settings (formOptions: SubscriptionSchedulesCancel'CancelOptions) (options: CancelOptions) =
+            $"/v1/subscription_schedules/{options.Schedule}/cancel"
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
 
     module SubscriptionSchedulesRelease =
 
-        type ReleaseQueryParams = {
+        type ReleaseOptions = {
             Schedule: string
         }
         with
@@ -4461,13 +4461,13 @@ module StripeService =
                 }
 
         ///<p>Releases the subscription schedule immediately, which will stop scheduling of its phases, but leave any existing subscription in place. A schedule can only be released if its status is <code>not_started</code> or <code>active</code>. If the subscription schedule is currently associated with a subscription, releasing it will remove its <code>subscription</code> property and set the subscription’s ID to the <code>released_subscription</code> property.</p>
-        let Release settings (formParameters: PostSubscriptionSchedulesScheduleReleaseParams) (queryParameters: ReleaseQueryParams) =
-            $"/v1/subscription_schedules/{queryParameters.Schedule}/release"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formParameters
+        let Release settings (formOptions: SubscriptionSchedulesRelease'ReleaseOptions) (options: ReleaseOptions) =
+            $"/v1/subscription_schedules/{options.Schedule}/release"
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
 
     module Subscriptions =
 
-        type ListQueryParams = {
+        type ListOptions = {
             CollectionMethod: string option
             Created: int option
             CurrentPeriodEnd: int option
@@ -4499,16 +4499,16 @@ module StripeService =
                 }
 
         ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/subscriptions?collection_method={queryParameters.CollectionMethod}&created={queryParameters.Created}&current_period_end={queryParameters.CurrentPeriodEnd}&current_period_start={queryParameters.CurrentPeriodStart}&customer={queryParameters.Customer}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&plan={queryParameters.Plan}&price={queryParameters.Price}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}"
+        let List settings (options: ListOptions) =
+            $"/v1/subscriptions?collection_method={options.CollectionMethod}&created={options.Created}&current_period_end={options.CurrentPeriodEnd}&current_period_start={options.CurrentPeriodStart}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&plan={options.Plan}&price={options.Price}&starting_after={options.StartingAfter}&status={options.Status}"
             |> RestApi.getAsync<Subscription list> settings
 
         ///<p>Creates a new subscription on an existing customer. Each customer can have up to 500 active or scheduled subscriptions.</p>
-        let Create settings (formParameters: PostSubscriptionsParams) =
+        let Create settings (formOptions: Subscriptions'CreateOptions) =
             $"/v1/subscriptions"
-            |> RestApi.postAsync<_, Subscription> settings formParameters
+            |> RestApi.postAsync<_, Subscription> settings formOptions
 
-        type CancelQueryParams = {
+        type CancelOptions = {
             SubscriptionExposedId: string
         }
         with
@@ -4520,11 +4520,11 @@ module StripeService =
         ///<p>Cancels a customer’s subscription immediately. The customer will not be charged again for the subscription.
         ///Note, however, that any pending invoice items that you’ve created will still be charged for at the end of the period, unless manually <a href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations will also be left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations will be removed.
         ///By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
-        let Cancel settings (formParameters: DeleteSubscriptionsSubscriptionExposedIdParams) (queryParameters: CancelQueryParams) =
-            $"/v1/subscriptions/{queryParameters.SubscriptionExposedId}"
+        let Cancel settings (formOptions: Subscriptions'CancelOptions) (options: CancelOptions) =
+            $"/v1/subscriptions/{options.SubscriptionExposedId}"
             |> RestApi.deleteAsync<Subscription> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             SubscriptionExposedId: string
             Expand: string list option
         }
@@ -4536,11 +4536,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the subscription with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/subscriptions/{queryParameters.SubscriptionExposedId}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/subscriptions/{options.SubscriptionExposedId}?expand={options.Expand}"
             |> RestApi.getAsync<Subscription> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             SubscriptionExposedId: string
         }
         with
@@ -4550,13 +4550,13 @@ module StripeService =
                 }
 
         ///<p>Updates an existing subscription on a customer to match the specified parameters. When changing plans or quantities, we will optionally prorate the price we charge next month to make up for any price changes. To preview how the proration will be calculated, use the <a href="#upcoming_invoice">upcoming invoice</a> endpoint.</p>
-        let Update settings (formParameters: PostSubscriptionsSubscriptionExposedIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/subscriptions/{queryParameters.SubscriptionExposedId}"
-            |> RestApi.postAsync<_, Subscription> settings formParameters
+        let Update settings (formOptions: Subscriptions'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/subscriptions/{options.SubscriptionExposedId}"
+            |> RestApi.postAsync<_, Subscription> settings formOptions
 
     module SubscriptionsDiscount =
 
-        type DeleteDiscountQueryParams = {
+        type DeleteDiscountOptions = {
             SubscriptionExposedId: string
         }
         with
@@ -4566,13 +4566,13 @@ module StripeService =
                 }
 
         ///<p>Removes the currently applied discount on a subscription.</p>
-        let DeleteDiscount settings (queryParameters: DeleteDiscountQueryParams) =
-            $"/v1/subscriptions/{queryParameters.SubscriptionExposedId}/discount"
+        let DeleteDiscount settings (options: DeleteDiscountOptions) =
+            $"/v1/subscriptions/{options.SubscriptionExposedId}/discount"
             |> RestApi.deleteAsync<DeletedDiscount> settings
 
     module TaxRates =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Active: bool option
             Created: int option
             EndingBefore: string option
@@ -4594,16 +4594,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/tax_rates?active={queryParameters.Active}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&inclusive={queryParameters.Inclusive}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/tax_rates?active={options.Active}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&inclusive={options.Inclusive}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<TaxRate list> settings
 
         ///<p>Creates a new tax rate.</p>
-        let Create settings (formParameters: PostTaxRatesParams) =
+        let Create settings (formOptions: TaxRates'CreateOptions) =
             $"/v1/tax_rates"
-            |> RestApi.postAsync<_, TaxRate> settings formParameters
+            |> RestApi.postAsync<_, TaxRate> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             TaxRate: string
             Expand: string list option
         }
@@ -4615,11 +4615,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves a tax rate with the given ID</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/tax_rates/{queryParameters.TaxRate}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/tax_rates/{options.TaxRate}?expand={options.Expand}"
             |> RestApi.getAsync<TaxRate> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             TaxRate: string
         }
         with
@@ -4629,20 +4629,20 @@ module StripeService =
                 }
 
         ///<p>Updates an existing tax rate.</p>
-        let Update settings (formParameters: PostTaxRatesTaxRateParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/tax_rates/{queryParameters.TaxRate}"
-            |> RestApi.postAsync<_, TaxRate> settings formParameters
+        let Update settings (formOptions: TaxRates'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/tax_rates/{options.TaxRate}"
+            |> RestApi.postAsync<_, TaxRate> settings formOptions
 
     module TerminalConnectionTokens =
 
         ///<p>To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.</p>
-        let Create settings (formParameters: PostTerminalConnectionTokensParams) =
+        let Create settings (formOptions: TerminalConnectionTokens'CreateOptions) =
             $"/v1/terminal/connection_tokens"
-            |> RestApi.postAsync<_, TerminalConnectionToken> settings formParameters
+            |> RestApi.postAsync<_, TerminalConnectionToken> settings formOptions
 
     module TerminalLocations =
 
-        type ListQueryParams = {
+        type ListOptions = {
             EndingBefore: string option
             Expand: string list option
             Limit: int option
@@ -4658,16 +4658,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of <code>Location</code> objects.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/terminal/locations?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/terminal/locations?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<TerminalLocation list> settings
 
         ///<p>Creates a new <code>Location</code> object.</p>
-        let Create settings (formParameters: PostTerminalLocationsParams) =
+        let Create settings (formOptions: TerminalLocations'CreateOptions) =
             $"/v1/terminal/locations"
-            |> RestApi.postAsync<_, TerminalLocation> settings formParameters
+            |> RestApi.postAsync<_, TerminalLocation> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Location: string
         }
         with
@@ -4677,11 +4677,11 @@ module StripeService =
                 }
 
         ///<p>Deletes a <code>Location</code> object.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/terminal/locations/{queryParameters.Location}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/terminal/locations/{options.Location}"
             |> RestApi.deleteAsync<DeletedTerminalLocation> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Location: string
             Expand: string list option
         }
@@ -4693,11 +4693,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves a <code>Location</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/terminal/locations/{queryParameters.Location}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/terminal/locations/{options.Location}?expand={options.Expand}"
             |> RestApi.getAsync<TerminalLocation> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Location: string
         }
         with
@@ -4707,13 +4707,13 @@ module StripeService =
                 }
 
         ///<p>Updates a <code>Location</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostTerminalLocationsLocationParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/terminal/locations/{queryParameters.Location}"
-            |> RestApi.postAsync<_, TerminalLocation> settings formParameters
+        let Update settings (formOptions: TerminalLocations'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/terminal/locations/{options.Location}"
+            |> RestApi.postAsync<_, TerminalLocation> settings formOptions
 
     module TerminalReaders =
 
-        type ListQueryParams = {
+        type ListOptions = {
             DeviceType: string option
             EndingBefore: string option
             Expand: string list option
@@ -4735,16 +4735,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of <code>Reader</code> objects.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/terminal/readers?device_type={queryParameters.DeviceType}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&location={queryParameters.Location}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}"
+        let List settings (options: ListOptions) =
+            $"/v1/terminal/readers?device_type={options.DeviceType}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&location={options.Location}&starting_after={options.StartingAfter}&status={options.Status}"
             |> RestApi.getAsync<TerminalReader list> settings
 
         ///<p>Creates a new <code>Reader</code> object.</p>
-        let Create settings (formParameters: PostTerminalReadersParams) =
+        let Create settings (formOptions: TerminalReaders'CreateOptions) =
             $"/v1/terminal/readers"
-            |> RestApi.postAsync<_, TerminalReader> settings formParameters
+            |> RestApi.postAsync<_, TerminalReader> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             Reader: string
         }
         with
@@ -4754,11 +4754,11 @@ module StripeService =
                 }
 
         ///<p>Deletes a <code>Reader</code> object.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/terminal/readers/{queryParameters.Reader}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/terminal/readers/{options.Reader}"
             |> RestApi.deleteAsync<DeletedTerminalReader> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Reader: string
             Expand: string list option
         }
@@ -4770,11 +4770,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves a <code>Reader</code> object.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/terminal/readers/{queryParameters.Reader}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/terminal/readers/{options.Reader}?expand={options.Expand}"
             |> RestApi.getAsync<TerminalReader> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Reader: string
         }
         with
@@ -4784,19 +4784,19 @@ module StripeService =
                 }
 
         ///<p>Updates a <code>Reader</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
-        let Update settings (formParameters: PostTerminalReadersReaderParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/terminal/readers/{queryParameters.Reader}"
-            |> RestApi.postAsync<_, TerminalReader> settings formParameters
+        let Update settings (formOptions: TerminalReaders'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/terminal/readers/{options.Reader}"
+            |> RestApi.postAsync<_, TerminalReader> settings formOptions
 
     module Tokens =
 
         ///<p>Creates a single-use token that represents a bank account’s details.
         ///This token can be used with any API method in place of a bank account dictionary. This token can be used only once, by attaching it to a <a href="#accounts">Custom account</a>.</p>
-        let Create settings (formParameters: PostTokensParams) =
+        let Create settings (formOptions: Tokens'CreateOptions) =
             $"/v1/tokens"
-            |> RestApi.postAsync<_, Token> settings formParameters
+            |> RestApi.postAsync<_, Token> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Token: string
             Expand: string list option
         }
@@ -4808,13 +4808,13 @@ module StripeService =
                 }
 
         ///<p>Retrieves the token with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/tokens/{queryParameters.Token}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/tokens/{options.Token}?expand={options.Expand}"
             |> RestApi.getAsync<Token> settings
 
     module Topups =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Amount: int option
             Created: int option
             EndingBefore: string option
@@ -4836,16 +4836,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of top-ups.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/topups?amount={queryParameters.Amount}&created={queryParameters.Created}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&status={queryParameters.Status}"
+        let List settings (options: ListOptions) =
+            $"/v1/topups?amount={options.Amount}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}"
             |> RestApi.getAsync<Topup list> settings
 
         ///<p>Top up the balance of an account</p>
-        let Create settings (formParameters: PostTopupsParams) =
+        let Create settings (formOptions: Topups'CreateOptions) =
             $"/v1/topups"
-            |> RestApi.postAsync<_, Topup> settings formParameters
+            |> RestApi.postAsync<_, Topup> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Topup: string
             Expand: string list option
         }
@@ -4857,11 +4857,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of a top-up that has previously been created. Supply the unique top-up ID that was returned from your previous request, and Stripe will return the corresponding top-up information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/topups/{queryParameters.Topup}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/topups/{options.Topup}?expand={options.Expand}"
             |> RestApi.getAsync<Topup> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Topup: string
         }
         with
@@ -4871,13 +4871,13 @@ module StripeService =
                 }
 
         ///<p>Updates the metadata of a top-up. Other top-up details are not editable by design.</p>
-        let Update settings (formParameters: PostTopupsTopupParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/topups/{queryParameters.Topup}"
-            |> RestApi.postAsync<_, Topup> settings formParameters
+        let Update settings (formOptions: Topups'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/topups/{options.Topup}"
+            |> RestApi.postAsync<_, Topup> settings formOptions
 
     module TopupsCancel =
 
-        type CancelQueryParams = {
+        type CancelOptions = {
             Topup: string
         }
         with
@@ -4887,13 +4887,13 @@ module StripeService =
                 }
 
         ///<p>Cancels a top-up. Only pending top-ups can be canceled.</p>
-        let Cancel settings (formParameters: PostTopupsTopupCancelParams) (queryParameters: CancelQueryParams) =
-            $"/v1/topups/{queryParameters.Topup}/cancel"
-            |> RestApi.postAsync<_, Topup> settings formParameters
+        let Cancel settings (formOptions: TopupsCancel'CancelOptions) (options: CancelOptions) =
+            $"/v1/topups/{options.Topup}/cancel"
+            |> RestApi.postAsync<_, Topup> settings formOptions
 
     module Transfers =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Created: int option
             Destination: string option
             EndingBefore: string option
@@ -4915,16 +4915,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/transfers?created={queryParameters.Created}&destination={queryParameters.Destination}&ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}&transfer_group={queryParameters.TransferGroup}"
+        let List settings (options: ListOptions) =
+            $"/v1/transfers?created={options.Created}&destination={options.Destination}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&transfer_group={options.TransferGroup}"
             |> RestApi.getAsync<Transfer list> settings
 
         ///<p>To send funds from your Stripe account to a connected account, you create a new transfer object. Your <a href="#balance">Stripe balance</a> must be able to cover the transfer amount, or you’ll receive an “Insufficient Funds” error.</p>
-        let Create settings (formParameters: PostTransfersParams) =
+        let Create settings (formOptions: Transfers'CreateOptions) =
             $"/v1/transfers"
-            |> RestApi.postAsync<_, Transfer> settings formParameters
+            |> RestApi.postAsync<_, Transfer> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Transfer: string
             Expand: string list option
         }
@@ -4936,11 +4936,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the details of an existing transfer. Supply the unique transfer ID from either a transfer creation request or the transfer list, and Stripe will return the corresponding transfer information.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/transfers/{queryParameters.Transfer}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/transfers/{options.Transfer}?expand={options.Expand}"
             |> RestApi.getAsync<Transfer> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Transfer: string
         }
         with
@@ -4951,13 +4951,13 @@ module StripeService =
 
         ///<p>Updates the specified transfer by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request accepts only metadata as an argument.</p>
-        let Update settings (formParameters: PostTransfersTransferParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/transfers/{queryParameters.Transfer}"
-            |> RestApi.postAsync<_, Transfer> settings formParameters
+        let Update settings (formOptions: Transfers'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/transfers/{options.Transfer}"
+            |> RestApi.postAsync<_, Transfer> settings formOptions
 
     module TransfersReversals =
 
-        type ListQueryParams = {
+        type ListOptions = {
             Id: string
             EndingBefore: string option
             Expand: string list option
@@ -4975,11 +4975,11 @@ module StripeService =
                 }
 
         ///<p>You can see a list of the reversals belonging to a specific transfer. Note that the 10 most recent reversals are always available by default on the transfer object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional reversals.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/transfers/{queryParameters.Id}/reversals?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/transfers/{options.Id}/reversals?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<TransferReversal list> settings
 
-        type CreateQueryParams = {
+        type CreateOptions = {
             Id: string
         }
         with
@@ -4991,11 +4991,11 @@ module StripeService =
         ///<p>When you create a new reversal, you must specify a transfer to create it on.
         ///When reversing transfers, you can optionally reverse part of the transfer. You can do so as many times as you wish until the entire transfer has been reversed.
         ///Once entirely reversed, a transfer can’t be reversed again. This method will return an error when called on an already-reversed transfer, or when trying to reverse more money than is left on a transfer.</p>
-        let Create settings (formParameters: PostTransfersIdReversalsParams) (queryParameters: CreateQueryParams) =
-            $"/v1/transfers/{queryParameters.Id}/reversals"
-            |> RestApi.postAsync<_, TransferReversal> settings formParameters
+        let Create settings (formOptions: TransfersReversals'CreateOptions) (options: CreateOptions) =
+            $"/v1/transfers/{options.Id}/reversals"
+            |> RestApi.postAsync<_, TransferReversal> settings formOptions
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             Id: string
             Transfer: string
             Expand: string list option
@@ -5009,11 +5009,11 @@ module StripeService =
                 }
 
         ///<p>By default, you can see the 10 most recent reversals stored directly on the transfer object, but you can also retrieve details about a specific reversal stored on the transfer.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/transfers/{queryParameters.Transfer}/reversals/{queryParameters.Id}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/transfers/{options.Transfer}/reversals/{options.Id}?expand={options.Expand}"
             |> RestApi.getAsync<TransferReversal> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             Id: string
             Transfer: string
         }
@@ -5026,13 +5026,13 @@ module StripeService =
 
         ///<p>Updates the specified reversal by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts metadata and description as arguments.</p>
-        let Update settings (formParameters: PostTransfersTransferReversalsIdParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/transfers/{queryParameters.Transfer}/reversals/{queryParameters.Id}"
-            |> RestApi.postAsync<_, TransferReversal> settings formParameters
+        let Update settings (formOptions: TransfersReversals'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/transfers/{options.Transfer}/reversals/{options.Id}"
+            |> RestApi.postAsync<_, TransferReversal> settings formOptions
 
     module WebhookEndpoints =
 
-        type ListQueryParams = {
+        type ListOptions = {
             EndingBefore: string option
             Expand: string list option
             Limit: int option
@@ -5048,16 +5048,16 @@ module StripeService =
                 }
 
         ///<p>Returns a list of your webhook endpoints.</p>
-        let List settings (queryParameters: ListQueryParams) =
-            $"/v1/webhook_endpoints?ending_before={queryParameters.EndingBefore}&expand={queryParameters.Expand}&limit={queryParameters.Limit}&starting_after={queryParameters.StartingAfter}"
+        let List settings (options: ListOptions) =
+            $"/v1/webhook_endpoints?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
             |> RestApi.getAsync<WebhookEndpoint list> settings
 
         ///<p>A webhook endpoint must have a <code>url</code> and a list of <code>enabled_events</code>. You may optionally specify the Boolean <code>connect</code> parameter. If set to true, then a Connect webhook endpoint that notifies the specified <code>url</code> about events from all connected accounts is created; otherwise an account webhook endpoint that notifies the specified <code>url</code> only about events from your account is created. You can also create webhook endpoints in the <a href="https://dashboard.stripe.com/account/webhooks">webhooks settings</a> section of the Dashboard.</p>
-        let Create settings (formParameters: PostWebhookEndpointsParams) =
+        let Create settings (formOptions: WebhookEndpoints'CreateOptions) =
             $"/v1/webhook_endpoints"
-            |> RestApi.postAsync<_, WebhookEndpoint> settings formParameters
+            |> RestApi.postAsync<_, WebhookEndpoint> settings formOptions
 
-        type DeleteQueryParams = {
+        type DeleteOptions = {
             WebhookEndpoint: string
         }
         with
@@ -5067,11 +5067,11 @@ module StripeService =
                 }
 
         ///<p>You can also delete webhook endpoints via the <a href="https://dashboard.stripe.com/account/webhooks">webhook endpoint management</a> page of the Stripe dashboard.</p>
-        let Delete settings (queryParameters: DeleteQueryParams) =
-            $"/v1/webhook_endpoints/{queryParameters.WebhookEndpoint}"
+        let Delete settings (options: DeleteOptions) =
+            $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
             |> RestApi.deleteAsync<DeletedWebhookEndpoint> settings
 
-        type RetrieveQueryParams = {
+        type RetrieveOptions = {
             WebhookEndpoint: string
             Expand: string list option
         }
@@ -5083,11 +5083,11 @@ module StripeService =
                 }
 
         ///<p>Retrieves the webhook endpoint with the given ID.</p>
-        let Retrieve settings (queryParameters: RetrieveQueryParams) =
-            $"/v1/webhook_endpoints/{queryParameters.WebhookEndpoint}?expand={queryParameters.Expand}"
+        let Retrieve settings (options: RetrieveOptions) =
+            $"/v1/webhook_endpoints/{options.WebhookEndpoint}?expand={options.Expand}"
             |> RestApi.getAsync<WebhookEndpoint> settings
 
-        type UpdateQueryParams = {
+        type UpdateOptions = {
             WebhookEndpoint: string
         }
         with
@@ -5097,7 +5097,7 @@ module StripeService =
                 }
 
         ///<p>Updates the webhook endpoint. You may edit the <code>url</code>, the list of <code>enabled_events</code>, and the status of your endpoint.</p>
-        let Update settings (formParameters: PostWebhookEndpointsWebhookEndpointParams) (queryParameters: UpdateQueryParams) =
-            $"/v1/webhook_endpoints/{queryParameters.WebhookEndpoint}"
-            |> RestApi.postAsync<_, WebhookEndpoint> settings formParameters
+        let Update settings (formOptions: WebhookEndpoints'UpdateOptions) (options: UpdateOptions) =
+            $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
+            |> RestApi.postAsync<_, WebhookEndpoint> settings formOptions
 

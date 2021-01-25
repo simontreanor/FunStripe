@@ -11,12 +11,11 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
-///Select the entire text of this module and press ```Alt + Enter``` to generate the ```StripeRequest.fs``` file
+///Select the entire text of this module and press `Alt + Enter` to generate the `StripeRequest.fs` file
 module RequestBuilder =
 
     ///Record for OpenAPI schema object
     type SchemaObject = {
-
         AnyOf: JsonValue array option
         Description: string
         Enum: JsonValue array option
@@ -38,10 +37,9 @@ module RequestBuilder =
         | "number" -> "decimal"
         | _ -> s
 
-    ///Parse a ```JsonValue``` into an OpenAPI schema-object record
+    ///Parse a `JsonValue` into an OpenAPI schema-object record
     let getSchemaObject (jv: JsonValue) =
         {
-
             AnyOf = jv.TryGetProperty("anyOf") |> Option.map(fun v -> v.AsArray())
             Description = jv.TryGetProperty("description") |> Option.map(fun v -> v.AsString()) |> Option.defaultValue ""
             Enum = jv.TryGetProperty("enum") |> Option.map(fun v -> v.AsArray())
@@ -55,11 +53,11 @@ module RequestBuilder =
             Type = jv.TryGetProperty("type") |> Option.map(fun v -> v.AsString() |> mapType)
         }
 
-    ///Convert ```snake_case``` to ```PascalCase```
+    ///Convert `snake_case` to `PascalCase`
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.| |-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-    ///Convert ```snake_case``` to ```camelCase```
+    ///Convert `snake_case` to `camelCase`
     let camelCasify (s: string) =
         Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
@@ -77,20 +75,16 @@ module RequestBuilder =
     let clean (s: string) =
         s.Replace("*", "Asterix").Replace("GMT+", "GMTplus").Replace("GMT-", "GMTminus").Replace("/", "").Replace("-", "").Replace(" ", "").Replace("none", "none'")
 
-    ///Prepend ```Numeric``` to discriminated-union names that start with numbers, not permissible in F#
+    ///Prepend `Numeric` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =
         Regex.Replace(s, @"^(\d)", "Numeric$1")
 
-    ///Add ```JsonUnionCase``` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
+    ///Add `JsonUnionCase` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
     let escapeForJson s =
         if Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         else
             s |> clean |> pascalCasify
-
-    ///Correct Stripe operation IDs that breach naming conventions
-    let fixOperationId (operationId: string) =
-        operationId.Replace("-", "")
 
     ///Remove unnecessary suffix from object titles to prevent wordiness in property naming
     let fixTitle (title: string) =
@@ -134,20 +128,59 @@ module RequestBuilder =
         let json = File.ReadAllText(filePath')
 
         let root = JsonValue.Parse json
-        let paths = root.Item "paths"
+        let components = root.Item "components"
+        let schemas = components.Item "schemas"
+        let operationPaths = root.Item "paths"
 
+        let servicePaths =
+            schemas.Properties
+            |> Array.filter(fun (k, v) ->
+                v.Properties
+                |> Array.exists(fun (k, _) -> k = "x-stripeOperations")
+            )
+            |> Array.map(fun (k, v) ->
+                (
+                    k,
+                    v.Properties
+                    |> Array.filter(fun (k, _) -> k = "x-stripeOperations")
+                    |> Array.collect(fun (_, v) -> v.AsArray())
+                    |> Array.filter(fun jv -> jv.TryGetProperty("method_on") |> function | Some p -> p.AsString() = "collection" || p.AsString() = "service" | _ -> false)
+                    |> Array.map(fun jv -> (jv.GetProperty("method_name").AsString(), jv.GetProperty("operation").AsString(), jv.GetProperty("path").AsString()))
+                )
+            )
+            |> Array.collect snd
 
         let methods =
-            paths.Properties
-            |> Array.collect (fun (_, pathDetail) ->
-                pathDetail.Properties
-                |> Array.map (fun (_, methodDetail) ->
+            operationPaths.Properties
+            |> Array.filter(fun (path, _) -> path.Contains("x-stripe") |> not)
+            |> Array.map (fun (path, operations) ->
+                let pathRoot =
+                    ("",
+                        Regex.Split(path, "/")
+                        |> Array.mapi(fun i p ->
+                            match (i, p) with
+                            | 0, _ | 1, _ -> None
+                            | _, p when Regex.IsMatch(p, "^\{.+\}$") -> None
+                            | _, p -> Some (p |> pascalCasify)
+                        )
+                        |> Array.choose id
+                    ) |> String.Join
+                    |> fun s -> Regex.Replace(s, "^3d", "ThreeD")
+
+                operations.Properties
+                |> Array.map (fun (operation, method) ->
         
-                    let operationId = methodDetail.GetProperty("operationId").AsString() |> fixOperationId
+                    let methodName =
+                        servicePaths
+                        |> Array.tryFind(fun (_, o, p) -> o = operation && p = path)
+                        |> Option.map(fun (m, _, _) -> m |> pascalCasify)
+
+                    let fallback = method.GetProperty("operationId").AsString()
+                    let operationId = $"{pathRoot}'{methodName |> Option.defaultValue fallback}"
                     let form =
-                        methodDetail.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function
+                        method.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function
                         | Some f -> f
-                        | None -> methodDetail.GetProperty("requestBody").GetProperty("content").GetProperty("multipart/form-data")
+                        | None -> method.GetProperty("requestBody").GetProperty("content").GetProperty("multipart/form-data")
         
                     let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> failwith "No schema present"
 
@@ -216,7 +249,7 @@ module RequestBuilder =
 
                     let schemaObject = schema |> getSchemaObject
                     let required = schemaObject.Required |> Array.map(fun jv -> jv.AsString())  
-                    (operationId + "Params",
+                    (operationId + "Options",
                         schemaObject.Properties.Properties
                         |> Array.map(fun (k, v) ->
                             v |> parseValue operationId k (required.Contains(k)) false
@@ -224,6 +257,7 @@ module RequestBuilder =
                     )
                 )
             )
+            |> Array.collect id
             |> Array.filter(fun (_, v) -> v <> [||])
 
         let sb = Text.StringBuilder()
@@ -236,12 +270,23 @@ module RequestBuilder =
                     values
                     |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
                 ) |> String.Join
-            sb |> write $"\tand {name} =\n{valuesString}\n"
+            sb |> write $"\ttype {name} =\n{valuesString}\n"
 
         let rec writeValues isFirstOccurrence (name: string) values =
 
+            values
+            |> Array.filter(fun v -> v.SubValues.IsSome)
+            |> Array.iter(fun v ->
+                writeValues false (v.Type) (v.SubValues.Value)
+            )
+
+            values
+            |> Array.filter(fun v -> v.EnumValues.IsSome)
+            |> Array.iter(fun v ->
+                writeEnum (v.Type) (v.EnumValues.Value)
+            )
+
             if not (name.StartsWith "Choice<" || name.EndsWith " list") then
-                let keyword = if isFirstOccurrence then "type" else "and"
                         
                 let parametersString =
                     (", ",
@@ -257,26 +302,27 @@ module RequestBuilder =
                     ("\n",
                         values
                         |> Array.map(fun v ->
-                            let comment = v.Description |> commentify
-
-                            $"\t\t///{comment}\n\t\tmember _.{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}"
+                            let req = if v.Required then "" else " option"
+                            $"\t\t{v.Name |> pascalCasify}: {v.Type}{req}"
                         )
                     ) |> String.Join
                     
-                sb |> write $"\t{keyword} {name} ({parametersString}) =\n{propertiesString}\n"
+                let assignments =
+                    ("\n",
+                        values
+                        |> Array.map(fun v ->
+                            $"\t\t\t\t{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}"
+                        )
+                    ) |> String.Join
+
+                sb |> write $"\ttype {name} = {{\n{propertiesString}\n\t}}"
+
+                let create = if values |> Array.exists(fun v -> v.Name = "create") then "Create'" else "Create"
+
+                sb |> write $"\twith\n\t\tstatic member {create}({parametersString}) =\n\t\t\t{{\n{assignments}\n\t\t\t}}\n"
+
+                //sb |> write $"\ttype {name} ({parametersString}) =\n{propertiesString}\n"
         
-            values
-            |> Array.filter(fun v -> v.EnumValues.IsSome)
-            |> Array.iter(fun v ->
-                writeEnum (v.Type) (v.EnumValues.Value)
-            )
-
-            values
-            |> Array.filter(fun v -> v.SubValues.IsSome)
-            |> Array.iter(fun v ->
-                writeValues false (v.Type) (v.SubValues.Value)
-            )
-
         let mutable isFirstOccurrence = true
 
         for (name, value) in methods do

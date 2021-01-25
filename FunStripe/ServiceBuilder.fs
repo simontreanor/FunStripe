@@ -11,14 +11,14 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
-///Select the entire text of this module and press ```Alt + Enter``` to generate the ```StripeService.fs``` file
+///Select the entire text of this module and press `Alt + Enter` to generate the `StripeService.fs` file
 module ServiceBuilder =
 
-    ///Convert ```snake_case``` to ```PascalCase```
+    ///Convert `snake_case` to `PascalCase`
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.| |-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-    ///Convert ```snake_case``` to ```camelCase```
+    ///Convert `snake_case` to `camelCase`
     let camelCasify (s: string) =
         Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
@@ -113,14 +113,14 @@ module ServiceBuilder =
                 |> Array.filter (fun (_, in', _, _) -> in' = "query")
                 |> Array.sortBy (fun (_, _, req, _) -> if req then 0 else 1)
                 |> Array.map (fun (n, _, _, _) ->
-                    $"{n}={{queryParameters.{n |> escapeReservedName |> pascalCasify}}}"
+                    $"{n}={{options.{n |> escapeReservedName |> pascalCasify}}}"
                 )
             ) |> String.Join
         if queryString |> String.IsNullOrWhiteSpace then "" else $"?{queryString}"
 
     ///Format request path to allow string interpolation of inline parameters
     let formatPathParams (path: string) =
-        Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{queryParameters.{m.Groups.[1].Value |> escapeReservedName |> pascalCasify}}}")
+        Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{options.{m.Groups.[1].Value |> escapeReservedName |> pascalCasify}}}")
 
     ///Extract a type name from a JSON reference field
     let parseRef (s: string) =
@@ -132,7 +132,6 @@ module ServiceBuilder =
 
     ///Parses the Stripe OpenAPI specification, outputting an F# module specifying services (request groups) and requests
     let parseService filePath =
-
         let root = __SOURCE_DIRECTORY__
 
         let filePath' = defaultArg filePath $@"{root}/res/spec3.sdk.json"
@@ -175,6 +174,7 @@ module ServiceBuilder =
                         )
                         |> Array.choose id
                     ) |> String.Join
+                    |> fun s -> Regex.Replace(s, "^3d", "ThreeD")
 
                 let methodOperationPaths = operations.Properties |> Array.choose(fun (operation, _) ->
                     servicePaths
@@ -194,9 +194,7 @@ module ServiceBuilder =
         paths
         |> Array.iter (fun (name, methodOperationPaths) ->
 
-            let name' = name |> fun s -> Regex.Replace(s, "^3d", "ThreeD")
-
-            sb |> write $"\tmodule {name'} =\n"
+            sb |> write $"\tmodule {name} =\n"
 
             methodOperationPaths
             |> Array.iter (fun (method, operation, path) ->
@@ -211,18 +209,24 @@ module ServiceBuilder =
 
                     //prep form values
                     let operationId = v.GetProperty("operationId").AsString()
-                    let form = v.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function | Some jv -> jv | None -> JsonValue.Null
+                    let form =
+                        v.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function
+                        | Some jv -> jv
+                        | None ->
+                            v.GetProperty("requestBody").GetProperty("content").TryGetProperty("multipart/form-data") |> function
+                            | Some jv -> jv
+                            | None -> JsonValue.Null
                     let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> JsonValue.Null
                     let formParameters = schema.TryGetProperty("properties") |> function | Some jv -> jv.Properties | None -> [||]
-                    let formParamsType = $"{operationId}Params"
-                    let formParam = if formParameters.Any() then $" (formParameters: {formParamsType})" else ""
+                    let formParamsType = $"{name}'{method'}Options"
+                    let formParam = if formParameters.Any() then $" (formOptions: {formParamsType})" else ""
 
                     //get request method
                     let description = v.GetProperty("description").AsString()
                     let queryParameters = v.TryGetProperty("parameters") |> function | Some jv -> jv.AsArray() | None -> [||]
                     let mappedParameters = queryParameters |> mapParameters
-                    let queryParamsType = $"{method'}QueryParams"
-                    let queryParam = if queryParameters.Any() then $" (queryParameters: {queryParamsType})" else ""
+                    let queryParamsType = $"{method'}Options"
+                    let queryParam = if queryParameters.Any() then $" (options: {queryParamsType})" else ""
 
                     if queryParameters |> Array.isEmpty |> not then
                         sb |> write $"\t\ttype {queryParamsType} = {{"
@@ -256,18 +260,18 @@ module ServiceBuilder =
                                     let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
                                     $"{listType |> parseRef |> pascalCasify} list"
                                 | _ ->
-                                    failwith $"Unhandled response type: {name'} %A{responseSchema}"
+                                    failwith $"Unhandled response type: {name} %A{responseSchema}"
 
                     //set API method
                     match verb with
                     | "get" when formParameters.Any() ->
-                        sb |> write $"\t\t\t|> RestApi.getWithAsync<_, {responseType}> settings formParameters\n"
+                        sb |> write $"\t\t\t|> RestApi.getWithAsync<_, {responseType}> settings formOptions\n"
                     | "get" ->
                         sb |> write $"\t\t\t|> RestApi.getAsync<{responseType}> settings\n"
                     | "post" when formParameters.Any() |> not ->
                         sb |> write $"\t\t\t|> RestApi.postWithoutAsync<{responseType}> settings\n"
                     | "post" ->
-                        sb |> write $"\t\t\t|> RestApi.postAsync<_, {responseType}> settings formParameters\n"
+                        sb |> write $"\t\t\t|> RestApi.postAsync<_, {responseType}> settings formOptions\n"
                     | "delete" ->
                         sb |> write $"\t\t\t|> RestApi.deleteAsync<{responseType}> settings\n"
                     | _ ->

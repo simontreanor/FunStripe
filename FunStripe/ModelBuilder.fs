@@ -11,7 +11,7 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
-///Select the entire text of this module and press ```Alt + Enter``` to generate the ```StripeModel.fs``` file
+///Select the entire text of this module and press `Alt + Enter` to generate the `StripeModel.fs` file
 module ModelBuilder =
 
     ///Record for OpenAPI schema object
@@ -38,7 +38,7 @@ module ModelBuilder =
         | "number" -> "decimal"
         | _ -> s
 
-    ///Parse a ```JsonValue``` into a OpenAPI schema-object record
+    ///Parse a `JsonValue` into a OpenAPI schema-object record
     let getSchemaObject (jv: JsonValue) =
         {
             AdditionalProperties = jv.TryGetProperty("additionalProperties") |> function | Some v -> v |> Some | None -> None
@@ -55,11 +55,11 @@ module ModelBuilder =
             Type = jv.TryGetProperty("type") |> function | Some v -> v.AsString() |> mapType |> Some | None -> None
         }
 
-    ///Convert ```snake_case``` to ```PascalCase```
+    ///Convert `snake_case` to `PascalCase`
     let pascalCasify (s: string) =
         Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
-    ///Convert ```snake_case``` to ```camelCase```
+    ///Convert `snake_case` to `camelCase`
     let camelCasify (s: string) =
         Regex.Replace(s, @"( |_|-)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
@@ -77,15 +77,15 @@ module ModelBuilder =
     let clean (s: string) =
         s.Replace("-", "").Replace(" ", "")
 
-    ///Prepend ```Numeric``` to discriminated-union names that start with numbers, not permissible in F#
+    ///Prepend `Numeric` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =
         Regex.Replace(s, @"^(\d)", "Numeric$1")
 
-    ///Add ```JsonUnionCase``` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
+    ///Add `JsonUnionCase` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
     let escapeForJson (s: string) =
         if s.Contains(" of ") then
             s
-        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".")then
+        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         elif s = "none" then
             $@"[<JsonUnionCase(""{s}"")>] {s|> pascalCasify}'"
