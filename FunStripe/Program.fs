@@ -10,21 +10,21 @@ open System
 let testCustomer = "cus_HxEURwENT9MKb3"
 
 let defaultCard =
-    PostPaymentMethodsCardCardDetailsParams(
+    PaymentMethods'CreateCardCardDetailsParams.Create(
         cvc = "314",
         expMonth = 10,
         expYear = 2021,
         number = "4242424242424242"
     )
 
-let settings = RestApi.StripeApiSettings.Create(apiKey = Config.getStripeTestApiKey())
+let settings = RestApi.StripeApiSettings.Create(apiKey = Config.StripeTestApiKey)
 
 let getNewPaymentMethod () =
     asyncResult {
         let parameters = 
-            PostPaymentMethodsParams(
+            PaymentMethods'CreateOptions.Create(
                 card = Choice1Of2 defaultCard,
-                ``type`` = PostPaymentMethodsType.Card
+                ``type`` = PaymentMethods'CreateType.Card
             )
         return! PaymentMethods.Create settings parameters
     }
@@ -35,14 +35,14 @@ let test() =
             let! expected = getNewPaymentMethod()
             let! actual =
                 let parameters =
-                    // PostPaymentMethodsPaymentMethodAttachParams(
+                    // PaymentMethodsAttach'AttachOptions.Create(
                     //     customer = testCustomer,
                     //     expand = [nameof(Customer)]
                     // )
-                    PostPaymentMethodsPaymentMethodAttachParams(
+                    PaymentMethodsAttach'AttachOptions.Create(
                         customer = testCustomer
                     )
-                let queryParameters = { PaymentMethodsAttach.AttachQueryParams.PaymentMethod = expected.Id }
+                let queryParameters = PaymentMethodsAttach.AttachOptions.Create(paymentMethod = expected.Id)
                 PaymentMethodsAttach.Attach settings parameters queryParameters
             return expected, actual
         }

@@ -9,8 +9,9 @@ module StripeService =
 
         ///<p>Initiate 3D Secure authentication.</p>
         let Create settings (formOptions: ThreeDSecure'CreateOptions) =
+
             $"/v1/3d_secure"
-            |> RestApi.postAsync<_, ThreeDSecure> settings formOptions
+            |> RestApi.postAsync<_, ThreeDSecure> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             ThreeDSecure: string
@@ -25,8 +26,9 @@ module StripeService =
 
         ///<p>Retrieves a 3D Secure object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/3d_secure/{options.ThreeDSecure}?expand={options.Expand}"
-            |> RestApi.getAsync<ThreeDSecure> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/3d_secure/{options.ThreeDSecure}"
+            |> RestApi.getAsync<ThreeDSecure> settings qs
 
     module Account =
 
@@ -41,15 +43,17 @@ module StripeService =
 
         ///<p>Retrieves the details of an account.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/account?expand={options.Expand}"
-            |> RestApi.getAsync<Account> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/account"
+            |> RestApi.getAsync<Account> settings qs
 
     module AccountLinks =
 
         ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
         let Create settings (formOptions: AccountLinks'CreateOptions) =
+
             $"/v1/account_links"
-            |> RestApi.postAsync<_, AccountLink> settings formOptions
+            |> RestApi.postAsync<_, AccountLink> settings (Map.empty) formOptions
 
     module Accounts =
 
@@ -72,14 +76,16 @@ module StripeService =
 
         ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
         let List settings (options: ListOptions) =
-            $"/v1/accounts?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Account list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/accounts"
+            |> RestApi.getAsync<Account list> settings qs
 
         ///<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
         ///To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
         let Create settings (formOptions: Accounts'CreateOptions) =
+
             $"/v1/accounts"
-            |> RestApi.postAsync<_, Account> settings formOptions
+            |> RestApi.postAsync<_, Account> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Account: string
@@ -94,8 +100,9 @@ module StripeService =
         ///Accounts created using test-mode keys can be deleted at any time. Accounts created using live-mode keys can only be deleted once all balances are zero.
         ///If you want to delete your own account, use the <a href="https://dashboard.stripe.com/account">account information tab in your account settings</a> instead.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/accounts/{options.Account}"
-            |> RestApi.deleteAsync<DeletedAccount> settings
+            |> RestApi.deleteAsync<DeletedAccount> settings (Map.empty)
 
         type RetrieveOptions = {
             Account: string
@@ -110,8 +117,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an account.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/accounts/{options.Account}?expand={options.Expand}"
-            |> RestApi.getAsync<Account> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/accounts/{options.Account}"
+            |> RestApi.getAsync<Account> settings qs
 
         type UpdateOptions = {
             Account: string
@@ -125,8 +133,9 @@ module StripeService =
         ///<p>Updates a connected <a href="/docs/connect/accounts">Express or Custom account</a> by setting the values of the parameters passed. Any parameters not provided are left unchanged. Most parameters can be changed only for Custom accounts. (These are marked <strong>Custom Only</strong> below.) Parameters marked <strong>Custom and Express</strong> are supported by both account types.
         ///To update your own account, use the <a href="https://dashboard.stripe.com/account">Dashboard</a>. Refer to our <a href="/docs/connect/updating-accounts">Connect</a> documentation to learn more about updating accounts.</p>
         let Update settings (formOptions: Accounts'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/accounts/{options.Account}"
-            |> RestApi.postAsync<_, Account> settings formOptions
+            |> RestApi.postAsync<_, Account> settings (Map.empty) formOptions
 
     module AccountsCapabilities =
 
@@ -143,8 +152,9 @@ module StripeService =
 
         ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
         let Capabilities settings (options: CapabilitiesOptions) =
-            $"/v1/accounts/{options.Account}/capabilities?expand={options.Expand}"
-            |> RestApi.getAsync<Capability list> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/accounts/{options.Account}/capabilities"
+            |> RestApi.getAsync<Capability list> settings qs
 
         type RetrieveOptions = {
             Account: string
@@ -161,8 +171,9 @@ module StripeService =
 
         ///<p>Retrieves information about the specified Account Capability.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/accounts/{options.Account}/capabilities/{options.Capability}?expand={options.Expand}"
-            |> RestApi.getAsync<Capability> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/accounts/{options.Account}/capabilities/{options.Capability}"
+            |> RestApi.getAsync<Capability> settings qs
 
         type UpdateOptions = {
             Account: string
@@ -177,8 +188,9 @@ module StripeService =
 
         ///<p>Updates an existing Account Capability.</p>
         let Update settings (formOptions: AccountsCapabilities'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/accounts/{options.Account}/capabilities/{options.Capability}"
-            |> RestApi.postAsync<_, Capability> settings formOptions
+            |> RestApi.postAsync<_, Capability> settings (Map.empty) formOptions
 
     module AccountsExternalAccounts =
 
@@ -201,8 +213,9 @@ module StripeService =
 
         ///<p>List external accounts for an account.</p>
         let List settings (options: ListOptions) =
-            $"/v1/accounts/{options.Account}/external_accounts?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<ExternalAccount list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/accounts/{options.Account}/external_accounts"
+            |> RestApi.getAsync<ExternalAccount list> settings qs
 
         type CreateOptions = {
             Account: string
@@ -215,8 +228,9 @@ module StripeService =
 
         ///<p>Create an external account for a given account.</p>
         let Create settings (formOptions: AccountsExternalAccounts'CreateOptions) (options: CreateOptions) =
+
             $"/v1/accounts/{options.Account}/external_accounts"
-            |> RestApi.postAsync<_, ExternalAccount> settings formOptions
+            |> RestApi.postAsync<_, ExternalAccount> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Account: string
@@ -231,8 +245,9 @@ module StripeService =
 
         ///<p>Delete a specified external account for a given account.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
-            |> RestApi.deleteAsync<DeletedExternalAccount> settings
+            |> RestApi.deleteAsync<DeletedExternalAccount> settings (Map.empty)
 
         type RetrieveOptions = {
             Account: string
@@ -249,8 +264,9 @@ module StripeService =
 
         ///<p>Retrieve a specified external account for a given account.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/accounts/{options.Account}/external_accounts/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<ExternalAccount> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
+            |> RestApi.getAsync<ExternalAccount> settings qs
 
         type UpdateOptions = {
             Account: string
@@ -266,8 +282,9 @@ module StripeService =
         ///<p>Updates the metadata, account holder name, and account holder type of a bank account belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and optionally sets it as the default for its currency. Other bank account details are not editable by design.
         ///You can re-enable a disabled bank account by performing an update call without providing any arguments or changes.</p>
         let Update settings (formOptions: AccountsExternalAccounts'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
-            |> RestApi.postAsync<_, ExternalAccount> settings formOptions
+            |> RestApi.postAsync<_, ExternalAccount> settings (Map.empty) formOptions
 
     module AccountsLoginLinks =
 
@@ -283,8 +300,9 @@ module StripeService =
         ///<p>Creates a single-use login link for an Express account to access their Stripe dashboard.
         ///<strong>You may only create login links for <a href="/docs/connect/express-accounts">Express accounts</a> connected to your platform</strong>.</p>
         let Create settings (formOptions: AccountsLoginLinks'CreateOptions) (options: CreateOptions) =
+
             $"/v1/accounts/{options.Account}/login_links"
-            |> RestApi.postAsync<_, LoginLink> settings formOptions
+            |> RestApi.postAsync<_, LoginLink> settings (Map.empty) formOptions
 
     module AccountsPersons =
 
@@ -309,8 +327,9 @@ module StripeService =
 
         ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/accounts/{options.Account}/persons?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&relationship={options.Relationship}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Person list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("relationship", options.Relationship |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/accounts/{options.Account}/persons"
+            |> RestApi.getAsync<Person list> settings qs
 
         type CreateOptions = {
             Account: string
@@ -323,8 +342,9 @@ module StripeService =
 
         ///<p>Creates a new person.</p>
         let Create settings (formOptions: AccountsPersons'CreateOptions) (options: CreateOptions) =
+
             $"/v1/accounts/{options.Account}/persons"
-            |> RestApi.postAsync<_, Person> settings formOptions
+            |> RestApi.postAsync<_, Person> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Account: string
@@ -339,8 +359,9 @@ module StripeService =
 
         ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>account_opener</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/accounts/{options.Account}/persons/{options.Person}"
-            |> RestApi.deleteAsync<DeletedPerson> settings
+            |> RestApi.deleteAsync<DeletedPerson> settings (Map.empty)
 
         type RetrieveOptions = {
             Account: string
@@ -357,8 +378,9 @@ module StripeService =
 
         ///<p>Retrieves an existing person.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/accounts/{options.Account}/persons/{options.Person}?expand={options.Expand}"
-            |> RestApi.getAsync<Person> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/accounts/{options.Account}/persons/{options.Person}"
+            |> RestApi.getAsync<Person> settings qs
 
         type UpdateOptions = {
             Account: string
@@ -373,8 +395,9 @@ module StripeService =
 
         ///<p>Updates an existing person.</p>
         let Update settings (formOptions: AccountsPersons'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/accounts/{options.Account}/persons/{options.Person}"
-            |> RestApi.postAsync<_, Person> settings formOptions
+            |> RestApi.postAsync<_, Person> settings (Map.empty) formOptions
 
     module AccountsReject =
 
@@ -390,8 +413,9 @@ module StripeService =
         ///<p>With <a href="/docs/connect">Connect</a>, you may flag accounts as suspicious.
         ///Test-mode Custom and Express accounts can be rejected at any time. Accounts created using live-mode keys may only be rejected once all balances are zero.</p>
         let Reject settings (formOptions: AccountsReject'RejectOptions) (options: RejectOptions) =
+
             $"/v1/accounts/{options.Account}/reject"
-            |> RestApi.postAsync<_, Account> settings formOptions
+            |> RestApi.postAsync<_, Account> settings (Map.empty) formOptions
 
     module ApplePayDomains =
 
@@ -414,13 +438,15 @@ module StripeService =
 
         ///<p>List apple pay domains.</p>
         let List settings (options: ListOptions) =
-            $"/v1/apple_pay/domains?domain_name={options.DomainName}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<ApplePayDomain list> settings
+            let qs = [("domain_name", options.DomainName |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/apple_pay/domains"
+            |> RestApi.getAsync<ApplePayDomain list> settings qs
 
         ///<p>Create an apple pay domain.</p>
         let Create settings (formOptions: ApplePayDomains'CreateOptions) =
+
             $"/v1/apple_pay/domains"
-            |> RestApi.postAsync<_, ApplePayDomain> settings formOptions
+            |> RestApi.postAsync<_, ApplePayDomain> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Domain: string
@@ -433,8 +459,9 @@ module StripeService =
 
         ///<p>Delete an apple pay domain.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/apple_pay/domains/{options.Domain}"
-            |> RestApi.deleteAsync<DeletedApplePayDomain> settings
+            |> RestApi.deleteAsync<DeletedApplePayDomain> settings (Map.empty)
 
         type RetrieveOptions = {
             Domain: string
@@ -449,8 +476,9 @@ module StripeService =
 
         ///<p>Retrieve an apple pay domain.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/apple_pay/domains/{options.Domain}?expand={options.Expand}"
-            |> RestApi.getAsync<ApplePayDomain> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/apple_pay/domains/{options.Domain}"
+            |> RestApi.getAsync<ApplePayDomain> settings qs
 
     module ApplicationFees =
 
@@ -475,8 +503,9 @@ module StripeService =
 
         ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/application_fees?charge={options.Charge}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<ApplicationFee list> settings
+            let qs = [("charge", options.Charge |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/application_fees"
+            |> RestApi.getAsync<ApplicationFee list> settings qs
 
         type RetrieveOptions = {
             Id: string
@@ -491,8 +520,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an application fee that your account has collected. The same information is returned when refunding the application fee.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/application_fees/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<ApplicationFee> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/application_fees/{options.Id}"
+            |> RestApi.getAsync<ApplicationFee> settings qs
 
     module ApplicationFeesRefunds =
 
@@ -511,8 +541,9 @@ module StripeService =
 
         ///<p>By default, you can see the 10 most recent refunds stored directly on the application fee object, but you can also retrieve details about a specific refund stored on the application fee.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/application_fees/{options.Fee}/refunds/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<FeeRefund> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/application_fees/{options.Fee}/refunds/{options.Id}"
+            |> RestApi.getAsync<FeeRefund> settings qs
 
         type UpdateOptions = {
             Fee: string
@@ -528,8 +559,9 @@ module StripeService =
         ///<p>Updates the specified application fee refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts metadata as an argument.</p>
         let Update settings (formOptions: ApplicationFeesRefunds'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/application_fees/{options.Fee}/refunds/{options.Id}"
-            |> RestApi.postAsync<_, FeeRefund> settings formOptions
+            |> RestApi.postAsync<_, FeeRefund> settings (Map.empty) formOptions
 
         type ListOptions = {
             Id: string
@@ -550,8 +582,9 @@ module StripeService =
 
         ///<p>You can see a list of the refunds belonging to a specific application fee. Note that the 10 most recent refunds are always available by default on the application fee object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
         let List settings (options: ListOptions) =
-            $"/v1/application_fees/{options.Id}/refunds?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<FeeRefund list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/application_fees/{options.Id}/refunds"
+            |> RestApi.getAsync<FeeRefund list> settings qs
 
         type CreateOptions = {
             Id: string
@@ -570,8 +603,9 @@ module StripeService =
         ///This method will raise an error when called on an already-refunded application fee,
         ///or when trying to refund more money than is left on an application fee.</p>
         let Create settings (formOptions: ApplicationFeesRefunds'CreateOptions) (options: CreateOptions) =
+
             $"/v1/application_fees/{options.Id}/refunds"
-            |> RestApi.postAsync<_, FeeRefund> settings formOptions
+            |> RestApi.postAsync<_, FeeRefund> settings (Map.empty) formOptions
 
     module Balance =
 
@@ -587,8 +621,9 @@ module StripeService =
         ///<p>Retrieves the current account balance, based on the authentication that was used to make the request.
         /// For a sample request, see <a href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting for negative balances</a>.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/balance?expand={options.Expand}"
-            |> RestApi.getAsync<Balance> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/balance"
+            |> RestApi.getAsync<Balance> settings qs
 
     module BalanceTransactions =
 
@@ -622,8 +657,9 @@ module StripeService =
         ///<p>Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.
         ///Note that this endpoint was previously called “Balance history” and used the path <code>/v1/balance/history</code>.</p>
         let List settings (options: ListOptions) =
-            $"/v1/balance_transactions?available_on={options.AvailableOn}&created={options.Created}&currency={options.Currency}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payout={options.Payout}&source={options.Source}&starting_after={options.StartingAfter}&type={options.``type``}"
-            |> RestApi.getAsync<BalanceTransaction list> settings
+            let qs = [("available_on", options.AvailableOn |> box); ("created", options.Created |> box); ("currency", options.Currency |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payout", options.Payout |> box); ("source", options.Source |> box); ("starting_after", options.StartingAfter |> box); ("type", options.``type`` |> box)] |> Map.ofList
+            $"/v1/balance_transactions"
+            |> RestApi.getAsync<BalanceTransaction list> settings qs
 
         type RetrieveOptions = {
             Id: string
@@ -639,15 +675,17 @@ module StripeService =
         ///<p>Retrieves the balance transaction with the given ID.
         ///Note that this endpoint previously used the path <code>/v1/balance/history/:id</code>.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/balance_transactions/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<BalanceTransaction> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/balance_transactions/{options.Id}"
+            |> RestApi.getAsync<BalanceTransaction> settings qs
 
     module BillingPortalSessions =
 
         ///<p>Creates a session of the customer portal.</p>
         let Create settings (formOptions: BillingPortalSessions'CreateOptions) =
+
             $"/v1/billing_portal/sessions"
-            |> RestApi.postAsync<_, BillingPortalSession> settings formOptions
+            |> RestApi.postAsync<_, BillingPortalSession> settings (Map.empty) formOptions
 
     module BitcoinReceivers =
 
@@ -674,8 +712,9 @@ module StripeService =
 
         ///<p>Returns a list of your receivers. Receivers are returned sorted by creation date, with the most recently created receivers appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/bitcoin/receivers?active={options.Active}&ending_before={options.EndingBefore}&expand={options.Expand}&filled={options.Filled}&limit={options.Limit}&starting_after={options.StartingAfter}&uncaptured_funds={options.UncapturedFunds}"
-            |> RestApi.getAsync<BitcoinReceiver list> settings
+            let qs = [("active", options.Active |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("filled", options.Filled |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("uncaptured_funds", options.UncapturedFunds |> box)] |> Map.ofList
+            $"/v1/bitcoin/receivers"
+            |> RestApi.getAsync<BitcoinReceiver list> settings qs
 
         type RetrieveOptions = {
             Id: string
@@ -690,8 +729,9 @@ module StripeService =
 
         ///<p>Retrieves the Bitcoin receiver with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/bitcoin/receivers/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<BitcoinReceiver> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/bitcoin/receivers/{options.Id}"
+            |> RestApi.getAsync<BitcoinReceiver> settings qs
 
     module BitcoinReceiversTransactions =
 
@@ -716,8 +756,9 @@ module StripeService =
 
         ///<p>List bitcoin transacitons for a given receiver.</p>
         let List settings (options: ListOptions) =
-            $"/v1/bitcoin/receivers/{options.Receiver}/transactions?customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<BitcoinTransaction list> settings
+            let qs = [("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/bitcoin/receivers/{options.Receiver}/transactions"
+            |> RestApi.getAsync<BitcoinTransaction list> settings qs
 
     module Charges =
 
@@ -746,13 +787,15 @@ module StripeService =
 
         ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/charges?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}&transfer_group={options.TransferGroup}"
-            |> RestApi.getAsync<Charge list> settings
+            let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box); ("transfer_group", options.TransferGroup |> box)] |> Map.ofList
+            $"/v1/charges"
+            |> RestApi.getAsync<Charge list> settings qs
 
         ///<p>To charge a credit card or other payment source, you create a <code>Charge</code> object. If your API key is in test mode, the supplied payment source (e.g., card) won’t actually be charged, although everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).</p>
         let Create settings (formOptions: Charges'CreateOptions) =
+
             $"/v1/charges"
-            |> RestApi.postAsync<_, Charge> settings formOptions
+            |> RestApi.postAsync<_, Charge> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Charge: string
@@ -767,8 +810,9 @@ module StripeService =
 
         ///<p>Retrieves the details of a charge that has previously been created. Supply the unique charge ID that was returned from your previous request, and Stripe will return the corresponding charge information. The same information is returned when creating or refunding the charge.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/charges/{options.Charge}?expand={options.Expand}"
-            |> RestApi.getAsync<Charge> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/charges/{options.Charge}"
+            |> RestApi.getAsync<Charge> settings qs
 
         type UpdateOptions = {
             Charge: string
@@ -781,8 +825,9 @@ module StripeService =
 
         ///<p>Updates the specified charge by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: Charges'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/charges/{options.Charge}"
-            |> RestApi.postAsync<_, Charge> settings formOptions
+            |> RestApi.postAsync<_, Charge> settings (Map.empty) formOptions
 
     module ChargesCapture =
 
@@ -798,8 +843,9 @@ module StripeService =
         ///<p>Capture the payment of an existing, uncaptured, charge. This is the second half of the two-step payment flow, where first you <a href="#create_charge">created a charge</a> with the capture option set to false.
         ///Uncaptured payments expire exactly seven days after they are created. If they are not captured by that point in time, they will be marked as refunded and will no longer be capturable.</p>
         let Capture settings (formOptions: ChargesCapture'CaptureOptions) (options: CaptureOptions) =
+
             $"/v1/charges/{options.Charge}/capture"
-            |> RestApi.postAsync<_, Charge> settings formOptions
+            |> RestApi.postAsync<_, Charge> settings (Map.empty) formOptions
 
     module ChargesRefunds =
 
@@ -822,8 +868,9 @@ module StripeService =
 
         ///<p>You can see a list of the refunds belonging to a specific charge. Note that the 10 most recent refunds are always available by default on the charge object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>
         let List settings (options: ListOptions) =
-            $"/v1/charges/{options.Charge}/refunds?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Refund list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/charges/{options.Charge}/refunds"
+            |> RestApi.getAsync<Refund list> settings qs
 
         type RetrieveOptions = {
             Charge: string
@@ -840,8 +887,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing refund.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/charges/{options.Charge}/refunds/{options.Refund}?expand={options.Expand}"
-            |> RestApi.getAsync<Refund> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/charges/{options.Charge}/refunds/{options.Refund}"
+            |> RestApi.getAsync<Refund> settings qs
 
     module CheckoutSessions =
 
@@ -866,13 +914,15 @@ module StripeService =
 
         ///<p>Returns a list of Checkout Sessions.</p>
         let List settings (options: ListOptions) =
-            $"/v1/checkout/sessions?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}&subscription={options.Subscription}"
-            |> RestApi.getAsync<CheckoutSession list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
+            $"/v1/checkout/sessions"
+            |> RestApi.getAsync<CheckoutSession list> settings qs
 
         ///<p>Creates a Session object.</p>
         let Create settings (formOptions: CheckoutSessions'CreateOptions) =
+
             $"/v1/checkout/sessions"
-            |> RestApi.postAsync<_, CheckoutSession> settings formOptions
+            |> RestApi.postAsync<_, CheckoutSession> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Session: string
@@ -887,8 +937,9 @@ module StripeService =
 
         ///<p>Retrieves a Session object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/checkout/sessions/{options.Session}?expand={options.Expand}"
-            |> RestApi.getAsync<CheckoutSession> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/checkout/sessions/{options.Session}"
+            |> RestApi.getAsync<CheckoutSession> settings qs
 
     module CheckoutSessionsLineItems =
 
@@ -911,8 +962,9 @@ module StripeService =
 
         ///<p>When retrieving a Checkout Session, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         let List settings (options: ListOptions) =
-            $"/v1/checkout/sessions/{options.Session}/line_items?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Item list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/checkout/sessions/{options.Session}/line_items"
+            |> RestApi.getAsync<Item list> settings qs
 
     module CountrySpecs =
 
@@ -933,8 +985,9 @@ module StripeService =
 
         ///<p>Lists all Country Spec objects available in the API.</p>
         let List settings (options: ListOptions) =
-            $"/v1/country_specs?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<CountrySpec list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/country_specs"
+            |> RestApi.getAsync<CountrySpec list> settings qs
 
         type RetrieveOptions = {
             Country: string
@@ -949,8 +1002,9 @@ module StripeService =
 
         ///<p>Returns a Country Spec for a given Country code.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/country_specs/{options.Country}?expand={options.Expand}"
-            |> RestApi.getAsync<CountrySpec> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/country_specs/{options.Country}"
+            |> RestApi.getAsync<CountrySpec> settings qs
 
     module Coupons =
 
@@ -973,14 +1027,16 @@ module StripeService =
 
         ///<p>Returns a list of your coupons.</p>
         let List settings (options: ListOptions) =
-            $"/v1/coupons?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Coupon list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/coupons"
+            |> RestApi.getAsync<Coupon list> settings qs
 
         ///<p>You can create coupons easily via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. Coupon creation is also accessible via the API if you need to create coupons on the fly.
         ///A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and <code>currency</code>. If you set an <code>amount_off</code>, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of <currency>100</currency> will have a final total of <currency>0</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it and an invoice with a subtotal of <currency>300</currency> will have a final total of <currency>100</currency> if a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to it.</p>
         let Create settings (formOptions: Coupons'CreateOptions) =
+
             $"/v1/coupons"
-            |> RestApi.postAsync<_, Coupon> settings formOptions
+            |> RestApi.postAsync<_, Coupon> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Coupon: string
@@ -993,8 +1049,9 @@ module StripeService =
 
         ///<p>You can delete coupons via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can’t redeem the coupon. You can also delete coupons via the API.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/coupons/{options.Coupon}"
-            |> RestApi.deleteAsync<DeletedCoupon> settings
+            |> RestApi.deleteAsync<DeletedCoupon> settings (Map.empty)
 
         type RetrieveOptions = {
             Coupon: string
@@ -1009,8 +1066,9 @@ module StripeService =
 
         ///<p>Retrieves the coupon with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/coupons/{options.Coupon}?expand={options.Expand}"
-            |> RestApi.getAsync<Coupon> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/coupons/{options.Coupon}"
+            |> RestApi.getAsync<Coupon> settings qs
 
         type UpdateOptions = {
             Coupon: string
@@ -1023,8 +1081,9 @@ module StripeService =
 
         ///<p>Updates the metadata of a coupon. Other coupon details (currency, duration, amount_off) are, by design, not editable.</p>
         let Update settings (formOptions: Coupons'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/coupons/{options.Coupon}"
-            |> RestApi.postAsync<_, Coupon> settings formOptions
+            |> RestApi.postAsync<_, Coupon> settings (Map.empty) formOptions
 
     module CreditNotes =
 
@@ -1049,8 +1108,9 @@ module StripeService =
 
         ///<p>Returns a list of credit notes.</p>
         let List settings (options: ListOptions) =
-            $"/v1/credit_notes?customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&invoice={options.Invoice}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<CreditNote list> settings
+            let qs = [("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/credit_notes"
+            |> RestApi.getAsync<CreditNote list> settings qs
 
         ///<p>Issue a credit note to adjust the amount of a finalized invoice. For a <code>status=open</code> invoice, a credit note reduces
         ///its <code>amount_due</code>. For a <code>status=paid</code> invoice, a credit note does not affect its <code>amount_due</code>. Instead, it can result
@@ -1064,8 +1124,9 @@ module StripeService =
         ///You may issue multiple credit notes for an invoice. Each credit note will increment the invoice’s <code>pre_payment_credit_notes_amount</code>
         ///or <code>post_payment_credit_notes_amount</code> depending on its <code>status</code> at the time of credit note creation.</p>
         let Create settings (formOptions: CreditNotes'CreateOptions) =
+
             $"/v1/credit_notes"
-            |> RestApi.postAsync<_, CreditNote> settings formOptions
+            |> RestApi.postAsync<_, CreditNote> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Id: string
@@ -1080,8 +1141,9 @@ module StripeService =
 
         ///<p>Retrieves the credit note object with the given identifier.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/credit_notes/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<CreditNote> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/credit_notes/{options.Id}"
+            |> RestApi.getAsync<CreditNote> settings qs
 
         type UpdateOptions = {
             Id: string
@@ -1094,8 +1156,9 @@ module StripeService =
 
         ///<p>Updates an existing credit note.</p>
         let Update settings (formOptions: CreditNotes'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/credit_notes/{options.Id}"
-            |> RestApi.postAsync<_, CreditNote> settings formOptions
+            |> RestApi.postAsync<_, CreditNote> settings (Map.empty) formOptions
 
     module CreditNotesPreview =
 
@@ -1130,8 +1193,9 @@ module StripeService =
 
         ///<p>Get a preview of a credit note without creating it.</p>
         let Preview settings (options: PreviewOptions) =
-            $"/v1/credit_notes/preview?invoice={options.Invoice}&amount={options.Amount}&credit_amount={options.CreditAmount}&expand={options.Expand}&lines={options.Lines}&memo={options.Memo}&metadata={options.Metadata}&out_of_band_amount={options.OutOfBandAmount}&reason={options.Reason}&refund={options.Refund}&refund_amount={options.RefundAmount}"
-            |> RestApi.getAsync<CreditNote> settings
+            let qs = [("invoice", options.Invoice |> box); ("amount", options.Amount |> box); ("credit_amount", options.CreditAmount |> box); ("expand", options.Expand |> box); ("lines", options.Lines |> box); ("memo", options.Memo |> box); ("metadata", options.Metadata |> box); ("out_of_band_amount", options.OutOfBandAmount |> box); ("reason", options.Reason |> box); ("refund", options.Refund |> box); ("refund_amount", options.RefundAmount |> box)] |> Map.ofList
+            $"/v1/credit_notes/preview"
+            |> RestApi.getAsync<CreditNote> settings qs
 
     module CreditNotesPreviewLines =
 
@@ -1172,8 +1236,9 @@ module StripeService =
 
         ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
         let PreviewLines settings (options: PreviewLinesOptions) =
-            $"/v1/credit_notes/preview/lines?invoice={options.Invoice}&amount={options.Amount}&credit_amount={options.CreditAmount}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&lines={options.Lines}&memo={options.Memo}&metadata={options.Metadata}&out_of_band_amount={options.OutOfBandAmount}&reason={options.Reason}&refund={options.Refund}&refund_amount={options.RefundAmount}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<CreditNoteLineItem list> settings
+            let qs = [("invoice", options.Invoice |> box); ("amount", options.Amount |> box); ("credit_amount", options.CreditAmount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("lines", options.Lines |> box); ("memo", options.Memo |> box); ("metadata", options.Metadata |> box); ("out_of_band_amount", options.OutOfBandAmount |> box); ("reason", options.Reason |> box); ("refund", options.Refund |> box); ("refund_amount", options.RefundAmount |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/credit_notes/preview/lines"
+            |> RestApi.getAsync<CreditNoteLineItem list> settings qs
 
     module CreditNotesLines =
 
@@ -1196,8 +1261,9 @@ module StripeService =
 
         ///<p>When retrieving a credit note, you’ll get a <strong>lines</strong> property containing the the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         let List settings (options: ListOptions) =
-            $"/v1/credit_notes/{options.CreditNote}/lines?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<CreditNoteLineItem list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/credit_notes/{options.CreditNote}/lines"
+            |> RestApi.getAsync<CreditNoteLineItem list> settings qs
 
     module CreditNotesVoid =
 
@@ -1212,8 +1278,9 @@ module StripeService =
 
         ///<p>Marks a credit note as void. Learn more about <a href="/docs/billing/invoices/credit-notes#voiding">voiding credit notes</a>.</p>
         let VoidCreditNote settings (formOptions: CreditNotesVoid'VoidCreditNoteOptions) (options: VoidCreditNoteOptions) =
+
             $"/v1/credit_notes/{options.Id}/void"
-            |> RestApi.postAsync<_, CreditNote> settings formOptions
+            |> RestApi.postAsync<_, CreditNote> settings (Map.empty) formOptions
 
     module Customers =
 
@@ -1238,13 +1305,15 @@ module StripeService =
 
         ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/customers?created={options.Created}&email={options.Email}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Customer list> settings
+            let qs = [("created", options.Created |> box); ("email", options.Email |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/customers"
+            |> RestApi.getAsync<Customer list> settings qs
 
         ///<p>Creates a new customer object.</p>
         let Create settings (formOptions: Customers'CreateOptions) =
+
             $"/v1/customers"
-            |> RestApi.postAsync<_, Customer> settings formOptions
+            |> RestApi.postAsync<_, Customer> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Customer: string
@@ -1257,8 +1326,9 @@ module StripeService =
 
         ///<p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/customers/{options.Customer}"
-            |> RestApi.deleteAsync<DeletedCustomer> settings
+            |> RestApi.deleteAsync<DeletedCustomer> settings (Map.empty)
 
         type RetrieveOptions = {
             Customer: string
@@ -1273,8 +1343,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing customer. You need only supply the unique customer identifier that was returned upon customer creation.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/customers/{options.Customer}?expand={options.Expand}"
-            |> RestApi.getAsync<Customer> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/customers/{options.Customer}"
+            |> RestApi.getAsync<Customer> settings qs
 
         type UpdateOptions = {
             Customer: string
@@ -1288,8 +1359,9 @@ module StripeService =
         ///<p>Updates the specified customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged. For example, if you pass the <strong>source</strong> parameter, that becomes the customer’s active source (e.g., a card) to be used for all charges in the future. When you update a customer to a new valid card source by passing the <strong>source</strong> parameter: for each of the customer’s current subscriptions, if the subscription bills automatically and is in the <code>past_due</code> state, then the latest open invoice for the subscription with automatic collection enabled will be retried. This retry will not count as an automatic retry, and will not affect the next regularly scheduled payment for the invoice. Changing the <strong>default_source</strong> for a customer will not trigger this behavior.
         ///This request accepts mostly the same arguments as the customer creation call.</p>
         let Update settings (formOptions: Customers'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/customers/{options.Customer}"
-            |> RestApi.postAsync<_, Customer> settings formOptions
+            |> RestApi.postAsync<_, Customer> settings (Map.empty) formOptions
 
     module CustomersBalanceTransactions =
 
@@ -1312,8 +1384,9 @@ module StripeService =
 
         ///<p>Returns a list of transactions that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
         let List settings (options: ListOptions) =
-            $"/v1/customers/{options.Customer}/balance_transactions?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<CustomerBalanceTransaction list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/customers/{options.Customer}/balance_transactions"
+            |> RestApi.getAsync<CustomerBalanceTransaction list> settings qs
 
         type CreateOptions = {
             Customer: string
@@ -1326,8 +1399,9 @@ module StripeService =
 
         ///<p>Creates an immutable transaction that updates the customer’s credit <a href="/docs/billing/customer/balance">balance</a>.</p>
         let Create settings (formOptions: CustomersBalanceTransactions'CreateOptions) (options: CreateOptions) =
+
             $"/v1/customers/{options.Customer}/balance_transactions"
-            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings formOptions
+            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Customer: string
@@ -1344,8 +1418,9 @@ module StripeService =
 
         ///<p>Retrieves a specific customer balance transaction that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/customers/{options.Customer}/balance_transactions/{options.Transaction}?expand={options.Expand}"
-            |> RestApi.getAsync<CustomerBalanceTransaction> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/customers/{options.Customer}/balance_transactions/{options.Transaction}"
+            |> RestApi.getAsync<CustomerBalanceTransaction> settings qs
 
         type UpdateOptions = {
             Customer: string
@@ -1360,8 +1435,9 @@ module StripeService =
 
         ///<p>Most credit balance transaction fields are immutable, but you may update its <code>description</code> and <code>metadata</code>.</p>
         let Update settings (formOptions: CustomersBalanceTransactions'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/customers/{options.Customer}/balance_transactions/{options.Transaction}"
-            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings formOptions
+            |> RestApi.postAsync<_, CustomerBalanceTransaction> settings (Map.empty) formOptions
 
     module CustomersDiscount =
 
@@ -1376,8 +1452,9 @@ module StripeService =
 
         ///<p>Removes the currently applied discount on a customer.</p>
         let DeleteDiscount settings (options: DeleteDiscountOptions) =
+
             $"/v1/customers/{options.Customer}/discount"
-            |> RestApi.deleteAsync<DeletedDiscount> settings
+            |> RestApi.deleteAsync<DeletedDiscount> settings (Map.empty)
 
     module CustomersSources =
 
@@ -1402,8 +1479,9 @@ module StripeService =
 
         ///<p>List sources for a specified customer.</p>
         let List settings (options: ListOptions) =
-            $"/v1/customers/{options.Customer}/sources?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&object={options.Object}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<PaymentSource list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("object", options.Object |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/customers/{options.Customer}/sources"
+            |> RestApi.getAsync<PaymentSource list> settings qs
 
         type CreateOptions = {
             Customer: string
@@ -1419,8 +1497,9 @@ module StripeService =
         ///However, if the owner already has a default, then it will not change.
         ///To change the default, you should <a href="/docs/api#update_customer">update the customer</a> to have a new <code>default_source</code>.</p>
         let Create settings (formOptions: CustomersSources'CreateOptions) (options: CreateOptions) =
+
             $"/v1/customers/{options.Customer}/sources"
-            |> RestApi.postAsync<_, PaymentSource> settings formOptions
+            |> RestApi.postAsync<_, PaymentSource> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Customer: string
@@ -1435,8 +1514,9 @@ module StripeService =
 
         ///<p>Delete a specified source for a given customer.</p>
         let Delete settings (formOptions: CustomersSources'DeleteOptions) (options: DeleteOptions) =
+
             $"/v1/customers/{options.Customer}/sources/{options.Id}"
-            |> RestApi.deleteAsync<PaymentSource> settings
+            |> RestApi.deleteAsync<PaymentSource> settings (Map.empty)
 
         type RetrieveOptions = {
             Customer: string
@@ -1453,8 +1533,9 @@ module StripeService =
 
         ///<p>Retrieve a specified source for a given customer.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/customers/{options.Customer}/sources/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<PaymentSource> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/customers/{options.Customer}/sources/{options.Id}"
+            |> RestApi.getAsync<PaymentSource> settings qs
 
         type UpdateOptions = {
             Customer: string
@@ -1469,8 +1550,9 @@ module StripeService =
 
         ///<p>Update a specified source for a given customer.</p>
         let Update settings (formOptions: CustomersSources'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/customers/{options.Customer}/sources/{options.Id}"
-            |> RestApi.postAsync<_, Card> settings formOptions
+            |> RestApi.postAsync<_, Card> settings (Map.empty) formOptions
 
     module CustomersSourcesVerify =
 
@@ -1487,8 +1569,9 @@ module StripeService =
 
         ///<p>Verify a specified bank account for a given customer.</p>
         let Verify settings (formOptions: CustomersSourcesVerify'VerifyOptions) (options: VerifyOptions) =
+
             $"/v1/customers/{options.Customer}/sources/{options.Id}/verify"
-            |> RestApi.postAsync<_, BankAccount> settings formOptions
+            |> RestApi.postAsync<_, BankAccount> settings (Map.empty) formOptions
 
     module CustomersTaxIds =
 
@@ -1511,8 +1594,9 @@ module StripeService =
 
         ///<p>Returns a list of tax IDs for a customer.</p>
         let List settings (options: ListOptions) =
-            $"/v1/customers/{options.Customer}/tax_ids?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<TaxId list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/customers/{options.Customer}/tax_ids"
+            |> RestApi.getAsync<TaxId list> settings qs
 
         type CreateOptions = {
             Customer: string
@@ -1525,8 +1609,9 @@ module StripeService =
 
         ///<p>Creates a new <code>TaxID</code> object for a customer.</p>
         let Create settings (formOptions: CustomersTaxIds'CreateOptions) (options: CreateOptions) =
+
             $"/v1/customers/{options.Customer}/tax_ids"
-            |> RestApi.postAsync<_, TaxId> settings formOptions
+            |> RestApi.postAsync<_, TaxId> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Customer: string
@@ -1541,8 +1626,9 @@ module StripeService =
 
         ///<p>Deletes an existing <code>TaxID</code> object.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/customers/{options.Customer}/tax_ids/{options.Id}"
-            |> RestApi.deleteAsync<DeletedTaxId> settings
+            |> RestApi.deleteAsync<DeletedTaxId> settings (Map.empty)
 
         type RetrieveOptions = {
             Customer: string
@@ -1559,8 +1645,9 @@ module StripeService =
 
         ///<p>Retrieves the <code>TaxID</code> object with the given identifier.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/customers/{options.Customer}/tax_ids/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<TaxId> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/customers/{options.Customer}/tax_ids/{options.Id}"
+            |> RestApi.getAsync<TaxId> settings qs
 
     module Disputes =
 
@@ -1587,8 +1674,9 @@ module StripeService =
 
         ///<p>Returns a list of your disputes.</p>
         let List settings (options: ListOptions) =
-            $"/v1/disputes?charge={options.Charge}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Dispute list> settings
+            let qs = [("charge", options.Charge |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/disputes"
+            |> RestApi.getAsync<Dispute list> settings qs
 
         type RetrieveOptions = {
             Dispute: string
@@ -1603,8 +1691,9 @@ module StripeService =
 
         ///<p>Retrieves the dispute with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/disputes/{options.Dispute}?expand={options.Expand}"
-            |> RestApi.getAsync<Dispute> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/disputes/{options.Dispute}"
+            |> RestApi.getAsync<Dispute> settings qs
 
         type UpdateOptions = {
             Dispute: string
@@ -1618,8 +1707,9 @@ module StripeService =
         ///<p>When you get a dispute, contacting your customer is always the best first step. If that doesn’t work, you can submit evidence to help us resolve the dispute in your favor. You can do this in your <a href="https://dashboard.stripe.com/disputes">dashboard</a>, but if you prefer, you can use the API to submit evidence programmatically.
         ///Depending on your dispute type, different evidence fields will give you a better chance of winning your dispute. To figure out which evidence fields to provide, see our <a href="/docs/disputes/categories">guide to dispute types</a>.</p>
         let Update settings (formOptions: Disputes'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/disputes/{options.Dispute}"
-            |> RestApi.postAsync<_, Dispute> settings formOptions
+            |> RestApi.postAsync<_, Dispute> settings (Map.empty) formOptions
 
     module DisputesClose =
 
@@ -1635,15 +1725,17 @@ module StripeService =
         ///<p>Closing the dispute for a charge indicates that you do not have any evidence to submit and are essentially dismissing the dispute, acknowledging it as lost.
         ///The status of the dispute will change from <code>needs_response</code> to <code>lost</code>. <em>Closing a dispute is irreversible</em>.</p>
         let Close settings (formOptions: DisputesClose'CloseOptions) (options: CloseOptions) =
+
             $"/v1/disputes/{options.Dispute}/close"
-            |> RestApi.postAsync<_, Dispute> settings formOptions
+            |> RestApi.postAsync<_, Dispute> settings (Map.empty) formOptions
 
     module EphemeralKeys =
 
         ///<p>Creates a short-lived API key for a given resource.</p>
         let Create settings (formOptions: EphemeralKeys'CreateOptions) =
+
             $"/v1/ephemeral_keys"
-            |> RestApi.postAsync<_, EphemeralKey> settings formOptions
+            |> RestApi.postAsync<_, EphemeralKey> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Key: string
@@ -1656,8 +1748,9 @@ module StripeService =
 
         ///<p>Invalidates a short-lived API key for a given resource.</p>
         let Delete settings (formOptions: EphemeralKeys'DeleteOptions) (options: DeleteOptions) =
+
             $"/v1/ephemeral_keys/{options.Key}"
-            |> RestApi.deleteAsync<EphemeralKey> settings
+            |> RestApi.deleteAsync<EphemeralKey> settings (Map.empty)
 
     module Events =
 
@@ -1686,8 +1779,9 @@ module StripeService =
 
         ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="/docs/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header).</p>
         let List settings (options: ListOptions) =
-            $"/v1/events?created={options.Created}&delivery_success={options.DeliverySuccess}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&type={options.``type``}&types={options.Types}"
-            |> RestApi.getAsync<Event list> settings
+            let qs = [("created", options.Created |> box); ("delivery_success", options.DeliverySuccess |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.``type`` |> box); ("types", options.Types |> box)] |> Map.ofList
+            $"/v1/events"
+            |> RestApi.getAsync<Event list> settings qs
 
         type RetrieveOptions = {
             Id: string
@@ -1702,8 +1796,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an event. Supply the unique identifier of the event, which you might have received in a webhook.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/events/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<Event> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/events/{options.Id}"
+            |> RestApi.getAsync<Event> settings qs
 
     module ExchangeRates =
 
@@ -1724,8 +1819,9 @@ module StripeService =
 
         ///<p>Returns a list of objects that contain the rates at which foreign currencies are converted to one another. Only shows the currencies for which Stripe supports.</p>
         let List settings (options: ListOptions) =
-            $"/v1/exchange_rates?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<ExchangeRate list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/exchange_rates"
+            |> RestApi.getAsync<ExchangeRate list> settings qs
 
         type RetrieveOptions = {
             RateId: string
@@ -1740,8 +1836,9 @@ module StripeService =
 
         ///<p>Retrieves the exchange rates from the given currency to every supported currency.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/exchange_rates/{options.RateId}?expand={options.Expand}"
-            |> RestApi.getAsync<ExchangeRate> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/exchange_rates/{options.RateId}"
+            |> RestApi.getAsync<ExchangeRate> settings qs
 
     module FileLinks =
 
@@ -1768,13 +1865,15 @@ module StripeService =
 
         ///<p>Returns a list of file links.</p>
         let List settings (options: ListOptions) =
-            $"/v1/file_links?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&expired={options.Expired}&file={options.File}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<FileLink list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("expired", options.Expired |> box); ("file", options.File |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/file_links"
+            |> RestApi.getAsync<FileLink list> settings qs
 
         ///<p>Creates a new file link object.</p>
         let Create settings (formOptions: FileLinks'CreateOptions) =
+
             $"/v1/file_links"
-            |> RestApi.postAsync<_, FileLink> settings formOptions
+            |> RestApi.postAsync<_, FileLink> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Link: string
@@ -1789,8 +1888,9 @@ module StripeService =
 
         ///<p>Retrieves the file link with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/file_links/{options.Link}?expand={options.Expand}"
-            |> RestApi.getAsync<FileLink> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/file_links/{options.Link}"
+            |> RestApi.getAsync<FileLink> settings qs
 
         type UpdateOptions = {
             Link: string
@@ -1803,8 +1903,9 @@ module StripeService =
 
         ///<p>Updates an existing file link object. Expired links can no longer be updated.</p>
         let Update settings (formOptions: FileLinks'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/file_links/{options.Link}"
-            |> RestApi.postAsync<_, FileLink> settings formOptions
+            |> RestApi.postAsync<_, FileLink> settings (Map.empty) formOptions
 
     module Files =
 
@@ -1829,14 +1930,16 @@ module StripeService =
 
         ///<p>Returns a list of the files that your account has access to. The files are returned sorted by creation date, with the most recently created files appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/files?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&purpose={options.Purpose}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<File list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("purpose", options.Purpose |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/files"
+            |> RestApi.getAsync<File list> settings qs
 
         ///<p>To upload a file to Stripe, you’ll need to send a request of type <code>multipart/form-data</code>. The request should contain the file you would like to upload, as well as the parameters for creating a file.
         ///All of Stripe’s officially supported Client libraries should have support for sending <code>multipart/form-data</code>.</p>
         let Create settings (formOptions: Files'CreateOptions) =
+
             $"/v1/files"
-            |> RestApi.postAsync<_, File> settings formOptions
+            |> RestApi.postAsync<_, File> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             File: string
@@ -1851,8 +1954,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing file object. Supply the unique file ID from a file, and Stripe will return the corresponding file object. To access file contents, see the <a href="/docs/file-upload#download-file-contents">File Upload Guide</a>.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/files/{options.File}?expand={options.Expand}"
-            |> RestApi.getAsync<File> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/files/{options.File}"
+            |> RestApi.getAsync<File> settings qs
 
     module Invoiceitems =
 
@@ -1881,13 +1985,15 @@ module StripeService =
 
         ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/invoiceitems?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&invoice={options.Invoice}&limit={options.Limit}&pending={options.Pending}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Invoiceitem list> settings
+            let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("pending", options.Pending |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/invoiceitems"
+            |> RestApi.getAsync<Invoiceitem list> settings qs
 
         ///<p>Creates an item to be added to a draft invoice (up to 250 items per invoice). If no invoice is specified, the item will be on the next invoice created for the customer specified.</p>
         let Create settings (formOptions: Invoiceitems'CreateOptions) =
+
             $"/v1/invoiceitems"
-            |> RestApi.postAsync<_, Invoiceitem> settings formOptions
+            |> RestApi.postAsync<_, Invoiceitem> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Invoiceitem: string
@@ -1900,8 +2006,9 @@ module StripeService =
 
         ///<p>Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they’re not attached to invoices, or if it’s attached to a draft invoice.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/invoiceitems/{options.Invoiceitem}"
-            |> RestApi.deleteAsync<DeletedInvoiceitem> settings
+            |> RestApi.deleteAsync<DeletedInvoiceitem> settings (Map.empty)
 
         type RetrieveOptions = {
             Invoiceitem: string
@@ -1916,8 +2023,9 @@ module StripeService =
 
         ///<p>Retrieves the invoice item with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/invoiceitems/{options.Invoiceitem}?expand={options.Expand}"
-            |> RestApi.getAsync<Invoiceitem> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/invoiceitems/{options.Invoiceitem}"
+            |> RestApi.getAsync<Invoiceitem> settings qs
 
         type UpdateOptions = {
             Invoiceitem: string
@@ -1930,8 +2038,9 @@ module StripeService =
 
         ///<p>Updates the amount or description of an invoice item on an upcoming invoice. Updating an invoice item is only possible before the invoice it’s attached to is closed.</p>
         let Update settings (formOptions: Invoiceitems'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/invoiceitems/{options.Invoiceitem}"
-            |> RestApi.postAsync<_, Invoiceitem> settings formOptions
+            |> RestApi.postAsync<_, Invoiceitem> settings (Map.empty) formOptions
 
     module Invoices =
 
@@ -1964,13 +2073,15 @@ module StripeService =
 
         ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/invoices?collection_method={options.CollectionMethod}&created={options.Created}&customer={options.Customer}&due_date={options.DueDate}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&subscription={options.Subscription}"
-            |> RestApi.getAsync<Invoice list> settings
+            let qs = [("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("due_date", options.DueDate |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
+            $"/v1/invoices"
+            |> RestApi.getAsync<Invoice list> settings qs
 
         ///<p>This endpoint creates a draft invoice for a given customer. The draft invoice created pulls in all pending invoice items on that customer, including prorations. The invoice remains a draft until you <a href="#finalize_invoice">finalize</a> the invoice, which allows you to <a href="#pay_invoice">pay</a> or <a href="#send_invoice">send</a> the invoice to your customers.</p>
         let Create settings (formOptions: Invoices'CreateOptions) =
+
             $"/v1/invoices"
-            |> RestApi.postAsync<_, Invoice> settings formOptions
+            |> RestApi.postAsync<_, Invoice> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Invoice: string
@@ -1983,8 +2094,9 @@ module StripeService =
 
         ///<p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="#void_invoice">voided</a>.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/invoices/{options.Invoice}"
-            |> RestApi.deleteAsync<DeletedInvoice> settings
+            |> RestApi.deleteAsync<DeletedInvoice> settings (Map.empty)
 
         type RetrieveOptions = {
             Invoice: string
@@ -1999,8 +2111,9 @@ module StripeService =
 
         ///<p>Retrieves the invoice with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/invoices/{options.Invoice}?expand={options.Expand}"
-            |> RestApi.getAsync<Invoice> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/invoices/{options.Invoice}"
+            |> RestApi.getAsync<Invoice> settings qs
 
         type UpdateOptions = {
             Invoice: string
@@ -2017,8 +2130,9 @@ module StripeService =
         ///sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automatically reconciling</a> invoices, pass
         ///<code>auto_advance=false</code>.</p>
         let Update settings (formOptions: Invoices'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/invoices/{options.Invoice}"
-            |> RestApi.postAsync<_, Invoice> settings formOptions
+            |> RestApi.postAsync<_, Invoice> settings (Map.empty) formOptions
 
     module InvoicesUpcoming =
 
@@ -2069,8 +2183,9 @@ module StripeService =
         ///Note that when you are viewing an upcoming invoice, you are simply viewing a preview – the invoice has not yet been created. As such, the upcoming invoice will not show up in invoice listing calls, and you cannot use the API to pay or edit the invoice. If you want to change the amount that your customer will be billed, you can add, remove, or update pending invoice items, or update the customer’s discount.
         ///You can preview the effects of updating a subscription, including a preview of what proration will take place. To ensure that the actual proration is calculated exactly the same as the previewed proration, you should pass a <code>proration_date</code> parameter when doing the actual subscription update. The value passed in should be the same as the <code>subscription_proration_date</code> returned on the upcoming invoice resource. The recommended way to get only the prorations being previewed is to consider only proration line items where <code>period[start]</code> is equal to the <code>subscription_proration_date</code> on the upcoming invoice resource.</p>
         let Upcoming settings (options: UpcomingOptions) =
-            $"/v1/invoices/upcoming?coupon={options.Coupon}&subscription_start_date={options.SubscriptionStartDate}&subscription_proration_date={options.SubscriptionProrationDate}&subscription_proration_behavior={options.SubscriptionProrationBehavior}&subscription_items={options.SubscriptionItems}&subscription_default_tax_rates={options.SubscriptionDefaultTaxRates}&subscription_cancel_now={options.SubscriptionCancelNow}&subscription_cancel_at_period_end={options.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={options.SubscriptionCancelAt}&subscription_billing_cycle_anchor={options.SubscriptionBillingCycleAnchor}&subscription={options.Subscription}&schedule={options.Schedule}&invoice_items={options.InvoiceItems}&expand={options.Expand}&discounts={options.Discounts}&customer={options.Customer}&subscription_trial_end={options.SubscriptionTrialEnd}&subscription_trial_from_plan={options.SubscriptionTrialFromPlan}"
-            |> RestApi.getAsync<Invoice> settings
+            let qs = [("coupon", options.Coupon |> box); ("subscription_start_date", options.SubscriptionStartDate |> box); ("subscription_proration_date", options.SubscriptionProrationDate |> box); ("subscription_proration_behavior", options.SubscriptionProrationBehavior |> box); ("subscription_items", options.SubscriptionItems |> box); ("subscription_default_tax_rates", options.SubscriptionDefaultTaxRates |> box); ("subscription_cancel_now", options.SubscriptionCancelNow |> box); ("subscription_cancel_at_period_end", options.SubscriptionCancelAtPeriodEnd |> box); ("subscription_cancel_at", options.SubscriptionCancelAt |> box); ("subscription_billing_cycle_anchor", options.SubscriptionBillingCycleAnchor |> box); ("subscription", options.Subscription |> box); ("schedule", options.Schedule |> box); ("invoice_items", options.InvoiceItems |> box); ("expand", options.Expand |> box); ("discounts", options.Discounts |> box); ("customer", options.Customer |> box); ("subscription_trial_end", options.SubscriptionTrialEnd |> box); ("subscription_trial_from_plan", options.SubscriptionTrialFromPlan |> box)] |> Map.ofList
+            $"/v1/invoices/upcoming"
+            |> RestApi.getAsync<Invoice> settings qs
 
     module InvoicesUpcomingLines =
 
@@ -2125,8 +2240,9 @@ module StripeService =
 
         ///<p>When retrieving an upcoming invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         let UpcomingLines settings (options: UpcomingLinesOptions) =
-            $"/v1/invoices/upcoming/lines?coupon={options.Coupon}&subscription_start_date={options.SubscriptionStartDate}&subscription_proration_date={options.SubscriptionProrationDate}&subscription_proration_behavior={options.SubscriptionProrationBehavior}&subscription_items={options.SubscriptionItems}&subscription_default_tax_rates={options.SubscriptionDefaultTaxRates}&subscription_cancel_now={options.SubscriptionCancelNow}&subscription_cancel_at_period_end={options.SubscriptionCancelAtPeriodEnd}&subscription_cancel_at={options.SubscriptionCancelAt}&subscription_trial_end={options.SubscriptionTrialEnd}&subscription_billing_cycle_anchor={options.SubscriptionBillingCycleAnchor}&starting_after={options.StartingAfter}&schedule={options.Schedule}&limit={options.Limit}&invoice_items={options.InvoiceItems}&expand={options.Expand}&ending_before={options.EndingBefore}&discounts={options.Discounts}&customer={options.Customer}&subscription={options.Subscription}&subscription_trial_from_plan={options.SubscriptionTrialFromPlan}"
-            |> RestApi.getAsync<LineItem list> settings
+            let qs = [("coupon", options.Coupon |> box); ("subscription_start_date", options.SubscriptionStartDate |> box); ("subscription_proration_date", options.SubscriptionProrationDate |> box); ("subscription_proration_behavior", options.SubscriptionProrationBehavior |> box); ("subscription_items", options.SubscriptionItems |> box); ("subscription_default_tax_rates", options.SubscriptionDefaultTaxRates |> box); ("subscription_cancel_now", options.SubscriptionCancelNow |> box); ("subscription_cancel_at_period_end", options.SubscriptionCancelAtPeriodEnd |> box); ("subscription_cancel_at", options.SubscriptionCancelAt |> box); ("subscription_trial_end", options.SubscriptionTrialEnd |> box); ("subscription_billing_cycle_anchor", options.SubscriptionBillingCycleAnchor |> box); ("starting_after", options.StartingAfter |> box); ("schedule", options.Schedule |> box); ("limit", options.Limit |> box); ("invoice_items", options.InvoiceItems |> box); ("expand", options.Expand |> box); ("ending_before", options.EndingBefore |> box); ("discounts", options.Discounts |> box); ("customer", options.Customer |> box); ("subscription", options.Subscription |> box); ("subscription_trial_from_plan", options.SubscriptionTrialFromPlan |> box)] |> Map.ofList
+            $"/v1/invoices/upcoming/lines"
+            |> RestApi.getAsync<LineItem list> settings qs
 
     module InvoicesFinalize =
 
@@ -2141,8 +2257,9 @@ module StripeService =
 
         ///<p>Stripe automatically finalizes drafts before sending and attempting payment on invoices. However, if you’d like to finalize a draft invoice manually, you can do so using this method.</p>
         let FinalizeInvoice settings (formOptions: InvoicesFinalize'FinalizeInvoiceOptions) (options: FinalizeInvoiceOptions) =
+
             $"/v1/invoices/{options.Invoice}/finalize"
-            |> RestApi.postAsync<_, Invoice> settings formOptions
+            |> RestApi.postAsync<_, Invoice> settings (Map.empty) formOptions
 
     module InvoicesLines =
 
@@ -2165,8 +2282,9 @@ module StripeService =
 
         ///<p>When retrieving an invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
         let List settings (options: ListOptions) =
-            $"/v1/invoices/{options.Invoice}/lines?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<LineItem list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/invoices/{options.Invoice}/lines"
+            |> RestApi.getAsync<LineItem list> settings qs
 
     module InvoicesMarkUncollectible =
 
@@ -2181,8 +2299,9 @@ module StripeService =
 
         ///<p>Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes.</p>
         let MarkUncollectible settings (formOptions: InvoicesMarkUncollectible'MarkUncollectibleOptions) (options: MarkUncollectibleOptions) =
+
             $"/v1/invoices/{options.Invoice}/mark_uncollectible"
-            |> RestApi.postAsync<_, Invoice> settings formOptions
+            |> RestApi.postAsync<_, Invoice> settings (Map.empty) formOptions
 
     module InvoicesPay =
 
@@ -2197,8 +2316,9 @@ module StripeService =
 
         ///<p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
         let Pay settings (formOptions: InvoicesPay'PayOptions) (options: PayOptions) =
+
             $"/v1/invoices/{options.Invoice}/pay"
-            |> RestApi.postAsync<_, Invoice> settings formOptions
+            |> RestApi.postAsync<_, Invoice> settings (Map.empty) formOptions
 
     module InvoicesSend =
 
@@ -2214,8 +2334,9 @@ module StripeService =
         ///<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.
         ///Requests made in test-mode result in no emails being sent, despite sending an <code>invoice.sent</code> event.</p>
         let SendInvoice settings (formOptions: InvoicesSend'SendInvoiceOptions) (options: SendInvoiceOptions) =
+
             $"/v1/invoices/{options.Invoice}/send"
-            |> RestApi.postAsync<_, Invoice> settings formOptions
+            |> RestApi.postAsync<_, Invoice> settings (Map.empty) formOptions
 
     module InvoicesVoid =
 
@@ -2230,8 +2351,9 @@ module StripeService =
 
         ///<p>Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is similar to <a href="#delete_invoice">deletion</a>, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found.</p>
         let VoidInvoice settings (formOptions: InvoicesVoid'VoidInvoiceOptions) (options: VoidInvoiceOptions) =
+
             $"/v1/invoices/{options.Invoice}/void"
-            |> RestApi.postAsync<_, Invoice> settings formOptions
+            |> RestApi.postAsync<_, Invoice> settings (Map.empty) formOptions
 
     module IssuerFraudRecords =
 
@@ -2254,8 +2376,9 @@ module StripeService =
 
         ///<p>Returns a list of issuer fraud records.</p>
         let List settings (options: ListOptions) =
-            $"/v1/issuer_fraud_records?charge={options.Charge}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<IssuerFraudRecord list> settings
+            let qs = [("charge", options.Charge |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/issuer_fraud_records"
+            |> RestApi.getAsync<IssuerFraudRecord list> settings qs
 
         type RetrieveOptions = {
             IssuerFraudRecord: string
@@ -2271,8 +2394,9 @@ module StripeService =
         ///<p>Retrieves the details of an issuer fraud record that has previously been created. 
         ///Please refer to the <a href="#issuer_fraud_record_object">issuer fraud record</a> object reference for more details.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/issuer_fraud_records/{options.IssuerFraudRecord}?expand={options.Expand}"
-            |> RestApi.getAsync<IssuerFraudRecord> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/issuer_fraud_records/{options.IssuerFraudRecord}"
+            |> RestApi.getAsync<IssuerFraudRecord> settings qs
 
     module IssuingAuthorizations =
 
@@ -2301,8 +2425,9 @@ module StripeService =
 
         ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/issuing/authorizations?card={options.Card}&cardholder={options.Cardholder}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}"
-            |> RestApi.getAsync<IssuingAuthorization list> settings
+            let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+            $"/v1/issuing/authorizations"
+            |> RestApi.getAsync<IssuingAuthorization list> settings qs
 
         type RetrieveOptions = {
             Authorization: string
@@ -2317,8 +2442,9 @@ module StripeService =
 
         ///<p>Retrieves an Issuing <code>Authorization</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/issuing/authorizations/{options.Authorization}?expand={options.Expand}"
-            |> RestApi.getAsync<IssuingAuthorization> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/issuing/authorizations/{options.Authorization}"
+            |> RestApi.getAsync<IssuingAuthorization> settings qs
 
         type UpdateOptions = {
             Authorization: string
@@ -2331,8 +2457,9 @@ module StripeService =
 
         ///<p>Updates the specified Issuing <code>Authorization</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: IssuingAuthorizations'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/issuing/authorizations/{options.Authorization}"
-            |> RestApi.postAsync<_, IssuingAuthorization> settings formOptions
+            |> RestApi.postAsync<_, IssuingAuthorization> settings (Map.empty) formOptions
 
     module IssuingAuthorizationsApprove =
 
@@ -2347,8 +2474,9 @@ module StripeService =
 
         ///<p>Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.</p>
         let Approve settings (formOptions: IssuingAuthorizationsApprove'ApproveOptions) (options: ApproveOptions) =
+
             $"/v1/issuing/authorizations/{options.Authorization}/approve"
-            |> RestApi.postAsync<_, IssuingAuthorization> settings formOptions
+            |> RestApi.postAsync<_, IssuingAuthorization> settings (Map.empty) formOptions
 
     module IssuingAuthorizationsDecline =
 
@@ -2363,8 +2491,9 @@ module StripeService =
 
         ///<p>Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.</p>
         let Decline settings (formOptions: IssuingAuthorizationsDecline'DeclineOptions) (options: DeclineOptions) =
+
             $"/v1/issuing/authorizations/{options.Authorization}/decline"
-            |> RestApi.postAsync<_, IssuingAuthorization> settings formOptions
+            |> RestApi.postAsync<_, IssuingAuthorization> settings (Map.empty) formOptions
 
     module IssuingCardholders =
 
@@ -2395,13 +2524,15 @@ module StripeService =
 
         ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/issuing/cardholders?created={options.Created}&email={options.Email}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&phone_number={options.PhoneNumber}&starting_after={options.StartingAfter}&status={options.Status}&type={options.``type``}"
-            |> RestApi.getAsync<IssuingCardholder list> settings
+            let qs = [("created", options.Created |> box); ("email", options.Email |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("phone_number", options.PhoneNumber |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.``type`` |> box)] |> Map.ofList
+            $"/v1/issuing/cardholders"
+            |> RestApi.getAsync<IssuingCardholder list> settings qs
 
         ///<p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p>
         let Create settings (formOptions: IssuingCardholders'CreateOptions) =
+
             $"/v1/issuing/cardholders"
-            |> RestApi.postAsync<_, IssuingCardholder> settings formOptions
+            |> RestApi.postAsync<_, IssuingCardholder> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Cardholder: string
@@ -2416,8 +2547,9 @@ module StripeService =
 
         ///<p>Retrieves an Issuing <code>Cardholder</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/issuing/cardholders/{options.Cardholder}?expand={options.Expand}"
-            |> RestApi.getAsync<IssuingCardholder> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/issuing/cardholders/{options.Cardholder}"
+            |> RestApi.getAsync<IssuingCardholder> settings qs
 
         type UpdateOptions = {
             Cardholder: string
@@ -2430,8 +2562,9 @@ module StripeService =
 
         ///<p>Updates the specified Issuing <code>Cardholder</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: IssuingCardholders'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/issuing/cardholders/{options.Cardholder}"
-            |> RestApi.postAsync<_, IssuingCardholder> settings formOptions
+            |> RestApi.postAsync<_, IssuingCardholder> settings (Map.empty) formOptions
 
     module IssuingCards =
 
@@ -2466,13 +2599,15 @@ module StripeService =
 
         ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/issuing/cards?cardholder={options.Cardholder}&created={options.Created}&ending_before={options.EndingBefore}&exp_month={options.ExpMonth}&exp_year={options.ExpYear}&expand={options.Expand}&last4={options.Last4}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&type={options.``type``}"
-            |> RestApi.getAsync<IssuingCard list> settings
+            let qs = [("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("exp_month", options.ExpMonth |> box); ("exp_year", options.ExpYear |> box); ("expand", options.Expand |> box); ("last4", options.Last4 |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.``type`` |> box)] |> Map.ofList
+            $"/v1/issuing/cards"
+            |> RestApi.getAsync<IssuingCard list> settings qs
 
         ///<p>Creates an Issuing <code>Card</code> object.</p>
         let Create settings (formOptions: IssuingCards'CreateOptions) =
+
             $"/v1/issuing/cards"
-            |> RestApi.postAsync<_, IssuingCard> settings formOptions
+            |> RestApi.postAsync<_, IssuingCard> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Card: string
@@ -2487,8 +2622,9 @@ module StripeService =
 
         ///<p>Retrieves an Issuing <code>Card</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/issuing/cards/{options.Card}?expand={options.Expand}"
-            |> RestApi.getAsync<IssuingCard> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/issuing/cards/{options.Card}"
+            |> RestApi.getAsync<IssuingCard> settings qs
 
         type UpdateOptions = {
             Card: string
@@ -2501,8 +2637,9 @@ module StripeService =
 
         ///<p>Updates the specified Issuing <code>Card</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: IssuingCards'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/issuing/cards/{options.Card}"
-            |> RestApi.postAsync<_, IssuingCard> settings formOptions
+            |> RestApi.postAsync<_, IssuingCard> settings (Map.empty) formOptions
 
     module IssuingDisputes =
 
@@ -2529,13 +2666,15 @@ module StripeService =
 
         ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/issuing/disputes?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&transaction={options.Transaction}"
-            |> RestApi.getAsync<IssuingDispute list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("transaction", options.Transaction |> box)] |> Map.ofList
+            $"/v1/issuing/disputes"
+            |> RestApi.getAsync<IssuingDispute list> settings qs
 
         ///<p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p>
         let Create settings (formOptions: IssuingDisputes'CreateOptions) =
+
             $"/v1/issuing/disputes"
-            |> RestApi.postAsync<_, IssuingDispute> settings formOptions
+            |> RestApi.postAsync<_, IssuingDispute> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Dispute: string
@@ -2550,8 +2689,9 @@ module StripeService =
 
         ///<p>Retrieves an Issuing <code>Dispute</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/issuing/disputes/{options.Dispute}?expand={options.Expand}"
-            |> RestApi.getAsync<IssuingDispute> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/issuing/disputes/{options.Dispute}"
+            |> RestApi.getAsync<IssuingDispute> settings qs
 
         type UpdateOptions = {
             Dispute: string
@@ -2564,8 +2704,9 @@ module StripeService =
 
         ///<p>Updates the specified Issuing <code>Dispute</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Properties on the <code>evidence</code> object can be unset by passing in an empty string.</p>
         let Update settings (formOptions: IssuingDisputes'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/issuing/disputes/{options.Dispute}"
-            |> RestApi.postAsync<_, IssuingDispute> settings formOptions
+            |> RestApi.postAsync<_, IssuingDispute> settings (Map.empty) formOptions
 
     module IssuingDisputesSubmit =
 
@@ -2580,8 +2721,9 @@ module StripeService =
 
         ///<p>Submits an Issuing <code>Dispute</code> to the card network. Stripe validates that all evidence fields required for the dispute’s reason are present. For more details, see <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a>.</p>
         let Submit settings (formOptions: IssuingDisputesSubmit'SubmitOptions) (options: SubmitOptions) =
+
             $"/v1/issuing/disputes/{options.Dispute}/submit"
-            |> RestApi.postAsync<_, IssuingDispute> settings formOptions
+            |> RestApi.postAsync<_, IssuingDispute> settings (Map.empty) formOptions
 
     module IssuingTransactions =
 
@@ -2608,8 +2750,9 @@ module StripeService =
 
         ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/issuing/transactions?card={options.Card}&cardholder={options.Cardholder}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<IssuingTransaction list> settings
+            let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/issuing/transactions"
+            |> RestApi.getAsync<IssuingTransaction list> settings qs
 
         type RetrieveOptions = {
             Transaction: string
@@ -2624,8 +2767,9 @@ module StripeService =
 
         ///<p>Retrieves an Issuing <code>Transaction</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/issuing/transactions/{options.Transaction}?expand={options.Expand}"
-            |> RestApi.getAsync<IssuingTransaction> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/issuing/transactions/{options.Transaction}"
+            |> RestApi.getAsync<IssuingTransaction> settings qs
 
         type UpdateOptions = {
             Transaction: string
@@ -2638,8 +2782,9 @@ module StripeService =
 
         ///<p>Updates the specified Issuing <code>Transaction</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: IssuingTransactions'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/issuing/transactions/{options.Transaction}"
-            |> RestApi.postAsync<_, IssuingTransaction> settings formOptions
+            |> RestApi.postAsync<_, IssuingTransaction> settings (Map.empty) formOptions
 
     module Mandates =
 
@@ -2656,8 +2801,9 @@ module StripeService =
 
         ///<p>Retrieves a Mandate object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/mandates/{options.Mandate}?expand={options.Expand}"
-            |> RestApi.getAsync<Mandate> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/mandates/{options.Mandate}"
+            |> RestApi.getAsync<Mandate> settings qs
 
     module OrderReturns =
 
@@ -2682,8 +2828,9 @@ module StripeService =
 
         ///<p>Returns a list of your order returns. The returns are returned sorted by creation date, with the most recently created return appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/order_returns?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&order={options.Order}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<OrderReturn list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("order", options.Order |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/order_returns"
+            |> RestApi.getAsync<OrderReturn list> settings qs
 
         type RetrieveOptions = {
             Id: string
@@ -2698,8 +2845,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing order return. Supply the unique order ID from either an order return creation request or the order return list, and Stripe will return the corresponding order information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/order_returns/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<OrderReturn> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/order_returns/{options.Id}"
+            |> RestApi.getAsync<OrderReturn> settings qs
 
     module Orders =
 
@@ -2732,13 +2880,15 @@ module StripeService =
 
         ///<p>Returns a list of your orders. The orders are returned sorted by creation date, with the most recently created orders appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/orders?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&ids={options.Ids}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}&status_transitions={options.StatusTransitions}&upstream_ids={options.UpstreamIds}"
-            |> RestApi.getAsync<Order list> settings
+            let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("ids", options.Ids |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("status_transitions", options.StatusTransitions |> box); ("upstream_ids", options.UpstreamIds |> box)] |> Map.ofList
+            $"/v1/orders"
+            |> RestApi.getAsync<Order list> settings qs
 
         ///<p>Creates a new order object.</p>
         let Create settings (formOptions: Orders'CreateOptions) =
+
             $"/v1/orders"
-            |> RestApi.postAsync<_, Order> settings formOptions
+            |> RestApi.postAsync<_, Order> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Id: string
@@ -2753,8 +2903,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing order. Supply the unique order ID from either an order creation request or the order list, and Stripe will return the corresponding order information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/orders/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<Order> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/orders/{options.Id}"
+            |> RestApi.getAsync<Order> settings qs
 
         type UpdateOptions = {
             Id: string
@@ -2767,8 +2918,9 @@ module StripeService =
 
         ///<p>Updates the specific order by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: Orders'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/orders/{options.Id}"
-            |> RestApi.postAsync<_, Order> settings formOptions
+            |> RestApi.postAsync<_, Order> settings (Map.empty) formOptions
 
     module OrdersPay =
 
@@ -2783,8 +2935,9 @@ module StripeService =
 
         ///<p>Pay an order by providing a <code>source</code> to create a payment.</p>
         let Pay settings (formOptions: OrdersPay'PayOptions) (options: PayOptions) =
+
             $"/v1/orders/{options.Id}/pay"
-            |> RestApi.postAsync<_, Order> settings formOptions
+            |> RestApi.postAsync<_, Order> settings (Map.empty) formOptions
 
     module OrdersReturns =
 
@@ -2799,8 +2952,9 @@ module StripeService =
 
         ///<p>Return all or part of an order. The order must have a status of <code>paid</code> or <code>fulfilled</code> before it can be returned. Once all items have been returned, the order will become <code>canceled</code> or <code>returned</code> depending on which status the order started in.</p>
         let ReturnOrder settings (formOptions: OrdersReturns'ReturnOrderOptions) (options: ReturnOrderOptions) =
+
             $"/v1/orders/{options.Id}/returns"
-            |> RestApi.postAsync<_, OrderReturn> settings formOptions
+            |> RestApi.postAsync<_, OrderReturn> settings (Map.empty) formOptions
 
     module PaymentIntents =
 
@@ -2825,8 +2979,9 @@ module StripeService =
 
         ///<p>Returns a list of PaymentIntents.</p>
         let List settings (options: ListOptions) =
-            $"/v1/payment_intents?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<PaymentIntent list> settings
+            let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/payment_intents"
+            |> RestApi.getAsync<PaymentIntent list> settings qs
 
         ///<p>Creates a PaymentIntent object.
         ///After the PaymentIntent is created, attach a payment method and <a href="/docs/api/payment_intents/confirm">confirm</a>
@@ -2837,8 +2992,9 @@ module StripeService =
         ///available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when <code>confirm=true</code>
         ///is supplied.</p>
         let Create settings (formOptions: PaymentIntents'CreateOptions) =
+
             $"/v1/payment_intents"
-            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
+            |> RestApi.postAsync<_, PaymentIntent> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Intent: string
@@ -2857,8 +3013,9 @@ module StripeService =
         ///Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. 
         ///When retrieved with a publishable key, only a subset of properties will be returned. Please refer to the <a href="#payment_intent_object">payment intent</a> object reference for more details.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/payment_intents/{options.Intent}?client_secret={options.ClientSecret}&expand={options.Expand}"
-            |> RestApi.getAsync<PaymentIntent> settings
+            let qs = [("client_secret", options.ClientSecret |> box); ("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/payment_intents/{options.Intent}"
+            |> RestApi.getAsync<PaymentIntent> settings qs
 
         type UpdateOptions = {
             Intent: string
@@ -2876,8 +3033,9 @@ module StripeService =
         ///update and confirm at the same time, we recommend updating properties via
         ///the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>
         let Update settings (formOptions: PaymentIntents'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/payment_intents/{options.Intent}"
-            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
+            |> RestApi.postAsync<_, PaymentIntent> settings (Map.empty) formOptions
 
     module PaymentIntentsCancel =
 
@@ -2893,8 +3051,9 @@ module StripeService =
         ///<p>A PaymentIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_capture</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. 
         ///Once canceled, no additional charges will be made by the PaymentIntent and any operations on the PaymentIntent will fail with an error. For PaymentIntents with <code>status=’requires_capture’</code>, the remaining <code>amount_capturable</code> will automatically be refunded.</p>
         let Cancel settings (formOptions: PaymentIntentsCancel'CancelOptions) (options: CancelOptions) =
+
             $"/v1/payment_intents/{options.Intent}/cancel"
-            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
+            |> RestApi.postAsync<_, PaymentIntent> settings (Map.empty) formOptions
 
     module PaymentIntentsCapture =
 
@@ -2911,8 +3070,9 @@ module StripeService =
         ///Uncaptured PaymentIntents will be canceled exactly seven days after they are created.
         ///Learn more about <a href="/docs/payments/capture-later">separate authorization and capture</a>.</p>
         let Capture settings (formOptions: PaymentIntentsCapture'CaptureOptions) (options: CaptureOptions) =
+
             $"/v1/payment_intents/{options.Intent}/capture"
-            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
+            |> RestApi.postAsync<_, PaymentIntent> settings (Map.empty) formOptions
 
     module PaymentIntentsConfirm =
 
@@ -2948,8 +3108,9 @@ module StripeService =
         ///attempt. Read the <a href="/docs/payments/payment-intents/web-manual">expanded documentation</a>
         ///to learn more about manual confirmation.</p>
         let Confirm settings (formOptions: PaymentIntentsConfirm'ConfirmOptions) (options: ConfirmOptions) =
+
             $"/v1/payment_intents/{options.Intent}/confirm"
-            |> RestApi.postAsync<_, PaymentIntent> settings formOptions
+            |> RestApi.postAsync<_, PaymentIntent> settings (Map.empty) formOptions
 
     module PaymentMethods =
 
@@ -2974,13 +3135,15 @@ module StripeService =
 
         ///<p>Returns a list of PaymentMethods for a given Customer</p>
         let List settings (options: ListOptions) =
-            $"/v1/payment_methods?customer={options.Customer}&type={options.``type``}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<PaymentMethod list> settings
+            let qs = [("customer", options.Customer |> box); ("type", options.``type`` |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/payment_methods"
+            |> RestApi.getAsync<PaymentMethod list> settings qs
 
         ///<p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
         let Create settings (formOptions: PaymentMethods'CreateOptions) =
+
             $"/v1/payment_methods"
-            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
+            |> RestApi.postAsync<_, PaymentMethod> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             PaymentMethod: string
@@ -2995,8 +3158,9 @@ module StripeService =
 
         ///<p>Retrieves a PaymentMethod object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/payment_methods/{options.PaymentMethod}?expand={options.Expand}"
-            |> RestApi.getAsync<PaymentMethod> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/payment_methods/{options.PaymentMethod}"
+            |> RestApi.getAsync<PaymentMethod> settings qs
 
         type UpdateOptions = {
             PaymentMethod: string
@@ -3009,8 +3173,9 @@ module StripeService =
 
         ///<p>Updates a PaymentMethod object. A PaymentMethod must be attached a customer to be updated.</p>
         let Update settings (formOptions: PaymentMethods'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/payment_methods/{options.PaymentMethod}"
-            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
+            |> RestApi.postAsync<_, PaymentMethod> settings (Map.empty) formOptions
 
     module PaymentMethodsAttach =
 
@@ -3033,8 +3198,9 @@ module StripeService =
         ///set <a href="/docs/api/customers/update#update_customer-invoice_settings-default_payment_method"><code>invoice_settings.default_payment_method</code></a>,
         ///on the Customer to the PaymentMethod’s ID.</p>
         let Attach settings (formOptions: PaymentMethodsAttach'AttachOptions) (options: AttachOptions) =
+
             $"/v1/payment_methods/{options.PaymentMethod}/attach"
-            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
+            |> RestApi.postAsync<_, PaymentMethod> settings (Map.empty) formOptions
 
     module PaymentMethodsDetach =
 
@@ -3049,8 +3215,9 @@ module StripeService =
 
         ///<p>Detaches a PaymentMethod object from a Customer.</p>
         let Detach settings (formOptions: PaymentMethodsDetach'DetachOptions) (options: DetachOptions) =
+
             $"/v1/payment_methods/{options.PaymentMethod}/detach"
-            |> RestApi.postAsync<_, PaymentMethod> settings formOptions
+            |> RestApi.postAsync<_, PaymentMethod> settings (Map.empty) formOptions
 
     module Payouts =
 
@@ -3079,15 +3246,17 @@ module StripeService =
 
         ///<p>Returns a list of existing payouts sent to third-party bank accounts or that Stripe has sent you. The payouts are returned in sorted order, with the most recently created payouts appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/payouts?arrival_date={options.ArrivalDate}&created={options.Created}&destination={options.Destination}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}"
-            |> RestApi.getAsync<Payout list> settings
+            let qs = [("arrival_date", options.ArrivalDate |> box); ("created", options.Created |> box); ("destination", options.Destination |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+            $"/v1/payouts"
+            |> RestApi.getAsync<Payout list> settings qs
 
         ///<p>To send funds to your own bank account, you create a new payout object. Your <a href="#balance">Stripe balance</a> must be able to cover the payout amount, or you’ll receive an “Insufficient Funds” error.
         ///If your API key is in test mode, money won’t actually be sent, though everything else will occur as if in live mode.
         ///If you are creating a manual payout on a Stripe account that uses multiple payment source types, you’ll need to specify the source type balance that the payout should draw from. The <a href="#balance_object">balance object</a> details available and pending amounts by source type.</p>
         let Create settings (formOptions: Payouts'CreateOptions) =
+
             $"/v1/payouts"
-            |> RestApi.postAsync<_, Payout> settings formOptions
+            |> RestApi.postAsync<_, Payout> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Payout: string
@@ -3102,8 +3271,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing payout. Supply the unique payout ID from either a payout creation request or the payout list, and Stripe will return the corresponding payout information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/payouts/{options.Payout}?expand={options.Expand}"
-            |> RestApi.getAsync<Payout> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/payouts/{options.Payout}"
+            |> RestApi.getAsync<Payout> settings qs
 
         type UpdateOptions = {
             Payout: string
@@ -3116,8 +3286,9 @@ module StripeService =
 
         ///<p>Updates the specified payout by setting the values of the parameters passed. Any parameters not provided will be left unchanged. This request accepts only the metadata as arguments.</p>
         let Update settings (formOptions: Payouts'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/payouts/{options.Payout}"
-            |> RestApi.postAsync<_, Payout> settings formOptions
+            |> RestApi.postAsync<_, Payout> settings (Map.empty) formOptions
 
     module PayoutsCancel =
 
@@ -3132,8 +3303,9 @@ module StripeService =
 
         ///<p>A previously created payout can be canceled if it has not yet been paid out. Funds will be refunded to your available balance. You may not cancel automatic Stripe payouts.</p>
         let Cancel settings (formOptions: PayoutsCancel'CancelOptions) (options: CancelOptions) =
+
             $"/v1/payouts/{options.Payout}/cancel"
-            |> RestApi.postAsync<_, Payout> settings formOptions
+            |> RestApi.postAsync<_, Payout> settings (Map.empty) formOptions
 
     module PayoutsReverse =
 
@@ -3149,8 +3321,9 @@ module StripeService =
         ///<p>Reverses a payout by debiting the destination bank account. Only payouts for connected accounts to US bank accounts may be reversed at this time. If the payout is in the <code>pending</code> status, <code>/v1/payouts/:id/cancel</code> should be used instead.
         ///By requesting a reversal via <code>/v1/payouts/:id/reverse</code>, you confirm that the authorized signatory of the selected bank account has authorized the debit on the bank account and that no other authorization is required.</p>
         let Reverse settings (formOptions: PayoutsReverse'ReverseOptions) (options: ReverseOptions) =
+
             $"/v1/payouts/{options.Payout}/reverse"
-            |> RestApi.postAsync<_, Payout> settings formOptions
+            |> RestApi.postAsync<_, Payout> settings (Map.empty) formOptions
 
     module Plans =
 
@@ -3177,13 +3350,15 @@ module StripeService =
 
         ///<p>Returns a list of your plans.</p>
         let List settings (options: ListOptions) =
-            $"/v1/plans?active={options.Active}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&product={options.Product}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Plan list> settings
+            let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("product", options.Product |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/plans"
+            |> RestApi.getAsync<Plan list> settings qs
 
         ///<p>You can now model subscriptions more flexibly using the <a href="#prices">Prices API</a>. It replaces the Plans API and is backwards compatible to simplify your migration.</p>
         let Create settings (formOptions: Plans'CreateOptions) =
+
             $"/v1/plans"
-            |> RestApi.postAsync<_, Plan> settings formOptions
+            |> RestApi.postAsync<_, Plan> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Plan: string
@@ -3196,8 +3371,9 @@ module StripeService =
 
         ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/plans/{options.Plan}"
-            |> RestApi.deleteAsync<DeletedPlan> settings
+            |> RestApi.deleteAsync<DeletedPlan> settings (Map.empty)
 
         type RetrieveOptions = {
             Plan: string
@@ -3212,8 +3388,9 @@ module StripeService =
 
         ///<p>Retrieves the plan with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/plans/{options.Plan}?expand={options.Expand}"
-            |> RestApi.getAsync<Plan> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/plans/{options.Plan}"
+            |> RestApi.getAsync<Plan> settings qs
 
         type UpdateOptions = {
             Plan: string
@@ -3226,8 +3403,9 @@ module StripeService =
 
         ///<p>Updates the specified plan by setting the values of the parameters passed. Any parameters not provided are left unchanged. By design, you cannot change a plan’s ID, amount, currency, or billing cycle.</p>
         let Update settings (formOptions: Plans'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/plans/{options.Plan}"
-            |> RestApi.postAsync<_, Plan> settings formOptions
+            |> RestApi.postAsync<_, Plan> settings (Map.empty) formOptions
 
     module Prices =
 
@@ -3262,13 +3440,15 @@ module StripeService =
 
         ///<p>Returns a list of your prices.</p>
         let List settings (options: ListOptions) =
-            $"/v1/prices?active={options.Active}&created={options.Created}&currency={options.Currency}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&lookup_keys={options.LookupKeys}&product={options.Product}&recurring={options.Recurring}&starting_after={options.StartingAfter}&type={options.``type``}"
-            |> RestApi.getAsync<Price list> settings
+            let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("currency", options.Currency |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("lookup_keys", options.LookupKeys |> box); ("product", options.Product |> box); ("recurring", options.Recurring |> box); ("starting_after", options.StartingAfter |> box); ("type", options.``type`` |> box)] |> Map.ofList
+            $"/v1/prices"
+            |> RestApi.getAsync<Price list> settings qs
 
         ///<p>Creates a new price for an existing product. The price can be recurring or one-time.</p>
         let Create settings (formOptions: Prices'CreateOptions) =
+
             $"/v1/prices"
-            |> RestApi.postAsync<_, Price> settings formOptions
+            |> RestApi.postAsync<_, Price> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Price: string
@@ -3283,8 +3463,9 @@ module StripeService =
 
         ///<p>Retrieves the price with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/prices/{options.Price}?expand={options.Expand}"
-            |> RestApi.getAsync<Price> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/prices/{options.Price}"
+            |> RestApi.getAsync<Price> settings qs
 
         type UpdateOptions = {
             Price: string
@@ -3297,8 +3478,9 @@ module StripeService =
 
         ///<p>Updates the specified price by setting the values of the parameters passed. Any parameters not provided are left unchanged.</p>
         let Update settings (formOptions: Prices'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/prices/{options.Price}"
-            |> RestApi.postAsync<_, Price> settings formOptions
+            |> RestApi.postAsync<_, Price> settings (Map.empty) formOptions
 
     module Products =
 
@@ -3331,13 +3513,15 @@ module StripeService =
 
         ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/products?active={options.Active}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&ids={options.Ids}&limit={options.Limit}&shippable={options.Shippable}&starting_after={options.StartingAfter}&type={options.``type``}&url={options.Url}"
-            |> RestApi.getAsync<Product list> settings
+            let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("ids", options.Ids |> box); ("limit", options.Limit |> box); ("shippable", options.Shippable |> box); ("starting_after", options.StartingAfter |> box); ("type", options.``type`` |> box); ("url", options.Url |> box)] |> Map.ofList
+            $"/v1/products"
+            |> RestApi.getAsync<Product list> settings qs
 
         ///<p>Creates a new product object.</p>
         let Create settings (formOptions: Products'CreateOptions) =
+
             $"/v1/products"
-            |> RestApi.postAsync<_, Product> settings formOptions
+            |> RestApi.postAsync<_, Product> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Id: string
@@ -3350,8 +3534,9 @@ module StripeService =
 
         ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/products/{options.Id}"
-            |> RestApi.deleteAsync<DeletedProduct> settings
+            |> RestApi.deleteAsync<DeletedProduct> settings (Map.empty)
 
         type RetrieveOptions = {
             Id: string
@@ -3366,8 +3551,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/products/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<Product> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/products/{options.Id}"
+            |> RestApi.getAsync<Product> settings qs
 
         type UpdateOptions = {
             Id: string
@@ -3380,8 +3566,9 @@ module StripeService =
 
         ///<p>Updates the specific product by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: Products'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/products/{options.Id}"
-            |> RestApi.postAsync<_, Product> settings formOptions
+            |> RestApi.postAsync<_, Product> settings (Map.empty) formOptions
 
     module PromotionCodes =
 
@@ -3412,13 +3599,15 @@ module StripeService =
 
         ///<p>Returns a list of your promotion codes.</p>
         let List settings (options: ListOptions) =
-            $"/v1/promotion_codes?active={options.Active}&code={options.Code}&coupon={options.Coupon}&created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<PromotionCode list> settings
+            let qs = [("active", options.Active |> box); ("code", options.Code |> box); ("coupon", options.Coupon |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/promotion_codes"
+            |> RestApi.getAsync<PromotionCode list> settings qs
 
         ///<p>A promotion code points to a coupon. You can optionally restrict the code to a specific customer, redemption limit, and expiration date.</p>
         let Create settings (formOptions: PromotionCodes'CreateOptions) =
+
             $"/v1/promotion_codes"
-            |> RestApi.postAsync<_, PromotionCode> settings formOptions
+            |> RestApi.postAsync<_, PromotionCode> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             PromotionCode: string
@@ -3433,8 +3622,9 @@ module StripeService =
 
         ///<p>Retrieves the promotion code with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/promotion_codes/{options.PromotionCode}?expand={options.Expand}"
-            |> RestApi.getAsync<PromotionCode> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/promotion_codes/{options.PromotionCode}"
+            |> RestApi.getAsync<PromotionCode> settings qs
 
         type UpdateOptions = {
             PromotionCode: string
@@ -3447,8 +3637,9 @@ module StripeService =
 
         ///<p>Updates the specified promotion code by setting the values of the parameters passed. Most fields are, by design, not editable.</p>
         let Update settings (formOptions: PromotionCodes'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/promotion_codes/{options.PromotionCode}"
-            |> RestApi.postAsync<_, PromotionCode> settings formOptions
+            |> RestApi.postAsync<_, PromotionCode> settings (Map.empty) formOptions
 
     module RadarEarlyFraudWarnings =
 
@@ -3471,8 +3662,9 @@ module StripeService =
 
         ///<p>Returns a list of early fraud warnings.</p>
         let List settings (options: ListOptions) =
-            $"/v1/radar/early_fraud_warnings?charge={options.Charge}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<RadarEarlyFraudWarning list> settings
+            let qs = [("charge", options.Charge |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/radar/early_fraud_warnings"
+            |> RestApi.getAsync<RadarEarlyFraudWarning list> settings qs
 
         type RetrieveOptions = {
             EarlyFraudWarning: string
@@ -3488,8 +3680,9 @@ module StripeService =
         ///<p>Retrieves the details of an early fraud warning that has previously been created. 
         ///Please refer to the <a href="#early_fraud_warning_object">early fraud warning</a> object reference for more details.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/radar/early_fraud_warnings/{options.EarlyFraudWarning}?expand={options.Expand}"
-            |> RestApi.getAsync<RadarEarlyFraudWarning> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/radar/early_fraud_warnings/{options.EarlyFraudWarning}"
+            |> RestApi.getAsync<RadarEarlyFraudWarning> settings qs
 
     module RadarValueListItems =
 
@@ -3516,13 +3709,15 @@ module StripeService =
 
         ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/radar/value_list_items?value_list={options.ValueList}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&value={options.Value}"
-            |> RestApi.getAsync<RadarValueListItem list> settings
+            let qs = [("value_list", options.ValueList |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("value", options.Value |> box)] |> Map.ofList
+            $"/v1/radar/value_list_items"
+            |> RestApi.getAsync<RadarValueListItem list> settings qs
 
         ///<p>Creates a new <code>ValueListItem</code> object, which is added to the specified parent value list.</p>
         let Create settings (formOptions: RadarValueListItems'CreateOptions) =
+
             $"/v1/radar/value_list_items"
-            |> RestApi.postAsync<_, RadarValueListItem> settings formOptions
+            |> RestApi.postAsync<_, RadarValueListItem> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Item: string
@@ -3535,8 +3730,9 @@ module StripeService =
 
         ///<p>Deletes a <code>ValueListItem</code> object, removing it from its parent value list.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/radar/value_list_items/{options.Item}"
-            |> RestApi.deleteAsync<DeletedRadarValueListItem> settings
+            |> RestApi.deleteAsync<DeletedRadarValueListItem> settings (Map.empty)
 
         type RetrieveOptions = {
             Item: string
@@ -3551,8 +3747,9 @@ module StripeService =
 
         ///<p>Retrieves a <code>ValueListItem</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/radar/value_list_items/{options.Item}?expand={options.Expand}"
-            |> RestApi.getAsync<RadarValueListItem> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/radar/value_list_items/{options.Item}"
+            |> RestApi.getAsync<RadarValueListItem> settings qs
 
     module RadarValueLists =
 
@@ -3579,13 +3776,15 @@ module StripeService =
 
         ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/radar/value_lists?alias={options.Alias}&contains={options.Contains}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<RadarValueList list> settings
+            let qs = [("alias", options.Alias |> box); ("contains", options.Contains |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/radar/value_lists"
+            |> RestApi.getAsync<RadarValueList list> settings qs
 
         ///<p>Creates a new <code>ValueList</code> object, which can then be referenced in rules.</p>
         let Create settings (formOptions: RadarValueLists'CreateOptions) =
+
             $"/v1/radar/value_lists"
-            |> RestApi.postAsync<_, RadarValueList> settings formOptions
+            |> RestApi.postAsync<_, RadarValueList> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             ValueList: string
@@ -3598,8 +3797,9 @@ module StripeService =
 
         ///<p>Deletes a <code>ValueList</code> object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/radar/value_lists/{options.ValueList}"
-            |> RestApi.deleteAsync<DeletedRadarValueList> settings
+            |> RestApi.deleteAsync<DeletedRadarValueList> settings (Map.empty)
 
         type RetrieveOptions = {
             ValueList: string
@@ -3614,8 +3814,9 @@ module StripeService =
 
         ///<p>Retrieves a <code>ValueList</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/radar/value_lists/{options.ValueList}?expand={options.Expand}"
-            |> RestApi.getAsync<RadarValueList> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/radar/value_lists/{options.ValueList}"
+            |> RestApi.getAsync<RadarValueList> settings qs
 
         type UpdateOptions = {
             ValueList: string
@@ -3628,8 +3829,9 @@ module StripeService =
 
         ///<p>Updates a <code>ValueList</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Note that <code>item_type</code> is immutable.</p>
         let Update settings (formOptions: RadarValueLists'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/radar/value_lists/{options.ValueList}"
-            |> RestApi.postAsync<_, RadarValueList> settings formOptions
+            |> RestApi.postAsync<_, RadarValueList> settings (Map.empty) formOptions
 
     module Recipients =
 
@@ -3656,14 +3858,16 @@ module StripeService =
 
         ///<p>Returns a list of your recipients. The recipients are returned sorted by creation date, with the most recently created recipients appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/recipients?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&type={options.``type``}&verified={options.Verified}"
-            |> RestApi.getAsync<Recipient list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.``type`` |> box); ("verified", options.Verified |> box)] |> Map.ofList
+            $"/v1/recipients"
+            |> RestApi.getAsync<Recipient list> settings qs
 
         ///<p>Creates a new <code>Recipient</code> object and verifies the recipient’s identity.
         ///Also verifies the recipient’s bank account information or debit card, if either is provided.</p>
         let Create settings (formOptions: Recipients'CreateOptions) =
+
             $"/v1/recipients"
-            |> RestApi.postAsync<_, Recipient> settings formOptions
+            |> RestApi.postAsync<_, Recipient> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Id: string
@@ -3676,8 +3880,9 @@ module StripeService =
 
         ///<p>Permanently deletes a recipient. It cannot be undone.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/recipients/{options.Id}"
-            |> RestApi.deleteAsync<DeletedRecipient> settings
+            |> RestApi.deleteAsync<DeletedRecipient> settings (Map.empty)
 
         type RetrieveOptions = {
             Id: string
@@ -3692,8 +3897,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing recipient. You need only supply the unique recipient identifier that was returned upon recipient creation.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/recipients/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<Recipient> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/recipients/{options.Id}"
+            |> RestApi.getAsync<Recipient> settings qs
 
         type UpdateOptions = {
             Id: string
@@ -3709,8 +3915,9 @@ module StripeService =
         ///If you update the name or tax ID, the identity verification will automatically be rerun.
         ///If you update the bank account, the bank account validation will automatically be rerun.</p>
         let Update settings (formOptions: Recipients'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/recipients/{options.Id}"
-            |> RestApi.postAsync<_, Recipient> settings formOptions
+            |> RestApi.postAsync<_, Recipient> settings (Map.empty) formOptions
 
     module Refunds =
 
@@ -3737,13 +3944,15 @@ module StripeService =
 
         ///<p>Returns a list of all refunds you’ve previously created. The refunds are returned in sorted order, with the most recent refunds appearing first. For convenience, the 10 most recent refunds are always available by default on the charge object.</p>
         let List settings (options: ListOptions) =
-            $"/v1/refunds?charge={options.Charge}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_intent={options.PaymentIntent}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Refund list> settings
+            let qs = [("charge", options.Charge |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/refunds"
+            |> RestApi.getAsync<Refund list> settings qs
 
         ///<p>Create a refund.</p>
         let Create settings (formOptions: Refunds'CreateOptions) =
+
             $"/v1/refunds"
-            |> RestApi.postAsync<_, Refund> settings formOptions
+            |> RestApi.postAsync<_, Refund> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Refund: string
@@ -3758,8 +3967,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing refund.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/refunds/{options.Refund}?expand={options.Expand}"
-            |> RestApi.getAsync<Refund> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/refunds/{options.Refund}"
+            |> RestApi.getAsync<Refund> settings qs
 
         type UpdateOptions = {
             Refund: string
@@ -3773,8 +3983,9 @@ module StripeService =
         ///<p>Updates the specified refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts <code>metadata</code> as an argument.</p>
         let Update settings (formOptions: Refunds'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/refunds/{options.Refund}"
-            |> RestApi.postAsync<_, Refund> settings formOptions
+            |> RestApi.postAsync<_, Refund> settings (Map.empty) formOptions
 
     module ReportingReportRuns =
 
@@ -3797,13 +4008,15 @@ module StripeService =
 
         ///<p>Returns a list of Report Runs, with the most recent appearing first. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         let List settings (options: ListOptions) =
-            $"/v1/reporting/report_runs?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<ReportingReportRun list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/reporting/report_runs"
+            |> RestApi.getAsync<ReportingReportRun list> settings qs
 
         ///<p>Creates a new object and begin running the report. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         let Create settings (formOptions: ReportingReportRuns'CreateOptions) =
+
             $"/v1/reporting/report_runs"
-            |> RestApi.postAsync<_, ReportingReportRun> settings formOptions
+            |> RestApi.postAsync<_, ReportingReportRun> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             ReportRun: string
@@ -3818,8 +4031,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing Report Run. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/reporting/report_runs/{options.ReportRun}?expand={options.Expand}"
-            |> RestApi.getAsync<ReportingReportRun> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/reporting/report_runs/{options.ReportRun}"
+            |> RestApi.getAsync<ReportingReportRun> settings qs
 
     module ReportingReportTypes =
 
@@ -3834,8 +4048,9 @@ module StripeService =
 
         ///<p>Returns a full list of Report Types. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         let List settings (options: ListOptions) =
-            $"/v1/reporting/report_types?expand={options.Expand}"
-            |> RestApi.getAsync<ReportingReportType list> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/reporting/report_types"
+            |> RestApi.getAsync<ReportingReportType list> settings qs
 
         type RetrieveOptions = {
             ReportType: string
@@ -3850,8 +4065,9 @@ module StripeService =
 
         ///<p>Retrieves the details of a Report Type. (Requires a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/reporting/report_types/{options.ReportType}?expand={options.Expand}"
-            |> RestApi.getAsync<ReportingReportType> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/reporting/report_types/{options.ReportType}"
+            |> RestApi.getAsync<ReportingReportType> settings qs
 
     module Reviews =
 
@@ -3874,8 +4090,9 @@ module StripeService =
 
         ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/reviews?created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Review list> settings
+            let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/reviews"
+            |> RestApi.getAsync<Review list> settings qs
 
         type RetrieveOptions = {
             Review: string
@@ -3890,8 +4107,9 @@ module StripeService =
 
         ///<p>Retrieves a <code>Review</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/reviews/{options.Review}?expand={options.Expand}"
-            |> RestApi.getAsync<Review> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/reviews/{options.Review}"
+            |> RestApi.getAsync<Review> settings qs
 
     module ReviewsApprove =
 
@@ -3906,8 +4124,9 @@ module StripeService =
 
         ///<p>Approves a <code>Review</code> object, closing it and removing it from the list of reviews.</p>
         let Approve settings (formOptions: ReviewsApprove'ApproveOptions) (options: ApproveOptions) =
+
             $"/v1/reviews/{options.Review}/approve"
-            |> RestApi.postAsync<_, Review> settings formOptions
+            |> RestApi.postAsync<_, Review> settings (Map.empty) formOptions
 
     module SetupAttempts =
 
@@ -3932,8 +4151,9 @@ module StripeService =
 
         ///<p>Returns a list of SetupAttempts associated with a provided SetupIntent.</p>
         let List settings (options: ListOptions) =
-            $"/v1/setup_attempts?setup_intent={options.SetupIntent}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<SetupAttempt list> settings
+            let qs = [("setup_intent", options.SetupIntent |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/setup_attempts"
+            |> RestApi.getAsync<SetupAttempt list> settings qs
 
     module SetupIntents =
 
@@ -3960,15 +4180,17 @@ module StripeService =
 
         ///<p>Returns a list of SetupIntents.</p>
         let List settings (options: ListOptions) =
-            $"/v1/setup_intents?created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&payment_method={options.PaymentMethod}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<SetupIntent list> settings
+            let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_method", options.PaymentMethod |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/setup_intents"
+            |> RestApi.getAsync<SetupIntent list> settings qs
 
         ///<p>Creates a SetupIntent object.
         ///After the SetupIntent is created, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
         ///to collect any required permissions to charge the payment method later.</p>
         let Create settings (formOptions: SetupIntents'CreateOptions) =
+
             $"/v1/setup_intents"
-            |> RestApi.postAsync<_, SetupIntent> settings formOptions
+            |> RestApi.postAsync<_, SetupIntent> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Intent: string
@@ -3987,8 +4209,9 @@ module StripeService =
         ///Client-side retrieval using a publishable key is allowed when the <code>client_secret</code> is provided in the query string. 
         ///When retrieved with a publishable key, only a subset of properties will be returned. Please refer to the <a href="#setup_intent_object">SetupIntent</a> object reference for more details.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/setup_intents/{options.Intent}?client_secret={options.ClientSecret}&expand={options.Expand}"
-            |> RestApi.getAsync<SetupIntent> settings
+            let qs = [("client_secret", options.ClientSecret |> box); ("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/setup_intents/{options.Intent}"
+            |> RestApi.getAsync<SetupIntent> settings qs
 
         type UpdateOptions = {
             Intent: string
@@ -4001,8 +4224,9 @@ module StripeService =
 
         ///<p>Updates a SetupIntent object.</p>
         let Update settings (formOptions: SetupIntents'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/setup_intents/{options.Intent}"
-            |> RestApi.postAsync<_, SetupIntent> settings formOptions
+            |> RestApi.postAsync<_, SetupIntent> settings (Map.empty) formOptions
 
     module SetupIntentsCancel =
 
@@ -4018,8 +4242,9 @@ module StripeService =
         ///<p>A SetupIntent object can be canceled when it is in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. 
         ///Once canceled, setup is abandoned and any operations on the SetupIntent will fail with an error.</p>
         let Cancel settings (formOptions: SetupIntentsCancel'CancelOptions) (options: CancelOptions) =
+
             $"/v1/setup_intents/{options.Intent}/cancel"
-            |> RestApi.postAsync<_, SetupIntent> settings formOptions
+            |> RestApi.postAsync<_, SetupIntent> settings (Map.empty) formOptions
 
     module SetupIntentsConfirm =
 
@@ -4044,8 +4269,9 @@ module StripeService =
         ///the SetupIntent will transition to the
         ///<code>requires_payment_method</code> status.</p>
         let Confirm settings (formOptions: SetupIntentsConfirm'ConfirmOptions) (options: ConfirmOptions) =
+
             $"/v1/setup_intents/{options.Intent}/confirm"
-            |> RestApi.postAsync<_, SetupIntent> settings formOptions
+            |> RestApi.postAsync<_, SetupIntent> settings (Map.empty) formOptions
 
     module SigmaScheduledQueryRuns =
 
@@ -4066,8 +4292,9 @@ module StripeService =
 
         ///<p>Returns a list of scheduled query runs.</p>
         let List settings (options: ListOptions) =
-            $"/v1/sigma/scheduled_query_runs?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<ScheduledQueryRun list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/sigma/scheduled_query_runs"
+            |> RestApi.getAsync<ScheduledQueryRun list> settings qs
 
         type RetrieveOptions = {
             ScheduledQueryRun: string
@@ -4082,8 +4309,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an scheduled query run.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/sigma/scheduled_query_runs/{options.ScheduledQueryRun}?expand={options.Expand}"
-            |> RestApi.getAsync<ScheduledQueryRun> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/sigma/scheduled_query_runs/{options.ScheduledQueryRun}"
+            |> RestApi.getAsync<ScheduledQueryRun> settings qs
 
     module Skus =
 
@@ -4114,13 +4342,15 @@ module StripeService =
 
         ///<p>Returns a list of your SKUs. The SKUs are returned sorted by creation date, with the most recently created SKUs appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/skus?active={options.Active}&attributes={options.Attributes}&ending_before={options.EndingBefore}&expand={options.Expand}&ids={options.Ids}&in_stock={options.InStock}&limit={options.Limit}&product={options.Product}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<Sku list> settings
+            let qs = [("active", options.Active |> box); ("attributes", options.Attributes |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("ids", options.Ids |> box); ("in_stock", options.InStock |> box); ("limit", options.Limit |> box); ("product", options.Product |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/skus"
+            |> RestApi.getAsync<Sku list> settings qs
 
         ///<p>Creates a new SKU associated with a product.</p>
         let Create settings (formOptions: Skus'CreateOptions) =
+
             $"/v1/skus"
-            |> RestApi.postAsync<_, Sku> settings formOptions
+            |> RestApi.postAsync<_, Sku> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Id: string
@@ -4133,8 +4363,9 @@ module StripeService =
 
         ///<p>Delete a SKU. Deleting a SKU is only possible until it has been used in an order.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/skus/{options.Id}"
-            |> RestApi.deleteAsync<DeletedSku> settings
+            |> RestApi.deleteAsync<DeletedSku> settings (Map.empty)
 
         type RetrieveOptions = {
             Id: string
@@ -4149,8 +4380,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing SKU. Supply the unique SKU identifier from either a SKU creation request or from the product, and Stripe will return the corresponding SKU information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/skus/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<Sku> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/skus/{options.Id}"
+            |> RestApi.getAsync<Sku> settings qs
 
         type UpdateOptions = {
             Id: string
@@ -4164,15 +4396,17 @@ module StripeService =
         ///<p>Updates the specific SKU by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///Note that a SKU’s <code>attributes</code> are not editable. Instead, you would need to deactivate the existing SKU and create a new one with the new attribute values.</p>
         let Update settings (formOptions: Skus'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/skus/{options.Id}"
-            |> RestApi.postAsync<_, Sku> settings formOptions
+            |> RestApi.postAsync<_, Sku> settings (Map.empty) formOptions
 
     module Sources =
 
         ///<p>Creates a new source object.</p>
         let Create settings (formOptions: Sources'CreateOptions) =
+
             $"/v1/sources"
-            |> RestApi.postAsync<_, Source> settings formOptions
+            |> RestApi.postAsync<_, Source> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Source: string
@@ -4189,8 +4423,9 @@ module StripeService =
 
         ///<p>Retrieves an existing source object. Supply the unique source ID from a source creation request and Stripe will return the corresponding up-to-date source object information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/sources/{options.Source}?client_secret={options.ClientSecret}&expand={options.Expand}"
-            |> RestApi.getAsync<Source> settings
+            let qs = [("client_secret", options.ClientSecret |> box); ("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/sources/{options.Source}"
+            |> RestApi.getAsync<Source> settings qs
 
         type UpdateOptions = {
             Source: string
@@ -4204,8 +4439,9 @@ module StripeService =
         ///<p>Updates the specified source by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request accepts the <code>metadata</code> and <code>owner</code> as arguments. It is also possible to update type specific information for selected payment methods. Please refer to our <a href="/docs/sources">payment method guides</a> for more detail.</p>
         let Update settings (formOptions: Sources'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/sources/{options.Source}"
-            |> RestApi.postAsync<_, Source> settings formOptions
+            |> RestApi.postAsync<_, Source> settings (Map.empty) formOptions
 
     module SourcesSourceTransactions =
 
@@ -4228,8 +4464,9 @@ module StripeService =
 
         ///<p>List source transactions for a given source.</p>
         let SourceTransactions settings (options: SourceTransactionsOptions) =
-            $"/v1/sources/{options.Source}/source_transactions?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<SourceTransaction list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/sources/{options.Source}/source_transactions"
+            |> RestApi.getAsync<SourceTransaction list> settings qs
 
     module SourcesVerify =
 
@@ -4244,8 +4481,9 @@ module StripeService =
 
         ///<p>Verify a given source.</p>
         let Verify settings (formOptions: SourcesVerify'VerifyOptions) (options: VerifyOptions) =
+
             $"/v1/sources/{options.Source}/verify"
-            |> RestApi.postAsync<_, Source> settings formOptions
+            |> RestApi.postAsync<_, Source> settings (Map.empty) formOptions
 
     module SubscriptionItems =
 
@@ -4268,13 +4506,15 @@ module StripeService =
 
         ///<p>Returns a list of your subscription items for a given subscription.</p>
         let List settings (options: ListOptions) =
-            $"/v1/subscription_items?subscription={options.Subscription}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<SubscriptionItem list> settings
+            let qs = [("subscription", options.Subscription |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/subscription_items"
+            |> RestApi.getAsync<SubscriptionItem list> settings qs
 
         ///<p>Adds a new item to an existing subscription. No existing items will be changed or replaced.</p>
         let Create settings (formOptions: SubscriptionItems'CreateOptions) =
+
             $"/v1/subscription_items"
-            |> RestApi.postAsync<_, SubscriptionItem> settings formOptions
+            |> RestApi.postAsync<_, SubscriptionItem> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Item: string
@@ -4287,8 +4527,9 @@ module StripeService =
 
         ///<p>Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.</p>
         let Delete settings (formOptions: SubscriptionItems'DeleteOptions) (options: DeleteOptions) =
+
             $"/v1/subscription_items/{options.Item}"
-            |> RestApi.deleteAsync<DeletedSubscriptionItem> settings
+            |> RestApi.deleteAsync<DeletedSubscriptionItem> settings (Map.empty)
 
         type RetrieveOptions = {
             Item: string
@@ -4303,8 +4544,9 @@ module StripeService =
 
         ///<p>Retrieves the subscription item with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/subscription_items/{options.Item}?expand={options.Expand}"
-            |> RestApi.getAsync<SubscriptionItem> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/subscription_items/{options.Item}"
+            |> RestApi.getAsync<SubscriptionItem> settings qs
 
         type UpdateOptions = {
             Item: string
@@ -4317,8 +4559,9 @@ module StripeService =
 
         ///<p>Updates the plan or quantity of an item on a current subscription.</p>
         let Update settings (formOptions: SubscriptionItems'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/subscription_items/{options.Item}"
-            |> RestApi.postAsync<_, SubscriptionItem> settings formOptions
+            |> RestApi.postAsync<_, SubscriptionItem> settings (Map.empty) formOptions
 
     module SubscriptionItemsUsageRecordSummaries =
 
@@ -4342,8 +4585,9 @@ module StripeService =
         ///<p>For the specified subscription item, returns a list of summary objects. Each object in the list provides usage information that’s been summarized from multiple usage records and over a subscription billing period (e.g., 15 usage records in the month of September).
         ///The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
         let UsageRecordSummaries settings (options: UsageRecordSummariesOptions) =
-            $"/v1/subscription_items/{options.SubscriptionItem}/usage_record_summaries?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<UsageRecordSummary list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/subscription_items/{options.SubscriptionItem}/usage_record_summaries"
+            |> RestApi.getAsync<UsageRecordSummary list> settings qs
 
     module SubscriptionItemsUsageRecords =
 
@@ -4361,8 +4605,9 @@ module StripeService =
         ///The default calculation for usage is to add up all the <code>quantity</code> values of the usage records within a billing period. You can change this default behavior with the billing plan’s <code>aggregate_usage</code> <a href="/docs/api/plans/create#create_plan-aggregate_usage">parameter</a>. When there is more than one usage record with the same timestamp, Stripe adds the <code>quantity</code> values together. In most cases, this is the desired resolution, however, you can change this behavior with the <code>action</code> parameter.
         ///The default pricing model for metered billing is <a href="/docs/api/plans/object#plan_object-billing_scheme">per-unit pricing</a>. For finer granularity, you can configure metered billing to have a <a href="https://stripe.com/docs/billing/subscriptions/tiers">tiered pricing</a> model.</p>
         let Create settings (formOptions: SubscriptionItemsUsageRecords'CreateOptions) (options: CreateOptions) =
+
             $"/v1/subscription_items/{options.SubscriptionItem}/usage_records"
-            |> RestApi.postAsync<_, UsageRecord> settings formOptions
+            |> RestApi.postAsync<_, UsageRecord> settings (Map.empty) formOptions
 
     module SubscriptionSchedules =
 
@@ -4395,13 +4640,15 @@ module StripeService =
 
         ///<p>Retrieves the list of your subscription schedules.</p>
         let List settings (options: ListOptions) =
-            $"/v1/subscription_schedules?canceled_at={options.CanceledAt}&completed_at={options.CompletedAt}&created={options.Created}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&released_at={options.ReleasedAt}&scheduled={options.Scheduled}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<SubscriptionSchedule list> settings
+            let qs = [("canceled_at", options.CanceledAt |> box); ("completed_at", options.CompletedAt |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("released_at", options.ReleasedAt |> box); ("scheduled", options.Scheduled |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/subscription_schedules"
+            |> RestApi.getAsync<SubscriptionSchedule list> settings qs
 
         ///<p>Creates a new subscription schedule object. Each customer can have up to 500 active or scheduled subscriptions.</p>
         let Create settings (formOptions: SubscriptionSchedules'CreateOptions) =
+
             $"/v1/subscription_schedules"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Schedule: string
@@ -4416,8 +4663,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing subscription schedule. You only need to supply the unique subscription schedule identifier that was returned upon subscription schedule creation.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/subscription_schedules/{options.Schedule}?expand={options.Expand}"
-            |> RestApi.getAsync<SubscriptionSchedule> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/subscription_schedules/{options.Schedule}"
+            |> RestApi.getAsync<SubscriptionSchedule> settings qs
 
         type UpdateOptions = {
             Schedule: string
@@ -4430,8 +4678,9 @@ module StripeService =
 
         ///<p>Updates an existing subscription schedule.</p>
         let Update settings (formOptions: SubscriptionSchedules'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/subscription_schedules/{options.Schedule}"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings (Map.empty) formOptions
 
     module SubscriptionSchedulesCancel =
 
@@ -4446,8 +4695,9 @@ module StripeService =
 
         ///<p>Cancels a subscription schedule and its associated subscription immediately (if the subscription schedule has an active subscription). A subscription schedule can only be canceled if its status is <code>not_started</code> or <code>active</code>.</p>
         let Cancel settings (formOptions: SubscriptionSchedulesCancel'CancelOptions) (options: CancelOptions) =
+
             $"/v1/subscription_schedules/{options.Schedule}/cancel"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings (Map.empty) formOptions
 
     module SubscriptionSchedulesRelease =
 
@@ -4462,8 +4712,9 @@ module StripeService =
 
         ///<p>Releases the subscription schedule immediately, which will stop scheduling of its phases, but leave any existing subscription in place. A schedule can only be released if its status is <code>not_started</code> or <code>active</code>. If the subscription schedule is currently associated with a subscription, releasing it will remove its <code>subscription</code> property and set the subscription’s ID to the <code>released_subscription</code> property.</p>
         let Release settings (formOptions: SubscriptionSchedulesRelease'ReleaseOptions) (options: ReleaseOptions) =
+
             $"/v1/subscription_schedules/{options.Schedule}/release"
-            |> RestApi.postAsync<_, SubscriptionSchedule> settings formOptions
+            |> RestApi.postAsync<_, SubscriptionSchedule> settings (Map.empty) formOptions
 
     module Subscriptions =
 
@@ -4500,13 +4751,15 @@ module StripeService =
 
         ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
         let List settings (options: ListOptions) =
-            $"/v1/subscriptions?collection_method={options.CollectionMethod}&created={options.Created}&current_period_end={options.CurrentPeriodEnd}&current_period_start={options.CurrentPeriodStart}&customer={options.Customer}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&plan={options.Plan}&price={options.Price}&starting_after={options.StartingAfter}&status={options.Status}"
-            |> RestApi.getAsync<Subscription list> settings
+            let qs = [("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("current_period_end", options.CurrentPeriodEnd |> box); ("current_period_start", options.CurrentPeriodStart |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("plan", options.Plan |> box); ("price", options.Price |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+            $"/v1/subscriptions"
+            |> RestApi.getAsync<Subscription list> settings qs
 
         ///<p>Creates a new subscription on an existing customer. Each customer can have up to 500 active or scheduled subscriptions.</p>
         let Create settings (formOptions: Subscriptions'CreateOptions) =
+
             $"/v1/subscriptions"
-            |> RestApi.postAsync<_, Subscription> settings formOptions
+            |> RestApi.postAsync<_, Subscription> settings (Map.empty) formOptions
 
         type CancelOptions = {
             SubscriptionExposedId: string
@@ -4521,8 +4774,9 @@ module StripeService =
         ///Note, however, that any pending invoice items that you’ve created will still be charged for at the end of the period, unless manually <a href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations will also be left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations will be removed.
         ///By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
         let Cancel settings (formOptions: Subscriptions'CancelOptions) (options: CancelOptions) =
+
             $"/v1/subscriptions/{options.SubscriptionExposedId}"
-            |> RestApi.deleteAsync<Subscription> settings
+            |> RestApi.deleteAsync<Subscription> settings (Map.empty)
 
         type RetrieveOptions = {
             SubscriptionExposedId: string
@@ -4537,8 +4791,9 @@ module StripeService =
 
         ///<p>Retrieves the subscription with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/subscriptions/{options.SubscriptionExposedId}?expand={options.Expand}"
-            |> RestApi.getAsync<Subscription> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/subscriptions/{options.SubscriptionExposedId}"
+            |> RestApi.getAsync<Subscription> settings qs
 
         type UpdateOptions = {
             SubscriptionExposedId: string
@@ -4551,8 +4806,9 @@ module StripeService =
 
         ///<p>Updates an existing subscription on a customer to match the specified parameters. When changing plans or quantities, we will optionally prorate the price we charge next month to make up for any price changes. To preview how the proration will be calculated, use the <a href="#upcoming_invoice">upcoming invoice</a> endpoint.</p>
         let Update settings (formOptions: Subscriptions'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/subscriptions/{options.SubscriptionExposedId}"
-            |> RestApi.postAsync<_, Subscription> settings formOptions
+            |> RestApi.postAsync<_, Subscription> settings (Map.empty) formOptions
 
     module SubscriptionsDiscount =
 
@@ -4567,8 +4823,9 @@ module StripeService =
 
         ///<p>Removes the currently applied discount on a subscription.</p>
         let DeleteDiscount settings (options: DeleteDiscountOptions) =
+
             $"/v1/subscriptions/{options.SubscriptionExposedId}/discount"
-            |> RestApi.deleteAsync<DeletedDiscount> settings
+            |> RestApi.deleteAsync<DeletedDiscount> settings (Map.empty)
 
     module TaxRates =
 
@@ -4595,13 +4852,15 @@ module StripeService =
 
         ///<p>Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/tax_rates?active={options.Active}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&inclusive={options.Inclusive}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<TaxRate list> settings
+            let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("inclusive", options.Inclusive |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/tax_rates"
+            |> RestApi.getAsync<TaxRate list> settings qs
 
         ///<p>Creates a new tax rate.</p>
         let Create settings (formOptions: TaxRates'CreateOptions) =
+
             $"/v1/tax_rates"
-            |> RestApi.postAsync<_, TaxRate> settings formOptions
+            |> RestApi.postAsync<_, TaxRate> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             TaxRate: string
@@ -4616,8 +4875,9 @@ module StripeService =
 
         ///<p>Retrieves a tax rate with the given ID</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/tax_rates/{options.TaxRate}?expand={options.Expand}"
-            |> RestApi.getAsync<TaxRate> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/tax_rates/{options.TaxRate}"
+            |> RestApi.getAsync<TaxRate> settings qs
 
         type UpdateOptions = {
             TaxRate: string
@@ -4630,15 +4890,17 @@ module StripeService =
 
         ///<p>Updates an existing tax rate.</p>
         let Update settings (formOptions: TaxRates'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/tax_rates/{options.TaxRate}"
-            |> RestApi.postAsync<_, TaxRate> settings formOptions
+            |> RestApi.postAsync<_, TaxRate> settings (Map.empty) formOptions
 
     module TerminalConnectionTokens =
 
         ///<p>To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.</p>
         let Create settings (formOptions: TerminalConnectionTokens'CreateOptions) =
+
             $"/v1/terminal/connection_tokens"
-            |> RestApi.postAsync<_, TerminalConnectionToken> settings formOptions
+            |> RestApi.postAsync<_, TerminalConnectionToken> settings (Map.empty) formOptions
 
     module TerminalLocations =
 
@@ -4659,13 +4921,15 @@ module StripeService =
 
         ///<p>Returns a list of <code>Location</code> objects.</p>
         let List settings (options: ListOptions) =
-            $"/v1/terminal/locations?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<TerminalLocation list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/terminal/locations"
+            |> RestApi.getAsync<TerminalLocation list> settings qs
 
         ///<p>Creates a new <code>Location</code> object.</p>
         let Create settings (formOptions: TerminalLocations'CreateOptions) =
+
             $"/v1/terminal/locations"
-            |> RestApi.postAsync<_, TerminalLocation> settings formOptions
+            |> RestApi.postAsync<_, TerminalLocation> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Location: string
@@ -4678,8 +4942,9 @@ module StripeService =
 
         ///<p>Deletes a <code>Location</code> object.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/terminal/locations/{options.Location}"
-            |> RestApi.deleteAsync<DeletedTerminalLocation> settings
+            |> RestApi.deleteAsync<DeletedTerminalLocation> settings (Map.empty)
 
         type RetrieveOptions = {
             Location: string
@@ -4694,8 +4959,9 @@ module StripeService =
 
         ///<p>Retrieves a <code>Location</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/terminal/locations/{options.Location}?expand={options.Expand}"
-            |> RestApi.getAsync<TerminalLocation> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/terminal/locations/{options.Location}"
+            |> RestApi.getAsync<TerminalLocation> settings qs
 
         type UpdateOptions = {
             Location: string
@@ -4708,8 +4974,9 @@ module StripeService =
 
         ///<p>Updates a <code>Location</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: TerminalLocations'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/terminal/locations/{options.Location}"
-            |> RestApi.postAsync<_, TerminalLocation> settings formOptions
+            |> RestApi.postAsync<_, TerminalLocation> settings (Map.empty) formOptions
 
     module TerminalReaders =
 
@@ -4736,13 +5003,15 @@ module StripeService =
 
         ///<p>Returns a list of <code>Reader</code> objects.</p>
         let List settings (options: ListOptions) =
-            $"/v1/terminal/readers?device_type={options.DeviceType}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&location={options.Location}&starting_after={options.StartingAfter}&status={options.Status}"
-            |> RestApi.getAsync<TerminalReader list> settings
+            let qs = [("device_type", options.DeviceType |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("location", options.Location |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+            $"/v1/terminal/readers"
+            |> RestApi.getAsync<TerminalReader list> settings qs
 
         ///<p>Creates a new <code>Reader</code> object.</p>
         let Create settings (formOptions: TerminalReaders'CreateOptions) =
+
             $"/v1/terminal/readers"
-            |> RestApi.postAsync<_, TerminalReader> settings formOptions
+            |> RestApi.postAsync<_, TerminalReader> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             Reader: string
@@ -4755,8 +5024,9 @@ module StripeService =
 
         ///<p>Deletes a <code>Reader</code> object.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/terminal/readers/{options.Reader}"
-            |> RestApi.deleteAsync<DeletedTerminalReader> settings
+            |> RestApi.deleteAsync<DeletedTerminalReader> settings (Map.empty)
 
         type RetrieveOptions = {
             Reader: string
@@ -4771,8 +5041,9 @@ module StripeService =
 
         ///<p>Retrieves a <code>Reader</code> object.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/terminal/readers/{options.Reader}?expand={options.Expand}"
-            |> RestApi.getAsync<TerminalReader> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/terminal/readers/{options.Reader}"
+            |> RestApi.getAsync<TerminalReader> settings qs
 
         type UpdateOptions = {
             Reader: string
@@ -4785,16 +5056,18 @@ module StripeService =
 
         ///<p>Updates a <code>Reader</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
         let Update settings (formOptions: TerminalReaders'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/terminal/readers/{options.Reader}"
-            |> RestApi.postAsync<_, TerminalReader> settings formOptions
+            |> RestApi.postAsync<_, TerminalReader> settings (Map.empty) formOptions
 
     module Tokens =
 
         ///<p>Creates a single-use token that represents a bank account’s details.
         ///This token can be used with any API method in place of a bank account dictionary. This token can be used only once, by attaching it to a <a href="#accounts">Custom account</a>.</p>
         let Create settings (formOptions: Tokens'CreateOptions) =
+
             $"/v1/tokens"
-            |> RestApi.postAsync<_, Token> settings formOptions
+            |> RestApi.postAsync<_, Token> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Token: string
@@ -4809,8 +5082,9 @@ module StripeService =
 
         ///<p>Retrieves the token with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/tokens/{options.Token}?expand={options.Expand}"
-            |> RestApi.getAsync<Token> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/tokens/{options.Token}"
+            |> RestApi.getAsync<Token> settings qs
 
     module Topups =
 
@@ -4837,13 +5111,15 @@ module StripeService =
 
         ///<p>Returns a list of top-ups.</p>
         let List settings (options: ListOptions) =
-            $"/v1/topups?amount={options.Amount}&created={options.Created}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&status={options.Status}"
-            |> RestApi.getAsync<Topup list> settings
+            let qs = [("amount", options.Amount |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+            $"/v1/topups"
+            |> RestApi.getAsync<Topup list> settings qs
 
         ///<p>Top up the balance of an account</p>
         let Create settings (formOptions: Topups'CreateOptions) =
+
             $"/v1/topups"
-            |> RestApi.postAsync<_, Topup> settings formOptions
+            |> RestApi.postAsync<_, Topup> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Topup: string
@@ -4858,8 +5134,9 @@ module StripeService =
 
         ///<p>Retrieves the details of a top-up that has previously been created. Supply the unique top-up ID that was returned from your previous request, and Stripe will return the corresponding top-up information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/topups/{options.Topup}?expand={options.Expand}"
-            |> RestApi.getAsync<Topup> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/topups/{options.Topup}"
+            |> RestApi.getAsync<Topup> settings qs
 
         type UpdateOptions = {
             Topup: string
@@ -4872,8 +5149,9 @@ module StripeService =
 
         ///<p>Updates the metadata of a top-up. Other top-up details are not editable by design.</p>
         let Update settings (formOptions: Topups'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/topups/{options.Topup}"
-            |> RestApi.postAsync<_, Topup> settings formOptions
+            |> RestApi.postAsync<_, Topup> settings (Map.empty) formOptions
 
     module TopupsCancel =
 
@@ -4888,8 +5166,9 @@ module StripeService =
 
         ///<p>Cancels a top-up. Only pending top-ups can be canceled.</p>
         let Cancel settings (formOptions: TopupsCancel'CancelOptions) (options: CancelOptions) =
+
             $"/v1/topups/{options.Topup}/cancel"
-            |> RestApi.postAsync<_, Topup> settings formOptions
+            |> RestApi.postAsync<_, Topup> settings (Map.empty) formOptions
 
     module Transfers =
 
@@ -4916,13 +5195,15 @@ module StripeService =
 
         ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
         let List settings (options: ListOptions) =
-            $"/v1/transfers?created={options.Created}&destination={options.Destination}&ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}&transfer_group={options.TransferGroup}"
-            |> RestApi.getAsync<Transfer list> settings
+            let qs = [("created", options.Created |> box); ("destination", options.Destination |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("transfer_group", options.TransferGroup |> box)] |> Map.ofList
+            $"/v1/transfers"
+            |> RestApi.getAsync<Transfer list> settings qs
 
         ///<p>To send funds from your Stripe account to a connected account, you create a new transfer object. Your <a href="#balance">Stripe balance</a> must be able to cover the transfer amount, or you’ll receive an “Insufficient Funds” error.</p>
         let Create settings (formOptions: Transfers'CreateOptions) =
+
             $"/v1/transfers"
-            |> RestApi.postAsync<_, Transfer> settings formOptions
+            |> RestApi.postAsync<_, Transfer> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Transfer: string
@@ -4937,8 +5218,9 @@ module StripeService =
 
         ///<p>Retrieves the details of an existing transfer. Supply the unique transfer ID from either a transfer creation request or the transfer list, and Stripe will return the corresponding transfer information.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/transfers/{options.Transfer}?expand={options.Expand}"
-            |> RestApi.getAsync<Transfer> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/transfers/{options.Transfer}"
+            |> RestApi.getAsync<Transfer> settings qs
 
         type UpdateOptions = {
             Transfer: string
@@ -4952,8 +5234,9 @@ module StripeService =
         ///<p>Updates the specified transfer by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request accepts only metadata as an argument.</p>
         let Update settings (formOptions: Transfers'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/transfers/{options.Transfer}"
-            |> RestApi.postAsync<_, Transfer> settings formOptions
+            |> RestApi.postAsync<_, Transfer> settings (Map.empty) formOptions
 
     module TransfersReversals =
 
@@ -4976,8 +5259,9 @@ module StripeService =
 
         ///<p>You can see a list of the reversals belonging to a specific transfer. Note that the 10 most recent reversals are always available by default on the transfer object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional reversals.</p>
         let List settings (options: ListOptions) =
-            $"/v1/transfers/{options.Id}/reversals?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<TransferReversal list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/transfers/{options.Id}/reversals"
+            |> RestApi.getAsync<TransferReversal list> settings qs
 
         type CreateOptions = {
             Id: string
@@ -4992,8 +5276,9 @@ module StripeService =
         ///When reversing transfers, you can optionally reverse part of the transfer. You can do so as many times as you wish until the entire transfer has been reversed.
         ///Once entirely reversed, a transfer can’t be reversed again. This method will return an error when called on an already-reversed transfer, or when trying to reverse more money than is left on a transfer.</p>
         let Create settings (formOptions: TransfersReversals'CreateOptions) (options: CreateOptions) =
+
             $"/v1/transfers/{options.Id}/reversals"
-            |> RestApi.postAsync<_, TransferReversal> settings formOptions
+            |> RestApi.postAsync<_, TransferReversal> settings (Map.empty) formOptions
 
         type RetrieveOptions = {
             Id: string
@@ -5010,8 +5295,9 @@ module StripeService =
 
         ///<p>By default, you can see the 10 most recent reversals stored directly on the transfer object, but you can also retrieve details about a specific reversal stored on the transfer.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/transfers/{options.Transfer}/reversals/{options.Id}?expand={options.Expand}"
-            |> RestApi.getAsync<TransferReversal> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/transfers/{options.Transfer}/reversals/{options.Id}"
+            |> RestApi.getAsync<TransferReversal> settings qs
 
         type UpdateOptions = {
             Id: string
@@ -5027,8 +5313,9 @@ module StripeService =
         ///<p>Updates the specified reversal by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
         ///This request only accepts metadata and description as arguments.</p>
         let Update settings (formOptions: TransfersReversals'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/transfers/{options.Transfer}/reversals/{options.Id}"
-            |> RestApi.postAsync<_, TransferReversal> settings formOptions
+            |> RestApi.postAsync<_, TransferReversal> settings (Map.empty) formOptions
 
     module WebhookEndpoints =
 
@@ -5049,13 +5336,15 @@ module StripeService =
 
         ///<p>Returns a list of your webhook endpoints.</p>
         let List settings (options: ListOptions) =
-            $"/v1/webhook_endpoints?ending_before={options.EndingBefore}&expand={options.Expand}&limit={options.Limit}&starting_after={options.StartingAfter}"
-            |> RestApi.getAsync<WebhookEndpoint list> settings
+            let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            $"/v1/webhook_endpoints"
+            |> RestApi.getAsync<WebhookEndpoint list> settings qs
 
         ///<p>A webhook endpoint must have a <code>url</code> and a list of <code>enabled_events</code>. You may optionally specify the Boolean <code>connect</code> parameter. If set to true, then a Connect webhook endpoint that notifies the specified <code>url</code> about events from all connected accounts is created; otherwise an account webhook endpoint that notifies the specified <code>url</code> only about events from your account is created. You can also create webhook endpoints in the <a href="https://dashboard.stripe.com/account/webhooks">webhooks settings</a> section of the Dashboard.</p>
         let Create settings (formOptions: WebhookEndpoints'CreateOptions) =
+
             $"/v1/webhook_endpoints"
-            |> RestApi.postAsync<_, WebhookEndpoint> settings formOptions
+            |> RestApi.postAsync<_, WebhookEndpoint> settings (Map.empty) formOptions
 
         type DeleteOptions = {
             WebhookEndpoint: string
@@ -5068,8 +5357,9 @@ module StripeService =
 
         ///<p>You can also delete webhook endpoints via the <a href="https://dashboard.stripe.com/account/webhooks">webhook endpoint management</a> page of the Stripe dashboard.</p>
         let Delete settings (options: DeleteOptions) =
+
             $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
-            |> RestApi.deleteAsync<DeletedWebhookEndpoint> settings
+            |> RestApi.deleteAsync<DeletedWebhookEndpoint> settings (Map.empty)
 
         type RetrieveOptions = {
             WebhookEndpoint: string
@@ -5084,8 +5374,9 @@ module StripeService =
 
         ///<p>Retrieves the webhook endpoint with the given ID.</p>
         let Retrieve settings (options: RetrieveOptions) =
-            $"/v1/webhook_endpoints/{options.WebhookEndpoint}?expand={options.Expand}"
-            |> RestApi.getAsync<WebhookEndpoint> settings
+            let qs = [("expand", options.Expand |> box)] |> Map.ofList
+            $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
+            |> RestApi.getAsync<WebhookEndpoint> settings qs
 
         type UpdateOptions = {
             WebhookEndpoint: string
@@ -5098,6 +5389,7 @@ module StripeService =
 
         ///<p>Updates the webhook endpoint. You may edit the <code>url</code>, the list of <code>enabled_events</code>, and the status of your endpoint.</p>
         let Update settings (formOptions: WebhookEndpoints'UpdateOptions) (options: UpdateOptions) =
+
             $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
-            |> RestApi.postAsync<_, WebhookEndpoint> settings formOptions
+            |> RestApi.postAsync<_, WebhookEndpoint> settings (Map.empty) formOptions
 

@@ -1,7 +1,9 @@
 namespace FunStripe
 
 open FSharp.Data
-open FunStripe.StripeError
+open FSharp.Reflection
+open FunStripe
+open System
 
 module RestApi =
 
@@ -16,8 +18,8 @@ module RestApi =
     with
         static member Create(?apiKey: string, ?baseUrl: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) =
             {
-                ApiKey = defaultArg apiKey "https://api.stripe.com"
-                BaseUrl = defaultArg baseUrl "<enter default stripe secret key here>"
+                ApiKey = defaultArg apiKey Config.StripeTestApiKey
+                BaseUrl = defaultArg baseUrl Config.StripeBaseUrl
                 IdempotencyKey = idempotencyKey
                 StripeAccount = stripeAccount
                 StripeVersion = stripeVersion
@@ -41,7 +43,43 @@ module RestApi =
 
         authHeader :: stripeHeaders
 
-    ///Parse response from API and convert it to a ```Result```
+    ///Format query string values if present
+    let formatQueryString (options: Map<string, obj>) =
+        let options' =
+            ("&",
+                options
+                |> Map.toArray
+                |> Array.choose(fun (k, v) ->
+                    match v with
+                    | :? Option<List<string>> as o ->
+                        o
+                        |> Option.map(fun ss ->
+                            (";", ss)
+                            |> String.Join
+                            |> fun s -> $"{k}[]={s}"
+                        )
+                    | :? Option<int> as o ->
+                        o |> Option.map(fun i -> $"{k}={i |> string}")
+                    | :? Option<string> as o ->
+                        o |> Option.map(fun s -> $"{k}={s}")
+                    | :? List<string> as ss ->
+                        (";", ss)
+                        |> String.Join
+                        |> fun s -> $"{k}[]={s}"
+                        |> Some
+                    | :? int as i ->
+                        $"{k}={i |> string}" |> Some
+                    | :? string as s ->
+                        $"{k}={s}" |> Some
+                    | _ ->
+                        None
+                )
+            ) |> String.Join
+        match options' with
+        | "" -> ""
+        | _ -> $"?{options'}"
+
+    ///Parse response from API and convert it to a `Result`
     let parseResponse<'a> (r: HttpResponse) =
         match r.StatusCode with
         | sc when sc >= 200 && sc <= 299 ->
@@ -52,45 +90,50 @@ module RestApi =
         | _ ->
             r.Body
             |> function Text t -> t | Binary _ -> ""
-            |> Json.Util.deserialise<ErrorResponse>
+            |> Json.Util.deserialise<StripeError.ErrorResponse>
             |> Error
 
-    ///Make a ```GET``` request (without form parameters in the body (default))
-    let getAsync<'a> settings (url: string) =
+    ///Make a `GET` request (without form parameters in the body (default))
+    let getAsync<'a> settings queryStringOptions (url: string) =
         async {
+            let queryString = queryStringOptions |> formatQueryString
             let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get)
+                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get)
             return response |> parseResponse<'a>
         }
 
-    ///Make a ```GET``` request with form parameters in the body
-    let getWithAsync<'a, 'b> settings (data: 'a) (url: string) =
+    ///Make a `GET` request with form parameters in the body
+    let getWithAsync<'a, 'b> settings queryStringOptions (data: 'a) (url: string) =
         async {
+            let queryString = queryStringOptions |> formatQueryString
             let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get, body = FormValues (data |> FormUtil.serialise))
+                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get, body = FormValues (data |> FormUtil.serialise))
             return response |> parseResponse<'b>
         }
 
-    ///Make a ```POST``` request (with form parameters in the body (default))
-    let postAsync<'a, 'b> settings (data: 'a) (url: string) = 
+    ///Make a `POST` request (with form parameters in the body (default))
+    let postAsync<'a, 'b> settings queryStringOptions (data: 'a) (url: string) = 
         async {
+            let queryString = queryStringOptions |> formatQueryString
             let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post, body = FormValues (data |> FormUtil.serialise))
+                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post, body = FormValues (data |> FormUtil.serialise))
             return response |> parseResponse<'b>
         }
 
-    ///Make a ```POST``` request without form parameters in the body
-    let postWithoutAsync<'a> settings (url: string) = 
+    ///Make a `POST` request without form parameters in the body
+    let postWithoutAsync<'a> settings queryStringOptions (url: string) = 
         async {
+            let queryString = queryStringOptions |> formatQueryString
             let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post)
+                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post)
             return response |> parseResponse<'a>
         }
 
-    ///Make a ```DELETE``` request (without form parameters in the body (default))
-    let deleteAsync<'a> settings (url: string) =
+    ///Make a `DELETE` request (without form parameters in the body (default))
+    let deleteAsync<'a> settings queryStringOptions (url: string) =
         async {
+            let queryString = queryStringOptions |> formatQueryString
             let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Delete)
+                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Delete)
             return response |> parseResponse<'a>
         }

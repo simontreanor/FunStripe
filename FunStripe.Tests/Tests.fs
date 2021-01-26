@@ -10,13 +10,15 @@ open System.Text.RegularExpressions
 
 module Tests =
 
+    let settings = RestApi.StripeApiSettings.Create(apiKey = Config.StripeTestApiKey)
+
     [<TestFixture>]
     type PaymentMethodUnitTests () =
 
         let testCustomer = "cus_HxEURwENT9MKb3"
 
         let defaultCard =
-            PostPaymentMethodsCardCardDetailsParams(
+            PaymentMethods'CreateCardCardDetailsParams.Create(
                 cvc = "314",
                 expMonth = 10,
                 expYear = 2021,
@@ -24,29 +26,28 @@ module Tests =
             )
 
         let getNewPaymentMethod () =
-            let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
             asyncResult {
                 let parameters = 
-                    PostPaymentMethodsParams(
+                    PaymentMethods'CreateOptions.Create(
                         card = Choice1Of2 defaultCard,
-                        ``type`` = PostPaymentMethodsType.Card
+                        ``type`` = PaymentMethods'CreateType.Card
                     )
-                return! pms.Create(parameters)
+                return! PaymentMethods.Create settings parameters
             }
 
         let attachCustomer paymentMethodId =
-            let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
             asyncResult {
                 let parameters = 
-                    PostPaymentMethodsPaymentMethodAttachParams(
+                    PaymentMethodsAttach'AttachOptions.Create(
                         customer = testCustomer
                     )
-                return! pms.Attach(parameters, paymentMethodId)
+                let queryParameters = PaymentMethodsAttach.AttachOptions.Create(paymentMethod = paymentMethodId)
+                return! PaymentMethodsAttach.Attach settings parameters queryParameters
             }
 
         let defaultPaymentMethod =
-            let address = { City = None; Country = None; Line1 = None; Line2 = None; PostalCode = None; State = None }
-            let billingDetails = { Address = Some address; Email = None; Name = None; Phone = None }
+            let address = { Address.City = None; Country = None; Line1 = None; Line2 = None; PostalCode = None; State = None }
+            let billingDetails = { BillingDetails.Address = Some address; Email = None; Name = None; Phone = None }
             let paymentMethodCardChecks = { PaymentMethodCardChecks.AddressLine1Check = None; AddressPostalCodeCheck = None; CvcCheck = None }
             let networks = { Available = ["Visa"]; Preferred = None }
             let threeDSecureUsage = { Supported = true }
@@ -89,9 +90,9 @@ module Tests =
                 }
                 |> Seq.sortBy fst
             let actual = 
-                PostPaymentMethodsParams(
+                PaymentMethods'CreateOptions.Create(
                     card = Choice1Of2 defaultCard,
-                    ``type`` = PostPaymentMethodsType.Card
+                    ``type`` = PaymentMethods'CreateType.Card
                 )
                 |> FormUtil.serialise
                 |> Seq.sortBy fst
@@ -116,7 +117,7 @@ module Tests =
                     Assert.AreEqual(exp.Type, act.Type)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
+                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
 
         [<Test>]
         member _.``test payment method retrieval``() =
@@ -124,8 +125,8 @@ module Tests =
                 asyncResult {
                     let! expected = getNewPaymentMethod()
                     let! actual =
-                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
-                        pms.Retrieve(expected.Id)
+                        let queryParameters = PaymentMethods.RetrieveOptions.Create(paymentMethod = expected.Id, expand = [nameof(Customer) |> Json.Util.snakeCase])
+                        PaymentMethods.Retrieve settings queryParameters
                     return expected, actual
 
                 }
@@ -134,7 +135,7 @@ module Tests =
             | Ok (exp, act) ->
                 Assert.AreEqual(exp, act)
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
+                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
 
         [<Test>]
         member _.``test payment method update``() =
@@ -143,12 +144,12 @@ module Tests =
                     let! expected = getNewPaymentMethod()
                     let! newPM = attachCustomer expected.Id
                     let! actual =
-                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                         let parameters =
-                            PostPaymentMethodsPaymentMethodParams(
+                            PaymentMethods'UpdateOptions.Create(
                                 metadata = ([("OrderId", "6735")] |> Map.ofList)
                             )
-                        pms.Update(parameters, newPM.Id)
+                        let queryParameters = PaymentMethods.UpdateOptions.Create(paymentMethod = newPM.Id)
+                        PaymentMethods.Update settings parameters queryParameters
                     return expected, newPM, actual
                 }
                 |> Async.RunSynchronously
@@ -160,7 +161,7 @@ module Tests =
                     Assert.AreEqual([("order_id", "6735")] |> Map.ofList |> Some, act.Metadata)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
+                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
 
         [<Test>]
         member _.``test attaching customer to payment method``() =
@@ -168,16 +169,16 @@ module Tests =
                 asyncResult {
                     let! expected = getNewPaymentMethod()
                     let! actual =
-                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
                         let parameters =
-                            PostPaymentMethodsPaymentMethodAttachParams(
+                            PaymentMethodsAttach'AttachOptions.Create(
                                 customer = testCustomer,
                                 expand = [nameof(Customer)]
                             )
-                            // PostPaymentMethodsPaymentMethodAttachParams(
+                            // PaymentMethodsAttach'AttachOptions.Create(
                             //     customer = testCustomer
                             // )
-                        pms.Attach(parameters, expected.Id)
+                        let queryParameters = PaymentMethodsAttach.AttachOptions.Create(paymentMethod = expected.Id)
+                        PaymentMethodsAttach.Attach settings parameters queryParameters
                     return expected, actual
                 }
                 |> Async.RunSynchronously
@@ -188,7 +189,7 @@ module Tests =
                     Assert.AreEqual(exp.Id, act.Id)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
+                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
 
         [<Test>]
         member _.``test detaching customer from payment method``() =
@@ -197,9 +198,9 @@ module Tests =
                     let! expected = getNewPaymentMethod()
                     let! newPM = attachCustomer expected.Id
                     let! actual =
-                        let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
-                        let parameters = PostPaymentMethodsPaymentMethodDetachParams()
-                        pms.Detach(parameters, newPM.Id)
+                        let parameters = PaymentMethodsDetach'DetachOptions.Create()
+                        let queryParameters = PaymentMethodsDetach.DetachOptions.Create(paymentMethod = newPM.Id)
+                        PaymentMethodsDetach.Detach settings parameters queryParameters
                     return expected, actual
                 }
                 |> Async.RunSynchronously
@@ -210,7 +211,7 @@ module Tests =
                     Assert.AreEqual(exp.Id, act.Id)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.Error.Message)
+                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
 
         [<Test>]
         member _.``test parsing customer object``() =

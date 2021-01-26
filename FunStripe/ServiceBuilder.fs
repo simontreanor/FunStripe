@@ -106,17 +106,15 @@ module ServiceBuilder =
 
     ///Format querystring for path
     let formatQueryString mappedParameters =
-        let queryString =
-            (
-                "&",
-                mappedParameters
-                |> Array.filter (fun (_, in', _, _) -> in' = "query")
-                |> Array.sortBy (fun (_, _, req, _) -> if req then 0 else 1)
-                |> Array.map (fun (n, _, _, _) ->
-                    $"{n}={{options.{n |> escapeReservedName |> pascalCasify}}}"
-                )
-            ) |> String.Join
-        if queryString |> String.IsNullOrWhiteSpace then "" else $"?{queryString}"
+        (
+            "; ",
+            mappedParameters
+            |> Array.filter (fun (_, in', _, _) -> in' = "query")
+            |> Array.sortBy (fun (_, _, req, _) -> if req then 0 else 1)
+            |> Array.map (fun (n, _, _, _) ->
+                $"(\"{n}\", options.{n |> escapeReservedName |> pascalCasify} |> box)"
+            )
+        ) |> String.Join
 
     ///Format request path to allow string interpolation of inline parameters
     let formatPathParams (path: string) =
@@ -226,7 +224,10 @@ module ServiceBuilder =
                     let queryParameters = v.TryGetProperty("parameters") |> function | Some jv -> jv.AsArray() | None -> [||]
                     let mappedParameters = queryParameters |> mapParameters
                     let queryParamsType = $"{method'}Options"
+                    let qs = mappedParameters |> formatQueryString
+                    let queryDeclaration = if qs = "" then "" else $"\t\t\tlet qs = [{qs}] |> Map.ofList"
                     let queryParam = if queryParameters.Any() then $" (options: {queryParamsType})" else ""
+                    let query = if qs = "" then " (Map.empty)" else $" qs"
 
                     if queryParameters |> Array.isEmpty |> not then
                         sb |> write $"\t\ttype {queryParamsType} = {{"
@@ -240,7 +241,8 @@ module ServiceBuilder =
 
                     sb |> write $"\t\t///{description |> commentify}"
                     sb |> write $"\t\tlet {method'} settings{formParam}{queryParam} ="
-                    sb |> write $"\t\t\t$\"{path |> formatPathParams}{mappedParameters |> formatQueryString}\""
+                    sb |> write queryDeclaration
+                    sb |> write $"\t\t\t$\"{path |> formatPathParams}\""
 
                     //get response type
                     let responseSchema = v.GetProperty("responses").GetProperty("200").GetProperty("content").GetProperty("application/json").GetProperty("schema")
@@ -265,15 +267,15 @@ module ServiceBuilder =
                     //set API method
                     match verb with
                     | "get" when formParameters.Any() ->
-                        sb |> write $"\t\t\t|> RestApi.getWithAsync<_, {responseType}> settings formOptions\n"
+                        sb |> write $"\t\t\t|> RestApi.getWithAsync<_, {responseType}> settings{query} formOptions\n"
                     | "get" ->
-                        sb |> write $"\t\t\t|> RestApi.getAsync<{responseType}> settings\n"
+                        sb |> write $"\t\t\t|> RestApi.getAsync<{responseType}> settings{query}\n"
                     | "post" when formParameters.Any() |> not ->
-                        sb |> write $"\t\t\t|> RestApi.postWithoutAsync<{responseType}> settings\n"
+                        sb |> write $"\t\t\t|> RestApi.postWithoutAsync<{responseType}> settings{query}\n"
                     | "post" ->
-                        sb |> write $"\t\t\t|> RestApi.postAsync<_, {responseType}> settings formOptions\n"
+                        sb |> write $"\t\t\t|> RestApi.postAsync<_, {responseType}> settings{query} formOptions\n"
                     | "delete" ->
-                        sb |> write $"\t\t\t|> RestApi.deleteAsync<{responseType}> settings\n"
+                        sb |> write $"\t\t\t|> RestApi.deleteAsync<{responseType}> settings{query}\n"
                     | _ ->
                         failwith $"Unhandled verb: {verb}"
 
