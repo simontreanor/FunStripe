@@ -4,7 +4,6 @@ open FunStripe.AsyncResultCE
 open NUnit.Framework
 open StripeModel
 open StripeRequest
-open StripeService
 open System
 open System.Text.RegularExpressions
 
@@ -18,7 +17,7 @@ module Tests =
         let testCustomer = "cus_HxEURwENT9MKb3"
 
         let defaultCard =
-            PaymentMethods'CreateCardCardDetailsParams.Create(
+            PaymentMethods.CreateCardCardDetailsParams.Create(
                 cvc = "314",
                 expMonth = 10,
                 expYear = 2021,
@@ -27,22 +26,22 @@ module Tests =
 
         let getNewPaymentMethod () =
             asyncResult {
-                let parameters = 
-                    PaymentMethods'CreateOptions.Create(
+                let options = 
+                    PaymentMethods.CreateOptions.Create(
                         card = Choice1Of2 defaultCard,
-                        ``type`` = PaymentMethods'CreateType.Card
+                        type' = PaymentMethods.CreateType.Card
                     )
-                return! PaymentMethods.Create settings parameters
+                return! PaymentMethods.Create settings options
             }
 
         let attachCustomer paymentMethodId =
             asyncResult {
-                let parameters = 
-                    PaymentMethodsAttach'AttachOptions.Create(
-                        customer = testCustomer
+                let options = 
+                    PaymentMethodsAttach.AttachOptions.Create(
+                        customer = testCustomer,
+                        paymentMethod = paymentMethodId
                     )
-                let queryParameters = PaymentMethodsAttach.AttachOptions.Create(paymentMethod = paymentMethodId)
-                return! PaymentMethodsAttach.Attach settings parameters queryParameters
+                return! PaymentMethodsAttach.Attach settings options
             }
 
         let defaultPaymentMethod =
@@ -90,9 +89,9 @@ module Tests =
                 }
                 |> Seq.sortBy fst
             let actual = 
-                PaymentMethods'CreateOptions.Create(
+                PaymentMethods.CreateOptions.Create(
                     card = Choice1Of2 defaultCard,
-                    ``type`` = PaymentMethods'CreateType.Card
+                    type' = PaymentMethods.CreateType.Card
                 )
                 |> FormUtil.serialise
                 |> Seq.sortBy fst
@@ -144,12 +143,12 @@ module Tests =
                     let! expected = getNewPaymentMethod()
                     let! newPM = attachCustomer expected.Id
                     let! actual =
-                        let parameters =
-                            PaymentMethods'UpdateOptions.Create(
-                                metadata = ([("OrderId", "6735")] |> Map.ofList)
+                        let options =
+                            PaymentMethods.UpdateOptions.Create(
+                                metadata = ([("OrderId", "6735")] |> Map.ofList),
+                                paymentMethod = newPM.Id
                             )
-                        let queryParameters = PaymentMethods.UpdateOptions.Create(paymentMethod = newPM.Id)
-                        PaymentMethods.Update settings parameters queryParameters
+                        PaymentMethods.Update settings options
                     return expected, newPM, actual
                 }
                 |> Async.RunSynchronously
@@ -169,16 +168,17 @@ module Tests =
                 asyncResult {
                     let! expected = getNewPaymentMethod()
                     let! actual =
-                        let parameters =
-                            PaymentMethodsAttach'AttachOptions.Create(
+                        let options =
+                            PaymentMethodsAttach.AttachOptions.Create(
                                 customer = testCustomer,
-                                expand = [nameof(Customer)]
+                                expand = [nameof(Customer)],
+                                paymentMethod = expected.Id
                             )
-                            // PaymentMethodsAttach'AttachOptions.Create(
+                            // PaymentMethodsAttach.AttachOptions.Create(
                             //     customer = testCustomer
+                            //     paymentMethod = expected.Id
                             // )
-                        let queryParameters = PaymentMethodsAttach.AttachOptions.Create(paymentMethod = expected.Id)
-                        PaymentMethodsAttach.Attach settings parameters queryParameters
+                        PaymentMethodsAttach.Attach settings options
                     return expected, actual
                 }
                 |> Async.RunSynchronously
@@ -198,9 +198,11 @@ module Tests =
                     let! expected = getNewPaymentMethod()
                     let! newPM = attachCustomer expected.Id
                     let! actual =
-                        let parameters = PaymentMethodsDetach'DetachOptions.Create()
-                        let queryParameters = PaymentMethodsDetach.DetachOptions.Create(paymentMethod = newPM.Id)
-                        PaymentMethodsDetach.Detach settings parameters queryParameters
+                        let options =
+                            PaymentMethodsDetach.DetachOptions.Create(
+                                paymentMethod = newPM.Id
+                            )
+                        PaymentMethodsDetach.Detach settings options
                     return expected, actual
                 }
                 |> Async.RunSynchronously

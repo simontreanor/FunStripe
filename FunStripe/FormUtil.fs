@@ -1,10 +1,12 @@
 namespace FunStripe
 
+open FSharp.Data
 open FSharp.Reflection
 open System
 open System.Linq
 open System.Globalization
 open System.Text.RegularExpressions
+open System.Reflection
 
 module FormUtil =
 
@@ -76,5 +78,12 @@ module FormUtil =
     ///Serialise F# class
     let serialise<'a> (parameters:'a) =
         typeof<'a>.GetProperties()
+        |> Array.map (fun pi -> format (pi.Name) (pi.GetValue(parameters, [||]))) |> Seq.concat
+        |> Seq.map (fun (k, v) -> (k |> formatFieldName, v |> string))
+
+    ///Serialise F# record
+    let serialiseFormRecord<'a> (parameters:'a) =
+        FSharpType.GetRecordFields typeof<'a>
+        |> Array.filter(fun pi -> pi.CustomAttributes.Cast<CustomAttributeData>() |> Seq.exists(fun cad -> cad.AttributeType = typeof<Config.FormAttribute>))
         |> Array.map (fun pi -> format (pi.Name) (pi.GetValue(parameters, [||]))) |> Seq.concat
         |> Seq.map (fun (k, v) -> (k |> formatFieldName, v |> string))

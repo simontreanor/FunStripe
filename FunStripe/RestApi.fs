@@ -107,7 +107,7 @@ module RestApi =
         async {
             let queryString = queryStringOptions |> formatQueryString
             let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get, body = FormValues (data |> FormUtil.serialise))
+                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get, body = FormValues (data |> FormUtil.serialiseFormRecord))
             return response |> parseResponse<'b>
         }
 
@@ -116,7 +116,7 @@ module RestApi =
         async {
             let queryString = queryStringOptions |> formatQueryString
             let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post, body = FormValues (data |> FormUtil.serialise))
+                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post, body = FormValues (data |> FormUtil.serialiseFormRecord))
             return response |> parseResponse<'b>
         }
 

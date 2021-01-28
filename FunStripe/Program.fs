@@ -1,16 +1,13 @@
-// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
-
 open FunStripe
 open FunStripe.AsyncResultCE
 open FunStripe.StripeModel
 open FunStripe.StripeRequest
-open FunStripe.StripeService
 open System
 
 let testCustomer = "cus_HxEURwENT9MKb3"
 
 let defaultCard =
-    PaymentMethods'CreateCardCardDetailsParams.Create(
+    PaymentMethods.CreateCardCardDetailsParams.Create(
         cvc = "314",
         expMonth = 10,
         expYear = 2021,
@@ -21,12 +18,12 @@ let settings = RestApi.StripeApiSettings.Create(apiKey = Config.StripeTestApiKey
 
 let getNewPaymentMethod () =
     asyncResult {
-        let parameters = 
-            PaymentMethods'CreateOptions.Create(
+        let options = 
+            PaymentMethods.CreateOptions.Create(
                 card = Choice1Of2 defaultCard,
-                ``type`` = PaymentMethods'CreateType.Card
+                type' = PaymentMethods.CreateType.Card
             )
-        return! PaymentMethods.Create settings parameters
+        return! PaymentMethods.Create settings options
     }
 
 let test() =
@@ -34,16 +31,16 @@ let test() =
         asyncResult {
             let! expected = getNewPaymentMethod()
             let! actual =
-                let parameters =
+                let options =
                     // PaymentMethodsAttach'AttachOptions.Create(
                     //     customer = testCustomer,
                     //     expand = [nameof(Customer)]
                     // )
-                    PaymentMethodsAttach'AttachOptions.Create(
-                        customer = testCustomer
+                    PaymentMethodsAttach.AttachOptions.Create(
+                        customer = testCustomer,
+                        paymentMethod = expected.Id
                     )
-                let queryParameters = PaymentMethodsAttach.AttachOptions.Create(paymentMethod = expected.Id)
-                PaymentMethodsAttach.Attach settings parameters queryParameters
+                PaymentMethodsAttach.Attach settings options
             return expected, actual
         }
         |> Async.RunSynchronously

@@ -13,39 +13,42 @@ Open the StripeModel, StripeRequest and StripeService modules.
 Here's an example of how to create a new payment method:
 
 ```F#
+let settings = RestApi.StripeApiSettings.Create(apiKey = Config.StripeTestApiKey)
+
 let defaultCard =
-    PostPaymentMethodsCardCardDetailsParams(
+    PaymentMethods.CreateCardCardDetailsParams.Create(
         cvc = "314",
         expMonth = 10,
         expYear = 2021,
         number = "4242424242424242"
     )
 
-let createNewPaymentMethod () =
-    let pms = PaymentMethodService(apiKey = Config.getStripeTestApiKey())
+let getNewPaymentMethod () =
     asyncResult {
-        let parameters = 
-            PostPaymentMethodsParams(
+        let options = 
+            PaymentMethods.CreateOptions.Create(
                 card = Choice1Of2 defaultCard,
-                ``type`` = PostPaymentMethodsType.Card
+                type' = PaymentMethods.CreateType.Card
             )
-        return! pms.Create(parameters)
+        return! PaymentMethods.Create settings options
     }
 ```
 
-The result value is an ```AsyncResult<PaymentMethod,ErrorResponse>```, giving you the requested object in case of success or a detailed error response if not.
+The result value is an `AsyncResult<PaymentMethod,ErrorResponse>`, giving you the requested object in case of success or a detailed error response if not.
 
-The general format of API requests is ```<service instance>```.```<verb>```(```<body parameters>```,```<required inline parameters>```,```<optional inline parameters>```).
+The general format of API requests is `<module>`.`<method>` `settings` `options`.
 
-To instantiate the service instance you need to pass in your Stripe API key. To keep the keys out of source code, it is recommended to use [UserSecrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows) during development and web-server configuration settings in production.
+To instantiate the `settings` you need to pass in your Stripe API key. To keep the keys out of source code, it is recommended to use [UserSecrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows) during development and web-server configuration settings in production.
+
+The `options` can be provided using record notation or if there are many unintialised properties you can use the static `Create` method to instantiate the record more effiently.
 
 ## Code Generation
 
-By cloning the source repository, as a developer you can use ```ModelBuilder.fs```, ```RequestBuilder.fs``` and ```ServiceBuilder.fs``` to generate the code in ```StripeModel.fs```, ```StripeRequest.fs``` and ```StripeService.fs``` respectively.
+By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and `StripeRequest.fs` respectively.
 
-Using Visual Studio Code, you simply select all the text in each document and hit ```Alt + Enter``` to send the code to F# Interactive. This will overwrite the contents of the target modules.
+Using Visual Studio Code, you simply select all the text in each document and hit `Alt + Enter` to send the code to F# Interactive. This will overwrite the contents of the target modules.
 
-The Stripe OpenAPI specification is stored locally as ```/res/spec3.sdk.json```. See the references below for the link to the latest online version.
+The Stripe OpenAPI specification is stored locally as `/res/spec3.sdk.json`. See the references below for the link to the latest online version.
 
 By replacing the local copy with the latest one from online, you can regenerate the source code and build it to get the latest changes.
 
