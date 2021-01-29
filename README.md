@@ -13,10 +13,10 @@ Open the StripeModel, StripeRequest and StripeService modules.
 Here's an example of how to create a new payment method:
 
 ```F#
-let settings = RestApi.StripeApiSettings.Create(apiKey = Config.StripeTestApiKey)
+let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
 let defaultCard =
-    PaymentMethods.CreateCardCardDetailsParams.Create(
+    PaymentMethods.CreateCardCardDetailsParams.New(
         cvc = "314",
         expMonth = 10,
         expYear = 2021,
@@ -26,7 +26,7 @@ let defaultCard =
 let getNewPaymentMethod () =
     asyncResult {
         let options = 
-            PaymentMethods.CreateOptions.Create(
+            PaymentMethods.CreateOptions.New(
                 card = Choice1Of2 defaultCard,
                 type' = PaymentMethods.CreateType.Card
             )
@@ -40,7 +40,7 @@ The general format of API requests is `<module>`.`<method>` `settings` `options`
 
 To instantiate the `settings` you need to pass in your Stripe API key. To keep the keys out of source code, it is recommended to use [UserSecrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows) during development and web-server configuration settings in production.
 
-The `options` can be provided using record notation or if there are many unintialised properties you can use the static `Create` method to instantiate the record more effiently.
+The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 
 ## Code Generation
 

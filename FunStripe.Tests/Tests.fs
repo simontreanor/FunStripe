@@ -9,7 +9,7 @@ open System.Text.RegularExpressions
 
 module Tests =
 
-    let settings = RestApi.StripeApiSettings.Create(apiKey = Config.StripeTestApiKey)
+    let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
     [<TestFixture>]
     type PaymentMethodUnitTests () =
@@ -17,7 +17,7 @@ module Tests =
         let testCustomer = "cus_HxEURwENT9MKb3"
 
         let defaultCard =
-            PaymentMethods.CreateCardCardDetailsParams.Create(
+            PaymentMethods.Create'CardCardDetailsParams.New(
                 cvc = "314",
                 expMonth = 10,
                 expYear = 2021,
@@ -27,9 +27,9 @@ module Tests =
         let getNewPaymentMethod () =
             asyncResult {
                 let options = 
-                    PaymentMethods.CreateOptions.Create(
+                    PaymentMethods.CreateOptions.New(
                         card = Choice1Of2 defaultCard,
-                        type' = PaymentMethods.CreateType.Card
+                        type' = PaymentMethods.Create'Type.Card
                     )
                 return! PaymentMethods.Create settings options
             }
@@ -37,7 +37,7 @@ module Tests =
         let attachCustomer paymentMethodId =
             asyncResult {
                 let options = 
-                    PaymentMethodsAttach.AttachOptions.Create(
+                    PaymentMethodsAttach.AttachOptions.New(
                         customer = testCustomer,
                         paymentMethod = paymentMethodId
                     )
@@ -51,7 +51,7 @@ module Tests =
             let networks = { Available = ["Visa"]; Preferred = None }
             let threeDSecureUsage = { Supported = true }
             let paymentMethodCard =
-                PaymentMethodCard.Create(
+                PaymentMethodCard.New(
                     brand = PaymentMethodCardBrand.Visa,
                     checks = Some paymentMethodCardChecks,
                     country = Some "US",
@@ -65,7 +65,7 @@ module Tests =
                     wallet = None
                 )
             let paymentMethod =
-                PaymentMethod.Create(
+                PaymentMethod.New(
                     billingDetails = billingDetails,
                     card = paymentMethodCard,
                     created = DateTime(2020, 10, 30, 16, 35, 0),
@@ -89,9 +89,9 @@ module Tests =
                 }
                 |> Seq.sortBy fst
             let actual = 
-                PaymentMethods.CreateOptions.Create(
+                PaymentMethods.CreateOptions.New(
                     card = Choice1Of2 defaultCard,
-                    type' = PaymentMethods.CreateType.Card
+                    type' = PaymentMethods.Create'Type.Card
                 )
                 |> FormUtil.serialise
                 |> Seq.sortBy fst
@@ -124,7 +124,7 @@ module Tests =
                 asyncResult {
                     let! expected = getNewPaymentMethod()
                     let! actual =
-                        let queryParameters = PaymentMethods.RetrieveOptions.Create(paymentMethod = expected.Id, expand = [nameof(Customer) |> Json.Util.snakeCase])
+                        let queryParameters = PaymentMethods.RetrieveOptions.New(paymentMethod = expected.Id, expand = [nameof(Customer) |> Json.Util.snakeCase])
                         PaymentMethods.Retrieve settings queryParameters
                     return expected, actual
 
@@ -144,7 +144,7 @@ module Tests =
                     let! newPM = attachCustomer expected.Id
                     let! actual =
                         let options =
-                            PaymentMethods.UpdateOptions.Create(
+                            PaymentMethods.UpdateOptions.New(
                                 metadata = ([("OrderId", "6735")] |> Map.ofList),
                                 paymentMethod = newPM.Id
                             )
@@ -169,12 +169,12 @@ module Tests =
                     let! expected = getNewPaymentMethod()
                     let! actual =
                         let options =
-                            PaymentMethodsAttach.AttachOptions.Create(
+                            PaymentMethodsAttach.AttachOptions.New(
                                 customer = testCustomer,
                                 expand = [nameof(Customer)],
                                 paymentMethod = expected.Id
                             )
-                            // PaymentMethodsAttach.AttachOptions.Create(
+                            // PaymentMethodsAttach.AttachOptions.New(
                             //     customer = testCustomer
                             //     paymentMethod = expected.Id
                             // )
@@ -199,7 +199,7 @@ module Tests =
                     let! newPM = attachCustomer expected.Id
                     let! actual =
                         let options =
-                            PaymentMethodsDetach.DetachOptions.Create(
+                            PaymentMethodsDetach.DetachOptions.New(
                                 paymentMethod = newPM.Id
                             )
                         PaymentMethodsDetach.Detach settings options
@@ -247,7 +247,7 @@ module Tests =
                         Some {
                             Data = [
                                 PaymentSource.Card (
-                                    Card.Create (
+                                    Card.New (
                                         id = "card_1I6ZSoGXSUku3vEhr04df95L",
                                         addressCity =  None,
                                         addressCountry =  None,

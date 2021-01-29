@@ -7,21 +7,21 @@ open System
 let testCustomer = "cus_HxEURwENT9MKb3"
 
 let defaultCard =
-    PaymentMethods.CreateCardCardDetailsParams.Create(
+    PaymentMethods.Create'CardCardDetailsParams.New(
         cvc = "314",
         expMonth = 10,
         expYear = 2021,
         number = "4242424242424242"
     )
 
-let settings = RestApi.StripeApiSettings.Create(apiKey = Config.StripeTestApiKey)
+let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
 let getNewPaymentMethod () =
     asyncResult {
         let options = 
-            PaymentMethods.CreateOptions.Create(
+            PaymentMethods.CreateOptions.New(
                 card = Choice1Of2 defaultCard,
-                type' = PaymentMethods.CreateType.Card
+                type' = PaymentMethods.Create'Type.Card
             )
         return! PaymentMethods.Create settings options
     }
@@ -32,11 +32,11 @@ let test() =
             let! expected = getNewPaymentMethod()
             let! actual =
                 let options =
-                    // PaymentMethodsAttach'AttachOptions.Create(
+                    // PaymentMethodsAttach'AttachOptions.New(
                     //     customer = testCustomer,
                     //     expand = [nameof(Customer)]
                     // )
-                    PaymentMethodsAttach.AttachOptions.Create(
+                    PaymentMethodsAttach.AttachOptions.New(
                         customer = testCustomer,
                         paymentMethod = expected.Id
                     )

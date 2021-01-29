@@ -28,7 +28,7 @@ module Util =
         String.Join("_", words)
 
     ///JSON setting for snake-case formatting (Stripe uses snake-case, F# prefers pascal/camel case)
-    let config = JsonConfig.Create(allowUntyped = true, jsonFieldNaming = snakeCase, unformatted = true)
+    let config = JsonConfig.New(allowUntyped = true, jsonFieldNaming = snakeCase, unformatted = true)
 
     ///Convert F# objects to JSON strings
     let serialise data =

@@ -16,7 +16,7 @@ module RestApi =
         StripeVersion: string option
     }
     with
-        static member Create(?apiKey: string, ?baseUrl: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) =
+        static member New(?apiKey: string, ?baseUrl: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string) =
             {
                 ApiKey = defaultArg apiKey Config.StripeTestApiKey
                 BaseUrl = defaultArg baseUrl Config.StripeBaseUrl

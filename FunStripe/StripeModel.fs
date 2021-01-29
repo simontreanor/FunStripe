@@ -50,7 +50,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "account"
 
-        static member Create (id: string, ?businessProfile: AccountBusinessProfile option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?country: string, ?created: DateTime, ?defaultCurrency: string, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: AccountExternalAccounts, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettings option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
+        static member New (id: string, ?businessProfile: AccountBusinessProfile option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?country: string, ?created: DateTime, ?defaultCurrency: string, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: AccountExternalAccounts, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettings option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
             {
                 Account.Id = id //required
                 Account.BusinessProfile = businessProfile |> Option.flatten
@@ -97,7 +97,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: ExternalAccount list, hasMore: bool, url: string) =
+        static member New (data: ExternalAccount list, hasMore: bool, url: string) =
             {
                 AccountExternalAccounts.Data = data //required
                 AccountExternalAccounts.HasMore = hasMore //required
@@ -110,7 +110,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?displayName: string) =
+        static member New (?displayName: string) =
             {
                 AccountBacsDebitPaymentsSettings.DisplayName = displayName
             }
@@ -127,7 +127,7 @@ module StripeModel =
     }
     with
 
-        static member Create (icon: AccountBrandingSettingsIcon'AnyOf option, logo: AccountBrandingSettingsLogo'AnyOf option, primaryColor: string option, secondaryColor: string option) =
+        static member New (icon: AccountBrandingSettingsIcon'AnyOf option, logo: AccountBrandingSettingsLogo'AnyOf option, primaryColor: string option, secondaryColor: string option) =
             {
                 AccountBrandingSettings.Icon = icon //required
                 AccountBrandingSettings.Logo = logo //required
@@ -163,7 +163,7 @@ module StripeModel =
     }
     with
 
-        static member Create (mcc: string option, name: string option, supportAddress: Address option, supportEmail: string option, supportPhone: string option, supportUrl: string option, url: string option, ?productDescription: string option) =
+        static member New (mcc: string option, name: string option, supportAddress: Address option, supportEmail: string option, supportPhone: string option, supportUrl: string option, url: string option, ?productDescription: string option) =
             {
                 AccountBusinessProfile.Mcc = mcc //required
                 AccountBusinessProfile.Name = name //required
@@ -219,7 +219,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers) =
+        static member New (?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers) =
             {
                 AccountCapabilities.AuBecsDebitPayments = auBecsDebitPayments
                 AccountCapabilities.BacsDebitPayments = bacsDebitPayments
@@ -361,7 +361,7 @@ module StripeModel =
     }
     with
 
-        static member Create (currentDeadline: DateTime option, currentlyDue: string list, disabledReason: AccountCapabilityRequirementsDisabledReason option, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
+        static member New (currentDeadline: DateTime option, currentlyDue: string list, disabledReason: AccountCapabilityRequirementsDisabledReason option, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
             {
                 AccountCapabilityRequirements.CurrentDeadline = currentDeadline //required
                 AccountCapabilityRequirements.CurrentlyDue = currentlyDue //required
@@ -386,7 +386,7 @@ module StripeModel =
     }
     with
 
-        static member Create (statementDescriptorPrefix: string option, ?declineOn: AccountDeclineChargeOn) =
+        static member New (statementDescriptorPrefix: string option, ?declineOn: AccountDeclineChargeOn) =
             {
                 AccountCardPaymentsSettings.StatementDescriptorPrefix = statementDescriptorPrefix //required
                 AccountCardPaymentsSettings.DeclineOn = declineOn
@@ -400,7 +400,7 @@ module StripeModel =
     }
     with
 
-        static member Create (displayName: string option, timezone: string option) =
+        static member New (displayName: string option, timezone: string option) =
             {
                 AccountDashboardSettings.DisplayName = displayName //required
                 AccountDashboardSettings.Timezone = timezone //required
@@ -414,7 +414,7 @@ module StripeModel =
     }
     with
 
-        static member Create (avsFailure: bool, cvcFailure: bool) =
+        static member New (avsFailure: bool, cvcFailure: bool) =
             {
                 AccountDeclineChargeOn.AvsFailure = avsFailure //required
                 AccountDeclineChargeOn.CvcFailure = cvcFailure //required
@@ -435,7 +435,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "account_link"
 
-        static member Create (created: DateTime, expiresAt: DateTime, url: string) =
+        static member New (created: DateTime, expiresAt: DateTime, url: string) =
             {
                 AccountLink.Created = created //required
                 AccountLink.ExpiresAt = expiresAt //required
@@ -452,7 +452,7 @@ module StripeModel =
     }
     with
 
-        static member Create (statementDescriptor: string option, statementDescriptorKana: string option, statementDescriptorKanji: string option) =
+        static member New (statementDescriptor: string option, statementDescriptorKana: string option, statementDescriptorKanji: string option) =
             {
                 AccountPaymentsSettings.StatementDescriptor = statementDescriptor //required
                 AccountPaymentsSettings.StatementDescriptorKana = statementDescriptorKana //required
@@ -468,7 +468,7 @@ module StripeModel =
     }
     with
 
-        static member Create (debitNegativeBalances: bool, schedule: TransferSchedule, statementDescriptor: string option) =
+        static member New (debitNegativeBalances: bool, schedule: TransferSchedule, statementDescriptor: string option) =
             {
                 AccountPayoutSettings.DebitNegativeBalances = debitNegativeBalances //required
                 AccountPayoutSettings.Schedule = schedule //required
@@ -493,7 +493,7 @@ module StripeModel =
     }
     with
 
-        static member Create (currentDeadline: DateTime option, currentlyDue: string list option, disabledReason: AccountRequirementsDisabledReason option, errors: AccountRequirementsError list option, eventuallyDue: string list option, pastDue: string list option, pendingVerification: string list option) =
+        static member New (currentDeadline: DateTime option, currentlyDue: string list option, disabledReason: AccountRequirementsDisabledReason option, errors: AccountRequirementsError list option, eventuallyDue: string list option, pastDue: string list option, pendingVerification: string list option) =
             {
                 AccountRequirements.CurrentDeadline = currentDeadline //required
                 AccountRequirements.CurrentlyDue = currentlyDue //required
@@ -525,7 +525,7 @@ module StripeModel =
     }
     with
 
-        static member Create (code: AccountRequirementsErrorCode, reason: string, requirement: string) =
+        static member New (code: AccountRequirementsErrorCode, reason: string, requirement: string) =
             {
                 AccountRequirementsError.Code = code //required
                 AccountRequirementsError.Reason = reason //required
@@ -582,7 +582,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?creditorId: string) =
+        static member New (?creditorId: string) =
             {
                 AccountSepaDebitPaymentsSettings.CreditorId = creditorId
             }
@@ -598,7 +598,7 @@ module StripeModel =
     }
     with
 
-        static member Create (branding: AccountBrandingSettings, cardPayments: AccountCardPaymentsSettings, dashboard: AccountDashboardSettings, payments: AccountPaymentsSettings, ?bacsDebitPayments: AccountBacsDebitPaymentsSettings, ?payouts: AccountPayoutSettings, ?sepaDebitPayments: AccountSepaDebitPaymentsSettings) =
+        static member New (branding: AccountBrandingSettings, cardPayments: AccountCardPaymentsSettings, dashboard: AccountDashboardSettings, payments: AccountPaymentsSettings, ?bacsDebitPayments: AccountBacsDebitPaymentsSettings, ?payouts: AccountPayoutSettings, ?sepaDebitPayments: AccountSepaDebitPaymentsSettings) =
             {
                 AccountSettings.Branding = branding //required
                 AccountSettings.CardPayments = cardPayments //required
@@ -621,7 +621,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?date: DateTime option, ?ip: string option, ?serviceAgreement: string, ?userAgent: string option) =
+        static member New (?date: DateTime option, ?ip: string option, ?serviceAgreement: string, ?userAgent: string option) =
             {
                 AccountTosAcceptance.Date = date |> Option.flatten
                 AccountTosAcceptance.Ip = ip |> Option.flatten
@@ -645,7 +645,7 @@ module StripeModel =
     }
     with
 
-        static member Create (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
             {
                 Address.City = city //required
                 Address.Country = country //required
@@ -683,7 +683,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "alipay_account"
 
-        static member Create (created: DateTime, fingerprint: string, id: string, livemode: bool, paymentAmount: int option, paymentCurrency: string option, reusable: bool, used: bool, username: string, ?customer: AlipayAccountCustomer'AnyOf option, ?metadata: Map<string, string>) =
+        static member New (created: DateTime, fingerprint: string, id: string, livemode: bool, paymentAmount: int option, paymentCurrency: string option, reusable: bool, used: bool, username: string, ?customer: AlipayAccountCustomer'AnyOf option, ?metadata: Map<string, string>) =
             {
                 AlipayAccount.Created = created //required
                 AlipayAccount.Fingerprint = fingerprint //required
@@ -711,7 +711,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?kana: string, ?kanji: string) =
+        static member New (?kana: string, ?kanji: string) =
             {
                 AlternateStatementDescriptors.Kana = kana
                 AlternateStatementDescriptors.Kanji = kanji
@@ -741,7 +741,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: ApiErrorsType, ?charge: string, ?code: string, ?declineCode: string, ?docUrl: string, ?message: string, ?param: string, ?paymentIntent: PaymentIntent, ?paymentMethod: PaymentMethod, ?paymentMethodType: string, ?setupIntent: SetupIntent, ?source: PaymentSource) =
+        static member New (``type``: ApiErrorsType, ?charge: string, ?code: string, ?declineCode: string, ?docUrl: string, ?message: string, ?param: string, ?paymentIntent: PaymentIntent, ?paymentMethod: PaymentMethod, ?paymentMethodType: string, ?setupIntent: SetupIntent, ?source: PaymentSource) =
             {
                 ApiErrors.Type = ``type`` //required
                 ApiErrors.Charge = charge
@@ -779,7 +779,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "apple_pay_domain"
 
-        static member Create (created: DateTime, domainName: string, id: string, livemode: bool) =
+        static member New (created: DateTime, domainName: string, id: string, livemode: bool) =
             {
                 ApplePayDomain.Created = created //required
                 ApplePayDomain.DomainName = domainName //required
@@ -797,7 +797,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "application"
 
-        static member Create (id: string, name: string option) =
+        static member New (id: string, name: string option) =
             {
                 Application.Id = id //required
                 Application.Name = name //required
@@ -835,7 +835,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "application_fee"
 
-        static member Create (account: ApplicationFeeAccount'AnyOf, amount: int, amountRefunded: int, application: ApplicationFeeApplication'AnyOf, balanceTransaction: ApplicationFeeBalanceTransaction'AnyOf option, charge: ApplicationFeeCharge'AnyOf, created: DateTime, currency: string, id: string, livemode: bool, originatingTransaction: ApplicationFeeOriginatingTransaction'AnyOf option, refunded: bool, refunds: ApplicationFeeRefunds) =
+        static member New (account: ApplicationFeeAccount'AnyOf, amount: int, amountRefunded: int, application: ApplicationFeeApplication'AnyOf, balanceTransaction: ApplicationFeeBalanceTransaction'AnyOf option, charge: ApplicationFeeCharge'AnyOf, created: DateTime, currency: string, id: string, livemode: bool, originatingTransaction: ApplicationFeeOriginatingTransaction'AnyOf option, refunded: bool, refunds: ApplicationFeeRefunds) =
             {
                 ApplicationFee.Account = account //required
                 ApplicationFee.Amount = amount //required
@@ -885,7 +885,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: FeeRefund list, hasMore: bool, url: string) =
+        static member New (data: FeeRefund list, hasMore: bool, url: string) =
             {
                 ApplicationFeeRefunds.Data = data //required
                 ApplicationFeeRefunds.HasMore = hasMore //required
@@ -917,7 +917,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "balance"
 
-        static member Create (available: BalanceAmount list, livemode: bool, pending: BalanceAmount list, ?connectReserved: BalanceAmount list, ?instantAvailable: BalanceAmount list, ?issuing: BalanceDetail) =
+        static member New (available: BalanceAmount list, livemode: bool, pending: BalanceAmount list, ?connectReserved: BalanceAmount list, ?instantAvailable: BalanceAmount list, ?issuing: BalanceDetail) =
             {
                 Balance.Available = available //required
                 Balance.Livemode = livemode //required
@@ -936,7 +936,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, currency: string, ?sourceTypes: BalanceAmountBySourceType) =
+        static member New (amount: int, currency: string, ?sourceTypes: BalanceAmountBySourceType) =
             {
                 BalanceAmount.Amount = amount //required
                 BalanceAmount.Currency = currency //required
@@ -953,7 +953,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankAccount: int, ?card: int, ?fpx: int) =
+        static member New (?bankAccount: int, ?card: int, ?fpx: int) =
             {
                 BalanceAmountBySourceType.BankAccount = bankAccount
                 BalanceAmountBySourceType.Card = card
@@ -966,7 +966,7 @@ module StripeModel =
     }
     with
 
-        static member Create (available: BalanceAmount list) =
+        static member New (available: BalanceAmount list) =
             {
                 BalanceDetail.Available = available //required
             }
@@ -1008,7 +1008,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "balance_transaction"
 
-        static member Create (amount: int, availableOn: DateTime, created: DateTime, currency: string, description: string option, exchangeRate: decimal option, fee: int, feeDetails: Fee list, id: string, net: int, reportingCategory: string, source: BalanceTransactionSource'AnyOf option, status: BalanceTransactionStatus, ``type``: BalanceTransactionType) =
+        static member New (amount: int, availableOn: DateTime, created: DateTime, currency: string, description: string option, exchangeRate: decimal option, fee: int, feeDetails: Fee list, id: string, net: int, reportingCategory: string, source: BalanceTransactionSource'AnyOf option, status: BalanceTransactionStatus, ``type``: BalanceTransactionType) =
             {
                 BalanceTransaction.Amount = amount //required
                 BalanceTransaction.AvailableOn = availableOn //required
@@ -1128,7 +1128,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "bank_account"
 
-        static member Create (accountHolderName: string option, accountHolderType: BankAccountAccountHolderType option, bankName: string option, country: string, currency: string, fingerprint: string option, id: string, last4: string, routingNumber: string option, status: BankAccountStatus, ?account: BankAccountAccount'AnyOf option, ?availablePayoutMethods: BankAccountAvailablePayoutMethods list option, ?customer: BankAccountCustomer'AnyOf option, ?defaultForCurrency: bool option, ?metadata: Map<string, string> option) =
+        static member New (accountHolderName: string option, accountHolderType: BankAccountAccountHolderType option, bankName: string option, country: string, currency: string, fingerprint: string option, id: string, last4: string, routingNumber: string option, status: BankAccountStatus, ?account: BankAccountAccount'AnyOf option, ?availablePayoutMethods: BankAccountAvailablePayoutMethods list option, ?customer: BankAccountCustomer'AnyOf option, ?defaultForCurrency: bool option, ?metadata: Map<string, string> option) =
             {
                 BankAccount.AccountHolderName = accountHolderName //required
                 BankAccount.AccountHolderType = accountHolderType //required
@@ -1183,7 +1183,7 @@ module StripeModel =
     }
     with
 
-        static member Create (address: Address option, email: string option, name: string option, phone: string option) =
+        static member New (address: Address option, email: string option, name: string option, phone: string option) =
             {
                 BillingDetails.Address = address //required
                 BillingDetails.Email = email //required
@@ -1215,7 +1215,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "billing_portal.session"
 
-        static member Create (created: DateTime, customer: string, id: string, livemode: bool, returnUrl: string, url: string) =
+        static member New (created: DateTime, customer: string, id: string, livemode: bool, returnUrl: string, url: string) =
             {
                 BillingPortalSession.Created = created //required
                 BillingPortalSession.Customer = customer //required
@@ -1273,7 +1273,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "bitcoin_receiver"
 
-        static member Create (active: bool, amount: int, amountReceived: int, bitcoinAmount: int, bitcoinAmountReceived: int, bitcoinUri: string, created: DateTime, currency: string, description: string option, email: string option, filled: bool, id: string, inboundAddress: string, livemode: bool, metadata: Map<string, string> option, refundAddress: string option, uncapturedFunds: bool, usedForPayment: bool option, ?customer: string option, ?payment: string option, ?transactions: BitcoinReceiverTransactions) =
+        static member New (active: bool, amount: int, amountReceived: int, bitcoinAmount: int, bitcoinAmountReceived: int, bitcoinUri: string, created: DateTime, currency: string, description: string option, email: string option, filled: bool, id: string, inboundAddress: string, livemode: bool, metadata: Map<string, string> option, refundAddress: string option, uncapturedFunds: bool, usedForPayment: bool option, ?customer: string option, ?payment: string option, ?transactions: BitcoinReceiverTransactions) =
             {
                 BitcoinReceiver.Active = active //required
                 BitcoinReceiver.Amount = amount //required
@@ -1311,7 +1311,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: BitcoinTransaction list, hasMore: bool, url: string) =
+        static member New (data: BitcoinTransaction list, hasMore: bool, url: string) =
             {
                 BitcoinReceiverTransactions.Data = data //required
                 BitcoinReceiverTransactions.HasMore = hasMore //required
@@ -1336,7 +1336,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "bitcoin_transaction"
 
-        static member Create (amount: int, bitcoinAmount: int, created: DateTime, currency: string, id: string, receiver: string) =
+        static member New (amount: int, bitcoinAmount: int, created: DateTime, currency: string, id: string, receiver: string) =
             {
                 BitcoinTransaction.Amount = amount //required
                 BitcoinTransaction.BitcoinAmount = bitcoinAmount //required
@@ -1365,7 +1365,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "capability"
 
-        static member Create (account: CapabilityAccount'AnyOf, id: string, requested: bool, requestedAt: DateTime option, status: CapabilityStatus, ?requirements: AccountCapabilityRequirements) =
+        static member New (account: CapabilityAccount'AnyOf, id: string, requested: bool, requestedAt: DateTime option, status: CapabilityStatus, ?requirements: AccountCapabilityRequirements) =
             {
                 Capability.Account = account //required
                 Capability.Id = id //required
@@ -1456,7 +1456,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "card"
 
-        static member Create (addressCity: string option, addressCountry: string option, addressLine1: string option, addressLine1Check: CardAddressLine1Check option, addressLine2: string option, addressState: string option, addressZip: string option, addressZipCheck: CardAddressZipCheck option, brand: CardBrand, country: string option, cvcCheck: CardCvcCheck option, dynamicLast4: string option, expMonth: int, expYear: int, funding: CardFunding, id: string, last4: string, metadata: Map<string, string> option, name: string option, tokenizationMethod: CardTokenizationMethod option, ?account: CardAccount'AnyOf option, ?availablePayoutMethods: CardAvailablePayoutMethods list option, ?currency: string option, ?customer: CardCustomer'AnyOf option, ?defaultForCurrency: bool option, ?description: string, ?fingerprint: string option, ?iin: string, ?issuer: string, ?recipient: CardRecipient'AnyOf option) =
+        static member New (addressCity: string option, addressCountry: string option, addressLine1: string option, addressLine1Check: CardAddressLine1Check option, addressLine2: string option, addressState: string option, addressZip: string option, addressZipCheck: CardAddressZipCheck option, brand: CardBrand, country: string option, cvcCheck: CardCvcCheck option, dynamicLast4: string option, expMonth: int, expYear: int, funding: CardFunding, id: string, last4: string, metadata: Map<string, string> option, name: string option, tokenizationMethod: CardTokenizationMethod option, ?account: CardAccount'AnyOf option, ?availablePayoutMethods: CardAvailablePayoutMethods list option, ?currency: string option, ?customer: CardCustomer'AnyOf option, ?defaultForCurrency: bool option, ?description: string, ?fingerprint: string option, ?iin: string, ?issuer: string, ?recipient: CardRecipient'AnyOf option) =
             {
                 Card.AddressCity = addressCity //required
                 Card.AddressCountry = addressCountry //required
@@ -1552,7 +1552,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?cardMandatePaymentMethodDetails: string option) =
+        static member New (?cardMandatePaymentMethodDetails: string option) =
             {
                 CardMandatePaymentMethodDetails.CardMandatePaymentMethodDetails = cardMandatePaymentMethodDetails |> Option.flatten
             }
@@ -1662,7 +1662,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "charge"
 
-        static member Create (amount: int, amountCaptured: int, amountRefunded: int, application: ChargeApplication'AnyOf option, applicationFee: ChargeApplicationFee'AnyOf option, applicationFeeAmount: int option, balanceTransaction: ChargeBalanceTransaction'AnyOf option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: DateTime, currency: string, customer: ChargeCustomer'AnyOf option, description: string option, destination: ChargeDestination'AnyOf option, dispute: ChargeDispute'AnyOf option, disputed: bool, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetails option, id: string, invoice: ChargeInvoice'AnyOf option, livemode: bool, metadata: Map<string, string>, onBehalfOf: ChargeOnBehalfOf'AnyOf option, order: ChargeOrder'AnyOf option, outcome: ChargeOutcome option, paid: bool, paymentIntent: ChargePaymentIntent'AnyOf option, paymentMethod: string option, paymentMethodDetails: PaymentMethodDetails option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, refunds: ChargeRefunds, review: ChargeReview'AnyOf option, shipping: Shipping option, source: PaymentSource option, sourceTransfer: ChargeSourceTransfer'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: ChargeStatus, transferData: ChargeTransferData option, transferGroup: string option, ?alternateStatementDescriptors: AlternateStatementDescriptors, ?authorizationCode: string, ?level3: Level3, ?transfer: ChargeTransfer'AnyOf) =
+        static member New (amount: int, amountCaptured: int, amountRefunded: int, application: ChargeApplication'AnyOf option, applicationFee: ChargeApplicationFee'AnyOf option, applicationFeeAmount: int option, balanceTransaction: ChargeBalanceTransaction'AnyOf option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: DateTime, currency: string, customer: ChargeCustomer'AnyOf option, description: string option, destination: ChargeDestination'AnyOf option, dispute: ChargeDispute'AnyOf option, disputed: bool, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetails option, id: string, invoice: ChargeInvoice'AnyOf option, livemode: bool, metadata: Map<string, string>, onBehalfOf: ChargeOnBehalfOf'AnyOf option, order: ChargeOrder'AnyOf option, outcome: ChargeOutcome option, paid: bool, paymentIntent: ChargePaymentIntent'AnyOf option, paymentMethod: string option, paymentMethodDetails: PaymentMethodDetails option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, refunds: ChargeRefunds, review: ChargeReview'AnyOf option, shipping: Shipping option, source: PaymentSource option, sourceTransfer: ChargeSourceTransfer'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: ChargeStatus, transferData: ChargeTransferData option, transferGroup: string option, ?alternateStatementDescriptors: AlternateStatementDescriptors, ?authorizationCode: string, ?level3: Level3, ?transfer: ChargeTransfer'AnyOf) =
             {
                 Charge.Amount = amount //required
                 Charge.AmountCaptured = amountCaptured //required
@@ -1786,7 +1786,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: Refund list, hasMore: bool, url: string) =
+        static member New (data: Refund list, hasMore: bool, url: string) =
             {
                 ChargeRefunds.Data = data //required
                 ChargeRefunds.HasMore = hasMore //required
@@ -1801,7 +1801,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?stripeReport: string, ?userReport: ChargeFraudDetailsUserReport) =
+        static member New (?stripeReport: string, ?userReport: ChargeFraudDetailsUserReport) =
             {
                 ChargeFraudDetails.StripeReport = stripeReport
                 ChargeFraudDetails.UserReport = userReport
@@ -1829,7 +1829,7 @@ module StripeModel =
     }
     with
 
-        static member Create (networkStatus: ChargeOutcomeNetworkStatus option, reason: string option, sellerMessage: string option, ``type``: ChargeOutcomeType, ?riskLevel: string, ?riskScore: int, ?rule: ChargeOutcomeRule'AnyOf) =
+        static member New (networkStatus: ChargeOutcomeNetworkStatus option, reason: string option, sellerMessage: string option, ``type``: ChargeOutcomeType, ?riskLevel: string, ?riskScore: int, ?rule: ChargeOutcomeRule'AnyOf) =
             {
                 ChargeOutcome.NetworkStatus = networkStatus //required
                 ChargeOutcome.Reason = reason //required
@@ -1865,7 +1865,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int option, destination: ChargeTransferDataDestination'AnyOf) =
+        static member New (amount: int option, destination: ChargeTransferDataDestination'AnyOf) =
             {
                 ChargeTransferData.Amount = amount //required
                 ChargeTransferData.Destination = destination //required
@@ -1958,7 +1958,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "checkout.session"
 
-        static member Create (allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string, clientReferenceId: string option, currency: string option, customer: CheckoutSessionCustomer'AnyOf option, customerEmail: string option, id: string, livemode: bool, locale: CheckoutSessionLocale option, metadata: Map<string, string> option, mode: CheckoutSessionMode, paymentIntent: CheckoutSessionPaymentIntent'AnyOf option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, setupIntent: CheckoutSessionSetupIntent'AnyOf option, shipping: Shipping option, shippingAddressCollection: PaymentPagesPaymentPageResourcesShippingAddressCollection option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscription'AnyOf option, successUrl: string, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, ?lineItems: CheckoutSessionLineItems) =
+        static member New (allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string, clientReferenceId: string option, currency: string option, customer: CheckoutSessionCustomer'AnyOf option, customerEmail: string option, id: string, livemode: bool, locale: CheckoutSessionLocale option, metadata: Map<string, string> option, mode: CheckoutSessionMode, paymentIntent: CheckoutSessionPaymentIntent'AnyOf option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, setupIntent: CheckoutSessionSetupIntent'AnyOf option, shipping: Shipping option, shippingAddressCollection: PaymentPagesPaymentPageResourcesShippingAddressCollection option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscription'AnyOf option, successUrl: string, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, ?lineItems: CheckoutSessionLineItems) =
             {
                 CheckoutSession.AllowPromotionCodes = allowPromotionCodes //required
                 CheckoutSession.AmountSubtotal = amountSubtotal //required
@@ -2075,7 +2075,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: Item list, hasMore: bool, url: string) =
+        static member New (data: Item list, hasMore: bool, url: string) =
             {
                 CheckoutSessionLineItems.Data = data //required
                 CheckoutSessionLineItems.HasMore = hasMore //required
@@ -2098,7 +2098,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "connect_collection_transfer"
 
-        static member Create (amount: int, currency: string, destination: ConnectCollectionTransferDestination'AnyOf, id: string, livemode: bool) =
+        static member New (amount: int, currency: string, destination: ConnectCollectionTransferDestination'AnyOf, id: string, livemode: bool) =
             {
                 ConnectCollectionTransfer.Amount = amount //required
                 ConnectCollectionTransfer.Currency = currency //required
@@ -2135,7 +2135,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "country_spec"
 
-        static member Create (defaultCurrency: string, id: string, supportedBankAccountCurrencies: Map<string, string list>, supportedPaymentCurrencies: string list, supportedPaymentMethods: string list, supportedTransferCountries: string list, verificationFields: CountrySpecVerificationFields) =
+        static member New (defaultCurrency: string, id: string, supportedBankAccountCurrencies: Map<string, string list>, supportedPaymentCurrencies: string list, supportedPaymentMethods: string list, supportedTransferCountries: string list, verificationFields: CountrySpecVerificationFields) =
             {
                 CountrySpec.DefaultCurrency = defaultCurrency //required
                 CountrySpec.Id = id //required
@@ -2154,7 +2154,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additional: string list, minimum: string list) =
+        static member New (additional: string list, minimum: string list) =
             {
                 CountrySpecVerificationFieldDetails.Additional = additional //required
                 CountrySpecVerificationFieldDetails.Minimum = minimum //required
@@ -2166,7 +2166,7 @@ module StripeModel =
     }
     with
 
-        static member Create (company: CountrySpecVerificationFieldDetails, individual: CountrySpecVerificationFieldDetails) =
+        static member New (company: CountrySpecVerificationFieldDetails, individual: CountrySpecVerificationFieldDetails) =
             {
                 CountrySpecVerificationFields.Company = company //required
                 CountrySpecVerificationFields.Individual = individual //required
@@ -2210,7 +2210,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "coupon"
 
-        static member Create (amountOff: int option, created: DateTime, currency: string option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, percentOff: decimal option, redeemBy: DateTime option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo) =
+        static member New (amountOff: int option, created: DateTime, currency: string option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, percentOff: decimal option, redeemBy: DateTime option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo) =
             {
                 Coupon.AmountOff = amountOff //required
                 Coupon.Created = created //required
@@ -2240,7 +2240,7 @@ module StripeModel =
     }
     with
 
-        static member Create (products: string list) =
+        static member New (products: string list) =
             {
                 CouponAppliesTo.Products = products //required
             }
@@ -2301,7 +2301,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "credit_note"
 
-        static member Create (amount: int, created: DateTime, currency: string, customer: CreditNoteCustomer'AnyOf, customerBalanceTransaction: CreditNoteCustomerBalanceTransaction'AnyOf option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, id: string, invoice: CreditNoteInvoice'AnyOf, lines: CreditNoteLines, livemode: bool, memo: string option, metadata: Map<string, string> option, number: string, outOfBandAmount: int option, pdf: string, reason: CreditNoteReason option, refund: CreditNoteRefund'AnyOf option, status: CreditNoteStatus, subtotal: int, taxAmounts: CreditNoteTaxAmount list, total: int, ``type``: CreditNoteType, voidedAt: DateTime option) =
+        static member New (amount: int, created: DateTime, currency: string, customer: CreditNoteCustomer'AnyOf, customerBalanceTransaction: CreditNoteCustomerBalanceTransaction'AnyOf option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, id: string, invoice: CreditNoteInvoice'AnyOf, lines: CreditNoteLines, livemode: bool, memo: string option, metadata: Map<string, string> option, number: string, outOfBandAmount: int option, pdf: string, reason: CreditNoteReason option, refund: CreditNoteRefund'AnyOf option, status: CreditNoteStatus, subtotal: int, taxAmounts: CreditNoteTaxAmount list, total: int, ``type``: CreditNoteType, voidedAt: DateTime option) =
             {
                 CreditNote.Amount = amount //required
                 CreditNote.Created = created //required
@@ -2373,7 +2373,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: CreditNoteLineItem list, hasMore: bool, url: string) =
+        static member New (data: CreditNoteLineItem list, hasMore: bool, url: string) =
             {
                 CreditNoteLines.Data = data //required
                 CreditNoteLines.HasMore = hasMore //required
@@ -2412,7 +2412,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "credit_note_line_item"
 
-        static member Create (amount: int, description: string option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, id: string, livemode: bool, quantity: int option, taxAmounts: CreditNoteTaxAmount list, taxRates: TaxRate list, ``type``: CreditNoteLineItemType, unitAmount: int option, unitAmountDecimal: string option, ?invoiceLineItem: string) =
+        static member New (amount: int, description: string option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, id: string, livemode: bool, quantity: int option, taxAmounts: CreditNoteTaxAmount list, taxRates: TaxRate list, ``type``: CreditNoteLineItemType, unitAmount: int option, unitAmountDecimal: string option, ?invoiceLineItem: string) =
             {
                 CreditNoteLineItem.Amount = amount //required
                 CreditNoteLineItem.Description = description //required
@@ -2443,7 +2443,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, inclusive: bool, taxRate: CreditNoteTaxAmountTaxRate'AnyOf) =
+        static member New (amount: int, inclusive: bool, taxRate: CreditNoteTaxAmountTaxRate'AnyOf) =
             {
                 CreditNoteTaxAmount.Amount = amount //required
                 CreditNoteTaxAmount.Inclusive = inclusive //required
@@ -2512,7 +2512,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "customer"
 
-        static member Create (created: DateTime, defaultSource: CustomerDefaultSource'AnyOf option, description: string option, email: string option, id: string, livemode: bool, shipping: Shipping option, ?address: Address option, ?balance: int, ?currency: string option, ?delinquent: bool option, ?discount: Discount option, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: CustomerSources, ?subscriptions: CustomerSubscriptions, ?taxExempt: CustomerTaxExempt option, ?taxIds: CustomerTaxIds) =
+        static member New (created: DateTime, defaultSource: CustomerDefaultSource'AnyOf option, description: string option, email: string option, id: string, livemode: bool, shipping: Shipping option, ?address: Address option, ?balance: int, ?currency: string option, ?delinquent: bool option, ?discount: Discount option, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: CustomerSources, ?subscriptions: CustomerSubscriptions, ?taxExempt: CustomerTaxExempt option, ?taxIds: CustomerTaxIds) =
             {
                 Customer.Created = created //required
                 Customer.DefaultSource = defaultSource //required
@@ -2561,7 +2561,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: PaymentSource list, hasMore: bool, url: string) =
+        static member New (data: PaymentSource list, hasMore: bool, url: string) =
             {
                 CustomerSources.Data = data //required
                 CustomerSources.HasMore = hasMore //required
@@ -2581,7 +2581,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: Subscription list, hasMore: bool, url: string) =
+        static member New (data: Subscription list, hasMore: bool, url: string) =
             {
                 CustomerSubscriptions.Data = data //required
                 CustomerSubscriptions.HasMore = hasMore //required
@@ -2601,7 +2601,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: TaxId list, hasMore: bool, url: string) =
+        static member New (data: TaxId list, hasMore: bool, url: string) =
             {
                 CustomerTaxIds.Data = data //required
                 CustomerTaxIds.HasMore = hasMore //required
@@ -2618,7 +2618,7 @@ module StripeModel =
     }
     with
 
-        static member Create (acceptedAt: DateTime option, ``type``: CustomerAcceptanceType, ?offline: OfflineAcceptance, ?online: OnlineAcceptance) =
+        static member New (acceptedAt: DateTime option, ``type``: CustomerAcceptanceType, ?offline: OfflineAcceptance, ?online: OnlineAcceptance) =
             {
                 CustomerAcceptance.AcceptedAt = acceptedAt //required
                 CustomerAcceptance.Type = ``type`` //required
@@ -2665,7 +2665,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "customer_balance_transaction"
 
-        static member Create (amount: int, created: DateTime, creditNote: CustomerBalanceTransactionCreditNote'AnyOf option, currency: string, customer: CustomerBalanceTransactionCustomer'AnyOf, description: string option, endingBalance: int, id: string, invoice: CustomerBalanceTransactionInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, ``type``: CustomerBalanceTransactionType) =
+        static member New (amount: int, created: DateTime, creditNote: CustomerBalanceTransactionCreditNote'AnyOf option, currency: string, customer: CustomerBalanceTransactionCustomer'AnyOf, description: string option, endingBalance: int, id: string, invoice: CustomerBalanceTransactionInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, ``type``: CustomerBalanceTransactionType) =
             {
                 CustomerBalanceTransaction.Amount = amount //required
                 CustomerBalanceTransaction.Created = created //required
@@ -2714,7 +2714,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "account"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedAccount.Deleted = deleted //required
                 DeletedAccount.Id = id //required
@@ -2730,7 +2730,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "alipay_account"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedAlipayAccount.Deleted = deleted //required
                 DeletedAlipayAccount.Id = id //required
@@ -2746,7 +2746,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "apple_pay_domain"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedApplePayDomain.Deleted = deleted //required
                 DeletedApplePayDomain.Id = id //required
@@ -2764,7 +2764,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "bank_account"
 
-        static member Create (currency: string option, deleted: bool, id: string) =
+        static member New (currency: string option, deleted: bool, id: string) =
             {
                 DeletedBankAccount.Currency = currency //required
                 DeletedBankAccount.Deleted = deleted //required
@@ -2781,7 +2781,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "bitcoin_receiver"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedBitcoinReceiver.Deleted = deleted //required
                 DeletedBitcoinReceiver.Id = id //required
@@ -2799,7 +2799,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "card"
 
-        static member Create (currency: string option, deleted: bool, id: string) =
+        static member New (currency: string option, deleted: bool, id: string) =
             {
                 DeletedCard.Currency = currency //required
                 DeletedCard.Deleted = deleted //required
@@ -2816,7 +2816,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "coupon"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedCoupon.Deleted = deleted //required
                 DeletedCoupon.Id = id //required
@@ -2832,7 +2832,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "customer"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedCustomer.Deleted = deleted //required
                 DeletedCustomer.Id = id //required
@@ -2863,7 +2863,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "discount"
 
-        static member Create (checkoutSession: string option, coupon: Coupon, customer: DeletedDiscountCustomer'AnyOf option, deleted: bool, id: string, invoice: string option, invoiceItem: string option, promotionCode: DeletedDiscountPromotionCode'AnyOf option, start: DateTime, subscription: string option) =
+        static member New (checkoutSession: string option, coupon: Coupon, customer: DeletedDiscountCustomer'AnyOf option, deleted: bool, id: string, invoice: string option, invoiceItem: string option, promotionCode: DeletedDiscountPromotionCode'AnyOf option, start: DateTime, subscription: string option) =
             {
                 DeletedDiscount.CheckoutSession = checkoutSession //required
                 DeletedDiscount.Coupon = coupon //required
@@ -2900,7 +2900,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoice"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedInvoice.Deleted = deleted //required
                 DeletedInvoice.Id = id //required
@@ -2916,7 +2916,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoiceitem"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedInvoiceitem.Deleted = deleted //required
                 DeletedInvoiceitem.Id = id //required
@@ -2938,7 +2938,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "person"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedPerson.Deleted = deleted //required
                 DeletedPerson.Id = id //required
@@ -2954,7 +2954,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "plan"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedPlan.Deleted = deleted //required
                 DeletedPlan.Id = id //required
@@ -2970,7 +2970,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "price"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedPrice.Deleted = deleted //required
                 DeletedPrice.Id = id //required
@@ -2986,7 +2986,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "product"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedProduct.Deleted = deleted //required
                 DeletedProduct.Id = id //required
@@ -3002,7 +3002,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "radar.value_list"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedRadarValueList.Deleted = deleted //required
                 DeletedRadarValueList.Id = id //required
@@ -3018,7 +3018,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "radar.value_list_item"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedRadarValueListItem.Deleted = deleted //required
                 DeletedRadarValueListItem.Id = id //required
@@ -3034,7 +3034,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "recipient"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedRecipient.Deleted = deleted //required
                 DeletedRecipient.Id = id //required
@@ -3050,7 +3050,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "sku"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedSku.Deleted = deleted //required
                 DeletedSku.Id = id //required
@@ -3066,7 +3066,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "subscription_item"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedSubscriptionItem.Deleted = deleted //required
                 DeletedSubscriptionItem.Id = id //required
@@ -3082,7 +3082,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax_id"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedTaxId.Deleted = deleted //required
                 DeletedTaxId.Id = id //required
@@ -3098,7 +3098,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "terminal.location"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedTerminalLocation.Deleted = deleted //required
                 DeletedTerminalLocation.Id = id //required
@@ -3114,7 +3114,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "terminal.reader"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedTerminalReader.Deleted = deleted //required
                 DeletedTerminalReader.Id = id //required
@@ -3130,7 +3130,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "webhook_endpoint"
 
-        static member Create (deleted: bool, id: string) =
+        static member New (deleted: bool, id: string) =
             {
                 DeletedWebhookEndpoint.Deleted = deleted //required
                 DeletedWebhookEndpoint.Id = id //required
@@ -3148,7 +3148,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: DeliveryEstimateType, ?date: string, ?earliest: string, ?latest: string) =
+        static member New (``type``: DeliveryEstimateType, ?date: string, ?earliest: string, ?latest: string) =
             {
                 DeliveryEstimate.Type = ``type`` //required
                 DeliveryEstimate.Date = date
@@ -3189,7 +3189,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "discount"
 
-        static member Create (checkoutSession: string option, coupon: Coupon, customer: DiscountCustomer'AnyOf option, ``end``: DateTime option, id: string, invoice: string option, invoiceItem: string option, promotionCode: DiscountPromotionCode'AnyOf option, start: DateTime, subscription: string option) =
+        static member New (checkoutSession: string option, coupon: Coupon, customer: DiscountCustomer'AnyOf option, ``end``: DateTime option, id: string, invoice: string option, invoiceItem: string option, promotionCode: DiscountPromotionCode'AnyOf option, start: DateTime, subscription: string option) =
             {
                 Discount.CheckoutSession = checkoutSession //required
                 Discount.Coupon = coupon //required
@@ -3220,7 +3220,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, discount: DiscountsResourceDiscountAmountDiscount'AnyOf) =
+        static member New (amount: int, discount: DiscountsResourceDiscountAmountDiscount'AnyOf) =
             {
                 DiscountsResourceDiscountAmount.Amount = amount //required
                 DiscountsResourceDiscountAmount.Discount = discount //required
@@ -3271,7 +3271,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "dispute"
 
-        static member Create (amount: int, balanceTransactions: BalanceTransaction list, charge: DisputeCharge'AnyOf, created: DateTime, currency: string, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, paymentIntent: DisputePaymentIntent'AnyOf option, reason: DisputeReason, status: DisputeStatus, ?networkReasonCode: string option) =
+        static member New (amount: int, balanceTransactions: BalanceTransaction list, charge: DisputeCharge'AnyOf, created: DateTime, currency: string, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, paymentIntent: DisputePaymentIntent'AnyOf option, reason: DisputeReason, status: DisputeStatus, ?networkReasonCode: string option) =
             {
                 Dispute.Amount = amount //required
                 Dispute.BalanceTransactions = balanceTransactions //required
@@ -3382,7 +3382,7 @@ module StripeModel =
     }
     with
 
-        static member Create (accessActivityLog: string option, billingAddress: string option, cancellationPolicy: DisputeEvidenceCancellationPolicy'AnyOf option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: DisputeEvidenceCustomerCommunication'AnyOf option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: DisputeEvidenceCustomerSignature'AnyOf option, duplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentation'AnyOf option, duplicateChargeExplanation: string option, duplicateChargeId: string option, productDescription: string option, receipt: DisputeEvidenceReceipt'AnyOf option, refundPolicy: DisputeEvidenceRefundPolicy'AnyOf option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: DisputeEvidenceServiceDocumentation'AnyOf option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: DisputeEvidenceShippingDocumentation'AnyOf option, shippingTrackingNumber: string option, uncategorizedFile: DisputeEvidenceUncategorizedFile'AnyOf option, uncategorizedText: string option) =
+        static member New (accessActivityLog: string option, billingAddress: string option, cancellationPolicy: DisputeEvidenceCancellationPolicy'AnyOf option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: DisputeEvidenceCustomerCommunication'AnyOf option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: DisputeEvidenceCustomerSignature'AnyOf option, duplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentation'AnyOf option, duplicateChargeExplanation: string option, duplicateChargeId: string option, productDescription: string option, receipt: DisputeEvidenceReceipt'AnyOf option, refundPolicy: DisputeEvidenceRefundPolicy'AnyOf option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: DisputeEvidenceServiceDocumentation'AnyOf option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: DisputeEvidenceShippingDocumentation'AnyOf option, shippingTrackingNumber: string option, uncategorizedFile: DisputeEvidenceUncategorizedFile'AnyOf option, uncategorizedText: string option) =
             {
                 DisputeEvidence.AccessActivityLog = accessActivityLog //required
                 DisputeEvidence.BillingAddress = billingAddress //required
@@ -3461,7 +3461,7 @@ module StripeModel =
     }
     with
 
-        static member Create (dueBy: DateTime option, hasEvidence: bool, pastDue: bool, submissionCount: int) =
+        static member New (dueBy: DateTime option, hasEvidence: bool, pastDue: bool, submissionCount: int) =
             {
                 DisputeEvidenceDetails.DueBy = dueBy //required
                 DisputeEvidenceDetails.HasEvidence = hasEvidence //required
@@ -3485,7 +3485,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "ephemeral_key"
 
-        static member Create (created: DateTime, expires: DateTime, id: string, livemode: bool, ?secret: string) =
+        static member New (created: DateTime, expires: DateTime, id: string, livemode: bool, ?secret: string) =
             {
                 EphemeralKey.Created = created //required
                 EphemeralKey.Expires = expires //required
@@ -3500,7 +3500,7 @@ module StripeModel =
     }
     with
 
-        static member Create (error: ApiErrors) =
+        static member New (error: ApiErrors) =
             {
                 Error.Error = error //required
             }
@@ -3553,7 +3553,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "event"
 
-        static member Create (apiVersion: string option, created: DateTime, data: NotificationEventData, id: string, livemode: bool, pendingWebhooks: int, request: NotificationEventRequest option, ``type``: string, ?account: string) =
+        static member New (apiVersion: string option, created: DateTime, data: NotificationEventData, id: string, livemode: bool, pendingWebhooks: int, request: NotificationEventRequest option, ``type``: string, ?account: string) =
             {
                 Event.ApiVersion = apiVersion //required
                 Event.Created = created //required
@@ -3586,7 +3586,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "exchange_rate"
 
-        static member Create (id: string, rates: Map<string, string list>) =
+        static member New (id: string, rates: Map<string, string list>) =
             {
                 ExchangeRate.Id = id //required
                 ExchangeRate.Rates = rates //required
@@ -3610,7 +3610,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, application: string option, currency: string, description: string option, ``type``: FeeType) =
+        static member New (amount: int, application: string option, currency: string, description: string option, ``type``: FeeType) =
             {
                 Fee.Amount = amount //required
                 Fee.Application = application //required
@@ -3648,7 +3648,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "fee_refund"
 
-        static member Create (amount: int, balanceTransaction: FeeRefundBalanceTransaction'AnyOf option, created: DateTime, currency: string, fee: FeeRefundFee'AnyOf, id: string, metadata: Map<string, string> option) =
+        static member New (amount: int, balanceTransaction: FeeRefundBalanceTransaction'AnyOf option, created: DateTime, currency: string, fee: FeeRefundFee'AnyOf, id: string, metadata: Map<string, string> option) =
             {
                 FeeRefund.Amount = amount //required
                 FeeRefund.BalanceTransaction = balanceTransaction //required
@@ -3699,7 +3699,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "file"
 
-        static member Create (created: DateTime, expiresAt: DateTime option, filename: string option, id: string, purpose: FilePurpose, size: int, title: string option, ``type``: string option, url: string option, ?links: FileLinks option) =
+        static member New (created: DateTime, expiresAt: DateTime option, filename: string option, id: string, purpose: FilePurpose, size: int, title: string option, ``type``: string option, url: string option, ?links: FileLinks option) =
             {
                 File.Created = created //required
                 File.ExpiresAt = expiresAt //required
@@ -3736,7 +3736,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: FileLink list, hasMore: bool, url: string) =
+        static member New (data: FileLink list, hasMore: bool, url: string) =
             {
                 FileLinks.Data = data //required
                 FileLinks.HasMore = hasMore //required
@@ -3768,7 +3768,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "file_link"
 
-        static member Create (created: DateTime, expired: bool, expiresAt: DateTime option, file: FileLinkFile'AnyOf, id: string, livemode: bool, metadata: Map<string, string>, url: string option) =
+        static member New (created: DateTime, expired: bool, expiresAt: DateTime option, file: FileLinkFile'AnyOf, id: string, livemode: bool, metadata: Map<string, string>, url: string option) =
             {
                 FileLink.Created = created //required
                 FileLink.Expired = expired //required
@@ -3804,7 +3804,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
+        static member New (?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
             {
                 FinancialReportingFinanceReportRunRunParameters.Columns = columns
                 FinancialReportingFinanceReportRunRunParameters.ConnectedAccount = connectedAccount
@@ -3830,7 +3830,7 @@ module StripeModel =
     }
     with
 
-        static member Create (quantity: int option, ``type``: InventoryType, value: InventoryValue option) =
+        static member New (quantity: int option, ``type``: InventoryType, value: InventoryValue option) =
             {
                 Inventory.Quantity = quantity //required
                 Inventory.Type = ``type`` //required
@@ -4003,7 +4003,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoice"
 
-        static member Create (accountCountry: string option, accountName: string option, amountDue: int, amountPaid: int, amountRemaining: int, applicationFeeAmount: int option, attemptCount: int, attempted: bool, billingReason: InvoiceBillingReason option, charge: InvoiceCharge'AnyOf option, collectionMethod: InvoiceCollectionMethod option, created: DateTime, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomer'AnyOf, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option, defaultSource: InvoiceDefaultSource'AnyOf option, defaultTaxRates: TaxRate list, description: string option, discount: Discount option, discounts: InvoiceDiscounts'AnyOf list option, dueDate: DateTime option, endingBalance: int option, footer: string option, lines: InvoiceLines, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: DateTime option, number: string option, paid: bool, paymentIntent: InvoicePaymentIntent'AnyOf option, periodEnd: DateTime, periodStart: DateTime, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesStatusTransitions, subscription: InvoiceSubscription'AnyOf option, subtotal: int, tax: int option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalTaxAmounts: InvoiceTaxAmount list, transferData: InvoiceTransferData option, webhooksDeliveredAt: DateTime option, ?accountTaxIds: InvoiceAccountTaxIds'AnyOf list option, ?autoAdvance: bool, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?lastFinalizationError: ApiErrors option, ?subscriptionProrationDate: int, ?thresholdReason: InvoiceThresholdReason) =
+        static member New (accountCountry: string option, accountName: string option, amountDue: int, amountPaid: int, amountRemaining: int, applicationFeeAmount: int option, attemptCount: int, attempted: bool, billingReason: InvoiceBillingReason option, charge: InvoiceCharge'AnyOf option, collectionMethod: InvoiceCollectionMethod option, created: DateTime, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomer'AnyOf, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option, defaultSource: InvoiceDefaultSource'AnyOf option, defaultTaxRates: TaxRate list, description: string option, discount: Discount option, discounts: InvoiceDiscounts'AnyOf list option, dueDate: DateTime option, endingBalance: int option, footer: string option, lines: InvoiceLines, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: DateTime option, number: string option, paid: bool, paymentIntent: InvoicePaymentIntent'AnyOf option, periodEnd: DateTime, periodStart: DateTime, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesStatusTransitions, subscription: InvoiceSubscription'AnyOf option, subtotal: int, tax: int option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalTaxAmounts: InvoiceTaxAmount list, transferData: InvoiceTransferData option, webhooksDeliveredAt: DateTime option, ?accountTaxIds: InvoiceAccountTaxIds'AnyOf list option, ?autoAdvance: bool, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?lastFinalizationError: ApiErrors option, ?subscriptionProrationDate: int, ?thresholdReason: InvoiceThresholdReason) =
             {
                 Invoice.AccountCountry = accountCountry //required
                 Invoice.AccountName = accountName //required
@@ -4145,7 +4145,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: LineItem list, hasMore: bool, url: string) =
+        static member New (data: LineItem list, hasMore: bool, url: string) =
             {
                 InvoiceLines.Data = data //required
                 InvoiceLines.HasMore = hasMore //required
@@ -4160,7 +4160,7 @@ module StripeModel =
     }
     with
 
-        static member Create (lineItemIds: string list, usageGte: int) =
+        static member New (lineItemIds: string list, usageGte: int) =
             {
                 InvoiceItemThresholdReason.LineItemIds = lineItemIds //required
                 InvoiceItemThresholdReason.UsageGte = usageGte //required
@@ -4174,7 +4174,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``end``: DateTime, start: DateTime) =
+        static member New (``end``: DateTime, start: DateTime) =
             {
                 InvoiceLineItemPeriod.End = ``end`` //required
                 InvoiceLineItemPeriod.Start = start //required
@@ -4188,7 +4188,7 @@ module StripeModel =
     }
     with
 
-        static member Create (name: string, value: string) =
+        static member New (name: string, value: string) =
             {
                 InvoiceSettingCustomField.Name = name //required
                 InvoiceSettingCustomField.Value = value //required
@@ -4204,7 +4204,7 @@ module StripeModel =
     }
     with
 
-        static member Create (customFields: InvoiceSettingCustomField list option, defaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethod'AnyOf option, footer: string option) =
+        static member New (customFields: InvoiceSettingCustomField list option, defaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethod'AnyOf option, footer: string option) =
             {
                 InvoiceSettingCustomerSetting.CustomFields = customFields //required
                 InvoiceSettingCustomerSetting.DefaultPaymentMethod = defaultPaymentMethod //required
@@ -4221,7 +4221,7 @@ module StripeModel =
     }
     with
 
-        static member Create (daysUntilDue: int option) =
+        static member New (daysUntilDue: int option) =
             {
                 InvoiceSettingSubscriptionScheduleSetting.DaysUntilDue = daysUntilDue //required
             }
@@ -4236,7 +4236,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, inclusive: bool, taxRate: InvoiceTaxAmountTaxRate'AnyOf) =
+        static member New (amount: int, inclusive: bool, taxRate: InvoiceTaxAmountTaxRate'AnyOf) =
             {
                 InvoiceTaxAmount.Amount = amount //required
                 InvoiceTaxAmount.Inclusive = inclusive //required
@@ -4255,7 +4255,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amountGte: int option, itemReasons: InvoiceItemThresholdReason list) =
+        static member New (amountGte: int option, itemReasons: InvoiceItemThresholdReason list) =
             {
                 InvoiceThresholdReason.AmountGte = amountGte //required
                 InvoiceThresholdReason.ItemReasons = itemReasons //required
@@ -4269,7 +4269,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int option, destination: InvoiceTransferDataDestination'AnyOf) =
+        static member New (amount: int option, destination: InvoiceTransferDataDestination'AnyOf) =
             {
                 InvoiceTransferData.Amount = amount //required
                 InvoiceTransferData.Destination = destination //required
@@ -4332,7 +4332,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoiceitem"
 
-        static member Create (amount: int, currency: string, customer: InvoiceitemCustomer'AnyOf, date: DateTime, description: string option, discountable: bool, discounts: InvoiceitemDiscounts'AnyOf list option, id: string, invoice: InvoiceitemInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, period: InvoiceLineItemPeriod, plan: Plan option, price: Price option, proration: bool, quantity: int, subscription: InvoiceitemSubscription'AnyOf option, taxRates: TaxRate list option, unitAmount: int option, unitAmountDecimal: string option, ?subscriptionItem: string) =
+        static member New (amount: int, currency: string, customer: InvoiceitemCustomer'AnyOf, date: DateTime, description: string option, discountable: bool, discounts: InvoiceitemDiscounts'AnyOf list option, id: string, invoice: InvoiceitemInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, period: InvoiceLineItemPeriod, plan: Plan option, price: Price option, proration: bool, quantity: int, subscription: InvoiceitemSubscription'AnyOf option, taxRates: TaxRate list option, unitAmount: int option, unitAmountDecimal: string option, ?subscriptionItem: string) =
             {
                 Invoiceitem.Amount = amount //required
                 Invoiceitem.Currency = currency //required
@@ -4382,7 +4382,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: InvoicesResourceInvoiceTaxIdType, value: string option) =
+        static member New (``type``: InvoicesResourceInvoiceTaxIdType, value: string option) =
             {
                 InvoicesResourceInvoiceTaxId.Type = ``type`` //required
                 InvoicesResourceInvoiceTaxId.Value = value //required
@@ -4435,7 +4435,7 @@ module StripeModel =
     }
     with
 
-        static member Create (finalizedAt: DateTime option, markedUncollectibleAt: DateTime option, paidAt: DateTime option, voidedAt: DateTime option) =
+        static member New (finalizedAt: DateTime option, markedUncollectibleAt: DateTime option, paidAt: DateTime option, voidedAt: DateTime option) =
             {
                 InvoicesStatusTransitions.FinalizedAt = finalizedAt //required
                 InvoicesStatusTransitions.MarkedUncollectibleAt = markedUncollectibleAt //required
@@ -4468,7 +4468,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuer_fraud_record"
 
-        static member Create (actionable: bool, charge: IssuerFraudRecordCharge'AnyOf, created: DateTime, fraudType: string, hasLiabilityShift: bool, id: string, livemode: bool, postDate: int) =
+        static member New (actionable: bool, charge: IssuerFraudRecordCharge'AnyOf, created: DateTime, fraudType: string, hasLiabilityShift: bool, id: string, livemode: bool, postDate: int) =
             {
                 IssuerFraudRecord.Actionable = actionable //required
                 IssuerFraudRecord.Charge = charge //required
@@ -4533,7 +4533,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.authorization"
 
-        static member Create (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardholder: IssuingAuthorizationCardholder'AnyOf option, created: DateTime, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, pendingRequest: IssuingAuthorizationPendingRequest option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, wallet: IssuingAuthorizationWallet option) =
+        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardholder: IssuingAuthorizationCardholder'AnyOf option, created: DateTime, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, pendingRequest: IssuingAuthorizationPendingRequest option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, wallet: IssuingAuthorizationWallet option) =
             {
                 IssuingAuthorization.Amount = amount //required
                 IssuingAuthorization.AmountDetails = amountDetails //required
@@ -4624,7 +4624,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.card"
 
-        static member Create (brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: DateTime, currency: string, expMonth: int, expYear: int, id: string, last4: string, livemode: bool, metadata: Map<string, string>, replacedBy: IssuingCardReplacedBy'AnyOf option, replacementFor: IssuingCardReplacementFor'AnyOf option, replacementReason: IssuingCardReplacementReason option, shipping: IssuingCardShipping option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, ?cvc: string, ?number: string) =
+        static member New (brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: DateTime, currency: string, expMonth: int, expYear: int, id: string, last4: string, livemode: bool, metadata: Map<string, string>, replacedBy: IssuingCardReplacedBy'AnyOf option, replacementFor: IssuingCardReplacementFor'AnyOf option, replacementReason: IssuingCardReplacementReason option, shipping: IssuingCardShipping option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, ?cvc: string, ?number: string) =
             {
                 IssuingCard.Brand = brand //required
                 IssuingCard.CancellationReason = cancellationReason //required
@@ -4709,7 +4709,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.cardholder"
 
-        static member Create (billing: IssuingCardholderAddress, company: IssuingCardholderCompany option, created: DateTime, email: string option, id: string, individual: IssuingCardholderIndividual option, livemode: bool, metadata: Map<string, string>, name: string, phoneNumber: string option, requirements: IssuingCardholderRequirements, spendingControls: IssuingCardholderAuthorizationControls option, status: IssuingCardholderStatus, ``type``: IssuingCardholderType) =
+        static member New (billing: IssuingCardholderAddress, company: IssuingCardholderCompany option, created: DateTime, email: string option, id: string, individual: IssuingCardholderIndividual option, livemode: bool, metadata: Map<string, string>, name: string, phoneNumber: string option, requirements: IssuingCardholderRequirements, spendingControls: IssuingCardholderAuthorizationControls option, status: IssuingCardholderStatus, ``type``: IssuingCardholderType) =
             {
                 IssuingCardholder.Billing = billing //required
                 IssuingCardholder.Company = company //required
@@ -4763,7 +4763,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.dispute"
 
-        static member Create (balanceTransactions: BalanceTransaction list option, id: string, livemode: bool, transaction: IssuingDisputeTransaction'AnyOf, ?amount: int, ?created: DateTime, ?currency: string, ?evidence: IssuingDisputeEvidence, ?metadata: Map<string, string>, ?status: IssuingDisputeStatus) =
+        static member New (balanceTransactions: BalanceTransaction list option, id: string, livemode: bool, transaction: IssuingDisputeTransaction'AnyOf, ?amount: int, ?created: DateTime, ?currency: string, ?evidence: IssuingDisputeEvidence, ?metadata: Map<string, string>, ?status: IssuingDisputeStatus) =
             {
                 IssuingDispute.BalanceTransactions = balanceTransactions //required
                 IssuingDispute.Id = id //required
@@ -4831,7 +4831,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.transaction"
 
-        static member Create (amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: IssuingTransactionAuthorization'AnyOf option, balanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option, card: IssuingTransactionCard'AnyOf, cardholder: IssuingTransactionCardholder'AnyOf option, created: DateTime, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, purchaseDetails: IssuingTransactionPurchaseDetails option, ``type``: IssuingTransactionType, ?dispute: IssuingTransactionDispute'AnyOf option) =
+        static member New (amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: IssuingTransactionAuthorization'AnyOf option, balanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option, card: IssuingTransactionCard'AnyOf, cardholder: IssuingTransactionCardholder'AnyOf option, created: DateTime, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, purchaseDetails: IssuingTransactionPurchaseDetails option, ``type``: IssuingTransactionType, ?dispute: IssuingTransactionDispute'AnyOf option) =
             {
                 IssuingTransaction.Amount = amount //required
                 IssuingTransaction.AmountDetails = amountDetails //required
@@ -4883,7 +4883,7 @@ module StripeModel =
     }
     with
 
-        static member Create (atmFee: int option) =
+        static member New (atmFee: int option) =
             {
                 IssuingAuthorizationAmountDetails.AtmFee = atmFee //required
             }
@@ -4906,7 +4906,7 @@ module StripeModel =
     }
     with
 
-        static member Create (category: string, city: string option, country: string option, name: string option, networkId: string, postalCode: string option, state: string option) =
+        static member New (category: string, city: string option, country: string option, name: string option, networkId: string, postalCode: string option, state: string option) =
             {
                 IssuingAuthorizationMerchantData.Category = category //required
                 IssuingAuthorizationMerchantData.City = city //required
@@ -4933,7 +4933,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, currency: string, isAmountControllable: bool, merchantAmount: int, merchantCurrency: string) =
+        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, currency: string, isAmountControllable: bool, merchantAmount: int, merchantCurrency: string) =
             {
                 IssuingAuthorizationPendingRequest.Amount = amount //required
                 IssuingAuthorizationPendingRequest.AmountDetails = amountDetails //required
@@ -4963,7 +4963,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, created: DateTime, currency: string, merchantAmount: int, merchantCurrency: string, reason: IssuingAuthorizationRequestReason) =
+        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, created: DateTime, currency: string, merchantAmount: int, merchantCurrency: string, reason: IssuingAuthorizationRequestReason) =
             {
                 IssuingAuthorizationRequest.Amount = amount //required
                 IssuingAuthorizationRequest.AmountDetails = amountDetails //required
@@ -5002,7 +5002,7 @@ module StripeModel =
     }
     with
 
-        static member Create (addressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check, addressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck, cvcCheck: IssuingAuthorizationVerificationDataCvcCheck, expiryCheck: IssuingAuthorizationVerificationDataExpiryCheck) =
+        static member New (addressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check, addressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck, cvcCheck: IssuingAuthorizationVerificationDataCvcCheck, expiryCheck: IssuingAuthorizationVerificationDataExpiryCheck) =
             {
                 IssuingAuthorizationVerificationData.AddressLine1Check = addressLine1Check //required
                 IssuingAuthorizationVerificationData.AddressPostalCodeCheck = addressPostalCodeCheck //required
@@ -5042,7 +5042,7 @@ module StripeModel =
     }
     with
 
-        static member Create (allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: string option) =
+        static member New (allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: string option) =
             {
                 IssuingCardAuthorizationControls.AllowedCategories = allowedCategories //required
                 IssuingCardAuthorizationControls.BlockedCategories = blockedCategories //required
@@ -5651,7 +5651,7 @@ module StripeModel =
     }
     with
 
-        static member Create (address: Address, carrier: IssuingCardShippingCarrier option, eta: DateTime option, name: string, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
+        static member New (address: Address, carrier: IssuingCardShippingCarrier option, eta: DateTime option, name: string, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
             {
                 IssuingCardShipping.Address = address //required
                 IssuingCardShipping.Carrier = carrier //required
@@ -5695,7 +5695,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, categories: IssuingCardSpendingLimitCategories list option, interval: IssuingCardSpendingLimitInterval) =
+        static member New (amount: int, categories: IssuingCardSpendingLimitCategories list option, interval: IssuingCardSpendingLimitInterval) =
             {
                 IssuingCardSpendingLimit.Amount = amount //required
                 IssuingCardSpendingLimit.Categories = categories //required
@@ -6005,7 +6005,7 @@ module StripeModel =
     }
     with
 
-        static member Create (address: Address) =
+        static member New (address: Address) =
             {
                 IssuingCardholderAddress.Address = address //required
             }
@@ -6022,7 +6022,7 @@ module StripeModel =
     }
     with
 
-        static member Create (allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: string option) =
+        static member New (allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: string option) =
             {
                 IssuingCardholderAuthorizationControls.AllowedCategories = allowedCategories //required
                 IssuingCardholderAuthorizationControls.BlockedCategories = blockedCategories //required
@@ -6616,7 +6616,7 @@ module StripeModel =
     }
     with
 
-        static member Create (taxIdProvided: bool) =
+        static member New (taxIdProvided: bool) =
             {
                 IssuingCardholderCompany.TaxIdProvided = taxIdProvided //required
             }
@@ -6629,7 +6629,7 @@ module StripeModel =
     }
     with
 
-        static member Create (back: IssuingCardholderIdDocumentBack'AnyOf option, front: IssuingCardholderIdDocumentFront'AnyOf option) =
+        static member New (back: IssuingCardholderIdDocumentBack'AnyOf option, front: IssuingCardholderIdDocumentFront'AnyOf option) =
             {
                 IssuingCardholderIdDocument.Back = back //required
                 IssuingCardholderIdDocument.Front = front //required
@@ -6655,7 +6655,7 @@ module StripeModel =
     }
     with
 
-        static member Create (dob: IssuingCardholderIndividualDob option, firstName: string, lastName: string, verification: IssuingCardholderVerification option) =
+        static member New (dob: IssuingCardholderIndividualDob option, firstName: string, lastName: string, verification: IssuingCardholderVerification option) =
             {
                 IssuingCardholderIndividual.Dob = dob //required
                 IssuingCardholderIndividual.FirstName = firstName //required
@@ -6673,7 +6673,7 @@ module StripeModel =
     }
     with
 
-        static member Create (day: int option, month: int option, year: int option) =
+        static member New (day: int option, month: int option, year: int option) =
             {
                 IssuingCardholderIndividualDob.Day = day //required
                 IssuingCardholderIndividualDob.Month = month //required
@@ -6688,7 +6688,7 @@ module StripeModel =
     }
     with
 
-        static member Create (disabledReason: IssuingCardholderRequirementsDisabledReason option, pastDue: IssuingCardholderRequirementsPastDue list option) =
+        static member New (disabledReason: IssuingCardholderRequirementsDisabledReason option, pastDue: IssuingCardholderRequirementsPastDue list option) =
             {
                 IssuingCardholderRequirements.DisabledReason = disabledReason //required
                 IssuingCardholderRequirements.PastDue = pastDue //required
@@ -6718,7 +6718,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, categories: IssuingCardholderSpendingLimitCategories list option, interval: IssuingCardholderSpendingLimitInterval) =
+        static member New (amount: int, categories: IssuingCardholderSpendingLimitCategories list option, interval: IssuingCardholderSpendingLimitInterval) =
             {
                 IssuingCardholderSpendingLimit.Amount = amount //required
                 IssuingCardholderSpendingLimit.Categories = categories //required
@@ -7029,7 +7029,7 @@ module StripeModel =
     }
     with
 
-        static member Create (document: IssuingCardholderIdDocument option) =
+        static member New (document: IssuingCardholderIdDocument option) =
             {
                 IssuingCardholderVerification.Document = document //required
             }
@@ -7058,7 +7058,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationPolicyProvided: bool option, cancellationReason: string option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeCanceledEvidenceProductType option, returnStatus: IssuingDisputeCanceledEvidenceReturnStatus option, returnedAt: DateTime option) =
+        static member New (additionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationPolicyProvided: bool option, cancellationReason: string option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeCanceledEvidenceProductType option, returnStatus: IssuingDisputeCanceledEvidenceReturnStatus option, returnedAt: DateTime option) =
             {
                 IssuingDisputeCanceledEvidence.AdditionalDocumentation = additionalDocumentation //required
                 IssuingDisputeCanceledEvidence.CanceledAt = canceledAt //required
@@ -7100,7 +7100,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentation'AnyOf option, cardStatement: IssuingDisputeDuplicateEvidenceCardStatement'AnyOf option, cashReceipt: IssuingDisputeDuplicateEvidenceCashReceipt'AnyOf option, checkImage: IssuingDisputeDuplicateEvidenceCheckImage'AnyOf option, explanation: string option, originalTransaction: string option) =
+        static member New (additionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentation'AnyOf option, cardStatement: IssuingDisputeDuplicateEvidenceCardStatement'AnyOf option, cashReceipt: IssuingDisputeDuplicateEvidenceCashReceipt'AnyOf option, checkImage: IssuingDisputeDuplicateEvidenceCheckImage'AnyOf option, explanation: string option, originalTransaction: string option) =
             {
                 IssuingDisputeDuplicateEvidence.AdditionalDocumentation = additionalDocumentation //required
                 IssuingDisputeDuplicateEvidence.CardStatement = cardStatement //required
@@ -7139,7 +7139,7 @@ module StripeModel =
     }
     with
 
-        static member Create (reason: IssuingDisputeEvidenceReason, ?canceled: IssuingDisputeCanceledEvidence, ?duplicate: IssuingDisputeDuplicateEvidence, ?fraudulent: IssuingDisputeFraudulentEvidence, ?merchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence, ?notReceived: IssuingDisputeNotReceivedEvidence, ?other: IssuingDisputeOtherEvidence, ?serviceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence) =
+        static member New (reason: IssuingDisputeEvidenceReason, ?canceled: IssuingDisputeCanceledEvidence, ?duplicate: IssuingDisputeDuplicateEvidence, ?fraudulent: IssuingDisputeFraudulentEvidence, ?merchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence, ?notReceived: IssuingDisputeNotReceivedEvidence, ?other: IssuingDisputeOtherEvidence, ?serviceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence) =
             {
                 IssuingDisputeEvidence.Reason = reason //required
                 IssuingDisputeEvidence.Canceled = canceled
@@ -7168,7 +7168,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentation'AnyOf option, explanation: string option) =
+        static member New (additionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentation'AnyOf option, explanation: string option) =
             {
                 IssuingDisputeFraudulentEvidence.AdditionalDocumentation = additionalDocumentation //required
                 IssuingDisputeFraudulentEvidence.Explanation = explanation //required
@@ -7194,7 +7194,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, explanation: string option, receivedAt: DateTime option, returnDescription: string option, returnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option, returnedAt: DateTime option) =
+        static member New (additionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, explanation: string option, receivedAt: DateTime option, returnDescription: string option, returnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option, returnedAt: DateTime option) =
             {
                 IssuingDisputeMerchandiseNotAsDescribedEvidence.AdditionalDocumentation = additionalDocumentation //required
                 IssuingDisputeMerchandiseNotAsDescribedEvidence.Explanation = explanation //required
@@ -7226,7 +7226,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeNotReceivedEvidenceProductType option) =
+        static member New (additionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeNotReceivedEvidenceProductType option) =
             {
                 IssuingDisputeNotReceivedEvidence.AdditionalDocumentation = additionalDocumentation //required
                 IssuingDisputeNotReceivedEvidence.ExpectedAt = expectedAt //required
@@ -7255,7 +7255,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf option, explanation: string option, productDescription: string option, productType: IssuingDisputeOtherEvidenceProductType option) =
+        static member New (additionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf option, explanation: string option, productDescription: string option, productType: IssuingDisputeOtherEvidenceProductType option) =
             {
                 IssuingDisputeOtherEvidence.AdditionalDocumentation = additionalDocumentation //required
                 IssuingDisputeOtherEvidence.Explanation = explanation //required
@@ -7285,7 +7285,7 @@ module StripeModel =
     }
     with
 
-        static member Create (additionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationReason: string option, explanation: string option, receivedAt: DateTime option) =
+        static member New (additionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationReason: string option, explanation: string option, receivedAt: DateTime option) =
             {
                 IssuingDisputeServiceNotAsDescribedEvidence.AdditionalDocumentation = additionalDocumentation //required
                 IssuingDisputeServiceNotAsDescribedEvidence.CanceledAt = canceledAt //required
@@ -7304,7 +7304,7 @@ module StripeModel =
     }
     with
 
-        static member Create (atmFee: int option) =
+        static member New (atmFee: int option) =
             {
                 IssuingTransactionAmountDetails.AtmFee = atmFee //required
             }
@@ -7323,7 +7323,7 @@ module StripeModel =
     }
     with
 
-        static member Create (departureAt: int option, passengerName: string option, refundable: bool option, segments: IssuingTransactionFlightDataLeg list option, travelAgency: string option) =
+        static member New (departureAt: int option, passengerName: string option, refundable: bool option, segments: IssuingTransactionFlightDataLeg list option, travelAgency: string option) =
             {
                 IssuingTransactionFlightData.DepartureAt = departureAt //required
                 IssuingTransactionFlightData.PassengerName = passengerName //required
@@ -7348,7 +7348,7 @@ module StripeModel =
     }
     with
 
-        static member Create (arrivalAirportCode: string option, carrier: string option, departureAirportCode: string option, flightNumber: string option, serviceClass: string option, stopoverAllowed: bool option) =
+        static member New (arrivalAirportCode: string option, carrier: string option, departureAirportCode: string option, flightNumber: string option, serviceClass: string option, stopoverAllowed: bool option) =
             {
                 IssuingTransactionFlightDataLeg.ArrivalAirportCode = arrivalAirportCode //required
                 IssuingTransactionFlightDataLeg.Carrier = carrier //required
@@ -7370,7 +7370,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: IssuingTransactionFuelDataType, unit: IssuingTransactionFuelDataUnit, unitCostDecimal: string, volumeDecimal: string option) =
+        static member New (``type``: IssuingTransactionFuelDataType, unit: IssuingTransactionFuelDataUnit, unitCostDecimal: string, volumeDecimal: string option) =
             {
                 IssuingTransactionFuelData.Type = ``type`` //required
                 IssuingTransactionFuelData.Unit = unit //required
@@ -7397,7 +7397,7 @@ module StripeModel =
     }
     with
 
-        static member Create (checkInAt: int option, nights: int option) =
+        static member New (checkInAt: int option, nights: int option) =
             {
                 IssuingTransactionLodgingData.CheckInAt = checkInAt //required
                 IssuingTransactionLodgingData.Nights = nights //required
@@ -7417,7 +7417,7 @@ module StripeModel =
     }
     with
 
-        static member Create (flight: IssuingTransactionFlightData option, fuel: IssuingTransactionFuelData option, lodging: IssuingTransactionLodgingData option, receipt: IssuingTransactionReceiptData list option, reference: string option) =
+        static member New (flight: IssuingTransactionFlightData option, fuel: IssuingTransactionFuelData option, lodging: IssuingTransactionLodgingData option, receipt: IssuingTransactionReceiptData list option, reference: string option) =
             {
                 IssuingTransactionPurchaseDetails.Flight = flight //required
                 IssuingTransactionPurchaseDetails.Fuel = fuel //required
@@ -7438,7 +7438,7 @@ module StripeModel =
     }
     with
 
-        static member Create (description: string option, quantity: decimal option, total: int option, unitCost: int option) =
+        static member New (description: string option, quantity: decimal option, total: int option, unitCost: int option) =
             {
                 IssuingTransactionReceiptData.Description = description //required
                 IssuingTransactionReceiptData.Quantity = quantity //required
@@ -7470,7 +7470,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "item"
 
-        static member Create (amountSubtotal: int option, amountTotal: int option, currency: string, description: string, id: string, price: Price, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
+        static member New (amountSubtotal: int option, amountTotal: int option, currency: string, description: string, id: string, price: Price, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
             {
                 Item.AmountSubtotal = amountSubtotal //required
                 Item.AmountTotal = amountTotal //required
@@ -7516,7 +7516,7 @@ module StripeModel =
     }
     with
 
-        static member Create (name: string option, ?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?directorsProvided: bool, ?executivesProvided: bool, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?phone: string option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
+        static member New (name: string option, ?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?directorsProvided: bool, ?executivesProvided: bool, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?phone: string option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
             {
                 LegalEntityCompany.Name = name //required
                 LegalEntityCompany.Address = address
@@ -7557,7 +7557,7 @@ module StripeModel =
     }
     with
 
-        static member Create (document: LegalEntityCompanyVerificationDocument) =
+        static member New (document: LegalEntityCompanyVerificationDocument) =
             {
                 LegalEntityCompanyVerification.Document = document //required
             }
@@ -7574,7 +7574,7 @@ module StripeModel =
     }
     with
 
-        static member Create (back: LegalEntityCompanyVerificationDocumentBack'AnyOf option, details: string option, detailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option, front: LegalEntityCompanyVerificationDocumentFront'AnyOf option) =
+        static member New (back: LegalEntityCompanyVerificationDocumentBack'AnyOf option, details: string option, detailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option, front: LegalEntityCompanyVerificationDocumentFront'AnyOf option) =
             {
                 LegalEntityCompanyVerificationDocument.Back = back //required
                 LegalEntityCompanyVerificationDocument.Details = details //required
@@ -7616,7 +7616,7 @@ module StripeModel =
     }
     with
 
-        static member Create (day: int option, month: int option, year: int option) =
+        static member New (day: int option, month: int option, year: int option) =
             {
                 LegalEntityDob.Day = day //required
                 LegalEntityDob.Month = month //required
@@ -7641,7 +7641,7 @@ module StripeModel =
     }
     with
 
-        static member Create (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option, town: string option) =
+        static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option, town: string option) =
             {
                 LegalEntityJapanAddress.City = city //required
                 LegalEntityJapanAddress.Country = country //required
@@ -7665,7 +7665,7 @@ module StripeModel =
     }
     with
 
-        static member Create (status: LegalEntityPersonVerificationStatus, ?additionalDocument: LegalEntityPersonVerificationDocument option, ?details: string option, ?detailsCode: LegalEntityPersonVerificationDetailsCode option, ?document: LegalEntityPersonVerificationDocument) =
+        static member New (status: LegalEntityPersonVerificationStatus, ?additionalDocument: LegalEntityPersonVerificationDocument option, ?details: string option, ?detailsCode: LegalEntityPersonVerificationDetailsCode option, ?document: LegalEntityPersonVerificationDocument) =
             {
                 LegalEntityPersonVerification.Status = status //required
                 LegalEntityPersonVerification.AdditionalDocument = additionalDocument |> Option.flatten
@@ -7701,7 +7701,7 @@ module StripeModel =
     }
     with
 
-        static member Create (back: LegalEntityPersonVerificationDocumentBack'AnyOf option, details: string option, detailsCode: LegalEntityPersonVerificationDocumentDetailsCode option, front: LegalEntityPersonVerificationDocumentFront'AnyOf option) =
+        static member New (back: LegalEntityPersonVerificationDocumentBack'AnyOf option, details: string option, detailsCode: LegalEntityPersonVerificationDocumentDetailsCode option, front: LegalEntityPersonVerificationDocumentFront'AnyOf option) =
             {
                 LegalEntityPersonVerificationDocument.Back = back //required
                 LegalEntityPersonVerificationDocument.Details = details //required
@@ -7747,7 +7747,7 @@ module StripeModel =
     }
     with
 
-        static member Create (lineItems: Level3LineItems list, merchantReference: string, ?customerReference: string, ?shippingAddressZip: string, ?shippingAmount: int, ?shippingFromZip: string) =
+        static member New (lineItems: Level3LineItems list, merchantReference: string, ?customerReference: string, ?shippingAddressZip: string, ?shippingAmount: int, ?shippingFromZip: string) =
             {
                 Level3.LineItems = lineItems //required
                 Level3.MerchantReference = merchantReference //required
@@ -7767,7 +7767,7 @@ module StripeModel =
     }
     with
 
-        static member Create (discountAmount: int option, productCode: string, productDescription: string, quantity: int option, taxAmount: int option, unitCost: int option) =
+        static member New (discountAmount: int option, productCode: string, productDescription: string, quantity: int option, taxAmount: int option, unitCost: int option) =
             {
                 Level3LineItems.DiscountAmount = discountAmount //required
                 Level3LineItems.ProductCode = productCode //required
@@ -7822,7 +7822,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "line_item"
 
-        static member Create (amount: int, currency: string, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: LineItemDiscounts'AnyOf list option, id: string, livemode: bool, metadata: Map<string, string>, period: InvoiceLineItemPeriod, plan: Plan option, price: Price option, proration: bool, quantity: int option, subscription: string option, ``type``: LineItemType, ?invoiceItem: string, ?subscriptionItem: string, ?taxAmounts: InvoiceTaxAmount list, ?taxRates: TaxRate list) =
+        static member New (amount: int, currency: string, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: LineItemDiscounts'AnyOf list option, id: string, livemode: bool, metadata: Map<string, string>, period: InvoiceLineItemPeriod, plan: Plan option, price: Price option, proration: bool, quantity: int option, subscription: string option, ``type``: LineItemType, ?invoiceItem: string, ?subscriptionItem: string, ?taxAmounts: InvoiceTaxAmount list, ?taxRates: TaxRate list) =
             {
                 LineItem.Amount = amount //required
                 LineItem.Currency = currency //required
@@ -7861,7 +7861,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, discount: Discount) =
+        static member New (amount: int, discount: Discount) =
             {
                 LineItemsDiscountAmount.Amount = amount //required
                 LineItemsDiscountAmount.Discount = discount //required
@@ -7874,7 +7874,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, rate: TaxRate) =
+        static member New (amount: int, rate: TaxRate) =
             {
                 LineItemsTaxAmount.Amount = amount //required
                 LineItemsTaxAmount.Rate = rate //required
@@ -7890,7 +7890,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "login_link"
 
-        static member Create (created: DateTime, url: string) =
+        static member New (created: DateTime, url: string) =
             {
                 LoginLink.Created = created //required
                 LoginLink.Url = url //required
@@ -7917,7 +7917,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "mandate"
 
-        static member Create (customerAcceptance: CustomerAcceptance, id: string, livemode: bool, paymentMethod: MandatePaymentMethod'AnyOf, paymentMethodDetails: MandatePaymentMethodDetails, status: MandateStatus, ``type``: MandateType, ?multiUse: MandateMultiUse, ?singleUse: MandateSingleUse) =
+        static member New (customerAcceptance: CustomerAcceptance, id: string, livemode: bool, paymentMethod: MandatePaymentMethod'AnyOf, paymentMethodDetails: MandatePaymentMethodDetails, status: MandateStatus, ``type``: MandateType, ?multiUse: MandateMultiUse, ?singleUse: MandateSingleUse) =
             {
                 Mandate.CustomerAcceptance = customerAcceptance //required
                 Mandate.Id = id //required
@@ -7949,7 +7949,7 @@ module StripeModel =
     }
     with
 
-        static member Create (url: string) =
+        static member New (url: string) =
             {
                 MandateAuBecsDebit.Url = url //required
             }
@@ -7964,7 +7964,7 @@ module StripeModel =
     }
     with
 
-        static member Create (networkStatus: MandateBacsDebitNetworkStatus, reference: string, url: string) =
+        static member New (networkStatus: MandateBacsDebitNetworkStatus, reference: string, url: string) =
             {
                 MandateBacsDebit.NetworkStatus = networkStatus //required
                 MandateBacsDebit.Reference = reference //required
@@ -7982,7 +7982,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?mandateMultiUse: string option) =
+        static member New (?mandateMultiUse: string option) =
             {
                 MandateMultiUse.MandateMultiUse = mandateMultiUse |> Option.flatten
             }
@@ -7997,7 +7997,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: string, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?card: CardMandatePaymentMethodDetails, ?sepaDebit: MandateSepaDebit) =
+        static member New (``type``: string, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?card: CardMandatePaymentMethodDetails, ?sepaDebit: MandateSepaDebit) =
             {
                 MandatePaymentMethodDetails.Type = ``type`` //required
                 MandatePaymentMethodDetails.AuBecsDebit = auBecsDebit
@@ -8014,7 +8014,7 @@ module StripeModel =
     }
     with
 
-        static member Create (reference: string, url: string) =
+        static member New (reference: string, url: string) =
             {
                 MandateSepaDebit.Reference = reference //required
                 MandateSepaDebit.Url = url //required
@@ -8028,7 +8028,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, currency: string) =
+        static member New (amount: int, currency: string) =
             {
                 MandateSingleUse.Amount = amount //required
                 MandateSingleUse.Currency = currency //required
@@ -8042,7 +8042,7 @@ module StripeModel =
     }
     with
 
-        static member Create (available: string list, preferred: string option) =
+        static member New (available: string list, preferred: string option) =
             {
                 Networks.Available = available //required
                 Networks.Preferred = preferred //required
@@ -8056,7 +8056,7 @@ module StripeModel =
     }
     with
 
-        static member Create (object: obj, ?previousAttributes: obj) =
+        static member New (object: obj, ?previousAttributes: obj) =
             {
                 NotificationEventData.Object = object //required
                 NotificationEventData.PreviousAttributes = previousAttributes
@@ -8070,7 +8070,7 @@ module StripeModel =
     }
     with
 
-        static member Create (id: string option, idempotencyKey: string option) =
+        static member New (id: string option, idempotencyKey: string option) =
             {
                 NotificationEventRequest.Id = id //required
                 NotificationEventRequest.IdempotencyKey = idempotencyKey //required
@@ -8081,7 +8081,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?offlineAcceptance: string option) =
+        static member New (?offlineAcceptance: string option) =
             {
                 OfflineAcceptance.OfflineAcceptance = offlineAcceptance |> Option.flatten
             }
@@ -8094,7 +8094,7 @@ module StripeModel =
     }
     with
 
-        static member Create (ipAddress: string option, userAgent: string option) =
+        static member New (ipAddress: string option, userAgent: string option) =
             {
                 OnlineAcceptance.IpAddress = ipAddress //required
                 OnlineAcceptance.UserAgent = userAgent //required
@@ -8154,7 +8154,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "order"
 
-        static member Create (amount: int, amountReturned: int option, application: string option, applicationFee: int option, charge: OrderCharge'AnyOf option, created: DateTime, currency: string, customer: OrderCustomer'AnyOf option, email: string option, id: string, items: OrderItem list, livemode: bool, metadata: Map<string, string> option, returns: OrderReturns option, selectedShippingMethod: string option, shipping: Shipping option, shippingMethods: ShippingMethod list option, status: OrderStatus, statusTransitions: StatusTransitions option, updated: DateTime option, ?externalCouponCode: string, ?upstreamId: string) =
+        static member New (amount: int, amountReturned: int option, application: string option, applicationFee: int option, charge: OrderCharge'AnyOf option, created: DateTime, currency: string, customer: OrderCustomer'AnyOf option, email: string option, id: string, items: OrderItem list, livemode: bool, metadata: Map<string, string> option, returns: OrderReturns option, selectedShippingMethod: string option, shipping: Shipping option, shippingMethods: ShippingMethod list option, status: OrderStatus, statusTransitions: StatusTransitions option, updated: DateTime option, ?externalCouponCode: string, ?upstreamId: string) =
             {
                 Order.Amount = amount //required
                 Order.AmountReturned = amountReturned //required
@@ -8209,7 +8209,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: OrderReturn list, hasMore: bool, url: string) =
+        static member New (data: OrderReturn list, hasMore: bool, url: string) =
             {
                 OrderReturns.Data = data //required
                 OrderReturns.HasMore = hasMore //required
@@ -8237,7 +8237,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "order_item"
 
-        static member Create (amount: int, currency: string, description: string, parent: OrderItemParent'AnyOf option, quantity: int option, ``type``: OrderItemType) =
+        static member New (amount: int, currency: string, description: string, parent: OrderItemParent'AnyOf option, quantity: int option, ``type``: OrderItemType) =
             {
                 OrderItem.Amount = amount //required
                 OrderItem.Currency = currency //required
@@ -8282,7 +8282,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "order_return"
 
-        static member Create (amount: int, created: DateTime, currency: string, id: string, items: OrderItem list, livemode: bool, order: OrderReturnOrder'AnyOf option, refund: OrderReturnRefund'AnyOf option) =
+        static member New (amount: int, created: DateTime, currency: string, id: string, items: OrderItem list, livemode: bool, order: OrderReturnOrder'AnyOf option, refund: OrderReturnRefund'AnyOf option) =
             {
                 OrderReturn.Amount = amount //required
                 OrderReturn.Created = created //required
@@ -8314,7 +8314,7 @@ module StripeModel =
     }
     with
 
-        static member Create (height: decimal, length: decimal, weight: decimal, width: decimal) =
+        static member New (height: decimal, length: decimal, weight: decimal, width: decimal) =
             {
                 PackageDimensions.Height = height //required
                 PackageDimensions.Length = length //required
@@ -8327,7 +8327,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentFlowsPrivatePaymentMethodsAlipay: string option) =
+        static member New (?paymentFlowsPrivatePaymentMethodsAlipay: string option) =
             {
                 PaymentFlowsPrivatePaymentMethodsAlipay.PaymentFlowsPrivatePaymentMethodsAlipay = paymentFlowsPrivatePaymentMethodsAlipay |> Option.flatten
             }
@@ -8340,7 +8340,7 @@ module StripeModel =
     }
     with
 
-        static member Create (fingerprint: string option, transactionId: string option) =
+        static member New (fingerprint: string option, transactionId: string option) =
             {
                 PaymentFlowsPrivatePaymentMethodsAlipayDetails.Fingerprint = fingerprint //required
                 PaymentFlowsPrivatePaymentMethodsAlipayDetails.TransactionId = transactionId //required
@@ -8436,7 +8436,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "payment_intent"
 
-        static member Create (amount: int, amountCapturable: int, amountReceived: int, application: PaymentIntentApplication'AnyOf option, applicationFeeAmount: int option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, charges: PaymentIntentCharges, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: string, customer: PaymentIntentCustomer'AnyOf option, description: string option, id: string, invoice: PaymentIntentInvoice'AnyOf option, lastPaymentError: ApiErrors option, livemode: bool, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: PaymentIntentOnBehalfOf'AnyOf option, paymentMethod: PaymentIntentPaymentMethod'AnyOf option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, receiptEmail: string option, review: PaymentIntentReview'AnyOf option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferData: TransferData option, transferGroup: string option) =
+        static member New (amount: int, amountCapturable: int, amountReceived: int, application: PaymentIntentApplication'AnyOf option, applicationFeeAmount: int option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, charges: PaymentIntentCharges, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: string, customer: PaymentIntentCustomer'AnyOf option, description: string option, id: string, invoice: PaymentIntentInvoice'AnyOf option, lastPaymentError: ApiErrors option, livemode: bool, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: PaymentIntentOnBehalfOf'AnyOf option, paymentMethod: PaymentIntentPaymentMethod'AnyOf option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, receiptEmail: string option, review: PaymentIntentReview'AnyOf option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferData: TransferData option, transferGroup: string option) =
             {
                 PaymentIntent.Amount = amount //required
                 PaymentIntent.AmountCapturable = amountCapturable //required
@@ -8548,7 +8548,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: Charge list, hasMore: bool, url: string) =
+        static member New (data: Charge list, hasMore: bool, url: string) =
             {
                 PaymentIntentCharges.Data = data //required
                 PaymentIntentCharges.HasMore = hasMore //required
@@ -8566,7 +8566,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?useStripeSdk: obj) =
+        static member New (``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?useStripeSdk: obj) =
             {
                 PaymentIntentNextAction.Type = ``type`` //required
                 PaymentIntentNextAction.AlipayHandleRedirect = alipayHandleRedirect
@@ -8591,7 +8591,7 @@ module StripeModel =
     }
     with
 
-        static member Create (nativeData: string option, nativeUrl: string option, returnUrl: string option, url: string option) =
+        static member New (nativeData: string option, nativeUrl: string option, returnUrl: string option, url: string option) =
             {
                 PaymentIntentNextActionAlipayHandleRedirect.NativeData = nativeData //required
                 PaymentIntentNextActionAlipayHandleRedirect.NativeUrl = nativeUrl //required
@@ -8609,7 +8609,7 @@ module StripeModel =
     }
     with
 
-        static member Create (expiresAfter: DateTime option, hostedVoucherUrl: string option, number: string option) =
+        static member New (expiresAfter: DateTime option, hostedVoucherUrl: string option, number: string option) =
             {
                 PaymentIntentNextActionDisplayOxxoDetails.ExpiresAfter = expiresAfter //required
                 PaymentIntentNextActionDisplayOxxoDetails.HostedVoucherUrl = hostedVoucherUrl //required
@@ -8624,7 +8624,7 @@ module StripeModel =
     }
     with
 
-        static member Create (returnUrl: string option, url: string option) =
+        static member New (returnUrl: string option, url: string option) =
             {
                 PaymentIntentNextActionRedirectToUrl.ReturnUrl = returnUrl //required
                 PaymentIntentNextActionRedirectToUrl.Url = url //required
@@ -8641,7 +8641,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?alipay: PaymentMethodOptionsAlipay, ?bancontact: PaymentMethodOptionsBancontact, ?card: PaymentIntentPaymentMethodOptionsCard, ?oxxo: PaymentMethodOptionsOxxo, ?p24: PaymentMethodOptionsP24, ?sepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit, ?sofort: PaymentMethodOptionsSofort) =
+        static member New (?alipay: PaymentMethodOptionsAlipay, ?bancontact: PaymentMethodOptionsBancontact, ?card: PaymentIntentPaymentMethodOptionsCard, ?oxxo: PaymentMethodOptionsOxxo, ?p24: PaymentMethodOptionsP24, ?sepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit, ?sofort: PaymentMethodOptionsSofort) =
             {
                 PaymentIntentPaymentMethodOptions.Alipay = alipay
                 PaymentIntentPaymentMethodOptions.Bancontact = bancontact
@@ -8663,7 +8663,7 @@ module StripeModel =
     }
     with
 
-        static member Create (installments: PaymentMethodOptionsCardInstallments option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
+        static member New (installments: PaymentMethodOptionsCardInstallments option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
             {
                 PaymentIntentPaymentMethodOptionsCard.Installments = installments //required
                 PaymentIntentPaymentMethodOptionsCard.Network = network //required
@@ -8692,7 +8692,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option) =
+        static member New (?paymentIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option) =
             {
                 PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit.PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit = paymentIntentPaymentMethodOptionsMandateOptionsSepaDebit |> Option.flatten
             }
@@ -8702,7 +8702,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
+        static member New (?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
             {
                 PaymentIntentPaymentMethodOptionsSepaDebit.MandateOptions = mandateOptions
             }
@@ -8746,7 +8746,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "payment_method"
 
-        static member Create (billingDetails: BillingDetails, created: DateTime, customer: PaymentMethodCustomer'AnyOf option, id: string, livemode: bool, metadata: Map<string, string> option, ``type``: PaymentMethodType, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?card: PaymentMethodCard, ?cardPresent: PaymentMethodCardPresent, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?sepaDebit: PaymentMethodSepaDebit, ?sofort: PaymentMethodSofort) =
+        static member New (billingDetails: BillingDetails, created: DateTime, customer: PaymentMethodCustomer'AnyOf option, id: string, livemode: bool, metadata: Map<string, string> option, ``type``: PaymentMethodType, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?card: PaymentMethodCard, ?cardPresent: PaymentMethodCardPresent, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?sepaDebit: PaymentMethodSepaDebit, ?sofort: PaymentMethodSofort) =
             {
                 PaymentMethod.BillingDetails = billingDetails //required
                 PaymentMethod.Created = created //required
@@ -8805,7 +8805,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bsbNumber: string option, fingerprint: string option, last4: string option) =
+        static member New (bsbNumber: string option, fingerprint: string option, last4: string option) =
             {
                 PaymentMethodAuBecsDebit.BsbNumber = bsbNumber //required
                 PaymentMethodAuBecsDebit.Fingerprint = fingerprint //required
@@ -8822,7 +8822,7 @@ module StripeModel =
     }
     with
 
-        static member Create (fingerprint: string option, last4: string option, sortCode: string option) =
+        static member New (fingerprint: string option, last4: string option, sortCode: string option) =
             {
                 PaymentMethodBacsDebit.Fingerprint = fingerprint //required
                 PaymentMethodBacsDebit.Last4 = last4 //required
@@ -8834,7 +8834,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodBancontact: string option) =
+        static member New (?paymentMethodBancontact: string option) =
             {
                 PaymentMethodBancontact.PaymentMethodBancontact = paymentMethodBancontact |> Option.flatten
             }
@@ -8871,7 +8871,7 @@ module StripeModel =
     }
     with
 
-        static member Create (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, last4: string, networks: Networks option, threeDSecureUsage: ThreeDSecureUsage option, wallet: PaymentMethodCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
+        static member New (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, last4: string, networks: Networks option, threeDSecureUsage: ThreeDSecureUsage option, wallet: PaymentMethodCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodCard.Brand = brand //required
                 PaymentMethodCard.Checks = checks //required
@@ -8915,7 +8915,7 @@ module StripeModel =
     }
     with
 
-        static member Create (addressLine1Check: PaymentMethodCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodCardChecksCvcCheck option) =
+        static member New (addressLine1Check: PaymentMethodCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodCardChecksCvcCheck option) =
             {
                 PaymentMethodCardChecks.AddressLine1Check = addressLine1Check //required
                 PaymentMethodCardChecks.AddressPostalCodeCheck = addressPostalCodeCheck //required
@@ -8945,7 +8945,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodCardPresent: string option) =
+        static member New (?paymentMethodCardPresent: string option) =
             {
                 PaymentMethodCardPresent.PaymentMethodCardPresent = paymentMethodCardPresent |> Option.flatten
             }
@@ -8964,7 +8964,7 @@ module StripeModel =
     }
     with
 
-        static member Create (dynamicLast4: string option, ``type``: PaymentMethodCardWalletType, ?amexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout, ?applePay: PaymentMethodCardWalletApplePay, ?googlePay: PaymentMethodCardWalletGooglePay, ?masterpass: PaymentMethodCardWalletMasterpass, ?samsungPay: PaymentMethodCardWalletSamsungPay, ?visaCheckout: PaymentMethodCardWalletVisaCheckout) =
+        static member New (dynamicLast4: string option, ``type``: PaymentMethodCardWalletType, ?amexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout, ?applePay: PaymentMethodCardWalletApplePay, ?googlePay: PaymentMethodCardWalletGooglePay, ?masterpass: PaymentMethodCardWalletMasterpass, ?samsungPay: PaymentMethodCardWalletSamsungPay, ?visaCheckout: PaymentMethodCardWalletVisaCheckout) =
             {
                 PaymentMethodCardWallet.DynamicLast4 = dynamicLast4 //required
                 PaymentMethodCardWallet.Type = ``type`` //required
@@ -8989,7 +8989,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodCardWalletAmexExpressCheckout: string option) =
+        static member New (?paymentMethodCardWalletAmexExpressCheckout: string option) =
             {
                 PaymentMethodCardWalletAmexExpressCheckout.PaymentMethodCardWalletAmexExpressCheckout = paymentMethodCardWalletAmexExpressCheckout |> Option.flatten
             }
@@ -8999,7 +8999,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodCardWalletApplePay: string option) =
+        static member New (?paymentMethodCardWalletApplePay: string option) =
             {
                 PaymentMethodCardWalletApplePay.PaymentMethodCardWalletApplePay = paymentMethodCardWalletApplePay |> Option.flatten
             }
@@ -9009,7 +9009,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodCardWalletGooglePay: string option) =
+        static member New (?paymentMethodCardWalletGooglePay: string option) =
             {
                 PaymentMethodCardWalletGooglePay.PaymentMethodCardWalletGooglePay = paymentMethodCardWalletGooglePay |> Option.flatten
             }
@@ -9026,7 +9026,7 @@ module StripeModel =
     }
     with
 
-        static member Create (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodCardWalletMasterpass.BillingAddress = billingAddress //required
                 PaymentMethodCardWalletMasterpass.Email = email //required
@@ -9039,7 +9039,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodCardWalletSamsungPay: string option) =
+        static member New (?paymentMethodCardWalletSamsungPay: string option) =
             {
                 PaymentMethodCardWalletSamsungPay.PaymentMethodCardWalletSamsungPay = paymentMethodCardWalletSamsungPay |> Option.flatten
             }
@@ -9056,7 +9056,7 @@ module StripeModel =
     }
     with
 
-        static member Create (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodCardWalletVisaCheckout.BillingAddress = billingAddress //required
                 PaymentMethodCardWalletVisaCheckout.Email = email //required
@@ -9096,7 +9096,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: PaymentMethodDetailsType, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?klarna: PaymentMethodDetailsKlarna, ?multibanco: PaymentMethodDetailsMultibanco, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?wechat: PaymentMethodDetailsWechat) =
+        static member New (``type``: PaymentMethodDetailsType, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?klarna: PaymentMethodDetailsKlarna, ?multibanco: PaymentMethodDetailsMultibanco, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?wechat: PaymentMethodDetailsWechat) =
             {
                 PaymentMethodDetails.Type = ``type`` //required
                 PaymentMethodDetails.AchCreditTransfer = achCreditTransfer
@@ -9156,7 +9156,7 @@ module StripeModel =
     }
     with
 
-        static member Create (accountNumber: string option, bankName: string option, routingNumber: string option, swiftCode: string option) =
+        static member New (accountNumber: string option, bankName: string option, routingNumber: string option, swiftCode: string option) =
             {
                 PaymentMethodDetailsAchCreditTransfer.AccountNumber = accountNumber //required
                 PaymentMethodDetailsAchCreditTransfer.BankName = bankName //required
@@ -9180,7 +9180,7 @@ module StripeModel =
     }
     with
 
-        static member Create (accountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option, bankName: string option, country: string option, fingerprint: string option, last4: string option, routingNumber: string option) =
+        static member New (accountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option, bankName: string option, country: string option, fingerprint: string option, last4: string option, routingNumber: string option) =
             {
                 PaymentMethodDetailsAchDebit.AccountHolderType = accountHolderType //required
                 PaymentMethodDetailsAchDebit.BankName = bankName //required
@@ -9210,7 +9210,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option, ?mandate: string) =
+        static member New (bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option, ?mandate: string) =
             {
                 PaymentMethodDetailsAcssDebit.BankName = bankName //required
                 PaymentMethodDetailsAcssDebit.Fingerprint = fingerprint //required
@@ -9232,7 +9232,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bsbNumber: string option, fingerprint: string option, last4: string option, ?mandate: string) =
+        static member New (bsbNumber: string option, fingerprint: string option, last4: string option, ?mandate: string) =
             {
                 PaymentMethodDetailsAuBecsDebit.BsbNumber = bsbNumber //required
                 PaymentMethodDetailsAuBecsDebit.Fingerprint = fingerprint //required
@@ -9252,7 +9252,7 @@ module StripeModel =
     }
     with
 
-        static member Create (fingerprint: string option, last4: string option, mandate: string option, sortCode: string option) =
+        static member New (fingerprint: string option, last4: string option, mandate: string option, sortCode: string option) =
             {
                 PaymentMethodDetailsBacsDebit.Fingerprint = fingerprint //required
                 PaymentMethodDetailsBacsDebit.Last4 = last4 //required
@@ -9282,7 +9282,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
+        static member New (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
             {
                 PaymentMethodDetailsBancontact.BankCode = bankCode //required
                 PaymentMethodDetailsBancontact.BankName = bankName //required
@@ -9345,7 +9345,7 @@ module StripeModel =
     }
     with
 
-        static member Create (brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, network: PaymentMethodDetailsCardNetwork option, threeDSecure: ThreeDSecureDetails option, wallet: PaymentMethodDetailsCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option) =
+        static member New (brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, network: PaymentMethodDetailsCardNetwork option, threeDSecure: ThreeDSecureDetails option, wallet: PaymentMethodDetailsCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option) =
             {
                 PaymentMethodDetailsCard.Brand = brand //required
                 PaymentMethodDetailsCard.Checks = checks //required
@@ -9403,7 +9403,7 @@ module StripeModel =
     }
     with
 
-        static member Create (addressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodDetailsCardChecksCvcCheck option) =
+        static member New (addressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodDetailsCardChecksCvcCheck option) =
             {
                 PaymentMethodDetailsCardChecks.AddressLine1Check = addressLine1Check //required
                 PaymentMethodDetailsCardChecks.AddressPostalCodeCheck = addressPostalCodeCheck //required
@@ -9434,7 +9434,7 @@ module StripeModel =
     }
     with
 
-        static member Create (plan: PaymentMethodDetailsCardInstallmentsPlan option) =
+        static member New (plan: PaymentMethodDetailsCardInstallmentsPlan option) =
             {
                 PaymentMethodDetailsCardInstallments.Plan = plan //required
             }
@@ -9450,7 +9450,7 @@ module StripeModel =
         ///Type of installment plan, one of `fixed_count`.
         member _.Type = "fixed_count"
 
-        static member Create (count: int option) =
+        static member New (count: int option) =
             {
                 PaymentMethodDetailsCardInstallmentsPlan.Count = count //required
             }
@@ -9491,7 +9491,7 @@ module StripeModel =
     }
     with
 
-        static member Create (brand: PaymentMethodDetailsCardPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option) =
+        static member New (brand: PaymentMethodDetailsCardPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodDetailsCardPresent.Brand = brand //required
                 PaymentMethodDetailsCardPresent.CardholderName = cardholderName //required
@@ -9568,7 +9568,7 @@ module StripeModel =
     }
     with
 
-        static member Create (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsCardPresentReceiptAccountType) =
+        static member New (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsCardPresentReceiptAccountType) =
             {
                 PaymentMethodDetailsCardPresentReceipt.ApplicationCryptogram = applicationCryptogram //required
                 PaymentMethodDetailsCardPresentReceipt.ApplicationPreferredName = applicationPreferredName //required
@@ -9601,7 +9601,7 @@ module StripeModel =
     }
     with
 
-        static member Create (dynamicLast4: string option, ``type``: PaymentMethodDetailsCardWalletType, ?amexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout, ?applePay: PaymentMethodDetailsCardWalletApplePay, ?googlePay: PaymentMethodDetailsCardWalletGooglePay, ?masterpass: PaymentMethodDetailsCardWalletMasterpass, ?samsungPay: PaymentMethodDetailsCardWalletSamsungPay, ?visaCheckout: PaymentMethodDetailsCardWalletVisaCheckout) =
+        static member New (dynamicLast4: string option, ``type``: PaymentMethodDetailsCardWalletType, ?amexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout, ?applePay: PaymentMethodDetailsCardWalletApplePay, ?googlePay: PaymentMethodDetailsCardWalletGooglePay, ?masterpass: PaymentMethodDetailsCardWalletMasterpass, ?samsungPay: PaymentMethodDetailsCardWalletSamsungPay, ?visaCheckout: PaymentMethodDetailsCardWalletVisaCheckout) =
             {
                 PaymentMethodDetailsCardWallet.DynamicLast4 = dynamicLast4 //required
                 PaymentMethodDetailsCardWallet.Type = ``type`` //required
@@ -9626,7 +9626,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodDetailsCardWalletAmexExpressCheckout: string option) =
+        static member New (?paymentMethodDetailsCardWalletAmexExpressCheckout: string option) =
             {
                 PaymentMethodDetailsCardWalletAmexExpressCheckout.PaymentMethodDetailsCardWalletAmexExpressCheckout = paymentMethodDetailsCardWalletAmexExpressCheckout |> Option.flatten
             }
@@ -9636,7 +9636,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodDetailsCardWalletApplePay: string option) =
+        static member New (?paymentMethodDetailsCardWalletApplePay: string option) =
             {
                 PaymentMethodDetailsCardWalletApplePay.PaymentMethodDetailsCardWalletApplePay = paymentMethodDetailsCardWalletApplePay |> Option.flatten
             }
@@ -9646,7 +9646,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodDetailsCardWalletGooglePay: string option) =
+        static member New (?paymentMethodDetailsCardWalletGooglePay: string option) =
             {
                 PaymentMethodDetailsCardWalletGooglePay.PaymentMethodDetailsCardWalletGooglePay = paymentMethodDetailsCardWalletGooglePay |> Option.flatten
             }
@@ -9663,7 +9663,7 @@ module StripeModel =
     }
     with
 
-        static member Create (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodDetailsCardWalletMasterpass.BillingAddress = billingAddress //required
                 PaymentMethodDetailsCardWalletMasterpass.Email = email //required
@@ -9676,7 +9676,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodDetailsCardWalletSamsungPay: string option) =
+        static member New (?paymentMethodDetailsCardWalletSamsungPay: string option) =
             {
                 PaymentMethodDetailsCardWalletSamsungPay.PaymentMethodDetailsCardWalletSamsungPay = paymentMethodDetailsCardWalletSamsungPay |> Option.flatten
             }
@@ -9693,7 +9693,7 @@ module StripeModel =
     }
     with
 
-        static member Create (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodDetailsCardWalletVisaCheckout.BillingAddress = billingAddress //required
                 PaymentMethodDetailsCardWalletVisaCheckout.Email = email //required
@@ -9709,7 +9709,7 @@ module StripeModel =
     }
     with
 
-        static member Create (verifiedName: string option) =
+        static member New (verifiedName: string option) =
             {
                 PaymentMethodDetailsEps.VerifiedName = verifiedName //required
             }
@@ -9724,7 +9724,7 @@ module StripeModel =
     }
     with
 
-        static member Create (accountHolderType: PaymentMethodDetailsFpxAccountHolderType option, bank: PaymentMethodDetailsFpxBank, transactionId: string option) =
+        static member New (accountHolderType: PaymentMethodDetailsFpxAccountHolderType option, bank: PaymentMethodDetailsFpxBank, transactionId: string option) =
             {
                 PaymentMethodDetailsFpx.AccountHolderType = accountHolderType //required
                 PaymentMethodDetailsFpx.Bank = bank //required
@@ -9771,7 +9771,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankCode: string option, bankName: string option, bic: string option, verifiedName: string option) =
+        static member New (bankCode: string option, bankName: string option, bic: string option, verifiedName: string option) =
             {
                 PaymentMethodDetailsGiropay.BankCode = bankCode //required
                 PaymentMethodDetailsGiropay.BankName = bankName //required
@@ -9785,7 +9785,7 @@ module StripeModel =
     }
     with
 
-        static member Create (transactionId: string option) =
+        static member New (transactionId: string option) =
             {
                 PaymentMethodDetailsGrabpay.TransactionId = transactionId //required
             }
@@ -9807,7 +9807,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bank: PaymentMethodDetailsIdealBank option, bic: PaymentMethodDetailsIdealBic option, generatedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, verifiedName: string option) =
+        static member New (bank: PaymentMethodDetailsIdealBank option, bic: PaymentMethodDetailsIdealBic option, generatedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, verifiedName: string option) =
             {
                 PaymentMethodDetailsIdeal.Bank = bank //required
                 PaymentMethodDetailsIdeal.Bic = bic //required
@@ -9891,7 +9891,7 @@ module StripeModel =
     }
     with
 
-        static member Create (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option) =
+        static member New (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodDetailsInteracPresent.Brand = brand //required
                 PaymentMethodDetailsInteracPresent.CardholderName = cardholderName //required
@@ -9964,7 +9964,7 @@ module StripeModel =
     }
     with
 
-        static member Create (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsInteracPresentReceiptAccountType) =
+        static member New (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsInteracPresentReceiptAccountType) =
             {
                 PaymentMethodDetailsInteracPresentReceipt.ApplicationCryptogram = applicationCryptogram //required
                 PaymentMethodDetailsInteracPresentReceipt.ApplicationPreferredName = applicationPreferredName //required
@@ -9987,7 +9987,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodDetailsKlarna: string option) =
+        static member New (?paymentMethodDetailsKlarna: string option) =
             {
                 PaymentMethodDetailsKlarna.PaymentMethodDetailsKlarna = paymentMethodDetailsKlarna |> Option.flatten
             }
@@ -10000,7 +10000,7 @@ module StripeModel =
     }
     with
 
-        static member Create (entity: string option, reference: string option) =
+        static member New (entity: string option, reference: string option) =
             {
                 PaymentMethodDetailsMultibanco.Entity = entity //required
                 PaymentMethodDetailsMultibanco.Reference = reference //required
@@ -10012,7 +10012,7 @@ module StripeModel =
     }
     with
 
-        static member Create (number: string option) =
+        static member New (number: string option) =
             {
                 PaymentMethodDetailsOxxo.Number = number //required
             }
@@ -10027,7 +10027,7 @@ module StripeModel =
     }
     with
 
-        static member Create (reference: string option, verifiedName: string option) =
+        static member New (reference: string option, verifiedName: string option) =
             {
                 PaymentMethodDetailsP24.Reference = reference //required
                 PaymentMethodDetailsP24.VerifiedName = verifiedName //required
@@ -10043,7 +10043,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankName: string option, bic: string option, iban: string option) =
+        static member New (bankName: string option, bic: string option, iban: string option) =
             {
                 PaymentMethodDetailsSepaCreditTransfer.BankName = bankName //required
                 PaymentMethodDetailsSepaCreditTransfer.Bic = bic //required
@@ -10066,7 +10066,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, last4: string option, mandate: string option) =
+        static member New (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, last4: string option, mandate: string option) =
             {
                 PaymentMethodDetailsSepaDebit.BankCode = bankCode //required
                 PaymentMethodDetailsSepaDebit.BranchCode = branchCode //required
@@ -10100,7 +10100,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankCode: string option, bankName: string option, bic: string option, country: string option, generatedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
+        static member New (bankCode: string option, bankName: string option, bic: string option, country: string option, generatedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
             {
                 PaymentMethodDetailsSofort.BankCode = bankCode //required
                 PaymentMethodDetailsSofort.BankName = bankName //required
@@ -10135,7 +10135,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodDetailsStripeAccount: string option) =
+        static member New (?paymentMethodDetailsStripeAccount: string option) =
             {
                 PaymentMethodDetailsStripeAccount.PaymentMethodDetailsStripeAccount = paymentMethodDetailsStripeAccount |> Option.flatten
             }
@@ -10145,7 +10145,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodDetailsWechat: string option) =
+        static member New (?paymentMethodDetailsWechat: string option) =
             {
                 PaymentMethodDetailsWechat.PaymentMethodDetailsWechat = paymentMethodDetailsWechat |> Option.flatten
             }
@@ -10155,7 +10155,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodEps: string option) =
+        static member New (?paymentMethodEps: string option) =
             {
                 PaymentMethodEps.PaymentMethodEps = paymentMethodEps |> Option.flatten
             }
@@ -10168,7 +10168,7 @@ module StripeModel =
     }
     with
 
-        static member Create (accountHolderType: PaymentMethodFpxAccountHolderType option, bank: PaymentMethodFpxBank) =
+        static member New (accountHolderType: PaymentMethodFpxAccountHolderType option, bank: PaymentMethodFpxBank) =
             {
                 PaymentMethodFpx.AccountHolderType = accountHolderType //required
                 PaymentMethodFpx.Bank = bank //required
@@ -10205,7 +10205,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodGiropay: string option) =
+        static member New (?paymentMethodGiropay: string option) =
             {
                 PaymentMethodGiropay.PaymentMethodGiropay = paymentMethodGiropay |> Option.flatten
             }
@@ -10215,7 +10215,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodGrabpay: string option) =
+        static member New (?paymentMethodGrabpay: string option) =
             {
                 PaymentMethodGrabpay.PaymentMethodGrabpay = paymentMethodGrabpay |> Option.flatten
             }
@@ -10228,7 +10228,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bank: PaymentMethodIdealBank option, bic: PaymentMethodIdealBic option) =
+        static member New (bank: PaymentMethodIdealBank option, bic: PaymentMethodIdealBic option) =
             {
                 PaymentMethodIdeal.Bank = bank //required
                 PaymentMethodIdeal.Bic = bic //required
@@ -10267,7 +10267,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodInteracPresent: string option) =
+        static member New (?paymentMethodInteracPresent: string option) =
             {
                 PaymentMethodInteracPresent.PaymentMethodInteracPresent = paymentMethodInteracPresent |> Option.flatten
             }
@@ -10277,7 +10277,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodOptionsAlipay: string option) =
+        static member New (?paymentMethodOptionsAlipay: string option) =
             {
                 PaymentMethodOptionsAlipay.PaymentMethodOptionsAlipay = paymentMethodOptionsAlipay |> Option.flatten
             }
@@ -10288,7 +10288,7 @@ module StripeModel =
     }
     with
 
-        static member Create (preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage) =
+        static member New (preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage) =
             {
                 PaymentMethodOptionsBancontact.PreferredLanguage = preferredLanguage //required
             }
@@ -10309,7 +10309,7 @@ module StripeModel =
     }
     with
 
-        static member Create (availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodDetailsCardInstallmentsPlan option) =
+        static member New (availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodDetailsCardInstallmentsPlan option) =
             {
                 PaymentMethodOptionsCardInstallments.AvailablePlans = availablePlans //required
                 PaymentMethodOptionsCardInstallments.Enabled = enabled //required
@@ -10322,7 +10322,7 @@ module StripeModel =
     }
     with
 
-        static member Create (expiresAfterDays: int) =
+        static member New (expiresAfterDays: int) =
             {
                 PaymentMethodOptionsOxxo.ExpiresAfterDays = expiresAfterDays //required
             }
@@ -10332,7 +10332,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodOptionsP24: string option) =
+        static member New (?paymentMethodOptionsP24: string option) =
             {
                 PaymentMethodOptionsP24.PaymentMethodOptionsP24 = paymentMethodOptionsP24 |> Option.flatten
             }
@@ -10343,7 +10343,7 @@ module StripeModel =
     }
     with
 
-        static member Create (preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option) =
+        static member New (preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option) =
             {
                 PaymentMethodOptionsSofort.PreferredLanguage = preferredLanguage //required
             }
@@ -10362,7 +10362,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?paymentMethodOxxo: string option) =
+        static member New (?paymentMethodOxxo: string option) =
             {
                 PaymentMethodOxxo.PaymentMethodOxxo = paymentMethodOxxo |> Option.flatten
             }
@@ -10373,7 +10373,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bank: PaymentMethodP24Bank option) =
+        static member New (bank: PaymentMethodP24Bank option) =
             {
                 PaymentMethodP24.Bank = bank //required
             }
@@ -10421,7 +10421,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
+        static member New (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
             {
                 PaymentMethodSepaDebit.BankCode = bankCode //required
                 PaymentMethodSepaDebit.BranchCode = branchCode //required
@@ -10437,7 +10437,7 @@ module StripeModel =
     }
     with
 
-        static member Create (country: string option) =
+        static member New (country: string option) =
             {
                 PaymentMethodSofort.Country = country //required
             }
@@ -10451,7 +10451,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amountDiscount: int, amountTax: int, ?breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown) =
+        static member New (amountDiscount: int, amountTax: int, ?breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown) =
             {
                 PaymentPagesCheckoutSessionTotalDetails.AmountDiscount = amountDiscount //required
                 PaymentPagesCheckoutSessionTotalDetails.AmountTax = amountTax //required
@@ -10466,7 +10466,7 @@ module StripeModel =
     }
     with
 
-        static member Create (discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
+        static member New (discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
             {
                 PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown.Discounts = discounts //required
                 PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown.Taxes = taxes //required
@@ -10479,7 +10479,7 @@ module StripeModel =
     }
     with
 
-        static member Create (allowedCountries: PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries list) =
+        static member New (allowedCountries: PaymentPagesPaymentPageResourcesShippingAddressCollectionAllowedCountries list) =
             {
                 PaymentPagesPaymentPageResourcesShippingAddressCollection.AllowedCountries = allowedCountries //required
             }
@@ -10786,7 +10786,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "payout"
 
-        static member Create (amount: int, arrivalDate: DateTime, automatic: bool, balanceTransaction: PayoutBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, destination: PayoutDestination'AnyOf option, failureBalanceTransaction: PayoutFailureBalanceTransaction'AnyOf option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string> option, method: PayoutMethod, originalPayout: PayoutOriginalPayout'AnyOf option, reversedBy: PayoutReversedBy'AnyOf option, sourceType: PayoutSourceType, statementDescriptor: string option, status: PayoutStatus, ``type``: PayoutType) =
+        static member New (amount: int, arrivalDate: DateTime, automatic: bool, balanceTransaction: PayoutBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, destination: PayoutDestination'AnyOf option, failureBalanceTransaction: PayoutFailureBalanceTransaction'AnyOf option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string> option, method: PayoutMethod, originalPayout: PayoutOriginalPayout'AnyOf option, reversedBy: PayoutReversedBy'AnyOf option, sourceType: PayoutSourceType, statementDescriptor: string option, status: PayoutStatus, ``type``: PayoutType) =
             {
                 Payout.Amount = amount //required
                 Payout.ArrivalDate = arrivalDate //required
@@ -10860,7 +10860,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``end``: DateTime option, start: DateTime option) =
+        static member New (``end``: DateTime option, start: DateTime option) =
             {
                 Period.End = ``end`` //required
                 Period.Start = start //required
@@ -10918,7 +10918,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "person"
 
-        static member Create (created: DateTime, id: string, ?account: string, ?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?dob: LegalEntityDob, ?email: string option, ?firstName: string option, ?firstNameKana: string option, ?firstNameKanji: string option, ?gender: string option, ?idNumberProvided: bool, ?lastName: string option, ?lastNameKana: string option, ?lastNameKanji: string option, ?maidenName: string option, ?metadata: Map<string, string>, ?phone: string option, ?politicalExposure: PersonPoliticalExposure, ?relationship: PersonRelationship, ?requirements: PersonRequirements option, ?ssnLast4Provided: bool, ?verification: LegalEntityPersonVerification) =
+        static member New (created: DateTime, id: string, ?account: string, ?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?dob: LegalEntityDob, ?email: string option, ?firstName: string option, ?firstNameKana: string option, ?firstNameKanji: string option, ?gender: string option, ?idNumberProvided: bool, ?lastName: string option, ?lastNameKana: string option, ?lastNameKanji: string option, ?maidenName: string option, ?metadata: Map<string, string>, ?phone: string option, ?politicalExposure: PersonPoliticalExposure, ?relationship: PersonRelationship, ?requirements: PersonRequirements option, ?ssnLast4Provided: bool, ?verification: LegalEntityPersonVerification) =
             {
                 Person.Created = created //required
                 Person.Id = id //required
@@ -10966,7 +10966,7 @@ module StripeModel =
     }
     with
 
-        static member Create (director: bool option, executive: bool option, owner: bool option, percentOwnership: decimal option, representative: bool option, title: string option) =
+        static member New (director: bool option, executive: bool option, owner: bool option, percentOwnership: decimal option, representative: bool option, title: string option) =
             {
                 PersonRelationship.Director = director //required
                 PersonRelationship.Executive = executive //required
@@ -10990,7 +10990,7 @@ module StripeModel =
     }
     with
 
-        static member Create (currentlyDue: string list, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
+        static member New (currentlyDue: string list, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
             {
                 PersonRequirements.CurrentlyDue = currentlyDue //required
                 PersonRequirements.Errors = errors //required
@@ -11048,7 +11048,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "plan"
 
-        static member Create (active: bool, aggregateUsage: PlanAggregateUsage option, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: DateTime, currency: string, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, nickname: string option, product: PlanProduct'AnyOf option, tiersMode: PlanTiersMode option, transformUsage: TransformUsage option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
+        static member New (active: bool, aggregateUsage: PlanAggregateUsage option, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: DateTime, currency: string, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, nickname: string option, product: PlanProduct'AnyOf option, tiersMode: PlanTiersMode option, transformUsage: TransformUsage option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
             {
                 Plan.Active = active //required
                 Plan.AggregateUsage = aggregateUsage //required
@@ -11114,7 +11114,7 @@ module StripeModel =
     }
     with
 
-        static member Create (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
+        static member New (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
             {
                 PlanTier.FlatAmount = flatAmount //required
                 PlanTier.FlatAmountDecimal = flatAmountDecimal //required
@@ -11137,7 +11137,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "platform_tax_fee"
 
-        static member Create (account: string, id: string, sourceTransaction: string, ``type``: string) =
+        static member New (account: string, id: string, sourceTransaction: string, ``type``: string) =
             {
                 PlatformTaxFee.Account = account //required
                 PlatformTaxFee.Id = id //required
@@ -11189,7 +11189,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "price"
 
-        static member Create (active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: string, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
+        static member New (active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: string, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
             {
                 Price.Active = active //required
                 Price.BillingScheme = billingScheme //required
@@ -11241,7 +11241,7 @@ module StripeModel =
     }
     with
 
-        static member Create (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
+        static member New (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
             {
                 PriceTier.FlatAmount = flatAmount //required
                 PriceTier.FlatAmountDecimal = flatAmountDecimal //required
@@ -11296,7 +11296,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "product"
 
-        static member Create (active: bool, attributes: string list option, caption: string option, created: DateTime, description: string option, id: string, images: string list, livemode: bool, metadata: Map<string, string>, name: string, packageDimensions: PackageDimensions option, shippable: bool option, statementDescriptor: string option, ``type``: ProductType, unitLabel: string option, updated: DateTime, url: string option, ?deactivateOn: string list) =
+        static member New (active: bool, attributes: string list option, caption: string option, created: DateTime, description: string option, id: string, images: string list, livemode: bool, metadata: Map<string, string>, name: string, packageDimensions: PackageDimensions option, shippable: bool option, statementDescriptor: string option, ``type``: ProductType, unitLabel: string option, updated: DateTime, url: string option, ?deactivateOn: string list) =
             {
                 Product.Active = active //required
                 Product.Attributes = attributes //required
@@ -11352,7 +11352,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "promotion_code"
 
-        static member Create (active: bool, code: string, coupon: Coupon, created: DateTime, customer: PromotionCodeCustomer'AnyOf option, expiresAt: DateTime option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, restrictions: PromotionCodesResourceRestrictions, timesRedeemed: int) =
+        static member New (active: bool, code: string, coupon: Coupon, created: DateTime, customer: PromotionCodeCustomer'AnyOf option, expiresAt: DateTime option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, restrictions: PromotionCodesResourceRestrictions, timesRedeemed: int) =
             {
                 PromotionCode.Active = active //required
                 PromotionCode.Code = code //required
@@ -11383,7 +11383,7 @@ module StripeModel =
     }
     with
 
-        static member Create (firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: string option) =
+        static member New (firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: string option) =
             {
                 PromotionCodesResourceRestrictions.FirstTimeTransaction = firstTimeTransaction //required
                 PromotionCodesResourceRestrictions.MinimumAmount = minimumAmount //required
@@ -11411,7 +11411,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "radar.early_fraud_warning"
 
-        static member Create (actionable: bool, charge: RadarEarlyFraudWarningCharge'AnyOf, created: DateTime, fraudType: string, id: string, livemode: bool) =
+        static member New (actionable: bool, charge: RadarEarlyFraudWarningCharge'AnyOf, created: DateTime, fraudType: string, id: string, livemode: bool) =
             {
                 RadarEarlyFraudWarning.Actionable = actionable //required
                 RadarEarlyFraudWarning.Charge = charge //required
@@ -11451,7 +11451,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "radar.value_list"
 
-        static member Create (alias: string, created: DateTime, createdBy: string, id: string, itemType: RadarValueListItemType, listItems: RadarValueListListItems, livemode: bool, metadata: Map<string, string>, name: string) =
+        static member New (alias: string, created: DateTime, createdBy: string, id: string, itemType: RadarValueListItemType, listItems: RadarValueListListItems, livemode: bool, metadata: Map<string, string>, name: string) =
             {
                 RadarValueList.Alias = alias //required
                 RadarValueList.Created = created //required
@@ -11486,7 +11486,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: RadarValueListItem list, hasMore: bool, url: string) =
+        static member New (data: RadarValueListItem list, hasMore: bool, url: string) =
             {
                 RadarValueListListItems.Data = data //required
                 RadarValueListListItems.HasMore = hasMore //required
@@ -11513,7 +11513,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "radar.value_list_item"
 
-        static member Create (created: DateTime, createdBy: string, id: string, livemode: bool, value: string, valueList: string) =
+        static member New (created: DateTime, createdBy: string, id: string, livemode: bool, value: string, valueList: string) =
             {
                 RadarValueListItem.Created = created //required
                 RadarValueListItem.CreatedBy = createdBy //required
@@ -11537,7 +11537,7 @@ module StripeModel =
     }
     with
 
-        static member Create (city: string option, country: string option, latitude: decimal option, longitude: decimal option, region: string option) =
+        static member New (city: string option, country: string option, latitude: decimal option, longitude: decimal option, region: string option) =
             {
                 RadarReviewResourceLocation.City = city //required
                 RadarReviewResourceLocation.Country = country //required
@@ -11558,7 +11558,7 @@ module StripeModel =
     }
     with
 
-        static member Create (browser: string option, device: string option, platform: string option, version: string option) =
+        static member New (browser: string option, device: string option, platform: string option, version: string option) =
             {
                 RadarReviewResourceSession.Browser = browser //required
                 RadarReviewResourceSession.Device = device //required
@@ -11606,7 +11606,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "recipient"
 
-        static member Create (activeAccount: BankAccount option, cards: RecipientCards option, created: DateTime, defaultCard: RecipientDefaultCard'AnyOf option, description: string option, email: string option, id: string, livemode: bool, metadata: Map<string, string>, migratedTo: RecipientMigratedTo'AnyOf option, name: string option, ``type``: RecipientType, verified: bool, ?rolledBackFrom: RecipientRolledBackFrom'AnyOf) =
+        static member New (activeAccount: BankAccount option, cards: RecipientCards option, created: DateTime, defaultCard: RecipientDefaultCard'AnyOf option, description: string option, email: string option, id: string, livemode: bool, metadata: Map<string, string>, migratedTo: RecipientMigratedTo'AnyOf option, name: string option, ``type``: RecipientType, verified: bool, ?rolledBackFrom: RecipientRolledBackFrom'AnyOf) =
             {
                 Recipient.ActiveAccount = activeAccount //required
                 Recipient.Cards = cards //required
@@ -11651,7 +11651,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: Card list, hasMore: bool, url: string) =
+        static member New (data: Card list, hasMore: bool, url: string) =
             {
                 RecipientCards.Data = data //required
                 RecipientCards.HasMore = hasMore //required
@@ -11672,7 +11672,7 @@ module StripeModel =
     }
     with
 
-        static member Create (aggregateUsage: RecurringAggregateUsage option, interval: RecurringInterval, intervalCount: int, trialPeriodDays: int option, usageType: RecurringUsageType) =
+        static member New (aggregateUsage: RecurringAggregateUsage option, interval: RecurringInterval, intervalCount: int, trialPeriodDays: int option, usageType: RecurringUsageType) =
             {
                 Recurring.AggregateUsage = aggregateUsage //required
                 Recurring.Interval = interval //required
@@ -11739,7 +11739,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "refund"
 
-        static member Create (amount: int, balanceTransaction: RefundBalanceTransaction'AnyOf option, charge: RefundCharge'AnyOf option, created: DateTime, currency: string, id: string, metadata: Map<string, string> option, paymentIntent: RefundPaymentIntent'AnyOf option, reason: string option, receiptNumber: string option, sourceTransferReversal: RefundSourceTransferReversal'AnyOf option, status: RefundStatus option, transferReversal: RefundTransferReversal'AnyOf option, ?description: string, ?failureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf, ?failureReason: RefundFailureReason) =
+        static member New (amount: int, balanceTransaction: RefundBalanceTransaction'AnyOf option, charge: RefundCharge'AnyOf option, created: DateTime, currency: string, id: string, metadata: Map<string, string> option, paymentIntent: RefundPaymentIntent'AnyOf option, reason: string option, receiptNumber: string option, sourceTransferReversal: RefundSourceTransferReversal'AnyOf option, status: RefundStatus option, transferReversal: RefundTransferReversal'AnyOf option, ?description: string, ?failureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf, ?failureReason: RefundFailureReason) =
             {
                 Refund.Amount = amount //required
                 Refund.BalanceTransaction = balanceTransaction //required
@@ -11829,7 +11829,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "reporting.report_run"
 
-        static member Create (created: DateTime, error: string option, id: string, livemode: bool, parameters: FinancialReportingFinanceReportRunRunParameters, reportType: string, result: File option, status: string, succeededAt: DateTime option) =
+        static member New (created: DateTime, error: string option, id: string, livemode: bool, parameters: FinancialReportingFinanceReportRunRunParameters, reportType: string, result: File option, status: string, succeededAt: DateTime option) =
             {
                 ReportingReportRun.Created = created //required
                 ReportingReportRun.Error = error //required
@@ -11870,7 +11870,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "reporting.report_type"
 
-        static member Create (dataAvailableEnd: DateTime, dataAvailableStart: DateTime, defaultColumns: string list option, id: string, name: string, updated: DateTime, version: int) =
+        static member New (dataAvailableEnd: DateTime, dataAvailableStart: DateTime, defaultColumns: string list option, id: string, name: string, updated: DateTime, version: int) =
             {
                 ReportingReportType.DataAvailableEnd = dataAvailableEnd //required
                 ReportingReportType.DataAvailableStart = dataAvailableStart //required
@@ -11894,7 +11894,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "reserve_transaction"
 
-        static member Create (amount: int, currency: string, description: string option, id: string) =
+        static member New (amount: int, currency: string, description: string option, id: string) =
             {
                 ReserveTransaction.Amount = amount //required
                 ReserveTransaction.Currency = currency //required
@@ -11937,7 +11937,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "review"
 
-        static member Create (billingZip: string option, charge: ReviewCharge'AnyOf option, closedReason: ReviewClosedReason option, created: DateTime, id: string, ipAddress: string option, ipAddressLocation: RadarReviewResourceLocation option, livemode: bool, ``open``: bool, openedReason: ReviewOpenedReason, reason: ReviewReason, session: RadarReviewResourceSession option, ?paymentIntent: ReviewPaymentIntent'AnyOf) =
+        static member New (billingZip: string option, charge: ReviewCharge'AnyOf option, closedReason: ReviewClosedReason option, created: DateTime, id: string, ipAddress: string option, ipAddressLocation: RadarReviewResourceLocation option, livemode: bool, ``open``: bool, openedReason: ReviewOpenedReason, reason: ReviewReason, session: RadarReviewResourceSession option, ?paymentIntent: ReviewPaymentIntent'AnyOf) =
             {
                 Review.BillingZip = billingZip //required
                 Review.Charge = charge //required
@@ -11990,7 +11990,7 @@ module StripeModel =
     }
     with
 
-        static member Create (action: string, id: string, predicate: string) =
+        static member New (action: string, id: string, predicate: string) =
             {
                 Rule.Action = action //required
                 Rule.Id = id //required
@@ -12026,7 +12026,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "scheduled_query_run"
 
-        static member Create (created: DateTime, dataLoadTime: DateTime, file: File option, id: string, livemode: bool, resultAvailableUntil: DateTime, sql: string, status: string, title: string, ?error: SigmaScheduledQueryRunError) =
+        static member New (created: DateTime, dataLoadTime: DateTime, file: File option, id: string, livemode: bool, resultAvailableUntil: DateTime, sql: string, status: string, title: string, ?error: SigmaScheduledQueryRunError) =
             {
                 ScheduledQueryRun.Created = created //required
                 ScheduledQueryRun.DataLoadTime = dataLoadTime //required
@@ -12048,7 +12048,7 @@ module StripeModel =
     }
     with
 
-        static member Create (charge: SepaDebitGeneratedFromCharge'AnyOf option, setupAttempt: SepaDebitGeneratedFromSetupAttempt'AnyOf option) =
+        static member New (charge: SepaDebitGeneratedFromCharge'AnyOf option, setupAttempt: SepaDebitGeneratedFromSetupAttempt'AnyOf option) =
             {
                 SepaDebitGeneratedFrom.Charge = charge //required
                 SepaDebitGeneratedFrom.SetupAttempt = setupAttempt //required
@@ -12095,7 +12095,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "setup_attempt"
 
-        static member Create (application: SetupAttemptApplication'AnyOf option, created: DateTime, customer: SetupAttemptCustomer'AnyOf option, id: string, livemode: bool, onBehalfOf: SetupAttemptOnBehalfOf'AnyOf option, paymentMethod: SetupAttemptPaymentMethod'AnyOf, paymentMethodDetails: SetupAttemptPaymentMethodDetails, setupError: ApiErrors option, setupIntent: SetupAttemptSetupIntent'AnyOf, status: SetupAttemptStatus, usage: SetupAttemptUsage) =
+        static member New (application: SetupAttemptApplication'AnyOf option, created: DateTime, customer: SetupAttemptCustomer'AnyOf option, id: string, livemode: bool, onBehalfOf: SetupAttemptOnBehalfOf'AnyOf option, paymentMethod: SetupAttemptPaymentMethod'AnyOf, paymentMethodDetails: SetupAttemptPaymentMethodDetails, setupError: ApiErrors option, setupIntent: SetupAttemptSetupIntent'AnyOf, status: SetupAttemptStatus, usage: SetupAttemptUsage) =
             {
                 SetupAttempt.Application = application //required
                 SetupAttempt.Created = created //required
@@ -12154,7 +12154,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: string, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?card: SetupAttemptPaymentMethodDetailsCard, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?sofort: SetupAttemptPaymentMethodDetailsSofort) =
+        static member New (``type``: string, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?card: SetupAttemptPaymentMethodDetailsCard, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?sofort: SetupAttemptPaymentMethodDetailsSofort) =
             {
                 SetupAttemptPaymentMethodDetails.Type = ``type`` //required
                 SetupAttemptPaymentMethodDetails.Bancontact = bancontact
@@ -12185,7 +12185,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
+        static member New (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
             {
                 SetupAttemptPaymentMethodDetailsBancontact.BankCode = bankCode //required
                 SetupAttemptPaymentMethodDetailsBancontact.BankName = bankName //required
@@ -12217,7 +12217,7 @@ module StripeModel =
     }
     with
 
-        static member Create (threeDSecure: ThreeDSecureDetails option) =
+        static member New (threeDSecure: ThreeDSecureDetails option) =
             {
                 SetupAttemptPaymentMethodDetailsCard.ThreeDSecure = threeDSecure //required
             }
@@ -12239,7 +12239,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bank: SetupAttemptPaymentMethodDetailsIdealBank option, bic: SetupAttemptPaymentMethodDetailsIdealBic option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, verifiedName: string option) =
+        static member New (bank: SetupAttemptPaymentMethodDetailsIdealBank option, bic: SetupAttemptPaymentMethodDetailsIdealBic option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, verifiedName: string option) =
             {
                 SetupAttemptPaymentMethodDetailsIdeal.Bank = bank //required
                 SetupAttemptPaymentMethodDetailsIdeal.Bic = bic //required
@@ -12307,7 +12307,7 @@ module StripeModel =
     }
     with
 
-        static member Create (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
+        static member New (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
             {
                 SetupAttemptPaymentMethodDetailsSofort.BankCode = bankCode //required
                 SetupAttemptPaymentMethodDetailsSofort.BankName = bankName //required
@@ -12400,7 +12400,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "setup_intent"
 
-        static member Create (application: SetupIntentApplication'AnyOf option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: DateTime, customer: SetupIntentCustomer'AnyOf option, description: string option, id: string, lastSetupError: ApiErrors option, latestAttempt: SetupIntentLatestAttempt'AnyOf option, livemode: bool, mandate: SetupIntentMandate'AnyOf option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, onBehalfOf: SetupIntentOnBehalfOf'AnyOf option, paymentMethod: SetupIntentPaymentMethod'AnyOf option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: SetupIntentSingleUseMandate'AnyOf option, status: SetupIntentStatus, usage: string) =
+        static member New (application: SetupIntentApplication'AnyOf option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: DateTime, customer: SetupIntentCustomer'AnyOf option, description: string option, id: string, lastSetupError: ApiErrors option, latestAttempt: SetupIntentLatestAttempt'AnyOf option, livemode: bool, mandate: SetupIntentMandate'AnyOf option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, onBehalfOf: SetupIntentOnBehalfOf'AnyOf option, paymentMethod: SetupIntentPaymentMethod'AnyOf option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: SetupIntentSingleUseMandate'AnyOf option, status: SetupIntentStatus, usage: string) =
             {
                 SetupIntent.Application = application //required
                 SetupIntent.CancellationReason = cancellationReason //required
@@ -12475,7 +12475,7 @@ module StripeModel =
     }
     with
 
-        static member Create (``type``: SetupIntentNextActionType, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?useStripeSdk: obj) =
+        static member New (``type``: SetupIntentNextActionType, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?useStripeSdk: obj) =
             {
                 SetupIntentNextAction.Type = ``type`` //required
                 SetupIntentNextAction.RedirectToUrl = redirectToUrl
@@ -12494,7 +12494,7 @@ module StripeModel =
     }
     with
 
-        static member Create (returnUrl: string option, url: string option) =
+        static member New (returnUrl: string option, url: string option) =
             {
                 SetupIntentNextActionRedirectToUrl.ReturnUrl = returnUrl //required
                 SetupIntentNextActionRedirectToUrl.Url = url //required
@@ -12506,7 +12506,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?card: SetupIntentPaymentMethodOptionsCard, ?sepaDebit: SetupIntentPaymentMethodOptionsSepaDebit) =
+        static member New (?card: SetupIntentPaymentMethodOptionsCard, ?sepaDebit: SetupIntentPaymentMethodOptionsSepaDebit) =
             {
                 SetupIntentPaymentMethodOptions.Card = card
                 SetupIntentPaymentMethodOptions.SepaDebit = sepaDebit
@@ -12518,7 +12518,7 @@ module StripeModel =
     }
     with
 
-        static member Create (requestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
+        static member New (requestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
             {
                 SetupIntentPaymentMethodOptionsCard.RequestThreeDSecure = requestThreeDSecure //required
             }
@@ -12533,7 +12533,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?setupIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option) =
+        static member New (?setupIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option) =
             {
                 SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit.SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit = setupIntentPaymentMethodOptionsMandateOptionsSepaDebit |> Option.flatten
             }
@@ -12543,7 +12543,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
+        static member New (?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
             {
                 SetupIntentPaymentMethodOptionsSepaDebit.MandateOptions = mandateOptions
             }
@@ -12561,7 +12561,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?address: Address, ?carrier: string option, ?name: string option, ?phone: string option, ?trackingNumber: string option) =
+        static member New (?address: Address, ?carrier: string option, ?name: string option, ?phone: string option, ?trackingNumber: string option) =
             {
                 Shipping.Address = address
                 Shipping.Carrier = carrier |> Option.flatten
@@ -12584,7 +12584,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, currency: string, deliveryEstimate: DeliveryEstimate option, description: string, id: string) =
+        static member New (amount: int, currency: string, deliveryEstimate: DeliveryEstimate option, description: string, id: string) =
             {
                 ShippingMethod.Amount = amount //required
                 ShippingMethod.Currency = currency //required
@@ -12599,7 +12599,7 @@ module StripeModel =
     }
     with
 
-        static member Create (message: string) =
+        static member New (message: string) =
             {
                 SigmaScheduledQueryRunError.Message = message //required
             }
@@ -12641,7 +12641,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "sku"
 
-        static member Create (active: bool, attributes: Map<string, string>, created: DateTime, currency: string, id: string, image: string option, inventory: Inventory, livemode: bool, metadata: Map<string, string>, packageDimensions: PackageDimensions option, price: int, product: SkuProduct'AnyOf, updated: DateTime) =
+        static member New (active: bool, attributes: Map<string, string>, created: DateTime, currency: string, id: string, image: string option, inventory: Inventory, livemode: bool, metadata: Map<string, string>, packageDimensions: PackageDimensions option, price: int, product: SkuProduct'AnyOf, updated: DateTime) =
             {
                 Sku.Active = active //required
                 Sku.Attributes = attributes //required
@@ -12724,7 +12724,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source"
 
-        static member Create (amount: int option, clientSecret: string, created: DateTime, currency: string option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, owner: SourceOwner option, statementDescriptor: string option, status: SourceStatus, ``type``: SourceType, usage: SourceUsage option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
+        static member New (amount: int option, clientSecret: string, created: DateTime, currency: string option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, owner: SourceOwner option, statementDescriptor: string option, status: SourceStatus, ``type``: SourceType, usage: SourceUsage option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
             {
                 Source.Amount = amount //required
                 Source.ClientSecret = clientSecret //required
@@ -12805,7 +12805,7 @@ module StripeModel =
     }
     with
 
-        static member Create (attemptsRemaining: int, status: string) =
+        static member New (attemptsRemaining: int, status: string) =
             {
                 SourceCodeVerificationFlow.AttemptsRemaining = attemptsRemaining //required
                 SourceCodeVerificationFlow.Status = status //required
@@ -12838,7 +12838,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source_mandate_notification"
 
-        static member Create (amount: int option, created: DateTime, id: string, livemode: bool, reason: SourceMandateNotificationReason, source: Source, status: SourceMandateNotificationStatus, ``type``: string, ?acssDebit: SourceMandateNotificationAcssDebitData, ?bacsDebit: SourceMandateNotificationBacsDebitData, ?sepaDebit: SourceMandateNotificationSepaDebitData) =
+        static member New (amount: int option, created: DateTime, id: string, livemode: bool, reason: SourceMandateNotificationReason, source: Source, status: SourceMandateNotificationStatus, ``type``: string, ?acssDebit: SourceMandateNotificationAcssDebitData, ?bacsDebit: SourceMandateNotificationBacsDebitData, ?sepaDebit: SourceMandateNotificationSepaDebitData) =
             {
                 SourceMandateNotification.Amount = amount //required
                 SourceMandateNotification.Created = created //required
@@ -12867,7 +12867,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?statementDescriptor: string) =
+        static member New (?statementDescriptor: string) =
             {
                 SourceMandateNotificationAcssDebitData.StatementDescriptor = statementDescriptor
             }
@@ -12878,7 +12878,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?last4: string) =
+        static member New (?last4: string) =
             {
                 SourceMandateNotificationBacsDebitData.Last4 = last4
             }
@@ -12893,7 +12893,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?creditorIdentifier: string, ?last4: string, ?mandateReference: string) =
+        static member New (?creditorIdentifier: string, ?last4: string, ?mandateReference: string) =
             {
                 SourceMandateNotificationSepaDebitData.CreditorIdentifier = creditorIdentifier
                 SourceMandateNotificationSepaDebitData.Last4 = last4
@@ -12913,7 +12913,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int, currency: string, items: SourceOrderItem list option, ?email: string, ?shipping: Shipping) =
+        static member New (amount: int, currency: string, items: SourceOrderItem list option, ?email: string, ?shipping: Shipping) =
             {
                 SourceOrder.Amount = amount //required
                 SourceOrder.Currency = currency //required
@@ -12938,7 +12938,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amount: int option, currency: string option, description: string option, parent: string option, ``type``: SourceOrderItemType option, ?quantity: int) =
+        static member New (amount: int option, currency: string option, description: string option, parent: string option, ``type``: SourceOrderItemType option, ?quantity: int) =
             {
                 SourceOrderItem.Amount = amount //required
                 SourceOrderItem.Currency = currency //required
@@ -12973,7 +12973,7 @@ module StripeModel =
     }
     with
 
-        static member Create (address: Address option, email: string option, name: string option, phone: string option, verifiedAddress: Address option, verifiedEmail: string option, verifiedName: string option, verifiedPhone: string option) =
+        static member New (address: Address option, email: string option, name: string option, phone: string option, verifiedAddress: Address option, verifiedEmail: string option, verifiedName: string option, verifiedPhone: string option) =
             {
                 SourceOwner.Address = address //required
                 SourceOwner.Email = email //required
@@ -13001,7 +13001,7 @@ module StripeModel =
     }
     with
 
-        static member Create (address: string option, amountCharged: int, amountReceived: int, amountReturned: int, refundAttributesMethod: SourceReceiverFlowRefundAttributesMethod, refundAttributesStatus: SourceReceiverFlowRefundAttributesStatus) =
+        static member New (address: string option, amountCharged: int, amountReceived: int, amountReturned: int, refundAttributesMethod: SourceReceiverFlowRefundAttributesMethod, refundAttributesStatus: SourceReceiverFlowRefundAttributesStatus) =
             {
                 SourceReceiverFlow.Address = address //required
                 SourceReceiverFlow.AmountCharged = amountCharged //required
@@ -13033,7 +13033,7 @@ module StripeModel =
     }
     with
 
-        static member Create (failureReason: string option, returnUrl: string, status: string, url: string) =
+        static member New (failureReason: string option, returnUrl: string, status: string, url: string) =
             {
                 SourceRedirectFlow.FailureReason = failureReason //required
                 SourceRedirectFlow.ReturnUrl = returnUrl //required
@@ -13072,7 +13072,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source_transaction"
 
-        static member Create (amount: int, created: DateTime, currency: string, id: string, livemode: bool, source: string, status: SourceTransactionStatus, ``type``: SourceTransactionType, ?achCreditTransfer: SourceTransactionAchCreditTransferData, ?chfCreditTransfer: SourceTransactionChfCreditTransferData, ?gbpCreditTransfer: SourceTransactionGbpCreditTransferData, ?paperCheck: SourceTransactionPaperCheckData, ?sepaCreditTransfer: SourceTransactionSepaCreditTransferData) =
+        static member New (amount: int, created: DateTime, currency: string, id: string, livemode: bool, source: string, status: SourceTransactionStatus, ``type``: SourceTransactionType, ?achCreditTransfer: SourceTransactionAchCreditTransferData, ?chfCreditTransfer: SourceTransactionChfCreditTransferData, ?gbpCreditTransfer: SourceTransactionGbpCreditTransferData, ?paperCheck: SourceTransactionPaperCheckData, ?sepaCreditTransfer: SourceTransactionSepaCreditTransferData) =
             {
                 SourceTransaction.Amount = amount //required
                 SourceTransaction.Created = created //required
@@ -13124,7 +13124,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?customerData: string, ?fingerprint: string, ?last4: string, ?routingNumber: string) =
+        static member New (?customerData: string, ?fingerprint: string, ?last4: string, ?routingNumber: string) =
             {
                 SourceTransactionAchCreditTransferData.CustomerData = customerData
                 SourceTransactionAchCreditTransferData.Fingerprint = fingerprint
@@ -13146,7 +13146,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?reference: string, ?senderAddressCountry: string, ?senderAddressLine1: string, ?senderIban: string, ?senderName: string) =
+        static member New (?reference: string, ?senderAddressCountry: string, ?senderAddressLine1: string, ?senderIban: string, ?senderName: string) =
             {
                 SourceTransactionChfCreditTransferData.Reference = reference
                 SourceTransactionChfCreditTransferData.SenderAddressCountry = senderAddressCountry
@@ -13173,7 +13173,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?fingerprint: string, ?fundingMethod: string, ?last4: string, ?reference: string, ?senderAccountNumber: string, ?senderName: string, ?senderSortCode: string) =
+        static member New (?fingerprint: string, ?fundingMethod: string, ?last4: string, ?reference: string, ?senderAccountNumber: string, ?senderName: string, ?senderSortCode: string) =
             {
                 SourceTransactionGbpCreditTransferData.Fingerprint = fingerprint
                 SourceTransactionGbpCreditTransferData.FundingMethod = fundingMethod
@@ -13192,7 +13192,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?availableAt: string, ?invoices: string) =
+        static member New (?availableAt: string, ?invoices: string) =
             {
                 SourceTransactionPaperCheckData.AvailableAt = availableAt
                 SourceTransactionPaperCheckData.Invoices = invoices
@@ -13208,7 +13208,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?reference: string, ?senderIban: string, ?senderName: string) =
+        static member New (?reference: string, ?senderIban: string, ?senderName: string) =
             {
                 SourceTransactionSepaCreditTransferData.Reference = reference
                 SourceTransactionSepaCreditTransferData.SenderIban = senderIban
@@ -13227,7 +13227,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?accountNumber: string option, ?bankName: string option, ?fingerprint: string option, ?refundAccountHolderName: string option, ?refundAccountHolderType: string option, ?refundRoutingNumber: string option, ?routingNumber: string option, ?swiftCode: string option) =
+        static member New (?accountNumber: string option, ?bankName: string option, ?fingerprint: string option, ?refundAccountHolderName: string option, ?refundAccountHolderType: string option, ?refundRoutingNumber: string option, ?routingNumber: string option, ?swiftCode: string option) =
             {
                 SourceTypeAchCreditTransfer.AccountNumber = accountNumber |> Option.flatten
                 SourceTypeAchCreditTransfer.BankName = bankName |> Option.flatten
@@ -13249,7 +13249,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankName: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option, ?``type``: string option) =
+        static member New (?bankName: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option, ?``type``: string option) =
             {
                 SourceTypeAchDebit.BankName = bankName |> Option.flatten
                 SourceTypeAchDebit.Country = country |> Option.flatten
@@ -13273,7 +13273,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankAddressCity: string option, ?bankAddressLine1: string option, ?bankAddressLine2: string option, ?bankAddressPostalCode: string option, ?bankName: string option, ?category: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option) =
+        static member New (?bankAddressCity: string option, ?bankAddressLine1: string option, ?bankAddressLine2: string option, ?bankAddressPostalCode: string option, ?bankName: string option, ?category: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option) =
             {
                 SourceTypeAcssDebit.BankAddressCity = bankAddressCity |> Option.flatten
                 SourceTypeAcssDebit.BankAddressLine1 = bankAddressLine1 |> Option.flatten
@@ -13294,7 +13294,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?dataString: string option, ?nativeUrl: string option, ?statementDescriptor: string option) =
+        static member New (?dataString: string option, ?nativeUrl: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeAlipay.DataString = dataString |> Option.flatten
                 SourceTypeAlipay.NativeUrl = nativeUrl |> Option.flatten
@@ -13308,7 +13308,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bsbNumber: string option, ?fingerprint: string option, ?last4: string option) =
+        static member New (?bsbNumber: string option, ?fingerprint: string option, ?last4: string option) =
             {
                 SourceTypeAuBecsDebit.BsbNumber = bsbNumber |> Option.flatten
                 SourceTypeAuBecsDebit.Fingerprint = fingerprint |> Option.flatten
@@ -13325,7 +13325,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankCode: string option, ?bankName: string option, ?bic: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
+        static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeBancontact.BankCode = bankCode |> Option.flatten
                 SourceTypeBancontact.BankName = bankName |> Option.flatten
@@ -13356,7 +13356,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?addressLine1Check: string option, ?addressZipCheck: string option, ?brand: string option, ?country: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+        static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?brand: string option, ?country: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
             {
                 SourceTypeCard.AddressLine1Check = addressLine1Check |> Option.flatten
                 SourceTypeCard.AddressZipCheck = addressZipCheck |> Option.flatten
@@ -13407,7 +13407,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?applicationCryptogram: string, ?applicationPreferredName: string, ?authorizationCode: string option, ?authorizationResponseCode: string, ?brand: string option, ?country: string option, ?cvmType: string, ?dataType: string option, ?dedicatedFileName: string, ?description: string, ?emvAuthData: string, ?evidenceCustomerSignature: string option, ?evidenceTransactionCertificate: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?posDeviceId: string option, ?posEntryMode: string, ?readMethod: string option, ?reader: string option, ?terminalVerificationResults: string, ?transactionStatusInformation: string) =
+        static member New (?applicationCryptogram: string, ?applicationPreferredName: string, ?authorizationCode: string option, ?authorizationResponseCode: string, ?brand: string option, ?country: string option, ?cvmType: string, ?dataType: string option, ?dedicatedFileName: string, ?description: string, ?emvAuthData: string, ?evidenceCustomerSignature: string option, ?evidenceTransactionCertificate: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?posDeviceId: string option, ?posEntryMode: string, ?readMethod: string option, ?reader: string option, ?terminalVerificationResults: string, ?transactionStatusInformation: string) =
             {
                 SourceTypeCardPresent.ApplicationCryptogram = applicationCryptogram
                 SourceTypeCardPresent.ApplicationPreferredName = applicationPreferredName
@@ -13443,7 +13443,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?reference: string option, ?statementDescriptor: string option) =
+        static member New (?reference: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeEps.Reference = reference |> Option.flatten
                 SourceTypeEps.StatementDescriptor = statementDescriptor |> Option.flatten
@@ -13457,7 +13457,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankCode: string option, ?bankName: string option, ?bic: string option, ?statementDescriptor: string option) =
+        static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeGiropay.BankCode = bankCode |> Option.flatten
                 SourceTypeGiropay.BankName = bankName |> Option.flatten
@@ -13473,7 +13473,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bank: string option, ?bic: string option, ?ibanLast4: string option, ?statementDescriptor: string option) =
+        static member New (?bank: string option, ?bic: string option, ?ibanLast4: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeIdeal.Bank = bank |> Option.flatten
                 SourceTypeIdeal.Bic = bic |> Option.flatten
@@ -13511,7 +13511,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?backgroundImageUrl: string, ?clientToken: string option, ?firstName: string, ?lastName: string, ?locale: string, ?logoUrl: string, ?pageTitle: string, ?payLaterAssetUrlsDescriptive: string, ?payLaterAssetUrlsStandard: string, ?payLaterName: string, ?payLaterRedirectUrl: string, ?payNowAssetUrlsDescriptive: string, ?payNowAssetUrlsStandard: string, ?payNowName: string, ?payNowRedirectUrl: string, ?payOverTimeAssetUrlsDescriptive: string, ?payOverTimeAssetUrlsStandard: string, ?payOverTimeName: string, ?payOverTimeRedirectUrl: string, ?paymentMethodCategories: string, ?purchaseCountry: string, ?purchaseType: string, ?redirectUrl: string, ?shippingDelay: int, ?shippingFirstName: string, ?shippingLastName: string) =
+        static member New (?backgroundImageUrl: string, ?clientToken: string option, ?firstName: string, ?lastName: string, ?locale: string, ?logoUrl: string, ?pageTitle: string, ?payLaterAssetUrlsDescriptive: string, ?payLaterAssetUrlsStandard: string, ?payLaterName: string, ?payLaterRedirectUrl: string, ?payNowAssetUrlsDescriptive: string, ?payNowAssetUrlsStandard: string, ?payNowName: string, ?payNowRedirectUrl: string, ?payOverTimeAssetUrlsDescriptive: string, ?payOverTimeAssetUrlsStandard: string, ?payOverTimeName: string, ?payOverTimeRedirectUrl: string, ?paymentMethodCategories: string, ?purchaseCountry: string, ?purchaseType: string, ?redirectUrl: string, ?shippingDelay: int, ?shippingFirstName: string, ?shippingLastName: string) =
             {
                 SourceTypeKlarna.BackgroundImageUrl = backgroundImageUrl
                 SourceTypeKlarna.ClientToken = clientToken |> Option.flatten
@@ -13555,7 +13555,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?entity: string option, ?reference: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+        static member New (?entity: string option, ?reference: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
             {
                 SourceTypeMultibanco.Entity = entity |> Option.flatten
                 SourceTypeMultibanco.Reference = reference |> Option.flatten
@@ -13574,7 +13574,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?reference: string option) =
+        static member New (?reference: string option) =
             {
                 SourceTypeP24.Reference = reference |> Option.flatten
             }
@@ -13594,7 +13594,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankName: string option, ?bic: string option, ?iban: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+        static member New (?bankName: string option, ?bic: string option, ?iban: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
             {
                 SourceTypeSepaCreditTransfer.BankName = bankName |> Option.flatten
                 SourceTypeSepaCreditTransfer.Bic = bic |> Option.flatten
@@ -13620,7 +13620,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankCode: string option, ?branchCode: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?mandateReference: string option, ?mandateUrl: string option) =
+        static member New (?bankCode: string option, ?branchCode: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?mandateReference: string option, ?mandateUrl: string option) =
             {
                 SourceTypeSepaDebit.BankCode = bankCode |> Option.flatten
                 SourceTypeSepaDebit.BranchCode = branchCode |> Option.flatten
@@ -13642,7 +13642,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?bankCode: string option, ?bankName: string option, ?bic: string option, ?country: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
+        static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?country: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeSofort.BankCode = bankCode |> Option.flatten
                 SourceTypeSofort.BankName = bankName |> Option.flatten
@@ -13677,7 +13677,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?addressLine1Check: string option, ?addressZipCheck: string option, ?authenticated: bool option, ?brand: string option, ?card: string option, ?country: string option, ?customer: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+        static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?authenticated: bool option, ?brand: string option, ?card: string option, ?country: string option, ?customer: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
             {
                 SourceTypeThreeDSecure.AddressLine1Check = addressLine1Check |> Option.flatten
                 SourceTypeThreeDSecure.AddressZipCheck = addressZipCheck |> Option.flatten
@@ -13708,7 +13708,7 @@ module StripeModel =
     }
     with
 
-        static member Create (?prepayId: string, ?qrCodeUrl: string option, ?statementDescriptor: string) =
+        static member New (?prepayId: string, ?qrCodeUrl: string option, ?statementDescriptor: string) =
             {
                 SourceTypeWechat.PrepayId = prepayId
                 SourceTypeWechat.QrCodeUrl = qrCodeUrl |> Option.flatten
@@ -13727,7 +13727,7 @@ module StripeModel =
     }
     with
 
-        static member Create (canceled: DateTime option, fulfiled: DateTime option, paid: DateTime option, returned: DateTime option) =
+        static member New (canceled: DateTime option, fulfiled: DateTime option, paid: DateTime option, returned: DateTime option) =
             {
                 StatusTransitions.Canceled = canceled //required
                 StatusTransitions.Fulfiled = fulfiled //required
@@ -13813,7 +13813,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "subscription"
 
-        static member Create (applicationFeePercent: decimal option, billingCycleAnchor: DateTime, billingThresholds: SubscriptionBillingThresholds option, cancelAt: DateTime option, cancelAtPeriodEnd: bool, canceledAt: DateTime option, collectionMethod: SubscriptionCollectionMethod option, created: DateTime, currentPeriodEnd: DateTime, currentPeriodStart: DateTime, customer: SubscriptionCustomer'AnyOf, daysUntilDue: int option, defaultPaymentMethod: SubscriptionDefaultPaymentMethod'AnyOf option, defaultSource: SubscriptionDefaultSource'AnyOf option, discount: Discount option, endedAt: DateTime option, id: string, items: SubscriptionItems, latestInvoice: SubscriptionLatestInvoice'AnyOf option, livemode: bool, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: DateTime option, pauseCollection: SubscriptionsResourcePauseCollection option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option, pendingSetupIntent: SubscriptionPendingSetupIntent'AnyOf option, pendingUpdate: SubscriptionsResourcePendingUpdate option, schedule: SubscriptionSchedule'AnyOf option, startDate: DateTime, status: SubscriptionStatus, transferData: SubscriptionTransferData option, trialEnd: DateTime option, trialStart: DateTime option, ?defaultTaxRates: TaxRate list option) =
+        static member New (applicationFeePercent: decimal option, billingCycleAnchor: DateTime, billingThresholds: SubscriptionBillingThresholds option, cancelAt: DateTime option, cancelAtPeriodEnd: bool, canceledAt: DateTime option, collectionMethod: SubscriptionCollectionMethod option, created: DateTime, currentPeriodEnd: DateTime, currentPeriodStart: DateTime, customer: SubscriptionCustomer'AnyOf, daysUntilDue: int option, defaultPaymentMethod: SubscriptionDefaultPaymentMethod'AnyOf option, defaultSource: SubscriptionDefaultSource'AnyOf option, discount: Discount option, endedAt: DateTime option, id: string, items: SubscriptionItems, latestInvoice: SubscriptionLatestInvoice'AnyOf option, livemode: bool, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: DateTime option, pauseCollection: SubscriptionsResourcePauseCollection option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option, pendingSetupIntent: SubscriptionPendingSetupIntent'AnyOf option, pendingUpdate: SubscriptionsResourcePendingUpdate option, schedule: SubscriptionSchedule'AnyOf option, startDate: DateTime, status: SubscriptionStatus, transferData: SubscriptionTransferData option, trialEnd: DateTime option, trialStart: DateTime option, ?defaultTaxRates: TaxRate list option) =
             {
                 Subscription.ApplicationFeePercent = applicationFeePercent //required
                 Subscription.BillingCycleAnchor = billingCycleAnchor //required
@@ -13901,7 +13901,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: SubscriptionItem list, hasMore: bool, url: string) =
+        static member New (data: SubscriptionItem list, hasMore: bool, url: string) =
             {
                 SubscriptionItems.Data = data //required
                 SubscriptionItems.HasMore = hasMore //required
@@ -13916,7 +13916,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amountGte: int option, resetBillingCycleAnchor: bool option) =
+        static member New (amountGte: int option, resetBillingCycleAnchor: bool option) =
             {
                 SubscriptionBillingThresholds.AmountGte = amountGte //required
                 SubscriptionBillingThresholds.ResetBillingCycleAnchor = resetBillingCycleAnchor //required
@@ -13946,7 +13946,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "subscription_item"
 
-        static member Create (billingThresholds: SubscriptionItemBillingThresholds option, created: int, id: string, metadata: Map<string, string>, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?quantity: int) =
+        static member New (billingThresholds: SubscriptionItemBillingThresholds option, created: int, id: string, metadata: Map<string, string>, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?quantity: int) =
             {
                 SubscriptionItem.BillingThresholds = billingThresholds //required
                 SubscriptionItem.Created = created //required
@@ -13965,7 +13965,7 @@ module StripeModel =
     }
     with
 
-        static member Create (usageGte: int option) =
+        static member New (usageGte: int option) =
             {
                 SubscriptionItemBillingThresholds.UsageGte = usageGte //required
             }
@@ -13978,7 +13978,7 @@ module StripeModel =
     }
     with
 
-        static member Create (interval: SubscriptionPendingInvoiceItemIntervalInterval, intervalCount: int) =
+        static member New (interval: SubscriptionPendingInvoiceItemIntervalInterval, intervalCount: int) =
             {
                 SubscriptionPendingInvoiceItemInterval.Interval = interval //required
                 SubscriptionPendingInvoiceItemInterval.IntervalCount = intervalCount //required
@@ -14027,7 +14027,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "subscription_schedule"
 
-        static member Create (canceledAt: DateTime option, completedAt: DateTime option, created: DateTime, currentPhase: SubscriptionScheduleCurrentPhase option, customer: SubscriptionScheduleCustomer'AnyOf, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: DateTime option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: SubscriptionScheduleSubscription'AnyOf option) =
+        static member New (canceledAt: DateTime option, completedAt: DateTime option, created: DateTime, currentPhase: SubscriptionScheduleCurrentPhase option, customer: SubscriptionScheduleCustomer'AnyOf, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: DateTime option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: SubscriptionScheduleSubscription'AnyOf option) =
             {
                 SubscriptionSchedule.CanceledAt = canceledAt //required
                 SubscriptionSchedule.CompletedAt = completedAt //required
@@ -14079,7 +14079,7 @@ module StripeModel =
     }
     with
 
-        static member Create (price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf, quantity: int option, ?taxRates: TaxRate list option) =
+        static member New (price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf, quantity: int option, ?taxRates: TaxRate list option) =
             {
                 SubscriptionScheduleAddInvoiceItem.Price = price //required
                 SubscriptionScheduleAddInvoiceItem.Quantity = quantity //required
@@ -14106,7 +14106,7 @@ module StripeModel =
     }
     with
 
-        static member Create (billingThresholds: SubscriptionItemBillingThresholds option, plan: SubscriptionScheduleConfigurationItemPlan'AnyOf, price: SubscriptionScheduleConfigurationItemPrice'AnyOf, ?quantity: int, ?taxRates: TaxRate list option) =
+        static member New (billingThresholds: SubscriptionItemBillingThresholds option, plan: SubscriptionScheduleConfigurationItemPlan'AnyOf, price: SubscriptionScheduleConfigurationItemPrice'AnyOf, ?quantity: int, ?taxRates: TaxRate list option) =
             {
                 SubscriptionScheduleConfigurationItem.BillingThresholds = billingThresholds //required
                 SubscriptionScheduleConfigurationItem.Plan = plan //required
@@ -14133,7 +14133,7 @@ module StripeModel =
     }
     with
 
-        static member Create (endDate: DateTime, startDate: DateTime) =
+        static member New (endDate: DateTime, startDate: DateTime) =
             {
                 SubscriptionScheduleCurrentPhase.EndDate = endDate //required
                 SubscriptionScheduleCurrentPhase.StartDate = startDate //required
@@ -14174,7 +14174,7 @@ module StripeModel =
     }
     with
 
-        static member Create (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, coupon: SubscriptionSchedulePhaseConfigurationCoupon'AnyOf option, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option, endDate: DateTime, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, items: SubscriptionScheduleConfigurationItem list, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: DateTime, transferData: SubscriptionTransferData option, trialEnd: DateTime option, ?defaultTaxRates: TaxRate list option) =
+        static member New (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, coupon: SubscriptionSchedulePhaseConfigurationCoupon'AnyOf option, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option, endDate: DateTime, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, items: SubscriptionScheduleConfigurationItem list, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: DateTime, transferData: SubscriptionTransferData option, trialEnd: DateTime option, ?defaultTaxRates: TaxRate list option) =
             {
                 SubscriptionSchedulePhaseConfiguration.AddInvoiceItems = addInvoiceItems //required
                 SubscriptionSchedulePhaseConfiguration.ApplicationFeePercent = applicationFeePercent //required
@@ -14231,7 +14231,7 @@ module StripeModel =
     }
     with
 
-        static member Create (billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, transferData: SubscriptionTransferData option) =
+        static member New (billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, transferData: SubscriptionTransferData option) =
             {
                 SubscriptionSchedulesResourceDefaultSettings.BillingCycleAnchor = billingCycleAnchor //required
                 SubscriptionSchedulesResourceDefaultSettings.BillingThresholds = billingThresholds //required
@@ -14261,7 +14261,7 @@ module StripeModel =
     }
     with
 
-        static member Create (amountPercent: decimal option, destination: SubscriptionTransferDataDestination'AnyOf) =
+        static member New (amountPercent: decimal option, destination: SubscriptionTransferDataDestination'AnyOf) =
             {
                 SubscriptionTransferData.AmountPercent = amountPercent //required
                 SubscriptionTransferData.Destination = destination //required
@@ -14281,7 +14281,7 @@ module StripeModel =
     }
     with
 
-        static member Create (behavior: SubscriptionsResourcePauseCollectionBehavior, resumesAt: DateTime option) =
+        static member New (behavior: SubscriptionsResourcePauseCollectionBehavior, resumesAt: DateTime option) =
             {
                 SubscriptionsResourcePauseCollection.Behavior = behavior //required
                 SubscriptionsResourcePauseCollection.ResumesAt = resumesAt //required
@@ -14308,7 +14308,7 @@ module StripeModel =
     }
     with
 
-        static member Create (billingCycleAnchor: DateTime option, expiresAt: DateTime, subscriptionItems: SubscriptionItem list option, trialEnd: DateTime option, trialFromPlan: bool option) =
+        static member New (billingCycleAnchor: DateTime option, expiresAt: DateTime, subscriptionItems: SubscriptionItem list option, trialEnd: DateTime option, trialFromPlan: bool option) =
             {
                 SubscriptionsResourcePendingUpdate.BillingCycleAnchor = billingCycleAnchor //required
                 SubscriptionsResourcePendingUpdate.ExpiresAt = expiresAt //required
@@ -14331,7 +14331,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax_deducted_at_source"
 
-        static member Create (id: string, periodEnd: DateTime, periodStart: DateTime, taxDeductionAccountNumber: string) =
+        static member New (id: string, periodEnd: DateTime, periodStart: DateTime, taxDeductionAccountNumber: string) =
             {
                 TaxDeductedAtSource.Id = id //required
                 TaxDeductedAtSource.PeriodEnd = periodEnd //required
@@ -14364,7 +14364,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax_id"
 
-        static member Create (country: string option, created: DateTime, customer: TaxIdCustomer'AnyOf option, id: string, livemode: bool, ``type``: TaxIdType, value: string, verification: TaxIdVerification option) =
+        static member New (country: string option, created: DateTime, customer: TaxIdCustomer'AnyOf option, id: string, livemode: bool, ``type``: TaxIdType, value: string, verification: TaxIdVerification option) =
             {
                 TaxId.Country = country //required
                 TaxId.Created = created //required
@@ -14425,7 +14425,7 @@ module StripeModel =
     }
     with
 
-        static member Create (status: TaxIdVerificationStatus, verifiedAddress: string option, verifiedName: string option) =
+        static member New (status: TaxIdVerificationStatus, verifiedAddress: string option, verifiedName: string option) =
             {
                 TaxIdVerification.Status = status //required
                 TaxIdVerification.VerifiedAddress = verifiedAddress //required
@@ -14466,7 +14466,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax_rate"
 
-        static member Create (active: bool, created: DateTime, description: string option, displayName: string, id: string, inclusive: bool, jurisdiction: string option, livemode: bool, metadata: Map<string, string> option, percentage: decimal) =
+        static member New (active: bool, created: DateTime, description: string option, displayName: string, id: string, inclusive: bool, jurisdiction: string option, livemode: bool, metadata: Map<string, string> option, percentage: decimal) =
             {
                 TaxRate.Active = active //required
                 TaxRate.Created = created //required
@@ -14492,7 +14492,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "terminal.connection_token"
 
-        static member Create (secret: string, ?location: string) =
+        static member New (secret: string, ?location: string) =
             {
                 TerminalConnectionToken.Secret = secret //required
                 TerminalConnectionToken.Location = location
@@ -14515,7 +14515,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "terminal.location"
 
-        static member Create (address: Address, displayName: string, id: string, livemode: bool, metadata: Map<string, string>) =
+        static member New (address: Address, displayName: string, id: string, livemode: bool, metadata: Map<string, string>) =
             {
                 TerminalLocation.Address = address //required
                 TerminalLocation.DisplayName = displayName //required
@@ -14552,7 +14552,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "terminal.reader"
 
-        static member Create (deviceSwVersion: string option, deviceType: TerminalReaderDeviceType, id: string, ipAddress: string option, label: string, livemode: bool, location: string option, metadata: Map<string, string>, serialNumber: string, status: string option) =
+        static member New (deviceSwVersion: string option, deviceType: TerminalReaderDeviceType, id: string, ipAddress: string option, label: string, livemode: bool, location: string option, metadata: Map<string, string>, serialNumber: string, status: string option) =
             {
                 TerminalReader.DeviceSwVersion = deviceSwVersion //required
                 TerminalReader.DeviceType = deviceType //required
@@ -14596,7 +14596,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "three_d_secure"
 
-        static member Create (amount: int, authenticated: bool, card: Card, created: DateTime, currency: string, id: string, livemode: bool, redirectUrl: string option, status: ThreeDSecureStatus) =
+        static member New (amount: int, authenticated: bool, card: Card, created: DateTime, currency: string, id: string, livemode: bool, redirectUrl: string option, status: ThreeDSecureStatus) =
             {
                 ThreeDSecure.Amount = amount //required
                 ThreeDSecure.Authenticated = authenticated //required
@@ -14628,7 +14628,7 @@ module StripeModel =
     }
     with
 
-        static member Create (authenticationFlow: ThreeDSecureDetailsAuthenticationFlow option, result: ThreeDSecureDetailsResult, resultReason: ThreeDSecureDetailsResultReason option, version: ThreeDSecureDetailsVersion) =
+        static member New (authenticationFlow: ThreeDSecureDetailsAuthenticationFlow option, result: ThreeDSecureDetailsResult, resultReason: ThreeDSecureDetailsResultReason option, version: ThreeDSecureDetailsVersion) =
             {
                 ThreeDSecureDetails.AuthenticationFlow = authenticationFlow //required
                 ThreeDSecureDetails.Result = result //required
@@ -14667,7 +14667,7 @@ module StripeModel =
     }
     with
 
-        static member Create (supported: bool) =
+        static member New (supported: bool) =
             {
                 ThreeDSecureUsage.Supported = supported //required
             }
@@ -14711,7 +14711,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "token"
 
-        static member Create (clientIp: string option, created: DateTime, id: string, livemode: bool, ``type``: TokenType, used: bool, ?bankAccount: BankAccount, ?card: Card) =
+        static member New (clientIp: string option, created: DateTime, id: string, livemode: bool, ``type``: TokenType, used: bool, ?bankAccount: BankAccount, ?card: Card) =
             {
                 Token.ClientIp = clientIp //required
                 Token.Created = created //required
@@ -14768,7 +14768,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "topup"
 
-        static member Create (amount: int, balanceTransaction: TopupBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string>, source: Source, statementDescriptor: string option, status: TopupStatus, transferGroup: string option) =
+        static member New (amount: int, balanceTransaction: TopupBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string>, source: Source, statementDescriptor: string option, status: TopupStatus, transferGroup: string option) =
             {
                 Topup.Amount = amount //required
                 Topup.BalanceTransaction = balanceTransaction //required
@@ -14844,7 +14844,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "transfer"
 
-        static member Create (amount: int, amountReversed: int, balanceTransaction: TransferBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, destination: TransferDestination'AnyOf option, id: string, livemode: bool, metadata: Map<string, string>, reversals: TransferReversals, reversed: bool, sourceTransaction: TransferSourceTransaction'AnyOf option, sourceType: TransferSourceType option, transferGroup: string option, ?destinationPayment: TransferDestinationPayment'AnyOf) =
+        static member New (amount: int, amountReversed: int, balanceTransaction: TransferBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, destination: TransferDestination'AnyOf option, id: string, livemode: bool, metadata: Map<string, string>, reversals: TransferReversals, reversed: bool, sourceTransaction: TransferSourceTransaction'AnyOf option, sourceType: TransferSourceType option, transferGroup: string option, ?destinationPayment: TransferDestinationPayment'AnyOf) =
             {
                 Transfer.Amount = amount //required
                 Transfer.AmountReversed = amountReversed //required
@@ -14898,7 +14898,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
         member _.Object = "list"
 
-        static member Create (data: TransferReversal list, hasMore: bool, url: string) =
+        static member New (data: TransferReversal list, hasMore: bool, url: string) =
             {
                 TransferReversals.Data = data //required
                 TransferReversals.HasMore = hasMore //required
@@ -14915,7 +14915,7 @@ module StripeModel =
     }
     with
 
-        static member Create (destination: TransferDataDestination'AnyOf, ?amount: int) =
+        static member New (destination: TransferDataDestination'AnyOf, ?amount: int) =
             {
                 TransferData.Destination = destination //required
                 TransferData.Amount = amount
@@ -14960,7 +14960,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "transfer_reversal"
 
-        static member Create (amount: int, balanceTransaction: TransferReversalBalanceTransaction'AnyOf option, created: DateTime, currency: string, destinationPaymentRefund: TransferReversalDestinationPaymentRefund'AnyOf option, id: string, metadata: Map<string, string> option, sourceRefund: TransferReversalSourceRefund'AnyOf option, transfer: TransferReversalTransfer'AnyOf) =
+        static member New (amount: int, balanceTransaction: TransferReversalBalanceTransaction'AnyOf option, created: DateTime, currency: string, destinationPaymentRefund: TransferReversalDestinationPaymentRefund'AnyOf option, id: string, metadata: Map<string, string> option, sourceRefund: TransferReversalSourceRefund'AnyOf option, transfer: TransferReversalTransfer'AnyOf) =
             {
                 TransferReversal.Amount = amount //required
                 TransferReversal.BalanceTransaction = balanceTransaction //required
@@ -15001,7 +15001,7 @@ module StripeModel =
     }
     with
 
-        static member Create (delayDays: int, interval: TransferScheduleInterval, ?monthlyAnchor: int, ?weeklyAnchor: string) =
+        static member New (delayDays: int, interval: TransferScheduleInterval, ?monthlyAnchor: int, ?weeklyAnchor: string) =
             {
                 TransferSchedule.DelayDays = delayDays //required
                 TransferSchedule.Interval = interval //required
@@ -15023,7 +15023,7 @@ module StripeModel =
     }
     with
 
-        static member Create (divideBy: int, round: TransformQuantityRound) =
+        static member New (divideBy: int, round: TransformQuantityRound) =
             {
                 TransformQuantity.DivideBy = divideBy //required
                 TransformQuantity.Round = round //required
@@ -15041,7 +15041,7 @@ module StripeModel =
     }
     with
 
-        static member Create (divideBy: int, round: TransformUsageRound) =
+        static member New (divideBy: int, round: TransformUsageRound) =
             {
                 TransformUsage.DivideBy = divideBy //required
                 TransformUsage.Round = round //required
@@ -15070,7 +15070,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "usage_record"
 
-        static member Create (id: string, livemode: bool, quantity: int, subscriptionItem: string, timestamp: DateTime) =
+        static member New (id: string, livemode: bool, quantity: int, subscriptionItem: string, timestamp: DateTime) =
             {
                 UsageRecord.Id = id //required
                 UsageRecord.Livemode = livemode //required
@@ -15096,7 +15096,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "usage_record_summary"
 
-        static member Create (id: string, invoice: string option, livemode: bool, period: Period, subscriptionItem: string, totalUsage: int) =
+        static member New (id: string, invoice: string option, livemode: bool, period: Period, subscriptionItem: string, totalUsage: int) =
             {
                 UsageRecordSummary.Id = id //required
                 UsageRecordSummary.Invoice = invoice //required
@@ -15139,7 +15139,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "webhook_endpoint"
 
-        static member Create (apiVersion: string option, application: string option, created: DateTime, description: string option, enabledEvents: string list, id: string, livemode: bool, metadata: Map<string, string>, status: WebhookEndpointStatus, url: string, ?secret: string) =
+        static member New (apiVersion: string option, application: string option, created: DateTime, description: string option, enabledEvents: string list, id: string, livemode: bool, metadata: Map<string, string>, status: WebhookEndpointStatus, url: string, ?secret: string) =
             {
                 WebhookEndpoint.ApiVersion = apiVersion //required
                 WebhookEndpoint.Application = application //required

@@ -129,7 +129,7 @@ type JsonConfig = {
 }
 with
     /// Creates customized [JsonConfig], each parameter corresponds to [JsonConfig] record member.
-    static member Create (?unformatted, ?serializeNone, ?deserializeOption, ?jsonFieldNaming, ?allowUntyped, ?enumValue) =
+    static member New (?unformatted, ?serializeNone, ?deserializeOption, ?jsonFieldNaming, ?allowUntyped, ?enumValue) =
         {
             JsonConfig.Unformatted = defaultArg unformatted false
             JsonConfig.SerializeNone = defaultArg serializeNone SerializeNone.Null
@@ -139,5 +139,5 @@ with
             JsonConfig.EnumValue = defaultArg enumValue EnumMode.Name
         }
     /// Default [JsonConfig].
-    static member Default = JsonConfig.Create()
+    static member Default = JsonConfig.New()
     

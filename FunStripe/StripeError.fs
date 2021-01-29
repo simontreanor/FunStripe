@@ -45,7 +45,7 @@ module StripeError =
         Type: ErrorType option
     }
     with
-        static member Create(?charge: string, ?code: string, ?declineCode: string, ?docUrl: string, ?message: string, ?metadata: Map<string, string>, ?param: string, ?paymentIntent: StripeModel.PaymentIntent, ?paymentMethod: StripeModel.PaymentMethod, ?paymentMethodType: StripeModel.PaymentMethodType, ?setupIntent: StripeModel.SetupIntent, ?source: StripeModel.Source, ?``type``: ErrorType) =
+        static member New(?charge: string, ?code: string, ?declineCode: string, ?docUrl: string, ?message: string, ?metadata: Map<string, string>, ?param: string, ?paymentIntent: StripeModel.PaymentIntent, ?paymentMethod: StripeModel.PaymentMethod, ?paymentMethodType: StripeModel.PaymentMethodType, ?setupIntent: StripeModel.SetupIntent, ?source: StripeModel.Source, ?``type``: ErrorType) =
             {
                 Charge = charge
                 Code = code

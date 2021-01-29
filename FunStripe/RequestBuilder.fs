@@ -251,7 +251,6 @@ module RequestBuilder =
             let name = po.Name
             let optionType = po.In
             let required = po.Required
-            let schema = po.Schema
             let type' = po.Type
             { Description = desc; Name = name; Required = required; Type = type'; OptionType = optionType; EnumValues = None; SubValues = None }
         )
@@ -266,7 +265,7 @@ module RequestBuilder =
         ) |> String.Join
 
     ///Format request path to allow string interpolation of inline parameters
-    let formatPathParams (path: string) =
+    let formatPathOptions (path: string) =
         Regex.Replace(path, @"\{([^}]+)\}", fun m -> $"{{options.{m.Groups.[1].Value |> escapeReservedName |> pascalCasify}}}")
 
     ///Extract a type name from a JSON reference field
@@ -362,7 +361,7 @@ module RequestBuilder =
                             (
                                 schemaObject.Properties.Properties
                                 |> Array.map(fun (k, v) ->
-                                    v |> parseValue methodName k (required.Contains(k)) false
+                                    v |> parseValue $"{methodName}'" k (required.Contains(k)) false
                                 )
                             )
                         let queryParameters =
@@ -453,9 +452,7 @@ module RequestBuilder =
 
                 sb |> write $"\t\ttype {name} = {{\n{propertiesString}\n\t\t}}"
 
-                let create = if values |> Array.exists(fun v -> v.Name = "create") then "Create'" else "Create"
-
-                sb |> write $"\t\twith\n\t\t\tstatic member {create}({parametersString}) =\n\t\t\t\t{{\n{assignments}\n\t\t\t\t}}\n"
+                sb |> write $"\t\twith\n\t\t\tstatic member New({parametersString}) =\n\t\t\t\t{{\n{assignments}\n\t\t\t\t}}\n"
 
         ///Write a method to make a request from the API
         let writeMethod method verb path description options responseType =
@@ -474,7 +471,7 @@ module RequestBuilder =
             sb |> write (description |> commentify 2)
             sb |> write $"\t\tlet {method} settings{optionsString} ="
             sb |> write queryDeclaration
-            sb |> write $"\t\t\t$\"{path |> formatPathParams}\""
+            sb |> write $"\t\t\t$\"{path |> formatPathOptions}\""
 
             //set API method
             match verb with

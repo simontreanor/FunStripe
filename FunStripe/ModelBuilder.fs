@@ -391,7 +391,7 @@ module ModelBuilder =
                     let withPrefix = if staticPropertiesString |> String.IsNullOrWhiteSpace then $"\n\twith\n" else ""
 
                     //compose `create` function
-                    $"{withPrefix}\n\t\tstatic member Create ({parameters}) =\n\t\t\t{{\n{properties}\n\t\t\t}}"
+                    $"{withPrefix}\n\t\tstatic member New ({parameters}) =\n\t\t\t{{\n{properties}\n\t\t\t}}"
 
                 //if there is a description, format it using comments
                 let desc = if description |> String.IsNullOrWhiteSpace then "" else $"\t///{description |> commentify}\n"
