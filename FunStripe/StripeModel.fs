@@ -1898,20 +1898,22 @@ module StripeModel =
         CancelUrl: string
         ///A unique string to reference the Checkout Session. This can be a
     ///customer ID, a cart ID, or similar, and can be used to reconcile the
-    ///session with your internal systems.
+    ///Session with your internal systems.
         ClientReferenceId: string option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: string option
-        ///The ID of the customer for this session.
+        ///The ID of the customer for this Session.
     ///For Checkout Sessions in `payment` or `subscription` mode, Checkout
     ///will create a new customer object based on information provided
-    ///during the session unless an existing customer was provided when
-    ///the session was created.
+    ///during the payment flow unless an existing customer was provided when
+    ///the Session was created.
         Customer: CheckoutSessionCustomer'AnyOf option
+        ///The customer details including the customer's tax exempt status and the customer's tax IDs.
+        CustomerDetails: PaymentPagesCheckoutSessionCustomerDetails option
         ///If provided, this value will be used when the Customer object is created.
     ///If not provided, customers will be asked to enter their email address.
     ///Use this parameter to prefill customer data if you already have an email
-    ///on file. To access information about the customer once a session is
+    ///on file. To access information about the customer once the payment flow is
     ///complete, use the `customer` attribute.
         CustomerEmail: string option
         ///Unique identifier for the object. Used to pass to `redirectToCheckout`
@@ -1958,7 +1960,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "checkout.session"
 
-        static member New (allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string, clientReferenceId: string option, currency: string option, customer: CheckoutSessionCustomer'AnyOf option, customerEmail: string option, id: string, livemode: bool, locale: CheckoutSessionLocale option, metadata: Map<string, string> option, mode: CheckoutSessionMode, paymentIntent: CheckoutSessionPaymentIntent'AnyOf option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, setupIntent: CheckoutSessionSetupIntent'AnyOf option, shipping: Shipping option, shippingAddressCollection: PaymentPagesPaymentPageResourcesShippingAddressCollection option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscription'AnyOf option, successUrl: string, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, ?lineItems: CheckoutSessionLineItems) =
+        static member New (allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string, clientReferenceId: string option, currency: string option, customer: CheckoutSessionCustomer'AnyOf option, customerDetails: PaymentPagesCheckoutSessionCustomerDetails option, customerEmail: string option, id: string, livemode: bool, locale: CheckoutSessionLocale option, metadata: Map<string, string> option, mode: CheckoutSessionMode, paymentIntent: CheckoutSessionPaymentIntent'AnyOf option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, setupIntent: CheckoutSessionSetupIntent'AnyOf option, shipping: Shipping option, shippingAddressCollection: PaymentPagesPaymentPageResourcesShippingAddressCollection option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscription'AnyOf option, successUrl: string, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, ?lineItems: CheckoutSessionLineItems) =
             {
                 CheckoutSession.AllowPromotionCodes = allowPromotionCodes //required
                 CheckoutSession.AmountSubtotal = amountSubtotal //required
@@ -1968,6 +1970,7 @@ module StripeModel =
                 CheckoutSession.ClientReferenceId = clientReferenceId //required
                 CheckoutSession.Currency = currency //required
                 CheckoutSession.Customer = customer //required
+                CheckoutSession.CustomerDetails = customerDetails //required
                 CheckoutSession.CustomerEmail = customerEmail //required
                 CheckoutSession.Id = id //required
                 CheckoutSession.Livemode = livemode //required
@@ -3714,6 +3717,7 @@ module StripeModel =
             }
 
     and FilePurpose =
+        | AccountRequirement
         | AdditionalVerification
         | BusinessIcon
         | BusinessLogo
@@ -3869,9 +3873,9 @@ module StripeModel =
     ///charged). If the amount due for the invoice is less than Stripe's [minimum allowed charge
     ///per currency](/docs/currencies#minimum-and-maximum-charge-amounts), the
     ///invoice is automatically marked paid, and we add the amount due to the
-    ///customer's running account balance which is applied to the next invoice.
-    ///More details on the customer's account balance are
-    ///[here](https://stripe.com/docs/api/customers/object#customer_object-account_balance).
+    ///customer's credit balance which is applied to the next invoice.
+    ///More details on the customer's credit balance are
+    ///[here](https://stripe.com/docs/billing/customer/balance).
     ///Related guide: [Send Invoices to Customers](https://stripe.com/docs/billing/invoices/sending).
     and Invoice = {
         ///The country of the business associated with this invoice, most often the business creating the invoice.
@@ -4003,7 +4007,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoice"
 
-        static member New (accountCountry: string option, accountName: string option, amountDue: int, amountPaid: int, amountRemaining: int, applicationFeeAmount: int option, attemptCount: int, attempted: bool, billingReason: InvoiceBillingReason option, charge: InvoiceCharge'AnyOf option, collectionMethod: InvoiceCollectionMethod option, created: DateTime, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomer'AnyOf, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option, defaultSource: InvoiceDefaultSource'AnyOf option, defaultTaxRates: TaxRate list, description: string option, discount: Discount option, discounts: InvoiceDiscounts'AnyOf list option, dueDate: DateTime option, endingBalance: int option, footer: string option, lines: InvoiceLines, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: DateTime option, number: string option, paid: bool, paymentIntent: InvoicePaymentIntent'AnyOf option, periodEnd: DateTime, periodStart: DateTime, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesStatusTransitions, subscription: InvoiceSubscription'AnyOf option, subtotal: int, tax: int option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalTaxAmounts: InvoiceTaxAmount list, transferData: InvoiceTransferData option, webhooksDeliveredAt: DateTime option, ?accountTaxIds: InvoiceAccountTaxIds'AnyOf list option, ?autoAdvance: bool, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?lastFinalizationError: ApiErrors option, ?subscriptionProrationDate: int, ?thresholdReason: InvoiceThresholdReason) =
+        static member New (accountCountry: string option, accountName: string option, amountDue: int, amountPaid: int, amountRemaining: int, applicationFeeAmount: int option, attemptCount: int, attempted: bool, billingReason: InvoiceBillingReason option, charge: InvoiceCharge'AnyOf option, collectionMethod: InvoiceCollectionMethod option, created: DateTime, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomer'AnyOf, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option, defaultSource: InvoiceDefaultSource'AnyOf option, defaultTaxRates: TaxRate list, description: string option, discount: Discount option, discounts: InvoiceDiscounts'AnyOf list option, dueDate: DateTime option, endingBalance: int option, footer: string option, lastFinalizationError: ApiErrors option, lines: InvoiceLines, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: DateTime option, number: string option, paid: bool, paymentIntent: InvoicePaymentIntent'AnyOf option, periodEnd: DateTime, periodStart: DateTime, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesStatusTransitions, subscription: InvoiceSubscription'AnyOf option, subtotal: int, tax: int option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalTaxAmounts: InvoiceTaxAmount list, transferData: InvoiceTransferData option, webhooksDeliveredAt: DateTime option, ?accountTaxIds: InvoiceAccountTaxIds'AnyOf list option, ?autoAdvance: bool, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?subscriptionProrationDate: int, ?thresholdReason: InvoiceThresholdReason) =
             {
                 Invoice.AccountCountry = accountCountry //required
                 Invoice.AccountName = accountName //required
@@ -4035,6 +4039,7 @@ module StripeModel =
                 Invoice.DueDate = dueDate //required
                 Invoice.EndingBalance = endingBalance //required
                 Invoice.Footer = footer //required
+                Invoice.LastFinalizationError = lastFinalizationError //required
                 Invoice.Lines = lines //required
                 Invoice.Livemode = livemode //required
                 Invoice.Metadata = metadata //required
@@ -4065,7 +4070,6 @@ module StripeModel =
                 Invoice.HostedInvoiceUrl = hostedInvoiceUrl |> Option.flatten
                 Invoice.Id = id
                 Invoice.InvoicePdf = invoicePdf |> Option.flatten
-                Invoice.LastFinalizationError = lastFinalizationError |> Option.flatten
                 Invoice.SubscriptionProrationDate = subscriptionProrationDate
                 Invoice.ThresholdReason = thresholdReason
             }
@@ -4740,22 +4744,22 @@ module StripeModel =
     ///Related guide: [Disputing Transactions](https://stripe.com/docs/issuing/purchases/disputes)
     and IssuingDispute = {
         ///Disputed amount. Usually the amount of the `disputed_transaction`, but can differ (usually because of currency fluctuation).
-        Amount: int option
+        Amount: int
         ///List of balance transactions associated with the dispute.
         BalanceTransactions: BalanceTransaction list option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime option
+        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///The currency the `disputed_transaction` was made in.
-        Currency: string option
-        Evidence: IssuingDisputeEvidence option
+        Currency: string
+        Evidence: IssuingDisputeEvidence
         ///Unique identifier for the object.
         Id: string
         ///Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
         Livemode: bool
         ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
+        Metadata: Map<string, string>
         ///Current status of the dispute.
-        Status: IssuingDisputeStatus option
+        Status: IssuingDisputeStatus
         ///The transaction being disputed.
         Transaction: IssuingDisputeTransaction'AnyOf
     }
@@ -4763,18 +4767,18 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.dispute"
 
-        static member New (balanceTransactions: BalanceTransaction list option, id: string, livemode: bool, transaction: IssuingDisputeTransaction'AnyOf, ?amount: int, ?created: DateTime, ?currency: string, ?evidence: IssuingDisputeEvidence, ?metadata: Map<string, string>, ?status: IssuingDisputeStatus) =
+        static member New (amount: int, balanceTransactions: BalanceTransaction list option, created: DateTime, currency: string, evidence: IssuingDisputeEvidence, id: string, livemode: bool, metadata: Map<string, string>, status: IssuingDisputeStatus, transaction: IssuingDisputeTransaction'AnyOf) =
             {
+                IssuingDispute.Amount = amount //required
                 IssuingDispute.BalanceTransactions = balanceTransactions //required
+                IssuingDispute.Created = created //required
+                IssuingDispute.Currency = currency //required
+                IssuingDispute.Evidence = evidence //required
                 IssuingDispute.Id = id //required
                 IssuingDispute.Livemode = livemode //required
+                IssuingDispute.Metadata = metadata //required
+                IssuingDispute.Status = status //required
                 IssuingDispute.Transaction = transaction //required
-                IssuingDispute.Amount = amount
-                IssuingDispute.Created = created
-                IssuingDispute.Currency = currency
-                IssuingDispute.Evidence = evidence
-                IssuingDispute.Metadata = metadata
-                IssuingDispute.Status = status
             }
 
     and IssuingDisputeStatus =
@@ -4831,7 +4835,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.transaction"
 
-        static member New (amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: IssuingTransactionAuthorization'AnyOf option, balanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option, card: IssuingTransactionCard'AnyOf, cardholder: IssuingTransactionCardholder'AnyOf option, created: DateTime, currency: string, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, purchaseDetails: IssuingTransactionPurchaseDetails option, ``type``: IssuingTransactionType, ?dispute: IssuingTransactionDispute'AnyOf option) =
+        static member New (amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: IssuingTransactionAuthorization'AnyOf option, balanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option, card: IssuingTransactionCard'AnyOf, cardholder: IssuingTransactionCardholder'AnyOf option, created: DateTime, currency: string, dispute: IssuingTransactionDispute'AnyOf option, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, purchaseDetails: IssuingTransactionPurchaseDetails option, ``type``: IssuingTransactionType) =
             {
                 IssuingTransaction.Amount = amount //required
                 IssuingTransaction.AmountDetails = amountDetails //required
@@ -4841,6 +4845,7 @@ module StripeModel =
                 IssuingTransaction.Cardholder = cardholder //required
                 IssuingTransaction.Created = created //required
                 IssuingTransaction.Currency = currency //required
+                IssuingTransaction.Dispute = dispute //required
                 IssuingTransaction.Id = id //required
                 IssuingTransaction.Livemode = livemode //required
                 IssuingTransaction.MerchantAmount = merchantAmount //required
@@ -4849,7 +4854,6 @@ module StripeModel =
                 IssuingTransaction.Metadata = metadata //required
                 IssuingTransaction.PurchaseDetails = purchaseDetails //required
                 IssuingTransaction.Type = ``type`` //required
-                IssuingTransaction.Dispute = dispute |> Option.flatten
             }
 
     and IssuingTransactionAuthorization'AnyOf =
@@ -4874,7 +4878,6 @@ module StripeModel =
 
     and IssuingTransactionType =
         | Capture
-        | Dispute
         | Refund
 
     and IssuingAuthorizationAmountDetails = {
@@ -5035,7 +5038,7 @@ module StripeModel =
         AllowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
         BlockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option
-        ///Limit spending with amount-based rules.
+        ///Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).
         SpendingLimits: IssuingCardSpendingLimit list option
         ///Currency of the amounts within `spending_limits`. Always the same as the currency of the card.
         SpendingLimitsCurrency: string option
@@ -7448,7 +7451,7 @@ module StripeModel =
 
     ///A line item.
     and Item = {
-        ///Total before any discounts or taxes is applied.
+        ///Total before any discounts or taxes are applied.
         AmountSubtotal: int option
         ///Total after discounts and taxes.
         AmountTotal: int option
@@ -7460,7 +7463,8 @@ module StripeModel =
         Discounts: LineItemsDiscountAmount list option
         ///Unique identifier for the object.
         Id: string
-        Price: Price
+        ///The price used to generate the line item.
+        Price: Price option
         ///The quantity of products being purchased.
         Quantity: int option
         ///The taxes applied to the line item.
@@ -7470,7 +7474,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "item"
 
-        static member New (amountSubtotal: int option, amountTotal: int option, currency: string, description: string, id: string, price: Price, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
+        static member New (amountSubtotal: int option, amountTotal: int option, currency: string, description: string, id: string, price: Price option, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
             {
                 Item.AmountSubtotal = amountSubtotal //required
                 Item.AmountTotal = amountTotal //required
@@ -9702,6 +9706,8 @@ module StripeModel =
             }
 
     and PaymentMethodDetailsEps = {
+        ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
+        Bank: PaymentMethodDetailsEpsBank option
         ///Owner's verified full name. Values are verified or provided by EPS directly
     ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
     ///EPS rarely provides this information so the attribute is usually empty.
@@ -9709,10 +9715,40 @@ module StripeModel =
     }
     with
 
-        static member New (verifiedName: string option) =
+        static member New (bank: PaymentMethodDetailsEpsBank option, verifiedName: string option) =
             {
+                PaymentMethodDetailsEps.Bank = bank //required
                 PaymentMethodDetailsEps.VerifiedName = verifiedName //required
             }
+
+    and PaymentMethodDetailsEpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
 
     and PaymentMethodDetailsFpx = {
         ///Account holder type, if provided. Can be one of `individual` or `company`.
@@ -10018,6 +10054,8 @@ module StripeModel =
             }
 
     and PaymentMethodDetailsP24 = {
+        ///The customer's bank. Can be one of `ing`, `citi_handlowy`, `tmobile_usbugi_bankowe`, `plus_bank`, `etransfer_pocztowy24`, `banki_spbdzielcze`, `bank_nowy_bfg_sa`, `getin_bank`, `blik`, `noble_pay`, `ideabank`, `envelobank`, `santander_przelew24`, `nest_przelew`, `mbank_mtransfer`, `inteligo`, `pbac_z_ipko`, `bnp_paribas`, `credit_agricole`, `toyota_bank`, `bank_pekao_sa`, `volkswagen_bank`, `bank_millennium`, `alior_bank`, or `boz`.
+        Bank: PaymentMethodDetailsP24Bank option
         ///Unique reference for this Przelewy24 payment.
         Reference: string option
         ///Owner's verified full name. Values are verified or provided by Przelewy24 directly
@@ -10027,11 +10065,39 @@ module StripeModel =
     }
     with
 
-        static member New (reference: string option, verifiedName: string option) =
+        static member New (bank: PaymentMethodDetailsP24Bank option, reference: string option, verifiedName: string option) =
             {
+                PaymentMethodDetailsP24.Bank = bank //required
                 PaymentMethodDetailsP24.Reference = reference //required
                 PaymentMethodDetailsP24.VerifiedName = verifiedName //required
             }
+
+    and PaymentMethodDetailsP24Bank =
+        | AliorBank
+        | BankMillennium
+        | BankNowyBfgSa
+        | BankPekaoSa
+        | BankiSpbdzielcze
+        | Blik
+        | BnpParibas
+        | Boz
+        | CitiHandlowy
+        | CreditAgricole
+        | Envelobank
+        | EtransferPocztowy24
+        | GetinBank
+        | Ideabank
+        | Ing
+        | Inteligo
+        | MbankMtransfer
+        | NestPrzelew
+        | NoblePay
+        | PbacZIpko
+        | PlusBank
+        | SantanderPrzelew24
+        | TmobileUsbugiBankowe
+        | ToyotaBank
+        | VolkswagenBank
 
     and PaymentMethodDetailsSepaCreditTransfer = {
         ///Name of the bank associated with the bank account.
@@ -10151,14 +10217,44 @@ module StripeModel =
             }
 
     and PaymentMethodEps = {
-        PaymentMethodEps: string option
+        ///The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
+        Bank: PaymentMethodEpsBank option
     }
     with
 
-        static member New (?paymentMethodEps: string option) =
+        static member New (bank: PaymentMethodEpsBank option) =
             {
-                PaymentMethodEps.PaymentMethodEps = paymentMethodEps |> Option.flatten
+                PaymentMethodEps.Bank = bank //required
             }
+
+    and PaymentMethodEpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
 
     and PaymentMethodFpx = {
         ///Account holder type, if provided. Can be one of `individual` or `company`.
@@ -10441,6 +10537,77 @@ module StripeModel =
             {
                 PaymentMethodSofort.Country = country //required
             }
+
+    and PaymentPagesCheckoutSessionCustomerDetails = {
+        ///The customer’s email at time of checkout.
+        Email: string option
+        ///The customer’s tax exempt status at time of checkout.
+        TaxExempt: PaymentPagesCheckoutSessionCustomerDetailsTaxExempt option
+        ///The customer’s tax IDs at time of checkout.
+        TaxIds: PaymentPagesCheckoutSessionTaxId list option
+    }
+    with
+
+        static member New (email: string option, taxExempt: PaymentPagesCheckoutSessionCustomerDetailsTaxExempt option, taxIds: PaymentPagesCheckoutSessionTaxId list option) =
+            {
+                PaymentPagesCheckoutSessionCustomerDetails.Email = email //required
+                PaymentPagesCheckoutSessionCustomerDetails.TaxExempt = taxExempt //required
+                PaymentPagesCheckoutSessionCustomerDetails.TaxIds = taxIds //required
+            }
+
+    and PaymentPagesCheckoutSessionCustomerDetailsTaxExempt =
+        | Exempt
+        | [<JsonUnionCase("none")>] None'
+        | Reverse
+
+    and PaymentPagesCheckoutSessionTaxId = {
+        ///The type of the tax ID, one of `eu_vat`, `br_cnpj`, `br_cpf`, `nz_gst`, `au_abn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, or `unknown`
+        Type: PaymentPagesCheckoutSessionTaxIdType
+        ///The value of the tax ID.
+        Value: string option
+    }
+    with
+
+        static member New (``type``: PaymentPagesCheckoutSessionTaxIdType, value: string option) =
+            {
+                PaymentPagesCheckoutSessionTaxId.Type = ``type`` //required
+                PaymentPagesCheckoutSessionTaxId.Value = value //required
+            }
+
+    and PaymentPagesCheckoutSessionTaxIdType =
+        | AeTrn
+        | AuAbn
+        | BrCnpj
+        | BrCpf
+        | CaBn
+        | CaQst
+        | ChVat
+        | ClTin
+        | EsCif
+        | EuVat
+        | HkBr
+        | IdNpwp
+        | InGst
+        | JpCn
+        | JpRn
+        | KrBrn
+        | LiUid
+        | MxRfc
+        | MyFrp
+        | MyItn
+        | MySst
+        | NoVat
+        | NzGst
+        | RuInn
+        | RuKpp
+        | SaVat
+        | SgGst
+        | SgUen
+        | ThVat
+        | TwVat
+        | Unknown
+        | UsEin
+        | ZaVat
 
     and PaymentPagesCheckoutSessionTotalDetails = {
         ///This is the sum of all the line item discounts.
@@ -10867,6 +11034,8 @@ module StripeModel =
             }
 
     ///This is an object representing a person associated with a Stripe account.
+    ///A platform cannot access a Standard or Express account's persons after the account starts onboarding, such as after generating an account link for the account.
+    ///See the [Standard onboarding](https://stripe.com/docs/connect/standard-accounts) or [Express onboarding documentation](https://stripe.com/docs/connect/express-accounts) for information about platform pre-filling and account onboarding steps.
     ///Related guide: [Handling Identity Verification with the API](https://stripe.com/docs/connect/identity-verification-api#person-information).
     and Person = {
         ///The account the person is associated with.
@@ -12147,6 +12316,7 @@ module StripeModel =
     and SetupAttemptPaymentMethodDetails = {
         Bancontact: SetupAttemptPaymentMethodDetailsBancontact option
         Card: SetupAttemptPaymentMethodDetailsCard option
+        CardPresent: SetupAttemptPaymentMethodDetailsCardPresent option
         Ideal: SetupAttemptPaymentMethodDetailsIdeal option
         Sofort: SetupAttemptPaymentMethodDetailsSofort option
         ///The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method.
@@ -12154,11 +12324,12 @@ module StripeModel =
     }
     with
 
-        static member New (``type``: string, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?card: SetupAttemptPaymentMethodDetailsCard, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?sofort: SetupAttemptPaymentMethodDetailsSofort) =
+        static member New (``type``: string, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?card: SetupAttemptPaymentMethodDetailsCard, ?cardPresent: SetupAttemptPaymentMethodDetailsCardPresent, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?sofort: SetupAttemptPaymentMethodDetailsSofort) =
             {
                 SetupAttemptPaymentMethodDetails.Type = ``type`` //required
                 SetupAttemptPaymentMethodDetails.Bancontact = bancontact
                 SetupAttemptPaymentMethodDetails.Card = card
+                SetupAttemptPaymentMethodDetails.CardPresent = cardPresent
                 SetupAttemptPaymentMethodDetails.Ideal = ideal
                 SetupAttemptPaymentMethodDetails.Sofort = sofort
             }
@@ -12221,6 +12392,21 @@ module StripeModel =
             {
                 SetupAttemptPaymentMethodDetailsCard.ThreeDSecure = threeDSecure //required
             }
+
+    and SetupAttemptPaymentMethodDetailsCardPresent = {
+        ///The ID of the Card PaymentMethod which was generated by this SetupAttempt.
+        GeneratedCard: SetupAttemptPaymentMethodDetailsCardPresentGeneratedCard'AnyOf option
+    }
+    with
+
+        static member New (generatedCard: SetupAttemptPaymentMethodDetailsCardPresentGeneratedCard'AnyOf option) =
+            {
+                SetupAttemptPaymentMethodDetailsCardPresent.GeneratedCard = generatedCard //required
+            }
+
+    and SetupAttemptPaymentMethodDetailsCardPresentGeneratedCard'AnyOf =
+        | String of string
+        | PaymentMethod of PaymentMethod
 
     and SetupAttemptPaymentMethodDetailsIdeal = {
         ///The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `sns_bank`, `triodos_bank`, or `van_lanschot`.
@@ -14159,7 +14345,7 @@ module StripeModel =
         DefaultTaxRates: TaxRate list option
         ///The end of this phase of the subscription schedule.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime
-        ///The subscription schedule's default invoice settings.
+        ///The invoice settings applicable during this phase.
         InvoiceSettings: InvoiceSettingSubscriptionScheduleSetting option
         ///Subscription items to configure the subscription to during this phase of the subscription schedule.
         Items: SubscriptionScheduleConfigurationItem list
@@ -14216,6 +14402,8 @@ module StripeModel =
         | [<JsonUnionCase("none")>] None'
 
     and SubscriptionSchedulesResourceDefaultSettings = {
+        ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account during this phase of the schedule.
+        ApplicationFeePercent: decimal option
         ///Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
         BillingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
@@ -14231,8 +14419,9 @@ module StripeModel =
     }
     with
 
-        static member New (billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, transferData: SubscriptionTransferData option) =
+        static member New (applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, transferData: SubscriptionTransferData option) =
             {
+                SubscriptionSchedulesResourceDefaultSettings.ApplicationFeePercent = applicationFeePercent //required
                 SubscriptionSchedulesResourceDefaultSettings.BillingCycleAnchor = billingCycleAnchor //required
                 SubscriptionSchedulesResourceDefaultSettings.BillingThresholds = billingThresholds //required
                 SubscriptionSchedulesResourceDefaultSettings.CollectionMethod = collectionMethod //required
@@ -14443,6 +14632,8 @@ module StripeModel =
     and TaxRate = {
         ///Defaults to `true`. When set to `false`, this tax rate cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
         Active: bool
+        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
@@ -14461,14 +14652,17 @@ module StripeModel =
         Metadata: Map<string, string> option
         ///This represents the tax rate percent out of 100.
         Percentage: decimal
+        ///[ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2:US), without country prefix. For example, "NY" for New York, United States.
+        State: string option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax_rate"
 
-        static member New (active: bool, created: DateTime, description: string option, displayName: string, id: string, inclusive: bool, jurisdiction: string option, livemode: bool, metadata: Map<string, string> option, percentage: decimal) =
+        static member New (active: bool, country: string option, created: DateTime, description: string option, displayName: string, id: string, inclusive: bool, jurisdiction: string option, livemode: bool, metadata: Map<string, string> option, percentage: decimal, state: string option) =
             {
                 TaxRate.Active = active //required
+                TaxRate.Country = country //required
                 TaxRate.Created = created //required
                 TaxRate.Description = description //required
                 TaxRate.DisplayName = displayName //required
@@ -14478,6 +14672,7 @@ module StripeModel =
                 TaxRate.Livemode = livemode //required
                 TaxRate.Metadata = metadata //required
                 TaxRate.Percentage = percentage //required
+                TaxRate.State = state //required
             }
 
     ///A Connection Token is used by the Stripe Terminal SDK to connect to a reader.

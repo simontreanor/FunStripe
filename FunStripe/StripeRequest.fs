@@ -644,6 +644,91 @@ module StripeRequest =
                     Verification = verification
                 }
 
+        type Create'DocumentsBankAccountOwnershipVerification = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Create'DocumentsCompanyLicense = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Create'DocumentsCompanyMemorandumOfAssociation = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Create'DocumentsCompanyMinisterialDecree = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Create'DocumentsCompanyRegistrationVerification = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Create'DocumentsCompanyTaxIdVerification = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Create'Documents = {
+            ///One or more documents that support the [Bank account ownership verification](https://support.stripe.com/questions/bank-account-ownership-verification) requirement. Must be a document associated with the account’s primary active bank account that displays the last 4 digits of the account number, either a statement or a voided check.
+            [<Config.Form>]BankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification option
+            ///One or more documents that demonstrate proof of a company's license to operate.
+            [<Config.Form>]CompanyLicense: Create'DocumentsCompanyLicense option
+            ///One or more documents showing the company's Memorandum of Association.
+            [<Config.Form>]CompanyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation option
+            ///(Certain countries only) One or more documents showing the ministerial decree legalizing the company's establishment.
+            [<Config.Form>]CompanyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree option
+            ///One or more documents that demonstrate proof of a company's registration with the appropriate local authorities.
+            [<Config.Form>]CompanyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification option
+            ///One or more documents that demonstrate proof of a company's tax ID.
+            [<Config.Form>]CompanyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification option
+        }
+        with
+            static member New(?bankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification, ?companyLicense: Create'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification) =
+                {
+                    BankAccountOwnershipVerification = bankAccountOwnershipVerification
+                    CompanyLicense = companyLicense
+                    CompanyMemorandumOfAssociation = companyMemorandumOfAssociation
+                    CompanyMinisterialDecree = companyMinisterialDecree
+                    CompanyRegistrationVerification = companyRegistrationVerification
+                    CompanyTaxIdVerification = companyTaxIdVerification
+                }
+
         type Create'IndividualAddress = {
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
@@ -1026,6 +1111,8 @@ module StripeRequest =
             [<Config.Form>]Country: string option
             ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
             [<Config.Form>]DefaultCurrency: string option
+            ///Documents that may be submitted to satisfy various informational requests.
+            [<Config.Form>]Documents: Create'Documents option
             ///The email address of the account holder. This is only to make the account easier to identify to you. Stripe will never directly email Custom accounts.
             [<Config.Form>]Email: string option
             ///Specifies which fields in the response should be expanded.
@@ -1044,7 +1131,7 @@ module StripeRequest =
             [<Config.Form>]Type: Create'Type option
         }
         with
-            static member New(?accountToken: string, ?businessProfile: Create'BusinessProfile, ?businessType: Create'BusinessType, ?capabilities: Create'Capabilities, ?company: Create'Company, ?country: string, ?defaultCurrency: string, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Create'Individual, ?metadata: Map<string, string>, ?settings: Create'Settings, ?tosAcceptance: Create'TosAcceptance, ?type': Create'Type) =
+            static member New(?accountToken: string, ?businessProfile: Create'BusinessProfile, ?businessType: Create'BusinessType, ?capabilities: Create'Capabilities, ?company: Create'Company, ?country: string, ?defaultCurrency: string, ?documents: Create'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Create'Individual, ?metadata: Map<string, string>, ?settings: Create'Settings, ?tosAcceptance: Create'TosAcceptance, ?type': Create'Type) =
                 {
                     AccountToken = accountToken
                     BusinessProfile = businessProfile
@@ -1053,6 +1140,7 @@ module StripeRequest =
                     Company = company
                     Country = country
                     DefaultCurrency = defaultCurrency
+                    Documents = documents
                     Email = email
                     Expand = expand
                     ExternalAccount = externalAccount
@@ -1602,6 +1690,91 @@ module StripeRequest =
                     Verification = verification
                 }
 
+        type Update'DocumentsBankAccountOwnershipVerification = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Update'DocumentsCompanyLicense = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Update'DocumentsCompanyMemorandumOfAssociation = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Update'DocumentsCompanyMinisterialDecree = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Update'DocumentsCompanyRegistrationVerification = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Update'DocumentsCompanyTaxIdVerification = {
+            ///One or more document ids returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]Files: string list option
+        }
+        with
+            static member New(?files: string list) =
+                {
+                    Files = files
+                }
+
+        type Update'Documents = {
+            ///One or more documents that support the [Bank account ownership verification](https://support.stripe.com/questions/bank-account-ownership-verification) requirement. Must be a document associated with the account’s primary active bank account that displays the last 4 digits of the account number, either a statement or a voided check.
+            [<Config.Form>]BankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification option
+            ///One or more documents that demonstrate proof of a company's license to operate.
+            [<Config.Form>]CompanyLicense: Update'DocumentsCompanyLicense option
+            ///One or more documents showing the company's Memorandum of Association.
+            [<Config.Form>]CompanyMemorandumOfAssociation: Update'DocumentsCompanyMemorandumOfAssociation option
+            ///(Certain countries only) One or more documents showing the ministerial decree legalizing the company's establishment.
+            [<Config.Form>]CompanyMinisterialDecree: Update'DocumentsCompanyMinisterialDecree option
+            ///One or more documents that demonstrate proof of a company's registration with the appropriate local authorities.
+            [<Config.Form>]CompanyRegistrationVerification: Update'DocumentsCompanyRegistrationVerification option
+            ///One or more documents that demonstrate proof of a company's tax ID.
+            [<Config.Form>]CompanyTaxIdVerification: Update'DocumentsCompanyTaxIdVerification option
+        }
+        with
+            static member New(?bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification, ?companyLicense: Update'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Update'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Update'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Update'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Update'DocumentsCompanyTaxIdVerification) =
+                {
+                    BankAccountOwnershipVerification = bankAccountOwnershipVerification
+                    CompanyLicense = companyLicense
+                    CompanyMemorandumOfAssociation = companyMemorandumOfAssociation
+                    CompanyMinisterialDecree = companyMinisterialDecree
+                    CompanyRegistrationVerification = companyRegistrationVerification
+                    CompanyTaxIdVerification = companyTaxIdVerification
+                }
+
         type Update'IndividualAddress = {
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
@@ -1978,6 +2151,8 @@ module StripeRequest =
             [<Config.Form>]Company: Update'Company option
             ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
             [<Config.Form>]DefaultCurrency: string option
+            ///Documents that may be submitted to satisfy various informational requests.
+            [<Config.Form>]Documents: Update'Documents option
             ///The email address of the account holder. This is only to make the account easier to identify to you. Stripe will never directly email Custom accounts.
             [<Config.Form>]Email: string option
             ///Specifies which fields in the response should be expanded.
@@ -1994,7 +2169,7 @@ module StripeRequest =
             [<Config.Form>]TosAcceptance: Update'TosAcceptance option
         }
         with
-            static member New(account: string, ?accountToken: string, ?businessProfile: Update'BusinessProfile, ?businessType: Update'BusinessType, ?capabilities: Update'Capabilities, ?company: Update'Company, ?defaultCurrency: string, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Update'Individual, ?metadata: Map<string, string>, ?settings: Update'Settings, ?tosAcceptance: Update'TosAcceptance) =
+            static member New(account: string, ?accountToken: string, ?businessProfile: Update'BusinessProfile, ?businessType: Update'BusinessType, ?capabilities: Update'Capabilities, ?company: Update'Company, ?defaultCurrency: string, ?documents: Update'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Update'Individual, ?metadata: Map<string, string>, ?settings: Update'Settings, ?tosAcceptance: Update'TosAcceptance) =
                 {
                     Account = account
                     AccountToken = accountToken
@@ -2003,6 +2178,7 @@ module StripeRequest =
                     Capabilities = capabilities
                     Company = company
                     DefaultCurrency = defaultCurrency
+                    Documents = documents
                     Email = email
                     Expand = expand
                     ExternalAccount = externalAccount
@@ -3681,9 +3857,9 @@ module StripeRequest =
             |> RestApi.getAsync<CheckoutSession list> settings qs
 
         type Create'Discounts = {
-            ///The ID of the coupon to apply to this session.
+            ///The ID of the coupon to apply to this Session.
             [<Config.Form>]Coupon: string option
-            ///The ID of a promotion code to apply to this session.
+            ///The ID of a promotion code to apply to this Session.
             [<Config.Form>]PromotionCode: string option
         }
         with
@@ -3764,6 +3940,8 @@ module StripeRequest =
             ///The description for the line item, to be displayed on the Checkout page.
             ///If using `price` or `price_data`, will default to the name of the associated product.
             [<Config.Form>]Description: string option
+            ///The [tax rates](https://stripe.com/docs/api/tax_rates) that will be applied to this line item depending on the customer's billing/shipping address. We currently support the following countries: US, GB, AU, and all countries in the EU.
+            [<Config.Form>]DynamicTaxRates: string list option
             ///A list of image URLs representing this line item. Each image can be up to 5 MB in size. If passing `price` or `price_data`, specify images on the associated product instead.
             [<Config.Form>]Images: string list option
             ///The name for the item to be displayed on the Checkout page. Required if `amount` is passed.
@@ -3772,17 +3950,18 @@ module StripeRequest =
             [<Config.Form>]Price: string option
             ///Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline. One of `price`, `price_data` or `amount` is required.
             [<Config.Form>]PriceData: Create'LineItemsPriceData option
-            ///The quantity of the line item being purchased.
+            ///The quantity of the line item being purchased. Quantity should not be defined when `recurring.usage_type=metered`.
             [<Config.Form>]Quantity: int option
-            ///The [tax rates](https://stripe.com/docs/api/tax_rates) which apply to this line item. This is only allowed in subscription mode.
+            ///The [tax rates](https://stripe.com/docs/api/tax_rates) which apply to this line item.
             [<Config.Form>]TaxRates: string list option
         }
         with
-            static member New(?amount: int, ?currency: string, ?description: string, ?images: string list, ?name: string, ?price: string, ?priceData: Create'LineItemsPriceData, ?quantity: int, ?taxRates: string list) =
+            static member New(?amount: int, ?currency: string, ?description: string, ?dynamicTaxRates: string list, ?images: string list, ?name: string, ?price: string, ?priceData: Create'LineItemsPriceData, ?quantity: int, ?taxRates: string list) =
                 {
                     Amount = amount
                     Currency = currency
                     Description = description
+                    DynamicTaxRates = dynamicTaxRates
                     Images = images
                     Name = name
                     Price = price
@@ -3883,9 +4062,14 @@ module StripeRequest =
             [<Config.Form>]ReceiptEmail: string option
             ///Indicates that you intend to make future payments with the payment
             ///method collected by this Checkout Session.
+            ///When setting this to `on_session`, Checkout will show a notice to the
+            ///customer that their payment details will be saved.
             ///When setting this to `off_session`, Checkout will show a notice to the
             ///customer that their payment details will be saved and used for future
             ///payments.
+            ///For both values, Checkout will attach the payment method to either the
+            ///provided Customer for the session, or a new Customer created by Checkout
+            ///if one has not been provided.
             ///When processing card payments, Checkout also uses `setup_future_usage`
             ///to dynamically optimize your payment flow and comply with regional
             ///legislation and network rules, such as SCA.
@@ -4205,7 +4389,7 @@ module StripeRequest =
         type Create'SubscriptionDataItems = {
             ///Plan ID for this item.
             [<Config.Form>]Plan: string option
-            ///Quantity for this item.
+            ///The quantity of the subscription item being purchased. Quantity should not be defined when `recurring.usage_type=metered`.
             [<Config.Form>]Quantity: int option
             ///The tax rates which apply to this item. When set, the `default_tax_rates`
             ///on `subscription_data` do not apply to this item.
@@ -4325,7 +4509,7 @@ module StripeRequest =
             ///object will be updated with the new email.
             ///If blank for Checkout Sessions in `payment` or `subscription` mode,
             ///Checkout will create a new customer object based on information
-            ///provided during the session.
+            ///provided during the payment flow.
             [<Config.Form>]Customer: string option
             ///If provided, this value will be used when the Customer object is created.
             ///If not provided, customers will be asked to enter their email address.
@@ -4333,7 +4517,7 @@ module StripeRequest =
             ///on file. To access information about the customer once a session is
             ///complete, use the `customer` field.
             [<Config.Form>]CustomerEmail: string option
-            ///The coupon or promotion code to apply to this session. Currently, only up to one may be specified.
+            ///The coupon or promotion code to apply to this Session. Currently, only up to one may be specified.
             [<Config.Form>]Discounts: Create'Discounts list option
             ///Specifies which fields in the response should be expanded.
             [<Config.Form>]Expand: string list option
@@ -4346,11 +4530,11 @@ module StripeRequest =
             [<Config.Form>]Locale: Create'Locale option
             ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]Metadata: Map<string, string> option
-            ///The mode of the Checkout Session. Required when using prices or `setup` mode. Pass `subscription` if Checkout session includes at least one recurring item.
+            ///The mode of the Checkout Session. Required when using prices or `setup` mode. Pass `subscription` if the Checkout Session includes at least one recurring item.
             [<Config.Form>]Mode: Create'Mode option
             ///A subset of parameters to be passed to PaymentIntent creation for Checkout Sessions in `payment` mode.
             [<Config.Form>]PaymentIntentData: Create'PaymentIntentData option
-            ///A list of the types of payment methods (e.g., `card`) this Checkout session can accept.
+            ///A list of the types of payment methods (e.g., `card`) this Checkout Session can accept.
             ///Read more about the supported payment methods and their requirements in our [payment
             ///method details guide](/docs/payments/checkout/payment-methods).
             ///If multiple payment methods are passed, Checkout will dynamically reorder them to
@@ -4999,7 +5183,7 @@ module StripeRequest =
             $"/v1/customers"
             |> RestApi.getAsync<Customer list> settings qs
 
-        type Create'AddressAddress = {
+        type Create'AddressOptionalFieldsAddress = {
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
@@ -5148,7 +5332,7 @@ module StripeRequest =
 
         type CreateOptions = {
             ///The customer's address.
-            [<Config.Form>]Address: Choice<Create'AddressAddress,string> option
+            [<Config.Form>]Address: Choice<Create'AddressOptionalFieldsAddress,string> option
             ///An integer amount in %s that represents the customer's current balance, which affect the customer's future invoices. A negative amount represents a credit that decreases the amount due on an invoice; a positive amount increases the amount due on an invoice.
             [<Config.Form>]Balance: int option
             [<Config.Form>]Coupon: string option
@@ -5184,7 +5368,7 @@ module StripeRequest =
             [<Config.Form>]TaxIdData: Create'TaxIdData list option
         }
         with
-            static member New(?address: Choice<Create'AddressAddress,string>, ?source: string, ?shipping: Choice<Create'ShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?paymentMethod: string, ?nextInvoiceSequence: int, ?taxExempt: Create'TaxExempt, ?name: string, ?invoiceSettings: Create'InvoiceSettings, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?coupon: string, ?balance: int, ?metadata: Map<string, string>, ?taxIdData: Create'TaxIdData list) =
+            static member New(?address: Choice<Create'AddressOptionalFieldsAddress,string>, ?source: string, ?shipping: Choice<Create'ShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?paymentMethod: string, ?nextInvoiceSequence: int, ?taxExempt: Create'TaxExempt, ?name: string, ?invoiceSettings: Create'InvoiceSettings, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?coupon: string, ?balance: int, ?metadata: Map<string, string>, ?taxIdData: Create'TaxIdData list) =
                 {
                     Address = address
                     Balance = balance
@@ -5244,7 +5428,7 @@ module StripeRequest =
             $"/v1/customers/{options.Customer}"
             |> RestApi.getAsync<Customer> settings qs
 
-        type Update'AddressAddress = {
+        type Update'AddressOptionalFieldsAddress = {
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
@@ -5350,7 +5534,7 @@ module StripeRequest =
         type UpdateOptions = {
             [<Config.Path>]Customer: string
             ///The customer's address.
-            [<Config.Form>]Address: Choice<Update'AddressAddress,string> option
+            [<Config.Form>]Address: Choice<Update'AddressOptionalFieldsAddress,string> option
             ///An integer amount in %s that represents the customer's current balance, which affect the customer's future invoices. A negative amount represents a credit that decreases the amount due on an invoice; a positive amount increases the amount due on an invoice.
             [<Config.Form>]Balance: int option
             [<Config.Form>]Coupon: string option
@@ -5389,7 +5573,7 @@ module StripeRequest =
             [<Config.Form>]TrialEnd: Choice<Update'TrialEnd,DateTime> option
         }
         with
-            static member New(customer: string, ?source: string, ?shipping: Choice<Update'ShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?nextInvoiceSequence: int, ?name: string, ?metadata: Map<string, string>, ?invoiceSettings: Update'InvoiceSettings, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?defaultSource: string, ?coupon: string, ?balance: int, ?address: Choice<Update'AddressAddress,string>, ?taxExempt: Update'TaxExempt, ?trialEnd: Choice<Update'TrialEnd,DateTime>) =
+            static member New(customer: string, ?source: string, ?shipping: Choice<Update'ShippingCustomerShipping,string>, ?promotionCode: string, ?preferredLocales: string list, ?phone: string, ?nextInvoiceSequence: int, ?name: string, ?metadata: Map<string, string>, ?invoiceSettings: Update'InvoiceSettings, ?invoicePrefix: string, ?expand: string list, ?email: string, ?description: string, ?defaultSource: string, ?coupon: string, ?balance: int, ?address: Choice<Update'AddressOptionalFieldsAddress,string>, ?taxExempt: Update'TaxExempt, ?trialEnd: Choice<Update'TrialEnd,DateTime>) =
                 {
                     Customer = customer
                     Address = address
@@ -6367,6 +6551,7 @@ module StripeRequest =
                 }
 
         type Create'Purpose =
+        | AccountRequirement
         | AdditionalVerification
         | BusinessIcon
         | BusinessLogo
@@ -6784,7 +6969,7 @@ module StripeRequest =
         type CreateOptions = {
             ///The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
             [<Config.Form>]AccountTaxIds: Choice<string list,string> option
-            ///A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#invoices).
+            ///A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/billing/invoices/connect#collecting-fees).
             [<Config.Form>]ApplicationFeeAmount: int option
             ///Controls whether Stripe will perform [automatic collection](https://stripe.com/docs/billing/invoices/workflow/#auto_advance) of the invoice. When `false`, the invoice's state will not automatically advance without an explicit action.
             [<Config.Form>]AutoAdvance: bool option
@@ -6929,7 +7114,7 @@ module StripeRequest =
             [<Config.Path>]Invoice: string
             ///The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
             [<Config.Form>]AccountTaxIds: Choice<string list,string> option
-            ///A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#invoices).
+            ///A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/billing/invoices/connect#collecting-fees).
             [<Config.Form>]ApplicationFeeAmount: int option
             ///Controls whether Stripe will perform [automatic collection](https://stripe.com/docs/billing/invoices/workflow/#auto_advance) of the invoice.
             [<Config.Form>]AutoAdvance: bool option
@@ -7343,9 +7528,9 @@ module StripeRequest =
     module IssuingAuthorizations =
 
         type ListOptions = {
-            ///Only return issuing transactions that belong to the given card.
+            ///Only return authorizations that belong to the given card.
             [<Config.Query>]Card: string option
-            ///Only return authorizations belonging to the given cardholder.
+            ///Only return authorizations that belong to the given cardholder.
             [<Config.Query>]Cardholder: string option
             ///Only return authorizations that were created during the given date interval.
             [<Config.Query>]Created: int option
@@ -10654,7 +10839,7 @@ module StripeRequest =
             [<Config.Form>]AllowedCategories: Create'SpendingControlsAllowedCategories list option
             ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
             [<Config.Form>]BlockedCategories: Create'SpendingControlsBlockedCategories list option
-            ///Limit spending with amount-based rules.
+            ///Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).
             [<Config.Form>]SpendingLimits: Create'SpendingControlsSpendingLimits list option
         }
         with
@@ -11638,7 +11823,7 @@ module StripeRequest =
             [<Config.Form>]AllowedCategories: Update'SpendingControlsAllowedCategories list option
             ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
             [<Config.Form>]BlockedCategories: Update'SpendingControlsBlockedCategories list option
-            ///Limit spending with amount-based rules.
+            ///Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).
             [<Config.Form>]SpendingLimits: Update'SpendingControlsSpendingLimits list option
         }
         with
@@ -12273,9 +12458,11 @@ module StripeRequest =
             [<Config.Query>]Limit: int option
             ///A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
             [<Config.Query>]StartingAfter: string option
+            ///Only return transactions that have the given type. One of `capture` or `refund`.
+            [<Config.Query>]Type: string option
         }
         with
-            static member New(?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            static member New(?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?type': string) =
                 {
                     Card = card
                     Cardholder = cardholder
@@ -12284,11 +12471,12 @@ module StripeRequest =
                     Expand = expand
                     Limit = limit
                     StartingAfter = startingAfter
+                    Type = type'
                 }
 
         ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
         let List settings (options: ListOptions) =
-            let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+            let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box)] |> Map.ofList
             $"/v1/issuing/transactions"
             |> RestApi.getAsync<IssuingTransaction list> settings qs
 
@@ -12857,6 +13045,45 @@ module StripeRequest =
                     Phone = phone
                 }
 
+        type Create'PaymentMethodDataEpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
+
+        type Create'PaymentMethodDataEps = {
+            ///The customer's bank.
+            [<Config.Form>]Bank: Create'PaymentMethodDataEpsBank option
+        }
+        with
+            static member New(?bank: Create'PaymentMethodDataEpsBank) =
+                {
+                    Bank = bank
+                }
+
         type Create'PaymentMethodDataFpxAccountHolderType =
         | Company
         | Individual
@@ -13012,7 +13239,7 @@ module StripeRequest =
             ///Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]BillingDetails: Create'PaymentMethodDataBillingDetails option
             ///If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
-            [<Config.Form>]Eps: string option
+            [<Config.Form>]Eps: Create'PaymentMethodDataEps option
             ///If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
             [<Config.Form>]Fpx: Create'PaymentMethodDataFpx option
             ///If this is a `giropay` PaymentMethod, this hash contains details about the Giropay payment method.
@@ -13037,7 +13264,7 @@ module StripeRequest =
             [<Config.Form>]Type: Create'PaymentMethodDataType option
         }
         with
-            static member New(?alipay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?p24: Create'PaymentMethodDataP24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Create'PaymentMethodDataIdeal, ?sofort: Create'PaymentMethodDataSofort, ?grabpay: string, ?fpx: Create'PaymentMethodDataFpx, ?eps: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?bancontact: string, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?giropay: string, ?type': Create'PaymentMethodDataType) =
+            static member New(?alipay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?p24: Create'PaymentMethodDataP24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Create'PaymentMethodDataIdeal, ?sofort: Create'PaymentMethodDataSofort, ?grabpay: string, ?fpx: Create'PaymentMethodDataFpx, ?eps: Create'PaymentMethodDataEps, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?bancontact: string, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?giropay: string, ?type': Create'PaymentMethodDataType) =
                 {
                     Alipay = alipay
                     AuBecsDebit = auBecsDebit
@@ -13164,6 +13391,16 @@ module StripeRequest =
                     ExpiresAfterDays = expiresAfterDays
                 }
 
+        type Create'PaymentMethodOptionsP24PaymentMethodOptions = {
+            ///Confirm that the payer has accepted the P24 terms and conditions.
+            [<Config.Form>]TosShownAndAccepted: bool option
+        }
+        with
+            static member New(?tosShownAndAccepted: bool) =
+                {
+                    TosShownAndAccepted = tosShownAndAccepted
+                }
+
         type Create'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions = {
             ///Additional fields for Mandate creation
             [<Config.Form>]MandateOptions: string option
@@ -13203,14 +13440,14 @@ module StripeRequest =
             ///If this is a `oxxo` PaymentMethod, this sub-hash contains details about the OXXO payment method options.
             [<Config.Form>]Oxxo: Choice<Create'PaymentMethodOptionsOxxoPaymentMethodOptions,string> option
             ///If this is a `p24` PaymentMethod, this sub-hash contains details about the Przelewy24 payment method options.
-            [<Config.Form>]P24: Choice<string,string> option
+            [<Config.Form>]P24: Choice<Create'PaymentMethodOptionsP24PaymentMethodOptions,string> option
             ///If this is a `sepa_debit` PaymentIntent, this sub-hash contains details about the SEPA Debit payment method options.
             [<Config.Form>]SepaDebit: Choice<Create'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string> option
             ///If this is a `sofort` PaymentMethod, this sub-hash contains details about the SOFORT payment method options.
             [<Config.Form>]Sofort: Choice<Create'PaymentMethodOptionsSofortPaymentMethodOptions,string> option
         }
         with
-            static member New(?alipay: Choice<string,string>, ?bancontact: Choice<Create'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?card: Choice<Create'PaymentMethodOptionsCardPaymentIntent,string>, ?oxxo: Choice<Create'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<string,string>, ?sepaDebit: Choice<Create'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Create'PaymentMethodOptionsSofortPaymentMethodOptions,string>) =
+            static member New(?alipay: Choice<string,string>, ?bancontact: Choice<Create'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?card: Choice<Create'PaymentMethodOptionsCardPaymentIntent,string>, ?oxxo: Choice<Create'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Create'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?sepaDebit: Choice<Create'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Create'PaymentMethodOptionsSofortPaymentMethodOptions,string>) =
                 {
                     Alipay = alipay
                     Bancontact = bancontact
@@ -13504,6 +13741,45 @@ module StripeRequest =
                     Phone = phone
                 }
 
+        type Update'PaymentMethodDataEpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
+
+        type Update'PaymentMethodDataEps = {
+            ///The customer's bank.
+            [<Config.Form>]Bank: Update'PaymentMethodDataEpsBank option
+        }
+        with
+            static member New(?bank: Update'PaymentMethodDataEpsBank) =
+                {
+                    Bank = bank
+                }
+
         type Update'PaymentMethodDataFpxAccountHolderType =
         | Company
         | Individual
@@ -13659,7 +13935,7 @@ module StripeRequest =
             ///Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]BillingDetails: Update'PaymentMethodDataBillingDetails option
             ///If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
-            [<Config.Form>]Eps: string option
+            [<Config.Form>]Eps: Update'PaymentMethodDataEps option
             ///If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
             [<Config.Form>]Fpx: Update'PaymentMethodDataFpx option
             ///If this is a `giropay` PaymentMethod, this hash contains details about the Giropay payment method.
@@ -13684,7 +13960,7 @@ module StripeRequest =
             [<Config.Form>]Type: Update'PaymentMethodDataType option
         }
         with
-            static member New(?alipay: string, ?sepaDebit: Update'PaymentMethodDataSepaDebit, ?p24: Update'PaymentMethodDataP24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Update'PaymentMethodDataIdeal, ?sofort: Update'PaymentMethodDataSofort, ?grabpay: string, ?fpx: Update'PaymentMethodDataFpx, ?eps: string, ?billingDetails: Update'PaymentMethodDataBillingDetails, ?bancontact: string, ?bacsDebit: Update'PaymentMethodDataBacsDebit, ?auBecsDebit: Update'PaymentMethodDataAuBecsDebit, ?giropay: string, ?type': Update'PaymentMethodDataType) =
+            static member New(?alipay: string, ?sepaDebit: Update'PaymentMethodDataSepaDebit, ?p24: Update'PaymentMethodDataP24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Update'PaymentMethodDataIdeal, ?sofort: Update'PaymentMethodDataSofort, ?grabpay: string, ?fpx: Update'PaymentMethodDataFpx, ?eps: Update'PaymentMethodDataEps, ?billingDetails: Update'PaymentMethodDataBillingDetails, ?bancontact: string, ?bacsDebit: Update'PaymentMethodDataBacsDebit, ?auBecsDebit: Update'PaymentMethodDataAuBecsDebit, ?giropay: string, ?type': Update'PaymentMethodDataType) =
                 {
                     Alipay = alipay
                     AuBecsDebit = auBecsDebit
@@ -13811,6 +14087,16 @@ module StripeRequest =
                     ExpiresAfterDays = expiresAfterDays
                 }
 
+        type Update'PaymentMethodOptionsP24PaymentMethodOptions = {
+            ///Confirm that the payer has accepted the P24 terms and conditions.
+            [<Config.Form>]TosShownAndAccepted: bool option
+        }
+        with
+            static member New(?tosShownAndAccepted: bool) =
+                {
+                    TosShownAndAccepted = tosShownAndAccepted
+                }
+
         type Update'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions = {
             ///Additional fields for Mandate creation
             [<Config.Form>]MandateOptions: string option
@@ -13850,14 +14136,14 @@ module StripeRequest =
             ///If this is a `oxxo` PaymentMethod, this sub-hash contains details about the OXXO payment method options.
             [<Config.Form>]Oxxo: Choice<Update'PaymentMethodOptionsOxxoPaymentMethodOptions,string> option
             ///If this is a `p24` PaymentMethod, this sub-hash contains details about the Przelewy24 payment method options.
-            [<Config.Form>]P24: Choice<string,string> option
+            [<Config.Form>]P24: Choice<Update'PaymentMethodOptionsP24PaymentMethodOptions,string> option
             ///If this is a `sepa_debit` PaymentIntent, this sub-hash contains details about the SEPA Debit payment method options.
             [<Config.Form>]SepaDebit: Choice<Update'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string> option
             ///If this is a `sofort` PaymentMethod, this sub-hash contains details about the SOFORT payment method options.
             [<Config.Form>]Sofort: Choice<Update'PaymentMethodOptionsSofortPaymentMethodOptions,string> option
         }
         with
-            static member New(?alipay: Choice<string,string>, ?bancontact: Choice<Update'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?card: Choice<Update'PaymentMethodOptionsCardPaymentIntent,string>, ?oxxo: Choice<Update'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<string,string>, ?sepaDebit: Choice<Update'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Update'PaymentMethodOptionsSofortPaymentMethodOptions,string>) =
+            static member New(?alipay: Choice<string,string>, ?bancontact: Choice<Update'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?card: Choice<Update'PaymentMethodOptionsCardPaymentIntent,string>, ?oxxo: Choice<Update'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Update'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?sepaDebit: Choice<Update'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Update'PaymentMethodOptionsSofortPaymentMethodOptions,string>) =
                 {
                     Alipay = alipay
                     Bancontact = bancontact
@@ -14246,6 +14532,45 @@ module StripeRequest =
                     Phone = phone
                 }
 
+        type Confirm'PaymentMethodDataEpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
+
+        type Confirm'PaymentMethodDataEps = {
+            ///The customer's bank.
+            [<Config.Form>]Bank: Confirm'PaymentMethodDataEpsBank option
+        }
+        with
+            static member New(?bank: Confirm'PaymentMethodDataEpsBank) =
+                {
+                    Bank = bank
+                }
+
         type Confirm'PaymentMethodDataFpxAccountHolderType =
         | Company
         | Individual
@@ -14401,7 +14726,7 @@ module StripeRequest =
             ///Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]BillingDetails: Confirm'PaymentMethodDataBillingDetails option
             ///If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
-            [<Config.Form>]Eps: string option
+            [<Config.Form>]Eps: Confirm'PaymentMethodDataEps option
             ///If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
             [<Config.Form>]Fpx: Confirm'PaymentMethodDataFpx option
             ///If this is a `giropay` PaymentMethod, this hash contains details about the Giropay payment method.
@@ -14426,7 +14751,7 @@ module StripeRequest =
             [<Config.Form>]Type: Confirm'PaymentMethodDataType option
         }
         with
-            static member New(?alipay: string, ?sepaDebit: Confirm'PaymentMethodDataSepaDebit, ?p24: Confirm'PaymentMethodDataP24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Confirm'PaymentMethodDataIdeal, ?sofort: Confirm'PaymentMethodDataSofort, ?grabpay: string, ?fpx: Confirm'PaymentMethodDataFpx, ?eps: string, ?billingDetails: Confirm'PaymentMethodDataBillingDetails, ?bancontact: string, ?bacsDebit: Confirm'PaymentMethodDataBacsDebit, ?auBecsDebit: Confirm'PaymentMethodDataAuBecsDebit, ?giropay: string, ?type': Confirm'PaymentMethodDataType) =
+            static member New(?alipay: string, ?sepaDebit: Confirm'PaymentMethodDataSepaDebit, ?p24: Confirm'PaymentMethodDataP24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Confirm'PaymentMethodDataIdeal, ?sofort: Confirm'PaymentMethodDataSofort, ?grabpay: string, ?fpx: Confirm'PaymentMethodDataFpx, ?eps: Confirm'PaymentMethodDataEps, ?billingDetails: Confirm'PaymentMethodDataBillingDetails, ?bancontact: string, ?bacsDebit: Confirm'PaymentMethodDataBacsDebit, ?auBecsDebit: Confirm'PaymentMethodDataAuBecsDebit, ?giropay: string, ?type': Confirm'PaymentMethodDataType) =
                 {
                     Alipay = alipay
                     AuBecsDebit = auBecsDebit
@@ -14553,6 +14878,16 @@ module StripeRequest =
                     ExpiresAfterDays = expiresAfterDays
                 }
 
+        type Confirm'PaymentMethodOptionsP24PaymentMethodOptions = {
+            ///Confirm that the payer has accepted the P24 terms and conditions.
+            [<Config.Form>]TosShownAndAccepted: bool option
+        }
+        with
+            static member New(?tosShownAndAccepted: bool) =
+                {
+                    TosShownAndAccepted = tosShownAndAccepted
+                }
+
         type Confirm'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions = {
             ///Additional fields for Mandate creation
             [<Config.Form>]MandateOptions: string option
@@ -14592,14 +14927,14 @@ module StripeRequest =
             ///If this is a `oxxo` PaymentMethod, this sub-hash contains details about the OXXO payment method options.
             [<Config.Form>]Oxxo: Choice<Confirm'PaymentMethodOptionsOxxoPaymentMethodOptions,string> option
             ///If this is a `p24` PaymentMethod, this sub-hash contains details about the Przelewy24 payment method options.
-            [<Config.Form>]P24: Choice<string,string> option
+            [<Config.Form>]P24: Choice<Confirm'PaymentMethodOptionsP24PaymentMethodOptions,string> option
             ///If this is a `sepa_debit` PaymentIntent, this sub-hash contains details about the SEPA Debit payment method options.
             [<Config.Form>]SepaDebit: Choice<Confirm'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string> option
             ///If this is a `sofort` PaymentMethod, this sub-hash contains details about the SOFORT payment method options.
             [<Config.Form>]Sofort: Choice<Confirm'PaymentMethodOptionsSofortPaymentMethodOptions,string> option
         }
         with
-            static member New(?alipay: Choice<string,string>, ?bancontact: Choice<Confirm'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?card: Choice<Confirm'PaymentMethodOptionsCardPaymentIntent,string>, ?oxxo: Choice<Confirm'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<string,string>, ?sepaDebit: Choice<Confirm'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Confirm'PaymentMethodOptionsSofortPaymentMethodOptions,string>) =
+            static member New(?alipay: Choice<string,string>, ?bancontact: Choice<Confirm'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?card: Choice<Confirm'PaymentMethodOptionsCardPaymentIntent,string>, ?oxxo: Choice<Confirm'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Confirm'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?sepaDebit: Choice<Confirm'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Confirm'PaymentMethodOptionsSofortPaymentMethodOptions,string>) =
                 {
                     Alipay = alipay
                     Bancontact = bancontact
@@ -14873,6 +15208,45 @@ module StripeRequest =
                     Token = token
                 }
 
+        type Create'EpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
+
+        type Create'Eps = {
+            ///The customer's bank.
+            [<Config.Form>]Bank: Create'EpsBank option
+        }
+        with
+            static member New(?bank: Create'EpsBank) =
+                {
+                    Bank = bank
+                }
+
         type Create'FpxAccountHolderType =
         | Company
         | Individual
@@ -15033,7 +15407,7 @@ module StripeRequest =
             ///The `Customer` to whom the original PaymentMethod is attached.
             [<Config.Form>]Customer: string option
             ///If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
-            [<Config.Form>]Eps: string option
+            [<Config.Form>]Eps: Create'Eps option
             ///Specifies which fields in the response should be expanded.
             [<Config.Form>]Expand: string list option
             ///If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
@@ -15062,7 +15436,7 @@ module StripeRequest =
             [<Config.Form>]Type: Create'Type option
         }
         with
-            static member New(?alipay: string, ?sepaDebit: Create'SepaDebit, ?paymentMethod: string, ?p24: Create'P24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Create'Ideal, ?grabpay: string, ?sofort: Create'Sofort, ?giropay: string, ?expand: string list, ?eps: string, ?customer: string, ?card: Choice<Create'CardCardDetailsParams,Create'CardTokenParams>, ?billingDetails: Create'BillingDetails, ?bancontact: string, ?bacsDebit: Create'BacsDebit, ?auBecsDebit: Create'AuBecsDebit, ?fpx: Create'Fpx, ?type': Create'Type) =
+            static member New(?alipay: string, ?sepaDebit: Create'SepaDebit, ?paymentMethod: string, ?p24: Create'P24, ?oxxo: string, ?metadata: Map<string, string>, ?interacPresent: string, ?ideal: Create'Ideal, ?grabpay: string, ?sofort: Create'Sofort, ?giropay: string, ?expand: string list, ?eps: Create'Eps, ?customer: string, ?card: Choice<Create'CardCardDetailsParams,Create'CardTokenParams>, ?billingDetails: Create'BillingDetails, ?bancontact: string, ?bacsDebit: Create'BacsDebit, ?auBecsDebit: Create'AuBecsDebit, ?fpx: Create'Fpx, ?type': Create'Type) =
                 {
                     Alipay = alipay
                     AuBecsDebit = auBecsDebit
@@ -15171,6 +15545,8 @@ module StripeRequest =
             [<Config.Path>]PaymentMethod: string
             ///This is a legacy parameter that will be removed in the future. It is a hash that does not accept any keys.
             [<Config.Form>]AuBecsDebit: string option
+            ///This is a legacy parameter that will be removed in the future. It is a hash that does not accept any keys.
+            [<Config.Form>]BacsDebit: string option
             ///Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]BillingDetails: Update'BillingDetails option
             ///If this is a `card` PaymentMethod, this hash contains the user's card details.
@@ -15183,10 +15559,11 @@ module StripeRequest =
             [<Config.Form>]SepaDebit: string option
         }
         with
-            static member New(paymentMethod: string, ?auBecsDebit: string, ?billingDetails: Update'BillingDetails, ?card: Update'Card, ?expand: string list, ?metadata: Map<string, string>, ?sepaDebit: string) =
+            static member New(paymentMethod: string, ?auBecsDebit: string, ?bacsDebit: string, ?billingDetails: Update'BillingDetails, ?card: Update'Card, ?expand: string list, ?metadata: Map<string, string>, ?sepaDebit: string) =
                 {
                     PaymentMethod = paymentMethod
                     AuBecsDebit = auBecsDebit
+                    BacsDebit = bacsDebit
                     BillingDetails = billingDetails
                     Card = card
                     Expand = expand
@@ -19640,6 +20017,8 @@ module StripeRequest =
         | SendInvoice
 
         type Create'DefaultSettings = {
+            ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
+            [<Config.Form>]ApplicationFeePercent: decimal option
             ///Can be set to `phase_start` to set the anchor to the start of the phase or `automatic` to automatically change it if needed. Cannot be set to `phase_start` if this phase specifies a trial. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
             [<Config.Form>]BillingCycleAnchor: Create'DefaultSettingsBillingCycleAnchor option
             ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
@@ -19654,8 +20033,9 @@ module StripeRequest =
             [<Config.Form>]TransferData: Choice<Create'DefaultSettingsTransferDataTransferDataSpecs,string> option
         }
         with
-            static member New(?billingCycleAnchor: Create'DefaultSettingsBillingCycleAnchor, ?billingThresholds: Choice<Create'DefaultSettingsBillingThresholdsBillingThresholds,string>, ?collectionMethod: Create'DefaultSettingsCollectionMethod, ?defaultPaymentMethod: string, ?invoiceSettings: Create'DefaultSettingsInvoiceSettings, ?transferData: Choice<Create'DefaultSettingsTransferDataTransferDataSpecs,string>) =
+            static member New(?applicationFeePercent: decimal, ?billingCycleAnchor: Create'DefaultSettingsBillingCycleAnchor, ?billingThresholds: Choice<Create'DefaultSettingsBillingThresholdsBillingThresholds,string>, ?collectionMethod: Create'DefaultSettingsCollectionMethod, ?defaultPaymentMethod: string, ?invoiceSettings: Create'DefaultSettingsInvoiceSettings, ?transferData: Choice<Create'DefaultSettingsTransferDataTransferDataSpecs,string>) =
                 {
+                    ApplicationFeePercent = applicationFeePercent
                     BillingCycleAnchor = billingCycleAnchor
                     BillingThresholds = billingThresholds
                     CollectionMethod = collectionMethod
@@ -19990,6 +20370,8 @@ module StripeRequest =
         | SendInvoice
 
         type Update'DefaultSettings = {
+            ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
+            [<Config.Form>]ApplicationFeePercent: decimal option
             ///Can be set to `phase_start` to set the anchor to the start of the phase or `automatic` to automatically change it if needed. Cannot be set to `phase_start` if this phase specifies a trial. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
             [<Config.Form>]BillingCycleAnchor: Update'DefaultSettingsBillingCycleAnchor option
             ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
@@ -20004,8 +20386,9 @@ module StripeRequest =
             [<Config.Form>]TransferData: Choice<Update'DefaultSettingsTransferDataTransferDataSpecs,string> option
         }
         with
-            static member New(?billingCycleAnchor: Update'DefaultSettingsBillingCycleAnchor, ?billingThresholds: Choice<Update'DefaultSettingsBillingThresholdsBillingThresholds,string>, ?collectionMethod: Update'DefaultSettingsCollectionMethod, ?defaultPaymentMethod: string, ?invoiceSettings: Update'DefaultSettingsInvoiceSettings, ?transferData: Choice<Update'DefaultSettingsTransferDataTransferDataSpecs,string>) =
+            static member New(?applicationFeePercent: decimal, ?billingCycleAnchor: Update'DefaultSettingsBillingCycleAnchor, ?billingThresholds: Choice<Update'DefaultSettingsBillingThresholdsBillingThresholds,string>, ?collectionMethod: Update'DefaultSettingsCollectionMethod, ?defaultPaymentMethod: string, ?invoiceSettings: Update'DefaultSettingsInvoiceSettings, ?transferData: Choice<Update'DefaultSettingsTransferDataTransferDataSpecs,string>) =
                 {
+                    ApplicationFeePercent = applicationFeePercent
                     BillingCycleAnchor = billingCycleAnchor
                     BillingThresholds = billingThresholds
                     CollectionMethod = collectionMethod
@@ -21055,6 +21438,8 @@ module StripeRequest =
         type CreateOptions = {
             ///Flag determining whether the tax rate is active or inactive (archived). Inactive tax rates cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
             [<Config.Form>]Active: bool option
+            ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]Country: string option
             ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
             [<Config.Form>]Description: string option
             ///The display name of the tax rate, which will be shown to users.
@@ -21069,11 +21454,14 @@ module StripeRequest =
             [<Config.Form>]Metadata: Map<string, string> option
             ///This represents the tax rate percent out of 100.
             [<Config.Form>]Percentage: decimal
+            ///[ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2:US), without country prefix. For example, "NY" for New York, United States.
+            [<Config.Form>]State: string option
         }
         with
-            static member New(displayName: string, inclusive: bool, percentage: decimal, ?active: bool, ?description: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>) =
+            static member New(displayName: string, inclusive: bool, percentage: decimal, ?active: bool, ?country: string, ?description: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string) =
                 {
                     Active = active
+                    Country = country
                     Description = description
                     DisplayName = displayName
                     Expand = expand
@@ -21081,6 +21469,7 @@ module StripeRequest =
                     Jurisdiction = jurisdiction
                     Metadata = metadata
                     Percentage = percentage
+                    State = state
                 }
 
         ///<p>Creates a new tax rate.</p>
@@ -21110,6 +21499,8 @@ module StripeRequest =
             [<Config.Path>]TaxRate: string
             ///Flag determining whether the tax rate is active or inactive (archived). Inactive tax rates cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
             [<Config.Form>]Active: bool option
+            ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]Country: string option
             ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
             [<Config.Form>]Description: string option
             ///The display name of the tax rate, which will be shown to users.
@@ -21120,17 +21511,21 @@ module StripeRequest =
             [<Config.Form>]Jurisdiction: string option
             ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]Metadata: Map<string, string> option
+            ///[ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2:US), without country prefix. For example, "NY" for New York, United States.
+            [<Config.Form>]State: string option
         }
         with
-            static member New(taxRate: string, ?active: bool, ?description: string, ?displayName: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>) =
+            static member New(taxRate: string, ?active: bool, ?country: string, ?description: string, ?displayName: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string) =
                 {
                     TaxRate = taxRate
                     Active = active
+                    Country = country
                     Description = description
                     DisplayName = displayName
                     Expand = expand
                     Jurisdiction = jurisdiction
                     Metadata = metadata
+                    State = state
                 }
 
         ///<p>Updates an existing tax rate.</p>
