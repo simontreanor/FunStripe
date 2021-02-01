@@ -1,6 +1,6 @@
 # FunStripe
 
-An F# 5.0 library to connect to the Stripe API, including code generators to update the model, requests and service.
+An F# 5.0 library to connect to the Stripe API to make PSD2 SCA (Strong Consumer Authentication) compatible payments, including code generators to update the model, requests and service.
 
 ## Installation
 
