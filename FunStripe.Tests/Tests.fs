@@ -169,15 +169,15 @@ module Tests =
                     let! expected = getNewPaymentMethod()
                     let! actual =
                         let options =
-                            PaymentMethodsAttach.AttachOptions.New(
-                                customer = testCustomer,
-                                expand = [nameof(Customer)],
-                                paymentMethod = expected.Id
-                            )
                             // PaymentMethodsAttach.AttachOptions.New(
-                            //     customer = testCustomer
+                            //     customer = testCustomer,
+                            //     expand = [nameof(Customer)],
                             //     paymentMethod = expected.Id
                             // )
+                            PaymentMethodsAttach.AttachOptions.New(
+                                customer = testCustomer,
+                                paymentMethod = expected.Id
+                            )
                         PaymentMethodsAttach.Attach settings options
                     return expected, actual
                 }

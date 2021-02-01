@@ -399,12 +399,20 @@ module internal Core =
                 deserializeUnwrapOption itemPath t JsonField.Default (Some jvalue)
             )
 
-        let deserializeList (path: JsonPath) (t: Type) (jvalue: JsonValue): obj =
+        let rec deserializeList (path: JsonPath) (t: Type) (jvalue: JsonValue): obj =
             match jvalue with
             | JsonValue.Array jvalues ->
                 let itemType = getListItemType t
                 let arrayValues = deserializeArrayItems path itemType jvalues
                 arrayValues |> List.ofSeq |> createList itemType
+            | JsonValue.Record fields ->
+                fields
+                |> Array.tryFind (fun (k, _) -> k = "data")
+                |> function
+                    | Some (_, v) ->
+                        deserializeList path t v
+                    | _ ->
+                        failDeserialization path "Failed to parse list from JSON that is not array or data record."
             | _ -> failDeserialization path "Failed to parse list from JSON that is not array."
 
         let deserializeArray (path: JsonPath) (t: Type) (jvalue: JsonValue): obj =

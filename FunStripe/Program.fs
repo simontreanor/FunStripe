@@ -1,5 +1,6 @@
 open FunStripe
 open FunStripe.AsyncResultCE
+open FunStripe.StripeError
 open FunStripe.StripeModel
 open FunStripe.StripeRequest
 open System
@@ -16,6 +17,9 @@ let defaultCard =
 
 let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
+let simpleError message =
+    async { return Error { ErrorResponse.StripeError = ErrorObject.New(message = message) } }
+
 let getNewPaymentMethod () =
     asyncResult {
         let options = 
@@ -27,26 +31,39 @@ let getNewPaymentMethod () =
     }
 
 let test() =
+    let (customerId, paymentMethodId) = ("cus_EoM0QeSF2VsaYl", "pm_1IG5N7GXSUku3vEhV7Zw2jaQ")
     let result =
         asyncResult {
-            let! expected = getNewPaymentMethod()
-            let! actual =
-                let options =
-                    // PaymentMethodsAttach'AttachOptions.New(
-                    //     customer = testCustomer,
-                    //     expand = [nameof(Customer)]
-                    // )
-                    PaymentMethodsAttach.AttachOptions.New(
-                        customer = testCustomer,
-                        paymentMethod = expected.Id
+            //Stripe docs recommend listing the customer's payment methods rather than using the paymentMethodId directly, but don't say why
+            let! paymentMethods =
+                PaymentMethods.ListOptions.New(
+                    customer = customerId,
+                    type' = "card"
+                )
+                |> PaymentMethods.List settings
+            let paymentMethod =
+                paymentMethods
+                |> List.tryFind(fun pm -> pm.Id = paymentMethodId)
+            match paymentMethod with
+            | Some pm ->
+                return!
+                    PaymentIntents.CreateOptions.New (
+                        amount = 12500,
+                        confirm = true,
+                        currency = "GBP",
+                        customer = customerId,
+                        offSession = Choice2Of2 PaymentIntents.Create'OffSession.Recurring,
+                        paymentMethod = pm.Id,
+                        setupFutureUsage = PaymentIntents.Create'SetupFutureUsage.OffSession
                     )
-                PaymentMethodsAttach.Attach settings options
-            return expected, actual
+                    |> PaymentIntents.Create settings
+            | None ->
+                return! simpleError "No matching payment method found"
         }
         |> Async.RunSynchronously
     match result with
-    | Ok (exp, act) ->
-        (exp = act) |> string
+    | Ok pi ->
+        sprintf "%A" pi
     | Error e ->
         sprintf "%A" e
 
