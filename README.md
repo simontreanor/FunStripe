@@ -4,7 +4,7 @@ An F# 5.0 library to connect to the Stripe API, including code generators to upd
 
 ## Installation
 
-TBD
+Get the latest version from [Nuget](https://www.nuget.org/packages/FSharp.Stripe/)
 
 ## Usage
 
