@@ -4,7 +4,7 @@ An F# 5.0 library to connect to the Stripe API, including code generators to upd
 
 ## Installation
 
-Get the latest version from [Nuget](https://www.nuget.org/packages/FSharp.Stripe/)
+Get the latest version from [Nuget](https://www.nuget.org/packages/FunStripe/)
 
 ## Usage
 
@@ -25,12 +25,12 @@ let defaultCard =
 
 let getNewPaymentMethod () =
     asyncResult {
-        let options = 
+        return! 
             PaymentMethods.CreateOptions.New(
                 card = Choice1Of2 defaultCard,
                 type' = PaymentMethods.CreateType.Card
             )
-        return! PaymentMethods.Create settings options
+            |> PaymentMethods.Create settings
     }
 ```
 
