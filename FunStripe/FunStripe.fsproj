@@ -6,8 +6,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <PackageId>FSharp.Stripe</PackageId>
-    <Version>0.7.6</Version>
+    <PackageId>FunStripe</PackageId>
+    <Version>0.7.7</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library</PackageDescription>
