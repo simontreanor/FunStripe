@@ -8,7 +8,7 @@ TBD
 
 ## Usage
 
-Open the StripeModel, StripeRequest and StripeService modules.
+Open the StripeModel and StripeRequest modules.
 
 Here's an example of how to create a new payment method:
 

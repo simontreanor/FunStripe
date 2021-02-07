@@ -6,12 +6,15 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <PackageId>FunStripeLib</PackageId>
-    <Version>0.7.2</Version>
+    <PackageId>FSharp.Stripe</PackageId>
+    <Version>0.7.5</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library</PackageDescription>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Json/InterfaceTypes.fs" />

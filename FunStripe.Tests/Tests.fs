@@ -26,22 +26,22 @@ module Tests =
 
         let getNewPaymentMethod () =
             asyncResult {
-                let options = 
+                return!
                     PaymentMethods.CreateOptions.New(
                         card = Choice1Of2 defaultCard,
                         type' = PaymentMethods.Create'Type.Card
                     )
-                return! PaymentMethods.Create settings options
+                    |> PaymentMethods.Create settings
             }
 
         let attachCustomer paymentMethodId =
             asyncResult {
-                let options = 
+                return!
                     PaymentMethodsAttach.AttachOptions.New(
                         customer = testCustomer,
                         paymentMethod = paymentMethodId
                     )
-                return! PaymentMethodsAttach.Attach settings options
+                    |> PaymentMethodsAttach.Attach settings
             }
 
         let defaultPaymentMethod =
