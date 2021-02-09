@@ -8054,13 +8054,13 @@ module StripeModel =
 
     and NotificationEventData = {
         ///Object containing the API resource relevant to the event. For example, an `invoice.created` event will have a full [invoice object](https://stripe.com/docs/api#invoice_object) as the value of the object key.
-        Object: obj
+        Object: string
         ///Object containing the names of the attributes that have changed, and their previous values (sent along only with *.updated events).
-        PreviousAttributes: obj option
+        PreviousAttributes: string option
     }
     with
 
-        static member New (object: obj, ?previousAttributes: obj) =
+        static member New (object: string, ?previousAttributes: string) =
             {
                 NotificationEventData.Object = object //required
                 NotificationEventData.PreviousAttributes = previousAttributes
@@ -8566,11 +8566,11 @@ module StripeModel =
         ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
         Type: PaymentIntentNextActionType
         ///When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: obj option
+        UseStripeSdk: string option
     }
     with
 
-        static member New (``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?useStripeSdk: obj) =
+        static member New (``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?useStripeSdk: string) =
             {
                 PaymentIntentNextAction.Type = ``type`` //required
                 PaymentIntentNextAction.AlipayHandleRedirect = alipayHandleRedirect
@@ -12657,11 +12657,11 @@ module StripeModel =
         ///Type of the next action to perform, one of `redirect_to_url` or `use_stripe_sdk`.
         Type: SetupIntentNextActionType
         ///When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: obj option
+        UseStripeSdk: string option
     }
     with
 
-        static member New (``type``: SetupIntentNextActionType, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?useStripeSdk: obj) =
+        static member New (``type``: SetupIntentNextActionType, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?useStripeSdk: string) =
             {
                 SetupIntentNextAction.Type = ``type`` //required
                 SetupIntentNextAction.RedirectToUrl = redirectToUrl

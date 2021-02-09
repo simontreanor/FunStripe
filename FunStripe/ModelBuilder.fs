@@ -196,7 +196,7 @@ module ModelBuilder =
                     | Some ap ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "Map<string, string list>"; EnumValues = None; SubValues = None; StaticValue = None }
                     | None ->
-                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "obj"; EnumValues = None; SubValues = None; StaticValue = None }
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "string"; EnumValues = None; SubValues = None; StaticValue = None }
         | Some t when t = "int" ->
             match so.Format with
             | Some "unix-time" ->

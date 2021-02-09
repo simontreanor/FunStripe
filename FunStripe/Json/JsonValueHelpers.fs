@@ -31,6 +31,7 @@ module internal JsonValueHelpers =
         match jvalue with
         | JsonValue.Number value -> int value
         | JsonValue.Float value -> int value
+        | JsonValue.String value -> Int32.TryParse value |> function | (true, i) -> i | _ -> 0
         | _ -> raiseWrongType path "int" jvalue
 
     let getUInt32 (path: JsonPath) (jvalue: JsonValue) =
@@ -95,7 +96,8 @@ module internal JsonValueHelpers =
     let getString (path: JsonPath) (jvalue: JsonValue) =
         match jvalue with
         | JsonValue.String value -> value
-        | _ -> raiseWrongType path "string" jvalue
+        | _ -> jvalue |> string
+        // | _ -> raiseWrongType path "string" jvalue
 
     let getChar (path: JsonPath) (jvalue: JsonValue) =
         match jvalue with

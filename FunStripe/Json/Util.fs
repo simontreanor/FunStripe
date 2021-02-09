@@ -12,6 +12,10 @@ module Util =
 
     let internal firstCharCapital (str: string) = (str.[0].ToString()).ToUpper() + str.Substring(1)
 
+    ///Convert `snake_case` to `PascalCase`
+    let pascalCasify (s: string) =
+        Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
+
     /// Converts names into lower camel case. Use in [JsonConfig].
     let lowerCamelCase (name: string): string =
         let regex = @"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
@@ -43,6 +47,25 @@ module Util =
     let deserialise<'a> data =
         let value = JsonValue.Parse(data)
         (Core.deserialize config JsonPath.Root typeof<'a> value) :?> 'a
+
+    ///Convert JSON strings to F# objects
+    let deserialise' type' data =
+        let value = JsonValue.Parse(data)
+        (Core.deserialize config JsonPath.Root type' value) :?> 'a
+
+    ///Get the object type based on the value of the static `Object` field
+    let getStripeObjectType json =
+        (json, @"""object"": ""(.+?)""")
+        |> System.Text.RegularExpressions.Regex.Match
+        |> fun m -> m.Success |> function
+            | true -> $"FunStripe.StripeModel+{m.Groups.[1].Value |> pascalCasify}, FunStripe"
+            | false -> "Microsoft.FSharp.Collections.FSharpMap`2[[System.String, System.Private.CoreLib],[System.String, System.Private.CoreLib]], FSharp.Core"
+        |> Type.GetType
+        |> (fun t -> t, json)
+
+    ///Detect JSON string type and convert to F# objects
+    let deserialiseStripeObject json =
+        json |> getStripeObjectType ||> deserialise'
 
     ///Get the name specified in the ```JsonUnionCase``` attribute (used to ensure correct naming of discriminated-union members where conventions are not followed)
     let getJsonUnionCaseName (value: obj) =

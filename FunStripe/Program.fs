@@ -31,41 +31,180 @@ let getNewPaymentMethod () =
     }
 
 let test() =
-    let (customerId, paymentMethodId) = ("cus_EoM0QeSF2VsaYl", "pm_1IG5N7GXSUku3vEhV7Zw2jaQ")
-    let result =
-        asyncResult {
-            //Stripe docs recommend listing the customer's payment methods rather than using the paymentMethodId directly, but don't say why
-            let! paymentMethods =
-                PaymentMethods.ListOptions.New(
-                    customer = customerId,
-                    type' = "card"
-                )
-                |> PaymentMethods.List settings
-            let paymentMethod =
-                paymentMethods
-                |> List.tryFind(fun pm -> pm.Id = paymentMethodId)
-            match paymentMethod with
-            | Some pm ->
-                return!
-                    PaymentIntents.CreateOptions.New (
-                        amount = 12500,
-                        confirm = true,
-                        currency = "GBP",
-                        customer = customerId,
-                        offSession = Choice2Of2 PaymentIntents.Create'OffSession.Recurring,
-                        paymentMethod = pm.Id,
-                        setupFutureUsage = PaymentIntents.Create'SetupFutureUsage.OffSession
-                    )
-                    |> PaymentIntents.Create settings
-            | None ->
-                return! simpleError "No matching payment method found"
-        }
-        |> Async.RunSynchronously
-    match result with
-    | Ok pi ->
-        sprintf "%A" pi
-    | Error e ->
-        sprintf "%A" e
+    let response =
+        """
+            {
+              "id": "evt_*",
+              "object": "event",
+              "api_version": "2020-03-02",
+              "created": 1612790103,
+              "data": {
+                "object": {
+                  "id": "ch_*",
+                  "object": "charge",
+                  "amount": 5000,
+                  "amount_captured": 5000,
+                  "amount_refunded": 0,
+                  "application": null,
+                  "application_fee": null,
+                  "application_fee_amount": null,
+                  "balance_transaction": "txn_*",
+                  "billing_details": {
+                    "address": {
+                      "city": null,
+                      "country": null,
+                      "line1": null,
+                      "line2": null,
+                      "postal_code": "SS1 2ZZ",
+                      "state": null
+                    },
+                    "email": null,
+                    "name": null,
+                    "phone": null
+                  },
+                  "calculated_statement_descriptor": "FOL LOAN REPAYMENT",
+                  "captured": true,
+                  "created": 1612790102,
+                  "currency": "gbp",
+                  "customer": "cus_*",
+                  "description": "Repayment",
+                  "destination": null,
+                  "dispute": null,
+                  "disputed": false,
+                  "failure_code": null,
+                  "failure_message": null,
+                  "fraud_details": {
+                  },
+                  "invoice": null,
+                  "livemode": true,
+                  "metadata": {
+                    "Created": "2020-02-09 05:55:02",
+                    "Customer email": "x@y.z",
+                    "Customer name": "x",
+                    "ItemRefId": "97a81234-595a-e911-b49e-2818781234cd",
+                    "ItemReference": "68123411392",
+                    "Payment n.": "123453",
+                    "ReferenceNumber": "420123405882"
+                  },
+                  "on_behalf_of": null,
+                  "order": null,
+                  "outcome": {
+                    "network_status": "approved_by_network",
+                    "reason": null,
+                    "risk_level": "normal",
+                    "seller_message": "Payment complete.",
+                    "type": "authorized"
+                  },
+                  "paid": true,
+                  "payment_intent": null,
+                  "payment_method": "src_*",
+                  "payment_method_details": {
+                    "card": {
+                      "brand": "visa",
+                      "checks": {
+                        "address_line1_check": null,
+                        "address_postal_code_check": "pass",
+                        "cvc_check": null
+                      },
+                      "country": "GB",
+                      "exp_month": 1,
+                      "exp_year": 2023,
+                      "fingerprint": "jA0T4567v3Er04sg",
+                      "funding": "debit",
+                      "installments": null,
+                      "last4": "0000",
+                      "network": "visa",
+                      "three_d_secure": null,
+                      "wallet": null
+                    },
+                    "type": "card"
+                  },
+                  "receipt_email": null,
+                  "receipt_number": null,
+                  "receipt_url": "https://pay.stripe.com/receipts/acct_*/ch_*/rcpt_*",
+                  "refunded": false,
+                  "refunds": {
+                    "object": "list",
+                    "data": [
+                    ],
+                    "has_more": false,
+                    "total_count": 0,
+                    "url": "/v1/charges/ch_*/refunds"
+                  },
+                  "review": null,
+                  "shipping": null,
+                  "source": {
+                    "id": "src_*",
+                    "object": "source",
+                    "amount": null,
+                    "card": {
+                      "exp_month": 1,
+                      "exp_year": 2023,
+                      "last4": "0000",
+                      "country": "GB",
+                      "brand": "Visa",
+                      "address_zip_check": "pass",
+                      "funding": "debit",
+                      "fingerprint": "jA0T4567v3Er04sg",
+                      "three_d_secure": "optional",
+                      "name": null,
+                      "address_line1_check": null,
+                      "cvc_check": null,
+                      "tokenization_method": null,
+                      "dynamic_last4": null
+                    },
+                    "client_secret": "src_client_secret_*",
+                    "created": 1612790103,
+                    "currency": null,
+                    "customer": "cus_*",
+                    "flow": "none",
+                    "livemode": true,
+                    "metadata": {
+                    },
+                    "owner": {
+                      "address": {
+                        "city": null,
+                        "country": null,
+                        "line1": null,
+                        "line2": null,
+                        "postal_code": "SS1 2ZZ",
+                        "state": null
+                      },
+                      "email": null,
+                      "name": null,
+                      "phone": null,
+                      "verified_address": null,
+                      "verified_email": null,
+                      "verified_name": null,
+                      "verified_phone": null
+                    },
+                    "statement_descriptor": null,
+                    "status": "chargeable",
+                    "type": "card",
+                    "usage": "reusable"
+                  },
+                  "source_transfer": null,
+                  "statement_descriptor": null,
+                  "statement_descriptor_suffix": null,
+                  "status": "succeeded",
+                  "transfer_data": null,
+                  "transfer_group": null
+                }
+              },
+              "livemode": true,
+              "pending_webhooks": 1,
+              "request": {
+                "id": "req_*",
+                "idempotency_key": "sameoldkey"
+              },
+              "type": "charge.succeeded"
+            }
+        """
+    let event = Json.Util.deserialise<Event> response
+
+    let eventObject = event.Data.Object |> Json.Util.deserialiseStripeObject
+
+    sprintf "%A" (eventObject)
 
 [<EntryPoint>]
 let main argv =
