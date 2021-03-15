@@ -38,7 +38,9 @@ The result value is an `AsyncResult<PaymentMethod,ErrorResponse>`, giving you th
 
 The general format of API requests is `<module>`.`<method>` `settings` `options`.
 
-To instantiate the `settings` you need to pass in your Stripe API key. To keep the keys out of source code, it is recommended to use [UserSecrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows) during development and web-server configuration settings in production.
+To instantiate the `settings` you need to pass in your Stripe API key. Having local rather than global settings allows you to use different keys for different Stripe accounts if you need to.
+
+If you don't specify the API key in the settings record, it will look for a default test API key to use, and to keep the keys out of source code, it uses [UserSecrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows). It is recommended to use user settings during development and web-server configuration settings in production, but if your source code will not be made public you can simply specify the API key as a string, at least for testing purposes. `Config.fs` contains some notes to help you.
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 

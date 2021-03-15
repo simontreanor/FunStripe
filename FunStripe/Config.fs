@@ -19,7 +19,14 @@ module Config =
     /// Defines the base URL for the Stripe API
     let StripeBaseUrl = "https://api.stripe.com"
 
-    /// Looks up the `UserSecrets` store on the developer's computer and retrieves the Stripe API test key (see README for link to documentation)
+    /// Looks up the `UserSecrets` store on the developer's computer and retrieves the Stripe API
+    /// test key (see README for link to documentation). To set the Stripe API key in `UserSecrets`
+    /// on your development computer use cmd: ```dotnet user-secrets set "StripeSK-Test" "sk_test_..."```
     let StripeTestApiKey =
         let config = ConfigurationBuilder().AddUserSecrets("170450ff-243d-4b38-9f56-c74254e1ca70").Build()
         config.["StripeSK-Test"] |> string
+
+    // If you don't want to use `UserSecrets` comment out the above three lines and uncomment the two
+    // lines below, and specify your Stripe API key manually:
+    // /// Manually set the default Stripe API key instead of using `UserSecrets`
+    // let StripeTestApiKey = "sk_test_..."
