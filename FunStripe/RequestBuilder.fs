@@ -353,10 +353,10 @@ module RequestBuilder =
                             operation.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded") |> function
                             | Some f -> f
                             | None -> operation.GetProperty("requestBody").GetProperty("content").GetProperty("multipart/form-data")
-            
+
                         let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> failwith "No schema present"
                         let schemaObject = schema |> getSchemaObject
-                        let required = schemaObject.RequiredFields |> Array.map(fun jv -> jv.AsString())  
+                        let required = schemaObject.RequiredFields |> Array.map(fun jv -> jv.AsString())
                         let formParameters =
                             (
                                 schemaObject.Properties.Properties
@@ -368,26 +368,39 @@ module RequestBuilder =
                             operation.TryGetProperty("parameters") |> function | Some jv -> jv.AsArray() | None -> [||]
                             |> parseQueryParameters
                         let options = formParameters |> Array.append queryParameters
-                        let responseSchema = operation.GetProperty("responses").GetProperty("200").GetProperty("content").GetProperty("application/json").GetProperty("schema")
-                        let responseType =
-                            match responseSchema.TryGetProperty("$ref") with
-                            | Some jv ->
-                                jv.AsString()
-                                |> parseRef |> pascalCasify
-                            | None ->
-                                match responseSchema.TryGetProperty("anyOf") with
-                                | Some jv when jv.AsArray() |> Array.isEmpty |> not ->
-                                    (jv.AsArray() |> Array.head).GetProperty("$ref").AsString()
+                        let responseContent = operation.GetProperty("responses").GetProperty("200").GetProperty("content")
+                        let tryJsonMimeType = responseContent.TryGetProperty("application/json")
+                        match tryJsonMimeType with
+                        | Some jsonMimeType ->
+                            let responseSchema = jsonMimeType.GetProperty("schema")
+                            let responseType =
+                                match responseSchema.TryGetProperty("$ref") with
+                                | Some jv ->
+                                    jv.AsString()
                                     |> parseRef |> pascalCasify
-                                | _ ->
-                                    match responseSchema.TryGetProperty("properties") with
-                                    | Some jv ->
-                                        let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
-                                        $"{listType |> parseRef |> pascalCasify} list"
+                                | None ->
+                                    match responseSchema.TryGetProperty("anyOf") with
+                                    | Some jv when jv.AsArray() |> Array.isEmpty |> not ->
+                                        (jv.AsArray() |> Array.head).GetProperty("$ref").AsString()
+                                        |> parseRef |> pascalCasify
                                     | _ ->
-                                        failwith $"Unhandled response type: {moduleName} %A{responseSchema}"
+                                        match responseSchema.TryGetProperty("properties") with
+                                        | Some jv ->
+                                            let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
+                                            $"{listType |> parseRef |> pascalCasify} list"
+                                        | _ ->
+                                            failwith $"Unhandled response type: {moduleName} %A{responseSchema}"
 
-                        (methodName, verb, path, desc, options, responseType)
+                            (methodName, verb, path, desc, options, responseType)
+                        | _ ->
+                            let tryPdfMimeType = responseContent.TryGetProperty("application/pdf")
+                            match tryPdfMimeType with
+                            | Some pdfMimeType ->
+                                let responseSchema = pdfMimeType.GetProperty("schema")
+                                let responseType = "string"
+                                (methodName, verb, path, desc, options, responseType)
+                            | _ ->
+                                failwith $"Unhandled mime type: {moduleName} %A{responseContent}"
                     )
                 (moduleName, methods)
             )
@@ -421,7 +434,7 @@ module RequestBuilder =
             )
 
             if not (name.StartsWith "Choice<" || name.EndsWith " list") then
-                        
+
                 let parametersString =
                     (", ",
                         values
@@ -441,7 +454,7 @@ module RequestBuilder =
                             $"{desc}\t\t\t[<Config.{v.OptionType |> string}>]{v.Name |> pascalCasify}: {v.Type}{req}"
                         )
                     ) |> String.Join
-                    
+
                 let assignments =
                     ("\n",
                         values
