@@ -282,6 +282,7 @@ module Tests =
                             HasMore = false
                             Url = "/v1/customers/cus_IhzR2Msjq0lILS/subscriptions"
                         }
+                    Tax = None
                     TaxExempt = Some (CustomerTaxExempt.None')
                     TaxIds =
                         Some {
