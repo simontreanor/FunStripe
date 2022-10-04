@@ -23,13 +23,13 @@ module Util =
         let first = List.head words
         let tail = List.tail words |> List.map firstCharCapital
         let parts = [first.ToLower()] @ tail
-        String.Join("", parts)
+        parts |> String.concat ""
 
     /// Converts names into snake case. Use in [JsonConfig].
     let snakeCase (name: string): string =
         let regex = @"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
         let words = Regex.Split(name, regex) |> List.ofArray |> List.map toLower
-        String.Join("_", words)
+        words |> String.concat "_"
 
     ///JSON setting for snake-case formatting (Stripe uses snake-case, F# prefers pascal/camel case)
     let config = JsonConfig.New(allowUntyped = true, jsonFieldNaming = snakeCase, unformatted = true)

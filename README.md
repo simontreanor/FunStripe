@@ -1,10 +1,10 @@
 # FunStripe
 
-An F# 5.0 library to connect to the Stripe API, including code generators to update the model and requests.
+An F# library to connect to the Stripe API, including code generators to update the model and requests. Targets .NET Framework 4.7.2, .NET Standard 2.1, .NET 5 and .NET 6.
 
 ## Latest updates
 
-2021-07-18: version 0.8.0 updates the Stripe API from version 2020-03-02 to 2020-08-27, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
+2022-10-04: version 0.9.0 updates the Stripe API from version 2020-08-27 to 2022-08-01, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
 
 ## Installation
 

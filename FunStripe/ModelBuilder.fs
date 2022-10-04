@@ -102,12 +102,13 @@ module ModelBuilder =
         | [] ->
             $"{infix'}{name |> pascalCasify}"
         | _ ->
-            let propertiesString = String.Join(", ", properties)
+            let propertiesString = properties |> String.concat ", "
             $"[<JsonField({propertiesString})>]{infix'}{name |> pascalCasify}"
 
     ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line
-    let commentify (s: string) = 
-        s.Replace("\n\n", "\n").Replace("\n", "\n\t///")
+    let commentify (tabCount: int) (s: string) = 
+        let tabs = "\t" |> String.replicate tabCount
+        s.Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")
 
     ///Extract a type name from a JSON reference field
     let parseRef (s: string) =
@@ -231,7 +232,7 @@ module ModelBuilder =
             { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"{prefix}{name |> pascalCasify}{suffix}"; EnumValues = Some choices'; SubValues = None; StaticValue = None }
 
     ///Utility function for appending lines to a StringBuilder
-    let write s (sb: Text.StringBuilder) =
+    let write (s: string) (sb: Text.StringBuilder) =
         sb.AppendLine s |> ignore
 
     ///Parses the Stripe OpenAPI specification, outputting an F# module specifying the object model for all Stripe objects
@@ -306,10 +307,9 @@ module ModelBuilder =
 
             //get the members of the discriminated union
             let valuesString =
-                ("\n",
-                    values
-                    |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
-                ) |> String.Join
+                values
+                |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
+                |> String.concat "\n"
 
             //write the type definition and members of the discriminated union
             sb |> write $"\tand {name'} =\n{valuesString}\n"
@@ -324,80 +324,91 @@ module ModelBuilder =
                 let keyword = if isFirstOccurrence then "type" else "and"
 
                 //get the type's dynamic properties and their types
+                let properties =
+                    values
+                    |> Array.filter(fun v -> v.StaticValue.IsNone)
+                    |> Array.map(fun v ->
+                        let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify 2}\n"
+                        let req = if v.Required && (v.Nullable |> not) then "" else " option"
+                        let transform =
+                            if v.Type = "DateTime" then
+                                Some "Transforms.DateTimeEpoch"
+                            else
+                                None
+                        $"{comment}\t\t{v.Name |> fixJsonNaming transform None}: {v.Type}{req}"
+                    )
+
                 let propertiesString =
-                    ("\n",
-                        values
-                        |> Array.filter(fun v -> v.StaticValue.IsNone)
-                        |> Array.map(fun v ->
-                            let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify}\n"
-                            let req = if v.Required && (v.Nullable |> not) then "" else " option"
-                            let transform =
-                                if v.Type = "DateTime" then
-                                    Some "Transforms.DateTimeEpoch"
-                                else
-                                    None
-                            $"{comment}\t\t{v.Name |> fixJsonNaming transform None}: {v.Type}{req}"
-                        )
-                    ) |> String.Join
+                    properties
+                    |> String.concat "\n"
 
                 //get the type's static properties; this is typically an `Object: string` property with a value set to the name of the type
+                let staticProperties =
+                    values
+                    |> Array.filter(fun v -> v.StaticValue.IsSome)
+                    |> Array.map(fun v ->
+                        let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify 2}\n"
+                        let name' = v.Name |> fixJsonNaming None (Some "member _.")
+                        $"{comment}\t\t{name'} = \"{v.StaticValue.Value}\""
+                    )
+
                 let staticPropertiesString =
-
-                    //get a string list of formatted properties
-                    let props =
-                        ("\n",
-                            values
-                            |> Array.filter(fun v -> v.StaticValue.IsSome)
-                            |> Array.map(fun v ->
-                                let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify}\n"
-                                let name' = v.Name |> fixJsonNaming None (Some "member _.")
-                                $"{comment}\t\t{name'} = \"{v.StaticValue.Value}\""
-                            )
-                        ) |> String.Join
-
-                    //if there are any static properties, prefix them with `with`
-                    if props |> String.IsNullOrWhiteSpace then "" else $"\n\twith\n{props}\n"
+                    staticProperties
+                    |> String.concat "\n"
+                    |> fun s ->
+                        //if there are any static properties, prefix them with `with`
+                        match staticProperties, properties with
+                        | [||], _ -> ""
+                        | _, [||] -> $"\n{s}\n"
+                        | _, _ -> $"\n\twith\n{s}\n"
 
                 //add a static `create` function with optional parameters to simplify record creation
                 let createFunction =
 
                     //format parameters
-                    let parameters =
-                        (", ",
-                            values
-                            |> Array.filter(fun v -> v.StaticValue.IsNone)
-                            |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
-                            |> Array.map(fun v ->
-                                let o = if v.Required then "" else "?"
-                                let n = if v.Nullable then " option" else ""
-                                $"{o}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}{n}"
-                            )
-                        ) |> String.Join
+                    let functionParameters =
+                        values
+                        |> Array.filter(fun v -> v.StaticValue.IsNone)
+                        |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
+                        |> Array.map(fun v ->
+                            let o = if v.Required then "" else "?"
+                            let n = if v.Nullable then " option" else ""
+                            $"{o}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}{n}"
+                        )
+
+                    let functionParametersString =
+                        functionParameters
+                        |> String.concat ", "
 
                     //format property initialisers
-                    let properties =
-                        ("\n",
-                            values
-                            |> Array.filter(fun v -> v.StaticValue.IsNone)
-                            |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
-                            |> Array.map(fun v ->
-                                let flatten = if (v.Required |> not) && v.Nullable then " |> Option.flatten" else ""
-                                let comment = if v.Required then " //required" else ""
-                                $"\t\t\t\t{name |> pascalCasify}.{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}{flatten}{comment}"
-                            )
-                        ) |> String.Join
+                    let functionProperties =
+                        values
+                        |> Array.filter(fun v -> v.StaticValue.IsNone)
+                        |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
+                        |> Array.map(fun v ->
+                            let flatten = if (v.Required |> not) && v.Nullable then " |> Option.flatten" else ""
+                            let comment = if v.Required then " //required" else ""
+                            $"\t\t\t\t{name |> pascalCasify}.{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}{flatten}{comment}"
+                        )
+
+                    let functionPropertiesString =
+                        functionProperties
+                        |> String.concat "\n"
 
                     //if there are no static properties, prefix `create` function with `with`
                     let withPrefix = if staticPropertiesString |> String.IsNullOrWhiteSpace then $"\n\twith\n" else ""
 
                     //compose `create` function
-                    $"{withPrefix}\n\t\tstatic member New ({parameters}) =\n\t\t\t{{\n{properties}\n\t\t\t}}"
+                    $"{withPrefix}\n\t\tstatic member New ({functionParametersString}) =\n\t\t\t{{\n{functionPropertiesString}\n\t\t\t}}"
 
                 //if there is a description, format it using comments
-                let desc = if description |> String.IsNullOrWhiteSpace then "" else $"\t///{description |> commentify}\n"
+                let desc = if description |> String.IsNullOrWhiteSpace then "" else $"\t///{description |> commentify 1}\n"
                     
                 //write the type definition and properties of the type
-                sb |> write $"{desc}\t{keyword} {name |> pascalCasify} = {{\n{propertiesString}\n\t}}{staticPropertiesString}{createFunction}\n"
+                if properties |> Array.isEmpty then
+                    sb |> write $"{desc}\t{keyword} {name |> pascalCasify} () = {staticPropertiesString}\n"
+                else
+                    sb |> write $"{desc}\t{keyword} {name |> pascalCasify} = {{\n{propertiesString}\n\t}}{staticPropertiesString}{createFunction}\n"
 
             //write out any enumerations
             values
@@ -434,5 +445,5 @@ module ModelBuilder =
     ;;
     open ModelBuilder;;
     let s = parseModel None;;
-    System.IO.File.WriteAllText(__SOURCE_DIRECTORY__ + "/StripeModel.fs", s);;
+    System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeModel.fs", s);;
 #endif

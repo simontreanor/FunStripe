@@ -221,6 +221,13 @@ module Tests =
                 {
                     Address = None
                     Balance = Some 0
+                    CashBalance =
+                        Some {
+                            Available = Some (Map.empty)
+                            Customer = "cus_IhzR2Msjq0lILS"
+                            Livemode = false
+                            Settings = { ReconciliationMode = CustomerBalanceCustomerBalanceSettingsReconciliationMode.Automatic }
+                        }
                     Created = DateTime(2021, 1, 6, 10, 42, 3)
                     Currency = None
                     DefaultSource = Some (CustomerDefaultSource'AnyOf.String "card_1I6ZSoGXSUku3vEhr04df95L")
@@ -229,12 +236,14 @@ module Tests =
                     Discount = None
                     Email = Some "KEITH_2614@mailinator.com"
                     Id = "cus_IhzR2Msjq0lILS"
+                    InvoiceCreditBalance = Some (Map.empty)
                     InvoicePrefix = Some "12F15AC4"
                     InvoiceSettings =
                         Some {
                             CustomFields = None
                             DefaultPaymentMethod = None
                             Footer = None
+                            RenderingOptions = None
                         }
                     Livemode = false
                     Metadata = Some (Map.empty)
@@ -290,6 +299,7 @@ module Tests =
                             HasMore = false
                             Url = "/v1/customers/cus_IhzR2Msjq0lILS/tax_ids"
                         }
+                    TestClock = None
                 }
             let response = """
                 {

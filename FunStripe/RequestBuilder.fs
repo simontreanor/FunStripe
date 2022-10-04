@@ -145,10 +145,10 @@ module RequestBuilder =
         member _.Type = ``type``
 
         member this.ToParameterString() =
-            (this.Name |> camelCasify |> escapeReservedName) + ": " + this.Type
+            $"{this.Name |> camelCasify |> escapeReservedName}: {this.Type}"
 
         member this.ToPropertyString() =
-            "\t\tmember _." + (this.Name |> camelCasify |> escapeReservedName) + " = " + (this.Name |> camelCasify |> escapeReservedName)
+            $"\t\tmember _.{this.Name |> camelCasify |> escapeReservedName} = {this.Name |> camelCasify |> escapeReservedName}"
 
     ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line, and also formatting the HTML to display all paragraphs correctly
     let commentify indent (s: string) =
@@ -204,7 +204,7 @@ module RequestBuilder =
                     let sv = i |> parseValue $"{prefix}" name false false
                     { Description = desc; Name = name; Required = req; Type = $"{sv.Type} list"; OptionType = Form; EnumValues = None; SubValues = Some [| sv |] }
             | None ->
-                failwith "This `never` fails #1"
+                failwith $"This `never` fails #1 {name}"
         | Some t when t = "object" ->
             match so.Title with
             | Some title ->
@@ -217,10 +217,11 @@ module RequestBuilder =
             | None ->
                 match name with
                 | "attributes"
+                | "currency_options"
                 | "metadata" ->
                     { Description = desc; Name = name; Required = req; Type = "Map<string, string>"; OptionType = Form; EnumValues = None; SubValues = None }
                 | _ ->
-                    failwith "This `never` fails #2"
+                    failwith $"This `never` fails #2: {name}"
         | Some t when t = "int" ->
             match so.Format with
             | Some "unix-time" ->
@@ -238,7 +239,7 @@ module RequestBuilder =
                 | _ ->
                     let sv = ao |> Array.map(fun v -> v |> parseValue $"{prefix}" name false true)
                     let choices = sv |> Array.map(fun v -> v.Type) |> Array.toList
-                    { Description = desc; Name = name; Required = req; Type = "Choice<" + String.Join(",", choices) + ">"; OptionType = Form; EnumValues = None; SubValues = Some sv }
+                    { Description = desc; Name = name; Required = req; Type = $"""Choice<{choices |> String.concat ","}>"""; OptionType = Form; EnumValues = None; SubValues = Some sv }
             | None ->
                 { Description = desc; Name = jv.AsString(); Required = req; Type = ""; OptionType = Undefined; EnumValues = None; SubValues = None }
 
@@ -257,12 +258,12 @@ module RequestBuilder =
 
     ///Format querystring for path
     let formatQueryString queryOptions =
-        ("; ",
-            queryOptions
-            |> Array.map (fun v ->
-                $"(\"{v.Name}\", options.{v.Name |> pascalCasify} |> box)"
-            )
-        ) |> String.Join
+        queryOptions
+        |> Array.map (fun v ->
+            $"(\"{v.Name}\", options.{v.Name |> pascalCasify} |> box)"
+        )
+        |> String.concat "; "
+        
 
     ///Format request path to allow string interpolation of inline parameters
     let formatPathOptions (path: string) =
@@ -310,16 +311,15 @@ module RequestBuilder =
             |> Array.filter(fun (path, _) -> path.Contains("x-stripe") |> not)
             |> Array.map(fun (path, operations) ->
                 let pathRoot =
-                    ("",
-                        Regex.Split(path, "/")
-                        |> Array.mapi(fun i p ->
-                            match (i, p) with
-                            | 0, _ | 1, _ -> None
-                            | _, p when Regex.IsMatch(p, "^\{.+\}$") -> None
-                            | _, p -> Some (p |> pascalCasify)
-                        )
-                        |> Array.choose id
-                    ) |> String.Join
+                    Regex.Split(path, "/")
+                    |> Array.mapi(fun i p ->
+                        match (i, p) with
+                        | 0, _ | 1, _ -> None
+                        | _, p when Regex.IsMatch(p, "^\{.+\}$") -> None
+                        | _, p -> Some (p |> pascalCasify)
+                    )
+                    |> Array.choose id
+                    |> String.concat ""
                     |> fun s -> Regex.Replace(s, "^3d", "ThreeD")
 
                 let methodOperationPaths =
@@ -412,10 +412,9 @@ module RequestBuilder =
         ///Write a discriminated union
         let writeDU (name: string) values =
             let valuesString =
-                ("\n",
-                    values
-                    |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
-                ) |> String.Join
+                values
+                |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
+                |> String.concat "\n"
             sb |> write $"\t\ttype {name} =\n{valuesString}\n"
 
         ///Write a type definition and static create method for a method's options
@@ -436,32 +435,29 @@ module RequestBuilder =
             if not (name.StartsWith "Choice<" || name.EndsWith " list") then
 
                 let parametersString =
-                    (", ",
-                        values
-                        |> Array.sortBy(fun v -> if v.Required then 0 else 1)
-                        |> Array.map(fun v ->
-                            let req = if v.Required then "" else "?"
-                            $"{req}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}"
-                        )
-                    ) |> String.Join
+                    values
+                    |> Array.sortBy(fun v -> if v.Required then 0 else 1)
+                    |> Array.map(fun v ->
+                        let req = if v.Required then "" else "?"
+                        $"{req}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}"
+                    )
+                    |> String.concat ", "
 
                 let propertiesString =
-                    ("\n",
-                        values
-                        |> Array.map(fun v ->
-                            let req = if v.Required then "" else " option"
-                            let desc = if v.Description |> String.IsNullOrWhiteSpace then "" else $"{v.Description |> commentify 3}\n"
-                            $"{desc}\t\t\t[<Config.{v.OptionType |> string}>]{v.Name |> pascalCasify}: {v.Type}{req}"
-                        )
-                    ) |> String.Join
+                    values
+                    |> Array.map(fun v ->
+                        let req = if v.Required then "" else " option"
+                        let desc = if v.Description |> String.IsNullOrWhiteSpace then "" else $"{v.Description |> commentify 3}\n"
+                        $"{desc}\t\t\t[<Config.{v.OptionType |> string}>]{v.Name |> pascalCasify}: {v.Type}{req}"
+                    )
+                    |> String.concat "\n"
 
                 let assignments =
-                    ("\n",
-                        values
-                        |> Array.map(fun v ->
-                            $"\t\t\t\t\t{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}"
-                        )
-                    ) |> String.Join
+                    values
+                    |> Array.map(fun v ->
+                        $"\t\t\t\t\t{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}"
+                    )
+                    |> String.concat "\n"
 
                 sb |> write $"\t\ttype {name} = {{\n{propertiesString}\n\t\t}}"
 
@@ -517,5 +513,5 @@ module RequestBuilder =
     ;;
     open RequestBuilder;;
     let s = parseRequest None;;
-    System.IO.File.WriteAllText(__SOURCE_DIRECTORY__ + "/StripeRequest.fs", s);;
+    System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeRequest.fs", s);;
 #endif

@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net472;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;net472;netstandard2.1</TargetFrameworks>
     <UserSecretsId>170450ff-243d-4b38-9f56-c74254e1ca70</UserSecretsId>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackageId>FunStripe</PackageId>
-    <Version>0.8.2</Version>
+    <Version>0.9.0</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library</PackageDescription>

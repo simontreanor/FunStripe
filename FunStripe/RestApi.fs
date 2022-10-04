@@ -46,35 +46,34 @@ module RestApi =
     ///Format query string values if present
     let formatQueryString (options: Map<string, obj>) =
         let options' =
-            ("&",
-                options
-                |> Map.toArray
-                |> Array.choose(fun (k, v) ->
-                    match v with
-                    | :? Option<List<string>> as o ->
-                        o
-                        |> Option.map(fun ss ->
-                            (";", ss)
-                            |> String.Join
-                            |> fun s -> $"{k}[]={s}"
-                        )
-                    | :? Option<int> as o ->
-                        o |> Option.map(fun i -> $"{k}={i |> string}")
-                    | :? Option<string> as o ->
-                        o |> Option.map(fun s -> $"{k}={s}")
-                    | :? List<string> as ss ->
-                        (";", ss)
-                        |> String.Join
+            options
+            |> Map.toArray
+            |> Array.choose(fun (k, v) ->
+                match v with
+                | :? Option<List<string>> as o ->
+                    o
+                    |> Option.map(fun ss ->
+                        ss
+                        |> String.concat ";"
                         |> fun s -> $"{k}[]={s}"
-                        |> Some
-                    | :? int as i ->
-                        $"{k}={i |> string}" |> Some
-                    | :? string as s ->
-                        $"{k}={s}" |> Some
-                    | _ ->
-                        None
-                )
-            ) |> String.Join
+                    )
+                | :? Option<int> as o ->
+                    o |> Option.map(fun i -> $"{k}={i |> string}")
+                | :? Option<string> as o ->
+                    o |> Option.map(fun s -> $"{k}={s}")
+                | :? List<string> as ss ->
+                    ss
+                    |> String.concat ";"
+                    |> fun s -> $"{k}[]={s}"
+                    |> Some
+                | :? int as i ->
+                    $"{k}={i |> string}" |> Some
+                | :? string as s ->
+                    $"{k}={s}" |> Some
+                | _ ->
+                    None
+            )
+            |> String.concat "&"
         match options' with
         | "" -> ""
         | _ -> $"?{options'}"
