@@ -7,7 +7,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackageId>FunStripe</PackageId>
-    <Version>0.9.0</Version>
+    <Version>0.9.1</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library</PackageDescription>
@@ -35,7 +35,7 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Data" Version="4.2.4" />
+    <PackageReference Include="FSharp.Data" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
   </ItemGroup>
