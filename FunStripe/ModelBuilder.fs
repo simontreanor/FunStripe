@@ -396,7 +396,7 @@ module ModelBuilder =
                         |> String.concat "\n"
 
                     //if there are no static properties, prefix `create` function with `with`
-                    let withPrefix = if staticPropertiesString |> String.IsNullOrWhiteSpace then $"\n\twith\n" else ""
+                    let withPrefix = if staticPropertiesString |> String.IsNullOrWhiteSpace then $"\n\twith" else ""
 
                     //compose `create` function
                     $"{withPrefix}\n\t\tstatic member New ({functionParametersString}) =\n\t\t\t{{\n{functionPropertiesString}\n\t\t\t}}"

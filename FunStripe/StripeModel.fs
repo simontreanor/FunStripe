@@ -113,7 +113,6 @@ module StripeModel =
         DisplayName: string option
     }
     with
-
         static member New (?displayName: string) =
             {
                 AccountBacsDebitPaymentsSettings.DisplayName = displayName
@@ -130,7 +129,6 @@ module StripeModel =
         SecondaryColor: string option
     }
     with
-
         static member New (icon: AccountBrandingSettingsIcon'AnyOf option, logo: AccountBrandingSettingsLogo'AnyOf option, primaryColor: string option, secondaryColor: string option) =
             {
                 AccountBrandingSettings.Icon = icon //required
@@ -166,7 +164,6 @@ module StripeModel =
         Url: string option
     }
     with
-
         static member New (mcc: string option, name: string option, supportAddress: Address option, supportEmail: string option, supportPhone: string option, supportUrl: string option, url: string option, ?productDescription: string option) =
             {
                 AccountBusinessProfile.Mcc = mcc //required
@@ -248,7 +245,6 @@ module StripeModel =
         UsBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments option
     }
     with
-
         static member New (?acssDebitPayments: AccountCapabilitiesAcssDebitPayments, ?affirmPayments: AccountCapabilitiesAffirmPayments, ?afterpayClearpayPayments: AccountCapabilitiesAfterpayClearpayPayments, ?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?bankTransferPayments: AccountCapabilitiesBankTransferPayments, ?blikPayments: AccountCapabilitiesBlikPayments, ?boletoPayments: AccountCapabilitiesBoletoPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?klarnaPayments: AccountCapabilitiesKlarnaPayments, ?konbiniPayments: AccountCapabilitiesKonbiniPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?linkPayments: AccountCapabilitiesLinkPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?paynowPayments: AccountCapabilitiesPaynowPayments, ?promptpayPayments: AccountCapabilitiesPromptpayPayments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers, ?treasury: AccountCapabilitiesTreasury, ?usBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments) =
             {
                 AccountCapabilities.AcssDebitPayments = acssDebitPayments
@@ -470,7 +466,6 @@ module StripeModel =
         PendingVerification: string list
     }
     with
-
         static member New (alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list, disabledReason: string option, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
             {
                 AccountCapabilityFutureRequirements.Alternatives = alternatives //required
@@ -505,7 +500,6 @@ module StripeModel =
         PendingVerification: string list
     }
     with
-
         static member New (alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list, disabledReason: AccountCapabilityRequirementsDisabledReason option, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
             {
                 AccountCapabilityRequirements.Alternatives = alternatives //required
@@ -534,7 +528,6 @@ module StripeModel =
         TosAcceptance: CardIssuingAccountTermsOfService option
     }
     with
-
         static member New (?tosAcceptance: CardIssuingAccountTermsOfService) =
             {
                 AccountCardIssuingSettings.TosAcceptance = tosAcceptance
@@ -550,7 +543,6 @@ module StripeModel =
         StatementDescriptorPrefixKanji: string option
     }
     with
-
         static member New (statementDescriptorPrefix: string option, statementDescriptorPrefixKana: string option, statementDescriptorPrefixKanji: string option, ?declineOn: AccountDeclineChargeOn) =
             {
                 AccountCardPaymentsSettings.StatementDescriptorPrefix = statementDescriptorPrefix //required
@@ -566,7 +558,6 @@ module StripeModel =
         Timezone: string option
     }
     with
-
         static member New (displayName: string option, timezone: string option) =
             {
                 AccountDashboardSettings.DisplayName = displayName //required
@@ -580,7 +571,6 @@ module StripeModel =
         CvcFailure: bool
     }
     with
-
         static member New (avsFailure: bool, cvcFailure: bool) =
             {
                 AccountDeclineChargeOn.AvsFailure = avsFailure //required
@@ -606,7 +596,6 @@ module StripeModel =
         PendingVerification: string list option
     }
     with
-
         static member New (alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list option, disabledReason: string option, errors: AccountRequirementsError list option, eventuallyDue: string list option, pastDue: string list option, pendingVerification: string list option) =
             {
                 AccountFutureRequirements.Alternatives = alternatives //required
@@ -654,7 +643,6 @@ module StripeModel =
         StatementDescriptorPrefixKanji: string option
     }
     with
-
         static member New (statementDescriptor: string option, statementDescriptorKana: string option, statementDescriptorKanji: string option, statementDescriptorPrefixKana: string option, statementDescriptorPrefixKanji: string option) =
             {
                 AccountPaymentsSettings.StatementDescriptor = statementDescriptor //required
@@ -672,7 +660,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (debitNegativeBalances: bool, schedule: TransferSchedule, statementDescriptor: string option) =
             {
                 AccountPayoutSettings.DebitNegativeBalances = debitNegativeBalances //required
@@ -699,7 +686,6 @@ module StripeModel =
         PendingVerification: string list option
     }
     with
-
         static member New (alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list option, disabledReason: AccountRequirementsDisabledReason option, errors: AccountRequirementsError list option, eventuallyDue: string list option, pastDue: string list option, pendingVerification: string list option) =
             {
                 AccountRequirements.Alternatives = alternatives //required
@@ -731,7 +717,6 @@ module StripeModel =
         OriginalFieldsDue: string list
     }
     with
-
         static member New (alternativeFieldsDue: string list, originalFieldsDue: string list) =
             {
                 AccountRequirementsAlternative.AlternativeFieldsDue = alternativeFieldsDue //required
@@ -747,7 +732,6 @@ module StripeModel =
         Requirement: string
     }
     with
-
         static member New (code: AccountRequirementsErrorCode, reason: string, requirement: string) =
             {
                 AccountRequirementsError.Code = code //required
@@ -808,7 +792,6 @@ module StripeModel =
         CreditorId: string option
     }
     with
-
         static member New (?creditorId: string) =
             {
                 AccountSepaDebitPaymentsSettings.CreditorId = creditorId
@@ -826,7 +809,6 @@ module StripeModel =
         Treasury: AccountTreasurySettings option
     }
     with
-
         static member New (branding: AccountBrandingSettings, cardPayments: AccountCardPaymentsSettings, dashboard: AccountDashboardSettings, payments: AccountPaymentsSettings, ?bacsDebitPayments: AccountBacsDebitPaymentsSettings, ?cardIssuing: AccountCardIssuingSettings, ?payouts: AccountPayoutSettings, ?sepaDebitPayments: AccountSepaDebitPaymentsSettings, ?treasury: AccountTreasurySettings) =
             {
                 AccountSettings.Branding = branding //required
@@ -849,7 +831,6 @@ module StripeModel =
         UserAgent: string option
     }
     with
-
         static member New (date: int option, ip: string option, ?userAgent: string) =
             {
                 AccountTermsOfService.Date = date //required
@@ -868,7 +849,6 @@ module StripeModel =
         UserAgent: string option
     }
     with
-
         static member New (?date: DateTime option, ?ip: string option, ?serviceAgreement: string, ?userAgent: string option) =
             {
                 AccountTosAcceptance.Date = date |> Option.flatten
@@ -881,7 +861,6 @@ module StripeModel =
         TosAcceptance: AccountTermsOfService option
     }
     with
-
         static member New (?tosAcceptance: AccountTermsOfService) =
             {
                 AccountTreasurySettings.TosAcceptance = tosAcceptance
@@ -894,7 +873,6 @@ module StripeModel =
         Type: AccountUnificationAccountControllerType
     }
     with
-
         static member New (``type``: AccountUnificationAccountControllerType, ?isController: bool) =
             {
                 AccountUnificationAccountController.Type = ``type`` //required
@@ -920,7 +898,6 @@ module StripeModel =
         State: string option
     }
     with
-
         static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
             {
                 Address.City = city //required
@@ -938,7 +915,6 @@ module StripeModel =
         Kanji: string option
     }
     with
-
         static member New (?kana: string, ?kanji: string) =
             {
                 AlternateStatementDescriptors.Kana = kana
@@ -968,7 +944,6 @@ module StripeModel =
         Type: ApiErrorsType
     }
     with
-
         static member New (``type``: ApiErrorsType, ?charge: string, ?code: string, ?declineCode: string, ?docUrl: string, ?message: string, ?param: string, ?paymentIntent: PaymentIntent, ?paymentMethod: PaymentMethod, ?paymentMethodType: string, ?setupIntent: SetupIntent, ?source: PaymentSource) =
             {
                 ApiErrors.Type = ``type`` //required
@@ -1162,7 +1137,6 @@ module StripeModel =
         Status: AutomaticTaxStatus option
     }
     with
-
         static member New (enabled: bool, status: AutomaticTaxStatus option) =
             {
                 AutomaticTax.Enabled = enabled //required
@@ -1217,7 +1191,6 @@ module StripeModel =
         SourceTypes: BalanceAmountBySourceType option
     }
     with
-
         static member New (amount: int, currency: string, ?sourceTypes: BalanceAmountBySourceType) =
             {
                 BalanceAmount.Amount = amount //required
@@ -1234,7 +1207,6 @@ module StripeModel =
         Fpx: int option
     }
     with
-
         static member New (?bankAccount: int, ?card: int, ?fpx: int) =
             {
                 BalanceAmountBySourceType.BankAccount = bankAccount
@@ -1247,7 +1219,6 @@ module StripeModel =
         Available: BalanceAmount list
     }
     with
-
         static member New (available: BalanceAmount list) =
             {
                 BalanceDetail.Available = available //required
@@ -1469,7 +1440,6 @@ module StripeModel =
         Type: BankConnectionsResourceAccountholderType
     }
     with
-
         static member New (``type``: BankConnectionsResourceAccountholderType, ?account: BankConnectionsResourceAccountholderAccount'AnyOf, ?customer: BankConnectionsResourceAccountholderCustomer'AnyOf) =
             {
                 BankConnectionsResourceAccountholder.Type = ``type`` //required
@@ -1502,7 +1472,6 @@ module StripeModel =
         Type: BankConnectionsResourceBalanceType
     }
     with
-
         static member New (asOf: DateTime, current: Map<string, string list>, ``type``: BankConnectionsResourceBalanceType, ?cash: BankConnectionsResourceBalanceApiResourceCashBalance, ?credit: BankConnectionsResourceBalanceApiResourceCreditBalance) =
             {
                 BankConnectionsResourceBalance.AsOf = asOf //required
@@ -1523,7 +1492,6 @@ module StripeModel =
         Available: Map<string, string list> option
     }
     with
-
         static member New (available: Map<string, string list> option) =
             {
                 BankConnectionsResourceBalanceApiResourceCashBalance.Available = available //required
@@ -1536,7 +1504,6 @@ module StripeModel =
         Used: Map<string, string list> option
     }
     with
-
         static member New (used: Map<string, string list> option) =
             {
                 BankConnectionsResourceBalanceApiResourceCreditBalance.Used = used //required
@@ -1549,7 +1516,6 @@ module StripeModel =
         Status: BankConnectionsResourceBalanceRefreshStatus
     }
     with
-
         static member New (lastAttemptedAt: DateTime, status: BankConnectionsResourceBalanceRefreshStatus) =
             {
                 BankConnectionsResourceBalanceRefresh.LastAttemptedAt = lastAttemptedAt //required
@@ -1566,7 +1532,6 @@ module StripeModel =
         Countries: string list option
     }
     with
-
         static member New (countries: string list option) =
             {
                 BankConnectionsResourceLinkAccountSessionFilters.Countries = countries //required
@@ -1579,7 +1544,6 @@ module StripeModel =
         Status: BankConnectionsResourceOwnershipRefreshStatus
     }
     with
-
         static member New (lastAttemptedAt: DateTime, status: BankConnectionsResourceOwnershipRefreshStatus) =
             {
                 BankConnectionsResourceOwnershipRefresh.LastAttemptedAt = lastAttemptedAt //required
@@ -1602,7 +1566,6 @@ module StripeModel =
         Phone: string option
     }
     with
-
         static member New (address: Address option, email: string option, name: string option, phone: string option) =
             {
                 BillingDetails.Address = address //required
@@ -1974,7 +1937,6 @@ module StripeModel =
         UserAgent: string option
     }
     with
-
         static member New (date: int option, ip: string option, ?userAgent: string) =
             {
                 CardIssuingAccountTermsOfService.Date = date //required
@@ -1986,7 +1948,6 @@ module StripeModel =
         CardMandatePaymentMethodDetails: string option
     }
     with
-
         static member New (?cardMandatePaymentMethodDetails: string option) =
             {
                 CardMandatePaymentMethodDetails.CardMandatePaymentMethodDetails = cardMandatePaymentMethodDetails |> Option.flatten
@@ -2259,7 +2220,6 @@ module StripeModel =
         UserReport: ChargeFraudDetailsUserReport option
     }
     with
-
         static member New (?stripeReport: string, ?userReport: ChargeFraudDetailsUserReport) =
             {
                 ChargeFraudDetails.StripeReport = stripeReport
@@ -2287,7 +2247,6 @@ module StripeModel =
         Type: ChargeOutcomeType
     }
     with
-
         static member New (networkStatus: ChargeOutcomeNetworkStatus option, reason: string option, sellerMessage: string option, ``type``: ChargeOutcomeType, ?riskLevel: string, ?riskScore: int, ?rule: ChargeOutcomeRule'AnyOf) =
             {
                 ChargeOutcome.NetworkStatus = networkStatus //required
@@ -2323,7 +2282,6 @@ module StripeModel =
         Destination: ChargeTransferDataDestination'AnyOf
     }
     with
-
         static member New (amount: int option, destination: ChargeTransferDataDestination'AnyOf) =
             {
                 ChargeTransferData.Amount = amount //required
@@ -2629,7 +2587,6 @@ module StripeModel =
         TransactionType: CheckoutAcssDebitMandateOptionsTransactionType option
     }
     with
-
         static member New (intervalDescription: string option, paymentSchedule: CheckoutAcssDebitMandateOptionsPaymentSchedule option, transactionType: CheckoutAcssDebitMandateOptionsTransactionType option, ?customMandateUrl: string, ?defaultFor: CheckoutAcssDebitMandateOptionsDefaultFor list) =
             {
                 CheckoutAcssDebitMandateOptions.IntervalDescription = intervalDescription //required
@@ -2664,7 +2621,6 @@ module StripeModel =
         VerificationMethod: CheckoutAcssDebitPaymentMethodOptionsVerificationMethod option
     }
     with
-
         static member New (?currency: CheckoutAcssDebitPaymentMethodOptionsCurrency, ?mandateOptions: CheckoutAcssDebitMandateOptions, ?setupFutureUsage: CheckoutAcssDebitPaymentMethodOptionsSetupFutureUsage, ?verificationMethod: CheckoutAcssDebitPaymentMethodOptionsVerificationMethod) =
             {
                 CheckoutAcssDebitPaymentMethodOptions.Currency = currency
@@ -2722,7 +2678,6 @@ module StripeModel =
         SetupFutureUsage: CheckoutBacsDebitPaymentMethodOptionsSetupFutureUsage option
     }
     with
-
         static member New (?setupFutureUsage: CheckoutBacsDebitPaymentMethodOptionsSetupFutureUsage) =
             {
                 CheckoutBacsDebitPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
@@ -2749,7 +2704,6 @@ module StripeModel =
         SetupFutureUsage: CheckoutBoletoPaymentMethodOptionsSetupFutureUsage option
     }
     with
-
         static member New (expiresAfterDays: int, ?setupFutureUsage: CheckoutBoletoPaymentMethodOptionsSetupFutureUsage) =
             {
                 CheckoutBoletoPaymentMethodOptions.ExpiresAfterDays = expiresAfterDays //required
@@ -2766,7 +2720,6 @@ module StripeModel =
         Enabled: bool option
     }
     with
-
         static member New (?enabled: bool) =
             {
                 CheckoutCardInstallmentsOptions.Enabled = enabled
@@ -2784,7 +2737,6 @@ module StripeModel =
         StatementDescriptorSuffixKanji: string option
     }
     with
-
         static member New (?installments: CheckoutCardInstallmentsOptions, ?setupFutureUsage: CheckoutCardPaymentMethodOptionsSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string) =
             {
                 CheckoutCardPaymentMethodOptions.Installments = installments
@@ -2807,7 +2759,6 @@ module StripeModel =
         Type: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType option
     }
     with
-
         static member New (``type``: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType option, ?euBankTransfer: PaymentMethodOptionsCustomerBalanceEuBankAccount, ?requestedAddressTypes: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsRequestedAddressTypes list) =
             {
                 CheckoutCustomerBalanceBankTransferPaymentMethodOptions.Type = ``type`` //required
@@ -2886,7 +2837,6 @@ module StripeModel =
         SetupFutureUsage: CheckoutKlarnaPaymentMethodOptionsSetupFutureUsage option
     }
     with
-
         static member New (?setupFutureUsage: CheckoutKlarnaPaymentMethodOptionsSetupFutureUsage) =
             {
                 CheckoutKlarnaPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
@@ -2946,7 +2896,6 @@ module StripeModel =
         ExpiresAfterSeconds: int option
     }
     with
-
         static member New (expiresAfterSeconds: int option) =
             {
                 CheckoutPixPaymentMethodOptions.ExpiresAfterSeconds = expiresAfterSeconds //required
@@ -2959,7 +2908,6 @@ module StripeModel =
         SetupFutureUsage: CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage option
     }
     with
-
         static member New (?setupFutureUsage: CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage) =
             {
                 CheckoutSepaDebitPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
@@ -2997,7 +2945,6 @@ module StripeModel =
         UsBankAccount: CheckoutUsBankAccountPaymentMethodOptions option
     }
     with
-
         static member New (?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions) =
             {
                 CheckoutSessionPaymentMethodOptions.AcssDebit = acssDebit
@@ -3043,7 +2990,6 @@ module StripeModel =
         VerificationMethod: CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod option
     }
     with
-
         static member New (?financialConnections: LinkedAccountOptionsUsBankAccount, ?setupFutureUsage: CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage, ?verificationMethod: CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod) =
             {
                 CheckoutUsBankAccountPaymentMethodOptions.FinancialConnections = financialConnections
@@ -3131,7 +3077,6 @@ module StripeModel =
         Minimum: string list
     }
     with
-
         static member New (additional: string list, minimum: string list) =
             {
                 CountrySpecVerificationFieldDetails.Additional = additional //required
@@ -3143,7 +3088,6 @@ module StripeModel =
         Individual: CountrySpecVerificationFieldDetails
     }
     with
-
         static member New (company: CountrySpecVerificationFieldDetails, individual: CountrySpecVerificationFieldDetails) =
             {
                 CountrySpecVerificationFields.Company = company //required
@@ -3220,7 +3164,6 @@ module StripeModel =
         Products: string list
     }
     with
-
         static member New (products: string list) =
             {
                 CouponAppliesTo.Products = products //required
@@ -3231,7 +3174,6 @@ module StripeModel =
         AmountOff: int
     }
     with
-
         static member New (amountOff: int) =
             {
                 CouponCurrencyOption.AmountOff = amountOff //required
@@ -3446,7 +3388,6 @@ module StripeModel =
         TaxRate: CreditNoteTaxAmountTaxRate'AnyOf
     }
     with
-
         static member New (amount: int, inclusive: bool, taxRate: CreditNoteTaxAmountTaxRate'AnyOf) =
             {
                 CreditNoteTaxAmount.Amount = amount //required
@@ -3471,7 +3412,6 @@ module StripeModel =
         UnitAmountDecimal: string option
     }
     with
-
         static member New (customUnitAmount: CustomUnitAmount option, taxBehavior: CurrencyOptionTaxBehavior option, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
             {
                 CurrencyOption.CustomUnitAmount = customUnitAmount //required
@@ -3495,7 +3435,6 @@ module StripeModel =
         Preset: int option
     }
     with
-
         static member New (maximum: int option, minimum: int option, preset: int option) =
             {
                 CustomUnitAmount.Maximum = maximum //required
@@ -3678,7 +3617,6 @@ module StripeModel =
         Type: CustomerAcceptanceType
     }
     with
-
         static member New (acceptedAt: DateTime option, ``type``: CustomerAcceptanceType, ?offline: OfflineAcceptance, ?online: OnlineAcceptance) =
             {
                 CustomerAcceptance.AcceptedAt = acceptedAt //required
@@ -3696,7 +3634,6 @@ module StripeModel =
         ReconciliationMode: CustomerBalanceCustomerBalanceSettingsReconciliationMode
     }
     with
-
         static member New (reconciliationMode: CustomerBalanceCustomerBalanceSettingsReconciliationMode) =
             {
                 CustomerBalanceCustomerBalanceSettings.ReconciliationMode = reconciliationMode //required
@@ -3711,7 +3648,6 @@ module StripeModel =
         PaymentIntent: CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransactionPaymentIntent'AnyOf
     }
     with
-
         static member New (paymentIntent: CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransactionPaymentIntent'AnyOf) =
             {
                 CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction.PaymentIntent = paymentIntent //required
@@ -3725,7 +3661,6 @@ module StripeModel =
         BankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer
     }
     with
-
         static member New (bankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer) =
             {
                 CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction.BankTransfer = bankTransfer //required
@@ -3739,7 +3674,6 @@ module StripeModel =
         Type: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferType
     }
     with
-
         static member New (reference: string option, ``type``: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferType, ?euBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer) =
             {
                 CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer.Reference = reference //required
@@ -3762,7 +3696,6 @@ module StripeModel =
         SenderName: string option
     }
     with
-
         static member New (bic: string option, ibanLast4: string option, senderName: string option) =
             {
                 CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer.Bic = bic //required
@@ -3775,7 +3708,6 @@ module StripeModel =
         Refund: CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransactionRefund'AnyOf
     }
     with
-
         static member New (refund: CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransactionRefund'AnyOf) =
             {
                 CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction.Refund = refund //required
@@ -3790,7 +3722,6 @@ module StripeModel =
         PaymentIntent: CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransactionPaymentIntent'AnyOf
     }
     with
-
         static member New (paymentIntent: CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransactionPaymentIntent'AnyOf) =
             {
                 CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction.PaymentIntent = paymentIntent //required
@@ -3941,7 +3872,6 @@ module StripeModel =
         Location: CustomerTaxLocation option
     }
     with
-
         static member New (automaticTax: CustomerTaxAutomaticTax, ipAddress: string option, location: CustomerTaxLocation option) =
             {
                 CustomerTax.AutomaticTax = automaticTax //required
@@ -3964,7 +3894,6 @@ module StripeModel =
         State: string option
     }
     with
-
         static member New (country: string, source: CustomerTaxLocationSource, state: string option) =
             {
                 CustomerTaxLocation.Country = country //required
@@ -4469,7 +4398,6 @@ module StripeModel =
         Discount: DiscountsResourceDiscountAmountDiscount'AnyOf
     }
     with
-
         static member New (amount: int, discount: DiscountsResourceDiscountAmountDiscount'AnyOf) =
             {
                 DiscountsResourceDiscountAmount.Amount = amount //required
@@ -4631,7 +4559,6 @@ module StripeModel =
         UncategorizedText: string option
     }
     with
-
         static member New (accessActivityLog: string option, billingAddress: string option, cancellationPolicy: DisputeEvidenceCancellationPolicy'AnyOf option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: DisputeEvidenceCustomerCommunication'AnyOf option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: DisputeEvidenceCustomerSignature'AnyOf option, duplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentation'AnyOf option, duplicateChargeExplanation: string option, duplicateChargeId: string option, productDescription: string option, receipt: DisputeEvidenceReceipt'AnyOf option, refundPolicy: DisputeEvidenceRefundPolicy'AnyOf option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: DisputeEvidenceServiceDocumentation'AnyOf option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: DisputeEvidenceShippingDocumentation'AnyOf option, shippingTrackingNumber: string option, uncategorizedFile: DisputeEvidenceUncategorizedFile'AnyOf option, uncategorizedText: string option) =
             {
                 DisputeEvidence.AccessActivityLog = accessActivityLog //required
@@ -4710,7 +4637,6 @@ module StripeModel =
         SubmissionCount: int
     }
     with
-
         static member New (dueBy: DateTime option, hasEvidence: bool, pastDue: bool, submissionCount: int) =
             {
                 DisputeEvidenceDetails.DueBy = dueBy //required
@@ -4726,7 +4652,6 @@ module StripeModel =
         EmailSentTo: string
     }
     with
-
         static member New (emailSentAt: DateTime, emailSentTo: string) =
             {
                 EmailSent.EmailSentAt = emailSentAt //required
@@ -4763,7 +4688,6 @@ module StripeModel =
         Error: ApiErrors
     }
     with
-
         static member New (error: ApiErrors) =
             {
                 Error.Error = error //required
@@ -4873,7 +4797,6 @@ module StripeModel =
         Type: FeeType
     }
     with
-
         static member New (amount: int, application: string option, currency: string, description: string option, ``type``: FeeType) =
             {
                 Fee.Amount = amount //required
@@ -5306,7 +5229,6 @@ module StripeModel =
         Timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
     }
     with
-
         static member New (?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
             {
                 FinancialReportingFinanceReportRunRunParameters.Columns = columns
@@ -5357,7 +5279,6 @@ module StripeModel =
         Type: FundingInstructionsBankTransferType
     }
     with
-
         static member New (country: string, financialAddresses: FundingInstructionsBankTransferFinancialAddress list, ``type``: FundingInstructionsBankTransferType) =
             {
                 FundingInstructionsBankTransfer.Country = country //required
@@ -5381,7 +5302,6 @@ module StripeModel =
         Zengin: FundingInstructionsBankTransferZenginRecord option
     }
     with
-
         static member New (``type``: FundingInstructionsBankTransferFinancialAddressType, ?iban: FundingInstructionsBankTransferIbanRecord, ?sortCode: FundingInstructionsBankTransferSortCodeRecord, ?spei: FundingInstructionsBankTransferSpeiRecord, ?supportedNetworks: FundingInstructionsBankTransferFinancialAddressSupportedNetworks list, ?zengin: FundingInstructionsBankTransferZenginRecord) =
             {
                 FundingInstructionsBankTransferFinancialAddress.Type = ``type`` //required
@@ -5417,7 +5337,6 @@ module StripeModel =
         Iban: string
     }
     with
-
         static member New (accountHolderName: string, bic: string, country: string, iban: string) =
             {
                 FundingInstructionsBankTransferIbanRecord.AccountHolderName = accountHolderName //required
@@ -5436,7 +5355,6 @@ module StripeModel =
         SortCode: string
     }
     with
-
         static member New (accountHolderName: string, accountNumber: string, sortCode: string) =
             {
                 FundingInstructionsBankTransferSortCodeRecord.AccountHolderName = accountHolderName //required
@@ -5454,7 +5372,6 @@ module StripeModel =
         Clabe: string
     }
     with
-
         static member New (bankCode: string, bankName: string, clabe: string) =
             {
                 FundingInstructionsBankTransferSpeiRecord.BankCode = bankCode //required
@@ -5480,7 +5397,6 @@ module StripeModel =
         BranchName: string option
     }
     with
-
         static member New (accountHolderName: string option, accountNumber: string option, accountType: FundingInstructionsBankTransferZenginRecordAccountType option, bankCode: string option, bankName: string option, branchCode: string option, branchName: string option) =
             {
                 FundingInstructionsBankTransferZenginRecord.AccountHolderName = accountHolderName //required
@@ -5506,7 +5422,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 GelatoDataDocumentReportDateOfBirth.Day = day //required
@@ -5524,7 +5439,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 GelatoDataDocumentReportExpirationDate.Day = day //required
@@ -5542,7 +5456,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 GelatoDataDocumentReportIssuedDate.Day = day //required
@@ -5560,7 +5473,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 GelatoDataIdNumberReportDate.Day = day //required
@@ -5578,7 +5490,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 GelatoDataVerifiedOutputsDate.Day = day //required
@@ -5614,7 +5525,6 @@ module StripeModel =
         Type: GelatoDocumentReportType option
     }
     with
-
         static member New (address: Address option, dob: GelatoDataDocumentReportDateOfBirth option, error: GelatoDocumentReportError option, expirationDate: GelatoDataDocumentReportExpirationDate option, files: string list option, firstName: string option, issuedDate: GelatoDataDocumentReportIssuedDate option, issuingCountry: string option, lastName: string option, number: string option, status: GelatoDocumentReportStatus, ``type``: GelatoDocumentReportType option) =
             {
                 GelatoDocumentReport.Address = address //required
@@ -5647,7 +5557,6 @@ module StripeModel =
         Reason: string option
     }
     with
-
         static member New (code: GelatoDocumentReportErrorCode option, reason: string option) =
             {
                 GelatoDocumentReportError.Code = code //required
@@ -5677,7 +5586,6 @@ module StripeModel =
         Status: GelatoIdNumberReportStatus
     }
     with
-
         static member New (dob: GelatoDataIdNumberReportDate option, error: GelatoIdNumberReportError option, firstName: string option, idNumber: string option, idNumberType: GelatoIdNumberReportIdNumberType option, lastName: string option, status: GelatoIdNumberReportStatus) =
             {
                 GelatoIdNumberReport.Dob = dob //required
@@ -5705,7 +5613,6 @@ module StripeModel =
         Reason: string option
     }
     with
-
         static member New (code: GelatoIdNumberReportErrorCode option, reason: string option) =
             {
                 GelatoIdNumberReportError.Code = code //required
@@ -5728,7 +5635,6 @@ module StripeModel =
         RequireMatchingSelfie: bool option
     }
     with
-
         static member New (?allowedTypes: GelatoReportDocumentOptionsAllowedTypes list, ?requireIdNumber: bool, ?requireLiveCapture: bool, ?requireMatchingSelfie: bool) =
             {
                 GelatoReportDocumentOptions.AllowedTypes = allowedTypes
@@ -5746,7 +5652,6 @@ module StripeModel =
         GelatoReportIdNumberOptions: string option
     }
     with
-
         static member New (?gelatoReportIdNumberOptions: string option) =
             {
                 GelatoReportIdNumberOptions.GelatoReportIdNumberOptions = gelatoReportIdNumberOptions |> Option.flatten
@@ -5764,7 +5669,6 @@ module StripeModel =
         Status: GelatoSelfieReportStatus
     }
     with
-
         static member New (document: string option, error: GelatoSelfieReportError option, selfie: string option, status: GelatoSelfieReportStatus) =
             {
                 GelatoSelfieReport.Document = document //required
@@ -5784,7 +5688,6 @@ module StripeModel =
         Reason: string option
     }
     with
-
         static member New (code: GelatoSelfieReportErrorCode option, reason: string option) =
             {
                 GelatoSelfieReportError.Code = code //required
@@ -5808,7 +5711,6 @@ module StripeModel =
         RequireMatchingSelfie: bool option
     }
     with
-
         static member New (?allowedTypes: GelatoSessionDocumentOptionsAllowedTypes list, ?requireIdNumber: bool, ?requireLiveCapture: bool, ?requireMatchingSelfie: bool) =
             {
                 GelatoSessionDocumentOptions.AllowedTypes = allowedTypes
@@ -5826,7 +5728,6 @@ module StripeModel =
         GelatoSessionIdNumberOptions: string option
     }
     with
-
         static member New (?gelatoSessionIdNumberOptions: string option) =
             {
                 GelatoSessionIdNumberOptions.GelatoSessionIdNumberOptions = gelatoSessionIdNumberOptions |> Option.flatten
@@ -5840,7 +5741,6 @@ module StripeModel =
         Reason: string option
     }
     with
-
         static member New (code: GelatoSessionLastErrorCode option, reason: string option) =
             {
                 GelatoSessionLastError.Code = code //required
@@ -5869,7 +5769,6 @@ module StripeModel =
         IdNumber: GelatoReportIdNumberOptions option
     }
     with
-
         static member New (?document: GelatoReportDocumentOptions, ?idNumber: GelatoReportIdNumberOptions) =
             {
                 GelatoVerificationReportOptions.Document = document
@@ -5881,7 +5780,6 @@ module StripeModel =
         IdNumber: GelatoSessionIdNumberOptions option
     }
     with
-
         static member New (?document: GelatoSessionDocumentOptions, ?idNumber: GelatoSessionIdNumberOptions) =
             {
                 GelatoVerificationSessionOptions.Document = document
@@ -5903,7 +5801,6 @@ module StripeModel =
         LastName: string option
     }
     with
-
         static member New (address: Address option, dob: GelatoDataVerifiedOutputsDate option, firstName: string option, idNumber: string option, idNumberType: GelatoVerifiedOutputsIdNumberType option, lastName: string option) =
             {
                 GelatoVerifiedOutputs.Address = address //required
@@ -6452,7 +6349,6 @@ module StripeModel =
         Enabled: bool option
     }
     with
-
         static member New (enabled: bool option) =
             {
                 InvoiceInstallmentsCard.Enabled = enabled //required
@@ -6465,7 +6361,6 @@ module StripeModel =
         UsageGte: int
     }
     with
-
         static member New (lineItemIds: string list, usageGte: int) =
             {
                 InvoiceItemThresholdReason.LineItemIds = lineItemIds //required
@@ -6479,7 +6374,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Start: DateTime
     }
     with
-
         static member New (``end``: DateTime, start: DateTime) =
             {
                 InvoiceLineItemPeriod.End = ``end`` //required
@@ -6495,7 +6389,6 @@ module StripeModel =
         Description: string option
     }
     with
-
         static member New (amount: int option, amountType: InvoiceMandateOptionsCardAmountType option, description: string option) =
             {
                 InvoiceMandateOptionsCard.Amount = amount //required
@@ -6513,7 +6406,6 @@ module StripeModel =
         VerificationMethod: InvoicePaymentMethodOptionsAcssDebitVerificationMethod option
     }
     with
-
         static member New (?mandateOptions: InvoicePaymentMethodOptionsAcssDebitMandateOptions, ?verificationMethod: InvoicePaymentMethodOptionsAcssDebitVerificationMethod) =
             {
                 InvoicePaymentMethodOptionsAcssDebit.MandateOptions = mandateOptions
@@ -6530,7 +6422,6 @@ module StripeModel =
         TransactionType: InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
     }
     with
-
         static member New (transactionType: InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType option) =
             {
                 InvoicePaymentMethodOptionsAcssDebitMandateOptions.TransactionType = transactionType //required
@@ -6545,7 +6436,6 @@ module StripeModel =
         PreferredLanguage: InvoicePaymentMethodOptionsBancontactPreferredLanguage
     }
     with
-
         static member New (preferredLanguage: InvoicePaymentMethodOptionsBancontactPreferredLanguage) =
             {
                 InvoicePaymentMethodOptionsBancontact.PreferredLanguage = preferredLanguage //required
@@ -6563,7 +6453,6 @@ module StripeModel =
         RequestThreeDSecure: InvoicePaymentMethodOptionsCardRequestThreeDSecure option
     }
     with
-
         static member New (requestThreeDSecure: InvoicePaymentMethodOptionsCardRequestThreeDSecure option, ?installments: InvoiceInstallmentsCard) =
             {
                 InvoicePaymentMethodOptionsCard.RequestThreeDSecure = requestThreeDSecure //required
@@ -6592,7 +6481,6 @@ module StripeModel =
         Type: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option
     }
     with
-
         static member New (``type``: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option, ?euBankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer) =
             {
                 InvoicePaymentMethodOptionsCustomerBalanceBankTransfer.Type = ``type`` //required
@@ -6610,7 +6498,6 @@ module StripeModel =
         Country: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry
     }
     with
-
         static member New (country: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry) =
             {
                 InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer.Country = country //required
@@ -6627,7 +6514,6 @@ module StripeModel =
         InvoicePaymentMethodOptionsKonbini: string option
     }
     with
-
         static member New (?invoicePaymentMethodOptionsKonbini: string option) =
             {
                 InvoicePaymentMethodOptionsKonbini.InvoicePaymentMethodOptionsKonbini = invoicePaymentMethodOptionsKonbini |> Option.flatten
@@ -6639,7 +6525,6 @@ module StripeModel =
         VerificationMethod: InvoicePaymentMethodOptionsUsBankAccountVerificationMethod option
     }
     with
-
         static member New (?financialConnections: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions, ?verificationMethod: InvoicePaymentMethodOptionsUsBankAccountVerificationMethod) =
             {
                 InvoicePaymentMethodOptionsUsBankAccount.FinancialConnections = financialConnections
@@ -6656,7 +6541,6 @@ module StripeModel =
         Permissions: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions list option
     }
     with
-
         static member New (?permissions: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions list) =
             {
                 InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions.Permissions = permissions
@@ -6674,7 +6558,6 @@ module StripeModel =
         Value: string
     }
     with
-
         static member New (name: string, value: string) =
             {
                 InvoiceSettingCustomField.Name = name //required
@@ -6692,7 +6575,6 @@ module StripeModel =
         RenderingOptions: InvoiceSettingRenderingOptions option
     }
     with
-
         static member New (customFields: InvoiceSettingCustomField list option, defaultPaymentMethod: InvoiceSettingCustomerSettingDefaultPaymentMethod'AnyOf option, footer: string option, renderingOptions: InvoiceSettingRenderingOptions option) =
             {
                 InvoiceSettingCustomerSetting.CustomFields = customFields //required
@@ -6710,7 +6592,6 @@ module StripeModel =
         DaysUntilDue: int option
     }
     with
-
         static member New (daysUntilDue: int option) =
             {
                 InvoiceSettingQuoteSetting.DaysUntilDue = daysUntilDue //required
@@ -6721,7 +6602,6 @@ module StripeModel =
         AmountTaxDisplay: string option
     }
     with
-
         static member New (amountTaxDisplay: string option) =
             {
                 InvoiceSettingRenderingOptions.AmountTaxDisplay = amountTaxDisplay //required
@@ -6732,7 +6612,6 @@ module StripeModel =
         DaysUntilDue: int option
     }
     with
-
         static member New (daysUntilDue: int option) =
             {
                 InvoiceSettingSubscriptionScheduleSetting.DaysUntilDue = daysUntilDue //required
@@ -6747,7 +6626,6 @@ module StripeModel =
         TaxRate: InvoiceTaxAmountTaxRate'AnyOf
     }
     with
-
         static member New (amount: int, inclusive: bool, taxRate: InvoiceTaxAmountTaxRate'AnyOf) =
             {
                 InvoiceTaxAmount.Amount = amount //required
@@ -6766,7 +6644,6 @@ module StripeModel =
         ItemReasons: InvoiceItemThresholdReason list
     }
     with
-
         static member New (amountGte: int option, itemReasons: InvoiceItemThresholdReason list) =
             {
                 InvoiceThresholdReason.AmountGte = amountGte //required
@@ -6780,7 +6657,6 @@ module StripeModel =
         Destination: InvoiceTransferDataDestination'AnyOf
     }
     with
-
         static member New (amount: int option, destination: InvoiceTransferDataDestination'AnyOf) =
             {
                 InvoiceTransferData.Amount = amount //required
@@ -6900,7 +6776,6 @@ module StripeModel =
         Invoice: InvoicesFromInvoiceInvoice'AnyOf
     }
     with
-
         static member New (action: string, invoice: InvoicesFromInvoiceInvoice'AnyOf) =
             {
                 InvoicesFromInvoice.Action = action //required
@@ -6918,7 +6793,6 @@ module StripeModel =
         InvoiceLineItems: string list
     }
     with
-
         static member New (invoice: string, invoiceLineItems: string list) =
             {
                 InvoicesLineItemsCreditedItems.Invoice = invoice //required
@@ -6930,7 +6804,6 @@ module StripeModel =
         CreditedItems: InvoicesLineItemsCreditedItems option
     }
     with
-
         static member New (creditedItems: InvoicesLineItemsCreditedItems option) =
             {
                 InvoicesLineItemsProrationDetails.CreditedItems = creditedItems //required
@@ -6951,7 +6824,6 @@ module StripeModel =
         UsBankAccount: InvoicePaymentMethodOptionsUsBankAccount option
     }
     with
-
         static member New (acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: InvoicePaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option) =
             {
                 InvoicesPaymentMethodOptions.AcssDebit = acssDebit //required
@@ -6971,7 +6843,6 @@ module StripeModel =
         PaymentMethodTypes: InvoicesPaymentSettingsPaymentMethodTypes list option
     }
     with
-
         static member New (defaultMandate: string option, paymentMethodOptions: InvoicesPaymentMethodOptions option, paymentMethodTypes: InvoicesPaymentSettingsPaymentMethodTypes list option) =
             {
                 InvoicesPaymentSettings.DefaultMandate = defaultMandate //required
@@ -7010,7 +6881,6 @@ module StripeModel =
         Value: string option
     }
     with
-
         static member New (``type``: InvoicesResourceInvoiceTaxIdType, value: string option) =
             {
                 InvoicesResourceInvoiceTaxId.Type = ``type`` //required
@@ -7077,7 +6947,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]VoidedAt: DateTime option
     }
     with
-
         static member New (finalizedAt: DateTime option, markedUncollectibleAt: DateTime option, paidAt: DateTime option, voidedAt: DateTime option) =
             {
                 InvoicesStatusTransitions.FinalizedAt = finalizedAt //required
@@ -7507,7 +7376,6 @@ module StripeModel =
         AtmFee: int option
     }
     with
-
         static member New (atmFee: int option) =
             {
                 IssuingAuthorizationAmountDetails.AtmFee = atmFee //required
@@ -7532,7 +7400,6 @@ module StripeModel =
         State: string option
     }
     with
-
         static member New (category: string, categoryCode: string, city: string option, country: string option, name: string option, networkId: string, postalCode: string option, state: string option) =
             {
                 IssuingAuthorizationMerchantData.Category = category //required
@@ -7560,7 +7427,6 @@ module StripeModel =
         MerchantCurrency: string
     }
     with
-
         static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, currency: string, isAmountControllable: bool, merchantAmount: int, merchantCurrency: string) =
             {
                 IssuingAuthorizationPendingRequest.Amount = amount //required
@@ -7590,7 +7456,6 @@ module StripeModel =
         Reason: IssuingAuthorizationRequestReason
     }
     with
-
         static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, created: DateTime, currency: string, merchantAmount: int, merchantCurrency: string, reason: IssuingAuthorizationRequestReason) =
             {
                 IssuingAuthorizationRequest.Amount = amount //required
@@ -7627,7 +7492,6 @@ module StripeModel =
         Transaction: string option
     }
     with
-
         static member New (receivedCredits: string list, receivedDebits: string list, transaction: string option) =
             {
                 IssuingAuthorizationTreasury.ReceivedCredits = receivedCredits //required
@@ -7646,7 +7510,6 @@ module StripeModel =
         ExpiryCheck: IssuingAuthorizationVerificationDataExpiryCheck
     }
     with
-
         static member New (addressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check, addressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck, cvcCheck: IssuingAuthorizationVerificationDataCvcCheck, expiryCheck: IssuingAuthorizationVerificationDataExpiryCheck) =
             {
                 IssuingAuthorizationVerificationData.AddressLine1Check = addressLine1Check //required
@@ -7682,7 +7545,6 @@ module StripeModel =
         IneligibleReason: IssuingCardApplePayIneligibleReason option
     }
     with
-
         static member New (eligible: bool, ineligibleReason: IssuingCardApplePayIneligibleReason option) =
             {
                 IssuingCardApplePay.Eligible = eligible //required
@@ -7705,7 +7567,6 @@ module StripeModel =
         SpendingLimitsCurrency: string option
     }
     with
-
         static member New (allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: string option) =
             {
                 IssuingCardAuthorizationControls.AllowedCategories = allowedCategories //required
@@ -8301,7 +8162,6 @@ module StripeModel =
         IneligibleReason: IssuingCardGooglePayIneligibleReason option
     }
     with
-
         static member New (eligible: bool, ineligibleReason: IssuingCardGooglePayIneligibleReason option) =
             {
                 IssuingCardGooglePay.Eligible = eligible //required
@@ -8339,7 +8199,6 @@ module StripeModel =
         Type: IssuingCardShippingType
     }
     with
-
         static member New (address: Address, carrier: IssuingCardShippingCarrier option, customs: IssuingCardShippingCustoms option, eta: DateTime option, name: string, phoneNumber: string option, requireSignature: bool option, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
             {
                 IssuingCardShipping.Address = address //required
@@ -8384,7 +8243,6 @@ module StripeModel =
         EoriNumber: string option
     }
     with
-
         static member New (eoriNumber: string option) =
             {
                 IssuingCardShippingCustoms.EoriNumber = eoriNumber //required
@@ -8399,7 +8257,6 @@ module StripeModel =
         Interval: IssuingCardSpendingLimitInterval
     }
     with
-
         static member New (amount: int, categories: IssuingCardSpendingLimitCategories list option, interval: IssuingCardSpendingLimitInterval) =
             {
                 IssuingCardSpendingLimit.Amount = amount //required
@@ -8712,7 +8569,6 @@ module StripeModel =
         PrimaryAccountIdentifier: string option
     }
     with
-
         static member New (applePay: IssuingCardApplePay, googlePay: IssuingCardGooglePay, primaryAccountIdentifier: string option) =
             {
                 IssuingCardWallets.ApplePay = applePay //required
@@ -8724,7 +8580,6 @@ module StripeModel =
         Address: Address
     }
     with
-
         static member New (address: Address) =
             {
                 IssuingCardholderAddress.Address = address //required
@@ -8741,7 +8596,6 @@ module StripeModel =
         SpendingLimitsCurrency: string option
     }
     with
-
         static member New (allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: string option) =
             {
                 IssuingCardholderAuthorizationControls.AllowedCategories = allowedCategories //required
@@ -9335,7 +9189,6 @@ module StripeModel =
         TaxIdProvided: bool
     }
     with
-
         static member New (taxIdProvided: bool) =
             {
                 IssuingCardholderCompany.TaxIdProvided = taxIdProvided //required
@@ -9348,7 +9201,6 @@ module StripeModel =
         Front: IssuingCardholderIdDocumentFront'AnyOf option
     }
     with
-
         static member New (back: IssuingCardholderIdDocumentBack'AnyOf option, front: IssuingCardholderIdDocumentFront'AnyOf option) =
             {
                 IssuingCardholderIdDocument.Back = back //required
@@ -9374,7 +9226,6 @@ module StripeModel =
         Verification: IssuingCardholderVerification option
     }
     with
-
         static member New (dob: IssuingCardholderIndividualDob option, firstName: string, lastName: string, verification: IssuingCardholderVerification option) =
             {
                 IssuingCardholderIndividual.Dob = dob //required
@@ -9392,7 +9243,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 IssuingCardholderIndividualDob.Day = day //required
@@ -9407,7 +9257,6 @@ module StripeModel =
         PastDue: IssuingCardholderRequirementsPastDue list option
     }
     with
-
         static member New (disabledReason: IssuingCardholderRequirementsDisabledReason option, pastDue: IssuingCardholderRequirementsPastDue list option) =
             {
                 IssuingCardholderRequirements.DisabledReason = disabledReason //required
@@ -9437,7 +9286,6 @@ module StripeModel =
         Interval: IssuingCardholderSpendingLimitInterval
     }
     with
-
         static member New (amount: int, categories: IssuingCardholderSpendingLimitCategories list option, interval: IssuingCardholderSpendingLimitInterval) =
             {
                 IssuingCardholderSpendingLimit.Amount = amount //required
@@ -9748,7 +9596,6 @@ module StripeModel =
         Document: IssuingCardholderIdDocument option
     }
     with
-
         static member New (document: IssuingCardholderIdDocument option) =
             {
                 IssuingCardholderVerification.Document = document //required
@@ -9777,7 +9624,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
     }
     with
-
         static member New (additionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationPolicyProvided: bool option, cancellationReason: string option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeCanceledEvidenceProductType option, returnStatus: IssuingDisputeCanceledEvidenceReturnStatus option, returnedAt: DateTime option) =
             {
                 IssuingDisputeCanceledEvidence.AdditionalDocumentation = additionalDocumentation //required
@@ -9819,7 +9665,6 @@ module StripeModel =
         OriginalTransaction: string option
     }
     with
-
         static member New (additionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentation'AnyOf option, cardStatement: IssuingDisputeDuplicateEvidenceCardStatement'AnyOf option, cashReceipt: IssuingDisputeDuplicateEvidenceCashReceipt'AnyOf option, checkImage: IssuingDisputeDuplicateEvidenceCheckImage'AnyOf option, explanation: string option, originalTransaction: string option) =
             {
                 IssuingDisputeDuplicateEvidence.AdditionalDocumentation = additionalDocumentation //required
@@ -9858,7 +9703,6 @@ module StripeModel =
         ServiceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence option
     }
     with
-
         static member New (reason: IssuingDisputeEvidenceReason, ?canceled: IssuingDisputeCanceledEvidence, ?duplicate: IssuingDisputeDuplicateEvidence, ?fraudulent: IssuingDisputeFraudulentEvidence, ?merchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence, ?notReceived: IssuingDisputeNotReceivedEvidence, ?other: IssuingDisputeOtherEvidence, ?serviceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence) =
             {
                 IssuingDisputeEvidence.Reason = reason //required
@@ -9887,7 +9731,6 @@ module StripeModel =
         Explanation: string option
     }
     with
-
         static member New (additionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentation'AnyOf option, explanation: string option) =
             {
                 IssuingDisputeFraudulentEvidence.AdditionalDocumentation = additionalDocumentation //required
@@ -9913,7 +9756,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
     }
     with
-
         static member New (additionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, explanation: string option, receivedAt: DateTime option, returnDescription: string option, returnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option, returnedAt: DateTime option) =
             {
                 IssuingDisputeMerchandiseNotAsDescribedEvidence.AdditionalDocumentation = additionalDocumentation //required
@@ -9945,7 +9787,6 @@ module StripeModel =
         ProductType: IssuingDisputeNotReceivedEvidenceProductType option
     }
     with
-
         static member New (additionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeNotReceivedEvidenceProductType option) =
             {
                 IssuingDisputeNotReceivedEvidence.AdditionalDocumentation = additionalDocumentation //required
@@ -9974,7 +9815,6 @@ module StripeModel =
         ProductType: IssuingDisputeOtherEvidenceProductType option
     }
     with
-
         static member New (additionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf option, explanation: string option, productDescription: string option, productType: IssuingDisputeOtherEvidenceProductType option) =
             {
                 IssuingDisputeOtherEvidence.AdditionalDocumentation = additionalDocumentation //required
@@ -10004,7 +9844,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReceivedAt: DateTime option
     }
     with
-
         static member New (additionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationReason: string option, explanation: string option, receivedAt: DateTime option) =
             {
                 IssuingDisputeServiceNotAsDescribedEvidence.AdditionalDocumentation = additionalDocumentation //required
@@ -10025,7 +9864,6 @@ module StripeModel =
         ReceivedDebit: string
     }
     with
-
         static member New (debitReversal: string option, receivedDebit: string) =
             {
                 IssuingDisputeTreasury.DebitReversal = debitReversal //required
@@ -10037,7 +9875,6 @@ module StripeModel =
         AtmFee: int option
     }
     with
-
         static member New (atmFee: int option) =
             {
                 IssuingTransactionAmountDetails.AtmFee = atmFee //required
@@ -10056,7 +9893,6 @@ module StripeModel =
         TravelAgency: string option
     }
     with
-
         static member New (departureAt: int option, passengerName: string option, refundable: bool option, segments: IssuingTransactionFlightDataLeg list option, travelAgency: string option) =
             {
                 IssuingTransactionFlightData.DepartureAt = departureAt //required
@@ -10081,7 +9917,6 @@ module StripeModel =
         StopoverAllowed: bool option
     }
     with
-
         static member New (arrivalAirportCode: string option, carrier: string option, departureAirportCode: string option, flightNumber: string option, serviceClass: string option, stopoverAllowed: bool option) =
             {
                 IssuingTransactionFlightDataLeg.ArrivalAirportCode = arrivalAirportCode //required
@@ -10103,7 +9938,6 @@ module StripeModel =
         VolumeDecimal: string option
     }
     with
-
         static member New (``type``: IssuingTransactionFuelDataType, unit: IssuingTransactionFuelDataUnit, unitCostDecimal: string, volumeDecimal: string option) =
             {
                 IssuingTransactionFuelData.Type = ``type`` //required
@@ -10130,7 +9964,6 @@ module StripeModel =
         Nights: int option
     }
     with
-
         static member New (checkInAt: int option, nights: int option) =
             {
                 IssuingTransactionLodgingData.CheckInAt = checkInAt //required
@@ -10150,7 +9983,6 @@ module StripeModel =
         Reference: string option
     }
     with
-
         static member New (flight: IssuingTransactionFlightData option, fuel: IssuingTransactionFuelData option, lodging: IssuingTransactionLodgingData option, receipt: IssuingTransactionReceiptData list option, reference: string option) =
             {
                 IssuingTransactionPurchaseDetails.Flight = flight //required
@@ -10171,7 +10003,6 @@ module StripeModel =
         UnitCost: int option
     }
     with
-
         static member New (description: string option, quantity: decimal option, total: int option, unitCost: int option) =
             {
                 IssuingTransactionReceiptData.Description = description //required
@@ -10187,7 +10018,6 @@ module StripeModel =
         ReceivedDebit: string option
     }
     with
-
         static member New (receivedCredit: string option, receivedDebit: string option) =
             {
                 IssuingTransactionTreasury.ReceivedCredit = receivedCredit //required
@@ -10281,7 +10111,6 @@ module StripeModel =
         Verification: LegalEntityCompanyVerification option
     }
     with
-
         static member New (?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?directorsProvided: bool, ?executivesProvided: bool, ?name: string option, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?ownershipDeclaration: LegalEntityUboDeclaration option, ?phone: string option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
             {
                 LegalEntityCompany.Address = address
@@ -10328,7 +10157,6 @@ module StripeModel =
         Document: LegalEntityCompanyVerificationDocument
     }
     with
-
         static member New (document: LegalEntityCompanyVerificationDocument) =
             {
                 LegalEntityCompanyVerification.Document = document //required
@@ -10345,7 +10173,6 @@ module StripeModel =
         Front: LegalEntityCompanyVerificationDocumentFront'AnyOf option
     }
     with
-
         static member New (back: LegalEntityCompanyVerificationDocumentBack'AnyOf option, details: string option, detailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option, front: LegalEntityCompanyVerificationDocumentFront'AnyOf option) =
             {
                 LegalEntityCompanyVerificationDocument.Back = back //required
@@ -10387,7 +10214,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 LegalEntityDob.Day = day //required
@@ -10412,7 +10238,6 @@ module StripeModel =
         Town: string option
     }
     with
-
         static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option, town: string option) =
             {
                 LegalEntityJapanAddress.City = city //required
@@ -10436,7 +10261,6 @@ module StripeModel =
         Status: LegalEntityPersonVerificationStatus
     }
     with
-
         static member New (status: LegalEntityPersonVerificationStatus, ?additionalDocument: LegalEntityPersonVerificationDocument option, ?details: string option, ?detailsCode: LegalEntityPersonVerificationDetailsCode option, ?document: LegalEntityPersonVerificationDocument) =
             {
                 LegalEntityPersonVerification.Status = status //required
@@ -10472,7 +10296,6 @@ module StripeModel =
         Front: LegalEntityPersonVerificationDocumentFront'AnyOf option
     }
     with
-
         static member New (back: LegalEntityPersonVerificationDocumentBack'AnyOf option, details: string option, detailsCode: LegalEntityPersonVerificationDocumentDetailsCode option, front: LegalEntityPersonVerificationDocumentFront'AnyOf option) =
             {
                 LegalEntityPersonVerificationDocument.Back = back //required
@@ -10518,7 +10341,6 @@ module StripeModel =
         UserAgent: string option
     }
     with
-
         static member New (date: DateTime option, ip: string option, userAgent: string option) =
             {
                 LegalEntityUboDeclaration.Date = date //required
@@ -10535,7 +10357,6 @@ module StripeModel =
         ShippingFromZip: string option
     }
     with
-
         static member New (lineItems: Level3LineItems list, merchantReference: string, ?customerReference: string, ?shippingAddressZip: string, ?shippingAmount: int, ?shippingFromZip: string) =
             {
                 Level3.LineItems = lineItems //required
@@ -10555,7 +10376,6 @@ module StripeModel =
         UnitCost: int option
     }
     with
-
         static member New (discountAmount: int option, productCode: string, productDescription: string, quantity: int option, taxAmount: int option, unitCost: int option) =
             {
                 Level3LineItems.DiscountAmount = discountAmount //required
@@ -10658,7 +10478,6 @@ module StripeModel =
         Discount: Discount
     }
     with
-
         static member New (amount: int, discount: Discount) =
             {
                 LineItemsDiscountAmount.Amount = amount //required
@@ -10671,7 +10490,6 @@ module StripeModel =
         Rate: TaxRate
     }
     with
-
         static member New (amount: int, rate: TaxRate) =
             {
                 LineItemsTaxAmount.Amount = amount //required
@@ -10685,7 +10503,6 @@ module StripeModel =
         ReturnUrl: string option
     }
     with
-
         static member New (?permissions: LinkedAccountOptionsUsBankAccountPermissions list, ?returnUrl: string) =
             {
                 LinkedAccountOptionsUsBankAccount.Permissions = permissions
@@ -10772,7 +10589,6 @@ module StripeModel =
         TransactionType: MandateAcssDebitTransactionType
     }
     with
-
         static member New (intervalDescription: string option, paymentSchedule: MandateAcssDebitPaymentSchedule, transactionType: MandateAcssDebitTransactionType, ?defaultFor: MandateAcssDebitDefaultFor list) =
             {
                 MandateAcssDebit.IntervalDescription = intervalDescription //required
@@ -10799,7 +10615,6 @@ module StripeModel =
         Url: string
     }
     with
-
         static member New (url: string) =
             {
                 MandateAuBecsDebit.Url = url //required
@@ -10814,7 +10629,6 @@ module StripeModel =
         Url: string
     }
     with
-
         static member New (networkStatus: MandateBacsDebitNetworkStatus, reference: string, url: string) =
             {
                 MandateBacsDebit.NetworkStatus = networkStatus //required
@@ -10836,7 +10650,6 @@ module StripeModel =
         Type: MandateBlikType option
     }
     with
-
         static member New (expiresAfter: DateTime option, ``type``: MandateBlikType option, ?offSession: MandateOptionsOffSessionDetailsBlik) =
             {
                 MandateBlik.ExpiresAfter = expiresAfter //required
@@ -10852,7 +10665,6 @@ module StripeModel =
         MandateLink: string option
     }
     with
-
         static member New (?mandateLink: string option) =
             {
                 MandateLink.MandateLink = mandateLink |> Option.flatten
@@ -10862,7 +10674,6 @@ module StripeModel =
         MandateMultiUse: string option
     }
     with
-
         static member New (?mandateMultiUse: string option) =
             {
                 MandateMultiUse.MandateMultiUse = mandateMultiUse |> Option.flatten
@@ -10879,7 +10690,6 @@ module StripeModel =
         IntervalCount: int option
     }
     with
-
         static member New (amount: int option, currency: string option, interval: MandateOptionsOffSessionDetailsBlikInterval option, intervalCount: int option) =
             {
                 MandateOptionsOffSessionDetailsBlik.Amount = amount //required
@@ -10907,7 +10717,6 @@ module StripeModel =
         UsBankAccount: MandateUsBankAccount option
     }
     with
-
         static member New (``type``: string, ?acssDebit: MandateAcssDebit, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?blik: MandateBlik, ?card: CardMandatePaymentMethodDetails, ?link: MandateLink, ?sepaDebit: MandateSepaDebit, ?usBankAccount: MandateUsBankAccount) =
             {
                 MandatePaymentMethodDetails.Type = ``type`` //required
@@ -10928,7 +10737,6 @@ module StripeModel =
         Url: string
     }
     with
-
         static member New (reference: string, url: string) =
             {
                 MandateSepaDebit.Reference = reference //required
@@ -10942,7 +10750,6 @@ module StripeModel =
         Currency: string
     }
     with
-
         static member New (amount: int, currency: string) =
             {
                 MandateSingleUse.Amount = amount //required
@@ -10953,7 +10760,6 @@ module StripeModel =
         MandateUsBankAccount: string option
     }
     with
-
         static member New (?mandateUsBankAccount: string option) =
             {
                 MandateUsBankAccount.MandateUsBankAccount = mandateUsBankAccount |> Option.flatten
@@ -10966,7 +10772,6 @@ module StripeModel =
         Preferred: string option
     }
     with
-
         static member New (available: string list, preferred: string option) =
             {
                 Networks.Available = available //required
@@ -10980,7 +10785,6 @@ module StripeModel =
         PreviousAttributes: string option
     }
     with
-
         static member New (object: string, ?previousAttributes: string) =
             {
                 NotificationEventData.Object = object //required
@@ -10994,7 +10798,6 @@ module StripeModel =
         IdempotencyKey: string option
     }
     with
-
         static member New (id: string option, idempotencyKey: string option) =
             {
                 NotificationEventRequest.Id = id //required
@@ -11005,7 +10808,6 @@ module StripeModel =
         OfflineAcceptance: string option
     }
     with
-
         static member New (?offlineAcceptance: string option) =
             {
                 OfflineAcceptance.OfflineAcceptance = offlineAcceptance |> Option.flatten
@@ -11018,7 +10820,6 @@ module StripeModel =
         UserAgent: string option
     }
     with
-
         static member New (ipAddress: string option, userAgent: string option) =
             {
                 OnlineAcceptance.IpAddress = ipAddress //required
@@ -11171,7 +10972,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 OrdersV2ResourceAutomaticPaymentMethods.Enabled = enabled //required
@@ -11184,7 +10984,6 @@ module StripeModel =
         Status: OrdersV2ResourceAutomaticTaxStatus option
     }
     with
-
         static member New (enabled: bool, status: OrdersV2ResourceAutomaticTaxStatus option) =
             {
                 OrdersV2ResourceAutomaticTax.Enabled = enabled //required
@@ -11207,7 +11006,6 @@ module StripeModel =
         Phone: string option
     }
     with
-
         static member New (address: Address option, email: string option, name: string option, phone: string option) =
             {
                 OrdersV2ResourceBillingDetails.Address = address //required
@@ -11226,7 +11024,6 @@ module StripeModel =
         SetupFutureUsage: OrdersV2ResourceCardPaymentMethodOptionsSetupFutureUsage option
     }
     with
-
         static member New (captureMethod: OrdersV2ResourceCardPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: OrdersV2ResourceCardPaymentMethodOptionsSetupFutureUsage) =
             {
                 OrdersV2ResourceCardPaymentMethodOptions.CaptureMethod = captureMethod //required
@@ -11251,7 +11048,6 @@ module StripeModel =
         Status: OrdersV2ResourcePaymentStatus option
     }
     with
-
         static member New (paymentIntent: OrdersV2ResourcePaymentPaymentIntent'AnyOf option, settings: OrdersV2ResourcePaymentSettings option, status: OrdersV2ResourcePaymentStatus option) =
             {
                 OrdersV2ResourcePayment.PaymentIntent = paymentIntent //required
@@ -11291,7 +11087,6 @@ module StripeModel =
         WechatPay: PaymentMethodOptionsWechatPay option
     }
     with
-
         static member New (?acssDebit: PaymentIntentPaymentMethodOptionsAcssDebit, ?afterpayClearpay: OrdersPaymentMethodOptionsAfterpayClearpay, ?alipay: PaymentMethodOptionsAlipay, ?bancontact: PaymentMethodOptionsBancontact, ?card: OrdersV2ResourceCardPaymentMethodOptions, ?customerBalance: PaymentMethodOptionsCustomerBalance, ?ideal: PaymentMethodOptionsIdeal, ?klarna: PaymentMethodOptionsKlarna, ?link: PaymentIntentPaymentMethodOptionsLink, ?oxxo: PaymentMethodOptionsOxxo, ?p24: PaymentMethodOptionsP24, ?paypal: PaymentMethodOptionsPaypal, ?sepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit, ?sofort: PaymentMethodOptionsSofort, ?wechatPay: PaymentMethodOptionsWechatPay) =
             {
                 OrdersV2ResourcePaymentMethodOptions.AcssDebit = acssDebit
@@ -11330,7 +11125,6 @@ module StripeModel =
         TransferData: OrdersV2ResourceTransferData option
     }
     with
-
         static member New (applicationFeeAmount: int option, automaticPaymentMethods: OrdersV2ResourceAutomaticPaymentMethods option, paymentMethodOptions: OrdersV2ResourcePaymentMethodOptions option, paymentMethodTypes: OrdersV2ResourcePaymentSettingsPaymentMethodTypes list option, returnUrl: string option, statementDescriptor: string option, statementDescriptorSuffix: string option, transferData: OrdersV2ResourceTransferData option) =
             {
                 OrdersV2ResourcePaymentSettings.ApplicationFeeAmount = applicationFeeAmount //required
@@ -11378,7 +11172,6 @@ module StripeModel =
         Taxes: LineItemsTaxAmount list option
     }
     with
-
         static member New (amountSubtotal: int, amountTax: int, amountTotal: int, shippingRate: OrdersV2ResourceShippingCostShippingRate'AnyOf option, ?taxes: LineItemsTaxAmount list) =
             {
                 OrdersV2ResourceShippingCost.AmountSubtotal = amountSubtotal //required
@@ -11401,7 +11194,6 @@ module StripeModel =
         Phone: string option
     }
     with
-
         static member New (address: Address option, name: string option, phone: string option) =
             {
                 OrdersV2ResourceShippingDetails.Address = address //required
@@ -11416,7 +11208,6 @@ module StripeModel =
         TaxIds: OrdersV2ResourceTaxDetailsResourceTaxId list
     }
     with
-
         static member New (taxExempt: OrdersV2ResourceTaxDetailsTaxExempt, taxIds: OrdersV2ResourceTaxDetailsResourceTaxId list) =
             {
                 OrdersV2ResourceTaxDetails.TaxExempt = taxExempt //required
@@ -11435,7 +11226,6 @@ module StripeModel =
         Value: string option
     }
     with
-
         static member New (``type``: OrdersV2ResourceTaxDetailsResourceTaxIdType, value: string option) =
             {
                 OrdersV2ResourceTaxDetailsResourceTaxId.Type = ``type`` //required
@@ -11501,7 +11291,6 @@ module StripeModel =
         Breakdown: OrdersV2ResourceTotalDetailsApiResourceBreakdown option
     }
     with
-
         static member New (amountDiscount: int, amountShipping: int option, amountTax: int, ?breakdown: OrdersV2ResourceTotalDetailsApiResourceBreakdown) =
             {
                 OrdersV2ResourceTotalDetails.AmountDiscount = amountDiscount //required
@@ -11517,7 +11306,6 @@ module StripeModel =
         Taxes: LineItemsTaxAmount list
     }
     with
-
         static member New (discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
             {
                 OrdersV2ResourceTotalDetailsApiResourceBreakdown.Discounts = discounts //required
@@ -11531,7 +11319,6 @@ module StripeModel =
         Destination: OrdersV2ResourceTransferDataDestination'AnyOf
     }
     with
-
         static member New (amount: int option, destination: OrdersV2ResourceTransferDataDestination'AnyOf) =
             {
                 OrdersV2ResourceTransferData.Amount = amount //required
@@ -11550,7 +11337,6 @@ module StripeModel =
         UsBankAccount: OutboundPaymentsPaymentMethodDetailsUsBankAccount option
     }
     with
-
         static member New (billingDetails: TreasurySharedResourceBillingDetails, ``type``: OutboundPaymentsPaymentMethodDetailsType, ?financialAccount: OutboundPaymentsPaymentMethodDetailsFinancialAccount, ?usBankAccount: OutboundPaymentsPaymentMethodDetailsUsBankAccount) =
             {
                 OutboundPaymentsPaymentMethodDetails.BillingDetails = billingDetails //required
@@ -11593,7 +11379,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (accountHolderType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType option, accountType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, network: OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork, routingNumber: string option) =
             {
                 OutboundPaymentsPaymentMethodDetailsUsBankAccount.AccountHolderType = accountHolderType //required
@@ -11648,7 +11433,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (accountHolderType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option, accountType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, network: OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork, routingNumber: string option) =
             {
                 OutboundTransfersPaymentMethodDetailsUsBankAccount.AccountHolderType = accountHolderType //required
@@ -11683,7 +11467,6 @@ module StripeModel =
         Width: decimal
     }
     with
-
         static member New (height: decimal, length: decimal, weight: decimal, width: decimal) =
             {
                 PackageDimensions.Height = height //required
@@ -11696,7 +11479,6 @@ module StripeModel =
         Tip: PaymentFlowsAmountDetailsResourceTip option
     }
     with
-
         static member New (?tip: PaymentFlowsAmountDetailsResourceTip) =
             {
                 PaymentFlowsAmountDetails.Tip = tip
@@ -11707,7 +11489,6 @@ module StripeModel =
         Amount: int option
     }
     with
-
         static member New (?amount: int) =
             {
                 PaymentFlowsAmountDetailsResourceTip.Amount = amount
@@ -11718,7 +11499,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PaymentFlowsAutomaticPaymentMethodsPaymentIntent.Enabled = enabled //required
@@ -11729,7 +11509,6 @@ module StripeModel =
         Plan: PaymentMethodDetailsCardInstallmentsPlan option
     }
     with
-
         static member New (enabled: bool, ?plan: PaymentMethodDetailsCardInstallmentsPlan) =
             {
                 PaymentFlowsInstallmentOptions.Enabled = enabled //required
@@ -11740,7 +11519,6 @@ module StripeModel =
         PaymentFlowsPrivatePaymentMethodsAlipay: string option
     }
     with
-
         static member New (?paymentFlowsPrivatePaymentMethodsAlipay: string option) =
             {
                 PaymentFlowsPrivatePaymentMethodsAlipay.PaymentFlowsPrivatePaymentMethodsAlipay = paymentFlowsPrivatePaymentMethodsAlipay |> Option.flatten
@@ -11755,7 +11533,6 @@ module StripeModel =
         TransactionId: string option
     }
     with
-
         static member New (fingerprint: string option, transactionId: string option, ?buyerId: string) =
             {
                 PaymentFlowsPrivatePaymentMethodsAlipayDetails.Fingerprint = fingerprint //required
@@ -11772,7 +11549,6 @@ module StripeModel =
         Year: int option
     }
     with
-
         static member New (day: int option, month: int option, year: int option) =
             {
                 PaymentFlowsPrivatePaymentMethodsKlarnaDob.Day = day //required
@@ -12001,7 +11777,6 @@ module StripeModel =
         CustomerNotification: PaymentIntentProcessingCustomerNotification option
     }
     with
-
         static member New (?customerNotification: PaymentIntentProcessingCustomerNotification) =
             {
                 PaymentIntentCardProcessing.CustomerNotification = customerNotification
@@ -12028,7 +11803,6 @@ module StripeModel =
         WechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp option
     }
     with
-
         static member New (``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?boletoDisplayDetails: PaymentIntentNextActionBoleto, ?cardAwaitNotification: PaymentIntentNextActionCardAwaitNotification, ?displayBankTransferInstructions: PaymentIntentNextActionDisplayBankTransferInstructions, ?konbiniDisplayDetails: PaymentIntentNextActionKonbini, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?paynowDisplayQrCode: PaymentIntentNextActionPaynowDisplayQrCode, ?pixDisplayQrCode: PaymentIntentNextActionPixDisplayQrCode, ?promptpayDisplayQrCode: PaymentIntentNextActionPromptpayDisplayQrCode, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?useStripeSdk: string, ?verifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits, ?wechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode, ?wechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp, ?wechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp) =
             {
                 PaymentIntentNextAction.Type = ``type`` //required
@@ -12067,7 +11841,6 @@ module StripeModel =
         Url: string option
     }
     with
-
         static member New (nativeData: string option, nativeUrl: string option, returnUrl: string option, url: string option) =
             {
                 PaymentIntentNextActionAlipayHandleRedirect.NativeData = nativeData //required
@@ -12087,7 +11860,6 @@ module StripeModel =
         Pdf: string option
     }
     with
-
         static member New (expiresAt: DateTime option, hostedVoucherUrl: string option, number: string option, pdf: string option) =
             {
                 PaymentIntentNextActionBoleto.ExpiresAt = expiresAt //required
@@ -12103,7 +11875,6 @@ module StripeModel =
         CustomerApprovalRequired: bool option
     }
     with
-
         static member New (chargeAttemptAt: DateTime option, customerApprovalRequired: bool option) =
             {
                 PaymentIntentNextActionCardAwaitNotification.ChargeAttemptAt = chargeAttemptAt //required
@@ -12125,7 +11896,6 @@ module StripeModel =
         Type: PaymentIntentNextActionDisplayBankTransferInstructionsType
     }
     with
-
         static member New (amountRemaining: int option, currency: string option, hostedInstructionsUrl: string option, reference: string option, ``type``: PaymentIntentNextActionDisplayBankTransferInstructionsType, ?financialAddresses: FundingInstructionsBankTransferFinancialAddress list) =
             {
                 PaymentIntentNextActionDisplayBankTransferInstructions.AmountRemaining = amountRemaining //required
@@ -12151,7 +11921,6 @@ module StripeModel =
         Number: string option
     }
     with
-
         static member New (expiresAfter: DateTime option, hostedVoucherUrl: string option, number: string option) =
             {
                 PaymentIntentNextActionDisplayOxxoDetails.ExpiresAfter = expiresAfter //required
@@ -12167,7 +11936,6 @@ module StripeModel =
         Stores: PaymentIntentNextActionKonbiniStores
     }
     with
-
         static member New (expiresAt: DateTime, hostedVoucherUrl: string option, stores: PaymentIntentNextActionKonbiniStores) =
             {
                 PaymentIntentNextActionKonbini.ExpiresAt = expiresAt //required
@@ -12182,7 +11950,6 @@ module StripeModel =
         PaymentCode: string
     }
     with
-
         static member New (paymentCode: string, ?confirmationNumber: string) =
             {
                 PaymentIntentNextActionKonbiniFamilymart.PaymentCode = paymentCode //required
@@ -12196,7 +11963,6 @@ module StripeModel =
         PaymentCode: string
     }
     with
-
         static member New (paymentCode: string, ?confirmationNumber: string) =
             {
                 PaymentIntentNextActionKonbiniLawson.PaymentCode = paymentCode //required
@@ -12210,7 +11976,6 @@ module StripeModel =
         PaymentCode: string
     }
     with
-
         static member New (paymentCode: string, ?confirmationNumber: string) =
             {
                 PaymentIntentNextActionKonbiniMinistop.PaymentCode = paymentCode //required
@@ -12224,7 +11989,6 @@ module StripeModel =
         PaymentCode: string
     }
     with
-
         static member New (paymentCode: string, ?confirmationNumber: string) =
             {
                 PaymentIntentNextActionKonbiniSeicomart.PaymentCode = paymentCode //required
@@ -12242,7 +12006,6 @@ module StripeModel =
         Seicomart: PaymentIntentNextActionKonbiniSeicomart option
     }
     with
-
         static member New (familymart: PaymentIntentNextActionKonbiniFamilymart option, lawson: PaymentIntentNextActionKonbiniLawson option, ministop: PaymentIntentNextActionKonbiniMinistop option, seicomart: PaymentIntentNextActionKonbiniSeicomart option) =
             {
                 PaymentIntentNextActionKonbiniStores.Familymart = familymart //required
@@ -12260,7 +12023,6 @@ module StripeModel =
         ImageUrlSvg: string
     }
     with
-
         static member New (data: string, imageUrlPng: string, imageUrlSvg: string) =
             {
                 PaymentIntentNextActionPaynowDisplayQrCode.Data = data //required
@@ -12281,7 +12043,6 @@ module StripeModel =
         ImageUrlSvg: string option
     }
     with
-
         static member New (?data: string, ?expiresAt: int, ?hostedInstructionsUrl: string, ?imageUrlPng: string, ?imageUrlSvg: string) =
             {
                 PaymentIntentNextActionPixDisplayQrCode.Data = data
@@ -12302,7 +12063,6 @@ module StripeModel =
         ImageUrlSvg: string
     }
     with
-
         static member New (data: string, hostedInstructionsUrl: string, imageUrlPng: string, imageUrlSvg: string) =
             {
                 PaymentIntentNextActionPromptpayDisplayQrCode.Data = data //required
@@ -12318,7 +12078,6 @@ module StripeModel =
         Url: string option
     }
     with
-
         static member New (returnUrl: string option, url: string option) =
             {
                 PaymentIntentNextActionRedirectToUrl.ReturnUrl = returnUrl //required
@@ -12334,7 +12093,6 @@ module StripeModel =
         MicrodepositType: PaymentIntentNextActionVerifyWithMicrodepositsMicrodepositType option
     }
     with
-
         static member New (arrivalDate: DateTime, hostedVerificationUrl: string, microdepositType: PaymentIntentNextActionVerifyWithMicrodepositsMicrodepositType option) =
             {
                 PaymentIntentNextActionVerifyWithMicrodeposits.ArrivalDate = arrivalDate //required
@@ -12357,7 +12115,6 @@ module StripeModel =
         ImageUrlSvg: string
     }
     with
-
         static member New (data: string, imageDataUrl: string, imageUrlPng: string, imageUrlSvg: string) =
             {
                 PaymentIntentNextActionWechatPayDisplayQrCode.Data = data //required
@@ -12383,7 +12140,6 @@ module StripeModel =
         Timestamp: string
     }
     with
-
         static member New (appId: string, nonceStr: string, package: string, partnerId: string, prepayId: string, sign: string, timestamp: string) =
             {
                 PaymentIntentNextActionWechatPayRedirectToAndroidApp.AppId = appId //required
@@ -12400,7 +12156,6 @@ module StripeModel =
         NativeUrl: string
     }
     with
-
         static member New (nativeUrl: string) =
             {
                 PaymentIntentNextActionWechatPayRedirectToIosApp.NativeUrl = nativeUrl //required
@@ -12439,7 +12194,6 @@ module StripeModel =
         WechatPay: PaymentMethodOptionsWechatPay option
     }
     with
-
         static member New (?acssDebit: PaymentIntentPaymentMethodOptionsAcssDebit, ?affirm: PaymentMethodOptionsAffirm, ?afterpayClearpay: PaymentMethodOptionsAfterpayClearpay, ?alipay: PaymentMethodOptionsAlipay, ?auBecsDebit: PaymentIntentPaymentMethodOptionsAuBecsDebit, ?bacsDebit: PaymentMethodOptionsBacsDebit, ?bancontact: PaymentMethodOptionsBancontact, ?blik: PaymentIntentPaymentMethodOptionsBlik, ?boleto: PaymentMethodOptionsBoleto, ?card: PaymentIntentPaymentMethodOptionsCard, ?cardPresent: PaymentMethodOptionsCardPresent, ?customerBalance: PaymentMethodOptionsCustomerBalance, ?eps: PaymentIntentPaymentMethodOptionsEps, ?fpx: PaymentMethodOptionsFpx, ?giropay: PaymentMethodOptionsGiropay, ?grabpay: PaymentMethodOptionsGrabpay, ?ideal: PaymentMethodOptionsIdeal, ?interacPresent: PaymentMethodOptionsInteracPresent, ?klarna: PaymentMethodOptionsKlarna, ?konbini: PaymentMethodOptionsKonbini, ?link: PaymentIntentPaymentMethodOptionsLink, ?oxxo: PaymentMethodOptionsOxxo, ?p24: PaymentMethodOptionsP24, ?paynow: PaymentMethodOptionsPaynow, ?pix: PaymentMethodOptionsPix, ?promptpay: PaymentMethodOptionsPromptpay, ?sepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit, ?sofort: PaymentMethodOptionsSofort, ?usBankAccount: PaymentIntentPaymentMethodOptionsUsBankAccount, ?wechatPay: PaymentMethodOptionsWechatPay) =
             {
                 PaymentIntentPaymentMethodOptions.AcssDebit = acssDebit
@@ -12484,7 +12238,6 @@ module StripeModel =
         VerificationMethod: PaymentIntentPaymentMethodOptionsAcssDebitVerificationMethod option
     }
     with
-
         static member New (?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsAcssDebitSetupFutureUsage, ?verificationMethod: PaymentIntentPaymentMethodOptionsAcssDebitVerificationMethod) =
             {
                 PaymentIntentPaymentMethodOptionsAcssDebit.MandateOptions = mandateOptions
@@ -12509,7 +12262,6 @@ module StripeModel =
         SetupFutureUsage: PaymentIntentPaymentMethodOptionsAuBecsDebitSetupFutureUsage option
     }
     with
-
         static member New (?setupFutureUsage: PaymentIntentPaymentMethodOptionsAuBecsDebitSetupFutureUsage) =
             {
                 PaymentIntentPaymentMethodOptionsAuBecsDebit.SetupFutureUsage = setupFutureUsage
@@ -12524,7 +12276,6 @@ module StripeModel =
         PaymentIntentPaymentMethodOptionsBlik: string option
     }
     with
-
         static member New (?paymentIntentPaymentMethodOptionsBlik: string option) =
             {
                 PaymentIntentPaymentMethodOptionsBlik.PaymentIntentPaymentMethodOptionsBlik = paymentIntentPaymentMethodOptionsBlik |> Option.flatten
@@ -12626,7 +12377,6 @@ module StripeModel =
         TransactionType: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option
     }
     with
-
         static member New (intervalDescription: string option, paymentSchedule: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option, transactionType: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option, ?customMandateUrl: string) =
             {
                 PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit.IntervalDescription = intervalDescription //required
@@ -12648,7 +12398,6 @@ module StripeModel =
         PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option
     }
     with
-
         static member New (?paymentIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option) =
             {
                 PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit.PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit = paymentIntentPaymentMethodOptionsMandateOptionsSepaDebit |> Option.flatten
@@ -12662,7 +12411,6 @@ module StripeModel =
         SetupFutureUsage: PaymentIntentPaymentMethodOptionsSepaDebitSetupFutureUsage option
     }
     with
-
         static member New (?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsSepaDebitSetupFutureUsage) =
             {
                 PaymentIntentPaymentMethodOptionsSepaDebit.MandateOptions = mandateOptions
@@ -12684,7 +12432,6 @@ module StripeModel =
         VerificationMethod: PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod option
     }
     with
-
         static member New (?financialConnections: LinkedAccountOptionsUsBankAccount, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsUsBankAccountSetupFutureUsage, ?verificationMethod: PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod) =
             {
                 PaymentIntentPaymentMethodOptionsUsBankAccount.FinancialConnections = financialConnections
@@ -12721,7 +12468,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CompletesAt: DateTime option
     }
     with
-
         static member New (approvalRequested: bool option, completesAt: DateTime option) =
             {
                 PaymentIntentProcessingCustomerNotification.ApprovalRequested = approvalRequested //required
@@ -12921,7 +12667,6 @@ module StripeModel =
         Type: PaymentLinksResourceAfterCompletionType
     }
     with
-
         static member New (``type``: PaymentLinksResourceAfterCompletionType, ?hostedConfirmation: PaymentLinksResourceCompletionBehaviorConfirmationPage, ?redirect: PaymentLinksResourceCompletionBehaviorRedirect) =
             {
                 PaymentLinksResourceAfterCompletion.Type = ``type`` //required
@@ -12938,7 +12683,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PaymentLinksResourceAutomaticTax.Enabled = enabled //required
@@ -12949,7 +12693,6 @@ module StripeModel =
         CustomMessage: string option
     }
     with
-
         static member New (customMessage: string option) =
             {
                 PaymentLinksResourceCompletionBehaviorConfirmationPage.CustomMessage = customMessage //required
@@ -12960,7 +12703,6 @@ module StripeModel =
         Url: string
     }
     with
-
         static member New (url: string) =
             {
                 PaymentLinksResourceCompletionBehaviorRedirect.Url = url //required
@@ -12973,7 +12715,6 @@ module StripeModel =
         TermsOfService: PaymentLinksResourceConsentCollectionTermsOfService option
     }
     with
-
         static member New (promotions: PaymentLinksResourceConsentCollectionPromotions option, termsOfService: PaymentLinksResourceConsentCollectionTermsOfService option) =
             {
                 PaymentLinksResourceConsentCollection.Promotions = promotions //required
@@ -12995,7 +12736,6 @@ module StripeModel =
         SetupFutureUsage: PaymentLinksResourcePaymentIntentDataSetupFutureUsage option
     }
     with
-
         static member New (captureMethod: PaymentLinksResourcePaymentIntentDataCaptureMethod option, setupFutureUsage: PaymentLinksResourcePaymentIntentDataSetupFutureUsage option) =
             {
                 PaymentLinksResourcePaymentIntentData.CaptureMethod = captureMethod //required
@@ -13015,7 +12755,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PaymentLinksResourcePhoneNumberCollection.Enabled = enabled //required
@@ -13026,7 +12765,6 @@ module StripeModel =
         AllowedCountries: PaymentLinksResourceShippingAddressCollectionAllowedCountries list
     }
     with
-
         static member New (allowedCountries: PaymentLinksResourceShippingAddressCollectionAllowedCountries list) =
             {
                 PaymentLinksResourceShippingAddressCollection.AllowedCountries = allowedCountries //required
@@ -13278,7 +13016,6 @@ module StripeModel =
         ShippingRate: PaymentLinksResourceShippingOptionShippingRate'AnyOf
     }
     with
-
         static member New (shippingAmount: int, shippingRate: PaymentLinksResourceShippingOptionShippingRate'AnyOf) =
             {
                 PaymentLinksResourceShippingOption.ShippingAmount = shippingAmount //required
@@ -13296,7 +13033,6 @@ module StripeModel =
         TrialPeriodDays: int option
     }
     with
-
         static member New (description: string option, trialPeriodDays: int option) =
             {
                 PaymentLinksResourceSubscriptionData.Description = description //required
@@ -13308,7 +13044,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PaymentLinksResourceTaxIdCollection.Enabled = enabled //required
@@ -13321,7 +13056,6 @@ module StripeModel =
         Destination: PaymentLinksResourceTransferDataDestination'AnyOf
     }
     with
-
         static member New (amount: int option, destination: PaymentLinksResourceTransferDataDestination'AnyOf) =
             {
                 PaymentLinksResourceTransferData.Amount = amount //required
@@ -13477,7 +13211,6 @@ module StripeModel =
         TransitNumber: string option
     }
     with
-
         static member New (bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option) =
             {
                 PaymentMethodAcssDebit.BankName = bankName //required
@@ -13491,7 +13224,6 @@ module StripeModel =
         PaymentMethodAffirm: string option
     }
     with
-
         static member New (?paymentMethodAffirm: string option) =
             {
                 PaymentMethodAffirm.PaymentMethodAffirm = paymentMethodAffirm |> Option.flatten
@@ -13501,7 +13233,6 @@ module StripeModel =
         PaymentMethodAfterpayClearpay: string option
     }
     with
-
         static member New (?paymentMethodAfterpayClearpay: string option) =
             {
                 PaymentMethodAfterpayClearpay.PaymentMethodAfterpayClearpay = paymentMethodAfterpayClearpay |> Option.flatten
@@ -13516,7 +13247,6 @@ module StripeModel =
         [<JsonField(Name="last4")>]Last4: string option
     }
     with
-
         static member New (bsbNumber: string option, fingerprint: string option, last4: string option) =
             {
                 PaymentMethodAuBecsDebit.BsbNumber = bsbNumber //required
@@ -13533,7 +13263,6 @@ module StripeModel =
         SortCode: string option
     }
     with
-
         static member New (fingerprint: string option, last4: string option, sortCode: string option) =
             {
                 PaymentMethodBacsDebit.Fingerprint = fingerprint //required
@@ -13545,7 +13274,6 @@ module StripeModel =
         PaymentMethodBancontact: string option
     }
     with
-
         static member New (?paymentMethodBancontact: string option) =
             {
                 PaymentMethodBancontact.PaymentMethodBancontact = paymentMethodBancontact |> Option.flatten
@@ -13555,7 +13283,6 @@ module StripeModel =
         PaymentMethodBlik: string option
     }
     with
-
         static member New (?paymentMethodBlik: string option) =
             {
                 PaymentMethodBlik.PaymentMethodBlik = paymentMethodBlik |> Option.flatten
@@ -13566,7 +13293,6 @@ module StripeModel =
         TaxId: string
     }
     with
-
         static member New (taxId: string) =
             {
                 PaymentMethodBoleto.TaxId = taxId //required
@@ -13604,7 +13330,6 @@ module StripeModel =
         Wallet: PaymentMethodCardWallet option
     }
     with
-
         static member New (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, last4: string, networks: Networks option, threeDSecureUsage: ThreeDSecureUsage option, wallet: PaymentMethodCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodCard.Brand = brand //required
@@ -13648,7 +13373,6 @@ module StripeModel =
         CvcCheck: PaymentMethodCardChecksCvcCheck option
     }
     with
-
         static member New (addressLine1Check: PaymentMethodCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodCardChecksCvcCheck option) =
             {
                 PaymentMethodCardChecks.AddressLine1Check = addressLine1Check //required
@@ -13678,7 +13402,6 @@ module StripeModel =
         PaymentMethodCardPresent: string option
     }
     with
-
         static member New (?paymentMethodCardPresent: string option) =
             {
                 PaymentMethodCardPresent.PaymentMethodCardPresent = paymentMethodCardPresent |> Option.flatten
@@ -13697,7 +13420,6 @@ module StripeModel =
         VisaCheckout: PaymentMethodCardWalletVisaCheckout option
     }
     with
-
         static member New (dynamicLast4: string option, ``type``: PaymentMethodCardWalletType, ?amexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout, ?applePay: PaymentMethodCardWalletApplePay, ?googlePay: PaymentMethodCardWalletGooglePay, ?masterpass: PaymentMethodCardWalletMasterpass, ?samsungPay: PaymentMethodCardWalletSamsungPay, ?visaCheckout: PaymentMethodCardWalletVisaCheckout) =
             {
                 PaymentMethodCardWallet.DynamicLast4 = dynamicLast4 //required
@@ -13722,7 +13444,6 @@ module StripeModel =
         PaymentMethodCardWalletAmexExpressCheckout: string option
     }
     with
-
         static member New (?paymentMethodCardWalletAmexExpressCheckout: string option) =
             {
                 PaymentMethodCardWalletAmexExpressCheckout.PaymentMethodCardWalletAmexExpressCheckout = paymentMethodCardWalletAmexExpressCheckout |> Option.flatten
@@ -13732,7 +13453,6 @@ module StripeModel =
         PaymentMethodCardWalletApplePay: string option
     }
     with
-
         static member New (?paymentMethodCardWalletApplePay: string option) =
             {
                 PaymentMethodCardWalletApplePay.PaymentMethodCardWalletApplePay = paymentMethodCardWalletApplePay |> Option.flatten
@@ -13742,7 +13462,6 @@ module StripeModel =
         PaymentMethodCardWalletGooglePay: string option
     }
     with
-
         static member New (?paymentMethodCardWalletGooglePay: string option) =
             {
                 PaymentMethodCardWalletGooglePay.PaymentMethodCardWalletGooglePay = paymentMethodCardWalletGooglePay |> Option.flatten
@@ -13759,7 +13478,6 @@ module StripeModel =
         ShippingAddress: Address option
     }
     with
-
         static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodCardWalletMasterpass.BillingAddress = billingAddress //required
@@ -13772,7 +13490,6 @@ module StripeModel =
         PaymentMethodCardWalletSamsungPay: string option
     }
     with
-
         static member New (?paymentMethodCardWalletSamsungPay: string option) =
             {
                 PaymentMethodCardWalletSamsungPay.PaymentMethodCardWalletSamsungPay = paymentMethodCardWalletSamsungPay |> Option.flatten
@@ -13789,7 +13506,6 @@ module StripeModel =
         ShippingAddress: Address option
     }
     with
-
         static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodCardWalletVisaCheckout.BillingAddress = billingAddress //required
@@ -13802,7 +13518,6 @@ module StripeModel =
         PaymentMethodCustomerBalance: string option
     }
     with
-
         static member New (?paymentMethodCustomerBalance: string option) =
             {
                 PaymentMethodCustomerBalance.PaymentMethodCustomerBalance = paymentMethodCustomerBalance |> Option.flatten
@@ -13851,7 +13566,6 @@ module StripeModel =
         WechatPay: PaymentMethodDetailsWechatPay option
     }
     with
-
         static member New (``type``: PaymentMethodDetailsType, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?affirm: PaymentMethodDetailsAffirm, ?afterpayClearpay: PaymentMethodDetailsAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?blik: PaymentMethodDetailsBlik, ?boleto: PaymentMethodDetailsBoleto, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?klarna: PaymentMethodDetailsKlarna, ?konbini: PaymentMethodDetailsKonbini, ?link: PaymentMethodDetailsLink, ?multibanco: PaymentMethodDetailsMultibanco, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?paynow: PaymentMethodDetailsPaynow, ?pix: PaymentMethodDetailsPix, ?promptpay: PaymentMethodDetailsPromptpay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?usBankAccount: PaymentMethodDetailsUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsWechatPay) =
             {
                 PaymentMethodDetails.Type = ``type`` //required
@@ -13924,7 +13638,6 @@ module StripeModel =
         SwiftCode: string option
     }
     with
-
         static member New (accountNumber: string option, bankName: string option, routingNumber: string option, swiftCode: string option) =
             {
                 PaymentMethodDetailsAchCreditTransfer.AccountNumber = accountNumber //required
@@ -13948,7 +13661,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (accountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option, bankName: string option, country: string option, fingerprint: string option, last4: string option, routingNumber: string option) =
             {
                 PaymentMethodDetailsAchDebit.AccountHolderType = accountHolderType //required
@@ -13978,7 +13690,6 @@ module StripeModel =
         TransitNumber: string option
     }
     with
-
         static member New (bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option, ?mandate: string) =
             {
                 PaymentMethodDetailsAcssDebit.BankName = bankName //required
@@ -13993,7 +13704,6 @@ module StripeModel =
         PaymentMethodDetailsAffirm: string option
     }
     with
-
         static member New (?paymentMethodDetailsAffirm: string option) =
             {
                 PaymentMethodDetailsAffirm.PaymentMethodDetailsAffirm = paymentMethodDetailsAffirm |> Option.flatten
@@ -14004,7 +13714,6 @@ module StripeModel =
         Reference: string option
     }
     with
-
         static member New (reference: string option) =
             {
                 PaymentMethodDetailsAfterpayClearpay.Reference = reference //required
@@ -14021,7 +13730,6 @@ module StripeModel =
         Mandate: string option
     }
     with
-
         static member New (bsbNumber: string option, fingerprint: string option, last4: string option, ?mandate: string) =
             {
                 PaymentMethodDetailsAuBecsDebit.BsbNumber = bsbNumber //required
@@ -14041,7 +13749,6 @@ module StripeModel =
         SortCode: string option
     }
     with
-
         static member New (fingerprint: string option, last4: string option, mandate: string option, sortCode: string option) =
             {
                 PaymentMethodDetailsBacsDebit.Fingerprint = fingerprint //required
@@ -14071,7 +13778,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: PaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
             {
                 PaymentMethodDetailsBancontact.BankCode = bankCode //required
@@ -14102,7 +13808,6 @@ module StripeModel =
         PaymentMethodDetailsBlik: string option
     }
     with
-
         static member New (?paymentMethodDetailsBlik: string option) =
             {
                 PaymentMethodDetailsBlik.PaymentMethodDetailsBlik = paymentMethodDetailsBlik |> Option.flatten
@@ -14113,7 +13818,6 @@ module StripeModel =
         TaxId: string
     }
     with
-
         static member New (taxId: string) =
             {
                 PaymentMethodDetailsBoleto.TaxId = taxId //required
@@ -14158,7 +13862,6 @@ module StripeModel =
         Wallet: PaymentMethodDetailsCardWallet option
     }
     with
-
         static member New (brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, mandate: string option, network: PaymentMethodDetailsCardNetwork option, threeDSecure: ThreeDSecureDetails option, wallet: PaymentMethodDetailsCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option) =
             {
                 PaymentMethodDetailsCard.Brand = brand //required
@@ -14217,7 +13920,6 @@ module StripeModel =
         CvcCheck: PaymentMethodDetailsCardChecksCvcCheck option
     }
     with
-
         static member New (addressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodDetailsCardChecksCvcCheck option) =
             {
                 PaymentMethodDetailsCardChecks.AddressLine1Check = addressLine1Check //required
@@ -14248,7 +13950,6 @@ module StripeModel =
         Plan: PaymentMethodDetailsCardInstallmentsPlan option
     }
     with
-
         static member New (plan: PaymentMethodDetailsCardInstallmentsPlan option) =
             {
                 PaymentMethodDetailsCardInstallments.Plan = plan //required
@@ -14314,7 +14015,6 @@ module StripeModel =
         Receipt: PaymentMethodDetailsCardPresentReceipt option
     }
     with
-
         static member New (amountAuthorized: int option, brand: PaymentMethodDetailsCardPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, incrementalAuthorizationSupported: bool, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, overcaptureSupported: bool, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceipt option, ?captureBefore: DateTime, ?description: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodDetailsCardPresent.AmountAuthorized = amountAuthorized //required
@@ -14395,7 +14095,6 @@ module StripeModel =
         TransactionStatusInformation: string option
     }
     with
-
         static member New (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsCardPresentReceiptAccountType) =
             {
                 PaymentMethodDetailsCardPresentReceipt.ApplicationCryptogram = applicationCryptogram //required
@@ -14428,7 +14127,6 @@ module StripeModel =
         VisaCheckout: PaymentMethodDetailsCardWalletVisaCheckout option
     }
     with
-
         static member New (dynamicLast4: string option, ``type``: PaymentMethodDetailsCardWalletType, ?amexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout, ?applePay: PaymentMethodDetailsCardWalletApplePay, ?googlePay: PaymentMethodDetailsCardWalletGooglePay, ?masterpass: PaymentMethodDetailsCardWalletMasterpass, ?samsungPay: PaymentMethodDetailsCardWalletSamsungPay, ?visaCheckout: PaymentMethodDetailsCardWalletVisaCheckout) =
             {
                 PaymentMethodDetailsCardWallet.DynamicLast4 = dynamicLast4 //required
@@ -14453,7 +14151,6 @@ module StripeModel =
         PaymentMethodDetailsCardWalletAmexExpressCheckout: string option
     }
     with
-
         static member New (?paymentMethodDetailsCardWalletAmexExpressCheckout: string option) =
             {
                 PaymentMethodDetailsCardWalletAmexExpressCheckout.PaymentMethodDetailsCardWalletAmexExpressCheckout = paymentMethodDetailsCardWalletAmexExpressCheckout |> Option.flatten
@@ -14463,7 +14160,6 @@ module StripeModel =
         PaymentMethodDetailsCardWalletApplePay: string option
     }
     with
-
         static member New (?paymentMethodDetailsCardWalletApplePay: string option) =
             {
                 PaymentMethodDetailsCardWalletApplePay.PaymentMethodDetailsCardWalletApplePay = paymentMethodDetailsCardWalletApplePay |> Option.flatten
@@ -14473,7 +14169,6 @@ module StripeModel =
         PaymentMethodDetailsCardWalletGooglePay: string option
     }
     with
-
         static member New (?paymentMethodDetailsCardWalletGooglePay: string option) =
             {
                 PaymentMethodDetailsCardWalletGooglePay.PaymentMethodDetailsCardWalletGooglePay = paymentMethodDetailsCardWalletGooglePay |> Option.flatten
@@ -14490,7 +14185,6 @@ module StripeModel =
         ShippingAddress: Address option
     }
     with
-
         static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodDetailsCardWalletMasterpass.BillingAddress = billingAddress //required
@@ -14503,7 +14197,6 @@ module StripeModel =
         PaymentMethodDetailsCardWalletSamsungPay: string option
     }
     with
-
         static member New (?paymentMethodDetailsCardWalletSamsungPay: string option) =
             {
                 PaymentMethodDetailsCardWalletSamsungPay.PaymentMethodDetailsCardWalletSamsungPay = paymentMethodDetailsCardWalletSamsungPay |> Option.flatten
@@ -14520,7 +14213,6 @@ module StripeModel =
         ShippingAddress: Address option
     }
     with
-
         static member New (billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
             {
                 PaymentMethodDetailsCardWalletVisaCheckout.BillingAddress = billingAddress //required
@@ -14533,7 +14225,6 @@ module StripeModel =
         PaymentMethodDetailsCustomerBalance: string option
     }
     with
-
         static member New (?paymentMethodDetailsCustomerBalance: string option) =
             {
                 PaymentMethodDetailsCustomerBalance.PaymentMethodDetailsCustomerBalance = paymentMethodDetailsCustomerBalance |> Option.flatten
@@ -14548,7 +14239,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bank: PaymentMethodDetailsEpsBank option, verifiedName: string option) =
             {
                 PaymentMethodDetailsEps.Bank = bank //required
@@ -14594,7 +14284,6 @@ module StripeModel =
         TransactionId: string option
     }
     with
-
         static member New (accountHolderType: PaymentMethodDetailsFpxAccountHolderType option, bank: PaymentMethodDetailsFpxBank, transactionId: string option) =
             {
                 PaymentMethodDetailsFpx.AccountHolderType = accountHolderType //required
@@ -14642,7 +14331,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bankCode: string option, bankName: string option, bic: string option, verifiedName: string option) =
             {
                 PaymentMethodDetailsGiropay.BankCode = bankCode //required
@@ -14656,7 +14344,6 @@ module StripeModel =
         TransactionId: string option
     }
     with
-
         static member New (transactionId: string option) =
             {
                 PaymentMethodDetailsGrabpay.TransactionId = transactionId //required
@@ -14678,7 +14365,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bank: PaymentMethodDetailsIdealBank option, bic: PaymentMethodDetailsIdealBic option, generatedSepaDebit: PaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, verifiedName: string option) =
             {
                 PaymentMethodDetailsIdeal.Bank = bank //required
@@ -14765,7 +14451,6 @@ module StripeModel =
         Receipt: PaymentMethodDetailsInteracPresentReceipt option
     }
     with
-
         static member New (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodDetailsInteracPresent.Brand = brand //required
@@ -14838,7 +14523,6 @@ module StripeModel =
         TransactionStatusInformation: string option
     }
     with
-
         static member New (applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: string option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsInteracPresentReceiptAccountType) =
             {
                 PaymentMethodDetailsInteracPresentReceipt.ApplicationCryptogram = applicationCryptogram //required
@@ -14866,7 +14550,6 @@ module StripeModel =
         PreferredLocale: string option
     }
     with
-
         static member New (paymentMethodCategory: string option, preferredLocale: string option) =
             {
                 PaymentMethodDetailsKlarna.PaymentMethodCategory = paymentMethodCategory //required
@@ -14878,7 +14561,6 @@ module StripeModel =
         Store: PaymentMethodDetailsKonbiniStore option
     }
     with
-
         static member New (store: PaymentMethodDetailsKonbiniStore option) =
             {
                 PaymentMethodDetailsKonbini.Store = store //required
@@ -14889,7 +14571,6 @@ module StripeModel =
         Chain: PaymentMethodDetailsKonbiniStoreChain option
     }
     with
-
         static member New (chain: PaymentMethodDetailsKonbiniStoreChain option) =
             {
                 PaymentMethodDetailsKonbiniStore.Chain = chain //required
@@ -14905,7 +14586,6 @@ module StripeModel =
         PaymentMethodDetailsLink: string option
     }
     with
-
         static member New (?paymentMethodDetailsLink: string option) =
             {
                 PaymentMethodDetailsLink.PaymentMethodDetailsLink = paymentMethodDetailsLink |> Option.flatten
@@ -14918,7 +14598,6 @@ module StripeModel =
         Reference: string option
     }
     with
-
         static member New (entity: string option, reference: string option) =
             {
                 PaymentMethodDetailsMultibanco.Entity = entity //required
@@ -14930,7 +14609,6 @@ module StripeModel =
         Number: string option
     }
     with
-
         static member New (number: string option) =
             {
                 PaymentMethodDetailsOxxo.Number = number //required
@@ -14947,7 +14625,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bank: PaymentMethodDetailsP24Bank option, reference: string option, verifiedName: string option) =
             {
                 PaymentMethodDetailsP24.Bank = bank //required
@@ -14987,7 +14664,6 @@ module StripeModel =
         Reference: string option
     }
     with
-
         static member New (reference: string option) =
             {
                 PaymentMethodDetailsPaynow.Reference = reference //required
@@ -14998,7 +14674,6 @@ module StripeModel =
         BankTransactionId: string option
     }
     with
-
         static member New (?bankTransactionId: string option) =
             {
                 PaymentMethodDetailsPix.BankTransactionId = bankTransactionId |> Option.flatten
@@ -15009,7 +14684,6 @@ module StripeModel =
         Reference: string option
     }
     with
-
         static member New (reference: string option) =
             {
                 PaymentMethodDetailsPromptpay.Reference = reference //required
@@ -15024,7 +14698,6 @@ module StripeModel =
         Iban: string option
     }
     with
-
         static member New (bankName: string option, bic: string option, iban: string option) =
             {
                 PaymentMethodDetailsSepaCreditTransfer.BankName = bankName //required
@@ -15047,7 +14720,6 @@ module StripeModel =
         Mandate: string option
     }
     with
-
         static member New (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, last4: string option, mandate: string option) =
             {
                 PaymentMethodDetailsSepaDebit.BankCode = bankCode //required
@@ -15081,7 +14753,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bankCode: string option, bankName: string option, bic: string option, country: string option, generatedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
             {
                 PaymentMethodDetailsSofort.BankCode = bankCode //required
@@ -15116,7 +14787,6 @@ module StripeModel =
         PaymentMethodDetailsStripeAccount: string option
     }
     with
-
         static member New (?paymentMethodDetailsStripeAccount: string option) =
             {
                 PaymentMethodDetailsStripeAccount.PaymentMethodDetailsStripeAccount = paymentMethodDetailsStripeAccount |> Option.flatten
@@ -15137,7 +14807,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (accountHolderType: PaymentMethodDetailsUsBankAccountAccountHolderType option, accountType: PaymentMethodDetailsUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, routingNumber: string option) =
             {
                 PaymentMethodDetailsUsBankAccount.AccountHolderType = accountHolderType //required
@@ -15160,7 +14829,6 @@ module StripeModel =
         PaymentMethodDetailsWechat: string option
     }
     with
-
         static member New (?paymentMethodDetailsWechat: string option) =
             {
                 PaymentMethodDetailsWechat.PaymentMethodDetailsWechat = paymentMethodDetailsWechat |> Option.flatten
@@ -15173,7 +14841,6 @@ module StripeModel =
         TransactionId: string option
     }
     with
-
         static member New (fingerprint: string option, transactionId: string option) =
             {
                 PaymentMethodDetailsWechatPay.Fingerprint = fingerprint //required
@@ -15185,7 +14852,6 @@ module StripeModel =
         Bank: PaymentMethodEpsBank option
     }
     with
-
         static member New (bank: PaymentMethodEpsBank option) =
             {
                 PaymentMethodEps.Bank = bank //required
@@ -15228,7 +14894,6 @@ module StripeModel =
         Bank: PaymentMethodFpxBank
     }
     with
-
         static member New (accountHolderType: PaymentMethodFpxAccountHolderType option, bank: PaymentMethodFpxBank) =
             {
                 PaymentMethodFpx.AccountHolderType = accountHolderType //required
@@ -15266,7 +14931,6 @@ module StripeModel =
         PaymentMethodGiropay: string option
     }
     with
-
         static member New (?paymentMethodGiropay: string option) =
             {
                 PaymentMethodGiropay.PaymentMethodGiropay = paymentMethodGiropay |> Option.flatten
@@ -15276,7 +14940,6 @@ module StripeModel =
         PaymentMethodGrabpay: string option
     }
     with
-
         static member New (?paymentMethodGrabpay: string option) =
             {
                 PaymentMethodGrabpay.PaymentMethodGrabpay = paymentMethodGrabpay |> Option.flatten
@@ -15289,7 +14952,6 @@ module StripeModel =
         Bic: PaymentMethodIdealBic option
     }
     with
-
         static member New (bank: PaymentMethodIdealBank option, bic: PaymentMethodIdealBic option) =
             {
                 PaymentMethodIdeal.Bank = bank //required
@@ -15330,7 +14992,6 @@ module StripeModel =
         PaymentMethodInteracPresent: string option
     }
     with
-
         static member New (?paymentMethodInteracPresent: string option) =
             {
                 PaymentMethodInteracPresent.PaymentMethodInteracPresent = paymentMethodInteracPresent |> Option.flatten
@@ -15341,7 +15002,6 @@ module StripeModel =
         Dob: PaymentFlowsPrivatePaymentMethodsKlarnaDob option
     }
     with
-
         static member New (dob: PaymentFlowsPrivatePaymentMethodsKlarnaDob option) =
             {
                 PaymentMethodKlarna.Dob = dob //required
@@ -15351,7 +15011,6 @@ module StripeModel =
         PaymentMethodKonbini: string option
     }
     with
-
         static member New (?paymentMethodKonbini: string option) =
             {
                 PaymentMethodKonbini.PaymentMethodKonbini = paymentMethodKonbini |> Option.flatten
@@ -15364,7 +15023,6 @@ module StripeModel =
         PersistentToken: string option
     }
     with
-
         static member New (email: string option, ?persistentToken: string) =
             {
                 PaymentMethodLink.Email = email //required
@@ -15405,7 +15063,6 @@ module StripeModel =
         SetupFutureUsage: PaymentMethodOptionsAlipaySetupFutureUsage option
     }
     with
-
         static member New (?setupFutureUsage: PaymentMethodOptionsAlipaySetupFutureUsage) =
             {
                 PaymentMethodOptionsAlipay.SetupFutureUsage = setupFutureUsage
@@ -15422,7 +15079,6 @@ module StripeModel =
         SetupFutureUsage: PaymentMethodOptionsBacsDebitSetupFutureUsage option
     }
     with
-
         static member New (?setupFutureUsage: PaymentMethodOptionsBacsDebitSetupFutureUsage) =
             {
                 PaymentMethodOptionsBacsDebit.SetupFutureUsage = setupFutureUsage
@@ -15442,7 +15098,6 @@ module StripeModel =
         SetupFutureUsage: PaymentMethodOptionsBancontactSetupFutureUsage option
     }
     with
-
         static member New (preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage, ?setupFutureUsage: PaymentMethodOptionsBancontactSetupFutureUsage) =
             {
                 PaymentMethodOptionsBancontact.PreferredLanguage = preferredLanguage //required
@@ -15468,7 +15123,6 @@ module StripeModel =
         SetupFutureUsage: PaymentMethodOptionsBoletoSetupFutureUsage option
     }
     with
-
         static member New (expiresAfterDays: int, ?setupFutureUsage: PaymentMethodOptionsBoletoSetupFutureUsage) =
             {
                 PaymentMethodOptionsBoleto.ExpiresAfterDays = expiresAfterDays //required
@@ -15489,7 +15143,6 @@ module StripeModel =
         Plan: PaymentMethodDetailsCardInstallmentsPlan option
     }
     with
-
         static member New (availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodDetailsCardInstallmentsPlan option) =
             {
                 PaymentMethodOptionsCardInstallments.AvailablePlans = availablePlans //required
@@ -15518,7 +15171,6 @@ module StripeModel =
         SupportedTypes: string list option
     }
     with
-
         static member New (amount: int, amountType: PaymentMethodOptionsCardMandateOptionsAmountType, description: string option, endDate: DateTime option, interval: PaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
             {
                 PaymentMethodOptionsCardMandateOptions.Amount = amount //required
@@ -15550,7 +15202,6 @@ module StripeModel =
         RequestIncrementalAuthorizationSupport: bool option
     }
     with
-
         static member New (requestExtendedAuthorization: bool option, requestIncrementalAuthorizationSupport: bool option) =
             {
                 PaymentMethodOptionsCardPresent.RequestExtendedAuthorization = requestExtendedAuthorization //required
@@ -15582,7 +15233,6 @@ module StripeModel =
         Type: PaymentMethodOptionsCustomerBalanceBankTransferType option
     }
     with
-
         static member New (``type``: PaymentMethodOptionsCustomerBalanceBankTransferType option, ?euBankTransfer: PaymentMethodOptionsCustomerBalanceEuBankAccount, ?requestedAddressTypes: PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes list) =
             {
                 PaymentMethodOptionsCustomerBalanceBankTransfer.Type = ``type`` //required
@@ -15608,7 +15258,6 @@ module StripeModel =
         Country: PaymentMethodOptionsCustomerBalanceEuBankAccountCountry
     }
     with
-
         static member New (country: PaymentMethodOptionsCustomerBalanceEuBankAccountCountry) =
             {
                 PaymentMethodOptionsCustomerBalanceEuBankAccount.Country = country //required
@@ -15649,7 +15298,6 @@ module StripeModel =
         SetupFutureUsage: PaymentMethodOptionsIdealSetupFutureUsage option
     }
     with
-
         static member New (?setupFutureUsage: PaymentMethodOptionsIdealSetupFutureUsage) =
             {
                 PaymentMethodOptionsIdeal.SetupFutureUsage = setupFutureUsage
@@ -15663,7 +15311,6 @@ module StripeModel =
         PaymentMethodOptionsInteracPresent: string option
     }
     with
-
         static member New (?paymentMethodOptionsInteracPresent: string option) =
             {
                 PaymentMethodOptionsInteracPresent.PaymentMethodOptionsInteracPresent = paymentMethodOptionsInteracPresent |> Option.flatten
@@ -15786,7 +15433,6 @@ module StripeModel =
         SetupFutureUsage: PaymentMethodOptionsSofortSetupFutureUsage option
     }
     with
-
         static member New (preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option, ?setupFutureUsage: PaymentMethodOptionsSofortSetupFutureUsage) =
             {
                 PaymentMethodOptionsSofort.PreferredLanguage = preferredLanguage //required
@@ -15833,7 +15479,6 @@ module StripeModel =
         PaymentMethodOxxo: string option
     }
     with
-
         static member New (?paymentMethodOxxo: string option) =
             {
                 PaymentMethodOxxo.PaymentMethodOxxo = paymentMethodOxxo |> Option.flatten
@@ -15844,7 +15489,6 @@ module StripeModel =
         Bank: PaymentMethodP24Bank option
     }
     with
-
         static member New (bank: PaymentMethodP24Bank option) =
             {
                 PaymentMethodP24.Bank = bank //required
@@ -15881,7 +15525,6 @@ module StripeModel =
         PaymentMethodPaynow: string option
     }
     with
-
         static member New (?paymentMethodPaynow: string option) =
             {
                 PaymentMethodPaynow.PaymentMethodPaynow = paymentMethodPaynow |> Option.flatten
@@ -15891,7 +15534,6 @@ module StripeModel =
         PaymentMethodPix: string option
     }
     with
-
         static member New (?paymentMethodPix: string option) =
             {
                 PaymentMethodPix.PaymentMethodPix = paymentMethodPix |> Option.flatten
@@ -15901,7 +15543,6 @@ module StripeModel =
         PaymentMethodPromptpay: string option
     }
     with
-
         static member New (?paymentMethodPromptpay: string option) =
             {
                 PaymentMethodPromptpay.PaymentMethodPromptpay = paymentMethodPromptpay |> Option.flatten
@@ -15922,7 +15563,6 @@ module StripeModel =
         [<JsonField(Name="last4")>]Last4: string option
     }
     with
-
         static member New (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
             {
                 PaymentMethodSepaDebit.BankCode = bankCode //required
@@ -15938,7 +15578,6 @@ module StripeModel =
         Country: string option
     }
     with
-
         static member New (country: string option) =
             {
                 PaymentMethodSofort.Country = country //required
@@ -15963,7 +15602,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (accountHolderType: PaymentMethodUsBankAccountAccountHolderType option, accountType: PaymentMethodUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, networks: UsBankAccountNetworks option, routingNumber: string option, ?financialConnectionsAccount: string option) =
             {
                 PaymentMethodUsBankAccount.AccountHolderType = accountHolderType //required
@@ -15988,7 +15626,6 @@ module StripeModel =
         PaymentMethodWechatPay: string option
     }
     with
-
         static member New (?paymentMethodWechatPay: string option) =
             {
                 PaymentMethodWechatPay.PaymentMethodWechatPay = paymentMethodWechatPay |> Option.flatten
@@ -15999,7 +15636,6 @@ module StripeModel =
         Recovery: PaymentPagesCheckoutSessionAfterExpirationRecovery option
     }
     with
-
         static member New (recovery: PaymentPagesCheckoutSessionAfterExpirationRecovery option) =
             {
                 PaymentPagesCheckoutSessionAfterExpiration.Recovery = recovery //required
@@ -16018,7 +15654,6 @@ module StripeModel =
         Url: string option
     }
     with
-
         static member New (allowPromotionCodes: bool, enabled: bool, expiresAt: DateTime option, url: string option) =
             {
                 PaymentPagesCheckoutSessionAfterExpirationRecovery.AllowPromotionCodes = allowPromotionCodes //required
@@ -16034,7 +15669,6 @@ module StripeModel =
         Status: PaymentPagesCheckoutSessionAutomaticTaxStatus option
     }
     with
-
         static member New (enabled: bool, status: PaymentPagesCheckoutSessionAutomaticTaxStatus option) =
             {
                 PaymentPagesCheckoutSessionAutomaticTax.Enabled = enabled //required
@@ -16073,7 +15707,6 @@ module StripeModel =
         TermsOfService: PaymentPagesCheckoutSessionConsentCollectionTermsOfService option
     }
     with
-
         static member New (promotions: PaymentPagesCheckoutSessionConsentCollectionPromotions option, termsOfService: PaymentPagesCheckoutSessionConsentCollectionTermsOfService option) =
             {
                 PaymentPagesCheckoutSessionConsentCollection.Promotions = promotions //required
@@ -16104,7 +15737,6 @@ module StripeModel =
         TaxIds: PaymentPagesCheckoutSessionTaxId list option
     }
     with
-
         static member New (address: Address option, email: string option, name: string option, phone: string option, taxExempt: PaymentPagesCheckoutSessionCustomerDetailsTaxExempt option, taxIds: PaymentPagesCheckoutSessionTaxId list option) =
             {
                 PaymentPagesCheckoutSessionCustomerDetails.Address = address //required
@@ -16125,7 +15757,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PaymentPagesCheckoutSessionPhoneNumberCollection.Enabled = enabled //required
@@ -16137,7 +15768,6 @@ module StripeModel =
         AllowedCountries: PaymentPagesCheckoutSessionShippingAddressCollectionAllowedCountries list
     }
     with
-
         static member New (allowedCountries: PaymentPagesCheckoutSessionShippingAddressCollectionAllowedCountries list) =
             {
                 PaymentPagesCheckoutSessionShippingAddressCollection.AllowedCountries = allowedCountries //required
@@ -16395,7 +16025,6 @@ module StripeModel =
         Taxes: LineItemsTaxAmount list option
     }
     with
-
         static member New (amountSubtotal: int, amountTax: int, amountTotal: int, shippingRate: PaymentPagesCheckoutSessionShippingCostShippingRate'AnyOf option, ?taxes: LineItemsTaxAmount list) =
             {
                 PaymentPagesCheckoutSessionShippingCost.AmountSubtotal = amountSubtotal //required
@@ -16416,7 +16045,6 @@ module StripeModel =
         ShippingRate: PaymentPagesCheckoutSessionShippingOptionShippingRate'AnyOf
     }
     with
-
         static member New (shippingAmount: int, shippingRate: PaymentPagesCheckoutSessionShippingOptionShippingRate'AnyOf) =
             {
                 PaymentPagesCheckoutSessionShippingOption.ShippingAmount = shippingAmount //required
@@ -16434,7 +16062,6 @@ module StripeModel =
         Value: string option
     }
     with
-
         static member New (``type``: PaymentPagesCheckoutSessionTaxIdType, value: string option) =
             {
                 PaymentPagesCheckoutSessionTaxId.Type = ``type`` //required
@@ -16495,7 +16122,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PaymentPagesCheckoutSessionTaxIdCollection.Enabled = enabled //required
@@ -16511,7 +16137,6 @@ module StripeModel =
         Breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown option
     }
     with
-
         static member New (amountDiscount: int, amountShipping: int option, amountTax: int, ?breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown) =
             {
                 PaymentPagesCheckoutSessionTotalDetails.AmountDiscount = amountDiscount //required
@@ -16527,7 +16152,6 @@ module StripeModel =
         Taxes: LineItemsTaxAmount list
     }
     with
-
         static member New (discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
             {
                 PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown.Discounts = discounts //required
@@ -16668,7 +16292,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Start: DateTime option
     }
     with
-
         static member New (``end``: DateTime option, start: DateTime option) =
             {
                 Period.End = ``end`` //required
@@ -16790,7 +16413,6 @@ module StripeModel =
         PendingVerification: string list
     }
     with
-
         static member New (alternatives: AccountRequirementsAlternative list option, currentlyDue: string list, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
             {
                 PersonFutureRequirements.Alternatives = alternatives //required
@@ -16816,7 +16438,6 @@ module StripeModel =
         Title: string option
     }
     with
-
         static member New (director: bool option, executive: bool option, owner: bool option, percentOwnership: decimal option, representative: bool option, title: string option) =
             {
                 PersonRelationship.Director = director //required
@@ -16842,7 +16463,6 @@ module StripeModel =
         PendingVerification: string list
     }
     with
-
         static member New (alternatives: AccountRequirementsAlternative list option, currentlyDue: string list, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
             {
                 PersonRequirements.Alternatives = alternatives //required
@@ -16967,7 +16587,6 @@ module StripeModel =
         UpTo: int option
     }
     with
-
         static member New (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
             {
                 PlanTier.FlatAmount = flatAmount //required
@@ -17008,7 +16627,6 @@ module StripeModel =
         TermsOfServiceUrl: string option
     }
     with
-
         static member New (headline: string option, privacyPolicyUrl: string option, termsOfServiceUrl: string option) =
             {
                 PortalBusinessProfile.Headline = headline //required
@@ -17023,7 +16641,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (allowedUpdates: PortalCustomerUpdateAllowedUpdates list, enabled: bool) =
             {
                 PortalCustomerUpdate.AllowedUpdates = allowedUpdates //required
@@ -17046,7 +16663,6 @@ module StripeModel =
         SubscriptionUpdate: PortalSubscriptionUpdate
     }
     with
-
         static member New (customerUpdate: PortalCustomerUpdate, invoiceHistory: PortalInvoiceList, paymentMethodUpdate: PortalPaymentMethodUpdate, subscriptionCancel: PortalSubscriptionCancel, subscriptionPause: PortalSubscriptionPause, subscriptionUpdate: PortalSubscriptionUpdate) =
             {
                 PortalFeatures.CustomerUpdate = customerUpdate //required
@@ -17062,7 +16678,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PortalInvoiceList.Enabled = enabled //required
@@ -17076,7 +16691,6 @@ module StripeModel =
         Url: string option
     }
     with
-
         static member New (enabled: bool, url: string option) =
             {
                 PortalLoginPage.Enabled = enabled //required
@@ -17088,7 +16702,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PortalPaymentMethodUpdate.Enabled = enabled //required
@@ -17104,7 +16717,6 @@ module StripeModel =
         ProrationBehavior: PortalSubscriptionCancelProrationBehavior
     }
     with
-
         static member New (cancellationReason: PortalSubscriptionCancellationReason, enabled: bool, mode: PortalSubscriptionCancelMode, prorationBehavior: PortalSubscriptionCancelProrationBehavior) =
             {
                 PortalSubscriptionCancel.CancellationReason = cancellationReason //required
@@ -17129,7 +16741,6 @@ module StripeModel =
         Options: PortalSubscriptionCancellationReasonOptions list
     }
     with
-
         static member New (enabled: bool, options: PortalSubscriptionCancellationReasonOptions list) =
             {
                 PortalSubscriptionCancellationReason.Enabled = enabled //required
@@ -17151,7 +16762,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 PortalSubscriptionPause.Enabled = enabled //required
@@ -17168,7 +16778,6 @@ module StripeModel =
         ProrationBehavior: PortalSubscriptionUpdateProrationBehavior
     }
     with
-
         static member New (defaultAllowedUpdates: PortalSubscriptionUpdateDefaultAllowedUpdates list, enabled: bool, products: PortalSubscriptionUpdateProduct list option, prorationBehavior: PortalSubscriptionUpdateProrationBehavior) =
             {
                 PortalSubscriptionUpdate.DefaultAllowedUpdates = defaultAllowedUpdates //required
@@ -17194,7 +16803,6 @@ module StripeModel =
         Product: string
     }
     with
-
         static member New (prices: string list, product: string) =
             {
                 PortalSubscriptionUpdateProduct.Prices = prices //required
@@ -17310,7 +16918,6 @@ module StripeModel =
         UpTo: int option
     }
     with
-
         static member New (flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
             {
                 PriceTier.FlatAmount = flatAmount //required
@@ -17465,7 +17072,6 @@ module StripeModel =
         MinimumAmount: int
     }
     with
-
         static member New (minimumAmount: int) =
             {
                 PromotionCodeCurrencyOption.MinimumAmount = minimumAmount //required
@@ -17482,7 +17088,6 @@ module StripeModel =
         MinimumAmountCurrency: string option
     }
     with
-
         static member New (firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: string option, ?currencyOptions: Map<string, string list>) =
             {
                 PromotionCodesResourceRestrictions.FirstTimeTransaction = firstTimeTransaction //required
@@ -17676,7 +17281,6 @@ module StripeModel =
         Status: QuotesResourceAutomaticTaxStatus option
     }
     with
-
         static member New (enabled: bool, status: QuotesResourceAutomaticTaxStatus option) =
             {
                 QuotesResourceAutomaticTax.Enabled = enabled //required
@@ -17694,7 +17298,6 @@ module StripeModel =
         Upfront: QuotesResourceUpfront
     }
     with
-
         static member New (recurring: QuotesResourceRecurring option, upfront: QuotesResourceUpfront) =
             {
                 QuotesResourceComputed.Recurring = recurring //required
@@ -17708,7 +17311,6 @@ module StripeModel =
         Quote: QuotesResourceFromQuoteQuote'AnyOf
     }
     with
-
         static member New (isRevision: bool, quote: QuotesResourceFromQuoteQuote'AnyOf) =
             {
                 QuotesResourceFromQuote.IsRevision = isRevision //required
@@ -17731,7 +17333,6 @@ module StripeModel =
         TotalDetails: QuotesResourceTotalDetails
     }
     with
-
         static member New (amountSubtotal: int, amountTotal: int, interval: QuotesResourceRecurringInterval, intervalCount: int, totalDetails: QuotesResourceTotalDetails) =
             {
                 QuotesResourceRecurring.AmountSubtotal = amountSubtotal //required
@@ -17756,7 +17357,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]FinalizedAt: DateTime option
     }
     with
-
         static member New (acceptedAt: DateTime option, canceledAt: DateTime option, finalizedAt: DateTime option) =
             {
                 QuotesResourceStatusTransitions.AcceptedAt = acceptedAt //required
@@ -17773,7 +17373,6 @@ module StripeModel =
         TrialPeriodDays: int option
     }
     with
-
         static member New (description: string option, effectiveDate: DateTime option, trialPeriodDays: int option) =
             {
                 QuotesResourceSubscriptionData.Description = description //required
@@ -17791,7 +17390,6 @@ module StripeModel =
         Breakdown: QuotesResourceTotalDetailsResourceBreakdown option
     }
     with
-
         static member New (amountDiscount: int, amountShipping: int option, amountTax: int, ?breakdown: QuotesResourceTotalDetailsResourceBreakdown) =
             {
                 QuotesResourceTotalDetails.AmountDiscount = amountDiscount //required
@@ -17807,7 +17405,6 @@ module StripeModel =
         Taxes: LineItemsTaxAmount list
     }
     with
-
         static member New (discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
             {
                 QuotesResourceTotalDetailsResourceBreakdown.Discounts = discounts //required
@@ -17823,7 +17420,6 @@ module StripeModel =
         Destination: QuotesResourceTransferDataDestination'AnyOf
     }
     with
-
         static member New (amount: int option, amountPercent: decimal option, destination: QuotesResourceTransferDataDestination'AnyOf) =
             {
                 QuotesResourceTransferData.Amount = amount //required
@@ -17845,7 +17441,6 @@ module StripeModel =
         TotalDetails: QuotesResourceTotalDetails
     }
     with
-
         static member New (amountSubtotal: int, amountTotal: int, totalDetails: QuotesResourceTotalDetails, ?lineItems: QuotesResourceUpfrontLineItems) =
             {
                 QuotesResourceUpfront.AmountSubtotal = amountSubtotal //required
@@ -18021,7 +17616,6 @@ module StripeModel =
         Session: string option
     }
     with
-
         static member New (?session: string) =
             {
                 RadarRadarOptions.Session = session
@@ -18040,7 +17634,6 @@ module StripeModel =
         Region: string option
     }
     with
-
         static member New (city: string option, country: string option, latitude: decimal option, longitude: decimal option, region: string option) =
             {
                 RadarReviewResourceLocation.City = city //required
@@ -18061,7 +17654,6 @@ module StripeModel =
         Version: string option
     }
     with
-
         static member New (browser: string option, device: string option, platform: string option, version: string option) =
             {
                 RadarReviewResourceSession.Browser = browser //required
@@ -18096,7 +17688,6 @@ module StripeModel =
         UsageType: RecurringUsageType
     }
     with
-
         static member New (aggregateUsage: RecurringAggregateUsage option, interval: RecurringInterval, intervalCount: int, trialPeriodDays: int option, usageType: RecurringUsageType) =
             {
                 Recurring.AggregateUsage = aggregateUsage //required
@@ -18236,7 +17827,6 @@ module StripeModel =
         Type: string
     }
     with
-
         static member New (displayDetails: RefundNextActionDisplayDetails option, ``type``: string) =
             {
                 RefundNextAction.DisplayDetails = displayDetails //required
@@ -18249,7 +17839,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
     }
     with
-
         static member New (emailSent: EmailSent, expiresAt: DateTime) =
             {
                 RefundNextActionDisplayDetails.EmailSent = emailSent //required
@@ -18455,7 +18044,6 @@ module StripeModel =
         Predicate: string
     }
     with
-
         static member New (action: string, id: string, predicate: string) =
             {
                 Rule.Action = action //required
@@ -18511,7 +18099,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 SchedulesPhaseAutomaticTax.Enabled = enabled //required
@@ -18524,7 +18111,6 @@ module StripeModel =
         User: string option
     }
     with
-
         static member New (``type``: SecretServiceResourceScopeType, ?user: string) =
             {
                 SecretServiceResourceScope.Type = ``type`` //required
@@ -18542,7 +18128,6 @@ module StripeModel =
         SetupAttempt: SepaDebitGeneratedFromSetupAttempt'AnyOf option
     }
     with
-
         static member New (charge: SepaDebitGeneratedFromCharge'AnyOf option, setupAttempt: SepaDebitGeneratedFromSetupAttempt'AnyOf option) =
             {
                 SepaDebitGeneratedFrom.Charge = charge //required
@@ -18669,7 +18254,6 @@ module StripeModel =
         UsBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount option
     }
     with
-
         static member New (``type``: string, ?acssDebit: SetupAttemptPaymentMethodDetailsAcssDebit, ?auBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit, ?bacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?blik: SetupAttemptPaymentMethodDetailsBlik, ?boleto: SetupAttemptPaymentMethodDetailsBoleto, ?card: SetupAttemptPaymentMethodDetailsCard, ?cardPresent: SetupAttemptPaymentMethodDetailsCardPresent, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?link: SetupAttemptPaymentMethodDetailsLink, ?sepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit, ?sofort: SetupAttemptPaymentMethodDetailsSofort, ?usBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount) =
             {
                 SetupAttemptPaymentMethodDetails.Type = ``type`` //required
@@ -18692,7 +18276,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsAcssDebit: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsAcssDebit: string option) =
             {
                 SetupAttemptPaymentMethodDetailsAcssDebit.SetupAttemptPaymentMethodDetailsAcssDebit = setupAttemptPaymentMethodDetailsAcssDebit |> Option.flatten
@@ -18702,7 +18285,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsAuBecsDebit: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsAuBecsDebit: string option) =
             {
                 SetupAttemptPaymentMethodDetailsAuBecsDebit.SetupAttemptPaymentMethodDetailsAuBecsDebit = setupAttemptPaymentMethodDetailsAuBecsDebit |> Option.flatten
@@ -18712,7 +18294,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsBacsDebit: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsBacsDebit: string option) =
             {
                 SetupAttemptPaymentMethodDetailsBacsDebit.SetupAttemptPaymentMethodDetailsBacsDebit = setupAttemptPaymentMethodDetailsBacsDebit |> Option.flatten
@@ -18739,7 +18320,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
             {
                 SetupAttemptPaymentMethodDetailsBancontact.BankCode = bankCode //required
@@ -18770,7 +18350,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsBlik: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsBlik: string option) =
             {
                 SetupAttemptPaymentMethodDetailsBlik.SetupAttemptPaymentMethodDetailsBlik = setupAttemptPaymentMethodDetailsBlik |> Option.flatten
@@ -18780,7 +18359,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsBoleto: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsBoleto: string option) =
             {
                 SetupAttemptPaymentMethodDetailsBoleto.SetupAttemptPaymentMethodDetailsBoleto = setupAttemptPaymentMethodDetailsBoleto |> Option.flatten
@@ -18791,7 +18369,6 @@ module StripeModel =
         ThreeDSecure: ThreeDSecureDetails option
     }
     with
-
         static member New (threeDSecure: ThreeDSecureDetails option) =
             {
                 SetupAttemptPaymentMethodDetailsCard.ThreeDSecure = threeDSecure //required
@@ -18802,7 +18379,6 @@ module StripeModel =
         GeneratedCard: SetupAttemptPaymentMethodDetailsCardPresentGeneratedCard'AnyOf option
     }
     with
-
         static member New (generatedCard: SetupAttemptPaymentMethodDetailsCardPresentGeneratedCard'AnyOf option) =
             {
                 SetupAttemptPaymentMethodDetailsCardPresent.GeneratedCard = generatedCard //required
@@ -18828,7 +18404,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bank: SetupAttemptPaymentMethodDetailsIdealBank option, bic: SetupAttemptPaymentMethodDetailsIdealBic option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, verifiedName: string option) =
             {
                 SetupAttemptPaymentMethodDetailsIdeal.Bank = bank //required
@@ -18881,7 +18456,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsLink: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsLink: string option) =
             {
                 SetupAttemptPaymentMethodDetailsLink.SetupAttemptPaymentMethodDetailsLink = setupAttemptPaymentMethodDetailsLink |> Option.flatten
@@ -18891,7 +18465,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsSepaDebit: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsSepaDebit: string option) =
             {
                 SetupAttemptPaymentMethodDetailsSepaDebit.SetupAttemptPaymentMethodDetailsSepaDebit = setupAttemptPaymentMethodDetailsSepaDebit |> Option.flatten
@@ -18918,7 +18491,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
             {
                 SetupAttemptPaymentMethodDetailsSofort.BankCode = bankCode //required
@@ -18949,7 +18521,6 @@ module StripeModel =
         SetupAttemptPaymentMethodDetailsUsBankAccount: string option
     }
     with
-
         static member New (?setupAttemptPaymentMethodDetailsUsBankAccount: string option) =
             {
                 SetupAttemptPaymentMethodDetailsUsBankAccount.SetupAttemptPaymentMethodDetailsUsBankAccount = setupAttemptPaymentMethodDetailsUsBankAccount |> Option.flatten
@@ -19109,7 +18680,6 @@ module StripeModel =
         VerifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits option
     }
     with
-
         static member New (``type``: SetupIntentNextActionType, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?useStripeSdk: string, ?verifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits) =
             {
                 SetupIntentNextAction.Type = ``type`` //required
@@ -19132,7 +18702,6 @@ module StripeModel =
         Url: string option
     }
     with
-
         static member New (returnUrl: string option, url: string option) =
             {
                 SetupIntentNextActionRedirectToUrl.ReturnUrl = returnUrl //required
@@ -19148,7 +18717,6 @@ module StripeModel =
         MicrodepositType: SetupIntentNextActionVerifyWithMicrodepositsMicrodepositType option
     }
     with
-
         static member New (arrivalDate: DateTime, hostedVerificationUrl: string, microdepositType: SetupIntentNextActionVerifyWithMicrodepositsMicrodepositType option) =
             {
                 SetupIntentNextActionVerifyWithMicrodeposits.ArrivalDate = arrivalDate //required
@@ -19169,7 +18737,6 @@ module StripeModel =
         UsBankAccount: SetupIntentPaymentMethodOptionsUsBankAccount option
     }
     with
-
         static member New (?acssDebit: SetupIntentPaymentMethodOptionsAcssDebit, ?blik: SetupIntentPaymentMethodOptionsBlik, ?card: SetupIntentPaymentMethodOptionsCard, ?link: SetupIntentPaymentMethodOptionsLink, ?sepaDebit: SetupIntentPaymentMethodOptionsSepaDebit, ?usBankAccount: SetupIntentPaymentMethodOptionsUsBankAccount) =
             {
                 SetupIntentPaymentMethodOptions.AcssDebit = acssDebit
@@ -19188,7 +18755,6 @@ module StripeModel =
         VerificationMethod: SetupIntentPaymentMethodOptionsAcssDebitVerificationMethod option
     }
     with
-
         static member New (currency: SetupIntentPaymentMethodOptionsAcssDebitCurrency option, ?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit, ?verificationMethod: SetupIntentPaymentMethodOptionsAcssDebitVerificationMethod) =
             {
                 SetupIntentPaymentMethodOptionsAcssDebit.Currency = currency //required
@@ -19209,7 +18775,6 @@ module StripeModel =
         MandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsBlik option
     }
     with
-
         static member New (?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsBlik) =
             {
                 SetupIntentPaymentMethodOptionsBlik.MandateOptions = mandateOptions
@@ -19224,7 +18789,6 @@ module StripeModel =
         RequestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option
     }
     with
-
         static member New (mandateOptions: SetupIntentPaymentMethodOptionsCardMandateOptions option, network: SetupIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
             {
                 SetupIntentPaymentMethodOptionsCard.MandateOptions = mandateOptions //required
@@ -19272,7 +18836,6 @@ module StripeModel =
         SupportedTypes: string list option
     }
     with
-
         static member New (amount: int, amountType: SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType, currency: string, description: string option, endDate: DateTime option, interval: SetupIntentPaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
             {
                 SetupIntentPaymentMethodOptionsCardMandateOptions.Amount = amount //required
@@ -19303,7 +18866,6 @@ module StripeModel =
         PersistentToken: string option
     }
     with
-
         static member New (persistentToken: string option) =
             {
                 SetupIntentPaymentMethodOptionsLink.PersistentToken = persistentToken //required
@@ -19322,7 +18884,6 @@ module StripeModel =
         TransactionType: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option
     }
     with
-
         static member New (intervalDescription: string option, paymentSchedule: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option, transactionType: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option, ?customMandateUrl: string, ?defaultFor: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitDefaultFor list) =
             {
                 SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit.IntervalDescription = intervalDescription //required
@@ -19353,7 +18914,6 @@ module StripeModel =
         Type: SetupIntentPaymentMethodOptionsMandateOptionsBlikType option
     }
     with
-
         static member New (expiresAfter: DateTime option, ``type``: SetupIntentPaymentMethodOptionsMandateOptionsBlikType option, ?offSession: MandateOptionsOffSessionDetailsBlik) =
             {
                 SetupIntentPaymentMethodOptionsMandateOptionsBlik.ExpiresAfter = expiresAfter //required
@@ -19369,7 +18929,6 @@ module StripeModel =
         SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option
     }
     with
-
         static member New (?setupIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option) =
             {
                 SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit.SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit = setupIntentPaymentMethodOptionsMandateOptionsSepaDebit |> Option.flatten
@@ -19379,7 +18938,6 @@ module StripeModel =
         MandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit option
     }
     with
-
         static member New (?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
             {
                 SetupIntentPaymentMethodOptionsSepaDebit.MandateOptions = mandateOptions
@@ -19391,7 +18949,6 @@ module StripeModel =
         VerificationMethod: SetupIntentPaymentMethodOptionsUsBankAccountVerificationMethod option
     }
     with
-
         static member New (?financialConnections: LinkedAccountOptionsUsBankAccount, ?verificationMethod: SetupIntentPaymentMethodOptionsUsBankAccountVerificationMethod) =
             {
                 SetupIntentPaymentMethodOptionsUsBankAccount.FinancialConnections = financialConnections
@@ -19408,7 +18965,6 @@ module StripeModel =
         VerificationMethod: SetupIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod option
     }
     with
-
         static member New (?verificationMethod: SetupIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod) =
             {
                 SetupIntentTypeSpecificPaymentMethodOptionsClient.VerificationMethod = verificationMethod
@@ -19431,7 +18987,6 @@ module StripeModel =
         TrackingNumber: string option
     }
     with
-
         static member New (?address: Address, ?carrier: string option, ?name: string, ?phone: string option, ?trackingNumber: string option) =
             {
                 Shipping.Address = address
@@ -19501,7 +19056,6 @@ module StripeModel =
         TaxBehavior: ShippingRateCurrencyOptionTaxBehavior
     }
     with
-
         static member New (amount: int, taxBehavior: ShippingRateCurrencyOptionTaxBehavior) =
             {
                 ShippingRateCurrencyOption.Amount = amount //required
@@ -19520,7 +19074,6 @@ module StripeModel =
         Minimum: ShippingRateDeliveryEstimateBound option
     }
     with
-
         static member New (maximum: ShippingRateDeliveryEstimateBound option, minimum: ShippingRateDeliveryEstimateBound option) =
             {
                 ShippingRateDeliveryEstimate.Maximum = maximum //required
@@ -19534,7 +19087,6 @@ module StripeModel =
         Value: int
     }
     with
-
         static member New (unit: ShippingRateDeliveryEstimateBoundUnit, value: int) =
             {
                 ShippingRateDeliveryEstimateBound.Unit = unit //required
@@ -19557,7 +19109,6 @@ module StripeModel =
         CurrencyOptions: Map<string, string list> option
     }
     with
-
         static member New (amount: int, currency: string, ?currencyOptions: Map<string, string list>) =
             {
                 ShippingRateFixedAmount.Amount = amount //required
@@ -19570,7 +19121,6 @@ module StripeModel =
         Message: string
     }
     with
-
         static member New (message: string) =
             {
                 SigmaScheduledQueryRunError.Message = message //required
@@ -19642,7 +19192,6 @@ module StripeModel =
         Value: SkuInventoryValue option
     }
     with
-
         static member New (quantity: int option, ``type``: SkuInventoryType, value: SkuInventoryValue option) =
             {
                 SkuInventory.Quantity = quantity //required
@@ -19802,7 +19351,6 @@ module StripeModel =
         Status: string
     }
     with
-
         static member New (attemptsRemaining: int, status: string) =
             {
                 SourceCodeVerificationFlow.AttemptsRemaining = attemptsRemaining //required
@@ -19864,7 +19412,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?statementDescriptor: string) =
             {
                 SourceMandateNotificationAcssDebitData.StatementDescriptor = statementDescriptor
@@ -19875,7 +19422,6 @@ module StripeModel =
         [<JsonField(Name="last4")>]Last4: string option
     }
     with
-
         static member New (?last4: string) =
             {
                 SourceMandateNotificationBacsDebitData.Last4 = last4
@@ -19890,7 +19436,6 @@ module StripeModel =
         MandateReference: string option
     }
     with
-
         static member New (?creditorIdentifier: string, ?last4: string, ?mandateReference: string) =
             {
                 SourceMandateNotificationSepaDebitData.CreditorIdentifier = creditorIdentifier
@@ -19910,7 +19455,6 @@ module StripeModel =
         Shipping: Shipping option
     }
     with
-
         static member New (amount: int, currency: string, items: SourceOrderItem list option, ?email: string, ?shipping: Shipping) =
             {
                 SourceOrder.Amount = amount //required
@@ -19935,7 +19479,6 @@ module StripeModel =
         Type: SourceOrderItemType option
     }
     with
-
         static member New (amount: int option, currency: string option, description: string option, parent: string option, ``type``: SourceOrderItemType option, ?quantity: int) =
             {
                 SourceOrderItem.Amount = amount //required
@@ -19970,7 +19513,6 @@ module StripeModel =
         VerifiedPhone: string option
     }
     with
-
         static member New (address: Address option, email: string option, name: string option, phone: string option, verifiedAddress: Address option, verifiedEmail: string option, verifiedName: string option, verifiedPhone: string option) =
             {
                 SourceOwner.Address = address //required
@@ -19998,7 +19540,6 @@ module StripeModel =
         RefundAttributesStatus: SourceReceiverFlowRefundAttributesStatus
     }
     with
-
         static member New (address: string option, amountCharged: int, amountReceived: int, amountReturned: int, refundAttributesMethod: SourceReceiverFlowRefundAttributesMethod, refundAttributesStatus: SourceReceiverFlowRefundAttributesStatus) =
             {
                 SourceReceiverFlow.Address = address //required
@@ -20030,7 +19571,6 @@ module StripeModel =
         Url: string
     }
     with
-
         static member New (failureReason: string option, returnUrl: string, status: string, url: string) =
             {
                 SourceRedirectFlow.FailureReason = failureReason //required
@@ -20121,7 +19661,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (?customerData: string, ?fingerprint: string, ?last4: string, ?routingNumber: string) =
             {
                 SourceTransactionAchCreditTransferData.CustomerData = customerData
@@ -20143,7 +19682,6 @@ module StripeModel =
         SenderName: string option
     }
     with
-
         static member New (?reference: string, ?senderAddressCountry: string, ?senderAddressLine1: string, ?senderIban: string, ?senderName: string) =
             {
                 SourceTransactionChfCreditTransferData.Reference = reference
@@ -20170,7 +19708,6 @@ module StripeModel =
         SenderSortCode: string option
     }
     with
-
         static member New (?fingerprint: string, ?fundingMethod: string, ?last4: string, ?reference: string, ?senderAccountNumber: string, ?senderName: string, ?senderSortCode: string) =
             {
                 SourceTransactionGbpCreditTransferData.Fingerprint = fingerprint
@@ -20189,7 +19726,6 @@ module StripeModel =
         Invoices: string option
     }
     with
-
         static member New (?availableAt: string, ?invoices: string) =
             {
                 SourceTransactionPaperCheckData.AvailableAt = availableAt
@@ -20205,7 +19741,6 @@ module StripeModel =
         SenderName: string option
     }
     with
-
         static member New (?reference: string, ?senderIban: string, ?senderName: string) =
             {
                 SourceTransactionSepaCreditTransferData.Reference = reference
@@ -20224,7 +19759,6 @@ module StripeModel =
         SwiftCode: string option
     }
     with
-
         static member New (?accountNumber: string option, ?bankName: string option, ?fingerprint: string option, ?refundAccountHolderName: string option, ?refundAccountHolderType: string option, ?refundRoutingNumber: string option, ?routingNumber: string option, ?swiftCode: string option) =
             {
                 SourceTypeAchCreditTransfer.AccountNumber = accountNumber |> Option.flatten
@@ -20246,7 +19780,6 @@ module StripeModel =
         Type: string option
     }
     with
-
         static member New (?bankName: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option, ?``type``: string option) =
             {
                 SourceTypeAchDebit.BankName = bankName |> Option.flatten
@@ -20270,7 +19803,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (?bankAddressCity: string option, ?bankAddressLine1: string option, ?bankAddressLine2: string option, ?bankAddressPostalCode: string option, ?bankName: string option, ?category: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option) =
             {
                 SourceTypeAcssDebit.BankAddressCity = bankAddressCity |> Option.flatten
@@ -20291,7 +19823,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?dataString: string option, ?nativeUrl: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeAlipay.DataString = dataString |> Option.flatten
@@ -20305,7 +19836,6 @@ module StripeModel =
         [<JsonField(Name="last4")>]Last4: string option
     }
     with
-
         static member New (?bsbNumber: string option, ?fingerprint: string option, ?last4: string option) =
             {
                 SourceTypeAuBecsDebit.BsbNumber = bsbNumber |> Option.flatten
@@ -20322,7 +19852,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeBancontact.BankCode = bankCode |> Option.flatten
@@ -20353,7 +19882,6 @@ module StripeModel =
         TokenizationMethod: string option
     }
     with
-
         static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?brand: string option, ?country: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
             {
                 SourceTypeCard.AddressLine1Check = addressLine1Check |> Option.flatten
@@ -20404,7 +19932,6 @@ module StripeModel =
         TransactionStatusInformation: string option
     }
     with
-
         static member New (?applicationCryptogram: string, ?applicationPreferredName: string, ?authorizationCode: string option, ?authorizationResponseCode: string, ?brand: string option, ?country: string option, ?cvmType: string, ?dataType: string option, ?dedicatedFileName: string, ?description: string, ?emvAuthData: string, ?evidenceCustomerSignature: string option, ?evidenceTransactionCertificate: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?posDeviceId: string option, ?posEntryMode: string, ?readMethod: string option, ?reader: string option, ?terminalVerificationResults: string, ?transactionStatusInformation: string) =
             {
                 SourceTypeCardPresent.ApplicationCryptogram = applicationCryptogram
@@ -20440,7 +19967,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?reference: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeEps.Reference = reference |> Option.flatten
@@ -20454,7 +19980,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeGiropay.BankCode = bankCode |> Option.flatten
@@ -20470,7 +19995,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?bank: string option, ?bic: string option, ?ibanLast4: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeIdeal.Bank = bank |> Option.flatten
@@ -20508,7 +20032,6 @@ module StripeModel =
         ShippingLastName: string option
     }
     with
-
         static member New (?backgroundImageUrl: string, ?clientToken: string option, ?firstName: string, ?lastName: string, ?locale: string, ?logoUrl: string, ?pageTitle: string, ?payLaterAssetUrlsDescriptive: string, ?payLaterAssetUrlsStandard: string, ?payLaterName: string, ?payLaterRedirectUrl: string, ?payNowAssetUrlsDescriptive: string, ?payNowAssetUrlsStandard: string, ?payNowName: string, ?payNowRedirectUrl: string, ?payOverTimeAssetUrlsDescriptive: string, ?payOverTimeAssetUrlsStandard: string, ?payOverTimeName: string, ?payOverTimeRedirectUrl: string, ?paymentMethodCategories: string, ?purchaseCountry: string, ?purchaseType: string, ?redirectUrl: string, ?shippingDelay: int, ?shippingFirstName: string, ?shippingLastName: string) =
             {
                 SourceTypeKlarna.BackgroundImageUrl = backgroundImageUrl
@@ -20552,7 +20075,6 @@ module StripeModel =
         RefundIban: string option
     }
     with
-
         static member New (?entity: string option, ?reference: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
             {
                 SourceTypeMultibanco.Entity = entity |> Option.flatten
@@ -20571,7 +20093,6 @@ module StripeModel =
         Reference: string option
     }
     with
-
         static member New (?reference: string option) =
             {
                 SourceTypeP24.Reference = reference |> Option.flatten
@@ -20591,7 +20112,6 @@ module StripeModel =
         RefundIban: string option
     }
     with
-
         static member New (?bankName: string option, ?bic: string option, ?iban: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
             {
                 SourceTypeSepaCreditTransfer.BankName = bankName |> Option.flatten
@@ -20617,7 +20137,6 @@ module StripeModel =
         MandateUrl: string option
     }
     with
-
         static member New (?bankCode: string option, ?branchCode: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?mandateReference: string option, ?mandateUrl: string option) =
             {
                 SourceTypeSepaDebit.BankCode = bankCode |> Option.flatten
@@ -20639,7 +20158,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?country: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
             {
                 SourceTypeSofort.BankCode = bankCode |> Option.flatten
@@ -20674,7 +20192,6 @@ module StripeModel =
         TokenizationMethod: string option
     }
     with
-
         static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?authenticated: bool option, ?brand: string option, ?card: string option, ?country: string option, ?customer: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
             {
                 SourceTypeThreeDSecure.AddressLine1Check = addressLine1Check |> Option.flatten
@@ -20705,7 +20222,6 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-
         static member New (?prepayId: string, ?qrCodeUrl: string option, ?statementDescriptor: string) =
             {
                 SourceTypeWechat.PrepayId = prepayId
@@ -20917,7 +20433,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 SubscriptionAutomaticTax.Enabled = enabled //required
@@ -20930,7 +20445,6 @@ module StripeModel =
         ResetBillingCycleAnchor: bool option
     }
     with
-
         static member New (amountGte: int option, resetBillingCycleAnchor: bool option) =
             {
                 SubscriptionBillingThresholds.AmountGte = amountGte //required
@@ -20979,7 +20493,6 @@ module StripeModel =
         UsageGte: int option
     }
     with
-
         static member New (usageGte: int option) =
             {
                 SubscriptionItemBillingThresholds.UsageGte = usageGte //required
@@ -20993,7 +20506,6 @@ module StripeModel =
         RequestThreeDSecure: SubscriptionPaymentMethodOptionsCardRequestThreeDSecure option
     }
     with
-
         static member New (network: SubscriptionPaymentMethodOptionsCardNetwork option, requestThreeDSecure: SubscriptionPaymentMethodOptionsCardRequestThreeDSecure option, ?mandateOptions: InvoiceMandateOptionsCard) =
             {
                 SubscriptionPaymentMethodOptionsCard.Network = network //required
@@ -21024,7 +20536,6 @@ module StripeModel =
         IntervalCount: int
     }
     with
-
         static member New (interval: SubscriptionPendingInvoiceItemIntervalInterval, intervalCount: int) =
             {
                 SubscriptionPendingInvoiceItemInterval.Interval = interval //required
@@ -21140,7 +20651,6 @@ module StripeModel =
         TaxRates: TaxRate list option
     }
     with
-
         static member New (price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf, quantity: int option, ?taxRates: TaxRate list option) =
             {
                 SubscriptionScheduleAddInvoiceItem.Price = price //required
@@ -21167,7 +20677,6 @@ module StripeModel =
         TaxRates: TaxRate list option
     }
     with
-
         static member New (billingThresholds: SubscriptionItemBillingThresholds option, plan: SubscriptionScheduleConfigurationItemPlan'AnyOf, price: SubscriptionScheduleConfigurationItemPrice'AnyOf, ?quantity: int, ?taxRates: TaxRate list option) =
             {
                 SubscriptionScheduleConfigurationItem.BillingThresholds = billingThresholds //required
@@ -21194,7 +20703,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartDate: DateTime
     }
     with
-
         static member New (endDate: DateTime, startDate: DateTime) =
             {
                 SubscriptionScheduleCurrentPhase.EndDate = endDate //required
@@ -21242,7 +20750,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TrialEnd: DateTime option
     }
     with
-
         static member New (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, coupon: SubscriptionSchedulePhaseConfigurationCoupon'AnyOf option, currency: string, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option, description: string option, endDate: DateTime, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, items: SubscriptionScheduleConfigurationItem list, metadata: Map<string, string> option, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: DateTime, transferData: SubscriptionTransferData option, trialEnd: DateTime option, ?automaticTax: SchedulesPhaseAutomaticTax, ?defaultTaxRates: TaxRate list option) =
             {
                 SubscriptionSchedulePhaseConfiguration.AddInvoiceItems = addInvoiceItems //required
@@ -21308,7 +20815,6 @@ module StripeModel =
         TransferData: SubscriptionTransferData option
     }
     with
-
         static member New (applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf option, description: string option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting option, transferData: SubscriptionTransferData option, ?automaticTax: SubscriptionSchedulesResourceDefaultSettingsAutomaticTax) =
             {
                 SubscriptionSchedulesResourceDefaultSettings.ApplicationFeePercent = applicationFeePercent //required
@@ -21339,7 +20845,6 @@ module StripeModel =
         Enabled: bool
     }
     with
-
         static member New (enabled: bool) =
             {
                 SubscriptionSchedulesResourceDefaultSettingsAutomaticTax.Enabled = enabled //required
@@ -21352,7 +20857,6 @@ module StripeModel =
         Destination: SubscriptionTransferDataDestination'AnyOf
     }
     with
-
         static member New (amountPercent: decimal option, destination: SubscriptionTransferDataDestination'AnyOf) =
             {
                 SubscriptionTransferData.AmountPercent = amountPercent //required
@@ -21372,7 +20876,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ResumesAt: DateTime option
     }
     with
-
         static member New (behavior: SubscriptionsResourcePauseCollectionBehavior, resumesAt: DateTime option) =
             {
                 SubscriptionsResourcePauseCollection.Behavior = behavior //required
@@ -21399,7 +20902,6 @@ module StripeModel =
         UsBankAccount: InvoicePaymentMethodOptionsUsBankAccount option
     }
     with
-
         static member New (acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option) =
             {
                 SubscriptionsResourcePaymentMethodOptions.AcssDebit = acssDebit //required
@@ -21419,7 +20921,6 @@ module StripeModel =
         SaveDefaultPaymentMethod: SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod option
     }
     with
-
         static member New (paymentMethodOptions: SubscriptionsResourcePaymentMethodOptions option, paymentMethodTypes: SubscriptionsResourcePaymentSettingsPaymentMethodTypes list option, saveDefaultPaymentMethod: SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod option) =
             {
                 SubscriptionsResourcePaymentSettings.PaymentMethodOptions = paymentMethodOptions //required
@@ -21470,7 +20971,6 @@ module StripeModel =
         TrialFromPlan: bool option
     }
     with
-
         static member New (billingCycleAnchor: DateTime option, expiresAt: DateTime, subscriptionItems: SubscriptionItem list option, trialEnd: DateTime option, trialFromPlan: bool option) =
             {
                 SubscriptionsResourcePendingUpdate.BillingCycleAnchor = billingCycleAnchor //required
@@ -21621,7 +21121,6 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-
         static member New (status: TaxIdVerificationStatus, verifiedAddress: string option, verifiedName: string option) =
             {
                 TaxIdVerification.Status = status //required
@@ -21835,7 +21334,6 @@ module StripeModel =
         SmartTipThreshold: int option
     }
     with
-
         static member New (?fixedAmounts: int list option, ?percentages: int list option, ?smartTipThreshold: int) =
             {
                 TerminalConfigurationConfigurationResourceCurrencySpecificConfig.FixedAmounts = fixedAmounts |> Option.flatten
@@ -21848,7 +21346,6 @@ module StripeModel =
         Splashscreen: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSplashscreen'AnyOf option
     }
     with
-
         static member New (?splashscreen: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSplashscreen'AnyOf) =
             {
                 TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig.Splashscreen = splashscreen
@@ -21875,7 +21372,6 @@ module StripeModel =
         Usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
     }
     with
-
         static member New (?aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig) =
             {
                 TerminalConfigurationConfigurationResourceTipping.Aud = aud
@@ -21906,7 +21402,6 @@ module StripeModel =
         Total: int
     }
     with
-
         static member New (currency: string, lineItems: TerminalReaderReaderResourceLineItem list, tax: int option, total: int) =
             {
                 TerminalReaderReaderResourceCart.Currency = currency //required
@@ -21925,7 +21420,6 @@ module StripeModel =
         Quantity: int
     }
     with
-
         static member New (amount: int, description: string, quantity: int) =
             {
                 TerminalReaderReaderResourceLineItem.Amount = amount //required
@@ -21939,7 +21433,6 @@ module StripeModel =
         SkipTipping: bool option
     }
     with
-
         static member New (?skipTipping: bool) =
             {
                 TerminalReaderReaderResourceProcessConfig.SkipTipping = skipTipping
@@ -21952,7 +21445,6 @@ module StripeModel =
         ProcessConfig: TerminalReaderReaderResourceProcessConfig option
     }
     with
-
         static member New (paymentIntent: TerminalReaderReaderResourceProcessPaymentIntentActionPaymentIntent'AnyOf, ?processConfig: TerminalReaderReaderResourceProcessConfig) =
             {
                 TerminalReaderReaderResourceProcessPaymentIntentAction.PaymentIntent = paymentIntent //required
@@ -21971,7 +21463,6 @@ module StripeModel =
         SetupIntent: TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf
     }
     with
-
         static member New (setupIntent: TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf, ?generatedCard: string) =
             {
                 TerminalReaderReaderResourceProcessSetupIntentAction.SetupIntent = setupIntent //required
@@ -21997,7 +21488,6 @@ module StripeModel =
         Type: TerminalReaderReaderResourceReaderActionType
     }
     with
-
         static member New (failureCode: string option, failureMessage: string option, status: TerminalReaderReaderResourceReaderActionStatus, ``type``: TerminalReaderReaderResourceReaderActionType, ?processPaymentIntent: TerminalReaderReaderResourceProcessPaymentIntentAction, ?processSetupIntent: TerminalReaderReaderResourceProcessSetupIntentAction, ?setReaderDisplay: TerminalReaderReaderResourceSetReaderDisplayAction) =
             {
                 TerminalReaderReaderResourceReaderAction.FailureCode = failureCode //required
@@ -22085,7 +21575,6 @@ module StripeModel =
         Version: ThreeDSecureDetailsVersion option
     }
     with
-
         static member New (authenticationFlow: ThreeDSecureDetailsAuthenticationFlow option, result: ThreeDSecureDetailsResult option, resultReason: ThreeDSecureDetailsResultReason option, version: ThreeDSecureDetailsVersion option) =
             {
                 ThreeDSecureDetails.AuthenticationFlow = authenticationFlow //required
@@ -22125,7 +21614,6 @@ module StripeModel =
         Supported: bool
     }
     with
-
         static member New (supported: bool) =
             {
                 ThreeDSecureUsage.Supported = supported //required
@@ -22374,7 +21862,6 @@ module StripeModel =
         Destination: TransferDataDestination'AnyOf
     }
     with
-
         static member New (destination: TransferDataDestination'AnyOf, ?amount: int) =
             {
                 TransferData.Destination = destination //required
@@ -22460,7 +21947,6 @@ module StripeModel =
         WeeklyAnchor: string option
     }
     with
-
         static member New (delayDays: int, interval: TransferScheduleInterval, ?monthlyAnchor: int, ?weeklyAnchor: string) =
             {
                 TransferSchedule.DelayDays = delayDays //required
@@ -22482,7 +21968,6 @@ module StripeModel =
         Round: TransformQuantityRound
     }
     with
-
         static member New (divideBy: int, round: TransformQuantityRound) =
             {
                 TransformQuantity.DivideBy = divideBy //required
@@ -22500,7 +21985,6 @@ module StripeModel =
         Round: TransformUsageRound
     }
     with
-
         static member New (divideBy: int, round: TransformUsageRound) =
             {
                 TransformUsage.DivideBy = divideBy //required
@@ -23321,7 +22805,6 @@ module StripeModel =
         RoutingNumber: string
     }
     with
-
         static member New (accountHolderName: string, accountNumber: string option, accountNumberLast4: string, bankName: string, routingNumber: string) =
             {
                 TreasuryFinancialAccountsResourceAbaRecord.AccountHolderName = accountHolderName //required
@@ -23341,7 +22824,6 @@ module StripeModel =
         OutboundPending: Map<string, string list>
     }
     with
-
         static member New (cash: Map<string, string list>, inboundPending: Map<string, string list>, outboundPending: Map<string, string list>) =
             {
                 TreasuryFinancialAccountsResourceBalance.Cash = cash //required
@@ -23354,7 +22836,6 @@ module StripeModel =
         Reasons: TreasuryFinancialAccountsResourceClosedStatusDetailsReasons list
     }
     with
-
         static member New (reasons: TreasuryFinancialAccountsResourceClosedStatusDetailsReasons list) =
             {
                 TreasuryFinancialAccountsResourceClosedStatusDetails.Reasons = reasons //required
@@ -23390,7 +22871,6 @@ module StripeModel =
         Aba: TreasuryFinancialAccountsResourceToggleSettings option
     }
     with
-
         static member New (?aba: TreasuryFinancialAccountsResourceToggleSettings) =
             {
                 TreasuryFinancialAccountsResourceFinancialAddressesFeatures.Aba = aba
@@ -23401,7 +22881,6 @@ module StripeModel =
         Ach: TreasuryFinancialAccountsResourceToggleSettings option
     }
     with
-
         static member New (?ach: TreasuryFinancialAccountsResourceToggleSettings) =
             {
                 TreasuryFinancialAccountsResourceInboundTransfers.Ach = ach
@@ -23413,7 +22892,6 @@ module StripeModel =
         UsDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option
     }
     with
-
         static member New (?ach: TreasuryFinancialAccountsResourceToggleSettings, ?usDomesticWire: TreasuryFinancialAccountsResourceToggleSettings) =
             {
                 TreasuryFinancialAccountsResourceOutboundPayments.Ach = ach
@@ -23426,7 +22904,6 @@ module StripeModel =
         UsDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option
     }
     with
-
         static member New (?ach: TreasuryFinancialAccountsResourceToggleSettings, ?usDomesticWire: TreasuryFinancialAccountsResourceToggleSettings) =
             {
                 TreasuryFinancialAccountsResourceOutboundTransfers.Ach = ach
@@ -23441,7 +22918,6 @@ module StripeModel =
         OutboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows option
     }
     with
-
         static member New (inboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsInboundFlows option, outboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows option) =
             {
                 TreasuryFinancialAccountsResourcePlatformRestrictions.InboundFlows = inboundFlows //required
@@ -23461,7 +22937,6 @@ module StripeModel =
         Closed: TreasuryFinancialAccountsResourceClosedStatusDetails option
     }
     with
-
         static member New (closed: TreasuryFinancialAccountsResourceClosedStatusDetails option) =
             {
                 TreasuryFinancialAccountsResourceStatusDetails.Closed = closed //required
@@ -23477,7 +22952,6 @@ module StripeModel =
         StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
     }
     with
-
         static member New (requested: bool, status: TreasuryFinancialAccountsResourceToggleSettingsStatus, statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list) =
             {
                 TreasuryFinancialAccountsResourceToggleSettings.Requested = requested //required
@@ -23500,7 +22974,6 @@ module StripeModel =
         Restriction: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction option
     }
     with
-
         static member New (code: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode, resolution: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution option, ?restriction: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction) =
             {
                 TreasuryFinancialAccountsResourceTogglesSettingStatusDetails.Code = code //required
@@ -23533,7 +23006,6 @@ module StripeModel =
         Code: TreasuryInboundTransfersResourceFailureDetailsCode
     }
     with
-
         static member New (code: TreasuryInboundTransfersResourceFailureDetailsCode) =
             {
                 TreasuryInboundTransfersResourceFailureDetails.Code = code //required
@@ -23559,7 +23031,6 @@ module StripeModel =
         ReceivedDebit: string option
     }
     with
-
         static member New (receivedDebit: string option) =
             {
                 TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows.ReceivedDebit = receivedDebit //required
@@ -23574,7 +23045,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]SucceededAt: DateTime option
     }
     with
-
         static member New (failedAt: DateTime option, succeededAt: DateTime option, ?canceledAt: DateTime option) =
             {
                 TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions.FailedAt = failedAt //required
@@ -23589,7 +23059,6 @@ module StripeModel =
         Present: bool
     }
     with
-
         static member New (ipAddress: string option, present: bool) =
             {
                 TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails.IpAddress = ipAddress //required
@@ -23607,7 +23076,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
     }
     with
-
         static member New (canceledAt: DateTime option, failedAt: DateTime option, postedAt: DateTime option, returnedAt: DateTime option) =
             {
                 TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions.CanceledAt = canceledAt //required
@@ -23623,7 +23091,6 @@ module StripeModel =
         Transaction: TreasuryOutboundPaymentsResourceReturnedStatusTransaction'AnyOf
     }
     with
-
         static member New (code: TreasuryOutboundPaymentsResourceReturnedStatusCode, transaction: TreasuryOutboundPaymentsResourceReturnedStatusTransaction'AnyOf) =
             {
                 TreasuryOutboundPaymentsResourceReturnedStatus.Code = code //required
@@ -23653,7 +23120,6 @@ module StripeModel =
         Transaction: TreasuryOutboundTransfersResourceReturnedDetailsTransaction'AnyOf
     }
     with
-
         static member New (code: TreasuryOutboundTransfersResourceReturnedDetailsCode, transaction: TreasuryOutboundTransfersResourceReturnedDetailsTransaction'AnyOf) =
             {
                 TreasuryOutboundTransfersResourceReturnedDetails.Code = code //required
@@ -23687,7 +23153,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
     }
     with
-
         static member New (canceledAt: DateTime option, failedAt: DateTime option, postedAt: DateTime option, returnedAt: DateTime option) =
             {
                 TreasuryOutboundTransfersResourceStatusTransitions.CanceledAt = canceledAt //required
@@ -23711,7 +23176,6 @@ module StripeModel =
         SourceFlowType: string option
     }
     with
-
         static member New (creditReversal: string option, issuingAuthorization: string option, issuingTransaction: string option, sourceFlow: string option, sourceFlowDetails: TreasuryReceivedCreditsResourceSourceFlowsDetails option, sourceFlowType: string option) =
             {
                 TreasuryReceivedCreditsResourceLinkedFlows.CreditReversal = creditReversal //required
@@ -23729,7 +23193,6 @@ module StripeModel =
         RestrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option
     }
     with
-
         static member New (deadline: DateTime option, restrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option) =
             {
                 TreasuryReceivedCreditsResourceReversalDetails.Deadline = deadline //required
@@ -23751,7 +23214,6 @@ module StripeModel =
         Type: TreasuryReceivedCreditsResourceSourceFlowsDetailsType
     }
     with
-
         static member New (``type``: TreasuryReceivedCreditsResourceSourceFlowsDetailsType, ?creditReversal: TreasuryCreditReversal, ?outboundPayment: TreasuryOutboundPayment, ?payout: Payout) =
             {
                 TreasuryReceivedCreditsResourceSourceFlowsDetails.Type = ``type`` //required
@@ -23771,7 +23233,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PostedAt: DateTime option
     }
     with
-
         static member New (postedAt: DateTime option) =
             {
                 TreasuryReceivedCreditsResourceStatusTransitions.PostedAt = postedAt //required
@@ -23782,7 +23243,6 @@ module StripeModel =
         IssuingDispute: string option
     }
     with
-
         static member New (issuingDispute: string option) =
             {
                 TreasuryReceivedDebitsResourceDebitReversalLinkedFlows.IssuingDispute = issuingDispute //required
@@ -23799,7 +23259,6 @@ module StripeModel =
         IssuingTransaction: string option
     }
     with
-
         static member New (debitReversal: string option, inboundTransfer: string option, issuingAuthorization: string option, issuingTransaction: string option) =
             {
                 TreasuryReceivedDebitsResourceLinkedFlows.DebitReversal = debitReversal //required
@@ -23815,7 +23274,6 @@ module StripeModel =
         RestrictedReason: TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason option
     }
     with
-
         static member New (deadline: DateTime option, restrictedReason: TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason option) =
             {
                 TreasuryReceivedDebitsResourceReversalDetails.Deadline = deadline //required
@@ -23834,7 +23292,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CompletedAt: DateTime option
     }
     with
-
         static member New (completedAt: DateTime option) =
             {
                 TreasuryReceivedDebitsResourceStatusTransitions.CompletedAt = completedAt //required
@@ -23848,7 +23305,6 @@ module StripeModel =
         Name: string option
     }
     with
-
         static member New (address: Address, email: string option, name: string option) =
             {
                 TreasurySharedResourceBillingDetails.Address = address //required
@@ -23894,7 +23350,6 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-
         static member New (bankName: string option, last4: string option, routingNumber: string option) =
             {
                 TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount.BankName = bankName //required
@@ -23909,7 +23364,6 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]VoidAt: DateTime option
     }
     with
-
         static member New (postedAt: DateTime option, voidAt: DateTime option) =
             {
                 TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions.PostedAt = postedAt //required
@@ -23926,7 +23380,6 @@ module StripeModel =
         OutboundPending: int
     }
     with
-
         static member New (cash: int, inboundPending: int, outboundPending: int) =
             {
                 TreasuryTransactionsResourceBalanceImpact.Cash = cash //required
@@ -23947,7 +23400,6 @@ module StripeModel =
         Type: TreasuryTransactionsResourceFlowDetailsType
     }
     with
-
         static member New (``type``: TreasuryTransactionsResourceFlowDetailsType, ?creditReversal: TreasuryCreditReversal, ?debitReversal: TreasuryDebitReversal, ?inboundTransfer: TreasuryInboundTransfer, ?issuingAuthorization: IssuingAuthorization, ?outboundPayment: TreasuryOutboundPayment, ?outboundTransfer: TreasuryOutboundTransfer, ?receivedCredit: TreasuryReceivedCredit, ?receivedDebit: TreasuryReceivedDebit) =
             {
                 TreasuryTransactionsResourceFlowDetails.Type = ``type`` //required
@@ -23979,7 +23431,6 @@ module StripeModel =
         Supported: UsBankAccountNetworksSupported list
     }
     with
-
         static member New (preferred: string option, supported: UsBankAccountNetworksSupported list) =
             {
                 UsBankAccountNetworks.Preferred = preferred //required
@@ -24050,7 +23501,6 @@ module StripeModel =
         Status: VerificationSessionRedactionStatus
     }
     with
-
         static member New (status: VerificationSessionRedactionStatus) =
             {
                 VerificationSessionRedaction.Status = status //required
