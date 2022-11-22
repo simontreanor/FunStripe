@@ -20,7 +20,7 @@ module Tests =
             PaymentMethods.Create'CardCardDetailsParams.New(
                 cvc = "314",
                 expMonth = 10,
-                expYear = 2021,
+                expYear = 2027,
                 number = "4242424242424242"
             )
 
@@ -56,7 +56,7 @@ module Tests =
                     checks = Some paymentMethodCardChecks,
                     country = Some "US",
                     expMonth = 10,
-                    expYear = 2021,
+                    expYear = 2027,
                     fingerprint = Some "YfQddCBRsntX6npu",
                     funding = PaymentMethodCardFunding.Credit,
                     last4 = "4242",
@@ -84,7 +84,7 @@ module Tests =
                     "type", "card"
                     "card[number]", "4242424242424242"
                     "card[exp_month]", "10"
-                    "card[exp_year]", "2021"
+                    "card[exp_year]", "2027"
                     "card[cvc]", "314"
                 }
                 |> Seq.sortBy fst
@@ -221,13 +221,7 @@ module Tests =
                 {
                     Address = None
                     Balance = Some 0
-                    CashBalance =
-                        Some {
-                            Available = Some (Map.empty)
-                            Customer = "cus_IhzR2Msjq0lILS"
-                            Livemode = false
-                            Settings = { ReconciliationMode = CustomerBalanceCustomerBalanceSettingsReconciliationMode.Automatic }
-                        }
+                    CashBalance = None
                     Created = DateTime(2021, 1, 6, 10, 42, 3)
                     Currency = None
                     DefaultSource = Some (CustomerDefaultSource'AnyOf.String "card_1I6ZSoGXSUku3vEhr04df95L")
@@ -236,7 +230,7 @@ module Tests =
                     Discount = None
                     Email = Some "KEITH_2614@mailinator.com"
                     Id = "cus_IhzR2Msjq0lILS"
-                    InvoiceCreditBalance = Some (Map.empty)
+                    InvoiceCreditBalance = None
                     InvoicePrefix = Some "12F15AC4"
                     InvoiceSettings =
                         Some {
@@ -272,7 +266,7 @@ module Tests =
                                         cvcCheck = Some (CardCvcCheck.Pass),
                                         dynamicLast4 =  None,
                                         expMonth = 10,
-                                        expYear = 2021,
+                                        expYear = 2027,
                                         fingerprint = Some "YfQddCBRsntX6npu",
                                         funding = CardFunding.Credit,
                                         last4 = "4242",
@@ -349,7 +343,7 @@ module Tests =
                         "cvc_check": "pass",
                         "dynamic_last4": null,
                         "exp_month": 10,
-                        "exp_year": 2021,
+                        "exp_year": 2027,
                         "fingerprint": "YfQddCBRsntX6npu",
                         "funding": "credit",
                         "last4": "4242",

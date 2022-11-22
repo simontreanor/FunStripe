@@ -128,7 +128,7 @@ module RequestBuilder =
         Regex.Replace(s, @"^(\d)", "Numeric$1")
 
     ///Add `JsonUnionCase` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
-    let escapeForJson s =
+    let escapeForJson (s: string) =
         if Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         else

@@ -93,7 +93,7 @@ module ModelBuilder =
             s |> clean |> pascalCasify
 
     ///Ensure JSON field names can round-trip successfully, as Stripe is inconsistent in the snake-casing of fields containing numbers
-    let fixJsonNaming transformType infix name =
+    let fixJsonNaming transformType infix (name: string) =
         let infix' = infix |> Option.defaultValue ""
         let nameProperty = if Regex.IsMatch(name, @"(?<!_)\d") then Some $"Name=\"{name}\"" else None
         let transformProperty = transformType |> Option.fold (fun _ v -> Some $"Transform=typeof<%s{v}>") None
