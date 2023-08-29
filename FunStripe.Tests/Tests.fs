@@ -48,7 +48,7 @@ module Tests =
             let address = { Address.City = None; Country = None; Line1 = None; Line2 = None; PostalCode = None; State = None }
             let billingDetails = { BillingDetails.Address = Some address; Email = None; Name = None; Phone = None }
             let paymentMethodCardChecks = { PaymentMethodCardChecks.AddressLine1Check = None; AddressPostalCodeCheck = None; CvcCheck = None }
-            let networks = { Available = ["Visa"]; Preferred = None }
+            let networks = { Networks.Available = ["Visa"]; Preferred = None }
             let threeDSecureUsage = { Supported = true }
             let paymentMethodCard =
                 PaymentMethodCard.New(
