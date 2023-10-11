@@ -1,6 +1,6 @@
 ﻿namespace FunStripe.Json
 
-module internal Core =
+module Core =
     open System
     open System.Collections
     open System.Globalization

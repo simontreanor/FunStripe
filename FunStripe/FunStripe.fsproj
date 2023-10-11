@@ -7,7 +7,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackageId>FunStripe</PackageId>
-    <Version>0.9.3</Version>
+    <Version>0.10.0</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library</PackageDescription>
@@ -22,16 +22,15 @@
     <Compile Include="Json/Reflection.fs" />
     <Compile Include="Json/Core.fs" />
     <Compile Include="Json/Transforms.fs" />
-    <Compile Include="Json/Util.fs" />
-    <Compile Include="AsyncResult.fs" />
-    <Compile Include="StripeModel.fs" />
-    <Compile Include="StripeError.fs" />
     <Compile Include="Config.fs" />
-    <Compile Include="FormUtil.fs" />
-    <Compile Include="RestApi.fs" />
-    <Compile Include="StripeRequest.fs" />
+    <Compile Include="Util.fs" />
+    <Compile Include="AsyncResult.fs" />
     <Compile Include="ModelBuilder.fs" />
     <Compile Include="RequestBuilder.fs" />
+    <Compile Include="StripeModel.fs" />
+    <Compile Include="StripeError.fs" />
+    <Compile Include="RestApi.fs" />
+    <Compile Include="StripeRequest.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

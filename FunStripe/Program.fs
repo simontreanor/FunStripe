@@ -4,6 +4,31 @@ open FunStripe.StripeError
 open FunStripe.StripeModel
 open FunStripe.StripeRequest
 open System
+open System.Text.RegularExpressions
+open FSharp.Data
+
+///Convert `snake_case` to `PascalCase`
+let pascalCasify (s: string) =
+    Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
+
+///Get the object type based on the value of the static `Object` field
+let getStripeObjectType json =
+    (json, @"""object"": ""(.+?)""")
+    |> System.Text.RegularExpressions.Regex.Match
+    |> fun m -> m.Success |> function
+        | true -> $"FunStripe.StripeModel+{m.Groups.[1].Value |> pascalCasify}, FunStripe"
+        | false -> "Microsoft.FSharp.Collections.FSharpMap`2[[System.String, System.Private.CoreLib],[System.String, System.Private.CoreLib]], FSharp.Core"
+    |> Type.GetType
+    |> (fun t -> t, json)
+
+///Convert JSON strings to F# objects
+let deserialise' type' data =
+    let value = JsonValue.Parse(data)
+    (Json.Core.deserialize Util.config Json.JsonPath.Root type' value) :?> 'a
+
+///Detect JSON string type and convert to F# objects
+let deserialiseStripeObject json =
+    json |> getStripeObjectType ||> deserialise'
 
 let testCustomer = "cus_HxEURwENT9MKb3"
 
@@ -200,9 +225,9 @@ let test() =
               "type": "charge.succeeded"
             }
         """
-    let event = Json.Util.deserialise<Event> response
+    let event = Util.deserialise<Event> response
 
-    let eventObject = event.Data.Object |> Json.Util.deserialiseStripeObject
+    let eventObject = event.Data.Object |> deserialiseStripeObject
 
     sprintf "%A" (eventObject)
 

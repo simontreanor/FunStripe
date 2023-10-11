@@ -5,9 +5,14 @@ open NUnit.Framework
 open StripeModel
 open StripeRequest
 open System
-open System.Text.RegularExpressions
+open FSharp.Data
 
 module Tests =
+
+    ///Serialise F# class
+    let serialise<'a> (parameters:'a) =
+        typeof<'a>.GetProperties()
+        |> Seq.collect (fun pi -> Util.format Util.config pi parameters)
 
     let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
@@ -93,7 +98,7 @@ module Tests =
                     card = Choice1Of2 defaultCard,
                     type' = PaymentMethods.Create'Type.Card
                 )
-                |> FormUtil.serialise
+                |> serialise
                 |> Seq.sortBy fst
             Assert.AreEqual(expected, actual)
 
@@ -124,7 +129,7 @@ module Tests =
                 asyncResult {
                     let! expected = getNewPaymentMethod()
                     let! actual =
-                        let queryParameters = PaymentMethods.RetrieveOptions.New(paymentMethod = expected.Id, expand = [nameof(Customer) |> Json.Util.snakeCase])
+                        let queryParameters = PaymentMethods.RetrieveOptions.New(paymentMethod = expected.Id, expand = [nameof(Customer) |> Util.snakeCase])
                         PaymentMethods.Retrieve settings queryParameters
                     return expected, actual
 
@@ -376,5 +381,5 @@ module Tests =
                   }
                 }
             """
-            let actual = Json.Util.deserialise<Customer> response
+            let actual = Util.deserialise<Customer> response
             Assert.AreEqual(expected, actual)

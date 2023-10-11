@@ -1,7 +1,7 @@
 namespace FunStripe
 
 open FunStripe.Json
-open FunStripe.Json.Util
+open FunStripe.Util
 open System
 
 module StripeModel =

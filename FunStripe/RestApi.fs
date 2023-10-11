@@ -1,7 +1,6 @@
 namespace FunStripe
 
 open FSharp.Data
-open FSharp.Reflection
 open FunStripe
 open System
 
@@ -84,55 +83,52 @@ module RestApi =
         | sc when sc >= 200 && sc <= 299 ->
             r.Body
                 |> function Text t -> t | Binary _ -> ""
-                |> Json.Util.deserialise<'a>
+                |> Util.deserialise<'a>
                 |> Ok
         | _ ->
             r.Body
             |> function Text t -> t | Binary _ -> ""
-            |> Json.Util.deserialise<StripeError.ErrorResponse>
+            |> Util.deserialise<StripeError.ErrorResponse>
             |> Error
 
     ///Make a `GET` request (without form parameters in the body (default))
     let getAsync<'a> settings queryStringOptions (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
         async {
-            let queryString = queryStringOptions |> formatQueryString
-            let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get)
             return response |> parseResponse<'a>
         }
 
     ///Make a `GET` request with form parameters in the body
     let getWithAsync<'a, 'b> settings queryStringOptions (data: 'a) (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
+        let formValues = data |> Util.serialiseForm |> FormValues
         async {
-            let queryString = queryStringOptions |> formatQueryString
-            let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get, body = FormValues (data |> FormUtil.serialiseFormRecord))
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get, body = formValues)
             return response |> parseResponse<'b>
         }
 
     ///Make a `POST` request (with form parameters in the body (default))
-    let postAsync<'a, 'b> settings queryStringOptions (data: 'a) (url: string) = 
+    let postAsync<'a, 'b> settings queryStringOptions (data: 'a) (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
+        let formValues = data |> Util.serialiseForm |> FormValues
         async {
-            let queryString = queryStringOptions |> formatQueryString
-            let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post, body = FormValues (data |> FormUtil.serialiseFormRecord))
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post, body = formValues)
             return response |> parseResponse<'b>
         }
 
     ///Make a `POST` request without form parameters in the body
-    let postWithoutAsync<'a> settings queryStringOptions (url: string) = 
+    let postWithoutAsync<'a> settings queryStringOptions (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
         async {
-            let queryString = queryStringOptions |> formatQueryString
-            let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post)
             return response |> parseResponse<'a>
         }
 
     ///Make a `DELETE` request (without form parameters in the body (default))
     let deleteAsync<'a> settings queryStringOptions (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
         async {
-            let queryString = queryStringOptions |> formatQueryString
-            let! response =
-                Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Delete)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Delete)
             return response |> parseResponse<'a>
         }
