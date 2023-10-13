@@ -297,7 +297,7 @@ module ModelBuilder =
         let sb = Text.StringBuilder()
 
         //write the namespace, references and module title
-        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Json.Util\nopen System\n\nmodule StripeModel =\n"
+        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\nmodule StripeModel =\n"
 
         //creates and formats a discriminated union
         let writeEnum (name: string) values =
