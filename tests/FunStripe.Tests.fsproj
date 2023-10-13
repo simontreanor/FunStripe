@@ -3,7 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FunStripe\FunStripe.fsproj" />
+    <ProjectReference Include="..\src\FunStripe.fsproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tests.fs" />
