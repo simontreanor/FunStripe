@@ -4,6 +4,8 @@ An F# library to connect to the Stripe API, including code generators to update 
 
 ## Latest updates
 
+2023-10-13: version 0.10.1 makes some minor tweaks to normalise the folder structure.
+
 2023-10-11: version 0.10.0 fixes an issue with form serialisation that meant that JsonField names were only applied to the top level elements. It also tidies the code up a little.
 
 2023-08-29: version 0.9.3 updates the Stripe API from version 2022-11-15 to 2023-08-16, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details. It also updates the package dependencies for FSharp.Core and FSharp.Data to 6.0.7 and 6.2.0 respectively. 
