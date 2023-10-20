@@ -27,7 +27,9 @@
     <Compile Include="Util.fs" />
     <Compile Include="AsyncResult.fs" />
     <Compile Include="ModelBuilder.fs" />
+    <Compile Include="ModelBuilder2.fs" />
     <Compile Include="RequestBuilder.fs" />
+    <Compile Include="RequestBuilder2.fs" />
     <Compile Include="StripeModel.fs" />
     <Compile Include="StripeError.fs" />
     <Compile Include="RestApi.fs" />
