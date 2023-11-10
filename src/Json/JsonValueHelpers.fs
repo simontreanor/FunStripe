@@ -9,8 +9,8 @@ module internal JsonValueHelpers =
         // Parse ISO 8601 format, fixing time zone if needed 
         let dateTimeStyles = DateTimeStyles.AllowWhiteSpaces ||| DateTimeStyles.RoundtripKind ||| DateTimeStyles.AssumeUniversal 
         match DateTimeOffset.TryParse(text, cultureInfo, dateTimeStyles) with 
-        | true, d -> Some d 
-        | _ -> None 
+        | true, d -> ValueSome d 
+        | _ -> ValueNone 
 
     let raiseWrongType path typeName jvalue =
         raise(JsonDeserializationError(path, sprintf "Expected type %s is incompatible with jvalue: %A" typeName jvalue))
@@ -121,8 +121,8 @@ module internal JsonValueHelpers =
         | JsonValue.String value -> 
             let jvalue = AsDateTimeOffset cultureInfo value
             match jvalue with
-            | Some jvalue -> jvalue
-            | None -> raiseWrongType path "DateTimeOffset" jvalue
+            | ValueSome jvalue -> jvalue
+            | ValueNone -> raiseWrongType path "DateTimeOffset" jvalue
         | _ -> raiseWrongType path "DateTimeOffset" jvalue
 
     let getGuid (path: JsonPath) (jvalue: JsonValue) =

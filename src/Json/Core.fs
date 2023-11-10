@@ -9,6 +9,8 @@ module Core =
     open FSharp.Data
     open Reflection
 
+    let pascalReplaceRegex = Regex(@"(^|_|\.)(\w)")
+
     let findAttributeMember<'T> (memberInfo: MemberInfo): 'T option =
         let attributes = memberInfo.GetCustomAttributes(typeof<'T>, false)
         match attributes.Length with
@@ -471,7 +473,7 @@ module Core =
 
         ///Convert `snake_case` to `PascalCase`
         let pascalCasify (s: string) =
-            Regex.Replace(s, @"(^|_|\.)(\w)", fun (m: Match) -> m.Groups.[2].Value.ToUpper())
+            pascalReplaceRegex.Replace(s, fun (m: Match) -> m.Groups.[2].Value.ToUpper())
 
         let deserializeUnion (path: JsonPath) (t: Type) (jvalue: JsonValue): obj =
             let unionCases = t |> getUnionCases

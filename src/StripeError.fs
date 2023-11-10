@@ -6,6 +6,7 @@ open FunStripe.Json
 module StripeError =
 
     ///Type of error
+    [<Struct>]
     type ErrorType =
     | ApiConnectionError
     | ApiError
