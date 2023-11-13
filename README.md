@@ -4,6 +4,8 @@ An F# library to connect to the Stripe API, including code generators to update 
 
 ## Latest updates
 
+2023-11-13: version 0.10.2 makes some minor performance enhancements.
+
 2023-10-13: version 0.10.1 makes some minor tweaks to normalise the folder structure.
 
 2023-10-11: version 0.10.0 fixes an issue with form serialisation that meant that JsonField names were only applied to the top level elements. It also tidies the code up a little.
@@ -31,20 +33,12 @@ Here's an example of how to create a new payment method:
 ```F#
 let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
-let defaultCard =
-    PaymentMethods.CreateCardCardDetailsParams.New(
-        cvc = "314",
-        expMonth = 10,
-        expYear = 2021,
-        number = "4242424242424242"
-    )
-
 let getNewPaymentMethod () =
     asyncResult {
         return! 
             PaymentMethods.CreateOptions.New(
-                card = Choice1Of2 defaultCard,
-                type' = PaymentMethods.CreateType.Card
+                card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                type' = PaymentMethods.Create'Type.Card
             )
             |> PaymentMethods.Create settings
     }

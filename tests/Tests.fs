@@ -5,7 +5,6 @@ open NUnit.Framework
 open StripeModel
 open StripeRequest
 open System
-open FSharp.Data
 
 module Tests =
 
@@ -21,19 +20,11 @@ module Tests =
 
         let testCustomer = "cus_HxEURwENT9MKb3"
 
-        let defaultCard =
-            PaymentMethods.Create'CardCardDetailsParams.New(
-                cvc = "314",
-                expMonth = 10,
-                expYear = 2027,
-                number = "4242424242424242"
-            )
-
         let getNewPaymentMethod () =
             asyncResult {
                 return!
                     PaymentMethods.CreateOptions.New(
-                        card = Choice1Of2 defaultCard,
+                        card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
                         type' = PaymentMethods.Create'Type.Card
                     )
                     |> PaymentMethods.Create settings
@@ -87,15 +78,12 @@ module Tests =
             let expected =
                 seq {
                     "type", "card"
-                    "card[number]", "4242424242424242"
-                    "card[exp_month]", "10"
-                    "card[exp_year]", "2027"
-                    "card[cvc]", "314"
+                    "card[token]", "tok_visa"
                 }
                 |> Seq.sortBy fst
             let actual = 
                 PaymentMethods.CreateOptions.New(
-                    card = Choice1Of2 defaultCard,
+                    card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
                     type' = PaymentMethods.Create'Type.Card
                 )
                 |> serialise
@@ -162,7 +150,7 @@ module Tests =
                 Assert.Multiple(fun () ->
                     Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some , act.Customer)
                     Assert.AreEqual(pm.Id, act.Id)
-                    Assert.AreEqual([("order_id", "6735")] |> Map.ofList |> Some, act.Metadata)
+                    Assert.AreEqual([("OrderId", "6735")] |> Map.ofList |> Some, act.Metadata)
                 )
             | Error e ->
                 Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
@@ -174,11 +162,6 @@ module Tests =
                     let! expected = getNewPaymentMethod()
                     let! actual =
                         let options =
-                            // PaymentMethodsAttach.AttachOptions.New(
-                            //     customer = testCustomer,
-                            //     expand = [nameof(Customer)],
-                            //     paymentMethod = expected.Id
-                            // )
                             PaymentMethodsAttach.AttachOptions.New(
                                 customer = testCustomer,
                                 paymentMethod = expected.Id

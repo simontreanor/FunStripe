@@ -16,11 +16,13 @@ module Util =
         fields.Cast<obj>()
         |> Seq.tryExactlyOne
 
+    let spitNameRegex = Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])")
+    let choiceRegex = Regex(@"Choice\d+Of\d+")
+
      /// Converts names into snake case. Use in [JsonConfig].
     let snakeCase (name: string): string =
         if name.Contains "_" then name else //don't double-snake-case!
-        let regex = @"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])"
-        let words = Regex.Split(name, regex) |> List.ofArray |> List.map(fun s -> s.ToLower())
+        let words = spitNameRegex.Split name |> List.ofArray |> List.map(fun s -> s.ToLower())
         words |> String.concat "_"
 
     ///Recurse through record fields / class properties and format as form key/value pairs
@@ -39,7 +41,7 @@ module Util =
                 )
             | _ when FSharpType.IsUnion (value'.GetType()) ->
                 match value'.GetType().Name with
-                | n when n.StartsWith "FSharpOption" || Regex.IsMatch(n, @"Choice\d+Of\d+") ->
+                | n when n.StartsWith "FSharpOption" || choiceRegex.IsMatch n ->
                     match unwrap (value'.GetType()) value' with
                     | Some o -> format' key' o
                     | None -> Seq.empty
