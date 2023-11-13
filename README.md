@@ -33,20 +33,12 @@ Here's an example of how to create a new payment method:
 ```F#
 let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
-let defaultCard =
-    PaymentMethods.CreateCardCardDetailsParams.New(
-        cvc = "314",
-        expMonth = 10,
-        expYear = 2021,
-        number = "4242424242424242"
-    )
-
 let getNewPaymentMethod () =
     asyncResult {
         return! 
             PaymentMethods.CreateOptions.New(
-                card = Choice1Of2 defaultCard,
-                type' = PaymentMethods.CreateType.Card
+                card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                type' = PaymentMethods.Create'Type.Card
             )
             |> PaymentMethods.Create settings
     }
