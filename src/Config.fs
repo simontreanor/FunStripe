@@ -21,7 +21,9 @@ module Config =
 
     /// Looks up the `UserSecrets` store on the developer's computer and retrieves the Stripe API
     /// test key (see README for link to documentation). To set the Stripe API key in `UserSecrets`
-    /// on your development computer use cmd: ```dotnet user-secrets set "StripeSK-Test" "sk_test_..."```
+    /// on your development computer, switch to the tests directory and use cmd: ```dotnet user-secrets init```
+    /// then command ```dotnet user-secrets set "StripeSK-Test" "sk_test_..."```. Also change the `userSecretsId`
+    /// value in the code to match the generated user-secrets ID.
     let StripeTestApiKey =
         let config = ConfigurationBuilder().AddUserSecrets("170450ff-243d-4b38-9f56-c74254e1ca70").Build()
         config.["StripeSK-Test"] |> string
