@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net472;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net9.0;net472;netstandard2.1</TargetFrameworks>
     <UserSecretsId>170450ff-243d-4b38-9f56-c74254e1ca70</UserSecretsId>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
