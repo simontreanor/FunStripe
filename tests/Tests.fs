@@ -88,7 +88,7 @@ module Tests =
                 )
                 |> serialise
                 |> Seq.sortBy fst
-            Assert.AreEqual(expected, actual)
+            Assert.That(expected, Is.EqualTo<(string * string) seq> actual)
 
         [<Test>]
         member _.``test payment method creation``() =
@@ -102,14 +102,14 @@ module Tests =
             match result with
             | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(exp.BillingDetails, act.BillingDetails)
-                    Assert.AreEqual(exp.Customer, act.Customer)
-                    Assert.AreEqual(exp.Livemode, act.Livemode)
-                    Assert.AreEqual(exp.Metadata, act.Metadata)
-                    Assert.AreEqual(exp.Type, act.Type)
+                    Assert.That(exp.BillingDetails, Is.EqualTo act.BillingDetails)
+                    Assert.That(exp.Customer, Is.EqualTo act.Customer)
+                    Assert.That(exp.Livemode, Is.EqualTo act.Livemode)
+                    Assert.That(exp.Metadata, Is.EqualTo act.Metadata)
+                    Assert.That(exp.Type, Is.EqualTo act.Type)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
+                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
 
         [<Test>]
         member _.``test payment method retrieval``() =
@@ -125,9 +125,9 @@ module Tests =
                 |> Async.RunSynchronously
             match result with
             | Ok (exp, act) ->
-                Assert.AreEqual(exp, act)
+                Assert.That(exp, Is.EqualTo act)
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
+                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
 
         [<Test>]
         member _.``test payment method update``() =
@@ -148,12 +148,12 @@ module Tests =
             match result with
             | Ok (exp, pm, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some , act.Customer)
-                    Assert.AreEqual(pm.Id, act.Id)
-                    Assert.AreEqual([("OrderId", "6735")] |> Map.ofList |> Some, act.Metadata)
+                    Assert.That(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, Is.EqualTo act.Customer)
+                    Assert.That(pm.Id, Is.EqualTo act.Id)
+                    Assert.That([("OrderId", "6735")] |> Map.ofList |> Some, Is.EqualTo act.Metadata)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
+                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
 
         [<Test>]
         member _.``test attaching customer to payment method``() =
@@ -173,11 +173,11 @@ module Tests =
             match result with
             | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, act.Customer)
-                    Assert.AreEqual(exp.Id, act.Id)
+                    Assert.That(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, Is.EqualTo act.Customer)
+                    Assert.That(exp.Id, Is.EqualTo act.Id)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
+                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
 
         [<Test>]
         member _.``test detaching customer from payment method``() =
@@ -197,11 +197,11 @@ module Tests =
             match result with
             | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.AreEqual(None, act.Customer)
-                    Assert.AreEqual(exp.Id, act.Id)
+                    Assert.That(None, Is.EqualTo act.Customer)
+                    Assert.That(exp.Id, Is.EqualTo act.Id)
                 )
             | Error e ->
-                Assert.AreEqual("<ErrorMessage>", e.StripeError.Message)
+                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
 
         [<Test>]
         member _.``test parsing customer object``() =
@@ -365,4 +365,4 @@ module Tests =
                 }
             """
             let actual = Util.deserialise<Customer> response
-            Assert.AreEqual(expected, actual)
+            Assert.That(expected, Is.EqualTo actual)

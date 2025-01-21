@@ -25,7 +25,7 @@ module Config =
     /// then command ```dotnet user-secrets set "StripeSK-Test" "sk_test_..."```. Also change the `userSecretsId`
     /// value in the code to match the generated user-secrets ID.
     let StripeTestApiKey =
-        let config = ConfigurationBuilder().AddUserSecrets("170450ff-243d-4b38-9f56-c74254e1ca70").Build()
+        let config = ConfigurationBuilder().AddUserSecrets("ee323121-66e7-40e6-acb1-d0914302cba3").Build()
         config.["StripeSK-Test"] |> string
 
     // If you don't want to use `UserSecrets` comment out the above three lines and uncomment the two
