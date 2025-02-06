@@ -7,6 +7,6835 @@ open System
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "0.11.1")>]
 module StripeModel =
 
+    [<Struct>]
+    type WebhookEndpointStatus =
+        | Enabled
+        | Disabled
+
+    [<Struct>]
+    type VerificationSessionRedactionStatus =
+        | Processing
+        | Redacted
+
+    [<Struct>]
+    type UsBankAccountNetworksSupported =
+        | Ach
+        | UsDomesticWire
+
+    type TreasuryTransactionsResourceFlowDetailsType =
+        | CreditReversal
+        | DebitReversal
+        | InboundTransfer
+        | IssuingAuthorization
+        | Other
+        | OutboundPayment
+        | OutboundTransfer
+        | ReceivedCredit
+        | ReceivedDebit
+
+    [<Struct>]
+    type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType =
+        | Balance
+        | FinancialAccount
+        | IssuingCard
+        | Stripe
+        | UsBankAccount
+
+    [<Struct>]
+    type TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason =
+        | AlreadyReversed
+        | DeadlinePassed
+        | NetworkRestricted
+        | Other
+        | SourceFlowRestricted
+
+    [<Struct>]
+    type TreasuryReceivedCreditsResourceSourceFlowsDetailsType =
+        | CreditReversal
+        | Other
+        | OutboundPayment
+        | Payout
+
+    [<Struct>]
+    type TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason =
+        | AlreadyReversed
+        | DeadlinePassed
+        | NetworkRestricted
+        | Other
+        | SourceFlowRestricted
+
+    type TreasuryOutboundTransfersResourceReturnedDetailsCode =
+        | AccountClosed
+        | AccountFrozen
+        | BankAccountRestricted
+        | BankOwnershipChanged
+        | Declined
+        | IncorrectAccountHolderName
+        | InvalidAccountNumber
+        | InvalidCurrency
+        | NoAccount
+        | Other
+
+    type TreasuryOutboundPaymentsResourceReturnedStatusCode =
+        | AccountClosed
+        | AccountFrozen
+        | BankAccountRestricted
+        | BankOwnershipChanged
+        | Declined
+        | IncorrectAccountHolderName
+        | InvalidAccountNumber
+        | InvalidCurrency
+        | NoAccount
+        | Other
+
+    type TreasuryInboundTransfersResourceFailureDetailsCode =
+        | AccountClosed
+        | AccountFrozen
+        | BankAccountRestricted
+        | BankOwnershipChanged
+        | DebitNotAuthorized
+        | IncorrectAccountHolderAddress
+        | IncorrectAccountHolderName
+        | IncorrectAccountHolderTaxId
+        | InsufficientFunds
+        | InvalidAccountNumber
+        | InvalidCurrency
+        | NoAccount
+        | Other
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction =
+        | InboundFlows
+        | OutboundFlows
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution =
+        | ContactStripe
+        | ProvideInformation
+        | RemoveRestriction
+
+    type TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode =
+        | Activating
+        | CapabilityNotRequested
+        | FinancialAccountClosed
+        | RejectedOther
+        | RejectedUnsupportedBusiness
+        | RequirementsPastDue
+        | RequirementsPendingVerification
+        | RestrictedByPlatform
+        | RestrictedOther
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourceToggleSettingsStatus =
+        | Active
+        | Pending
+        | Restricted
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows =
+        | Restricted
+        | Unrestricted
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourcePlatformRestrictionsInboundFlows =
+        | Restricted
+        | Unrestricted
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks =
+        | Ach
+        | UsDomesticWire
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourceClosedStatusDetailsReasons =
+        | AccountRejected
+        | ClosedByPlatform
+        | Other
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourceAchToggleSettingsStatus =
+        | Active
+        | Pending
+        | Restricted
+
+    [<Struct>]
+    type TreasuryFinancialAccountsResourceAbaToggleSettingsStatus =
+        | Active
+        | Pending
+        | Restricted
+
+    type TreasuryTransactionEntryType =
+        | CreditReversal
+        | CreditReversalPosting
+        | DebitReversal
+        | InboundTransfer
+        | InboundTransferReturn
+        | IssuingAuthorizationHold
+        | IssuingAuthorizationRelease
+        | Other
+        | OutboundPayment
+        | OutboundPaymentCancellation
+        | OutboundPaymentFailure
+        | OutboundPaymentPosting
+        | OutboundPaymentReturn
+        | OutboundTransfer
+        | OutboundTransferCancellation
+        | OutboundTransferFailure
+        | OutboundTransferPosting
+        | OutboundTransferReturn
+        | ReceivedCredit
+        | ReceivedDebit
+
+    type TreasuryTransactionEntryFlowType =
+        | CreditReversal
+        | DebitReversal
+        | InboundTransfer
+        | IssuingAuthorization
+        | Other
+        | OutboundPayment
+        | OutboundTransfer
+        | ReceivedCredit
+        | ReceivedDebit
+
+    [<Struct>]
+    type TreasuryTransactionStatus =
+        | Open
+        | Posted
+        | Void
+
+    type TreasuryTransactionFlowType =
+        | CreditReversal
+        | DebitReversal
+        | InboundTransfer
+        | IssuingAuthorization
+        | Other
+        | OutboundPayment
+        | OutboundTransfer
+        | ReceivedCredit
+        | ReceivedDebit
+
+    [<Struct>]
+    type TreasuryReceivedDebitStatus =
+        | Failed
+        | Succeeded
+
+    [<Struct>]
+    type TreasuryReceivedDebitNetwork =
+        | Ach
+        | Card
+        | Stripe
+
+    [<Struct>]
+    type TreasuryReceivedDebitFailureCode =
+        | AccountClosed
+        | AccountFrozen
+        | InsufficientFunds
+        | Other
+
+    [<Struct>]
+    type TreasuryReceivedCreditStatus =
+        | Failed
+        | Succeeded
+
+    [<Struct>]
+    type TreasuryReceivedCreditNetwork =
+        | Ach
+        | Card
+        | Stripe
+        | UsDomesticWire
+
+    [<Struct>]
+    type TreasuryReceivedCreditFailureCode =
+        | AccountClosed
+        | AccountFrozen
+        | Other
+
+    [<Struct>]
+    type TreasuryOutboundTransferStatus =
+        | Canceled
+        | Failed
+        | Posted
+        | Processing
+        | Returned
+
+    [<Struct>]
+    type TreasuryOutboundPaymentStatus =
+        | Canceled
+        | Failed
+        | Posted
+        | Processing
+        | Returned
+
+    [<Struct>]
+    type TreasuryInboundTransferStatus =
+        | Canceled
+        | Failed
+        | Processing
+        | Succeeded
+
+    type TreasuryFinancialAccountRestrictedFeatures =
+        | CardIssuing
+        | DepositInsurance
+        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
+        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
+        | IntraStripeFlows
+        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
+        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
+        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+        | RemoteDepositCapture
+
+    type TreasuryFinancialAccountPendingFeatures =
+        | CardIssuing
+        | DepositInsurance
+        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
+        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
+        | IntraStripeFlows
+        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
+        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
+        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+        | RemoteDepositCapture
+
+    type TreasuryFinancialAccountActiveFeatures =
+        | CardIssuing
+        | DepositInsurance
+        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
+        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
+        | IntraStripeFlows
+        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
+        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
+        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+        | RemoteDepositCapture
+
+    [<Struct>]
+    type TreasuryFinancialAccountStatus =
+        | Closed
+        | Open
+
+    [<Struct>]
+    type TreasuryDebitReversalStatus =
+        | Failed
+        | Processing
+        | Succeeded
+
+    [<Struct>]
+    type TreasuryDebitReversalNetwork =
+        | Ach
+        | Card
+
+    [<Struct>]
+    type TreasuryCreditReversalStatus =
+        | Canceled
+        | Posted
+        | Processing
+
+    [<Struct>]
+    type TreasuryCreditReversalNetwork =
+        | Ach
+        | Stripe
+
+    [<Struct>]
+    type TransformUsageRound =
+        | Down
+        | Up
+
+    [<Struct>]
+    type TransformQuantityRound =
+        | Down
+        | Up
+
+    [<Struct>]
+    type TransferScheduleInterval =
+        | Manual
+        | Daily
+        | Weekly
+        | Monthly
+
+    [<Struct>]
+    type TransferSourceType =
+        | Card
+        | Fpx
+        | BankAccount
+
+    [<Struct>]
+    type TopupStatus =
+        | Canceled
+        | Failed
+        | Pending
+        | Reversed
+        | Succeeded
+
+    [<Struct>]
+    type TokenType =
+        | Account
+        | BankAccount
+        | Card
+        | Pii
+
+    [<Struct>]
+    type ThreeDSecureDetailsChargeVersion =
+        | [<JsonUnionCase("1.0.2")>] Numeric102
+        | [<JsonUnionCase("2.1.0")>] Numeric210
+        | [<JsonUnionCase("2.2.0")>] Numeric220
+
+    type ThreeDSecureDetailsChargeResultReason =
+        | Abandoned
+        | Bypassed
+        | Canceled
+        | CardNotEnrolled
+        | NetworkNotSupported
+        | ProtocolError
+        | Rejected
+
+    type ThreeDSecureDetailsChargeResult =
+        | AttemptAcknowledged
+        | Authenticated
+        | Exempted
+        | Failed
+        | NotSupported
+        | ProcessingError
+
+    [<Struct>]
+    type ThreeDSecureDetailsChargeAuthenticationFlow =
+        | Challenge
+        | Frictionless
+
+    [<Struct>]
+    type ThreeDSecureDetailsVersion =
+        | [<JsonUnionCase("1.0.2")>] Numeric102
+        | [<JsonUnionCase("2.1.0")>] Numeric210
+        | [<JsonUnionCase("2.2.0")>] Numeric220
+
+    type ThreeDSecureDetailsResultReason =
+        | Abandoned
+        | Bypassed
+        | Canceled
+        | CardNotEnrolled
+        | NetworkNotSupported
+        | ProtocolError
+        | Rejected
+
+    type ThreeDSecureDetailsResult =
+        | AttemptAcknowledged
+        | Authenticated
+        | Exempted
+        | Failed
+        | NotSupported
+        | ProcessingError
+
+    [<Struct>]
+    type ThreeDSecureDetailsAuthenticationFlow =
+        | Challenge
+        | Frictionless
+
+    [<Struct>]
+    type TestHelpersTestClockStatus =
+        | Advancing
+        | InternalFailure
+        | Ready
+
+    [<Struct>]
+    type TerminalReaderReaderResourceRefundPaymentActionReason =
+        | Duplicate
+        | Fraudulent
+        | RequestedByCustomer
+
+    [<Struct>]
+    type TerminalReaderReaderResourceReaderActionType =
+        | ProcessPaymentIntent
+        | ProcessSetupIntent
+        | RefundPayment
+        | SetReaderDisplay
+
+    [<Struct>]
+    type TerminalReaderReaderResourceReaderActionStatus =
+        | Failed
+        | InProgress
+        | Succeeded
+
+    type TerminalReaderDeviceType =
+        | BbposChipper2x
+        | BbposWisepad3
+        | BbposWiseposE
+        | SimulatedWiseposE
+        | StripeM2
+        | VerifoneP400
+
+    type TaxRateTaxType =
+        | AmusementTax
+        | CommunicationsTax
+        | Gst
+        | Hst
+        | Igst
+        | Jct
+        | LeaseTax
+        | Pst
+        | Qst
+        | Rst
+        | SalesTax
+        | ServiceTax
+        | Vat
+
+    [<Struct>]
+    type TaxProductResourceTaxTransactionShippingCostTaxBehavior =
+        | Exclusive
+        | Inclusive
+
+    [<Struct>]
+    type TaxProductResourceTaxSettingsDefaultsTaxBehavior =
+        | Exclusive
+        | Inclusive
+        | InferredByCurrency
+
+    type TaxProductResourceTaxRateDetailsTaxType =
+        | AmusementTax
+        | CommunicationsTax
+        | Gst
+        | Hst
+        | Igst
+        | Jct
+        | LeaseTax
+        | Pst
+        | Qst
+        | Rst
+        | SalesTax
+        | Vat
+
+    [<Struct>]
+    type TaxProductResourceTaxCalculationShippingCostTaxBehavior =
+        | Exclusive
+        | Inclusive
+
+    type TaxProductResourceTaxBreakdownTaxabilityReason =
+        | CustomerExempt
+        | NotCollecting
+        | NotSubjectToTax
+        | NotSupported
+        | PortionProductExempt
+        | PortionReducedRated
+        | PortionStandardRated
+        | ProductExempt
+        | ProductExemptHoliday
+        | ProportionallyRated
+        | ReducedRated
+        | ReverseCharge
+        | StandardRated
+        | TaxableBasisReduced
+        | ZeroRated
+
+    type TaxProductResourceLineItemTaxRateDetailsTaxType =
+        | AmusementTax
+        | CommunicationsTax
+        | Gst
+        | Hst
+        | Igst
+        | Jct
+        | LeaseTax
+        | Pst
+        | Qst
+        | Rst
+        | SalesTax
+        | Vat
+
+    type TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
+        | CustomerExempt
+        | NotCollecting
+        | NotSubjectToTax
+        | NotSupported
+        | PortionProductExempt
+        | PortionReducedRated
+        | PortionStandardRated
+        | ProductExempt
+        | ProductExemptHoliday
+        | ProportionallyRated
+        | ReducedRated
+        | ReverseCharge
+        | StandardRated
+        | TaxableBasisReduced
+        | ZeroRated
+
+    [<Struct>]
+    type TaxProductResourceLineItemTaxBreakdownSourcing =
+        | Destination
+        | Origin
+
+    [<Struct>]
+    type TaxProductResourceJurisdictionLevel =
+        | City
+        | Country
+        | County
+        | District
+        | State
+
+    type TaxProductResourceCustomerDetailsResourceTaxIdType =
+        | AdNrt
+        | AeTrn
+        | ArCuit
+        | AuAbn
+        | AuArn
+        | BgUic
+        | BoTin
+        | BrCnpj
+        | BrCpf
+        | CaBn
+        | CaGstHst
+        | CaPstBc
+        | CaPstMb
+        | CaPstSk
+        | CaQst
+        | ChVat
+        | ClTin
+        | CnTin
+        | CoNit
+        | CrTin
+        | DoRcn
+        | EcRuc
+        | EgTin
+        | EsCif
+        | EuOssVat
+        | EuVat
+        | GbVat
+        | GeVat
+        | HkBr
+        | HuTin
+        | IdNpwp
+        | IlVat
+        | InGst
+        | IsVat
+        | JpCn
+        | JpRn
+        | JpTrn
+        | KePin
+        | KrBrn
+        | LiUid
+        | MxRfc
+        | MyFrp
+        | MyItn
+        | MySst
+        | NoVat
+        | NzGst
+        | PeRuc
+        | PhTin
+        | RoTin
+        | RsPib
+        | RuInn
+        | RuKpp
+        | SaVat
+        | SgGst
+        | SgUen
+        | SiTin
+        | SvNit
+        | ThVat
+        | TrTin
+        | TwVat
+        | UaVat
+        | Unknown
+        | UsEin
+        | UyRuc
+        | VeRif
+        | VnTin
+        | ZaVat
+
+    [<Struct>]
+    type TaxProductResourceCustomerDetailsTaxabilityOverride =
+        | CustomerExempt
+        | [<JsonUnionCase("none")>] None'
+        | ReverseCharge
+
+    [<Struct>]
+    type TaxProductResourceCustomerDetailsAddressSource =
+        | Billing
+        | Shipping
+
+    [<Struct>]
+    type TaxIdVerificationStatus =
+        | Pending
+        | Unavailable
+        | Unverified
+        | Verified
+
+    type TaxIdType =
+        | AdNrt
+        | AeTrn
+        | ArCuit
+        | AuAbn
+        | AuArn
+        | BgUic
+        | BoTin
+        | BrCnpj
+        | BrCpf
+        | CaBn
+        | CaGstHst
+        | CaPstBc
+        | CaPstMb
+        | CaPstSk
+        | CaQst
+        | ChVat
+        | ClTin
+        | CnTin
+        | CoNit
+        | CrTin
+        | DoRcn
+        | EcRuc
+        | EgTin
+        | EsCif
+        | EuOssVat
+        | EuVat
+        | GbVat
+        | GeVat
+        | HkBr
+        | HuTin
+        | IdNpwp
+        | IlVat
+        | InGst
+        | IsVat
+        | JpCn
+        | JpRn
+        | JpTrn
+        | KePin
+        | KrBrn
+        | LiUid
+        | MxRfc
+        | MyFrp
+        | MyItn
+        | MySst
+        | NoVat
+        | NzGst
+        | PeRuc
+        | PhTin
+        | RoTin
+        | RsPib
+        | RuInn
+        | RuKpp
+        | SaVat
+        | SgGst
+        | SgUen
+        | SiTin
+        | SvNit
+        | ThVat
+        | TrTin
+        | TwVat
+        | UaVat
+        | Unknown
+        | UsEin
+        | UyRuc
+        | VeRif
+        | VnTin
+        | ZaVat
+
+    [<Struct>]
+    type TaxTransactionLineItemType =
+        | Reversal
+        | Transaction
+
+    [<Struct>]
+    type TaxTransactionLineItemTaxBehavior =
+        | Exclusive
+        | Inclusive
+
+    [<Struct>]
+    type TaxTransactionType =
+        | Reversal
+        | Transaction
+
+    [<Struct>]
+    type TaxSettingsStatus =
+        | Active
+        | Pending
+
+    [<Struct>]
+    type TaxCalculationLineItemTaxBehavior =
+        | Exclusive
+        | Inclusive
+
+    [<Struct>]
+    type SubscriptionsTrialsResourceEndBehaviorMissingPaymentMethod =
+        | Cancel
+        | CreateInvoice
+        | Pause
+
+    type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
+        | AchCreditTransfer
+        | AchDebit
+        | AcssDebit
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Boleto
+        | Card
+        | Cashapp
+        | CustomerBalance
+        | Fpx
+        | Giropay
+        | Grabpay
+        | Ideal
+        | Konbini
+        | Link
+        | Paynow
+        | Paypal
+        | Promptpay
+        | SepaCreditTransfer
+        | SepaDebit
+        | Sofort
+        | UsBankAccount
+        | WechatPay
+
+    [<Struct>]
+    type SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod =
+        | Off
+        | OnSubscription
+
+    [<Struct>]
+    type SubscriptionsResourcePauseCollectionBehavior =
+        | KeepAsDraft
+        | MarkUncollectible
+        | Void
+
+    [<Struct>]
+    type SubscriptionSchedulesResourceDefaultSettingsCollectionMethod =
+        | ChargeAutomatically
+        | SendInvoice
+
+    [<Struct>]
+    type SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor =
+        | Automatic
+        | PhaseStart
+
+    [<Struct>]
+    type SubscriptionSchedulePhaseConfigurationProrationBehavior =
+        | AlwaysInvoice
+        | CreateProrations
+        | [<JsonUnionCase("none")>] None'
+
+    [<Struct>]
+    type SubscriptionSchedulePhaseConfigurationCollectionMethod =
+        | ChargeAutomatically
+        | SendInvoice
+
+    [<Struct>]
+    type SubscriptionSchedulePhaseConfigurationBillingCycleAnchor =
+        | Automatic
+        | PhaseStart
+
+    [<Struct>]
+    type SubscriptionScheduleStatus =
+        | Active
+        | Canceled
+        | Completed
+        | NotStarted
+        | Released
+
+    [<Struct>]
+    type SubscriptionScheduleEndBehavior =
+        | Cancel
+        | [<JsonUnionCase("none")>] None'
+        | Release
+        | Renew
+
+    [<Struct>]
+    type SubscriptionPendingInvoiceItemIntervalInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    [<Struct>]
+    type SubscriptionPaymentMethodOptionsCardRequestThreeDSecure =
+        | Any
+        | Automatic
+
+    type SubscriptionPaymentMethodOptionsCardNetwork =
+        | Amex
+        | CartesBancaires
+        | Diners
+        | Discover
+        | EftposAu
+        | Interac
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Unknown
+        | Visa
+
+    type SubscriptionStatus =
+        | Active
+        | Canceled
+        | Incomplete
+        | IncompleteExpired
+        | PastDue
+        | Paused
+        | Trialing
+        | Unpaid
+
+    [<Struct>]
+    type SubscriptionCollectionMethod =
+        | ChargeAutomatically
+        | SendInvoice
+
+    type SourceTransactionType =
+        | AchCreditTransfer
+        | AchDebit
+        | Alipay
+        | Bancontact
+        | Card
+        | CardPresent
+        | Eps
+        | Giropay
+        | Ideal
+        | Klarna
+        | Multibanco
+        | P24
+        | SepaDebit
+        | Sofort
+        | ThreeDSecure
+        | Wechat
+
+    [<Struct>]
+    type SourceTransactionStatus =
+        | Succeeded
+        | Pending
+        | Failed
+
+    [<Struct>]
+    type SourceReceiverFlowRefundAttributesStatus =
+        | Missing
+        | Requested
+        | Available
+
+    [<Struct>]
+    type SourceReceiverFlowRefundAttributesMethod =
+        | Email
+        | Manual
+        | [<JsonUnionCase("none")>] None'
+
+    [<Struct>]
+    type SourceOrderItemType =
+        | Sku
+        | Tax
+        | Shipping
+
+    [<Struct>]
+    type SourceMandateNotificationStatus =
+        | Pending
+        | Submitted
+
+    [<Struct>]
+    type SourceMandateNotificationReason =
+        | MandateConfirmed
+        | DebitInitiated
+
+    [<Struct>]
+    type SourceUsage =
+        | Reusable
+        | SingleUse
+
+    type SourceType =
+        | AchCreditTransfer
+        | AchDebit
+        | AcssDebit
+        | Alipay
+        | AuBecsDebit
+        | Bancontact
+        | Card
+        | CardPresent
+        | Eps
+        | Giropay
+        | Ideal
+        | Klarna
+        | Multibanco
+        | P24
+        | SepaCreditTransfer
+        | SepaDebit
+        | Sofort
+        | ThreeDSecure
+        | Wechat
+
+    [<Struct>]
+    type SourceStatus =
+        | Canceled
+        | Chargeable
+        | Consumed
+        | Failed
+        | Pending
+
+    [<Struct>]
+    type ShippingRateDeliveryEstimateBoundUnit =
+        | BusinessDay
+        | Day
+        | Hour
+        | Month
+        | Week
+
+    [<Struct>]
+    type ShippingRateCurrencyOptionTaxBehavior =
+        | Exclusive
+        | Inclusive
+        | Unspecified
+
+    [<Struct>]
+    type ShippingRateTaxBehavior =
+        | Exclusive
+        | Inclusive
+        | Unspecified
+
+    [<Struct>]
+    type SetupIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsUsBankAccountVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitDefaultFor =
+        | Invoice
+        | Subscription
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType =
+        | Business
+        | Personal
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule =
+        | Combined
+        | Interval
+        | Sporadic
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsCardMandateOptionsInterval =
+        | Day
+        | Month
+        | Sporadic
+        | Week
+        | Year
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType =
+        | Fixed
+        | Maximum
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsCardRequestThreeDSecure =
+        | Any
+        | Automatic
+        | ChallengeOnly
+
+    type SetupIntentPaymentMethodOptionsCardNetwork =
+        | Amex
+        | CartesBancaires
+        | Diners
+        | Discover
+        | EftposAu
+        | Interac
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Unknown
+        | Visa
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsAcssDebitVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type SetupIntentPaymentMethodOptionsAcssDebitCurrency =
+        | Cad
+        | Usd
+
+    [<Struct>]
+    type SetupIntentNextActionVerifyWithMicrodepositsMicrodepositType =
+        | Amounts
+        | DescriptorCode
+
+    [<Struct>]
+    type SetupIntentNextActionType =
+        | RedirectToUrl
+        | UseStripeSdk
+        | AlipayHandleRedirect
+        | OxxoDisplayDetails
+        | VerifyWithMicrodeposits
+
+    [<Struct>]
+    type SetupIntentFlowDirections =
+        | Inbound
+        | Outbound
+
+    type SetupIntentStatus =
+        | Canceled
+        | Processing
+        | RequiresAction
+        | RequiresConfirmation
+        | RequiresPaymentMethod
+        | Succeeded
+
+    [<Struct>]
+    type SetupIntentCancellationReason =
+        | Abandoned
+        | Duplicate
+        | RequestedByCustomer
+
+    [<Struct>]
+    type SetupAttemptPaymentMethodDetailsSofortPreferredLanguage =
+        | De
+        | En
+        | Fr
+        | Nl
+
+    type SetupAttemptPaymentMethodDetailsIdealBic =
+        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
+        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
+        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
+        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
+        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
+        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
+        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
+        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
+        | [<JsonUnionCase("MOYONL21")>] MOYONL21
+        | [<JsonUnionCase("RABONL2U")>] RABONL2U
+        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
+        | [<JsonUnionCase("REVOIE23")>] REVOIE23
+        | [<JsonUnionCase("REVOLT21")>] REVOLT21
+        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
+        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+
+    type SetupAttemptPaymentMethodDetailsIdealBank =
+        | AbnAmro
+        | AsnBank
+        | Bunq
+        | Handelsbanken
+        | Ing
+        | Knab
+        | Moneyou
+        | Rabobank
+        | Regiobank
+        | Revolut
+        | SnsBank
+        | TriodosBank
+        | VanLanschot
+        | Yoursafe
+
+    [<Struct>]
+    type SetupAttemptPaymentMethodDetailsCardWalletType =
+        | ApplePay
+        | GooglePay
+        | Link
+
+    type SetupAttemptPaymentMethodDetailsCardNetwork =
+        | Amex
+        | CartesBancaires
+        | Diners
+        | Discover
+        | EftposAu
+        | Interac
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type SetupAttemptPaymentMethodDetailsCardFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    type SetupAttemptPaymentMethodDetailsCardBrand =
+        | Amex
+        | Diners
+        | Discover
+        | EftposAu
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage =
+        | De
+        | En
+        | Fr
+        | Nl
+
+    [<Struct>]
+    type SetupAttemptFlowDirections =
+        | Inbound
+        | Outbound
+
+    [<Struct>]
+    type SetupAttemptUsage =
+        | OffSession
+        | OnSession
+
+    type SetupAttemptStatus =
+        | RequiresConfirmation
+        | RequiresAction
+        | Processing
+        | Succeeded
+        | Failed
+        | Abandoned
+
+    [<Struct>]
+    type SecretServiceResourceScopeType =
+        | Account
+        | User
+
+    type ReviewReason =
+        | Rule
+        | Manual
+        | Approved
+        | Refunded
+        | RefundedAsFraud
+        | Disputed
+        | Redacted
+
+    [<Struct>]
+    type ReviewOpenedReason =
+        | Manual
+        | Rule
+
+    [<Struct>]
+    type ReviewClosedReason =
+        | Approved
+        | Disputed
+        | Redacted
+        | Refunded
+        | RefundedAsFraud
+
+    [<Struct>]
+    type RefundStatus =
+        | Pending
+        | Succeeded
+        | Failed
+
+    [<Struct>]
+    type RefundReason =
+        | Duplicate
+        | ExpiredUncapturedCharge
+        | Fraudulent
+        | RequestedByCustomer
+
+    type RefundFailureReason =
+        | LostOrStolenCard
+        | ExpiredOrCanceledCard
+        | ChargeForPendingRefundDisputed
+        | InsufficientFunds
+        | Declined
+        | MerchantRequest
+        | Unknown
+
+    [<Struct>]
+    type RecurringUsageType =
+        | Licensed
+        | Metered
+
+    [<Struct>]
+    type RecurringInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    [<Struct>]
+    type RecurringAggregateUsage =
+        | LastDuringPeriod
+        | LastEver
+        | Max
+        | Sum
+
+    type RadarValueListItemType =
+        | CardBin
+        | CardFingerprint
+        | CaseSensitiveString
+        | Country
+        | CustomerId
+        | Email
+        | IpAddress
+        | SepaDebitFingerprint
+        | String
+        | UsBankAccountFingerprint
+
+    [<Struct>]
+    type QuotesResourceRecurringInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    [<Struct>]
+    type QuotesResourceAutomaticTaxStatus =
+        | Complete
+        | Failed
+        | RequiresLocationInputs
+
+    [<Struct>]
+    type QuoteStatus =
+        | Accepted
+        | Canceled
+        | Draft
+        | Open
+
+    [<Struct>]
+    type QuoteCollectionMethod =
+        | ChargeAutomatically
+        | SendInvoice
+
+    [<Struct>]
+    type ProductType =
+        | Good
+        | Service
+
+    [<Struct>]
+    type PriceType =
+        | OneTime
+        | Recurring
+
+    [<Struct>]
+    type PriceTiersMode =
+        | Graduated
+        | Volume
+
+    [<Struct>]
+    type PriceTaxBehavior =
+        | Exclusive
+        | Inclusive
+        | Unspecified
+
+    [<Struct>]
+    type PriceBillingScheme =
+        | PerUnit
+        | Tiered
+
+    [<Struct>]
+    type PortalSubscriptionUpdateDefaultAllowedUpdates =
+        | Price
+        | PromotionCode
+        | Quantity
+
+    [<Struct>]
+    type PortalSubscriptionUpdateProrationBehavior =
+        | AlwaysInvoice
+        | CreateProrations
+        | [<JsonUnionCase("none")>] None'
+
+    type PortalSubscriptionCancellationReasonOptions =
+        | CustomerService
+        | LowQuality
+        | MissingFeatures
+        | Other
+        | SwitchedService
+        | TooComplex
+        | TooExpensive
+        | Unused
+
+    [<Struct>]
+    type PortalSubscriptionCancelProrationBehavior =
+        | AlwaysInvoice
+        | CreateProrations
+        | [<JsonUnionCase("none")>] None'
+
+    [<Struct>]
+    type PortalSubscriptionCancelMode =
+        | AtPeriodEnd
+        | Immediately
+
+    [<Struct>]
+    type PortalFlowsFlowAfterCompletionType =
+        | HostedConfirmation
+        | PortalHomepage
+        | Redirect
+
+    [<Struct>]
+    type PortalFlowsFlowType =
+        | PaymentMethodUpdate
+        | SubscriptionCancel
+        | SubscriptionUpdate
+        | SubscriptionUpdateConfirm
+
+    type PortalCustomerUpdateAllowedUpdates =
+        | Address
+        | Email
+        | Name
+        | Phone
+        | Shipping
+        | TaxId
+
+    [<Struct>]
+    type PlanUsageType =
+        | Licensed
+        | Metered
+
+    [<Struct>]
+    type PlanTiersMode =
+        | Graduated
+        | Volume
+
+    [<Struct>]
+    type PlanInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    [<Struct>]
+    type PlanBillingScheme =
+        | PerUnit
+        | Tiered
+
+    [<Struct>]
+    type PlanAggregateUsage =
+        | LastDuringPeriod
+        | LastEver
+        | Max
+        | Sum
+
+    [<Struct>]
+    type PersonPoliticalExposure =
+        | Existing
+        | [<JsonUnionCase("none")>] None'
+
+    [<Struct>]
+    type PaypalSellerProtectionDisputeCategories =
+        | Fraudulent
+        | ProductNotReceived
+
+    [<Struct>]
+    type PaypalSellerProtectionStatus =
+        | Eligible
+        | NotEligible
+        | PartiallyEligible
+
+    [<Struct>]
+    type PayoutType =
+        | BankAccount
+        | Card
+
+    [<Struct>]
+    type PayoutStatus =
+        | Paid
+        | Pending
+        | InTransit
+        | Canceled
+        | Failed
+
+    [<Struct>]
+    type PayoutSourceType =
+        | Card
+        | Fpx
+        | BankAccount
+
+    [<Struct>]
+    type PayoutReconciliationStatus =
+        | Completed
+        | InProgress
+        | NotApplicable
+
+    [<Struct>]
+    type PayoutMethod =
+        | Standard
+        | Instant
+
+    type PaymentPagesCheckoutSessionTaxIdType =
+        | AdNrt
+        | AeTrn
+        | ArCuit
+        | AuAbn
+        | AuArn
+        | BgUic
+        | BoTin
+        | BrCnpj
+        | BrCpf
+        | CaBn
+        | CaGstHst
+        | CaPstBc
+        | CaPstMb
+        | CaPstSk
+        | CaQst
+        | ChVat
+        | ClTin
+        | CnTin
+        | CoNit
+        | CrTin
+        | DoRcn
+        | EcRuc
+        | EgTin
+        | EsCif
+        | EuOssVat
+        | EuVat
+        | GbVat
+        | GeVat
+        | HkBr
+        | HuTin
+        | IdNpwp
+        | IlVat
+        | InGst
+        | IsVat
+        | JpCn
+        | JpRn
+        | JpTrn
+        | KePin
+        | KrBrn
+        | LiUid
+        | MxRfc
+        | MyFrp
+        | MyItn
+        | MySst
+        | NoVat
+        | NzGst
+        | PeRuc
+        | PhTin
+        | RoTin
+        | RsPib
+        | RuInn
+        | RuKpp
+        | SaVat
+        | SgGst
+        | SgUen
+        | SiTin
+        | SvNit
+        | ThVat
+        | TrTin
+        | TwVat
+        | UaVat
+        | Unknown
+        | UsEin
+        | UyRuc
+        | VeRif
+        | VnTin
+        | ZaVat
+
+    type PaymentPagesCheckoutSessionShippingAddressCollectionAllowedCountries =
+        | [<JsonUnionCase("AC")>] AC
+        | [<JsonUnionCase("AD")>] AD
+        | [<JsonUnionCase("AE")>] AE
+        | [<JsonUnionCase("AF")>] AF
+        | [<JsonUnionCase("AG")>] AG
+        | [<JsonUnionCase("AI")>] AI
+        | [<JsonUnionCase("AL")>] AL
+        | [<JsonUnionCase("AM")>] AM
+        | [<JsonUnionCase("AO")>] AO
+        | [<JsonUnionCase("AQ")>] AQ
+        | [<JsonUnionCase("AR")>] AR
+        | [<JsonUnionCase("AT")>] AT
+        | [<JsonUnionCase("AU")>] AU
+        | [<JsonUnionCase("AW")>] AW
+        | [<JsonUnionCase("AX")>] AX
+        | [<JsonUnionCase("AZ")>] AZ
+        | [<JsonUnionCase("BA")>] BA
+        | [<JsonUnionCase("BB")>] BB
+        | [<JsonUnionCase("BD")>] BD
+        | [<JsonUnionCase("BE")>] BE
+        | [<JsonUnionCase("BF")>] BF
+        | [<JsonUnionCase("BG")>] BG
+        | [<JsonUnionCase("BH")>] BH
+        | [<JsonUnionCase("BI")>] BI
+        | [<JsonUnionCase("BJ")>] BJ
+        | [<JsonUnionCase("BL")>] BL
+        | [<JsonUnionCase("BM")>] BM
+        | [<JsonUnionCase("BN")>] BN
+        | [<JsonUnionCase("BO")>] BO
+        | [<JsonUnionCase("BQ")>] BQ
+        | [<JsonUnionCase("BR")>] BR
+        | [<JsonUnionCase("BS")>] BS
+        | [<JsonUnionCase("BT")>] BT
+        | [<JsonUnionCase("BV")>] BV
+        | [<JsonUnionCase("BW")>] BW
+        | [<JsonUnionCase("BY")>] BY
+        | [<JsonUnionCase("BZ")>] BZ
+        | [<JsonUnionCase("CA")>] CA
+        | [<JsonUnionCase("CD")>] CD
+        | [<JsonUnionCase("CF")>] CF
+        | [<JsonUnionCase("CG")>] CG
+        | [<JsonUnionCase("CH")>] CH
+        | [<JsonUnionCase("CI")>] CI
+        | [<JsonUnionCase("CK")>] CK
+        | [<JsonUnionCase("CL")>] CL
+        | [<JsonUnionCase("CM")>] CM
+        | [<JsonUnionCase("CN")>] CN
+        | [<JsonUnionCase("CO")>] CO
+        | [<JsonUnionCase("CR")>] CR
+        | [<JsonUnionCase("CV")>] CV
+        | [<JsonUnionCase("CW")>] CW
+        | [<JsonUnionCase("CY")>] CY
+        | [<JsonUnionCase("CZ")>] CZ
+        | [<JsonUnionCase("DE")>] DE
+        | [<JsonUnionCase("DJ")>] DJ
+        | [<JsonUnionCase("DK")>] DK
+        | [<JsonUnionCase("DM")>] DM
+        | [<JsonUnionCase("DO")>] DO
+        | [<JsonUnionCase("DZ")>] DZ
+        | [<JsonUnionCase("EC")>] EC
+        | [<JsonUnionCase("EE")>] EE
+        | [<JsonUnionCase("EG")>] EG
+        | [<JsonUnionCase("EH")>] EH
+        | [<JsonUnionCase("ER")>] ER
+        | [<JsonUnionCase("ES")>] ES
+        | [<JsonUnionCase("ET")>] ET
+        | [<JsonUnionCase("FI")>] FI
+        | [<JsonUnionCase("FJ")>] FJ
+        | [<JsonUnionCase("FK")>] FK
+        | [<JsonUnionCase("FO")>] FO
+        | [<JsonUnionCase("FR")>] FR
+        | [<JsonUnionCase("GA")>] GA
+        | [<JsonUnionCase("GB")>] GB
+        | [<JsonUnionCase("GD")>] GD
+        | [<JsonUnionCase("GE")>] GE
+        | [<JsonUnionCase("GF")>] GF
+        | [<JsonUnionCase("GG")>] GG
+        | [<JsonUnionCase("GH")>] GH
+        | [<JsonUnionCase("GI")>] GI
+        | [<JsonUnionCase("GL")>] GL
+        | [<JsonUnionCase("GM")>] GM
+        | [<JsonUnionCase("GN")>] GN
+        | [<JsonUnionCase("GP")>] GP
+        | [<JsonUnionCase("GQ")>] GQ
+        | [<JsonUnionCase("GR")>] GR
+        | [<JsonUnionCase("GS")>] GS
+        | [<JsonUnionCase("GT")>] GT
+        | [<JsonUnionCase("GU")>] GU
+        | [<JsonUnionCase("GW")>] GW
+        | [<JsonUnionCase("GY")>] GY
+        | [<JsonUnionCase("HK")>] HK
+        | [<JsonUnionCase("HN")>] HN
+        | [<JsonUnionCase("HR")>] HR
+        | [<JsonUnionCase("HT")>] HT
+        | [<JsonUnionCase("HU")>] HU
+        | [<JsonUnionCase("ID")>] ID
+        | [<JsonUnionCase("IE")>] IE
+        | [<JsonUnionCase("IL")>] IL
+        | [<JsonUnionCase("IM")>] IM
+        | [<JsonUnionCase("IN")>] IN
+        | [<JsonUnionCase("IO")>] IO
+        | [<JsonUnionCase("IQ")>] IQ
+        | [<JsonUnionCase("IS")>] IS
+        | [<JsonUnionCase("IT")>] IT
+        | [<JsonUnionCase("JE")>] JE
+        | [<JsonUnionCase("JM")>] JM
+        | [<JsonUnionCase("JO")>] JO
+        | [<JsonUnionCase("JP")>] JP
+        | [<JsonUnionCase("KE")>] KE
+        | [<JsonUnionCase("KG")>] KG
+        | [<JsonUnionCase("KH")>] KH
+        | [<JsonUnionCase("KI")>] KI
+        | [<JsonUnionCase("KM")>] KM
+        | [<JsonUnionCase("KN")>] KN
+        | [<JsonUnionCase("KR")>] KR
+        | [<JsonUnionCase("KW")>] KW
+        | [<JsonUnionCase("KY")>] KY
+        | [<JsonUnionCase("KZ")>] KZ
+        | [<JsonUnionCase("LA")>] LA
+        | [<JsonUnionCase("LB")>] LB
+        | [<JsonUnionCase("LC")>] LC
+        | [<JsonUnionCase("LI")>] LI
+        | [<JsonUnionCase("LK")>] LK
+        | [<JsonUnionCase("LR")>] LR
+        | [<JsonUnionCase("LS")>] LS
+        | [<JsonUnionCase("LT")>] LT
+        | [<JsonUnionCase("LU")>] LU
+        | [<JsonUnionCase("LV")>] LV
+        | [<JsonUnionCase("LY")>] LY
+        | [<JsonUnionCase("MA")>] MA
+        | [<JsonUnionCase("MC")>] MC
+        | [<JsonUnionCase("MD")>] MD
+        | [<JsonUnionCase("ME")>] ME
+        | [<JsonUnionCase("MF")>] MF
+        | [<JsonUnionCase("MG")>] MG
+        | [<JsonUnionCase("MK")>] MK
+        | [<JsonUnionCase("ML")>] ML
+        | [<JsonUnionCase("MM")>] MM
+        | [<JsonUnionCase("MN")>] MN
+        | [<JsonUnionCase("MO")>] MO
+        | [<JsonUnionCase("MQ")>] MQ
+        | [<JsonUnionCase("MR")>] MR
+        | [<JsonUnionCase("MS")>] MS
+        | [<JsonUnionCase("MT")>] MT
+        | [<JsonUnionCase("MU")>] MU
+        | [<JsonUnionCase("MV")>] MV
+        | [<JsonUnionCase("MW")>] MW
+        | [<JsonUnionCase("MX")>] MX
+        | [<JsonUnionCase("MY")>] MY
+        | [<JsonUnionCase("MZ")>] MZ
+        | [<JsonUnionCase("NA")>] NA
+        | [<JsonUnionCase("NC")>] NC
+        | [<JsonUnionCase("NE")>] NE
+        | [<JsonUnionCase("NG")>] NG
+        | [<JsonUnionCase("NI")>] NI
+        | [<JsonUnionCase("NL")>] NL
+        | [<JsonUnionCase("NO")>] NO
+        | [<JsonUnionCase("NP")>] NP
+        | [<JsonUnionCase("NR")>] NR
+        | [<JsonUnionCase("NU")>] NU
+        | [<JsonUnionCase("NZ")>] NZ
+        | [<JsonUnionCase("OM")>] OM
+        | [<JsonUnionCase("PA")>] PA
+        | [<JsonUnionCase("PE")>] PE
+        | [<JsonUnionCase("PF")>] PF
+        | [<JsonUnionCase("PG")>] PG
+        | [<JsonUnionCase("PH")>] PH
+        | [<JsonUnionCase("PK")>] PK
+        | [<JsonUnionCase("PL")>] PL
+        | [<JsonUnionCase("PM")>] PM
+        | [<JsonUnionCase("PN")>] PN
+        | [<JsonUnionCase("PR")>] PR
+        | [<JsonUnionCase("PS")>] PS
+        | [<JsonUnionCase("PT")>] PT
+        | [<JsonUnionCase("PY")>] PY
+        | [<JsonUnionCase("QA")>] QA
+        | [<JsonUnionCase("RE")>] RE
+        | [<JsonUnionCase("RO")>] RO
+        | [<JsonUnionCase("RS")>] RS
+        | [<JsonUnionCase("RU")>] RU
+        | [<JsonUnionCase("RW")>] RW
+        | [<JsonUnionCase("SA")>] SA
+        | [<JsonUnionCase("SB")>] SB
+        | [<JsonUnionCase("SC")>] SC
+        | [<JsonUnionCase("SE")>] SE
+        | [<JsonUnionCase("SG")>] SG
+        | [<JsonUnionCase("SH")>] SH
+        | [<JsonUnionCase("SI")>] SI
+        | [<JsonUnionCase("SJ")>] SJ
+        | [<JsonUnionCase("SK")>] SK
+        | [<JsonUnionCase("SL")>] SL
+        | [<JsonUnionCase("SM")>] SM
+        | [<JsonUnionCase("SN")>] SN
+        | [<JsonUnionCase("SO")>] SO
+        | [<JsonUnionCase("SR")>] SR
+        | [<JsonUnionCase("SS")>] SS
+        | [<JsonUnionCase("ST")>] ST
+        | [<JsonUnionCase("SV")>] SV
+        | [<JsonUnionCase("SX")>] SX
+        | [<JsonUnionCase("SZ")>] SZ
+        | [<JsonUnionCase("TA")>] TA
+        | [<JsonUnionCase("TC")>] TC
+        | [<JsonUnionCase("TD")>] TD
+        | [<JsonUnionCase("TF")>] TF
+        | [<JsonUnionCase("TG")>] TG
+        | [<JsonUnionCase("TH")>] TH
+        | [<JsonUnionCase("TJ")>] TJ
+        | [<JsonUnionCase("TK")>] TK
+        | [<JsonUnionCase("TL")>] TL
+        | [<JsonUnionCase("TM")>] TM
+        | [<JsonUnionCase("TN")>] TN
+        | [<JsonUnionCase("TO")>] TO
+        | [<JsonUnionCase("TR")>] TR
+        | [<JsonUnionCase("TT")>] TT
+        | [<JsonUnionCase("TV")>] TV
+        | [<JsonUnionCase("TW")>] TW
+        | [<JsonUnionCase("TZ")>] TZ
+        | [<JsonUnionCase("UA")>] UA
+        | [<JsonUnionCase("UG")>] UG
+        | [<JsonUnionCase("US")>] US
+        | [<JsonUnionCase("UY")>] UY
+        | [<JsonUnionCase("UZ")>] UZ
+        | [<JsonUnionCase("VA")>] VA
+        | [<JsonUnionCase("VC")>] VC
+        | [<JsonUnionCase("VE")>] VE
+        | [<JsonUnionCase("VG")>] VG
+        | [<JsonUnionCase("VN")>] VN
+        | [<JsonUnionCase("VU")>] VU
+        | [<JsonUnionCase("WF")>] WF
+        | [<JsonUnionCase("WS")>] WS
+        | [<JsonUnionCase("XK")>] XK
+        | [<JsonUnionCase("YE")>] YE
+        | [<JsonUnionCase("YT")>] YT
+        | [<JsonUnionCase("ZA")>] ZA
+        | [<JsonUnionCase("ZM")>] ZM
+        | [<JsonUnionCase("ZW")>] ZW
+        | [<JsonUnionCase("ZZ")>] ZZ
+
+    [<Struct>]
+    type PaymentPagesCheckoutSessionCustomerDetailsTaxExempt =
+        | Exempt
+        | [<JsonUnionCase("none")>] None'
+        | Reverse
+
+    [<Struct>]
+    type PaymentPagesCheckoutSessionCustomFieldsType =
+        | Dropdown
+        | Numeric
+        | Text
+
+    [<Struct>]
+    type PaymentPagesCheckoutSessionConsentCollectionTermsOfService =
+        | [<JsonUnionCase("none")>] None'
+        | Required
+
+    [<Struct>]
+    type PaymentPagesCheckoutSessionConsentCollectionPromotions =
+        | Auto
+        | [<JsonUnionCase("none")>] None'
+
+    [<Struct>]
+    type PaymentPagesCheckoutSessionConsentPromotions =
+        | OptIn
+        | OptOut
+
+    [<Struct>]
+    type PaymentPagesCheckoutSessionAutomaticTaxStatus =
+        | Complete
+        | Failed
+        | RequiresLocationInputs
+
+    type PaymentMethodUsBankAccountBlockedReason =
+        | BankAccountClosed
+        | BankAccountFrozen
+        | BankAccountInvalidDetails
+        | BankAccountRestricted
+        | BankAccountUnusable
+        | DebitNotAuthorized
+
+    type PaymentMethodUsBankAccountBlockedNetworkCode =
+        | [<JsonUnionCase("R02")>] R02
+        | [<JsonUnionCase("R03")>] R03
+        | [<JsonUnionCase("R04")>] R04
+        | [<JsonUnionCase("R05")>] R05
+        | [<JsonUnionCase("R07")>] R07
+        | [<JsonUnionCase("R08")>] R08
+        | [<JsonUnionCase("R10")>] R10
+        | [<JsonUnionCase("R11")>] R11
+        | [<JsonUnionCase("R16")>] R16
+        | [<JsonUnionCase("R20")>] R20
+        | [<JsonUnionCase("R29")>] R29
+        | [<JsonUnionCase("R31")>] R31
+
+    [<Struct>]
+    type PaymentMethodUsBankAccountAccountType =
+        | Checking
+        | Savings
+
+    [<Struct>]
+    type PaymentMethodUsBankAccountAccountHolderType =
+        | Company
+        | Individual
+
+    type PaymentMethodP24Bank =
+        | AliorBank
+        | BankMillennium
+        | BankNowyBfgSa
+        | BankPekaoSa
+        | BankiSpbdzielcze
+        | Blik
+        | BnpParibas
+        | Boz
+        | CitiHandlowy
+        | CreditAgricole
+        | Envelobank
+        | EtransferPocztowy24
+        | GetinBank
+        | Ideabank
+        | Ing
+        | Inteligo
+        | MbankMtransfer
+        | NestPrzelew
+        | NoblePay
+        | PbacZIpko
+        | PlusBank
+        | SantanderPrzelew24
+        | TmobileUsbugiBankowe
+        | ToyotaBank
+        | VolkswagenBank
+
+    [<Struct>]
+    type PaymentMethodOptionsWechatPayClient =
+        | Android
+        | Ios
+        | Web
+
+    [<Struct>]
+    type PaymentMethodOptionsSofortSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+
+    type PaymentMethodOptionsSofortPreferredLanguage =
+        | De
+        | En
+        | Es
+        | Fr
+        | It
+        | Nl
+        | Pl
+
+    [<Struct>]
+    type PaymentMethodOptionsPaypalSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+
+    [<Struct>]
+    type PaymentMethodOptionsIdealSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+
+    type PaymentMethodOptionsCustomerBalanceEuBankAccountCountry =
+        | [<JsonUnionCase("BE")>] BE
+        | [<JsonUnionCase("DE")>] DE
+        | [<JsonUnionCase("ES")>] ES
+        | [<JsonUnionCase("FR")>] FR
+        | [<JsonUnionCase("IE")>] IE
+        | [<JsonUnionCase("NL")>] NL
+
+    type PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes =
+        | Aba
+        | Iban
+        | Sepa
+        | SortCode
+        | Spei
+        | Swift
+        | Zengin
+
+    [<Struct>]
+    type PaymentMethodOptionsCustomerBalanceBankTransferType =
+        | EuBankTransfer
+        | GbBankTransfer
+        | JpBankTransfer
+        | MxBankTransfer
+        | UsBankTransfer
+
+    [<Struct>]
+    type PaymentMethodOptionsCashappSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentMethodOptionsCardMandateOptionsInterval =
+        | Day
+        | Month
+        | Sporadic
+        | Week
+        | Year
+
+    [<Struct>]
+    type PaymentMethodOptionsCardMandateOptionsAmountType =
+        | Fixed
+        | Maximum
+
+    [<Struct>]
+    type PaymentMethodOptionsBoletoSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentMethodOptionsBancontactSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+
+    [<Struct>]
+    type PaymentMethodOptionsBancontactPreferredLanguage =
+        | De
+        | En
+        | Fr
+        | Nl
+
+    [<Struct>]
+    type PaymentMethodOptionsBacsDebitSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentMethodOptionsAlipaySetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+
+    [<Struct>]
+    type PaymentMethodInteracPresentReadMethod =
+        | ContactEmv
+        | ContactlessEmv
+        | ContactlessMagstripeMode
+        | MagneticStripeFallback
+        | MagneticStripeTrack2
+
+    [<Struct>]
+    type PaymentMethodInteracPresentFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodInteracPresentBrand =
+        | Interac
+        | Mastercard
+        | Visa
+
+    type PaymentMethodIdealBic =
+        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
+        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
+        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
+        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
+        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
+        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
+        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
+        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
+        | [<JsonUnionCase("MOYONL21")>] MOYONL21
+        | [<JsonUnionCase("RABONL2U")>] RABONL2U
+        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
+        | [<JsonUnionCase("REVOIE23")>] REVOIE23
+        | [<JsonUnionCase("REVOLT21")>] REVOLT21
+        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
+        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+
+    type PaymentMethodIdealBank =
+        | AbnAmro
+        | AsnBank
+        | Bunq
+        | Handelsbanken
+        | Ing
+        | Knab
+        | Moneyou
+        | Rabobank
+        | Regiobank
+        | Revolut
+        | SnsBank
+        | TriodosBank
+        | VanLanschot
+        | Yoursafe
+
+    type PaymentMethodFpxBank =
+        | AffinBank
+        | Agrobank
+        | AllianceBank
+        | Ambank
+        | BankIslam
+        | BankMuamalat
+        | BankOfChina
+        | BankRakyat
+        | Bsn
+        | Cimb
+        | DeutscheBank
+        | HongLeongBank
+        | Hsbc
+        | Kfh
+        | Maybank2e
+        | Maybank2u
+        | Ocbc
+        | PbEnterprise
+        | PublicBank
+        | Rhb
+        | StandardChartered
+        | Uob
+
+    [<Struct>]
+    type PaymentMethodFpxAccountHolderType =
+        | Company
+        | Individual
+
+    type PaymentMethodEpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | DeutscheBankAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
+
+    [<Struct>]
+    type PaymentMethodDetailsUsBankAccountAccountType =
+        | Checking
+        | Savings
+
+    [<Struct>]
+    type PaymentMethodDetailsUsBankAccountAccountHolderType =
+        | Company
+        | Individual
+
+    type PaymentMethodDetailsSofortPreferredLanguage =
+        | De
+        | En
+        | Es
+        | Fr
+        | It
+        | Nl
+        | Pl
+
+    type PaymentMethodDetailsP24Bank =
+        | AliorBank
+        | BankMillennium
+        | BankNowyBfgSa
+        | BankPekaoSa
+        | BankiSpbdzielcze
+        | Blik
+        | BnpParibas
+        | Boz
+        | CitiHandlowy
+        | CreditAgricole
+        | Envelobank
+        | EtransferPocztowy24
+        | GetinBank
+        | Ideabank
+        | Ing
+        | Inteligo
+        | MbankMtransfer
+        | NestPrzelew
+        | NoblePay
+        | PbacZIpko
+        | PlusBank
+        | SantanderPrzelew24
+        | TmobileUsbugiBankowe
+        | ToyotaBank
+        | VolkswagenBank
+
+    [<Struct>]
+    type PaymentMethodDetailsKonbiniStoreChain =
+        | Familymart
+        | Lawson
+        | Ministop
+        | Seicomart
+
+    [<Struct>]
+    type PaymentMethodDetailsInteracPresentReceiptAccountType =
+        | Checking
+        | Savings
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsInteracPresentReadMethod =
+        | ContactEmv
+        | ContactlessEmv
+        | ContactlessMagstripeMode
+        | MagneticStripeFallback
+        | MagneticStripeTrack2
+
+    type PaymentMethodDetailsInteracPresentNetwork =
+        | Amex
+        | CartesBancaires
+        | Diners
+        | Discover
+        | EftposAu
+        | Interac
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsInteracPresentFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsInteracPresentBrand =
+        | Interac
+        | Mastercard
+        | Visa
+
+    type PaymentMethodDetailsIdealBic =
+        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
+        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
+        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
+        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
+        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
+        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
+        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
+        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
+        | [<JsonUnionCase("MOYONL21")>] MOYONL21
+        | [<JsonUnionCase("RABONL2U")>] RABONL2U
+        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
+        | [<JsonUnionCase("REVOIE23")>] REVOIE23
+        | [<JsonUnionCase("REVOLT21")>] REVOLT21
+        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
+        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+
+    type PaymentMethodDetailsIdealBank =
+        | AbnAmro
+        | AsnBank
+        | Bunq
+        | Handelsbanken
+        | Ing
+        | Knab
+        | Moneyou
+        | Rabobank
+        | Regiobank
+        | Revolut
+        | SnsBank
+        | TriodosBank
+        | VanLanschot
+        | Yoursafe
+
+    type PaymentMethodDetailsFpxBank =
+        | AffinBank
+        | Agrobank
+        | AllianceBank
+        | Ambank
+        | BankIslam
+        | BankMuamalat
+        | BankOfChina
+        | BankRakyat
+        | Bsn
+        | Cimb
+        | DeutscheBank
+        | HongLeongBank
+        | Hsbc
+        | Kfh
+        | Maybank2e
+        | Maybank2u
+        | Ocbc
+        | PbEnterprise
+        | PublicBank
+        | Rhb
+        | StandardChartered
+        | Uob
+
+    [<Struct>]
+    type PaymentMethodDetailsFpxAccountHolderType =
+        | Company
+        | Individual
+
+    type PaymentMethodDetailsEpsBank =
+        | ArzteUndApothekerBank
+        | AustrianAnadiBankAg
+        | BankAustria
+        | BankhausCarlSpangler
+        | BankhausSchelhammerUndSchatteraAg
+        | BawagPskAg
+        | BksBankAg
+        | BrullKallmusBankAg
+        | BtvVierLanderBank
+        | CapitalBankGraweGruppeAg
+        | DeutscheBankAg
+        | Dolomitenbank
+        | EasybankAg
+        | ErsteBankUndSparkassen
+        | HypoAlpeadriabankInternationalAg
+        | HypoBankBurgenlandAktiengesellschaft
+        | HypoNoeLbFurNiederosterreichUWien
+        | HypoOberosterreichSalzburgSteiermark
+        | HypoTirolBankAg
+        | HypoVorarlbergBankAg
+        | MarchfelderBank
+        | OberbankAg
+        | RaiffeisenBankengruppeOsterreich
+        | SchoellerbankAg
+        | SpardaBankWien
+        | VolksbankGruppe
+        | VolkskreditbankAg
+        | VrBankBraunau
+
+    type PaymentMethodDetailsCardWalletType =
+        | AmexExpressCheckout
+        | ApplePay
+        | GooglePay
+        | Link
+        | Masterpass
+        | SamsungPay
+        | VisaCheckout
+
+    [<Struct>]
+    type PaymentMethodDetailsCardPresentReceiptAccountType =
+        | Checking
+        | Credit
+        | Prepaid
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsCardPresentReadMethod =
+        | ContactEmv
+        | ContactlessEmv
+        | ContactlessMagstripeMode
+        | MagneticStripeFallback
+        | MagneticStripeTrack2
+
+    type PaymentMethodDetailsCardPresentNetwork =
+        | Amex
+        | CartesBancaires
+        | Diners
+        | Discover
+        | EftposAu
+        | Interac
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsCardPresentFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    type PaymentMethodDetailsCardPresentBrand =
+        | Amex
+        | Diners
+        | Discover
+        | EftposAu
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsCardChecksCvcCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    [<Struct>]
+    type PaymentMethodDetailsCardChecksAddressPostalCodeCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    [<Struct>]
+    type PaymentMethodDetailsCardChecksAddressLine1Check =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    type PaymentMethodDetailsCardNetwork =
+        | Amex
+        | CartesBancaires
+        | Diners
+        | Discover
+        | EftposAu
+        | Interac
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsCardFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    type PaymentMethodDetailsCardBrand =
+        | Amex
+        | Diners
+        | Discover
+        | EftposAu
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodDetailsBancontactPreferredLanguage =
+        | De
+        | En
+        | Fr
+        | Nl
+
+    [<Struct>]
+    type PaymentMethodDetailsAchDebitAccountHolderType =
+        | Company
+        | Individual
+
+    type PaymentMethodDetailsType =
+        | AchCreditTransfer
+        | AchDebit
+        | AcssDebit
+        | Alipay
+        | AuBecsDebit
+        | Bancontact
+        | Card
+        | CardPresent
+        | Eps
+        | Giropay
+        | Ideal
+        | Klarna
+        | Multibanco
+        | P24
+        | SepaDebit
+        | Sofort
+        | StripeAccount
+        | Wechat
+
+    type PaymentMethodCardWalletType =
+        | AmexExpressCheckout
+        | ApplePay
+        | GooglePay
+        | Link
+        | Masterpass
+        | SamsungPay
+        | VisaCheckout
+
+    [<Struct>]
+    type PaymentMethodCardPresentReadMethod =
+        | ContactEmv
+        | ContactlessEmv
+        | ContactlessMagstripeMode
+        | MagneticStripeFallback
+        | MagneticStripeTrack2
+
+    [<Struct>]
+    type PaymentMethodCardPresentFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    type PaymentMethodCardPresentBrand =
+        | Amex
+        | Diners
+        | Discover
+        | EftposAu
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    [<Struct>]
+    type PaymentMethodCardChecksCvcCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    [<Struct>]
+    type PaymentMethodCardChecksAddressPostalCodeCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    [<Struct>]
+    type PaymentMethodCardChecksAddressLine1Check =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    [<Struct>]
+    type PaymentMethodCardFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    type PaymentMethodCardBrand =
+        | Amex
+        | Diners
+        | Discover
+        | EftposAu
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    type PaymentMethodType =
+        | AcssDebit
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Blik
+        | Boleto
+        | Card
+        | CardPresent
+        | Cashapp
+        | CustomerBalance
+        | Eps
+        | Fpx
+        | Giropay
+        | Grabpay
+        | Ideal
+        | InteracPresent
+        | Klarna
+        | Konbini
+        | Link
+        | Oxxo
+        | P24
+        | Paynow
+        | Paypal
+        | Pix
+        | Promptpay
+        | SepaDebit
+        | Sofort
+        | UsBankAccount
+        | WechatPay
+        | Zip
+
+    type PaymentLinksResourceShippingAddressCollectionAllowedCountries =
+        | [<JsonUnionCase("AC")>] AC
+        | [<JsonUnionCase("AD")>] AD
+        | [<JsonUnionCase("AE")>] AE
+        | [<JsonUnionCase("AF")>] AF
+        | [<JsonUnionCase("AG")>] AG
+        | [<JsonUnionCase("AI")>] AI
+        | [<JsonUnionCase("AL")>] AL
+        | [<JsonUnionCase("AM")>] AM
+        | [<JsonUnionCase("AO")>] AO
+        | [<JsonUnionCase("AQ")>] AQ
+        | [<JsonUnionCase("AR")>] AR
+        | [<JsonUnionCase("AT")>] AT
+        | [<JsonUnionCase("AU")>] AU
+        | [<JsonUnionCase("AW")>] AW
+        | [<JsonUnionCase("AX")>] AX
+        | [<JsonUnionCase("AZ")>] AZ
+        | [<JsonUnionCase("BA")>] BA
+        | [<JsonUnionCase("BB")>] BB
+        | [<JsonUnionCase("BD")>] BD
+        | [<JsonUnionCase("BE")>] BE
+        | [<JsonUnionCase("BF")>] BF
+        | [<JsonUnionCase("BG")>] BG
+        | [<JsonUnionCase("BH")>] BH
+        | [<JsonUnionCase("BI")>] BI
+        | [<JsonUnionCase("BJ")>] BJ
+        | [<JsonUnionCase("BL")>] BL
+        | [<JsonUnionCase("BM")>] BM
+        | [<JsonUnionCase("BN")>] BN
+        | [<JsonUnionCase("BO")>] BO
+        | [<JsonUnionCase("BQ")>] BQ
+        | [<JsonUnionCase("BR")>] BR
+        | [<JsonUnionCase("BS")>] BS
+        | [<JsonUnionCase("BT")>] BT
+        | [<JsonUnionCase("BV")>] BV
+        | [<JsonUnionCase("BW")>] BW
+        | [<JsonUnionCase("BY")>] BY
+        | [<JsonUnionCase("BZ")>] BZ
+        | [<JsonUnionCase("CA")>] CA
+        | [<JsonUnionCase("CD")>] CD
+        | [<JsonUnionCase("CF")>] CF
+        | [<JsonUnionCase("CG")>] CG
+        | [<JsonUnionCase("CH")>] CH
+        | [<JsonUnionCase("CI")>] CI
+        | [<JsonUnionCase("CK")>] CK
+        | [<JsonUnionCase("CL")>] CL
+        | [<JsonUnionCase("CM")>] CM
+        | [<JsonUnionCase("CN")>] CN
+        | [<JsonUnionCase("CO")>] CO
+        | [<JsonUnionCase("CR")>] CR
+        | [<JsonUnionCase("CV")>] CV
+        | [<JsonUnionCase("CW")>] CW
+        | [<JsonUnionCase("CY")>] CY
+        | [<JsonUnionCase("CZ")>] CZ
+        | [<JsonUnionCase("DE")>] DE
+        | [<JsonUnionCase("DJ")>] DJ
+        | [<JsonUnionCase("DK")>] DK
+        | [<JsonUnionCase("DM")>] DM
+        | [<JsonUnionCase("DO")>] DO
+        | [<JsonUnionCase("DZ")>] DZ
+        | [<JsonUnionCase("EC")>] EC
+        | [<JsonUnionCase("EE")>] EE
+        | [<JsonUnionCase("EG")>] EG
+        | [<JsonUnionCase("EH")>] EH
+        | [<JsonUnionCase("ER")>] ER
+        | [<JsonUnionCase("ES")>] ES
+        | [<JsonUnionCase("ET")>] ET
+        | [<JsonUnionCase("FI")>] FI
+        | [<JsonUnionCase("FJ")>] FJ
+        | [<JsonUnionCase("FK")>] FK
+        | [<JsonUnionCase("FO")>] FO
+        | [<JsonUnionCase("FR")>] FR
+        | [<JsonUnionCase("GA")>] GA
+        | [<JsonUnionCase("GB")>] GB
+        | [<JsonUnionCase("GD")>] GD
+        | [<JsonUnionCase("GE")>] GE
+        | [<JsonUnionCase("GF")>] GF
+        | [<JsonUnionCase("GG")>] GG
+        | [<JsonUnionCase("GH")>] GH
+        | [<JsonUnionCase("GI")>] GI
+        | [<JsonUnionCase("GL")>] GL
+        | [<JsonUnionCase("GM")>] GM
+        | [<JsonUnionCase("GN")>] GN
+        | [<JsonUnionCase("GP")>] GP
+        | [<JsonUnionCase("GQ")>] GQ
+        | [<JsonUnionCase("GR")>] GR
+        | [<JsonUnionCase("GS")>] GS
+        | [<JsonUnionCase("GT")>] GT
+        | [<JsonUnionCase("GU")>] GU
+        | [<JsonUnionCase("GW")>] GW
+        | [<JsonUnionCase("GY")>] GY
+        | [<JsonUnionCase("HK")>] HK
+        | [<JsonUnionCase("HN")>] HN
+        | [<JsonUnionCase("HR")>] HR
+        | [<JsonUnionCase("HT")>] HT
+        | [<JsonUnionCase("HU")>] HU
+        | [<JsonUnionCase("ID")>] ID
+        | [<JsonUnionCase("IE")>] IE
+        | [<JsonUnionCase("IL")>] IL
+        | [<JsonUnionCase("IM")>] IM
+        | [<JsonUnionCase("IN")>] IN
+        | [<JsonUnionCase("IO")>] IO
+        | [<JsonUnionCase("IQ")>] IQ
+        | [<JsonUnionCase("IS")>] IS
+        | [<JsonUnionCase("IT")>] IT
+        | [<JsonUnionCase("JE")>] JE
+        | [<JsonUnionCase("JM")>] JM
+        | [<JsonUnionCase("JO")>] JO
+        | [<JsonUnionCase("JP")>] JP
+        | [<JsonUnionCase("KE")>] KE
+        | [<JsonUnionCase("KG")>] KG
+        | [<JsonUnionCase("KH")>] KH
+        | [<JsonUnionCase("KI")>] KI
+        | [<JsonUnionCase("KM")>] KM
+        | [<JsonUnionCase("KN")>] KN
+        | [<JsonUnionCase("KR")>] KR
+        | [<JsonUnionCase("KW")>] KW
+        | [<JsonUnionCase("KY")>] KY
+        | [<JsonUnionCase("KZ")>] KZ
+        | [<JsonUnionCase("LA")>] LA
+        | [<JsonUnionCase("LB")>] LB
+        | [<JsonUnionCase("LC")>] LC
+        | [<JsonUnionCase("LI")>] LI
+        | [<JsonUnionCase("LK")>] LK
+        | [<JsonUnionCase("LR")>] LR
+        | [<JsonUnionCase("LS")>] LS
+        | [<JsonUnionCase("LT")>] LT
+        | [<JsonUnionCase("LU")>] LU
+        | [<JsonUnionCase("LV")>] LV
+        | [<JsonUnionCase("LY")>] LY
+        | [<JsonUnionCase("MA")>] MA
+        | [<JsonUnionCase("MC")>] MC
+        | [<JsonUnionCase("MD")>] MD
+        | [<JsonUnionCase("ME")>] ME
+        | [<JsonUnionCase("MF")>] MF
+        | [<JsonUnionCase("MG")>] MG
+        | [<JsonUnionCase("MK")>] MK
+        | [<JsonUnionCase("ML")>] ML
+        | [<JsonUnionCase("MM")>] MM
+        | [<JsonUnionCase("MN")>] MN
+        | [<JsonUnionCase("MO")>] MO
+        | [<JsonUnionCase("MQ")>] MQ
+        | [<JsonUnionCase("MR")>] MR
+        | [<JsonUnionCase("MS")>] MS
+        | [<JsonUnionCase("MT")>] MT
+        | [<JsonUnionCase("MU")>] MU
+        | [<JsonUnionCase("MV")>] MV
+        | [<JsonUnionCase("MW")>] MW
+        | [<JsonUnionCase("MX")>] MX
+        | [<JsonUnionCase("MY")>] MY
+        | [<JsonUnionCase("MZ")>] MZ
+        | [<JsonUnionCase("NA")>] NA
+        | [<JsonUnionCase("NC")>] NC
+        | [<JsonUnionCase("NE")>] NE
+        | [<JsonUnionCase("NG")>] NG
+        | [<JsonUnionCase("NI")>] NI
+        | [<JsonUnionCase("NL")>] NL
+        | [<JsonUnionCase("NO")>] NO
+        | [<JsonUnionCase("NP")>] NP
+        | [<JsonUnionCase("NR")>] NR
+        | [<JsonUnionCase("NU")>] NU
+        | [<JsonUnionCase("NZ")>] NZ
+        | [<JsonUnionCase("OM")>] OM
+        | [<JsonUnionCase("PA")>] PA
+        | [<JsonUnionCase("PE")>] PE
+        | [<JsonUnionCase("PF")>] PF
+        | [<JsonUnionCase("PG")>] PG
+        | [<JsonUnionCase("PH")>] PH
+        | [<JsonUnionCase("PK")>] PK
+        | [<JsonUnionCase("PL")>] PL
+        | [<JsonUnionCase("PM")>] PM
+        | [<JsonUnionCase("PN")>] PN
+        | [<JsonUnionCase("PR")>] PR
+        | [<JsonUnionCase("PS")>] PS
+        | [<JsonUnionCase("PT")>] PT
+        | [<JsonUnionCase("PY")>] PY
+        | [<JsonUnionCase("QA")>] QA
+        | [<JsonUnionCase("RE")>] RE
+        | [<JsonUnionCase("RO")>] RO
+        | [<JsonUnionCase("RS")>] RS
+        | [<JsonUnionCase("RU")>] RU
+        | [<JsonUnionCase("RW")>] RW
+        | [<JsonUnionCase("SA")>] SA
+        | [<JsonUnionCase("SB")>] SB
+        | [<JsonUnionCase("SC")>] SC
+        | [<JsonUnionCase("SE")>] SE
+        | [<JsonUnionCase("SG")>] SG
+        | [<JsonUnionCase("SH")>] SH
+        | [<JsonUnionCase("SI")>] SI
+        | [<JsonUnionCase("SJ")>] SJ
+        | [<JsonUnionCase("SK")>] SK
+        | [<JsonUnionCase("SL")>] SL
+        | [<JsonUnionCase("SM")>] SM
+        | [<JsonUnionCase("SN")>] SN
+        | [<JsonUnionCase("SO")>] SO
+        | [<JsonUnionCase("SR")>] SR
+        | [<JsonUnionCase("SS")>] SS
+        | [<JsonUnionCase("ST")>] ST
+        | [<JsonUnionCase("SV")>] SV
+        | [<JsonUnionCase("SX")>] SX
+        | [<JsonUnionCase("SZ")>] SZ
+        | [<JsonUnionCase("TA")>] TA
+        | [<JsonUnionCase("TC")>] TC
+        | [<JsonUnionCase("TD")>] TD
+        | [<JsonUnionCase("TF")>] TF
+        | [<JsonUnionCase("TG")>] TG
+        | [<JsonUnionCase("TH")>] TH
+        | [<JsonUnionCase("TJ")>] TJ
+        | [<JsonUnionCase("TK")>] TK
+        | [<JsonUnionCase("TL")>] TL
+        | [<JsonUnionCase("TM")>] TM
+        | [<JsonUnionCase("TN")>] TN
+        | [<JsonUnionCase("TO")>] TO
+        | [<JsonUnionCase("TR")>] TR
+        | [<JsonUnionCase("TT")>] TT
+        | [<JsonUnionCase("TV")>] TV
+        | [<JsonUnionCase("TW")>] TW
+        | [<JsonUnionCase("TZ")>] TZ
+        | [<JsonUnionCase("UA")>] UA
+        | [<JsonUnionCase("UG")>] UG
+        | [<JsonUnionCase("US")>] US
+        | [<JsonUnionCase("UY")>] UY
+        | [<JsonUnionCase("UZ")>] UZ
+        | [<JsonUnionCase("VA")>] VA
+        | [<JsonUnionCase("VC")>] VC
+        | [<JsonUnionCase("VE")>] VE
+        | [<JsonUnionCase("VG")>] VG
+        | [<JsonUnionCase("VN")>] VN
+        | [<JsonUnionCase("VU")>] VU
+        | [<JsonUnionCase("WF")>] WF
+        | [<JsonUnionCase("WS")>] WS
+        | [<JsonUnionCase("XK")>] XK
+        | [<JsonUnionCase("YE")>] YE
+        | [<JsonUnionCase("YT")>] YT
+        | [<JsonUnionCase("ZA")>] ZA
+        | [<JsonUnionCase("ZM")>] ZM
+        | [<JsonUnionCase("ZW")>] ZW
+        | [<JsonUnionCase("ZZ")>] ZZ
+
+    [<Struct>]
+    type PaymentLinksResourcePaymentIntentDataSetupFutureUsage =
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentLinksResourcePaymentIntentDataCaptureMethod =
+        | Automatic
+        | AutomaticAsync
+        | Manual
+
+    [<Struct>]
+    type PaymentLinksResourceCustomFieldsType =
+        | Dropdown
+        | Numeric
+        | Text
+
+    [<Struct>]
+    type PaymentLinksResourceConsentCollectionTermsOfService =
+        | [<JsonUnionCase("none")>] None'
+        | Required
+
+    [<Struct>]
+    type PaymentLinksResourceConsentCollectionPromotions =
+        | Auto
+        | [<JsonUnionCase("none")>] None'
+
+    [<Struct>]
+    type PaymentLinksResourceAfterCompletionType =
+        | HostedConfirmation
+        | Redirect
+
+    type PaymentLinkPaymentMethodTypes =
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Blik
+        | Boleto
+        | Card
+        | Cashapp
+        | Eps
+        | Fpx
+        | Giropay
+        | Grabpay
+        | Ideal
+        | Klarna
+        | Konbini
+        | Link
+        | Oxxo
+        | P24
+        | Paynow
+        | Paypal
+        | Pix
+        | Promptpay
+        | SepaDebit
+        | Sofort
+        | UsBankAccount
+        | WechatPay
+
+    [<Struct>]
+    type PaymentLinkSubmitType =
+        | Auto
+        | Book
+        | Donate
+        | Pay
+
+    [<Struct>]
+    type PaymentLinkPaymentMethodCollection =
+        | Always
+        | IfRequired
+
+    [<Struct>]
+    type PaymentLinkCustomerCreation =
+        | Always
+        | IfRequired
+
+    [<Struct>]
+    type PaymentLinkBillingAddressCollection =
+        | Auto
+        | Required
+
+    [<Struct>]
+    type PaymentIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type PaymentIntentTypeSpecificPaymentMethodOptionsClientSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentIntentTypeSpecificPaymentMethodOptionsClientCaptureMethod =
+        | Manual
+        | ManualPreferred
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsUsBankAccountSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsUsBankAccountPreferredSettlementSpeed =
+        | Fastest
+        | Standard
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsSepaDebitSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType =
+        | Business
+        | Personal
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule =
+        | Combined
+        | Interval
+        | Sporadic
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsCardSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure =
+        | Any
+        | Automatic
+        | ChallengeOnly
+
+    type PaymentIntentPaymentMethodOptionsCardNetwork =
+        | Amex
+        | CartesBancaires
+        | Diners
+        | Discover
+        | EftposAu
+        | Interac
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Unknown
+        | Visa
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsAuBecsDebitSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsAcssDebitVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type PaymentIntentPaymentMethodOptionsAcssDebitSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentIntentNextActionVerifyWithMicrodepositsMicrodepositType =
+        | Amounts
+        | DescriptorCode
+
+    [<Struct>]
+    type PaymentIntentNextActionDisplayBankTransferInstructionsType =
+        | EuBankTransfer
+        | GbBankTransfer
+        | JpBankTransfer
+        | MxBankTransfer
+        | UsBankTransfer
+
+    [<Struct>]
+    type PaymentIntentNextActionType =
+        | RedirectToUrl
+        | UseStripeSdk
+        | AlipayHandleRedirect
+        | OxxoDisplayDetails
+        | VerifyWithMicrodeposits
+
+    type PaymentIntentStatus =
+        | Canceled
+        | Processing
+        | RequiresAction
+        | RequiresCapture
+        | RequiresConfirmation
+        | RequiresPaymentMethod
+        | Succeeded
+
+    [<Struct>]
+    type PaymentIntentSetupFutureUsage =
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type PaymentIntentConfirmationMethod =
+        | Automatic
+        | Manual
+
+    [<Struct>]
+    type PaymentIntentCaptureMethod =
+        | Automatic
+        | AutomaticAsync
+        | Manual
+
+    type PaymentIntentCancellationReason =
+        | Abandoned
+        | Automatic
+        | Duplicate
+        | FailedInvoice
+        | Fraudulent
+        | RequestedByCustomer
+        | VoidInvoice
+
+    [<Struct>]
+    type PaymentFlowsAutomaticPaymentMethodsSetupIntentAllowRedirects =
+        | Always
+        | Never
+
+    [<Struct>]
+    type PaymentFlowsAutomaticPaymentMethodsPaymentIntentAllowRedirects =
+        | Always
+        | Never
+
+    [<Struct>]
+    type OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork =
+        | Ach
+        | UsDomesticWire
+
+    [<Struct>]
+    type OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
+        | Checking
+        | Savings
+
+    [<Struct>]
+    type OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
+        | Company
+        | Individual
+
+    [<Struct>]
+    type OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork =
+        | Ach
+        | UsDomesticWire
+
+    [<Struct>]
+    type OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType =
+        | Checking
+        | Savings
+
+    [<Struct>]
+    type OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType =
+        | Company
+        | Individual
+
+    [<Struct>]
+    type OutboundPaymentsPaymentMethodDetailsType =
+        | FinancialAccount
+        | UsBankAccount
+
+    [<Struct>]
+    type MandateBacsDebitNetworkStatus =
+        | Accepted
+        | Pending
+        | Refused
+        | Revoked
+
+    [<Struct>]
+    type MandateAcssDebitDefaultFor =
+        | Invoice
+        | Subscription
+
+    [<Struct>]
+    type MandateAcssDebitTransactionType =
+        | Business
+        | Personal
+
+    [<Struct>]
+    type MandateAcssDebitPaymentSchedule =
+        | Combined
+        | Interval
+        | Sporadic
+
+    [<Struct>]
+    type MandateType =
+        | MultiUse
+        | SingleUse
+
+    [<Struct>]
+    type MandateStatus =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type LinkedAccountOptionsUsBankAccountPermissions =
+        | Balances
+        | Ownership
+        | PaymentMethod
+        | Transactions
+
+    type LineItemsTaxAmountTaxabilityReason =
+        | CustomerExempt
+        | NotCollecting
+        | NotSubjectToTax
+        | NotSupported
+        | PortionProductExempt
+        | PortionReducedRated
+        | PortionStandardRated
+        | ProductExempt
+        | ProductExemptHoliday
+        | ProportionallyRated
+        | ReducedRated
+        | ReverseCharge
+        | StandardRated
+        | TaxableBasisReduced
+        | ZeroRated
+
+    [<Struct>]
+    type LineItemType =
+        | Invoiceitem
+        | Subscription
+
+    type LegalEntityPersonVerificationDocumentDetailsCode =
+        | DocumentCorrupt
+        | DocumentCountryNotSupported
+        | DocumentExpired
+        | DocumentFailedCopy
+        | DocumentFailedOther
+        | DocumentFailedTestMode
+        | DocumentFraudulent
+        | DocumentFailedGreyscale
+        | DocumentIncomplete
+        | DocumentInvalid
+        | DocumentManipulated
+        | DocumentMissingBack
+        | DocumentMissingFront
+        | DocumentNotReadable
+        | DocumentNotUploaded
+        | DocumentPhotoMismatch
+        | DocumentTooLarge
+        | DocumentTypeNotSupported
+
+    [<Struct>]
+    type LegalEntityPersonVerificationStatus =
+        | Unverified
+        | Pending
+        | Verified
+
+    type LegalEntityPersonVerificationDetailsCode =
+        | DocumentAddressMismatch
+        | DocumentDobMismatch
+        | DocumentDuplicateType
+        | DocumentIdNumberMismatch
+        | DocumentNameMismatch
+        | DocumentNationalityMismatch
+        | FailedKeyedIdentity
+        | FailedOther
+
+    type LegalEntityCompanyVerificationDocumentDetailsCode =
+        | DocumentCorrupt
+        | DocumentExpired
+        | DocumentFailedCopy
+        | DocumentFailedGreyscale
+        | DocumentFailedOther
+        | DocumentFailedTestMode
+        | DocumentFraudulent
+        | DocumentIncomplete
+        | DocumentInvalid
+        | DocumentManipulated
+        | DocumentNotReadable
+        | DocumentNotUploaded
+        | DocumentTypeNotSupported
+        | DocumentTooLarge
+
+    type LegalEntityCompanyStructure =
+        | FreeZoneEstablishment
+        | FreeZoneLlc
+        | GovernmentInstrumentality
+        | GovernmentalUnit
+        | IncorporatedNonProfit
+        | IncorporatedPartnership
+        | LimitedLiabilityPartnership
+        | Llc
+        | MultiMemberLlc
+        | PrivateCompany
+        | PrivateCorporation
+        | PrivatePartnership
+        | PublicCompany
+        | PublicCorporation
+        | PublicPartnership
+        | SingleMemberLlc
+        | SoleEstablishment
+        | SoleProprietorship
+        | TaxExemptGovernmentInstrumentality
+        | UnincorporatedAssociation
+        | UnincorporatedNonProfit
+        | UnincorporatedPartnership
+
+    [<Struct>]
+    type IssuingTransactionFuelDataUnit =
+        | UsGallon
+        | Liter
+
+    [<Struct>]
+    type IssuingTransactionFuelDataType =
+        | Diesel
+        | UnleadedPlus
+        | UnleadedRegular
+        | UnleadedSuper
+        | Other
+
+    [<Struct>]
+    type IssuingDisputeOtherEvidenceProductType =
+        | Merchandise
+        | Service
+
+    [<Struct>]
+    type IssuingDisputeNotReceivedEvidenceProductType =
+        | Merchandise
+        | Service
+
+    [<Struct>]
+    type IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus =
+        | MerchantRejected
+        | Successful
+
+    type IssuingDisputeEvidenceReason =
+        | Canceled
+        | Duplicate
+        | Fraudulent
+        | MerchandiseNotAsDescribed
+        | NotReceived
+        | Other
+        | ServiceNotAsDescribed
+
+    [<Struct>]
+    type IssuingDisputeCanceledEvidenceReturnStatus =
+        | MerchantRejected
+        | Successful
+
+    [<Struct>]
+    type IssuingDisputeCanceledEvidenceProductType =
+        | Merchandise
+        | Service
+
+    type IssuingCardholderSpendingLimitCategories =
+        | AcRefrigerationRepair
+        | AccountingBookkeepingServices
+        | AdvertisingServices
+        | AgriculturalCooperative
+        | AirlinesAirCarriers
+        | AirportsFlyingFields
+        | AmbulanceServices
+        | AmusementParksCarnivals
+        | AntiqueReproductions
+        | AntiqueShops
+        | Aquariums
+        | ArchitecturalSurveyingServices
+        | ArtDealersAndGalleries
+        | ArtistsSupplyAndCraftShops
+        | AutoAndHomeSupplyStores
+        | AutoBodyRepairShops
+        | AutoPaintShops
+        | AutoServiceShops
+        | AutomatedCashDisburse
+        | AutomatedFuelDispensers
+        | AutomobileAssociations
+        | AutomotivePartsAndAccessoriesStores
+        | AutomotiveTireStores
+        | BailAndBondPayments
+        | Bakeries
+        | BandsOrchestras
+        | BarberAndBeautyShops
+        | BettingCasinoGambling
+        | BicycleShops
+        | BilliardPoolEstablishments
+        | BoatDealers
+        | BoatRentalsAndLeases
+        | BookStores
+        | BooksPeriodicalsAndNewspapers
+        | BowlingAlleys
+        | BusLines
+        | BusinessSecretarialSchools
+        | BuyingShoppingServices
+        | CableSatelliteAndOtherPayTelevisionAndRadio
+        | CameraAndPhotographicSupplyStores
+        | CandyNutAndConfectioneryStores
+        | CarAndTruckDealersNewUsed
+        | CarAndTruckDealersUsedOnly
+        | CarRentalAgencies
+        | CarWashes
+        | CarpentryServices
+        | CarpetUpholsteryCleaning
+        | Caterers
+        | CharitableAndSocialServiceOrganizationsFundraising
+        | ChemicalsAndAlliedProducts
+        | ChildCareServices
+        | ChildrensAndInfantsWearStores
+        | ChiropodistsPodiatrists
+        | Chiropractors
+        | CigarStoresAndStands
+        | CivicSocialFraternalAssociations
+        | CleaningAndMaintenance
+        | ClothingRental
+        | CollegesUniversities
+        | CommercialEquipment
+        | CommercialFootwear
+        | CommercialPhotographyArtAndGraphics
+        | CommuterTransportAndFerries
+        | ComputerNetworkServices
+        | ComputerProgramming
+        | ComputerRepair
+        | ComputerSoftwareStores
+        | ComputersPeripheralsAndSoftware
+        | ConcreteWorkServices
+        | ConstructionMaterials
+        | ConsultingPublicRelations
+        | CorrespondenceSchools
+        | CosmeticStores
+        | CounselingServices
+        | CountryClubs
+        | CourierServices
+        | CourtCosts
+        | CreditReportingAgencies
+        | CruiseLines
+        | DairyProductsStores
+        | DanceHallStudiosSchools
+        | DatingEscortServices
+        | DentistsOrthodontists
+        | DepartmentStores
+        | DetectiveAgencies
+        | DigitalGoodsApplications
+        | DigitalGoodsGames
+        | DigitalGoodsLargeVolume
+        | DigitalGoodsMedia
+        | DirectMarketingCatalogMerchant
+        | DirectMarketingCombinationCatalogAndRetailMerchant
+        | DirectMarketingInboundTelemarketing
+        | DirectMarketingInsuranceServices
+        | DirectMarketingOther
+        | DirectMarketingOutboundTelemarketing
+        | DirectMarketingSubscription
+        | DirectMarketingTravel
+        | DiscountStores
+        | Doctors
+        | DoorToDoorSales
+        | DraperyWindowCoveringAndUpholsteryStores
+        | DrinkingPlaces
+        | DrugStoresAndPharmacies
+        | DrugsDrugProprietariesAndDruggistSundries
+        | DryCleaners
+        | DurableGoods
+        | DutyFreeStores
+        | EatingPlacesRestaurants
+        | EducationalServices
+        | ElectricRazorStores
+        | ElectricVehicleCharging
+        | ElectricalPartsAndEquipment
+        | ElectricalServices
+        | ElectronicsRepairShops
+        | ElectronicsStores
+        | ElementarySecondarySchools
+        | EmergencyServicesGcasVisaUseOnly
+        | EmploymentTempAgencies
+        | EquipmentRental
+        | ExterminatingServices
+        | FamilyClothingStores
+        | FastFoodRestaurants
+        | FinancialInstitutions
+        | FinesGovernmentAdministrativeEntities
+        | FireplaceFireplaceScreensAndAccessoriesStores
+        | FloorCoveringStores
+        | Florists
+        | FloristsSuppliesNurseryStockAndFlowers
+        | FreezerAndLockerMeatProvisioners
+        | FuelDealersNonAutomotive
+        | FuneralServicesCrematories
+        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | FurnitureRepairRefinishing
+        | FurriersAndFurShops
+        | GeneralServices
+        | GiftCardNoveltyAndSouvenirShops
+        | GlassPaintAndWallpaperStores
+        | GlasswareCrystalStores
+        | GolfCoursesPublic
+        | GovernmentLicensedHorseDogRacingUsRegionOnly
+        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+        | GovernmentOwnedLotteriesNonUsRegion
+        | GovernmentOwnedLotteriesUsRegionOnly
+        | GovernmentServices
+        | GroceryStoresSupermarkets
+        | HardwareEquipmentAndSupplies
+        | HardwareStores
+        | HealthAndBeautySpas
+        | HearingAidsSalesAndSupplies
+        | HeatingPlumbingAC
+        | HobbyToyAndGameShops
+        | HomeSupplyWarehouseStores
+        | Hospitals
+        | HotelsMotelsAndResorts
+        | HouseholdApplianceStores
+        | IndustrialSupplies
+        | InformationRetrievalServices
+        | InsuranceDefault
+        | InsuranceUnderwritingPremiums
+        | IntraCompanyPurchases
+        | JewelryStoresWatchesClocksAndSilverwareStores
+        | LandscapingServices
+        | Laundries
+        | LaundryCleaningServices
+        | LegalServicesAttorneys
+        | LuggageAndLeatherGoodsStores
+        | LumberBuildingMaterialsStores
+        | ManualCashDisburse
+        | MarinasServiceAndSupplies
+        | Marketplaces
+        | MasonryStoneworkAndPlaster
+        | MassageParlors
+        | MedicalAndDentalLabs
+        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | MedicalServices
+        | MembershipOrganizations
+        | MensAndBoysClothingAndAccessoriesStores
+        | MensWomensClothingStores
+        | MetalServiceCenters
+        | Miscellaneous
+        | MiscellaneousApparelAndAccessoryShops
+        | MiscellaneousAutoDealers
+        | MiscellaneousBusinessServices
+        | MiscellaneousFoodStores
+        | MiscellaneousGeneralMerchandise
+        | MiscellaneousGeneralServices
+        | MiscellaneousHomeFurnishingSpecialtyStores
+        | MiscellaneousPublishingAndPrinting
+        | MiscellaneousRecreationServices
+        | MiscellaneousRepairShops
+        | MiscellaneousSpecialtyRetail
+        | MobileHomeDealers
+        | MotionPictureTheaters
+        | MotorFreightCarriersAndTrucking
+        | MotorHomesDealers
+        | MotorVehicleSuppliesAndNewParts
+        | MotorcycleShopsAndDealers
+        | MotorcycleShopsDealers
+        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | NewsDealersAndNewsstands
+        | NonFiMoneyOrders
+        | NonFiStoredValueCardPurchaseLoad
+        | NondurableGoods
+        | NurseriesLawnAndGardenSupplyStores
+        | NursingPersonalCare
+        | OfficeAndCommercialFurniture
+        | OpticiansEyeglasses
+        | OptometristsOphthalmologist
+        | OrthopedicGoodsProstheticDevices
+        | Osteopaths
+        | PackageStoresBeerWineAndLiquor
+        | PaintsVarnishesAndSupplies
+        | ParkingLotsGarages
+        | PassengerRailways
+        | PawnShops
+        | PetShopsPetFoodAndSupplies
+        | PetroleumAndPetroleumProducts
+        | PhotoDeveloping
+        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | PhotographicStudios
+        | PictureVideoProduction
+        | PieceGoodsNotionsAndOtherDryGoods
+        | PlumbingHeatingEquipmentAndSupplies
+        | PoliticalOrganizations
+        | PostalServicesGovernmentOnly
+        | PreciousStonesAndMetalsWatchesAndJewelry
+        | ProfessionalServices
+        | PublicWarehousingAndStorage
+        | QuickCopyReproAndBlueprint
+        | Railroads
+        | RealEstateAgentsAndManagersRentals
+        | RecordStores
+        | RecreationalVehicleRentals
+        | ReligiousGoodsStores
+        | ReligiousOrganizations
+        | RoofingSidingSheetMetal
+        | SecretarialSupportServices
+        | SecurityBrokersDealers
+        | ServiceStations
+        | SewingNeedleworkFabricAndPieceGoodsStores
+        | ShoeRepairHatCleaning
+        | ShoeStores
+        | SmallApplianceRepair
+        | SnowmobileDealers
+        | SpecialTradeServices
+        | SpecialtyCleaning
+        | SportingGoodsStores
+        | SportingRecreationCamps
+        | SportsAndRidingApparelStores
+        | SportsClubsFields
+        | StampAndCoinStores
+        | StationaryOfficeSuppliesPrintingAndWritingPaper
+        | StationeryStoresOfficeAndSchoolSupplyStores
+        | SwimmingPoolsSales
+        | TUiTravelGermany
+        | TailorsAlterations
+        | TaxPaymentsGovernmentAgencies
+        | TaxPreparationServices
+        | TaxicabsLimousines
+        | TelecommunicationEquipmentAndTelephoneSales
+        | TelecommunicationServices
+        | TelegraphServices
+        | TentAndAwningShops
+        | TestingLaboratories
+        | TheatricalTicketAgencies
+        | Timeshares
+        | TireRetreadingAndRepair
+        | TollsBridgeFees
+        | TouristAttractionsAndExhibits
+        | TowingServices
+        | TrailerParksCampgrounds
+        | TransportationServices
+        | TravelAgenciesTourOperators
+        | TruckStopIteration
+        | TruckUtilityTrailerRentals
+        | TypesettingPlateMakingAndRelatedServices
+        | TypewriterStores
+        | USFederalGovernmentAgenciesOrDepartments
+        | UniformsCommercialClothing
+        | UsedMerchandiseAndSecondhandStores
+        | Utilities
+        | VarietyStores
+        | VeterinaryServices
+        | VideoAmusementGameSupplies
+        | VideoGameArcades
+        | VideoTapeRentalStores
+        | VocationalTradeSchools
+        | WatchJewelryRepair
+        | WeldingRepair
+        | WholesaleClubs
+        | WigAndToupeeStores
+        | WiresMoneyOrders
+        | WomensAccessoryAndSpecialtyShops
+        | WomensReadyToWearStores
+        | WreckingAndSalvageYards
+
+    type IssuingCardholderSpendingLimitInterval =
+        | AllTime
+        | Daily
+        | Monthly
+        | PerAuthorization
+        | Weekly
+        | Yearly
+
+    type IssuingCardholderRequirementsPastDue =
+        | [<JsonUnionCase("company.tax_id")>] CompanyTaxId
+        | [<JsonUnionCase("individual.card_issuing.user_terms_acceptance.date")>] IndividualCardIssuingUserTermsAcceptanceDate
+        | [<JsonUnionCase("individual.card_issuing.user_terms_acceptance.ip")>] IndividualCardIssuingUserTermsAcceptanceIp
+        | [<JsonUnionCase("individual.dob.day")>] IndividualDobDay
+        | [<JsonUnionCase("individual.dob.month")>] IndividualDobMonth
+        | [<JsonUnionCase("individual.dob.year")>] IndividualDobYear
+        | [<JsonUnionCase("individual.first_name")>] IndividualFirstName
+        | [<JsonUnionCase("individual.last_name")>] IndividualLastName
+        | [<JsonUnionCase("individual.verification.document")>] IndividualVerificationDocument
+
+    [<Struct>]
+    type IssuingCardholderRequirementsDisabledReason =
+        | Listed
+        | [<JsonUnionCase("rejected.listed")>] RejectedListed
+        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
+        | UnderReview
+
+    type IssuingCardholderAuthorizationControlsBlockedCategories =
+        | AcRefrigerationRepair
+        | AccountingBookkeepingServices
+        | AdvertisingServices
+        | AgriculturalCooperative
+        | AirlinesAirCarriers
+        | AirportsFlyingFields
+        | AmbulanceServices
+        | AmusementParksCarnivals
+        | AntiqueReproductions
+        | AntiqueShops
+        | Aquariums
+        | ArchitecturalSurveyingServices
+        | ArtDealersAndGalleries
+        | ArtistsSupplyAndCraftShops
+        | AutoAndHomeSupplyStores
+        | AutoBodyRepairShops
+        | AutoPaintShops
+        | AutoServiceShops
+        | AutomatedCashDisburse
+        | AutomatedFuelDispensers
+        | AutomobileAssociations
+        | AutomotivePartsAndAccessoriesStores
+        | AutomotiveTireStores
+        | BailAndBondPayments
+        | Bakeries
+        | BandsOrchestras
+        | BarberAndBeautyShops
+        | BettingCasinoGambling
+        | BicycleShops
+        | BilliardPoolEstablishments
+        | BoatDealers
+        | BoatRentalsAndLeases
+        | BookStores
+        | BooksPeriodicalsAndNewspapers
+        | BowlingAlleys
+        | BusLines
+        | BusinessSecretarialSchools
+        | BuyingShoppingServices
+        | CableSatelliteAndOtherPayTelevisionAndRadio
+        | CameraAndPhotographicSupplyStores
+        | CandyNutAndConfectioneryStores
+        | CarAndTruckDealersNewUsed
+        | CarAndTruckDealersUsedOnly
+        | CarRentalAgencies
+        | CarWashes
+        | CarpentryServices
+        | CarpetUpholsteryCleaning
+        | Caterers
+        | CharitableAndSocialServiceOrganizationsFundraising
+        | ChemicalsAndAlliedProducts
+        | ChildCareServices
+        | ChildrensAndInfantsWearStores
+        | ChiropodistsPodiatrists
+        | Chiropractors
+        | CigarStoresAndStands
+        | CivicSocialFraternalAssociations
+        | CleaningAndMaintenance
+        | ClothingRental
+        | CollegesUniversities
+        | CommercialEquipment
+        | CommercialFootwear
+        | CommercialPhotographyArtAndGraphics
+        | CommuterTransportAndFerries
+        | ComputerNetworkServices
+        | ComputerProgramming
+        | ComputerRepair
+        | ComputerSoftwareStores
+        | ComputersPeripheralsAndSoftware
+        | ConcreteWorkServices
+        | ConstructionMaterials
+        | ConsultingPublicRelations
+        | CorrespondenceSchools
+        | CosmeticStores
+        | CounselingServices
+        | CountryClubs
+        | CourierServices
+        | CourtCosts
+        | CreditReportingAgencies
+        | CruiseLines
+        | DairyProductsStores
+        | DanceHallStudiosSchools
+        | DatingEscortServices
+        | DentistsOrthodontists
+        | DepartmentStores
+        | DetectiveAgencies
+        | DigitalGoodsApplications
+        | DigitalGoodsGames
+        | DigitalGoodsLargeVolume
+        | DigitalGoodsMedia
+        | DirectMarketingCatalogMerchant
+        | DirectMarketingCombinationCatalogAndRetailMerchant
+        | DirectMarketingInboundTelemarketing
+        | DirectMarketingInsuranceServices
+        | DirectMarketingOther
+        | DirectMarketingOutboundTelemarketing
+        | DirectMarketingSubscription
+        | DirectMarketingTravel
+        | DiscountStores
+        | Doctors
+        | DoorToDoorSales
+        | DraperyWindowCoveringAndUpholsteryStores
+        | DrinkingPlaces
+        | DrugStoresAndPharmacies
+        | DrugsDrugProprietariesAndDruggistSundries
+        | DryCleaners
+        | DurableGoods
+        | DutyFreeStores
+        | EatingPlacesRestaurants
+        | EducationalServices
+        | ElectricRazorStores
+        | ElectricVehicleCharging
+        | ElectricalPartsAndEquipment
+        | ElectricalServices
+        | ElectronicsRepairShops
+        | ElectronicsStores
+        | ElementarySecondarySchools
+        | EmergencyServicesGcasVisaUseOnly
+        | EmploymentTempAgencies
+        | EquipmentRental
+        | ExterminatingServices
+        | FamilyClothingStores
+        | FastFoodRestaurants
+        | FinancialInstitutions
+        | FinesGovernmentAdministrativeEntities
+        | FireplaceFireplaceScreensAndAccessoriesStores
+        | FloorCoveringStores
+        | Florists
+        | FloristsSuppliesNurseryStockAndFlowers
+        | FreezerAndLockerMeatProvisioners
+        | FuelDealersNonAutomotive
+        | FuneralServicesCrematories
+        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | FurnitureRepairRefinishing
+        | FurriersAndFurShops
+        | GeneralServices
+        | GiftCardNoveltyAndSouvenirShops
+        | GlassPaintAndWallpaperStores
+        | GlasswareCrystalStores
+        | GolfCoursesPublic
+        | GovernmentLicensedHorseDogRacingUsRegionOnly
+        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+        | GovernmentOwnedLotteriesNonUsRegion
+        | GovernmentOwnedLotteriesUsRegionOnly
+        | GovernmentServices
+        | GroceryStoresSupermarkets
+        | HardwareEquipmentAndSupplies
+        | HardwareStores
+        | HealthAndBeautySpas
+        | HearingAidsSalesAndSupplies
+        | HeatingPlumbingAC
+        | HobbyToyAndGameShops
+        | HomeSupplyWarehouseStores
+        | Hospitals
+        | HotelsMotelsAndResorts
+        | HouseholdApplianceStores
+        | IndustrialSupplies
+        | InformationRetrievalServices
+        | InsuranceDefault
+        | InsuranceUnderwritingPremiums
+        | IntraCompanyPurchases
+        | JewelryStoresWatchesClocksAndSilverwareStores
+        | LandscapingServices
+        | Laundries
+        | LaundryCleaningServices
+        | LegalServicesAttorneys
+        | LuggageAndLeatherGoodsStores
+        | LumberBuildingMaterialsStores
+        | ManualCashDisburse
+        | MarinasServiceAndSupplies
+        | Marketplaces
+        | MasonryStoneworkAndPlaster
+        | MassageParlors
+        | MedicalAndDentalLabs
+        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | MedicalServices
+        | MembershipOrganizations
+        | MensAndBoysClothingAndAccessoriesStores
+        | MensWomensClothingStores
+        | MetalServiceCenters
+        | Miscellaneous
+        | MiscellaneousApparelAndAccessoryShops
+        | MiscellaneousAutoDealers
+        | MiscellaneousBusinessServices
+        | MiscellaneousFoodStores
+        | MiscellaneousGeneralMerchandise
+        | MiscellaneousGeneralServices
+        | MiscellaneousHomeFurnishingSpecialtyStores
+        | MiscellaneousPublishingAndPrinting
+        | MiscellaneousRecreationServices
+        | MiscellaneousRepairShops
+        | MiscellaneousSpecialtyRetail
+        | MobileHomeDealers
+        | MotionPictureTheaters
+        | MotorFreightCarriersAndTrucking
+        | MotorHomesDealers
+        | MotorVehicleSuppliesAndNewParts
+        | MotorcycleShopsAndDealers
+        | MotorcycleShopsDealers
+        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | NewsDealersAndNewsstands
+        | NonFiMoneyOrders
+        | NonFiStoredValueCardPurchaseLoad
+        | NondurableGoods
+        | NurseriesLawnAndGardenSupplyStores
+        | NursingPersonalCare
+        | OfficeAndCommercialFurniture
+        | OpticiansEyeglasses
+        | OptometristsOphthalmologist
+        | OrthopedicGoodsProstheticDevices
+        | Osteopaths
+        | PackageStoresBeerWineAndLiquor
+        | PaintsVarnishesAndSupplies
+        | ParkingLotsGarages
+        | PassengerRailways
+        | PawnShops
+        | PetShopsPetFoodAndSupplies
+        | PetroleumAndPetroleumProducts
+        | PhotoDeveloping
+        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | PhotographicStudios
+        | PictureVideoProduction
+        | PieceGoodsNotionsAndOtherDryGoods
+        | PlumbingHeatingEquipmentAndSupplies
+        | PoliticalOrganizations
+        | PostalServicesGovernmentOnly
+        | PreciousStonesAndMetalsWatchesAndJewelry
+        | ProfessionalServices
+        | PublicWarehousingAndStorage
+        | QuickCopyReproAndBlueprint
+        | Railroads
+        | RealEstateAgentsAndManagersRentals
+        | RecordStores
+        | RecreationalVehicleRentals
+        | ReligiousGoodsStores
+        | ReligiousOrganizations
+        | RoofingSidingSheetMetal
+        | SecretarialSupportServices
+        | SecurityBrokersDealers
+        | ServiceStations
+        | SewingNeedleworkFabricAndPieceGoodsStores
+        | ShoeRepairHatCleaning
+        | ShoeStores
+        | SmallApplianceRepair
+        | SnowmobileDealers
+        | SpecialTradeServices
+        | SpecialtyCleaning
+        | SportingGoodsStores
+        | SportingRecreationCamps
+        | SportsAndRidingApparelStores
+        | SportsClubsFields
+        | StampAndCoinStores
+        | StationaryOfficeSuppliesPrintingAndWritingPaper
+        | StationeryStoresOfficeAndSchoolSupplyStores
+        | SwimmingPoolsSales
+        | TUiTravelGermany
+        | TailorsAlterations
+        | TaxPaymentsGovernmentAgencies
+        | TaxPreparationServices
+        | TaxicabsLimousines
+        | TelecommunicationEquipmentAndTelephoneSales
+        | TelecommunicationServices
+        | TelegraphServices
+        | TentAndAwningShops
+        | TestingLaboratories
+        | TheatricalTicketAgencies
+        | Timeshares
+        | TireRetreadingAndRepair
+        | TollsBridgeFees
+        | TouristAttractionsAndExhibits
+        | TowingServices
+        | TrailerParksCampgrounds
+        | TransportationServices
+        | TravelAgenciesTourOperators
+        | TruckStopIteration
+        | TruckUtilityTrailerRentals
+        | TypesettingPlateMakingAndRelatedServices
+        | TypewriterStores
+        | USFederalGovernmentAgenciesOrDepartments
+        | UniformsCommercialClothing
+        | UsedMerchandiseAndSecondhandStores
+        | Utilities
+        | VarietyStores
+        | VeterinaryServices
+        | VideoAmusementGameSupplies
+        | VideoGameArcades
+        | VideoTapeRentalStores
+        | VocationalTradeSchools
+        | WatchJewelryRepair
+        | WeldingRepair
+        | WholesaleClubs
+        | WigAndToupeeStores
+        | WiresMoneyOrders
+        | WomensAccessoryAndSpecialtyShops
+        | WomensReadyToWearStores
+        | WreckingAndSalvageYards
+
+    type IssuingCardholderAuthorizationControlsAllowedCategories =
+        | AcRefrigerationRepair
+        | AccountingBookkeepingServices
+        | AdvertisingServices
+        | AgriculturalCooperative
+        | AirlinesAirCarriers
+        | AirportsFlyingFields
+        | AmbulanceServices
+        | AmusementParksCarnivals
+        | AntiqueReproductions
+        | AntiqueShops
+        | Aquariums
+        | ArchitecturalSurveyingServices
+        | ArtDealersAndGalleries
+        | ArtistsSupplyAndCraftShops
+        | AutoAndHomeSupplyStores
+        | AutoBodyRepairShops
+        | AutoPaintShops
+        | AutoServiceShops
+        | AutomatedCashDisburse
+        | AutomatedFuelDispensers
+        | AutomobileAssociations
+        | AutomotivePartsAndAccessoriesStores
+        | AutomotiveTireStores
+        | BailAndBondPayments
+        | Bakeries
+        | BandsOrchestras
+        | BarberAndBeautyShops
+        | BettingCasinoGambling
+        | BicycleShops
+        | BilliardPoolEstablishments
+        | BoatDealers
+        | BoatRentalsAndLeases
+        | BookStores
+        | BooksPeriodicalsAndNewspapers
+        | BowlingAlleys
+        | BusLines
+        | BusinessSecretarialSchools
+        | BuyingShoppingServices
+        | CableSatelliteAndOtherPayTelevisionAndRadio
+        | CameraAndPhotographicSupplyStores
+        | CandyNutAndConfectioneryStores
+        | CarAndTruckDealersNewUsed
+        | CarAndTruckDealersUsedOnly
+        | CarRentalAgencies
+        | CarWashes
+        | CarpentryServices
+        | CarpetUpholsteryCleaning
+        | Caterers
+        | CharitableAndSocialServiceOrganizationsFundraising
+        | ChemicalsAndAlliedProducts
+        | ChildCareServices
+        | ChildrensAndInfantsWearStores
+        | ChiropodistsPodiatrists
+        | Chiropractors
+        | CigarStoresAndStands
+        | CivicSocialFraternalAssociations
+        | CleaningAndMaintenance
+        | ClothingRental
+        | CollegesUniversities
+        | CommercialEquipment
+        | CommercialFootwear
+        | CommercialPhotographyArtAndGraphics
+        | CommuterTransportAndFerries
+        | ComputerNetworkServices
+        | ComputerProgramming
+        | ComputerRepair
+        | ComputerSoftwareStores
+        | ComputersPeripheralsAndSoftware
+        | ConcreteWorkServices
+        | ConstructionMaterials
+        | ConsultingPublicRelations
+        | CorrespondenceSchools
+        | CosmeticStores
+        | CounselingServices
+        | CountryClubs
+        | CourierServices
+        | CourtCosts
+        | CreditReportingAgencies
+        | CruiseLines
+        | DairyProductsStores
+        | DanceHallStudiosSchools
+        | DatingEscortServices
+        | DentistsOrthodontists
+        | DepartmentStores
+        | DetectiveAgencies
+        | DigitalGoodsApplications
+        | DigitalGoodsGames
+        | DigitalGoodsLargeVolume
+        | DigitalGoodsMedia
+        | DirectMarketingCatalogMerchant
+        | DirectMarketingCombinationCatalogAndRetailMerchant
+        | DirectMarketingInboundTelemarketing
+        | DirectMarketingInsuranceServices
+        | DirectMarketingOther
+        | DirectMarketingOutboundTelemarketing
+        | DirectMarketingSubscription
+        | DirectMarketingTravel
+        | DiscountStores
+        | Doctors
+        | DoorToDoorSales
+        | DraperyWindowCoveringAndUpholsteryStores
+        | DrinkingPlaces
+        | DrugStoresAndPharmacies
+        | DrugsDrugProprietariesAndDruggistSundries
+        | DryCleaners
+        | DurableGoods
+        | DutyFreeStores
+        | EatingPlacesRestaurants
+        | EducationalServices
+        | ElectricRazorStores
+        | ElectricVehicleCharging
+        | ElectricalPartsAndEquipment
+        | ElectricalServices
+        | ElectronicsRepairShops
+        | ElectronicsStores
+        | ElementarySecondarySchools
+        | EmergencyServicesGcasVisaUseOnly
+        | EmploymentTempAgencies
+        | EquipmentRental
+        | ExterminatingServices
+        | FamilyClothingStores
+        | FastFoodRestaurants
+        | FinancialInstitutions
+        | FinesGovernmentAdministrativeEntities
+        | FireplaceFireplaceScreensAndAccessoriesStores
+        | FloorCoveringStores
+        | Florists
+        | FloristsSuppliesNurseryStockAndFlowers
+        | FreezerAndLockerMeatProvisioners
+        | FuelDealersNonAutomotive
+        | FuneralServicesCrematories
+        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | FurnitureRepairRefinishing
+        | FurriersAndFurShops
+        | GeneralServices
+        | GiftCardNoveltyAndSouvenirShops
+        | GlassPaintAndWallpaperStores
+        | GlasswareCrystalStores
+        | GolfCoursesPublic
+        | GovernmentLicensedHorseDogRacingUsRegionOnly
+        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+        | GovernmentOwnedLotteriesNonUsRegion
+        | GovernmentOwnedLotteriesUsRegionOnly
+        | GovernmentServices
+        | GroceryStoresSupermarkets
+        | HardwareEquipmentAndSupplies
+        | HardwareStores
+        | HealthAndBeautySpas
+        | HearingAidsSalesAndSupplies
+        | HeatingPlumbingAC
+        | HobbyToyAndGameShops
+        | HomeSupplyWarehouseStores
+        | Hospitals
+        | HotelsMotelsAndResorts
+        | HouseholdApplianceStores
+        | IndustrialSupplies
+        | InformationRetrievalServices
+        | InsuranceDefault
+        | InsuranceUnderwritingPremiums
+        | IntraCompanyPurchases
+        | JewelryStoresWatchesClocksAndSilverwareStores
+        | LandscapingServices
+        | Laundries
+        | LaundryCleaningServices
+        | LegalServicesAttorneys
+        | LuggageAndLeatherGoodsStores
+        | LumberBuildingMaterialsStores
+        | ManualCashDisburse
+        | MarinasServiceAndSupplies
+        | Marketplaces
+        | MasonryStoneworkAndPlaster
+        | MassageParlors
+        | MedicalAndDentalLabs
+        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | MedicalServices
+        | MembershipOrganizations
+        | MensAndBoysClothingAndAccessoriesStores
+        | MensWomensClothingStores
+        | MetalServiceCenters
+        | Miscellaneous
+        | MiscellaneousApparelAndAccessoryShops
+        | MiscellaneousAutoDealers
+        | MiscellaneousBusinessServices
+        | MiscellaneousFoodStores
+        | MiscellaneousGeneralMerchandise
+        | MiscellaneousGeneralServices
+        | MiscellaneousHomeFurnishingSpecialtyStores
+        | MiscellaneousPublishingAndPrinting
+        | MiscellaneousRecreationServices
+        | MiscellaneousRepairShops
+        | MiscellaneousSpecialtyRetail
+        | MobileHomeDealers
+        | MotionPictureTheaters
+        | MotorFreightCarriersAndTrucking
+        | MotorHomesDealers
+        | MotorVehicleSuppliesAndNewParts
+        | MotorcycleShopsAndDealers
+        | MotorcycleShopsDealers
+        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | NewsDealersAndNewsstands
+        | NonFiMoneyOrders
+        | NonFiStoredValueCardPurchaseLoad
+        | NondurableGoods
+        | NurseriesLawnAndGardenSupplyStores
+        | NursingPersonalCare
+        | OfficeAndCommercialFurniture
+        | OpticiansEyeglasses
+        | OptometristsOphthalmologist
+        | OrthopedicGoodsProstheticDevices
+        | Osteopaths
+        | PackageStoresBeerWineAndLiquor
+        | PaintsVarnishesAndSupplies
+        | ParkingLotsGarages
+        | PassengerRailways
+        | PawnShops
+        | PetShopsPetFoodAndSupplies
+        | PetroleumAndPetroleumProducts
+        | PhotoDeveloping
+        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | PhotographicStudios
+        | PictureVideoProduction
+        | PieceGoodsNotionsAndOtherDryGoods
+        | PlumbingHeatingEquipmentAndSupplies
+        | PoliticalOrganizations
+        | PostalServicesGovernmentOnly
+        | PreciousStonesAndMetalsWatchesAndJewelry
+        | ProfessionalServices
+        | PublicWarehousingAndStorage
+        | QuickCopyReproAndBlueprint
+        | Railroads
+        | RealEstateAgentsAndManagersRentals
+        | RecordStores
+        | RecreationalVehicleRentals
+        | ReligiousGoodsStores
+        | ReligiousOrganizations
+        | RoofingSidingSheetMetal
+        | SecretarialSupportServices
+        | SecurityBrokersDealers
+        | ServiceStations
+        | SewingNeedleworkFabricAndPieceGoodsStores
+        | ShoeRepairHatCleaning
+        | ShoeStores
+        | SmallApplianceRepair
+        | SnowmobileDealers
+        | SpecialTradeServices
+        | SpecialtyCleaning
+        | SportingGoodsStores
+        | SportingRecreationCamps
+        | SportsAndRidingApparelStores
+        | SportsClubsFields
+        | StampAndCoinStores
+        | StationaryOfficeSuppliesPrintingAndWritingPaper
+        | StationeryStoresOfficeAndSchoolSupplyStores
+        | SwimmingPoolsSales
+        | TUiTravelGermany
+        | TailorsAlterations
+        | TaxPaymentsGovernmentAgencies
+        | TaxPreparationServices
+        | TaxicabsLimousines
+        | TelecommunicationEquipmentAndTelephoneSales
+        | TelecommunicationServices
+        | TelegraphServices
+        | TentAndAwningShops
+        | TestingLaboratories
+        | TheatricalTicketAgencies
+        | Timeshares
+        | TireRetreadingAndRepair
+        | TollsBridgeFees
+        | TouristAttractionsAndExhibits
+        | TowingServices
+        | TrailerParksCampgrounds
+        | TransportationServices
+        | TravelAgenciesTourOperators
+        | TruckStopIteration
+        | TruckUtilityTrailerRentals
+        | TypesettingPlateMakingAndRelatedServices
+        | TypewriterStores
+        | USFederalGovernmentAgenciesOrDepartments
+        | UniformsCommercialClothing
+        | UsedMerchandiseAndSecondhandStores
+        | Utilities
+        | VarietyStores
+        | VeterinaryServices
+        | VideoAmusementGameSupplies
+        | VideoGameArcades
+        | VideoTapeRentalStores
+        | VocationalTradeSchools
+        | WatchJewelryRepair
+        | WeldingRepair
+        | WholesaleClubs
+        | WigAndToupeeStores
+        | WiresMoneyOrders
+        | WomensAccessoryAndSpecialtyShops
+        | WomensReadyToWearStores
+        | WreckingAndSalvageYards
+
+    type IssuingCardSpendingLimitCategories =
+        | AcRefrigerationRepair
+        | AccountingBookkeepingServices
+        | AdvertisingServices
+        | AgriculturalCooperative
+        | AirlinesAirCarriers
+        | AirportsFlyingFields
+        | AmbulanceServices
+        | AmusementParksCarnivals
+        | AntiqueReproductions
+        | AntiqueShops
+        | Aquariums
+        | ArchitecturalSurveyingServices
+        | ArtDealersAndGalleries
+        | ArtistsSupplyAndCraftShops
+        | AutoAndHomeSupplyStores
+        | AutoBodyRepairShops
+        | AutoPaintShops
+        | AutoServiceShops
+        | AutomatedCashDisburse
+        | AutomatedFuelDispensers
+        | AutomobileAssociations
+        | AutomotivePartsAndAccessoriesStores
+        | AutomotiveTireStores
+        | BailAndBondPayments
+        | Bakeries
+        | BandsOrchestras
+        | BarberAndBeautyShops
+        | BettingCasinoGambling
+        | BicycleShops
+        | BilliardPoolEstablishments
+        | BoatDealers
+        | BoatRentalsAndLeases
+        | BookStores
+        | BooksPeriodicalsAndNewspapers
+        | BowlingAlleys
+        | BusLines
+        | BusinessSecretarialSchools
+        | BuyingShoppingServices
+        | CableSatelliteAndOtherPayTelevisionAndRadio
+        | CameraAndPhotographicSupplyStores
+        | CandyNutAndConfectioneryStores
+        | CarAndTruckDealersNewUsed
+        | CarAndTruckDealersUsedOnly
+        | CarRentalAgencies
+        | CarWashes
+        | CarpentryServices
+        | CarpetUpholsteryCleaning
+        | Caterers
+        | CharitableAndSocialServiceOrganizationsFundraising
+        | ChemicalsAndAlliedProducts
+        | ChildCareServices
+        | ChildrensAndInfantsWearStores
+        | ChiropodistsPodiatrists
+        | Chiropractors
+        | CigarStoresAndStands
+        | CivicSocialFraternalAssociations
+        | CleaningAndMaintenance
+        | ClothingRental
+        | CollegesUniversities
+        | CommercialEquipment
+        | CommercialFootwear
+        | CommercialPhotographyArtAndGraphics
+        | CommuterTransportAndFerries
+        | ComputerNetworkServices
+        | ComputerProgramming
+        | ComputerRepair
+        | ComputerSoftwareStores
+        | ComputersPeripheralsAndSoftware
+        | ConcreteWorkServices
+        | ConstructionMaterials
+        | ConsultingPublicRelations
+        | CorrespondenceSchools
+        | CosmeticStores
+        | CounselingServices
+        | CountryClubs
+        | CourierServices
+        | CourtCosts
+        | CreditReportingAgencies
+        | CruiseLines
+        | DairyProductsStores
+        | DanceHallStudiosSchools
+        | DatingEscortServices
+        | DentistsOrthodontists
+        | DepartmentStores
+        | DetectiveAgencies
+        | DigitalGoodsApplications
+        | DigitalGoodsGames
+        | DigitalGoodsLargeVolume
+        | DigitalGoodsMedia
+        | DirectMarketingCatalogMerchant
+        | DirectMarketingCombinationCatalogAndRetailMerchant
+        | DirectMarketingInboundTelemarketing
+        | DirectMarketingInsuranceServices
+        | DirectMarketingOther
+        | DirectMarketingOutboundTelemarketing
+        | DirectMarketingSubscription
+        | DirectMarketingTravel
+        | DiscountStores
+        | Doctors
+        | DoorToDoorSales
+        | DraperyWindowCoveringAndUpholsteryStores
+        | DrinkingPlaces
+        | DrugStoresAndPharmacies
+        | DrugsDrugProprietariesAndDruggistSundries
+        | DryCleaners
+        | DurableGoods
+        | DutyFreeStores
+        | EatingPlacesRestaurants
+        | EducationalServices
+        | ElectricRazorStores
+        | ElectricVehicleCharging
+        | ElectricalPartsAndEquipment
+        | ElectricalServices
+        | ElectronicsRepairShops
+        | ElectronicsStores
+        | ElementarySecondarySchools
+        | EmergencyServicesGcasVisaUseOnly
+        | EmploymentTempAgencies
+        | EquipmentRental
+        | ExterminatingServices
+        | FamilyClothingStores
+        | FastFoodRestaurants
+        | FinancialInstitutions
+        | FinesGovernmentAdministrativeEntities
+        | FireplaceFireplaceScreensAndAccessoriesStores
+        | FloorCoveringStores
+        | Florists
+        | FloristsSuppliesNurseryStockAndFlowers
+        | FreezerAndLockerMeatProvisioners
+        | FuelDealersNonAutomotive
+        | FuneralServicesCrematories
+        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | FurnitureRepairRefinishing
+        | FurriersAndFurShops
+        | GeneralServices
+        | GiftCardNoveltyAndSouvenirShops
+        | GlassPaintAndWallpaperStores
+        | GlasswareCrystalStores
+        | GolfCoursesPublic
+        | GovernmentLicensedHorseDogRacingUsRegionOnly
+        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+        | GovernmentOwnedLotteriesNonUsRegion
+        | GovernmentOwnedLotteriesUsRegionOnly
+        | GovernmentServices
+        | GroceryStoresSupermarkets
+        | HardwareEquipmentAndSupplies
+        | HardwareStores
+        | HealthAndBeautySpas
+        | HearingAidsSalesAndSupplies
+        | HeatingPlumbingAC
+        | HobbyToyAndGameShops
+        | HomeSupplyWarehouseStores
+        | Hospitals
+        | HotelsMotelsAndResorts
+        | HouseholdApplianceStores
+        | IndustrialSupplies
+        | InformationRetrievalServices
+        | InsuranceDefault
+        | InsuranceUnderwritingPremiums
+        | IntraCompanyPurchases
+        | JewelryStoresWatchesClocksAndSilverwareStores
+        | LandscapingServices
+        | Laundries
+        | LaundryCleaningServices
+        | LegalServicesAttorneys
+        | LuggageAndLeatherGoodsStores
+        | LumberBuildingMaterialsStores
+        | ManualCashDisburse
+        | MarinasServiceAndSupplies
+        | Marketplaces
+        | MasonryStoneworkAndPlaster
+        | MassageParlors
+        | MedicalAndDentalLabs
+        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | MedicalServices
+        | MembershipOrganizations
+        | MensAndBoysClothingAndAccessoriesStores
+        | MensWomensClothingStores
+        | MetalServiceCenters
+        | Miscellaneous
+        | MiscellaneousApparelAndAccessoryShops
+        | MiscellaneousAutoDealers
+        | MiscellaneousBusinessServices
+        | MiscellaneousFoodStores
+        | MiscellaneousGeneralMerchandise
+        | MiscellaneousGeneralServices
+        | MiscellaneousHomeFurnishingSpecialtyStores
+        | MiscellaneousPublishingAndPrinting
+        | MiscellaneousRecreationServices
+        | MiscellaneousRepairShops
+        | MiscellaneousSpecialtyRetail
+        | MobileHomeDealers
+        | MotionPictureTheaters
+        | MotorFreightCarriersAndTrucking
+        | MotorHomesDealers
+        | MotorVehicleSuppliesAndNewParts
+        | MotorcycleShopsAndDealers
+        | MotorcycleShopsDealers
+        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | NewsDealersAndNewsstands
+        | NonFiMoneyOrders
+        | NonFiStoredValueCardPurchaseLoad
+        | NondurableGoods
+        | NurseriesLawnAndGardenSupplyStores
+        | NursingPersonalCare
+        | OfficeAndCommercialFurniture
+        | OpticiansEyeglasses
+        | OptometristsOphthalmologist
+        | OrthopedicGoodsProstheticDevices
+        | Osteopaths
+        | PackageStoresBeerWineAndLiquor
+        | PaintsVarnishesAndSupplies
+        | ParkingLotsGarages
+        | PassengerRailways
+        | PawnShops
+        | PetShopsPetFoodAndSupplies
+        | PetroleumAndPetroleumProducts
+        | PhotoDeveloping
+        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | PhotographicStudios
+        | PictureVideoProduction
+        | PieceGoodsNotionsAndOtherDryGoods
+        | PlumbingHeatingEquipmentAndSupplies
+        | PoliticalOrganizations
+        | PostalServicesGovernmentOnly
+        | PreciousStonesAndMetalsWatchesAndJewelry
+        | ProfessionalServices
+        | PublicWarehousingAndStorage
+        | QuickCopyReproAndBlueprint
+        | Railroads
+        | RealEstateAgentsAndManagersRentals
+        | RecordStores
+        | RecreationalVehicleRentals
+        | ReligiousGoodsStores
+        | ReligiousOrganizations
+        | RoofingSidingSheetMetal
+        | SecretarialSupportServices
+        | SecurityBrokersDealers
+        | ServiceStations
+        | SewingNeedleworkFabricAndPieceGoodsStores
+        | ShoeRepairHatCleaning
+        | ShoeStores
+        | SmallApplianceRepair
+        | SnowmobileDealers
+        | SpecialTradeServices
+        | SpecialtyCleaning
+        | SportingGoodsStores
+        | SportingRecreationCamps
+        | SportsAndRidingApparelStores
+        | SportsClubsFields
+        | StampAndCoinStores
+        | StationaryOfficeSuppliesPrintingAndWritingPaper
+        | StationeryStoresOfficeAndSchoolSupplyStores
+        | SwimmingPoolsSales
+        | TUiTravelGermany
+        | TailorsAlterations
+        | TaxPaymentsGovernmentAgencies
+        | TaxPreparationServices
+        | TaxicabsLimousines
+        | TelecommunicationEquipmentAndTelephoneSales
+        | TelecommunicationServices
+        | TelegraphServices
+        | TentAndAwningShops
+        | TestingLaboratories
+        | TheatricalTicketAgencies
+        | Timeshares
+        | TireRetreadingAndRepair
+        | TollsBridgeFees
+        | TouristAttractionsAndExhibits
+        | TowingServices
+        | TrailerParksCampgrounds
+        | TransportationServices
+        | TravelAgenciesTourOperators
+        | TruckStopIteration
+        | TruckUtilityTrailerRentals
+        | TypesettingPlateMakingAndRelatedServices
+        | TypewriterStores
+        | USFederalGovernmentAgenciesOrDepartments
+        | UniformsCommercialClothing
+        | UsedMerchandiseAndSecondhandStores
+        | Utilities
+        | VarietyStores
+        | VeterinaryServices
+        | VideoAmusementGameSupplies
+        | VideoGameArcades
+        | VideoTapeRentalStores
+        | VocationalTradeSchools
+        | WatchJewelryRepair
+        | WeldingRepair
+        | WholesaleClubs
+        | WigAndToupeeStores
+        | WiresMoneyOrders
+        | WomensAccessoryAndSpecialtyShops
+        | WomensReadyToWearStores
+        | WreckingAndSalvageYards
+
+    type IssuingCardSpendingLimitInterval =
+        | AllTime
+        | Daily
+        | Monthly
+        | PerAuthorization
+        | Weekly
+        | Yearly
+
+    [<Struct>]
+    type IssuingCardShippingType =
+        | Bulk
+        | Individual
+
+    type IssuingCardShippingStatus =
+        | Canceled
+        | Delivered
+        | Failure
+        | Pending
+        | Returned
+        | Shipped
+
+    [<Struct>]
+    type IssuingCardShippingService =
+        | Express
+        | Priority
+        | Standard
+
+    [<Struct>]
+    type IssuingCardShippingCarrier =
+        | Dhl
+        | Fedex
+        | RoyalMail
+        | Usps
+
+    [<Struct>]
+    type IssuingCardGooglePayIneligibleReason =
+        | MissingAgreement
+        | MissingCardholderContact
+        | UnsupportedRegion
+
+    type IssuingCardAuthorizationControlsBlockedCategories =
+        | AcRefrigerationRepair
+        | AccountingBookkeepingServices
+        | AdvertisingServices
+        | AgriculturalCooperative
+        | AirlinesAirCarriers
+        | AirportsFlyingFields
+        | AmbulanceServices
+        | AmusementParksCarnivals
+        | AntiqueReproductions
+        | AntiqueShops
+        | Aquariums
+        | ArchitecturalSurveyingServices
+        | ArtDealersAndGalleries
+        | ArtistsSupplyAndCraftShops
+        | AutoAndHomeSupplyStores
+        | AutoBodyRepairShops
+        | AutoPaintShops
+        | AutoServiceShops
+        | AutomatedCashDisburse
+        | AutomatedFuelDispensers
+        | AutomobileAssociations
+        | AutomotivePartsAndAccessoriesStores
+        | AutomotiveTireStores
+        | BailAndBondPayments
+        | Bakeries
+        | BandsOrchestras
+        | BarberAndBeautyShops
+        | BettingCasinoGambling
+        | BicycleShops
+        | BilliardPoolEstablishments
+        | BoatDealers
+        | BoatRentalsAndLeases
+        | BookStores
+        | BooksPeriodicalsAndNewspapers
+        | BowlingAlleys
+        | BusLines
+        | BusinessSecretarialSchools
+        | BuyingShoppingServices
+        | CableSatelliteAndOtherPayTelevisionAndRadio
+        | CameraAndPhotographicSupplyStores
+        | CandyNutAndConfectioneryStores
+        | CarAndTruckDealersNewUsed
+        | CarAndTruckDealersUsedOnly
+        | CarRentalAgencies
+        | CarWashes
+        | CarpentryServices
+        | CarpetUpholsteryCleaning
+        | Caterers
+        | CharitableAndSocialServiceOrganizationsFundraising
+        | ChemicalsAndAlliedProducts
+        | ChildCareServices
+        | ChildrensAndInfantsWearStores
+        | ChiropodistsPodiatrists
+        | Chiropractors
+        | CigarStoresAndStands
+        | CivicSocialFraternalAssociations
+        | CleaningAndMaintenance
+        | ClothingRental
+        | CollegesUniversities
+        | CommercialEquipment
+        | CommercialFootwear
+        | CommercialPhotographyArtAndGraphics
+        | CommuterTransportAndFerries
+        | ComputerNetworkServices
+        | ComputerProgramming
+        | ComputerRepair
+        | ComputerSoftwareStores
+        | ComputersPeripheralsAndSoftware
+        | ConcreteWorkServices
+        | ConstructionMaterials
+        | ConsultingPublicRelations
+        | CorrespondenceSchools
+        | CosmeticStores
+        | CounselingServices
+        | CountryClubs
+        | CourierServices
+        | CourtCosts
+        | CreditReportingAgencies
+        | CruiseLines
+        | DairyProductsStores
+        | DanceHallStudiosSchools
+        | DatingEscortServices
+        | DentistsOrthodontists
+        | DepartmentStores
+        | DetectiveAgencies
+        | DigitalGoodsApplications
+        | DigitalGoodsGames
+        | DigitalGoodsLargeVolume
+        | DigitalGoodsMedia
+        | DirectMarketingCatalogMerchant
+        | DirectMarketingCombinationCatalogAndRetailMerchant
+        | DirectMarketingInboundTelemarketing
+        | DirectMarketingInsuranceServices
+        | DirectMarketingOther
+        | DirectMarketingOutboundTelemarketing
+        | DirectMarketingSubscription
+        | DirectMarketingTravel
+        | DiscountStores
+        | Doctors
+        | DoorToDoorSales
+        | DraperyWindowCoveringAndUpholsteryStores
+        | DrinkingPlaces
+        | DrugStoresAndPharmacies
+        | DrugsDrugProprietariesAndDruggistSundries
+        | DryCleaners
+        | DurableGoods
+        | DutyFreeStores
+        | EatingPlacesRestaurants
+        | EducationalServices
+        | ElectricRazorStores
+        | ElectricVehicleCharging
+        | ElectricalPartsAndEquipment
+        | ElectricalServices
+        | ElectronicsRepairShops
+        | ElectronicsStores
+        | ElementarySecondarySchools
+        | EmergencyServicesGcasVisaUseOnly
+        | EmploymentTempAgencies
+        | EquipmentRental
+        | ExterminatingServices
+        | FamilyClothingStores
+        | FastFoodRestaurants
+        | FinancialInstitutions
+        | FinesGovernmentAdministrativeEntities
+        | FireplaceFireplaceScreensAndAccessoriesStores
+        | FloorCoveringStores
+        | Florists
+        | FloristsSuppliesNurseryStockAndFlowers
+        | FreezerAndLockerMeatProvisioners
+        | FuelDealersNonAutomotive
+        | FuneralServicesCrematories
+        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | FurnitureRepairRefinishing
+        | FurriersAndFurShops
+        | GeneralServices
+        | GiftCardNoveltyAndSouvenirShops
+        | GlassPaintAndWallpaperStores
+        | GlasswareCrystalStores
+        | GolfCoursesPublic
+        | GovernmentLicensedHorseDogRacingUsRegionOnly
+        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+        | GovernmentOwnedLotteriesNonUsRegion
+        | GovernmentOwnedLotteriesUsRegionOnly
+        | GovernmentServices
+        | GroceryStoresSupermarkets
+        | HardwareEquipmentAndSupplies
+        | HardwareStores
+        | HealthAndBeautySpas
+        | HearingAidsSalesAndSupplies
+        | HeatingPlumbingAC
+        | HobbyToyAndGameShops
+        | HomeSupplyWarehouseStores
+        | Hospitals
+        | HotelsMotelsAndResorts
+        | HouseholdApplianceStores
+        | IndustrialSupplies
+        | InformationRetrievalServices
+        | InsuranceDefault
+        | InsuranceUnderwritingPremiums
+        | IntraCompanyPurchases
+        | JewelryStoresWatchesClocksAndSilverwareStores
+        | LandscapingServices
+        | Laundries
+        | LaundryCleaningServices
+        | LegalServicesAttorneys
+        | LuggageAndLeatherGoodsStores
+        | LumberBuildingMaterialsStores
+        | ManualCashDisburse
+        | MarinasServiceAndSupplies
+        | Marketplaces
+        | MasonryStoneworkAndPlaster
+        | MassageParlors
+        | MedicalAndDentalLabs
+        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | MedicalServices
+        | MembershipOrganizations
+        | MensAndBoysClothingAndAccessoriesStores
+        | MensWomensClothingStores
+        | MetalServiceCenters
+        | Miscellaneous
+        | MiscellaneousApparelAndAccessoryShops
+        | MiscellaneousAutoDealers
+        | MiscellaneousBusinessServices
+        | MiscellaneousFoodStores
+        | MiscellaneousGeneralMerchandise
+        | MiscellaneousGeneralServices
+        | MiscellaneousHomeFurnishingSpecialtyStores
+        | MiscellaneousPublishingAndPrinting
+        | MiscellaneousRecreationServices
+        | MiscellaneousRepairShops
+        | MiscellaneousSpecialtyRetail
+        | MobileHomeDealers
+        | MotionPictureTheaters
+        | MotorFreightCarriersAndTrucking
+        | MotorHomesDealers
+        | MotorVehicleSuppliesAndNewParts
+        | MotorcycleShopsAndDealers
+        | MotorcycleShopsDealers
+        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | NewsDealersAndNewsstands
+        | NonFiMoneyOrders
+        | NonFiStoredValueCardPurchaseLoad
+        | NondurableGoods
+        | NurseriesLawnAndGardenSupplyStores
+        | NursingPersonalCare
+        | OfficeAndCommercialFurniture
+        | OpticiansEyeglasses
+        | OptometristsOphthalmologist
+        | OrthopedicGoodsProstheticDevices
+        | Osteopaths
+        | PackageStoresBeerWineAndLiquor
+        | PaintsVarnishesAndSupplies
+        | ParkingLotsGarages
+        | PassengerRailways
+        | PawnShops
+        | PetShopsPetFoodAndSupplies
+        | PetroleumAndPetroleumProducts
+        | PhotoDeveloping
+        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | PhotographicStudios
+        | PictureVideoProduction
+        | PieceGoodsNotionsAndOtherDryGoods
+        | PlumbingHeatingEquipmentAndSupplies
+        | PoliticalOrganizations
+        | PostalServicesGovernmentOnly
+        | PreciousStonesAndMetalsWatchesAndJewelry
+        | ProfessionalServices
+        | PublicWarehousingAndStorage
+        | QuickCopyReproAndBlueprint
+        | Railroads
+        | RealEstateAgentsAndManagersRentals
+        | RecordStores
+        | RecreationalVehicleRentals
+        | ReligiousGoodsStores
+        | ReligiousOrganizations
+        | RoofingSidingSheetMetal
+        | SecretarialSupportServices
+        | SecurityBrokersDealers
+        | ServiceStations
+        | SewingNeedleworkFabricAndPieceGoodsStores
+        | ShoeRepairHatCleaning
+        | ShoeStores
+        | SmallApplianceRepair
+        | SnowmobileDealers
+        | SpecialTradeServices
+        | SpecialtyCleaning
+        | SportingGoodsStores
+        | SportingRecreationCamps
+        | SportsAndRidingApparelStores
+        | SportsClubsFields
+        | StampAndCoinStores
+        | StationaryOfficeSuppliesPrintingAndWritingPaper
+        | StationeryStoresOfficeAndSchoolSupplyStores
+        | SwimmingPoolsSales
+        | TUiTravelGermany
+        | TailorsAlterations
+        | TaxPaymentsGovernmentAgencies
+        | TaxPreparationServices
+        | TaxicabsLimousines
+        | TelecommunicationEquipmentAndTelephoneSales
+        | TelecommunicationServices
+        | TelegraphServices
+        | TentAndAwningShops
+        | TestingLaboratories
+        | TheatricalTicketAgencies
+        | Timeshares
+        | TireRetreadingAndRepair
+        | TollsBridgeFees
+        | TouristAttractionsAndExhibits
+        | TowingServices
+        | TrailerParksCampgrounds
+        | TransportationServices
+        | TravelAgenciesTourOperators
+        | TruckStopIteration
+        | TruckUtilityTrailerRentals
+        | TypesettingPlateMakingAndRelatedServices
+        | TypewriterStores
+        | USFederalGovernmentAgenciesOrDepartments
+        | UniformsCommercialClothing
+        | UsedMerchandiseAndSecondhandStores
+        | Utilities
+        | VarietyStores
+        | VeterinaryServices
+        | VideoAmusementGameSupplies
+        | VideoGameArcades
+        | VideoTapeRentalStores
+        | VocationalTradeSchools
+        | WatchJewelryRepair
+        | WeldingRepair
+        | WholesaleClubs
+        | WigAndToupeeStores
+        | WiresMoneyOrders
+        | WomensAccessoryAndSpecialtyShops
+        | WomensReadyToWearStores
+        | WreckingAndSalvageYards
+
+    type IssuingCardAuthorizationControlsAllowedCategories =
+        | AcRefrigerationRepair
+        | AccountingBookkeepingServices
+        | AdvertisingServices
+        | AgriculturalCooperative
+        | AirlinesAirCarriers
+        | AirportsFlyingFields
+        | AmbulanceServices
+        | AmusementParksCarnivals
+        | AntiqueReproductions
+        | AntiqueShops
+        | Aquariums
+        | ArchitecturalSurveyingServices
+        | ArtDealersAndGalleries
+        | ArtistsSupplyAndCraftShops
+        | AutoAndHomeSupplyStores
+        | AutoBodyRepairShops
+        | AutoPaintShops
+        | AutoServiceShops
+        | AutomatedCashDisburse
+        | AutomatedFuelDispensers
+        | AutomobileAssociations
+        | AutomotivePartsAndAccessoriesStores
+        | AutomotiveTireStores
+        | BailAndBondPayments
+        | Bakeries
+        | BandsOrchestras
+        | BarberAndBeautyShops
+        | BettingCasinoGambling
+        | BicycleShops
+        | BilliardPoolEstablishments
+        | BoatDealers
+        | BoatRentalsAndLeases
+        | BookStores
+        | BooksPeriodicalsAndNewspapers
+        | BowlingAlleys
+        | BusLines
+        | BusinessSecretarialSchools
+        | BuyingShoppingServices
+        | CableSatelliteAndOtherPayTelevisionAndRadio
+        | CameraAndPhotographicSupplyStores
+        | CandyNutAndConfectioneryStores
+        | CarAndTruckDealersNewUsed
+        | CarAndTruckDealersUsedOnly
+        | CarRentalAgencies
+        | CarWashes
+        | CarpentryServices
+        | CarpetUpholsteryCleaning
+        | Caterers
+        | CharitableAndSocialServiceOrganizationsFundraising
+        | ChemicalsAndAlliedProducts
+        | ChildCareServices
+        | ChildrensAndInfantsWearStores
+        | ChiropodistsPodiatrists
+        | Chiropractors
+        | CigarStoresAndStands
+        | CivicSocialFraternalAssociations
+        | CleaningAndMaintenance
+        | ClothingRental
+        | CollegesUniversities
+        | CommercialEquipment
+        | CommercialFootwear
+        | CommercialPhotographyArtAndGraphics
+        | CommuterTransportAndFerries
+        | ComputerNetworkServices
+        | ComputerProgramming
+        | ComputerRepair
+        | ComputerSoftwareStores
+        | ComputersPeripheralsAndSoftware
+        | ConcreteWorkServices
+        | ConstructionMaterials
+        | ConsultingPublicRelations
+        | CorrespondenceSchools
+        | CosmeticStores
+        | CounselingServices
+        | CountryClubs
+        | CourierServices
+        | CourtCosts
+        | CreditReportingAgencies
+        | CruiseLines
+        | DairyProductsStores
+        | DanceHallStudiosSchools
+        | DatingEscortServices
+        | DentistsOrthodontists
+        | DepartmentStores
+        | DetectiveAgencies
+        | DigitalGoodsApplications
+        | DigitalGoodsGames
+        | DigitalGoodsLargeVolume
+        | DigitalGoodsMedia
+        | DirectMarketingCatalogMerchant
+        | DirectMarketingCombinationCatalogAndRetailMerchant
+        | DirectMarketingInboundTelemarketing
+        | DirectMarketingInsuranceServices
+        | DirectMarketingOther
+        | DirectMarketingOutboundTelemarketing
+        | DirectMarketingSubscription
+        | DirectMarketingTravel
+        | DiscountStores
+        | Doctors
+        | DoorToDoorSales
+        | DraperyWindowCoveringAndUpholsteryStores
+        | DrinkingPlaces
+        | DrugStoresAndPharmacies
+        | DrugsDrugProprietariesAndDruggistSundries
+        | DryCleaners
+        | DurableGoods
+        | DutyFreeStores
+        | EatingPlacesRestaurants
+        | EducationalServices
+        | ElectricRazorStores
+        | ElectricVehicleCharging
+        | ElectricalPartsAndEquipment
+        | ElectricalServices
+        | ElectronicsRepairShops
+        | ElectronicsStores
+        | ElementarySecondarySchools
+        | EmergencyServicesGcasVisaUseOnly
+        | EmploymentTempAgencies
+        | EquipmentRental
+        | ExterminatingServices
+        | FamilyClothingStores
+        | FastFoodRestaurants
+        | FinancialInstitutions
+        | FinesGovernmentAdministrativeEntities
+        | FireplaceFireplaceScreensAndAccessoriesStores
+        | FloorCoveringStores
+        | Florists
+        | FloristsSuppliesNurseryStockAndFlowers
+        | FreezerAndLockerMeatProvisioners
+        | FuelDealersNonAutomotive
+        | FuneralServicesCrematories
+        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+        | FurnitureRepairRefinishing
+        | FurriersAndFurShops
+        | GeneralServices
+        | GiftCardNoveltyAndSouvenirShops
+        | GlassPaintAndWallpaperStores
+        | GlasswareCrystalStores
+        | GolfCoursesPublic
+        | GovernmentLicensedHorseDogRacingUsRegionOnly
+        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+        | GovernmentOwnedLotteriesNonUsRegion
+        | GovernmentOwnedLotteriesUsRegionOnly
+        | GovernmentServices
+        | GroceryStoresSupermarkets
+        | HardwareEquipmentAndSupplies
+        | HardwareStores
+        | HealthAndBeautySpas
+        | HearingAidsSalesAndSupplies
+        | HeatingPlumbingAC
+        | HobbyToyAndGameShops
+        | HomeSupplyWarehouseStores
+        | Hospitals
+        | HotelsMotelsAndResorts
+        | HouseholdApplianceStores
+        | IndustrialSupplies
+        | InformationRetrievalServices
+        | InsuranceDefault
+        | InsuranceUnderwritingPremiums
+        | IntraCompanyPurchases
+        | JewelryStoresWatchesClocksAndSilverwareStores
+        | LandscapingServices
+        | Laundries
+        | LaundryCleaningServices
+        | LegalServicesAttorneys
+        | LuggageAndLeatherGoodsStores
+        | LumberBuildingMaterialsStores
+        | ManualCashDisburse
+        | MarinasServiceAndSupplies
+        | Marketplaces
+        | MasonryStoneworkAndPlaster
+        | MassageParlors
+        | MedicalAndDentalLabs
+        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+        | MedicalServices
+        | MembershipOrganizations
+        | MensAndBoysClothingAndAccessoriesStores
+        | MensWomensClothingStores
+        | MetalServiceCenters
+        | Miscellaneous
+        | MiscellaneousApparelAndAccessoryShops
+        | MiscellaneousAutoDealers
+        | MiscellaneousBusinessServices
+        | MiscellaneousFoodStores
+        | MiscellaneousGeneralMerchandise
+        | MiscellaneousGeneralServices
+        | MiscellaneousHomeFurnishingSpecialtyStores
+        | MiscellaneousPublishingAndPrinting
+        | MiscellaneousRecreationServices
+        | MiscellaneousRepairShops
+        | MiscellaneousSpecialtyRetail
+        | MobileHomeDealers
+        | MotionPictureTheaters
+        | MotorFreightCarriersAndTrucking
+        | MotorHomesDealers
+        | MotorVehicleSuppliesAndNewParts
+        | MotorcycleShopsAndDealers
+        | MotorcycleShopsDealers
+        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+        | NewsDealersAndNewsstands
+        | NonFiMoneyOrders
+        | NonFiStoredValueCardPurchaseLoad
+        | NondurableGoods
+        | NurseriesLawnAndGardenSupplyStores
+        | NursingPersonalCare
+        | OfficeAndCommercialFurniture
+        | OpticiansEyeglasses
+        | OptometristsOphthalmologist
+        | OrthopedicGoodsProstheticDevices
+        | Osteopaths
+        | PackageStoresBeerWineAndLiquor
+        | PaintsVarnishesAndSupplies
+        | ParkingLotsGarages
+        | PassengerRailways
+        | PawnShops
+        | PetShopsPetFoodAndSupplies
+        | PetroleumAndPetroleumProducts
+        | PhotoDeveloping
+        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+        | PhotographicStudios
+        | PictureVideoProduction
+        | PieceGoodsNotionsAndOtherDryGoods
+        | PlumbingHeatingEquipmentAndSupplies
+        | PoliticalOrganizations
+        | PostalServicesGovernmentOnly
+        | PreciousStonesAndMetalsWatchesAndJewelry
+        | ProfessionalServices
+        | PublicWarehousingAndStorage
+        | QuickCopyReproAndBlueprint
+        | Railroads
+        | RealEstateAgentsAndManagersRentals
+        | RecordStores
+        | RecreationalVehicleRentals
+        | ReligiousGoodsStores
+        | ReligiousOrganizations
+        | RoofingSidingSheetMetal
+        | SecretarialSupportServices
+        | SecurityBrokersDealers
+        | ServiceStations
+        | SewingNeedleworkFabricAndPieceGoodsStores
+        | ShoeRepairHatCleaning
+        | ShoeStores
+        | SmallApplianceRepair
+        | SnowmobileDealers
+        | SpecialTradeServices
+        | SpecialtyCleaning
+        | SportingGoodsStores
+        | SportingRecreationCamps
+        | SportsAndRidingApparelStores
+        | SportsClubsFields
+        | StampAndCoinStores
+        | StationaryOfficeSuppliesPrintingAndWritingPaper
+        | StationeryStoresOfficeAndSchoolSupplyStores
+        | SwimmingPoolsSales
+        | TUiTravelGermany
+        | TailorsAlterations
+        | TaxPaymentsGovernmentAgencies
+        | TaxPreparationServices
+        | TaxicabsLimousines
+        | TelecommunicationEquipmentAndTelephoneSales
+        | TelecommunicationServices
+        | TelegraphServices
+        | TentAndAwningShops
+        | TestingLaboratories
+        | TheatricalTicketAgencies
+        | Timeshares
+        | TireRetreadingAndRepair
+        | TollsBridgeFees
+        | TouristAttractionsAndExhibits
+        | TowingServices
+        | TrailerParksCampgrounds
+        | TransportationServices
+        | TravelAgenciesTourOperators
+        | TruckStopIteration
+        | TruckUtilityTrailerRentals
+        | TypesettingPlateMakingAndRelatedServices
+        | TypewriterStores
+        | USFederalGovernmentAgenciesOrDepartments
+        | UniformsCommercialClothing
+        | UsedMerchandiseAndSecondhandStores
+        | Utilities
+        | VarietyStores
+        | VeterinaryServices
+        | VideoAmusementGameSupplies
+        | VideoGameArcades
+        | VideoTapeRentalStores
+        | VocationalTradeSchools
+        | WatchJewelryRepair
+        | WeldingRepair
+        | WholesaleClubs
+        | WigAndToupeeStores
+        | WiresMoneyOrders
+        | WomensAccessoryAndSpecialtyShops
+        | WomensReadyToWearStores
+        | WreckingAndSalvageYards
+
+    [<Struct>]
+    type IssuingCardApplePayIneligibleReason =
+        | MissingAgreement
+        | MissingCardholderContact
+        | UnsupportedRegion
+
+    [<Struct>]
+    type IssuingAuthorizationVerificationDataExpiryCheck =
+        | Match
+        | Mismatch
+        | NotProvided
+
+    [<Struct>]
+    type IssuingAuthorizationVerificationDataCvcCheck =
+        | Match
+        | Mismatch
+        | NotProvided
+
+    [<Struct>]
+    type IssuingAuthorizationVerificationDataAddressPostalCodeCheck =
+        | Match
+        | Mismatch
+        | NotProvided
+
+    [<Struct>]
+    type IssuingAuthorizationVerificationDataAddressLine1Check =
+        | Match
+        | Mismatch
+        | NotProvided
+
+    type IssuingAuthorizationRequestReason =
+        | AccountDisabled
+        | CardActive
+        | CardInactive
+        | CardholderInactive
+        | CardholderVerificationRequired
+        | InsufficientFunds
+        | NotAllowed
+        | SpendingControls
+        | SuspectedFraud
+        | VerificationFailed
+        | WebhookApproved
+        | WebhookDeclined
+        | WebhookError
+        | WebhookTimeout
+
+    [<Struct>]
+    type IssuingTransactionWallet =
+        | ApplePay
+        | GooglePay
+        | SamsungPay
+
+    [<Struct>]
+    type IssuingTransactionType =
+        | Capture
+        | Refund
+
+    [<Struct>]
+    type IssuingDisputeStatus =
+        | Expired
+        | Lost
+        | Submitted
+        | Unsubmitted
+        | Won
+
+    [<Struct>]
+    type IssuingCardholderPreferredLocales =
+        | De
+        | En
+        | Es
+        | Fr
+        | It
+
+    [<Struct>]
+    type IssuingCardholderType =
+        | Company
+        | Individual
+
+    [<Struct>]
+    type IssuingCardholderStatus =
+        | Active
+        | Blocked
+        | Inactive
+
+    [<Struct>]
+    type IssuingCardType =
+        | Physical
+        | Virtual
+
+    [<Struct>]
+    type IssuingCardStatus =
+        | Active
+        | Canceled
+        | Inactive
+
+    [<Struct>]
+    type IssuingCardReplacementReason =
+        | Damaged
+        | Expired
+        | Lost
+        | Stolen
+
+    [<Struct>]
+    type IssuingCardCancellationReason =
+        | DesignRejected
+        | Lost
+        | Stolen
+
+    [<Struct>]
+    type IssuingAuthorizationWallet =
+        | ApplePay
+        | GooglePay
+        | SamsungPay
+
+    [<Struct>]
+    type IssuingAuthorizationStatus =
+        | Closed
+        | Pending
+        | Reversed
+
+    [<Struct>]
+    type IssuingAuthorizationAuthorizationMethod =
+        | Chip
+        | Contactless
+        | KeyedIn
+        | Online
+        | Swipe
+
+    type InvoicesResourceInvoiceTaxIdType =
+        | AdNrt
+        | AeTrn
+        | ArCuit
+        | AuAbn
+        | AuArn
+        | BgUic
+        | BoTin
+        | BrCnpj
+        | BrCpf
+        | CaBn
+        | CaGstHst
+        | CaPstBc
+        | CaPstMb
+        | CaPstSk
+        | CaQst
+        | ChVat
+        | ClTin
+        | CnTin
+        | CoNit
+        | CrTin
+        | DoRcn
+        | EcRuc
+        | EgTin
+        | EsCif
+        | EuOssVat
+        | EuVat
+        | GbVat
+        | GeVat
+        | HkBr
+        | HuTin
+        | IdNpwp
+        | IlVat
+        | InGst
+        | IsVat
+        | JpCn
+        | JpRn
+        | JpTrn
+        | KePin
+        | KrBrn
+        | LiUid
+        | MxRfc
+        | MyFrp
+        | MyItn
+        | MySst
+        | NoVat
+        | NzGst
+        | PeRuc
+        | PhTin
+        | RoTin
+        | RsPib
+        | RuInn
+        | RuKpp
+        | SaVat
+        | SgGst
+        | SgUen
+        | SiTin
+        | SvNit
+        | ThVat
+        | TrTin
+        | TwVat
+        | UaVat
+        | Unknown
+        | UsEin
+        | UyRuc
+        | VeRif
+        | VnTin
+        | ZaVat
+
+    type InvoicesPaymentSettingsPaymentMethodTypes =
+        | AchCreditTransfer
+        | AchDebit
+        | AcssDebit
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Boleto
+        | Card
+        | Cashapp
+        | CustomerBalance
+        | Fpx
+        | Giropay
+        | Grabpay
+        | Ideal
+        | Konbini
+        | Link
+        | Paynow
+        | Paypal
+        | Promptpay
+        | SepaCreditTransfer
+        | SepaDebit
+        | Sofort
+        | UsBankAccount
+        | WechatPay
+
+    type InvoiceTaxAmountTaxabilityReason =
+        | CustomerExempt
+        | NotCollecting
+        | NotSubjectToTax
+        | NotSupported
+        | PortionProductExempt
+        | PortionReducedRated
+        | PortionStandardRated
+        | ProductExempt
+        | ProductExemptHoliday
+        | ProportionallyRated
+        | ReducedRated
+        | ReverseCharge
+        | StandardRated
+        | TaxableBasisReduced
+        | ZeroRated
+
+    [<Struct>]
+    type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions =
+        | Balances
+        | PaymentMethod
+        | Transactions
+
+    [<Struct>]
+    type InvoicePaymentMethodOptionsUsBankAccountVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    type InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry =
+        | [<JsonUnionCase("BE")>] BE
+        | [<JsonUnionCase("DE")>] DE
+        | [<JsonUnionCase("ES")>] ES
+        | [<JsonUnionCase("FR")>] FR
+        | [<JsonUnionCase("IE")>] IE
+        | [<JsonUnionCase("NL")>] NL
+
+    [<Struct>]
+    type InvoicePaymentMethodOptionsCustomerBalanceBankTransferType =
+        | EuBankTransfer
+        | GbBankTransfer
+        | JpBankTransfer
+        | MxBankTransfer
+        | UsBankTransfer
+
+    [<Struct>]
+    type InvoicePaymentMethodOptionsCardRequestThreeDSecure =
+        | Any
+        | Automatic
+
+    [<Struct>]
+    type InvoicePaymentMethodOptionsBancontactPreferredLanguage =
+        | De
+        | En
+        | Fr
+        | Nl
+
+    [<Struct>]
+    type InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType =
+        | Business
+        | Personal
+
+    [<Struct>]
+    type InvoicePaymentMethodOptionsAcssDebitVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type InvoiceMandateOptionsCardAmountType =
+        | Fixed
+        | Maximum
+
+    [<Struct>]
+    type InvoiceStatus =
+        | Draft
+        | Open
+        | Paid
+        | Uncollectible
+        | Void
+
+    [<Struct>]
+    type InvoiceCustomerTaxExempt =
+        | Exempt
+        | [<JsonUnionCase("none")>] None'
+        | Reverse
+
+    [<Struct>]
+    type InvoiceCollectionMethod =
+        | ChargeAutomatically
+        | SendInvoice
+
+    type InvoiceBillingReason =
+        | AutomaticPendingInvoiceItemInvoice
+        | Manual
+        | QuoteAccept
+        | Subscription
+        | SubscriptionCreate
+        | SubscriptionCycle
+        | SubscriptionThreshold
+        | SubscriptionUpdate
+        | Upcoming
+
+    [<Struct>]
+    type InboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
+        | Checking
+        | Savings
+
+    [<Struct>]
+    type InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
+        | Company
+        | Individual
+
+    [<Struct>]
+    type IdentityVerificationSessionType =
+        | Document
+        | IdNumber
+
+    [<Struct>]
+    type IdentityVerificationSessionStatus =
+        | Canceled
+        | Processing
+        | RequiresInput
+        | Verified
+
+    [<Struct>]
+    type IdentityVerificationReportType =
+        | Document
+        | IdNumber
+
+    [<Struct>]
+    type GelatoVerifiedOutputsIdNumberType =
+        | BrCpf
+        | SgNric
+        | UsSsn
+
+    type GelatoSessionLastErrorCode =
+        | Abandoned
+        | ConsentDeclined
+        | CountryNotSupported
+        | DeviceNotSupported
+        | DocumentExpired
+        | DocumentTypeNotSupported
+        | DocumentUnverifiedOther
+        | IdNumberInsufficientDocumentData
+        | IdNumberMismatch
+        | IdNumberUnverifiedOther
+        | SelfieDocumentMissingPhoto
+        | SelfieFaceMismatch
+        | SelfieManipulated
+        | SelfieUnverifiedOther
+        | UnderSupportedAge
+
+    [<Struct>]
+    type GelatoSessionDocumentOptionsAllowedTypes =
+        | DrivingLicense
+        | IdCard
+        | Passport
+
+    [<Struct>]
+    type GelatoSelfieReportErrorCode =
+        | SelfieDocumentMissingPhoto
+        | SelfieFaceMismatch
+        | SelfieManipulated
+        | SelfieUnverifiedOther
+
+    [<Struct>]
+    type GelatoSelfieReportStatus =
+        | Unverified
+        | Verified
+
+    [<Struct>]
+    type GelatoReportDocumentOptionsAllowedTypes =
+        | DrivingLicense
+        | IdCard
+        | Passport
+
+    [<Struct>]
+    type GelatoIdNumberReportErrorCode =
+        | IdNumberInsufficientDocumentData
+        | IdNumberMismatch
+        | IdNumberUnverifiedOther
+
+    [<Struct>]
+    type GelatoIdNumberReportStatus =
+        | Unverified
+        | Verified
+
+    [<Struct>]
+    type GelatoIdNumberReportIdNumberType =
+        | BrCpf
+        | SgNric
+        | UsSsn
+
+    [<Struct>]
+    type GelatoDocumentReportErrorCode =
+        | DocumentExpired
+        | DocumentTypeNotSupported
+        | DocumentUnverifiedOther
+
+    [<Struct>]
+    type GelatoDocumentReportType =
+        | DrivingLicense
+        | IdCard
+        | Passport
+
+    [<Struct>]
+    type GelatoDocumentReportStatus =
+        | Unverified
+        | Verified
+
+    [<Struct>]
+    type FundingInstructionsBankTransferZenginRecordAccountType =
+        | Futsu
+        | Toza
+
+    [<Struct>]
+    type FundingInstructionsBankTransferFinancialAddressSupportedNetworks =
+        | Bacs
+        | Fps
+        | Sepa
+        | Spei
+        | Zengin
+
+    [<Struct>]
+    type FundingInstructionsBankTransferFinancialAddressType =
+        | Iban
+        | SortCode
+        | Spei
+        | Zengin
+
+    [<Struct>]
+    type FundingInstructionsBankTransferType =
+        | EuBankTransfer
+        | JpBankTransfer
+
+    [<Struct>]
+    type FinancialReportingFinanceReportRunRunParametersTimezone =
+        | IntervalStart
+        | IntervalEnd
+
+    [<Struct>]
+    type FinancialConnectionsSessionPrefetch =
+        | Balances
+        | Ownership
+
+    [<Struct>]
+    type FinancialConnectionsSessionPermissions =
+        | Balances
+        | Ownership
+        | PaymentMethod
+        | Transactions
+
+    [<Struct>]
+    type FinancialConnectionsAccountSupportedPaymentMethodTypes =
+        | Link
+        | UsBankAccount
+
+    [<Struct>]
+    type FinancialConnectionsAccountPermissions =
+        | Balances
+        | Ownership
+        | PaymentMethod
+        | Transactions
+
+    type FinancialConnectionsAccountSubcategory =
+        | Checking
+        | CreditCard
+        | LineOfCredit
+        | Mortgage
+        | Other
+        | Savings
+
+    [<Struct>]
+    type FinancialConnectionsAccountStatus =
+        | Active
+        | Disconnected
+        | Inactive
+
+    [<Struct>]
+    type FinancialConnectionsAccountCategory =
+        | Cash
+        | Credit
+        | Investment
+        | Other
+
+    type FilePurpose =
+        | AccountRequirement
+        | AdditionalVerification
+        | BusinessIcon
+        | BusinessLogo
+        | CustomerSignature
+        | DisputeEvidence
+        | DocumentProviderIdentityDocument
+        | FinanceReportRun
+        | IdentityDocument
+        | IdentityDocumentDownloadable
+        | PciDocument
+        | Selfie
+        | SigmaScheduledQuery
+        | TaxDocumentUserUpload
+        | TerminalReaderSplashscreen
+
+    [<Struct>]
+    type FeeType =
+        | ApplicationFee
+        | StripeFee
+        | Tax
+
+    type EventType =
+        | [<JsonUnionCase("account.application.authorized")>] AccountApplicationAuthorized
+        | [<JsonUnionCase("account.application.deauthorized")>] AccountApplicationDeauthorized
+        | [<JsonUnionCase("account.external_account.created")>] AccountExternalAccountCreated
+        | [<JsonUnionCase("account.external_account.deleted")>] AccountExternalAccountDeleted
+        | [<JsonUnionCase("account.external_account.updated")>] AccountExternalAccountUpdated
+        | [<JsonUnionCase("account.updated")>] AccountUpdated
+        | [<JsonUnionCase("application_fee.created")>] ApplicationFeeCreated
+        | [<JsonUnionCase("application_fee.refund.updated")>] ApplicationFeeRefundUpdated
+        | [<JsonUnionCase("application_fee.refunded")>] ApplicationFeeRefunded
+        | [<JsonUnionCase("balance.available")>] BalanceAvailable
+        | [<JsonUnionCase("billing_portal.configuration.created")>] BillingPortalConfigurationCreated
+        | [<JsonUnionCase("billing_portal.configuration.updated")>] BillingPortalConfigurationUpdated
+        | [<JsonUnionCase("billing_portal.session.created")>] BillingPortalSessionCreated
+        | [<JsonUnionCase("capability.updated")>] CapabilityUpdated
+        | [<JsonUnionCase("cash_balance.funds_available")>] CashBalanceFundsAvailable
+        | [<JsonUnionCase("charge.captured")>] ChargeCaptured
+        | [<JsonUnionCase("charge.dispute.closed")>] ChargeDisputeClosed
+        | [<JsonUnionCase("charge.dispute.created")>] ChargeDisputeCreated
+        | [<JsonUnionCase("charge.dispute.funds_reinstated")>] ChargeDisputeFundsReinstated
+        | [<JsonUnionCase("charge.dispute.funds_withdrawn")>] ChargeDisputeFundsWithdrawn
+        | [<JsonUnionCase("charge.dispute.updated")>] ChargeDisputeUpdated
+        | [<JsonUnionCase("charge.expired")>] ChargeExpired
+        | [<JsonUnionCase("charge.failed")>] ChargeFailed
+        | [<JsonUnionCase("charge.pending")>] ChargePending
+        | [<JsonUnionCase("charge.refund.updated")>] ChargeRefundUpdated
+        | [<JsonUnionCase("charge.refunded")>] ChargeRefunded
+        | [<JsonUnionCase("charge.succeeded")>] ChargeSucceeded
+        | [<JsonUnionCase("charge.updated")>] ChargeUpdated
+        | [<JsonUnionCase("checkout.session.async_payment_failed")>] CheckoutSessionAsyncPaymentFailed
+        | [<JsonUnionCase("checkout.session.async_payment_succeeded")>] CheckoutSessionAsyncPaymentSucceeded
+        | [<JsonUnionCase("checkout.session.completed")>] CheckoutSessionCompleted
+        | [<JsonUnionCase("checkout.session.expired")>] CheckoutSessionExpired
+        | [<JsonUnionCase("coupon.created")>] CouponCreated
+        | [<JsonUnionCase("coupon.deleted")>] CouponDeleted
+        | [<JsonUnionCase("coupon.updated")>] CouponUpdated
+        | [<JsonUnionCase("credit_note.created")>] CreditNoteCreated
+        | [<JsonUnionCase("credit_note.updated")>] CreditNoteUpdated
+        | [<JsonUnionCase("credit_note.voided")>] CreditNoteVoided
+        | [<JsonUnionCase("customer.created")>] CustomerCreated
+        | [<JsonUnionCase("customer.deleted")>] CustomerDeleted
+        | [<JsonUnionCase("customer.discount.created")>] CustomerDiscountCreated
+        | [<JsonUnionCase("customer.discount.deleted")>] CustomerDiscountDeleted
+        | [<JsonUnionCase("customer.discount.updated")>] CustomerDiscountUpdated
+        | [<JsonUnionCase("customer.source.created")>] CustomerSourceCreated
+        | [<JsonUnionCase("customer.source.deleted")>] CustomerSourceDeleted
+        | [<JsonUnionCase("customer.source.expiring")>] CustomerSourceExpiring
+        | [<JsonUnionCase("customer.source.updated")>] CustomerSourceUpdated
+        | [<JsonUnionCase("customer.subscription.created")>] CustomerSubscriptionCreated
+        | [<JsonUnionCase("customer.subscription.deleted")>] CustomerSubscriptionDeleted
+        | [<JsonUnionCase("customer.subscription.paused")>] CustomerSubscriptionPaused
+        | [<JsonUnionCase("customer.subscription.pending_update_applied")>] CustomerSubscriptionPendingUpdateApplied
+        | [<JsonUnionCase("customer.subscription.pending_update_expired")>] CustomerSubscriptionPendingUpdateExpired
+        | [<JsonUnionCase("customer.subscription.resumed")>] CustomerSubscriptionResumed
+        | [<JsonUnionCase("customer.subscription.trial_will_end")>] CustomerSubscriptionTrialWillEnd
+        | [<JsonUnionCase("customer.subscription.updated")>] CustomerSubscriptionUpdated
+        | [<JsonUnionCase("customer.tax_id.created")>] CustomerTaxIdCreated
+        | [<JsonUnionCase("customer.tax_id.deleted")>] CustomerTaxIdDeleted
+        | [<JsonUnionCase("customer.tax_id.updated")>] CustomerTaxIdUpdated
+        | [<JsonUnionCase("customer.updated")>] CustomerUpdated
+        | [<JsonUnionCase("customer_cash_balance_transaction.created")>] CustomerCashBalanceTransactionCreated
+        | [<JsonUnionCase("file.created")>] FileCreated
+        | [<JsonUnionCase("financial_connections.account.created")>] FinancialConnectionsAccountCreated
+        | [<JsonUnionCase("financial_connections.account.deactivated")>] FinancialConnectionsAccountDeactivated
+        | [<JsonUnionCase("financial_connections.account.disconnected")>] FinancialConnectionsAccountDisconnected
+        | [<JsonUnionCase("financial_connections.account.reactivated")>] FinancialConnectionsAccountReactivated
+        | [<JsonUnionCase("financial_connections.account.refreshed_balance")>] FinancialConnectionsAccountRefreshedBalance
+        | [<JsonUnionCase("identity.verification_session.canceled")>] IdentityVerificationSessionCanceled
+        | [<JsonUnionCase("identity.verification_session.created")>] IdentityVerificationSessionCreated
+        | [<JsonUnionCase("identity.verification_session.processing")>] IdentityVerificationSessionProcessing
+        | [<JsonUnionCase("identity.verification_session.redacted")>] IdentityVerificationSessionRedacted
+        | [<JsonUnionCase("identity.verification_session.requires_input")>] IdentityVerificationSessionRequiresInput
+        | [<JsonUnionCase("identity.verification_session.verified")>] IdentityVerificationSessionVerified
+        | [<JsonUnionCase("invoice.created")>] InvoiceCreated
+        | [<JsonUnionCase("invoice.deleted")>] InvoiceDeleted
+        | [<JsonUnionCase("invoice.finalization_failed")>] InvoiceFinalizationFailed
+        | [<JsonUnionCase("invoice.finalized")>] InvoiceFinalized
+        | [<JsonUnionCase("invoice.marked_uncollectible")>] InvoiceMarkedUncollectible
+        | [<JsonUnionCase("invoice.paid")>] InvoicePaid
+        | [<JsonUnionCase("invoice.payment_action_required")>] InvoicePaymentActionRequired
+        | [<JsonUnionCase("invoice.payment_failed")>] InvoicePaymentFailed
+        | [<JsonUnionCase("invoice.payment_succeeded")>] InvoicePaymentSucceeded
+        | [<JsonUnionCase("invoice.sent")>] InvoiceSent
+        | [<JsonUnionCase("invoice.upcoming")>] InvoiceUpcoming
+        | [<JsonUnionCase("invoice.updated")>] InvoiceUpdated
+        | [<JsonUnionCase("invoice.voided")>] InvoiceVoided
+        | [<JsonUnionCase("invoiceitem.created")>] InvoiceitemCreated
+        | [<JsonUnionCase("invoiceitem.deleted")>] InvoiceitemDeleted
+        | [<JsonUnionCase("invoiceitem.updated")>] InvoiceitemUpdated
+        | [<JsonUnionCase("issuing_authorization.created")>] IssuingAuthorizationCreated
+        | [<JsonUnionCase("issuing_authorization.request")>] IssuingAuthorizationRequest
+        | [<JsonUnionCase("issuing_authorization.updated")>] IssuingAuthorizationUpdated
+        | [<JsonUnionCase("issuing_card.created")>] IssuingCardCreated
+        | [<JsonUnionCase("issuing_card.updated")>] IssuingCardUpdated
+        | [<JsonUnionCase("issuing_cardholder.created")>] IssuingCardholderCreated
+        | [<JsonUnionCase("issuing_cardholder.updated")>] IssuingCardholderUpdated
+        | [<JsonUnionCase("issuing_dispute.closed")>] IssuingDisputeClosed
+        | [<JsonUnionCase("issuing_dispute.created")>] IssuingDisputeCreated
+        | [<JsonUnionCase("issuing_dispute.funds_reinstated")>] IssuingDisputeFundsReinstated
+        | [<JsonUnionCase("issuing_dispute.submitted")>] IssuingDisputeSubmitted
+        | [<JsonUnionCase("issuing_dispute.updated")>] IssuingDisputeUpdated
+        | [<JsonUnionCase("issuing_transaction.created")>] IssuingTransactionCreated
+        | [<JsonUnionCase("issuing_transaction.updated")>] IssuingTransactionUpdated
+        | [<JsonUnionCase("mandate.updated")>] MandateUpdated
+        | [<JsonUnionCase("order.created")>] OrderCreated
+        | [<JsonUnionCase("payment_intent.amount_capturable_updated")>] PaymentIntentAmountCapturableUpdated
+        | [<JsonUnionCase("payment_intent.canceled")>] PaymentIntentCanceled
+        | [<JsonUnionCase("payment_intent.created")>] PaymentIntentCreated
+        | [<JsonUnionCase("payment_intent.partially_funded")>] PaymentIntentPartiallyFunded
+        | [<JsonUnionCase("payment_intent.payment_failed")>] PaymentIntentPaymentFailed
+        | [<JsonUnionCase("payment_intent.processing")>] PaymentIntentProcessing
+        | [<JsonUnionCase("payment_intent.requires_action")>] PaymentIntentRequiresAction
+        | [<JsonUnionCase("payment_intent.succeeded")>] PaymentIntentSucceeded
+        | [<JsonUnionCase("payment_link.created")>] PaymentLinkCreated
+        | [<JsonUnionCase("payment_link.updated")>] PaymentLinkUpdated
+        | [<JsonUnionCase("payment_method.attached")>] PaymentMethodAttached
+        | [<JsonUnionCase("payment_method.automatically_updated")>] PaymentMethodAutomaticallyUpdated
+        | [<JsonUnionCase("payment_method.detached")>] PaymentMethodDetached
+        | [<JsonUnionCase("payment_method.updated")>] PaymentMethodUpdated
+        | [<JsonUnionCase("payout.canceled")>] PayoutCanceled
+        | [<JsonUnionCase("payout.created")>] PayoutCreated
+        | [<JsonUnionCase("payout.failed")>] PayoutFailed
+        | [<JsonUnionCase("payout.paid")>] PayoutPaid
+        | [<JsonUnionCase("payout.reconciliation_completed")>] PayoutReconciliationCompleted
+        | [<JsonUnionCase("payout.updated")>] PayoutUpdated
+        | [<JsonUnionCase("person.created")>] PersonCreated
+        | [<JsonUnionCase("person.deleted")>] PersonDeleted
+        | [<JsonUnionCase("person.updated")>] PersonUpdated
+        | [<JsonUnionCase("plan.created")>] PlanCreated
+        | [<JsonUnionCase("plan.deleted")>] PlanDeleted
+        | [<JsonUnionCase("plan.updated")>] PlanUpdated
+        | [<JsonUnionCase("price.created")>] PriceCreated
+        | [<JsonUnionCase("price.deleted")>] PriceDeleted
+        | [<JsonUnionCase("price.updated")>] PriceUpdated
+        | [<JsonUnionCase("product.created")>] ProductCreated
+        | [<JsonUnionCase("product.deleted")>] ProductDeleted
+        | [<JsonUnionCase("product.updated")>] ProductUpdated
+        | [<JsonUnionCase("promotion_code.created")>] PromotionCodeCreated
+        | [<JsonUnionCase("promotion_code.updated")>] PromotionCodeUpdated
+        | [<JsonUnionCase("quote.accepted")>] QuoteAccepted
+        | [<JsonUnionCase("quote.canceled")>] QuoteCanceled
+        | [<JsonUnionCase("quote.created")>] QuoteCreated
+        | [<JsonUnionCase("quote.finalized")>] QuoteFinalized
+        | [<JsonUnionCase("radar.early_fraud_warning.created")>] RadarEarlyFraudWarningCreated
+        | [<JsonUnionCase("radar.early_fraud_warning.updated")>] RadarEarlyFraudWarningUpdated
+        | [<JsonUnionCase("recipient.created")>] RecipientCreated
+        | [<JsonUnionCase("recipient.deleted")>] RecipientDeleted
+        | [<JsonUnionCase("recipient.updated")>] RecipientUpdated
+        | [<JsonUnionCase("refund.created")>] RefundCreated
+        | [<JsonUnionCase("refund.updated")>] RefundUpdated
+        | [<JsonUnionCase("reporting.report_run.failed")>] ReportingReportRunFailed
+        | [<JsonUnionCase("reporting.report_run.succeeded")>] ReportingReportRunSucceeded
+        | [<JsonUnionCase("reporting.report_type.updated")>] ReportingReportTypeUpdated
+        | [<JsonUnionCase("review.closed")>] ReviewClosed
+        | [<JsonUnionCase("review.opened")>] ReviewOpened
+        | [<JsonUnionCase("setup_intent.canceled")>] SetupIntentCanceled
+        | [<JsonUnionCase("setup_intent.created")>] SetupIntentCreated
+        | [<JsonUnionCase("setup_intent.requires_action")>] SetupIntentRequiresAction
+        | [<JsonUnionCase("setup_intent.setup_failed")>] SetupIntentSetupFailed
+        | [<JsonUnionCase("setup_intent.succeeded")>] SetupIntentSucceeded
+        | [<JsonUnionCase("sigma.scheduled_query_run.created")>] SigmaScheduledQueryRunCreated
+        | [<JsonUnionCase("sku.created")>] SkuCreated
+        | [<JsonUnionCase("sku.deleted")>] SkuDeleted
+        | [<JsonUnionCase("sku.updated")>] SkuUpdated
+        | [<JsonUnionCase("source.canceled")>] SourceCanceled
+        | [<JsonUnionCase("source.chargeable")>] SourceChargeable
+        | [<JsonUnionCase("source.failed")>] SourceFailed
+        | [<JsonUnionCase("source.mandate_notification")>] SourceMandateNotification
+        | [<JsonUnionCase("source.refund_attributes_required")>] SourceRefundAttributesRequired
+        | [<JsonUnionCase("source.transaction.created")>] SourceTransactionCreated
+        | [<JsonUnionCase("source.transaction.updated")>] SourceTransactionUpdated
+        | [<JsonUnionCase("subscription_schedule.aborted")>] SubscriptionScheduleAborted
+        | [<JsonUnionCase("subscription_schedule.canceled")>] SubscriptionScheduleCanceled
+        | [<JsonUnionCase("subscription_schedule.completed")>] SubscriptionScheduleCompleted
+        | [<JsonUnionCase("subscription_schedule.created")>] SubscriptionScheduleCreated
+        | [<JsonUnionCase("subscription_schedule.expiring")>] SubscriptionScheduleExpiring
+        | [<JsonUnionCase("subscription_schedule.released")>] SubscriptionScheduleReleased
+        | [<JsonUnionCase("subscription_schedule.updated")>] SubscriptionScheduleUpdated
+        | [<JsonUnionCase("tax.settings.updated")>] TaxSettingsUpdated
+        | [<JsonUnionCase("tax_rate.created")>] TaxRateCreated
+        | [<JsonUnionCase("tax_rate.updated")>] TaxRateUpdated
+        | [<JsonUnionCase("terminal.reader.action_failed")>] TerminalReaderActionFailed
+        | [<JsonUnionCase("terminal.reader.action_succeeded")>] TerminalReaderActionSucceeded
+        | [<JsonUnionCase("test_helpers.test_clock.advancing")>] TestHelpersTestClockAdvancing
+        | [<JsonUnionCase("test_helpers.test_clock.created")>] TestHelpersTestClockCreated
+        | [<JsonUnionCase("test_helpers.test_clock.deleted")>] TestHelpersTestClockDeleted
+        | [<JsonUnionCase("test_helpers.test_clock.internal_failure")>] TestHelpersTestClockInternalFailure
+        | [<JsonUnionCase("test_helpers.test_clock.ready")>] TestHelpersTestClockReady
+        | [<JsonUnionCase("topup.canceled")>] TopupCanceled
+        | [<JsonUnionCase("topup.created")>] TopupCreated
+        | [<JsonUnionCase("topup.failed")>] TopupFailed
+        | [<JsonUnionCase("topup.reversed")>] TopupReversed
+        | [<JsonUnionCase("topup.succeeded")>] TopupSucceeded
+        | [<JsonUnionCase("transfer.created")>] TransferCreated
+        | [<JsonUnionCase("transfer.reversed")>] TransferReversed
+        | [<JsonUnionCase("transfer.updated")>] TransferUpdated
+
+    type DisputePaymentMethodDetailsCardBrand =
+        | Amex
+        | Diners
+        | Discover
+        | EftposAu
+        | Jcb
+        | Mastercard
+        | Unionpay
+        | Visa
+        | Unknown
+
+    type DisputeStatus =
+        | Lost
+        | NeedsResponse
+        | UnderReview
+        | WarningClosed
+        | WarningNeedsResponse
+        | WarningUnderReview
+        | Won
+
+    type DisputeReason =
+        | BankCannotProcess
+        | CheckReturned
+        | CreditNotProcessed
+        | CustomerInitiated
+        | DebitNotAuthorized
+        | Duplicate
+        | Fraudulent
+        | General
+        | IncorrectAccountDetails
+        | InsufficientFunds
+        | ProductNotReceived
+        | ProductUnacceptable
+        | SubscriptionCanceled
+        | Unrecognized
+
+    [<Struct>]
+    type CustomerTaxLocationSource =
+        | BillingAddress
+        | IpAddress
+        | PaymentMethod
+        | ShippingDestination
+
+    [<Struct>]
+    type CustomerTaxAutomaticTax =
+        | Failed
+        | NotCollecting
+        | Supported
+        | UnrecognizedLocation
+
+    type CustomerCashBalanceTransactionType =
+        | AdjustedForOverdraft
+        | AppliedToPayment
+        | Funded
+        | FundingReversed
+        | RefundedFromPayment
+        | ReturnCanceled
+        | ReturnInitiated
+        | UnappliedFromPayment
+
+    type CustomerBalanceTransactionType =
+        | Adjustment
+        | AppliedToInvoice
+        | CreditNote
+        | Initial
+        | InvoiceOverpaid
+        | InvoiceTooLarge
+        | InvoiceTooSmall
+        | Migration
+        | UnappliedFromInvoice
+        | UnspentReceiverCredit
+
+    [<Struct>]
+    type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransferNetwork =
+        | Ach
+        | DomesticWireUs
+        | Swift
+
+    [<Struct>]
+    type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferType =
+        | EuBankTransfer
+        | GbBankTransfer
+        | JpBankTransfer
+        | MxBankTransfer
+        | UsBankTransfer
+
+    [<Struct>]
+    type CustomerBalanceCustomerBalanceSettingsReconciliationMode =
+        | Automatic
+        | Manual
+
+    [<Struct>]
+    type CustomerAcceptanceType =
+        | Offline
+        | Online
+
+    [<Struct>]
+    type CustomerTaxExempt =
+        | Exempt
+        | [<JsonUnionCase("none")>] None'
+        | Reverse
+
+    [<Struct>]
+    type CurrencyOptionTaxBehavior =
+        | Exclusive
+        | Inclusive
+        | Unspecified
+
+    type CreditNoteTaxAmountTaxabilityReason =
+        | CustomerExempt
+        | NotCollecting
+        | NotSubjectToTax
+        | NotSupported
+        | PortionProductExempt
+        | PortionReducedRated
+        | PortionStandardRated
+        | ProductExempt
+        | ProductExemptHoliday
+        | ProportionallyRated
+        | ReducedRated
+        | ReverseCharge
+        | StandardRated
+        | TaxableBasisReduced
+        | ZeroRated
+
+    [<Struct>]
+    type CreditNoteLineItemType =
+        | CustomLineItem
+        | InvoiceLineItem
+
+    [<Struct>]
+    type CreditNoteType =
+        | PostPayment
+        | PrePayment
+
+    [<Struct>]
+    type CreditNoteStatus =
+        | Issued
+        | Void
+
+    [<Struct>]
+    type CreditNoteReason =
+        | Duplicate
+        | Fraudulent
+        | OrderChange
+        | ProductUnsatisfactory
+
+    [<Struct>]
+    type CouponDuration =
+        | Forever
+        | Once
+        | Repeating
+
+    [<Struct>]
+    type CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod =
+        | Automatic
+        | Instant
+
+    [<Struct>]
+    type CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type CheckoutLinkPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+
+    [<Struct>]
+    type CheckoutKlarnaPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    type CheckoutCustomerBalanceBankTransferPaymentMethodOptionsRequestedAddressTypes =
+        | Aba
+        | Iban
+        | Sepa
+        | SortCode
+        | Spei
+        | Swift
+        | Zengin
+
+    [<Struct>]
+    type CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType =
+        | EuBankTransfer
+        | GbBankTransfer
+        | JpBankTransfer
+        | MxBankTransfer
+        | UsBankTransfer
+
+    [<Struct>]
+    type CheckoutCardPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type CheckoutBoletoPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type CheckoutBacsDebitPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type CheckoutAcssDebitPaymentMethodOptionsVerificationMethod =
+        | Automatic
+        | Instant
+        | Microdeposits
+
+    [<Struct>]
+    type CheckoutAcssDebitPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonUnionCase("none")>] None'
+        | OffSession
+        | OnSession
+
+    [<Struct>]
+    type CheckoutAcssDebitPaymentMethodOptionsCurrency =
+        | Cad
+        | Usd
+
+    [<Struct>]
+    type CheckoutAcssDebitMandateOptionsDefaultFor =
+        | Invoice
+        | Subscription
+
+    [<Struct>]
+    type CheckoutAcssDebitMandateOptionsTransactionType =
+        | Business
+        | Personal
+
+    [<Struct>]
+    type CheckoutAcssDebitMandateOptionsPaymentSchedule =
+        | Combined
+        | Interval
+        | Sporadic
+
+    [<Struct>]
+    type CheckoutSessionSubmitType =
+        | Auto
+        | Book
+        | Donate
+        | Pay
+
+    [<Struct>]
+    type CheckoutSessionStatus =
+        | Complete
+        | Expired
+        | Open
+
+    [<Struct>]
+    type CheckoutSessionPaymentStatus =
+        | NoPaymentRequired
+        | Paid
+        | Unpaid
+
+    [<Struct>]
+    type CheckoutSessionPaymentMethodCollection =
+        | Always
+        | IfRequired
+
+    [<Struct>]
+    type CheckoutSessionMode =
+        | Payment
+        | Setup
+        | Subscription
+
+    type CheckoutSessionLocale =
+        | Auto
+        | Bg
+        | Cs
+        | Da
+        | De
+        | El
+        | En
+        | [<JsonUnionCase("en-GB")>] EnGB
+        | Es
+        | [<JsonUnionCase("es-419")>] Es419
+        | Et
+        | Fi
+        | Fil
+        | Fr
+        | [<JsonUnionCase("fr-CA")>] FrCA
+        | Hr
+        | Hu
+        | Id
+        | It
+        | Ja
+        | Ko
+        | Lt
+        | Lv
+        | Ms
+        | Mt
+        | Nb
+        | Nl
+        | Pl
+        | Pt
+        | [<JsonUnionCase("pt-BR")>] PtBR
+        | Ro
+        | Ru
+        | Sk
+        | Sl
+        | Sv
+        | Th
+        | Tr
+        | Vi
+        | Zh
+        | [<JsonUnionCase("zh-HK")>] ZhHK
+        | [<JsonUnionCase("zh-TW")>] ZhTW
+
+    [<Struct>]
+    type CheckoutSessionCustomerCreation =
+        | Always
+        | IfRequired
+
+    [<Struct>]
+    type CheckoutSessionBillingAddressCollection =
+        | Auto
+        | Required
+
+    [<Struct>]
+    type ChargeOutcomeType =
+        | Authorized
+        | ManualReview
+        | IssuerDeclined
+        | Blocked
+        | Invalid
+
+    [<Struct>]
+    type ChargeOutcomeNetworkStatus =
+        | ApprovedByNetwork
+        | DeclinedByNetwork
+        | NotSentToNetwork
+        | ReversedAfterApproval
+
+    [<Struct>]
+    type ChargeFraudDetailsUserReport =
+        | Safe
+        | Fraudulent
+
+    [<Struct>]
+    type ChargeStatus =
+        | Failed
+        | Pending
+        | Succeeded
+
+    [<Struct>]
+    type CardAvailablePayoutMethods =
+        | Instant
+        | Standard
+
+    [<Struct>]
+    type CardTokenizationMethod =
+        | AndroidPay
+        | ApplePay
+        | Masterpass
+        | VisaCheckout
+
+    [<Struct>]
+    type CardStatus =
+        | New
+        | Errored
+
+    [<Struct>]
+    type CardFunding =
+        | Credit
+        | Debit
+        | Prepaid
+        | Unknown
+
+    [<Struct>]
+    type CardCvcCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    type CardBrand =
+        | [<JsonUnionCase("American Express")>] AmericanExpress
+        | [<JsonUnionCase("Diners Club")>] DinersClub
+        | [<JsonUnionCase("Discover")>] Discover
+        | [<JsonUnionCase("Eftpos Australia")>] EftposAustralia
+        | [<JsonUnionCase("JCB")>] JCB
+        | [<JsonUnionCase("MasterCard")>] MasterCard
+        | [<JsonUnionCase("UnionPay")>] UnionPay
+        | [<JsonUnionCase("Visa")>] Visa
+        | [<JsonUnionCase("Unknown")>] Unknown
+
+    [<Struct>]
+    type CardAddressZipCheck =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    [<Struct>]
+    type CardAddressLine1Check =
+        | Pass
+        | Fail
+        | Unavailable
+        | Unchecked
+
+    [<Struct>]
+    type CapabilityStatus =
+        | Active
+        | Disabled
+        | Inactive
+        | Pending
+        | Unrequested
+
+    [<Struct>]
+    type CancellationDetailsReason =
+        | CancellationRequested
+        | PaymentDisputed
+        | PaymentFailed
+
+    type CancellationDetailsFeedback =
+        | CustomerService
+        | LowQuality
+        | MissingFeatures
+        | Other
+        | SwitchedService
+        | TooComplex
+        | TooExpensive
+        | Unused
+
+    type BillingPortalSessionLocale =
+        | Auto
+        | Bg
+        | Cs
+        | Da
+        | De
+        | El
+        | En
+        | [<JsonUnionCase("en-AU")>] EnAU
+        | [<JsonUnionCase("en-CA")>] EnCA
+        | [<JsonUnionCase("en-GB")>] EnGB
+        | [<JsonUnionCase("en-IE")>] EnIE
+        | [<JsonUnionCase("en-IN")>] EnIN
+        | [<JsonUnionCase("en-NZ")>] EnNZ
+        | [<JsonUnionCase("en-SG")>] EnSG
+        | Es
+        | [<JsonUnionCase("es-419")>] Es419
+        | Et
+        | Fi
+        | Fil
+        | Fr
+        | [<JsonUnionCase("fr-CA")>] FrCA
+        | Hr
+        | Hu
+        | Id
+        | It
+        | Ja
+        | Ko
+        | Lt
+        | Lv
+        | Ms
+        | Mt
+        | Nb
+        | Nl
+        | Pl
+        | Pt
+        | [<JsonUnionCase("pt-BR")>] PtBR
+        | Ro
+        | Ru
+        | Sk
+        | Sl
+        | Sv
+        | Th
+        | Tr
+        | Vi
+        | Zh
+        | [<JsonUnionCase("zh-HK")>] ZhHK
+        | [<JsonUnionCase("zh-TW")>] ZhTW
+
+    [<Struct>]
+    type BankConnectionsResourceOwnershipRefreshStatus =
+        | Failed
+        | Pending
+        | Succeeded
+
+    [<Struct>]
+    type BankConnectionsResourceBalanceRefreshStatus =
+        | Failed
+        | Pending
+        | Succeeded
+
+    [<Struct>]
+    type BankConnectionsResourceBalanceType =
+        | Cash
+        | Credit
+
+    [<Struct>]
+    type BankConnectionsResourceAccountholderType =
+        | Account
+        | Customer
+
+    [<Struct>]
+    type BankAccountAvailablePayoutMethods =
+        | Instant
+        | Standard
+
+    [<Struct>]
+    type BankAccountStatus =
+        | New
+        | Validated
+        | Verified
+        | VerificationFailed
+        | Errored
+
+    [<Struct>]
+    type BankAccountAccountType =
+        | Futsu
+        | Toza
+
+    [<Struct>]
+    type BankAccountAccountHolderType =
+        | Individual
+        | Company
+
+    type BalanceTransactionType =
+        | Adjustment
+        | Advance
+        | AdvanceFunding
+        | AnticipationRepayment
+        | ApplicationFee
+        | ApplicationFeeRefund
+        | Charge
+        | ConnectCollectionTransfer
+        | Contribution
+        | IssuingAuthorizationHold
+        | IssuingAuthorizationRelease
+        | IssuingDispute
+        | IssuingTransaction
+        | Payment
+        | PaymentFailureRefund
+        | PaymentRefund
+        | PaymentReversal
+        | Payout
+        | PayoutCancel
+        | PayoutFailure
+        | Refund
+        | RefundFailure
+        | ReserveTransaction
+        | ReservedFunds
+        | StripeFee
+        | StripeFxFee
+        | TaxFee
+        | Topup
+        | TopupReversal
+        | Transfer
+        | TransferCancel
+        | TransferFailure
+        | TransferRefund
+
+    [<Struct>]
+    type BalanceTransactionStatus =
+        | Available
+        | Pending
+
+    [<Struct>]
+    type AutomaticTaxStatus =
+        | Complete
+        | Failed
+        | RequiresLocationInputs
+
+    [<Struct>]
+    type ApiErrorsType =
+        | ApiError
+        | CardError
+        | IdempotencyError
+        | InvalidRequestError
+
+    type ApiErrorsCode =
+        | AccountClosed
+        | AccountCountryInvalidAddress
+        | AccountErrorCountryChangeRequiresAdditionalSteps
+        | AccountInformationMismatch
+        | AccountInvalid
+        | AccountNumberInvalid
+        | AcssDebitSessionIncomplete
+        | AlipayUpgradeRequired
+        | AmountTooLarge
+        | AmountTooSmall
+        | ApiKeyExpired
+        | ApplicationFeesNotAllowed
+        | AuthenticationRequired
+        | BalanceInsufficient
+        | BankAccountBadRoutingNumbers
+        | BankAccountDeclined
+        | BankAccountExists
+        | BankAccountRestricted
+        | BankAccountUnusable
+        | BankAccountUnverified
+        | BankAccountVerificationFailed
+        | BillingInvalidMandate
+        | BitcoinUpgradeRequired
+        | CaptureChargeAuthorizationExpired
+        | CaptureUnauthorizedPayment
+        | CardDeclineRateLimitExceeded
+        | CardDeclined
+        | CardholderPhoneNumberRequired
+        | ChargeAlreadyCaptured
+        | ChargeAlreadyRefunded
+        | ChargeDisputed
+        | ChargeExceedsSourceLimit
+        | ChargeExpiredForCapture
+        | ChargeInvalidParameter
+        | ChargeNotRefundable
+        | ClearingCodeUnsupported
+        | CountryCodeInvalid
+        | CountryUnsupported
+        | CouponExpired
+        | CustomerMaxPaymentMethods
+        | CustomerMaxSubscriptions
+        | DebitNotAuthorized
+        | EmailInvalid
+        | ExpiredCard
+        | IdempotencyKeyInUse
+        | IncorrectAddress
+        | IncorrectCvc
+        | IncorrectNumber
+        | IncorrectZip
+        | InstantPayoutsConfigDisabled
+        | InstantPayoutsCurrencyDisabled
+        | InstantPayoutsLimitExceeded
+        | InstantPayoutsUnsupported
+        | InsufficientFunds
+        | IntentInvalidState
+        | IntentVerificationMethodMissing
+        | InvalidCardType
+        | InvalidCharacters
+        | InvalidChargeAmount
+        | InvalidCvc
+        | InvalidExpiryMonth
+        | InvalidExpiryYear
+        | InvalidNumber
+        | InvalidSourceUsage
+        | InvalidTaxLocation
+        | InvoiceNoCustomerLineItems
+        | InvoiceNoPaymentMethodTypes
+        | InvoiceNoSubscriptionLineItems
+        | InvoiceNotEditable
+        | InvoiceOnBehalfOfNotEditable
+        | InvoicePaymentIntentRequiresAction
+        | InvoiceUpcomingNone
+        | LivemodeMismatch
+        | LockTimeout
+        | Missing
+        | NoAccount
+        | NotAllowedOnStandardAccount
+        | OutOfInventory
+        | OwnershipDeclarationNotAllowed
+        | ParameterInvalidEmpty
+        | ParameterInvalidInteger
+        | ParameterInvalidStringBlank
+        | ParameterInvalidStringEmpty
+        | ParameterMissing
+        | ParameterUnknown
+        | ParametersExclusive
+        | PaymentIntentActionRequired
+        | PaymentIntentAuthenticationFailure
+        | PaymentIntentIncompatiblePaymentMethod
+        | PaymentIntentInvalidParameter
+        | PaymentIntentKonbiniRejectedConfirmationNumber
+        | PaymentIntentMandateInvalid
+        | PaymentIntentPaymentAttemptExpired
+        | PaymentIntentPaymentAttemptFailed
+        | PaymentIntentUnexpectedState
+        | PaymentMethodBankAccountAlreadyVerified
+        | PaymentMethodBankAccountBlocked
+        | PaymentMethodBillingDetailsAddressMissing
+        | PaymentMethodConfigurationFailures
+        | PaymentMethodCurrencyMismatch
+        | PaymentMethodCustomerDecline
+        | PaymentMethodInvalidParameter
+        | PaymentMethodInvalidParameterTestmode
+        | PaymentMethodMicrodepositFailed
+        | PaymentMethodMicrodepositVerificationAmountsInvalid
+        | PaymentMethodMicrodepositVerificationAmountsMismatch
+        | PaymentMethodMicrodepositVerificationAttemptsExceeded
+        | PaymentMethodMicrodepositVerificationDescriptorCodeMismatch
+        | PaymentMethodMicrodepositVerificationTimeout
+        | PaymentMethodNotAvailable
+        | PaymentMethodProviderDecline
+        | PaymentMethodProviderTimeout
+        | PaymentMethodUnactivated
+        | PaymentMethodUnexpectedState
+        | PaymentMethodUnsupportedType
+        | PayoutReconciliationNotReady
+        | PayoutsLimitExceeded
+        | PayoutsNotAllowed
+        | PlatformAccountRequired
+        | PlatformApiKeyExpired
+        | PostalCodeInvalid
+        | ProcessingError
+        | ProductInactive
+        | ProgressiveOnboardingLimitExceeded
+        | RateLimit
+        | ReferToCustomer
+        | RefundDisputedPayment
+        | ResourceAlreadyExists
+        | ResourceMissing
+        | ReturnIntentAlreadyProcessed
+        | RoutingNumberInvalid
+        | SecretKeyRequired
+        | SepaUnsupportedAccount
+        | SetupAttemptFailed
+        | SetupIntentAuthenticationFailure
+        | SetupIntentInvalidParameter
+        | SetupIntentMandateInvalid
+        | SetupIntentSetupAttemptExpired
+        | SetupIntentUnexpectedState
+        | ShippingCalculationFailed
+        | SkuInactive
+        | StateUnsupported
+        | StatusTransitionInvalid
+        | TaxIdInvalid
+        | TaxesCalculationFailed
+        | TerminalLocationCountryUnsupported
+        | TerminalReaderBusy
+        | TerminalReaderOffline
+        | TerminalReaderTimeout
+        | TestmodeChargesOnly
+        | TlsVersionUnsupported
+        | TokenAlreadyUsed
+        | TokenInUse
+        | TransferSourceBalanceParametersMismatch
+        | TransfersNotAllowed
+        | UrlInvalid
+
+    [<Struct>]
+    type AccountUnificationAccountControllerType =
+        | Account
+        | Application
+
+    type AccountRequirementsErrorCode =
+        | InvalidAddressCityStatePostalCode
+        | InvalidDobAgeUnder18
+        | InvalidRepresentativeCountry
+        | InvalidStreetAddress
+        | InvalidTosAcceptance
+        | InvalidValueOther
+        | VerificationDirectorsMismatch
+        | VerificationDocumentAddressMismatch
+        | VerificationDocumentAddressMissing
+        | VerificationDocumentCorrupt
+        | VerificationDocumentCountryNotSupported
+        | VerificationDocumentDirectorsMismatch
+        | VerificationDocumentDobMismatch
+        | VerificationDocumentDuplicateType
+        | VerificationDocumentExpired
+        | VerificationDocumentFailedCopy
+        | VerificationDocumentFailedGreyscale
+        | VerificationDocumentFailedOther
+        | VerificationDocumentFailedTestMode
+        | VerificationDocumentFraudulent
+        | VerificationDocumentIdNumberMismatch
+        | VerificationDocumentIdNumberMissing
+        | VerificationDocumentIncomplete
+        | VerificationDocumentInvalid
+        | VerificationDocumentIssueOrExpiryDateMissing
+        | VerificationDocumentManipulated
+        | VerificationDocumentMissingBack
+        | VerificationDocumentMissingFront
+        | VerificationDocumentNameMismatch
+        | VerificationDocumentNameMissing
+        | VerificationDocumentNationalityMismatch
+        | VerificationDocumentNotReadable
+        | VerificationDocumentNotSigned
+        | VerificationDocumentNotUploaded
+        | VerificationDocumentPhotoMismatch
+        | VerificationDocumentTooLarge
+        | VerificationDocumentTypeNotSupported
+        | VerificationExtraneousDirectors
+        | VerificationFailedAddressMatch
+        | VerificationFailedBusinessIecNumber
+        | VerificationFailedDocumentMatch
+        | VerificationFailedIdNumberMatch
+        | VerificationFailedKeyedIdentity
+        | VerificationFailedKeyedMatch
+        | VerificationFailedNameMatch
+        | VerificationFailedOther
+        | VerificationFailedResidentialAddress
+        | VerificationFailedTaxIdMatch
+        | VerificationFailedTaxIdNotIssued
+        | VerificationMissingDirectors
+        | VerificationMissingExecutives
+        | VerificationMissingOwners
+        | VerificationRequiresAdditionalMemorandumOfAssociations
+
+    type AccountRequirementsDisabledReason =
+        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
+        | [<JsonUnionCase("requirements.pending_verification")>] RequirementsPendingVerification
+        | Listed
+        | PlatformPaused
+        | [<JsonUnionCase("rejected.fraud")>] RejectedFraud
+        | [<JsonUnionCase("rejected.listed")>] RejectedListed
+        | [<JsonUnionCase("rejected.terms_of_service")>] RejectedTermsOfService
+        | [<JsonUnionCase("rejected.other")>] RejectedOther
+        | UnderReview
+        | Other
+
+    type AccountCapabilityRequirementsDisabledReason =
+        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
+        | [<JsonUnionCase("requirements.pending_verification")>] RequirementsPendingVerification
+        | Listed
+        | PlatformPaused
+        | [<JsonUnionCase("rejected.fraud")>] RejectedFraud
+        | [<JsonUnionCase("rejected.listed")>] RejectedListed
+        | [<JsonUnionCase("rejected.terms_of_service")>] RejectedTermsOfService
+        | [<JsonUnionCase("rejected.other")>] RejectedOther
+        | UnderReview
+        | Other
+
+    [<Struct>]
+    type AccountCapabilitiesZipPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesUsBankAccountAchPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesTreasury =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesTransfers =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesTaxReportingUs1099Misc =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesTaxReportingUs1099K =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesSofortPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesSepaDebitPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesPromptpayPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesPaynowPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesP24Payments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesOxxoPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesLinkPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesLegacyPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesKonbiniPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesKlarnaPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesJcbPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesIndiaInternationalPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesIdealPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesGrabpayPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesGiropayPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesFpxPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesEpsPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesCashappPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesCartesBancairesPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesCardPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesCardIssuing =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesBoletoPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesBlikPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesBankTransferPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesBancontactPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesBacsDebitPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesAuBecsDebitPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesAfterpayClearpayPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesAffirmPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountCapabilitiesAcssDebitPayments =
+        | Active
+        | Inactive
+        | Pending
+
+    [<Struct>]
+    type AccountType =
+        | Custom
+        | Express
+        | Standard
+
+    [<Struct>]
+    type AccountBusinessType =
+        | Company
+        | GovernmentEntity
+        | Individual
+        | NonProfit
+
+
     ///This is an object representing a Stripe account. You can retrieve it to see
     ///properties on the account like its current requirements or if the account is
     ///enabled to make live charges or receive payouts.
@@ -79,17 +6908,6 @@ module StripeModel =
                 Account.TosAcceptance = tosAcceptance
                 Account.Type = ``type``
             }
-
-    and AccountBusinessType =
-        | Company
-        | GovernmentEntity
-        | Individual
-        | NonProfit
-
-    and AccountType =
-        | Custom
-        | Express
-        | Standard
 
     ///External accounts (bank accounts and debit cards) currently attached to this account
     and AccountExternalAccounts = {
@@ -296,186 +7114,6 @@ module StripeModel =
                 AccountCapabilities.ZipPayments = zipPayments
             }
 
-    and AccountCapabilitiesAcssDebitPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesAffirmPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesAfterpayClearpayPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesAuBecsDebitPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesBacsDebitPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesBancontactPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesBankTransferPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesBlikPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesBoletoPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesCardIssuing =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesCardPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesCartesBancairesPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesCashappPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesEpsPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesFpxPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesGiropayPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesGrabpayPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesIdealPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesIndiaInternationalPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesJcbPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesKlarnaPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesKonbiniPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesLegacyPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesLinkPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesOxxoPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesP24Payments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesPaynowPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesPromptpayPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesSepaDebitPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesSofortPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesTaxReportingUs1099K =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesTaxReportingUs1099Misc =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesTransfers =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesTreasury =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesUsBankAccountAchPayments =
-        | Active
-        | Inactive
-        | Pending
-
-    and AccountCapabilitiesZipPayments =
-        | Active
-        | Inactive
-        | Pending
-
     and AccountCapabilityFutureRequirements = {
         ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
         Alternatives: AccountRequirementsAlternative list option
@@ -540,18 +7178,6 @@ module StripeModel =
                 AccountCapabilityRequirements.PastDue = pastDue //required
                 AccountCapabilityRequirements.PendingVerification = pendingVerification //required
             }
-
-    and AccountCapabilityRequirementsDisabledReason =
-        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
-        | [<JsonUnionCase("requirements.pending_verification")>] RequirementsPendingVerification
-        | Listed
-        | PlatformPaused
-        | [<JsonUnionCase("rejected.fraud")>] RejectedFraud
-        | [<JsonUnionCase("rejected.listed")>] RejectedListed
-        | [<JsonUnionCase("rejected.terms_of_service")>] RejectedTermsOfService
-        | [<JsonUnionCase("rejected.other")>] RejectedOther
-        | UnderReview
-        | Other
 
     and AccountCardIssuingSettings = {
         TosAcceptance: CardIssuingAccountTermsOfService option
@@ -740,18 +7366,6 @@ module StripeModel =
                 AccountRequirements.PendingVerification = pendingVerification //required
             }
 
-    and AccountRequirementsDisabledReason =
-        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
-        | [<JsonUnionCase("requirements.pending_verification")>] RequirementsPendingVerification
-        | Listed
-        | PlatformPaused
-        | [<JsonUnionCase("rejected.fraud")>] RejectedFraud
-        | [<JsonUnionCase("rejected.listed")>] RejectedListed
-        | [<JsonUnionCase("rejected.terms_of_service")>] RejectedTermsOfService
-        | [<JsonUnionCase("rejected.other")>] RejectedOther
-        | UnderReview
-        | Other
-
     and AccountRequirementsAlternative = {
         ///Fields that can be provided to satisfy all fields in `original_fields_due`.
         AlternativeFieldsDue: string list
@@ -780,61 +7394,6 @@ module StripeModel =
                 AccountRequirementsError.Reason = reason //required
                 AccountRequirementsError.Requirement = requirement //required
             }
-
-    and AccountRequirementsErrorCode =
-        | InvalidAddressCityStatePostalCode
-        | InvalidDobAgeUnder18
-        | InvalidRepresentativeCountry
-        | InvalidStreetAddress
-        | InvalidTosAcceptance
-        | InvalidValueOther
-        | VerificationDirectorsMismatch
-        | VerificationDocumentAddressMismatch
-        | VerificationDocumentAddressMissing
-        | VerificationDocumentCorrupt
-        | VerificationDocumentCountryNotSupported
-        | VerificationDocumentDirectorsMismatch
-        | VerificationDocumentDobMismatch
-        | VerificationDocumentDuplicateType
-        | VerificationDocumentExpired
-        | VerificationDocumentFailedCopy
-        | VerificationDocumentFailedGreyscale
-        | VerificationDocumentFailedOther
-        | VerificationDocumentFailedTestMode
-        | VerificationDocumentFraudulent
-        | VerificationDocumentIdNumberMismatch
-        | VerificationDocumentIdNumberMissing
-        | VerificationDocumentIncomplete
-        | VerificationDocumentInvalid
-        | VerificationDocumentIssueOrExpiryDateMissing
-        | VerificationDocumentManipulated
-        | VerificationDocumentMissingBack
-        | VerificationDocumentMissingFront
-        | VerificationDocumentNameMismatch
-        | VerificationDocumentNameMissing
-        | VerificationDocumentNationalityMismatch
-        | VerificationDocumentNotReadable
-        | VerificationDocumentNotSigned
-        | VerificationDocumentNotUploaded
-        | VerificationDocumentPhotoMismatch
-        | VerificationDocumentTooLarge
-        | VerificationDocumentTypeNotSupported
-        | VerificationExtraneousDirectors
-        | VerificationFailedAddressMatch
-        | VerificationFailedBusinessIecNumber
-        | VerificationFailedDocumentMatch
-        | VerificationFailedIdNumberMatch
-        | VerificationFailedKeyedIdentity
-        | VerificationFailedKeyedMatch
-        | VerificationFailedNameMatch
-        | VerificationFailedOther
-        | VerificationFailedResidentialAddress
-        | VerificationFailedTaxIdMatch
-        | VerificationFailedTaxIdNotIssued
-        | VerificationMissingDirectors
-        | VerificationMissingExecutives
-        | VerificationMissingOwners
-        | VerificationRequiresAdditionalMemorandumOfAssociations
 
     and AccountSepaDebitPaymentsSettings = {
         ///SEPA creditor identifier that identifies the company making the payment.
@@ -928,10 +7487,6 @@ module StripeModel =
                 AccountUnificationAccountController.IsController = isController
             }
 
-    and AccountUnificationAccountControllerType =
-        | Account
-        | Application
-
     and Address = {
         ///City, district, suburb, town, or village.
         City: string option
@@ -998,170 +7553,6 @@ module StripeModel =
                 ApiErrors.SetupIntent = setupIntent
                 ApiErrors.Source = source
             }
-
-    and ApiErrorsCode =
-        | AccountClosed
-        | AccountCountryInvalidAddress
-        | AccountErrorCountryChangeRequiresAdditionalSteps
-        | AccountInformationMismatch
-        | AccountInvalid
-        | AccountNumberInvalid
-        | AcssDebitSessionIncomplete
-        | AlipayUpgradeRequired
-        | AmountTooLarge
-        | AmountTooSmall
-        | ApiKeyExpired
-        | ApplicationFeesNotAllowed
-        | AuthenticationRequired
-        | BalanceInsufficient
-        | BankAccountBadRoutingNumbers
-        | BankAccountDeclined
-        | BankAccountExists
-        | BankAccountRestricted
-        | BankAccountUnusable
-        | BankAccountUnverified
-        | BankAccountVerificationFailed
-        | BillingInvalidMandate
-        | BitcoinUpgradeRequired
-        | CaptureChargeAuthorizationExpired
-        | CaptureUnauthorizedPayment
-        | CardDeclineRateLimitExceeded
-        | CardDeclined
-        | CardholderPhoneNumberRequired
-        | ChargeAlreadyCaptured
-        | ChargeAlreadyRefunded
-        | ChargeDisputed
-        | ChargeExceedsSourceLimit
-        | ChargeExpiredForCapture
-        | ChargeInvalidParameter
-        | ChargeNotRefundable
-        | ClearingCodeUnsupported
-        | CountryCodeInvalid
-        | CountryUnsupported
-        | CouponExpired
-        | CustomerMaxPaymentMethods
-        | CustomerMaxSubscriptions
-        | DebitNotAuthorized
-        | EmailInvalid
-        | ExpiredCard
-        | IdempotencyKeyInUse
-        | IncorrectAddress
-        | IncorrectCvc
-        | IncorrectNumber
-        | IncorrectZip
-        | InstantPayoutsConfigDisabled
-        | InstantPayoutsCurrencyDisabled
-        | InstantPayoutsLimitExceeded
-        | InstantPayoutsUnsupported
-        | InsufficientFunds
-        | IntentInvalidState
-        | IntentVerificationMethodMissing
-        | InvalidCardType
-        | InvalidCharacters
-        | InvalidChargeAmount
-        | InvalidCvc
-        | InvalidExpiryMonth
-        | InvalidExpiryYear
-        | InvalidNumber
-        | InvalidSourceUsage
-        | InvalidTaxLocation
-        | InvoiceNoCustomerLineItems
-        | InvoiceNoPaymentMethodTypes
-        | InvoiceNoSubscriptionLineItems
-        | InvoiceNotEditable
-        | InvoiceOnBehalfOfNotEditable
-        | InvoicePaymentIntentRequiresAction
-        | InvoiceUpcomingNone
-        | LivemodeMismatch
-        | LockTimeout
-        | Missing
-        | NoAccount
-        | NotAllowedOnStandardAccount
-        | OutOfInventory
-        | OwnershipDeclarationNotAllowed
-        | ParameterInvalidEmpty
-        | ParameterInvalidInteger
-        | ParameterInvalidStringBlank
-        | ParameterInvalidStringEmpty
-        | ParameterMissing
-        | ParameterUnknown
-        | ParametersExclusive
-        | PaymentIntentActionRequired
-        | PaymentIntentAuthenticationFailure
-        | PaymentIntentIncompatiblePaymentMethod
-        | PaymentIntentInvalidParameter
-        | PaymentIntentKonbiniRejectedConfirmationNumber
-        | PaymentIntentMandateInvalid
-        | PaymentIntentPaymentAttemptExpired
-        | PaymentIntentPaymentAttemptFailed
-        | PaymentIntentUnexpectedState
-        | PaymentMethodBankAccountAlreadyVerified
-        | PaymentMethodBankAccountBlocked
-        | PaymentMethodBillingDetailsAddressMissing
-        | PaymentMethodConfigurationFailures
-        | PaymentMethodCurrencyMismatch
-        | PaymentMethodCustomerDecline
-        | PaymentMethodInvalidParameter
-        | PaymentMethodInvalidParameterTestmode
-        | PaymentMethodMicrodepositFailed
-        | PaymentMethodMicrodepositVerificationAmountsInvalid
-        | PaymentMethodMicrodepositVerificationAmountsMismatch
-        | PaymentMethodMicrodepositVerificationAttemptsExceeded
-        | PaymentMethodMicrodepositVerificationDescriptorCodeMismatch
-        | PaymentMethodMicrodepositVerificationTimeout
-        | PaymentMethodNotAvailable
-        | PaymentMethodProviderDecline
-        | PaymentMethodProviderTimeout
-        | PaymentMethodUnactivated
-        | PaymentMethodUnexpectedState
-        | PaymentMethodUnsupportedType
-        | PayoutReconciliationNotReady
-        | PayoutsLimitExceeded
-        | PayoutsNotAllowed
-        | PlatformAccountRequired
-        | PlatformApiKeyExpired
-        | PostalCodeInvalid
-        | ProcessingError
-        | ProductInactive
-        | ProgressiveOnboardingLimitExceeded
-        | RateLimit
-        | ReferToCustomer
-        | RefundDisputedPayment
-        | ResourceAlreadyExists
-        | ResourceMissing
-        | ReturnIntentAlreadyProcessed
-        | RoutingNumberInvalid
-        | SecretKeyRequired
-        | SepaUnsupportedAccount
-        | SetupAttemptFailed
-        | SetupIntentAuthenticationFailure
-        | SetupIntentInvalidParameter
-        | SetupIntentMandateInvalid
-        | SetupIntentSetupAttemptExpired
-        | SetupIntentUnexpectedState
-        | ShippingCalculationFailed
-        | SkuInactive
-        | StateUnsupported
-        | StatusTransitionInvalid
-        | TaxIdInvalid
-        | TaxesCalculationFailed
-        | TerminalLocationCountryUnsupported
-        | TerminalReaderBusy
-        | TerminalReaderOffline
-        | TerminalReaderTimeout
-        | TestmodeChargesOnly
-        | TlsVersionUnsupported
-        | TokenAlreadyUsed
-        | TokenInUse
-        | TransferSourceBalanceParametersMismatch
-        | TransfersNotAllowed
-        | UrlInvalid
-
-    and ApiErrorsType =
-        | ApiError
-        | CardError
-        | IdempotencyError
-        | InvalidRequestError
 
     and ApplePayDomain = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -1340,11 +7731,6 @@ module StripeModel =
                 AutomaticTax.Status = status //required
             }
 
-    and AutomaticTaxStatus =
-        | Complete
-        | Failed
-        | RequiresLocationInputs
-
     ///This is an object representing your Stripe balance. You can retrieve it to see
     ///the balance currently on your Stripe account.
     ///You can also retrieve the balance history, which contains a list of
@@ -1480,45 +7866,6 @@ module StripeModel =
         | String of string
         | BalanceTransactionSource of BalanceTransactionSource
 
-    and BalanceTransactionStatus =
-        | Available
-        | Pending
-
-    and BalanceTransactionType =
-        | Adjustment
-        | Advance
-        | AdvanceFunding
-        | AnticipationRepayment
-        | ApplicationFee
-        | ApplicationFeeRefund
-        | Charge
-        | ConnectCollectionTransfer
-        | Contribution
-        | IssuingAuthorizationHold
-        | IssuingAuthorizationRelease
-        | IssuingDispute
-        | IssuingTransaction
-        | Payment
-        | PaymentFailureRefund
-        | PaymentRefund
-        | PaymentReversal
-        | Payout
-        | PayoutCancel
-        | PayoutFailure
-        | Refund
-        | RefundFailure
-        | ReserveTransaction
-        | ReservedFunds
-        | StripeFee
-        | StripeFxFee
-        | TaxFee
-        | Topup
-        | TopupReversal
-        | Transfer
-        | TransferCancel
-        | TransferFailure
-        | TransferRefund
-
     and BalanceTransactionSource =
         | ApplicationFee of ApplicationFee
         | Charge of Charge
@@ -1611,29 +7958,10 @@ module StripeModel =
         | String of string
         | Account of Account
 
-    and BankAccountAccountHolderType =
-        | Individual
-        | Company
-
-    and BankAccountAccountType =
-        | Futsu
-        | Toza
-
     and BankAccountCustomer'AnyOf =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
-
-    and BankAccountStatus =
-        | New
-        | Validated
-        | Verified
-        | VerificationFailed
-        | Errored
-
-    and BankAccountAvailablePayoutMethods =
-        | Instant
-        | Standard
 
     and BankConnectionsResourceAccountholder = {
         ///The ID of the Stripe account this account belongs to. Should only be present if `account_holder.type` is `account`.
@@ -1659,10 +7987,6 @@ module StripeModel =
         | String of string
         | Customer of Customer
 
-    and BankConnectionsResourceAccountholderType =
-        | Account
-        | Customer
-
     and BankConnectionsResourceBalance = {
         ///The time that the external institution calculated this balance. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]AsOf: DateTime
@@ -1684,10 +8008,6 @@ module StripeModel =
                 BankConnectionsResourceBalance.Cash = cash
                 BankConnectionsResourceBalance.Credit = credit
             }
-
-    and BankConnectionsResourceBalanceType =
-        | Cash
-        | Credit
 
     and BankConnectionsResourceBalanceApiResourceCashBalance = {
         ///The funds available to the account holder. Typically this is the current balance less any holds.
@@ -1726,11 +8046,6 @@ module StripeModel =
                 BankConnectionsResourceBalanceRefresh.Status = status //required
             }
 
-    and BankConnectionsResourceBalanceRefreshStatus =
-        | Failed
-        | Pending
-        | Succeeded
-
     and BankConnectionsResourceLinkAccountSessionFilters = {
         ///List of countries from which to filter accounts.
         Countries: string list option
@@ -1753,11 +8068,6 @@ module StripeModel =
                 BankConnectionsResourceOwnershipRefresh.LastAttemptedAt = lastAttemptedAt //required
                 BankConnectionsResourceOwnershipRefresh.Status = status //required
             }
-
-    and BankConnectionsResourceOwnershipRefreshStatus =
-        | Failed
-        | Pending
-        | Succeeded
 
     and BillingDetails = {
         ///Billing address.
@@ -1882,55 +8192,6 @@ module StripeModel =
         | String of string
         | BillingPortalConfiguration of BillingPortalConfiguration
 
-    and BillingPortalSessionLocale =
-        | Auto
-        | Bg
-        | Cs
-        | Da
-        | De
-        | El
-        | En
-        | [<JsonUnionCase("en-AU")>] EnAU
-        | [<JsonUnionCase("en-CA")>] EnCA
-        | [<JsonUnionCase("en-GB")>] EnGB
-        | [<JsonUnionCase("en-IE")>] EnIE
-        | [<JsonUnionCase("en-IN")>] EnIN
-        | [<JsonUnionCase("en-NZ")>] EnNZ
-        | [<JsonUnionCase("en-SG")>] EnSG
-        | Es
-        | [<JsonUnionCase("es-419")>] Es419
-        | Et
-        | Fi
-        | Fil
-        | Fr
-        | [<JsonUnionCase("fr-CA")>] FrCA
-        | Hr
-        | Hu
-        | Id
-        | It
-        | Ja
-        | Ko
-        | Lt
-        | Lv
-        | Ms
-        | Mt
-        | Nb
-        | Nl
-        | Pl
-        | Pt
-        | [<JsonUnionCase("pt-BR")>] PtBR
-        | Ro
-        | Ru
-        | Sk
-        | Sl
-        | Sv
-        | Th
-        | Tr
-        | Vi
-        | Zh
-        | [<JsonUnionCase("zh-HK")>] ZhHK
-        | [<JsonUnionCase("zh-TW")>] ZhTW
-
     and CancellationDetails = {
         ///Additional comments about why the user canceled the subscription, if the subscription was cancelled explicitly by the user.
         Comment: string option
@@ -1946,21 +8207,6 @@ module StripeModel =
                 CancellationDetails.Feedback = feedback //required
                 CancellationDetails.Reason = reason //required
             }
-
-    and CancellationDetailsFeedback =
-        | CustomerService
-        | LowQuality
-        | MissingFeatures
-        | Other
-        | SwitchedService
-        | TooComplex
-        | TooExpensive
-        | Unused
-
-    and CancellationDetailsReason =
-        | CancellationRequested
-        | PaymentDisputed
-        | PaymentFailed
 
     ///This is an object representing a capability for a Stripe account.
     ///Related guide: [Account capabilities](https://stripe.com/docs/connect/account-capabilities)
@@ -1996,13 +8242,6 @@ module StripeModel =
     and CapabilityAccount'AnyOf =
         | String of string
         | Account of Account
-
-    and CapabilityStatus =
-        | Active
-        | Disabled
-        | Inactive
-        | Pending
-        | Unrequested
 
     ///You can store multiple cards on a customer in order to charge the customer
     ///later. You can also store multiple debit cards on a recipient in order to
@@ -2113,59 +8352,10 @@ module StripeModel =
         | String of string
         | Account of Account
 
-    and CardAddressLine1Check =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
-
-    and CardAddressZipCheck =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
-
-    and CardBrand =
-        | [<JsonUnionCase("American Express")>] AmericanExpress
-        | [<JsonUnionCase("Diners Club")>] DinersClub
-        | [<JsonUnionCase("Discover")>] Discover
-        | [<JsonUnionCase("Eftpos Australia")>] EftposAustralia
-        | [<JsonUnionCase("JCB")>] JCB
-        | [<JsonUnionCase("MasterCard")>] MasterCard
-        | [<JsonUnionCase("UnionPay")>] UnionPay
-        | [<JsonUnionCase("Visa")>] Visa
-        | [<JsonUnionCase("Unknown")>] Unknown
-
     and CardCustomer'AnyOf =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
-
-    and CardCvcCheck =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
-
-    and CardFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
-    and CardStatus =
-        | New
-        | Errored
-
-    and CardTokenizationMethod =
-        | AndroidPay
-        | ApplePay
-        | Masterpass
-        | VisaCheckout
-
-    and CardAvailablePayoutMethods =
-        | Instant
-        | Standard
 
     and CardIssuingAccountTermsOfService = {
         ///The Unix timestamp marking when the account representative accepted the service agreement.
@@ -2407,11 +8597,6 @@ module StripeModel =
         | String of string
         | Transfer of Transfer
 
-    and ChargeStatus =
-        | Failed
-        | Pending
-        | Succeeded
-
     and ChargeTransfer'AnyOf =
         | String of string
         | Transfer of Transfer
@@ -2449,10 +8634,6 @@ module StripeModel =
                 ChargeFraudDetails.UserReport = userReport
             }
 
-    and ChargeFraudDetailsUserReport =
-        | Safe
-        | Fraudulent
-
     and ChargeOutcome = {
         ///Possible values are `approved_by_network`, `declined_by_network`, `not_sent_to_network`, and `reversed_after_approval`. The value `reversed_after_approval` indicates the payment was [blocked by Stripe](https://stripe.com/docs/declines#blocked-payments) after bank authorization, and may temporarily appear as "pending" on a cardholder's statement.
         NetworkStatus: ChargeOutcomeNetworkStatus option
@@ -2481,22 +8662,9 @@ module StripeModel =
                 ChargeOutcome.Rule = rule
             }
 
-    and ChargeOutcomeNetworkStatus =
-        | ApprovedByNetwork
-        | DeclinedByNetwork
-        | NotSentToNetwork
-        | ReversedAfterApproval
-
     and ChargeOutcomeRule'AnyOf =
         | String of string
         | Rule of Rule
-
-    and ChargeOutcomeType =
-        | Authorized
-        | ManualReview
-        | IssuerDeclined
-        | Blocked
-        | Invalid
 
     and ChargeTransferData = {
         ///The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
@@ -2693,70 +8861,14 @@ module StripeModel =
                 CheckoutSession.TaxIdCollection = taxIdCollection
             }
 
-    and CheckoutSessionBillingAddressCollection =
-        | Auto
-        | Required
-
     and CheckoutSessionCustomer'AnyOf =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
 
-    and CheckoutSessionCustomerCreation =
-        | Always
-        | IfRequired
-
     and CheckoutSessionInvoice'AnyOf =
         | String of string
         | Invoice of Invoice
-
-    and CheckoutSessionLocale =
-        | Auto
-        | Bg
-        | Cs
-        | Da
-        | De
-        | El
-        | En
-        | [<JsonUnionCase("en-GB")>] EnGB
-        | Es
-        | [<JsonUnionCase("es-419")>] Es419
-        | Et
-        | Fi
-        | Fil
-        | Fr
-        | [<JsonUnionCase("fr-CA")>] FrCA
-        | Hr
-        | Hu
-        | Id
-        | It
-        | Ja
-        | Ko
-        | Lt
-        | Lv
-        | Ms
-        | Mt
-        | Nb
-        | Nl
-        | Pl
-        | Pt
-        | [<JsonUnionCase("pt-BR")>] PtBR
-        | Ro
-        | Ru
-        | Sk
-        | Sl
-        | Sv
-        | Th
-        | Tr
-        | Vi
-        | Zh
-        | [<JsonUnionCase("zh-HK")>] ZhHK
-        | [<JsonUnionCase("zh-TW")>] ZhTW
-
-    and CheckoutSessionMode =
-        | Payment
-        | Setup
-        | Subscription
 
     and CheckoutSessionPaymentIntent'AnyOf =
         | String of string
@@ -2766,29 +8878,9 @@ module StripeModel =
         | String of string
         | PaymentLink of PaymentLink
 
-    and CheckoutSessionPaymentMethodCollection =
-        | Always
-        | IfRequired
-
-    and CheckoutSessionPaymentStatus =
-        | NoPaymentRequired
-        | Paid
-        | Unpaid
-
     and CheckoutSessionSetupIntent'AnyOf =
         | String of string
         | SetupIntent of SetupIntent
-
-    and CheckoutSessionStatus =
-        | Complete
-        | Expired
-        | Open
-
-    and CheckoutSessionSubmitType =
-        | Auto
-        | Book
-        | Donate
-        | Pay
 
     and CheckoutSessionSubscription'AnyOf =
         | String of string
@@ -2836,19 +8928,6 @@ module StripeModel =
                 CheckoutAcssDebitMandateOptions.DefaultFor = defaultFor
             }
 
-    and CheckoutAcssDebitMandateOptionsPaymentSchedule =
-        | Combined
-        | Interval
-        | Sporadic
-
-    and CheckoutAcssDebitMandateOptionsTransactionType =
-        | Business
-        | Personal
-
-    and CheckoutAcssDebitMandateOptionsDefaultFor =
-        | Invoice
-        | Subscription
-
     and CheckoutAcssDebitPaymentMethodOptions = {
         ///Currency supported by the bank account. Returned when the Session is in `setup` mode.
         Currency: CheckoutAcssDebitPaymentMethodOptionsCurrency option
@@ -2868,20 +8947,6 @@ module StripeModel =
                 CheckoutAcssDebitPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
                 CheckoutAcssDebitPaymentMethodOptions.VerificationMethod = verificationMethod
             }
-
-    and CheckoutAcssDebitPaymentMethodOptionsCurrency =
-        | Cad
-        | Usd
-
-    and CheckoutAcssDebitPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
-    and CheckoutAcssDebitPaymentMethodOptionsVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
 
     and CheckoutAffirmPaymentMethodOptions () = 
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -2923,11 +8988,6 @@ module StripeModel =
                 CheckoutBacsDebitPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
             }
 
-    and CheckoutBacsDebitPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
     and CheckoutBancontactPaymentMethodOptions () = 
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
         ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
@@ -2949,11 +9009,6 @@ module StripeModel =
                 CheckoutBoletoPaymentMethodOptions.ExpiresAfterDays = expiresAfterDays //required
                 CheckoutBoletoPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
             }
-
-    and CheckoutBoletoPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
 
     and CheckoutCardInstallmentsOptions = {
         ///Indicates if installments are enabled
@@ -2985,11 +9040,6 @@ module StripeModel =
                 CheckoutCardPaymentMethodOptions.StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
             }
 
-    and CheckoutCardPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
     and CheckoutCashappPaymentMethodOptions () = 
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
         ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
@@ -3012,22 +9062,6 @@ module StripeModel =
                 CheckoutCustomerBalanceBankTransferPaymentMethodOptions.EuBankTransfer = euBankTransfer
                 CheckoutCustomerBalanceBankTransferPaymentMethodOptions.RequestedAddressTypes = requestedAddressTypes
             }
-
-    and CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType =
-        | EuBankTransfer
-        | GbBankTransfer
-        | JpBankTransfer
-        | MxBankTransfer
-        | UsBankTransfer
-
-    and CheckoutCustomerBalanceBankTransferPaymentMethodOptionsRequestedAddressTypes =
-        | Aba
-        | Iban
-        | Sepa
-        | SortCode
-        | Spei
-        | Swift
-        | Zengin
 
     and CheckoutCustomerBalancePaymentMethodOptions = {
         BankTransfer: CheckoutCustomerBalanceBankTransferPaymentMethodOptions option
@@ -3092,11 +9126,6 @@ module StripeModel =
                 CheckoutKlarnaPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
             }
 
-    and CheckoutKlarnaPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
     and CheckoutKonbiniPaymentMethodOptions = {
         ///The number of calendar days (between 1 and 60) after which Konbini payment instructions will expire. For example, if a PaymentIntent is confirmed with Konbini and `expires_after_days` set to 2 on Monday JST, the instructions will expire on Wednesday 23:59:59 JST.
         ExpiresAfterDays: int option
@@ -3123,10 +9152,6 @@ module StripeModel =
             {
                 CheckoutLinkPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
             }
-
-    and CheckoutLinkPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
 
     and CheckoutOxxoPaymentMethodOptions = {
         ///The number of calendar days before an OXXO invoice expires. For example, if you create an OXXO invoice on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
@@ -3178,11 +9203,6 @@ module StripeModel =
             {
                 CheckoutSepaDebitPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
             }
-
-    and CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
 
     and CheckoutSessionPaymentMethodOptions = {
         AcssDebit: CheckoutAcssDebitPaymentMethodOptions option
@@ -3266,15 +9286,6 @@ module StripeModel =
                 CheckoutUsBankAccountPaymentMethodOptions.SetupFutureUsage = setupFutureUsage
                 CheckoutUsBankAccountPaymentMethodOptions.VerificationMethod = verificationMethod
             }
-
-    and CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
-    and CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod =
-        | Automatic
-        | Instant
 
     and ConnectCollectionTransfer = {
         ///Amount transferred, in cents (or local equivalent).
@@ -3424,11 +9435,6 @@ module StripeModel =
                 Coupon.CurrencyOptions = currencyOptions
             }
 
-    and CouponDuration =
-        | Forever
-        | Once
-        | Repeating
-
     and CouponAppliesTo = {
         ///A list of product IDs this coupon applies to
         Products: string list
@@ -3561,23 +9567,9 @@ module StripeModel =
         | String of string
         | Invoice of Invoice
 
-    and CreditNoteReason =
-        | Duplicate
-        | Fraudulent
-        | OrderChange
-        | ProductUnsatisfactory
-
     and CreditNoteRefund'AnyOf =
         | String of string
         | Refund of Refund
-
-    and CreditNoteStatus =
-        | Issued
-        | Void
-
-    and CreditNoteType =
-        | PostPayment
-        | PrePayment
 
     ///Line items that make up the credit note
     and CreditNoteLines = {
@@ -3655,10 +9647,6 @@ module StripeModel =
                 CreditNoteLineItem.InvoiceLineItem = invoiceLineItem
             }
 
-    and CreditNoteLineItemType =
-        | CustomLineItem
-        | InvoiceLineItem
-
     and CreditNoteTaxAmount = {
         ///The amount, in cents (or local equivalent), of the tax.
         Amount: int
@@ -3685,23 +9673,6 @@ module StripeModel =
         | String of string
         | TaxRate of TaxRate
 
-    and CreditNoteTaxAmountTaxabilityReason =
-        | CustomerExempt
-        | NotCollecting
-        | NotSubjectToTax
-        | NotSupported
-        | PortionProductExempt
-        | PortionReducedRated
-        | PortionStandardRated
-        | ProductExempt
-        | ProductExemptHoliday
-        | ProportionallyRated
-        | ReducedRated
-        | ReverseCharge
-        | StandardRated
-        | TaxableBasisReduced
-        | ZeroRated
-
     and CurrencyOption = {
         ///When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
         CustomUnitAmount: CustomUnitAmount option
@@ -3723,11 +9694,6 @@ module StripeModel =
                 CurrencyOption.UnitAmountDecimal = unitAmountDecimal //required
                 CurrencyOption.Tiers = tiers
             }
-
-    and CurrencyOptionTaxBehavior =
-        | Exclusive
-        | Inclusive
-        | Unspecified
 
     and CustomUnitAmount = {
         ///The maximum unit amount the customer can specify for this item.
@@ -3842,11 +9808,6 @@ module StripeModel =
         | String of string
         | PaymentSource of PaymentSource
 
-    and CustomerTaxExempt =
-        | Exempt
-        | [<JsonUnionCase("none")>] None'
-        | Reverse
-
     and CustomerTestClock'AnyOf =
         | String of string
         | TestHelpersTestClock of TestHelpersTestClock
@@ -3928,10 +9889,6 @@ module StripeModel =
                 CustomerAcceptance.Online = online
             }
 
-    and CustomerAcceptanceType =
-        | Offline
-        | Online
-
     and CustomerBalanceCustomerBalanceSettings = {
         ///The configuration for how funds that land in the customer cash balance are reconciled.
         ReconciliationMode: CustomerBalanceCustomerBalanceSettingsReconciliationMode
@@ -3944,10 +9901,6 @@ module StripeModel =
                 CustomerBalanceCustomerBalanceSettings.ReconciliationMode = reconciliationMode //required
                 CustomerBalanceCustomerBalanceSettings.UsingMerchantDefault = usingMerchantDefault //required
             }
-
-    and CustomerBalanceCustomerBalanceSettingsReconciliationMode =
-        | Automatic
-        | Manual
 
     and CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft = {
         ///The [Balance Transaction](docs/api/balance_transactions/object) that corresponds to funds taken out of your Stripe balance.
@@ -4014,13 +9967,6 @@ module StripeModel =
                 CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer.UsBankTransfer = usBankTransfer
             }
 
-    and CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferType =
-        | EuBankTransfer
-        | GbBankTransfer
-        | JpBankTransfer
-        | MxBankTransfer
-        | UsBankTransfer
-
     and CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer = {
         ///The BIC of the bank of the sender of the funding.
         Bic: string option
@@ -4081,11 +10027,6 @@ module StripeModel =
                 CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer.SenderName = senderName //required
                 CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer.Network = network
             }
-
-    and CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransferNetwork =
-        | Ach
-        | DomesticWireUs
-        | Swift
 
     and CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction = {
         ///The [Refund](https://stripe.com/docs/api/refunds/object) that moved these funds into the customer's cash balance.
@@ -4178,18 +10119,6 @@ module StripeModel =
         | String of string
         | Invoice of Invoice
 
-    and CustomerBalanceTransactionType =
-        | Adjustment
-        | AppliedToInvoice
-        | CreditNote
-        | Initial
-        | InvoiceOverpaid
-        | InvoiceTooLarge
-        | InvoiceTooSmall
-        | Migration
-        | UnappliedFromInvoice
-        | UnspentReceiverCredit
-
     ///Customers with certain payments enabled have a cash balance, representing funds that were paid
     ///by the customer to a merchant, but have not yet been allocated to a payment. Cash Balance Transactions
     ///represent when funds are moved into or out of this balance. This includes funding by the customer, allocation
@@ -4242,16 +10171,6 @@ module StripeModel =
         | String of string
         | Customer of Customer
 
-    and CustomerCashBalanceTransactionType =
-        | AdjustedForOverdraft
-        | AppliedToPayment
-        | Funded
-        | FundingReversed
-        | RefundedFromPayment
-        | ReturnCanceled
-        | ReturnInitiated
-        | UnappliedFromPayment
-
     and CustomerTax = {
         ///Surfaces if automatic tax computation is possible given the current customer location information.
         AutomaticTax: CustomerTaxAutomaticTax
@@ -4268,12 +10187,6 @@ module StripeModel =
                 CustomerTax.Location = location //required
             }
 
-    and CustomerTaxAutomaticTax =
-        | Failed
-        | NotCollecting
-        | Supported
-        | UnrecognizedLocation
-
     and CustomerTaxLocation = {
         ///The customer's country as identified by Stripe Tax.
         Country: string
@@ -4289,12 +10202,6 @@ module StripeModel =
                 CustomerTaxLocation.Source = source //required
                 CustomerTaxLocation.State = state //required
             }
-
-    and CustomerTaxLocationSource =
-        | BillingAddress
-        | IpAddress
-        | PaymentMethod
-        | ShippingDestination
 
     and DeletedAccount = {
         ///Always true for a deleted object
@@ -4851,31 +10758,6 @@ module StripeModel =
         | String of string
         | PaymentIntent of PaymentIntent
 
-    and DisputeReason =
-        | BankCannotProcess
-        | CheckReturned
-        | CreditNotProcessed
-        | CustomerInitiated
-        | DebitNotAuthorized
-        | Duplicate
-        | Fraudulent
-        | General
-        | IncorrectAccountDetails
-        | InsufficientFunds
-        | ProductNotReceived
-        | ProductUnacceptable
-        | SubscriptionCanceled
-        | Unrecognized
-
-    and DisputeStatus =
-        | Lost
-        | NeedsResponse
-        | UnderReview
-        | WarningClosed
-        | WarningNeedsResponse
-        | WarningUnderReview
-        | Won
-
     and DisputeEvidence = {
         ///Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity.
         AccessActivityLog: string option
@@ -5045,17 +10927,6 @@ module StripeModel =
                 DisputePaymentMethodDetailsCard.NetworkReasonCode = networkReasonCode //required
             }
 
-    and DisputePaymentMethodDetailsCardBrand =
-        | Amex
-        | Diners
-        | Discover
-        | EftposAu
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
     and EmailSent = {
         ///The timestamp when the email was sent.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EmailSentAt: DateTime
@@ -5165,203 +11036,6 @@ module StripeModel =
                 Event.Account = account
             }
 
-    and EventType =
-        | [<JsonUnionCase("account.application.authorized")>] AccountApplicationAuthorized
-        | [<JsonUnionCase("account.application.deauthorized")>] AccountApplicationDeauthorized
-        | [<JsonUnionCase("account.external_account.created")>] AccountExternalAccountCreated
-        | [<JsonUnionCase("account.external_account.deleted")>] AccountExternalAccountDeleted
-        | [<JsonUnionCase("account.external_account.updated")>] AccountExternalAccountUpdated
-        | [<JsonUnionCase("account.updated")>] AccountUpdated
-        | [<JsonUnionCase("application_fee.created")>] ApplicationFeeCreated
-        | [<JsonUnionCase("application_fee.refund.updated")>] ApplicationFeeRefundUpdated
-        | [<JsonUnionCase("application_fee.refunded")>] ApplicationFeeRefunded
-        | [<JsonUnionCase("balance.available")>] BalanceAvailable
-        | [<JsonUnionCase("billing_portal.configuration.created")>] BillingPortalConfigurationCreated
-        | [<JsonUnionCase("billing_portal.configuration.updated")>] BillingPortalConfigurationUpdated
-        | [<JsonUnionCase("billing_portal.session.created")>] BillingPortalSessionCreated
-        | [<JsonUnionCase("capability.updated")>] CapabilityUpdated
-        | [<JsonUnionCase("cash_balance.funds_available")>] CashBalanceFundsAvailable
-        | [<JsonUnionCase("charge.captured")>] ChargeCaptured
-        | [<JsonUnionCase("charge.dispute.closed")>] ChargeDisputeClosed
-        | [<JsonUnionCase("charge.dispute.created")>] ChargeDisputeCreated
-        | [<JsonUnionCase("charge.dispute.funds_reinstated")>] ChargeDisputeFundsReinstated
-        | [<JsonUnionCase("charge.dispute.funds_withdrawn")>] ChargeDisputeFundsWithdrawn
-        | [<JsonUnionCase("charge.dispute.updated")>] ChargeDisputeUpdated
-        | [<JsonUnionCase("charge.expired")>] ChargeExpired
-        | [<JsonUnionCase("charge.failed")>] ChargeFailed
-        | [<JsonUnionCase("charge.pending")>] ChargePending
-        | [<JsonUnionCase("charge.refund.updated")>] ChargeRefundUpdated
-        | [<JsonUnionCase("charge.refunded")>] ChargeRefunded
-        | [<JsonUnionCase("charge.succeeded")>] ChargeSucceeded
-        | [<JsonUnionCase("charge.updated")>] ChargeUpdated
-        | [<JsonUnionCase("checkout.session.async_payment_failed")>] CheckoutSessionAsyncPaymentFailed
-        | [<JsonUnionCase("checkout.session.async_payment_succeeded")>] CheckoutSessionAsyncPaymentSucceeded
-        | [<JsonUnionCase("checkout.session.completed")>] CheckoutSessionCompleted
-        | [<JsonUnionCase("checkout.session.expired")>] CheckoutSessionExpired
-        | [<JsonUnionCase("coupon.created")>] CouponCreated
-        | [<JsonUnionCase("coupon.deleted")>] CouponDeleted
-        | [<JsonUnionCase("coupon.updated")>] CouponUpdated
-        | [<JsonUnionCase("credit_note.created")>] CreditNoteCreated
-        | [<JsonUnionCase("credit_note.updated")>] CreditNoteUpdated
-        | [<JsonUnionCase("credit_note.voided")>] CreditNoteVoided
-        | [<JsonUnionCase("customer.created")>] CustomerCreated
-        | [<JsonUnionCase("customer.deleted")>] CustomerDeleted
-        | [<JsonUnionCase("customer.discount.created")>] CustomerDiscountCreated
-        | [<JsonUnionCase("customer.discount.deleted")>] CustomerDiscountDeleted
-        | [<JsonUnionCase("customer.discount.updated")>] CustomerDiscountUpdated
-        | [<JsonUnionCase("customer.source.created")>] CustomerSourceCreated
-        | [<JsonUnionCase("customer.source.deleted")>] CustomerSourceDeleted
-        | [<JsonUnionCase("customer.source.expiring")>] CustomerSourceExpiring
-        | [<JsonUnionCase("customer.source.updated")>] CustomerSourceUpdated
-        | [<JsonUnionCase("customer.subscription.created")>] CustomerSubscriptionCreated
-        | [<JsonUnionCase("customer.subscription.deleted")>] CustomerSubscriptionDeleted
-        | [<JsonUnionCase("customer.subscription.paused")>] CustomerSubscriptionPaused
-        | [<JsonUnionCase("customer.subscription.pending_update_applied")>] CustomerSubscriptionPendingUpdateApplied
-        | [<JsonUnionCase("customer.subscription.pending_update_expired")>] CustomerSubscriptionPendingUpdateExpired
-        | [<JsonUnionCase("customer.subscription.resumed")>] CustomerSubscriptionResumed
-        | [<JsonUnionCase("customer.subscription.trial_will_end")>] CustomerSubscriptionTrialWillEnd
-        | [<JsonUnionCase("customer.subscription.updated")>] CustomerSubscriptionUpdated
-        | [<JsonUnionCase("customer.tax_id.created")>] CustomerTaxIdCreated
-        | [<JsonUnionCase("customer.tax_id.deleted")>] CustomerTaxIdDeleted
-        | [<JsonUnionCase("customer.tax_id.updated")>] CustomerTaxIdUpdated
-        | [<JsonUnionCase("customer.updated")>] CustomerUpdated
-        | [<JsonUnionCase("customer_cash_balance_transaction.created")>] CustomerCashBalanceTransactionCreated
-        | [<JsonUnionCase("file.created")>] FileCreated
-        | [<JsonUnionCase("financial_connections.account.created")>] FinancialConnectionsAccountCreated
-        | [<JsonUnionCase("financial_connections.account.deactivated")>] FinancialConnectionsAccountDeactivated
-        | [<JsonUnionCase("financial_connections.account.disconnected")>] FinancialConnectionsAccountDisconnected
-        | [<JsonUnionCase("financial_connections.account.reactivated")>] FinancialConnectionsAccountReactivated
-        | [<JsonUnionCase("financial_connections.account.refreshed_balance")>] FinancialConnectionsAccountRefreshedBalance
-        | [<JsonUnionCase("identity.verification_session.canceled")>] IdentityVerificationSessionCanceled
-        | [<JsonUnionCase("identity.verification_session.created")>] IdentityVerificationSessionCreated
-        | [<JsonUnionCase("identity.verification_session.processing")>] IdentityVerificationSessionProcessing
-        | [<JsonUnionCase("identity.verification_session.redacted")>] IdentityVerificationSessionRedacted
-        | [<JsonUnionCase("identity.verification_session.requires_input")>] IdentityVerificationSessionRequiresInput
-        | [<JsonUnionCase("identity.verification_session.verified")>] IdentityVerificationSessionVerified
-        | [<JsonUnionCase("invoice.created")>] InvoiceCreated
-        | [<JsonUnionCase("invoice.deleted")>] InvoiceDeleted
-        | [<JsonUnionCase("invoice.finalization_failed")>] InvoiceFinalizationFailed
-        | [<JsonUnionCase("invoice.finalized")>] InvoiceFinalized
-        | [<JsonUnionCase("invoice.marked_uncollectible")>] InvoiceMarkedUncollectible
-        | [<JsonUnionCase("invoice.paid")>] InvoicePaid
-        | [<JsonUnionCase("invoice.payment_action_required")>] InvoicePaymentActionRequired
-        | [<JsonUnionCase("invoice.payment_failed")>] InvoicePaymentFailed
-        | [<JsonUnionCase("invoice.payment_succeeded")>] InvoicePaymentSucceeded
-        | [<JsonUnionCase("invoice.sent")>] InvoiceSent
-        | [<JsonUnionCase("invoice.upcoming")>] InvoiceUpcoming
-        | [<JsonUnionCase("invoice.updated")>] InvoiceUpdated
-        | [<JsonUnionCase("invoice.voided")>] InvoiceVoided
-        | [<JsonUnionCase("invoiceitem.created")>] InvoiceitemCreated
-        | [<JsonUnionCase("invoiceitem.deleted")>] InvoiceitemDeleted
-        | [<JsonUnionCase("invoiceitem.updated")>] InvoiceitemUpdated
-        | [<JsonUnionCase("issuing_authorization.created")>] IssuingAuthorizationCreated
-        | [<JsonUnionCase("issuing_authorization.request")>] IssuingAuthorizationRequest
-        | [<JsonUnionCase("issuing_authorization.updated")>] IssuingAuthorizationUpdated
-        | [<JsonUnionCase("issuing_card.created")>] IssuingCardCreated
-        | [<JsonUnionCase("issuing_card.updated")>] IssuingCardUpdated
-        | [<JsonUnionCase("issuing_cardholder.created")>] IssuingCardholderCreated
-        | [<JsonUnionCase("issuing_cardholder.updated")>] IssuingCardholderUpdated
-        | [<JsonUnionCase("issuing_dispute.closed")>] IssuingDisputeClosed
-        | [<JsonUnionCase("issuing_dispute.created")>] IssuingDisputeCreated
-        | [<JsonUnionCase("issuing_dispute.funds_reinstated")>] IssuingDisputeFundsReinstated
-        | [<JsonUnionCase("issuing_dispute.submitted")>] IssuingDisputeSubmitted
-        | [<JsonUnionCase("issuing_dispute.updated")>] IssuingDisputeUpdated
-        | [<JsonUnionCase("issuing_transaction.created")>] IssuingTransactionCreated
-        | [<JsonUnionCase("issuing_transaction.updated")>] IssuingTransactionUpdated
-        | [<JsonUnionCase("mandate.updated")>] MandateUpdated
-        | [<JsonUnionCase("order.created")>] OrderCreated
-        | [<JsonUnionCase("payment_intent.amount_capturable_updated")>] PaymentIntentAmountCapturableUpdated
-        | [<JsonUnionCase("payment_intent.canceled")>] PaymentIntentCanceled
-        | [<JsonUnionCase("payment_intent.created")>] PaymentIntentCreated
-        | [<JsonUnionCase("payment_intent.partially_funded")>] PaymentIntentPartiallyFunded
-        | [<JsonUnionCase("payment_intent.payment_failed")>] PaymentIntentPaymentFailed
-        | [<JsonUnionCase("payment_intent.processing")>] PaymentIntentProcessing
-        | [<JsonUnionCase("payment_intent.requires_action")>] PaymentIntentRequiresAction
-        | [<JsonUnionCase("payment_intent.succeeded")>] PaymentIntentSucceeded
-        | [<JsonUnionCase("payment_link.created")>] PaymentLinkCreated
-        | [<JsonUnionCase("payment_link.updated")>] PaymentLinkUpdated
-        | [<JsonUnionCase("payment_method.attached")>] PaymentMethodAttached
-        | [<JsonUnionCase("payment_method.automatically_updated")>] PaymentMethodAutomaticallyUpdated
-        | [<JsonUnionCase("payment_method.detached")>] PaymentMethodDetached
-        | [<JsonUnionCase("payment_method.updated")>] PaymentMethodUpdated
-        | [<JsonUnionCase("payout.canceled")>] PayoutCanceled
-        | [<JsonUnionCase("payout.created")>] PayoutCreated
-        | [<JsonUnionCase("payout.failed")>] PayoutFailed
-        | [<JsonUnionCase("payout.paid")>] PayoutPaid
-        | [<JsonUnionCase("payout.reconciliation_completed")>] PayoutReconciliationCompleted
-        | [<JsonUnionCase("payout.updated")>] PayoutUpdated
-        | [<JsonUnionCase("person.created")>] PersonCreated
-        | [<JsonUnionCase("person.deleted")>] PersonDeleted
-        | [<JsonUnionCase("person.updated")>] PersonUpdated
-        | [<JsonUnionCase("plan.created")>] PlanCreated
-        | [<JsonUnionCase("plan.deleted")>] PlanDeleted
-        | [<JsonUnionCase("plan.updated")>] PlanUpdated
-        | [<JsonUnionCase("price.created")>] PriceCreated
-        | [<JsonUnionCase("price.deleted")>] PriceDeleted
-        | [<JsonUnionCase("price.updated")>] PriceUpdated
-        | [<JsonUnionCase("product.created")>] ProductCreated
-        | [<JsonUnionCase("product.deleted")>] ProductDeleted
-        | [<JsonUnionCase("product.updated")>] ProductUpdated
-        | [<JsonUnionCase("promotion_code.created")>] PromotionCodeCreated
-        | [<JsonUnionCase("promotion_code.updated")>] PromotionCodeUpdated
-        | [<JsonUnionCase("quote.accepted")>] QuoteAccepted
-        | [<JsonUnionCase("quote.canceled")>] QuoteCanceled
-        | [<JsonUnionCase("quote.created")>] QuoteCreated
-        | [<JsonUnionCase("quote.finalized")>] QuoteFinalized
-        | [<JsonUnionCase("radar.early_fraud_warning.created")>] RadarEarlyFraudWarningCreated
-        | [<JsonUnionCase("radar.early_fraud_warning.updated")>] RadarEarlyFraudWarningUpdated
-        | [<JsonUnionCase("recipient.created")>] RecipientCreated
-        | [<JsonUnionCase("recipient.deleted")>] RecipientDeleted
-        | [<JsonUnionCase("recipient.updated")>] RecipientUpdated
-        | [<JsonUnionCase("refund.created")>] RefundCreated
-        | [<JsonUnionCase("refund.updated")>] RefundUpdated
-        | [<JsonUnionCase("reporting.report_run.failed")>] ReportingReportRunFailed
-        | [<JsonUnionCase("reporting.report_run.succeeded")>] ReportingReportRunSucceeded
-        | [<JsonUnionCase("reporting.report_type.updated")>] ReportingReportTypeUpdated
-        | [<JsonUnionCase("review.closed")>] ReviewClosed
-        | [<JsonUnionCase("review.opened")>] ReviewOpened
-        | [<JsonUnionCase("setup_intent.canceled")>] SetupIntentCanceled
-        | [<JsonUnionCase("setup_intent.created")>] SetupIntentCreated
-        | [<JsonUnionCase("setup_intent.requires_action")>] SetupIntentRequiresAction
-        | [<JsonUnionCase("setup_intent.setup_failed")>] SetupIntentSetupFailed
-        | [<JsonUnionCase("setup_intent.succeeded")>] SetupIntentSucceeded
-        | [<JsonUnionCase("sigma.scheduled_query_run.created")>] SigmaScheduledQueryRunCreated
-        | [<JsonUnionCase("sku.created")>] SkuCreated
-        | [<JsonUnionCase("sku.deleted")>] SkuDeleted
-        | [<JsonUnionCase("sku.updated")>] SkuUpdated
-        | [<JsonUnionCase("source.canceled")>] SourceCanceled
-        | [<JsonUnionCase("source.chargeable")>] SourceChargeable
-        | [<JsonUnionCase("source.failed")>] SourceFailed
-        | [<JsonUnionCase("source.mandate_notification")>] SourceMandateNotification
-        | [<JsonUnionCase("source.refund_attributes_required")>] SourceRefundAttributesRequired
-        | [<JsonUnionCase("source.transaction.created")>] SourceTransactionCreated
-        | [<JsonUnionCase("source.transaction.updated")>] SourceTransactionUpdated
-        | [<JsonUnionCase("subscription_schedule.aborted")>] SubscriptionScheduleAborted
-        | [<JsonUnionCase("subscription_schedule.canceled")>] SubscriptionScheduleCanceled
-        | [<JsonUnionCase("subscription_schedule.completed")>] SubscriptionScheduleCompleted
-        | [<JsonUnionCase("subscription_schedule.created")>] SubscriptionScheduleCreated
-        | [<JsonUnionCase("subscription_schedule.expiring")>] SubscriptionScheduleExpiring
-        | [<JsonUnionCase("subscription_schedule.released")>] SubscriptionScheduleReleased
-        | [<JsonUnionCase("subscription_schedule.updated")>] SubscriptionScheduleUpdated
-        | [<JsonUnionCase("tax.settings.updated")>] TaxSettingsUpdated
-        | [<JsonUnionCase("tax_rate.created")>] TaxRateCreated
-        | [<JsonUnionCase("tax_rate.updated")>] TaxRateUpdated
-        | [<JsonUnionCase("terminal.reader.action_failed")>] TerminalReaderActionFailed
-        | [<JsonUnionCase("terminal.reader.action_succeeded")>] TerminalReaderActionSucceeded
-        | [<JsonUnionCase("test_helpers.test_clock.advancing")>] TestHelpersTestClockAdvancing
-        | [<JsonUnionCase("test_helpers.test_clock.created")>] TestHelpersTestClockCreated
-        | [<JsonUnionCase("test_helpers.test_clock.deleted")>] TestHelpersTestClockDeleted
-        | [<JsonUnionCase("test_helpers.test_clock.internal_failure")>] TestHelpersTestClockInternalFailure
-        | [<JsonUnionCase("test_helpers.test_clock.ready")>] TestHelpersTestClockReady
-        | [<JsonUnionCase("topup.canceled")>] TopupCanceled
-        | [<JsonUnionCase("topup.created")>] TopupCreated
-        | [<JsonUnionCase("topup.failed")>] TopupFailed
-        | [<JsonUnionCase("topup.reversed")>] TopupReversed
-        | [<JsonUnionCase("topup.succeeded")>] TopupSucceeded
-        | [<JsonUnionCase("transfer.created")>] TransferCreated
-        | [<JsonUnionCase("transfer.reversed")>] TransferReversed
-        | [<JsonUnionCase("transfer.updated")>] TransferUpdated
-
     ///`Exchange Rate` objects allow you to determine the rates that Stripe is
     ///currently using to convert from one currency to another. Since this number is
     ///variable throughout the day, there are various reasons why you might want to
@@ -5432,11 +11106,6 @@ module StripeModel =
                 Fee.Description = description //required
                 Fee.Type = ``type`` //required
             }
-
-    and FeeType =
-        | ApplicationFee
-        | StripeFee
-        | Tax
 
     ///`Application Fee Refund` objects allow you to refund an application fee that
     ///has previously been created but not yet refunded. Funds will be refunded to
@@ -5526,23 +11195,6 @@ module StripeModel =
                 File.Url = url //required
                 File.Links = links |> Option.flatten
             }
-
-    and FilePurpose =
-        | AccountRequirement
-        | AdditionalVerification
-        | BusinessIcon
-        | BusinessLogo
-        | CustomerSignature
-        | DisputeEvidence
-        | DocumentProviderIdentityDocument
-        | FinanceReportRun
-        | IdentityDocument
-        | IdentityDocumentDownloadable
-        | PciDocument
-        | Selfie
-        | SigmaScheduledQuery
-        | TaxDocumentUserUpload
-        | TerminalReaderSplashscreen
 
     ///A list of [file links](https://stripe.com/docs/api#file_links) that point at this file.
     and FileLinks = {
@@ -5673,38 +11325,9 @@ module StripeModel =
                 FinancialConnectionsAccount.SupportedPaymentMethodTypes = supportedPaymentMethodTypes //required
             }
 
-    and FinancialConnectionsAccountCategory =
-        | Cash
-        | Credit
-        | Investment
-        | Other
-
     and FinancialConnectionsAccountOwnership'AnyOf =
         | String of string
         | FinancialConnectionsAccountOwnership of FinancialConnectionsAccountOwnership
-
-    and FinancialConnectionsAccountStatus =
-        | Active
-        | Disconnected
-        | Inactive
-
-    and FinancialConnectionsAccountSubcategory =
-        | Checking
-        | CreditCard
-        | LineOfCredit
-        | Mortgage
-        | Other
-        | Savings
-
-    and FinancialConnectionsAccountPermissions =
-        | Balances
-        | Ownership
-        | PaymentMethod
-        | Transactions
-
-    and FinancialConnectionsAccountSupportedPaymentMethodTypes =
-        | Link
-        | UsBankAccount
 
     ///Describes an owner of an account.
     and FinancialConnectionsAccountOwner = {
@@ -5835,16 +11458,6 @@ module StripeModel =
                 FinancialConnectionsSessionAccounts.Url = url //required
             }
 
-    and FinancialConnectionsSessionPermissions =
-        | Balances
-        | Ownership
-        | PaymentMethod
-        | Transactions
-
-    and FinancialConnectionsSessionPrefetch =
-        | Balances
-        | Ownership
-
     and FinancialReportingFinanceReportRunRunParameters = {
         ///The set of output columns requested for inclusion in the report run.
         Columns: string list option
@@ -5875,10 +11488,6 @@ module StripeModel =
                 FinancialReportingFinanceReportRunRunParameters.ReportingCategory = reportingCategory
                 FinancialReportingFinanceReportRunRunParameters.Timezone = timezone
             }
-
-    and FinancialReportingFinanceReportRunRunParametersTimezone =
-        | IntervalStart
-        | IntervalEnd
 
     ///Each customer has a [`balance`](https://stripe.com/docs/api/customers/object#customer_object-balance) that is
     ///automatically applied to future invoices and payments using the `customer_balance` payment method.
@@ -5921,10 +11530,6 @@ module StripeModel =
                 FundingInstructionsBankTransfer.Type = ``type`` //required
             }
 
-    and FundingInstructionsBankTransferType =
-        | EuBankTransfer
-        | JpBankTransfer
-
     ///FinancialAddresses contain identifying information that resolves to a FinancialAccount.
     and FundingInstructionsBankTransferFinancialAddress = {
         Iban: FundingInstructionsBankTransferIbanRecord option
@@ -5946,19 +11551,6 @@ module StripeModel =
                 FundingInstructionsBankTransferFinancialAddress.SupportedNetworks = supportedNetworks
                 FundingInstructionsBankTransferFinancialAddress.Zengin = zengin
             }
-
-    and FundingInstructionsBankTransferFinancialAddressType =
-        | Iban
-        | SortCode
-        | Spei
-        | Zengin
-
-    and FundingInstructionsBankTransferFinancialAddressSupportedNetworks =
-        | Bacs
-        | Fps
-        | Sepa
-        | Spei
-        | Zengin
 
     ///Iban Records contain E.U. bank account details per the SEPA format.
     and FundingInstructionsBankTransferIbanRecord = {
@@ -6042,10 +11634,6 @@ module StripeModel =
                 FundingInstructionsBankTransferZenginRecord.BranchCode = branchCode //required
                 FundingInstructionsBankTransferZenginRecord.BranchName = branchName //required
             }
-
-    and FundingInstructionsBankTransferZenginRecordAccountType =
-        | Futsu
-        | Toza
 
     ///Point in Time
     and GelatoDataDocumentReportDateOfBirth = {
@@ -6176,15 +11764,6 @@ module StripeModel =
                 GelatoDocumentReport.Type = ``type`` //required
             }
 
-    and GelatoDocumentReportStatus =
-        | Unverified
-        | Verified
-
-    and GelatoDocumentReportType =
-        | DrivingLicense
-        | IdCard
-        | Passport
-
     and GelatoDocumentReportError = {
         ///A short machine-readable string giving the reason for the verification failure.
         Code: GelatoDocumentReportErrorCode option
@@ -6197,11 +11776,6 @@ module StripeModel =
                 GelatoDocumentReportError.Code = code //required
                 GelatoDocumentReportError.Reason = reason //required
             }
-
-    and GelatoDocumentReportErrorCode =
-        | DocumentExpired
-        | DocumentTypeNotSupported
-        | DocumentUnverifiedOther
 
     ///Result from an id_number check
     and GelatoIdNumberReport = {
@@ -6232,15 +11806,6 @@ module StripeModel =
                 GelatoIdNumberReport.Status = status //required
             }
 
-    and GelatoIdNumberReportIdNumberType =
-        | BrCpf
-        | SgNric
-        | UsSsn
-
-    and GelatoIdNumberReportStatus =
-        | Unverified
-        | Verified
-
     and GelatoIdNumberReportError = {
         ///A short machine-readable string giving the reason for the verification failure.
         Code: GelatoIdNumberReportErrorCode option
@@ -6253,11 +11818,6 @@ module StripeModel =
                 GelatoIdNumberReportError.Code = code //required
                 GelatoIdNumberReportError.Reason = reason //required
             }
-
-    and GelatoIdNumberReportErrorCode =
-        | IdNumberInsufficientDocumentData
-        | IdNumberMismatch
-        | IdNumberUnverifiedOther
 
     and GelatoReportDocumentOptions = {
         ///Array of strings of allowed identity document types. If the provided identity document isn’t one of the allowed types, the verification check will fail with a document_type_not_allowed error code.
@@ -6277,11 +11837,6 @@ module StripeModel =
                 GelatoReportDocumentOptions.RequireLiveCapture = requireLiveCapture
                 GelatoReportDocumentOptions.RequireMatchingSelfie = requireMatchingSelfie
             }
-
-    and GelatoReportDocumentOptionsAllowedTypes =
-        | DrivingLicense
-        | IdCard
-        | Passport
 
     and GelatoReportIdNumberOptions = {
         GelatoReportIdNumberOptions: string option
@@ -6312,10 +11867,6 @@ module StripeModel =
                 GelatoSelfieReport.Status = status //required
             }
 
-    and GelatoSelfieReportStatus =
-        | Unverified
-        | Verified
-
     and GelatoSelfieReportError = {
         ///A short machine-readable string giving the reason for the verification failure.
         Code: GelatoSelfieReportErrorCode option
@@ -6328,12 +11879,6 @@ module StripeModel =
                 GelatoSelfieReportError.Code = code //required
                 GelatoSelfieReportError.Reason = reason //required
             }
-
-    and GelatoSelfieReportErrorCode =
-        | SelfieDocumentMissingPhoto
-        | SelfieFaceMismatch
-        | SelfieManipulated
-        | SelfieUnverifiedOther
 
     and GelatoSessionDocumentOptions = {
         ///Array of strings of allowed identity document types. If the provided identity document isn’t one of the allowed types, the verification check will fail with a document_type_not_allowed error code.
@@ -6353,11 +11898,6 @@ module StripeModel =
                 GelatoSessionDocumentOptions.RequireLiveCapture = requireLiveCapture
                 GelatoSessionDocumentOptions.RequireMatchingSelfie = requireMatchingSelfie
             }
-
-    and GelatoSessionDocumentOptionsAllowedTypes =
-        | DrivingLicense
-        | IdCard
-        | Passport
 
     and GelatoSessionIdNumberOptions = {
         GelatoSessionIdNumberOptions: string option
@@ -6381,23 +11921,6 @@ module StripeModel =
                 GelatoSessionLastError.Code = code //required
                 GelatoSessionLastError.Reason = reason //required
             }
-
-    and GelatoSessionLastErrorCode =
-        | Abandoned
-        | ConsentDeclined
-        | CountryNotSupported
-        | DeviceNotSupported
-        | DocumentExpired
-        | DocumentTypeNotSupported
-        | DocumentUnverifiedOther
-        | IdNumberInsufficientDocumentData
-        | IdNumberMismatch
-        | IdNumberUnverifiedOther
-        | SelfieDocumentMissingPhoto
-        | SelfieFaceMismatch
-        | SelfieManipulated
-        | SelfieUnverifiedOther
-        | UnderSupportedAge
 
     and GelatoVerificationReportOptions = {
         Document: GelatoReportDocumentOptions option
@@ -6446,11 +11969,6 @@ module StripeModel =
                 GelatoVerifiedOutputs.LastName = lastName //required
             }
 
-    and GelatoVerifiedOutputsIdNumberType =
-        | BrCpf
-        | SgNric
-        | UsSsn
-
     ///A VerificationReport is the result of an attempt to collect and verify data from a user.
     ///The collection of verification checks performed is determined from the `type` and `options`
     ///parameters used. You can find the result of each verification check performed in the
@@ -6492,10 +12010,6 @@ module StripeModel =
                 IdentityVerificationReport.Selfie = selfie
                 IdentityVerificationReport.Type = ``type``
             }
-
-    and IdentityVerificationReportType =
-        | Document
-        | IdNumber
 
     ///A VerificationSession guides you through the process of collecting and verifying the identities
     ///of your users. It contains details about the type of verification, such as what [verification
@@ -6559,16 +12073,6 @@ module StripeModel =
         | String of string
         | IdentityVerificationReport of IdentityVerificationReport
 
-    and IdentityVerificationSessionStatus =
-        | Canceled
-        | Processing
-        | RequiresInput
-        | Verified
-
-    and IdentityVerificationSessionType =
-        | Document
-        | IdNumber
-
     and InboundTransfers = {
         BillingDetails: TreasurySharedResourceBillingDetails
         UsBankAccount: InboundTransfersPaymentMethodDetailsUsBankAccount option
@@ -6610,14 +12114,6 @@ module StripeModel =
                 InboundTransfersPaymentMethodDetailsUsBankAccount.Last4 = last4 //required
                 InboundTransfersPaymentMethodDetailsUsBankAccount.RoutingNumber = routingNumber //required
             }
-
-    and InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
-        | Company
-        | Individual
-
-    and InboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
-        | Checking
-        | Savings
 
     ///Invoices are statements of amounts owed by a customer, and are either
     ///generated one-off, or generated periodically from a subscription.
@@ -6903,34 +12399,14 @@ module StripeModel =
         | Application of Application
         | DeletedApplication of DeletedApplication
 
-    and InvoiceBillingReason =
-        | AutomaticPendingInvoiceItemInvoice
-        | Manual
-        | QuoteAccept
-        | Subscription
-        | SubscriptionCreate
-        | SubscriptionCycle
-        | SubscriptionThreshold
-        | SubscriptionUpdate
-        | Upcoming
-
     and InvoiceCharge'AnyOf =
         | String of string
         | Charge of Charge
-
-    and InvoiceCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
 
     and InvoiceCustomer'AnyOf =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
-
-    and InvoiceCustomerTaxExempt =
-        | Exempt
-        | [<JsonUnionCase("none")>] None'
-        | Reverse
 
     and InvoiceDefaultPaymentMethod'AnyOf =
         | String of string
@@ -6955,13 +12431,6 @@ module StripeModel =
     and InvoiceQuote'AnyOf =
         | String of string
         | Quote of Quote
-
-    and InvoiceStatus =
-        | Draft
-        | Open
-        | Paid
-        | Uncollectible
-        | Void
 
     and InvoiceSubscription'AnyOf =
         | String of string
@@ -7053,10 +12522,6 @@ module StripeModel =
                 InvoiceMandateOptionsCard.Description = description //required
             }
 
-    and InvoiceMandateOptionsCardAmountType =
-        | Fixed
-        | Maximum
-
     and InvoicePaymentMethodOptionsAcssDebit = {
         MandateOptions: InvoicePaymentMethodOptionsAcssDebitMandateOptions option
         ///Bank account verification method.
@@ -7069,11 +12534,6 @@ module StripeModel =
                 InvoicePaymentMethodOptionsAcssDebit.VerificationMethod = verificationMethod
             }
 
-    and InvoicePaymentMethodOptionsAcssDebitVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
-
     and InvoicePaymentMethodOptionsAcssDebitMandateOptions = {
         ///Transaction type of the mandate.
         TransactionType: InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
@@ -7084,10 +12544,6 @@ module StripeModel =
                 InvoicePaymentMethodOptionsAcssDebitMandateOptions.TransactionType = transactionType //required
             }
 
-    and InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType =
-        | Business
-        | Personal
-
     and InvoicePaymentMethodOptionsBancontact = {
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
         PreferredLanguage: InvoicePaymentMethodOptionsBancontactPreferredLanguage
@@ -7097,12 +12553,6 @@ module StripeModel =
             {
                 InvoicePaymentMethodOptionsBancontact.PreferredLanguage = preferredLanguage //required
             }
-
-    and InvoicePaymentMethodOptionsBancontactPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
 
     and InvoicePaymentMethodOptionsCard = {
         Installments: InvoiceInstallmentsCard option
@@ -7115,10 +12565,6 @@ module StripeModel =
                 InvoicePaymentMethodOptionsCard.RequestThreeDSecure = requestThreeDSecure //required
                 InvoicePaymentMethodOptionsCard.Installments = installments
             }
-
-    and InvoicePaymentMethodOptionsCardRequestThreeDSecure =
-        | Any
-        | Automatic
 
     and InvoicePaymentMethodOptionsCustomerBalance = {
         BankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer option
@@ -7144,13 +12590,6 @@ module StripeModel =
                 InvoicePaymentMethodOptionsCustomerBalanceBankTransfer.EuBankTransfer = euBankTransfer
             }
 
-    and InvoicePaymentMethodOptionsCustomerBalanceBankTransferType =
-        | EuBankTransfer
-        | GbBankTransfer
-        | JpBankTransfer
-        | MxBankTransfer
-        | UsBankTransfer
-
     and InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer = {
         ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
         Country: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry
@@ -7160,14 +12599,6 @@ module StripeModel =
             {
                 InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer.Country = country //required
             }
-
-    and InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry =
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("NL")>] NL
 
     and InvoicePaymentMethodOptionsKonbini = {
         InvoicePaymentMethodOptionsKonbini: string option
@@ -7190,11 +12621,6 @@ module StripeModel =
                 InvoicePaymentMethodOptionsUsBankAccount.VerificationMethod = verificationMethod
             }
 
-    and InvoicePaymentMethodOptionsUsBankAccountVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
-
     and InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions = {
         ///The list of permissions to request. The `payment_method` permission must be included.
         Permissions: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions list option
@@ -7207,11 +12633,6 @@ module StripeModel =
                 InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions.Prefetch = prefetch //required
                 InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions.Permissions = permissions
             }
-
-    and InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions =
-        | Balances
-        | PaymentMethod
-        | Transactions
 
     and InvoiceSettingCustomField = {
         ///The name of the custom field.
@@ -7314,23 +12735,6 @@ module StripeModel =
     and InvoiceTaxAmountTaxRate'AnyOf =
         | String of string
         | TaxRate of TaxRate
-
-    and InvoiceTaxAmountTaxabilityReason =
-        | CustomerExempt
-        | NotCollecting
-        | NotSubjectToTax
-        | NotSupported
-        | PortionProductExempt
-        | PortionReducedRated
-        | PortionStandardRated
-        | ProductExempt
-        | ProductExemptHoliday
-        | ProportionallyRated
-        | ReducedRated
-        | ReverseCharge
-        | StandardRated
-        | TaxableBasisReduced
-        | ZeroRated
 
     and InvoiceThresholdReason = {
         ///The total invoice amount threshold boundary if it triggered the threshold invoice.
@@ -7525,32 +12929,6 @@ module StripeModel =
                 InvoicesPaymentSettings.PaymentMethodTypes = paymentMethodTypes //required
             }
 
-    and InvoicesPaymentSettingsPaymentMethodTypes =
-        | AchCreditTransfer
-        | AchDebit
-        | AcssDebit
-        | AuBecsDebit
-        | BacsDebit
-        | Bancontact
-        | Boleto
-        | Card
-        | Cashapp
-        | CustomerBalance
-        | Fpx
-        | Giropay
-        | Grabpay
-        | Ideal
-        | Konbini
-        | Link
-        | Paynow
-        | Paypal
-        | Promptpay
-        | SepaCreditTransfer
-        | SepaDebit
-        | Sofort
-        | UsBankAccount
-        | WechatPay
-
     and InvoicesResourceInvoiceTaxId = {
         ///The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, or `unknown`
         Type: InvoicesResourceInvoiceTaxIdType
@@ -7563,75 +12941,6 @@ module StripeModel =
                 InvoicesResourceInvoiceTaxId.Type = ``type`` //required
                 InvoicesResourceInvoiceTaxId.Value = value //required
             }
-
-    and InvoicesResourceInvoiceTaxIdType =
-        | AdNrt
-        | AeTrn
-        | ArCuit
-        | AuAbn
-        | AuArn
-        | BgUic
-        | BoTin
-        | BrCnpj
-        | BrCpf
-        | CaBn
-        | CaGstHst
-        | CaPstBc
-        | CaPstMb
-        | CaPstSk
-        | CaQst
-        | ChVat
-        | ClTin
-        | CnTin
-        | CoNit
-        | CrTin
-        | DoRcn
-        | EcRuc
-        | EgTin
-        | EsCif
-        | EuOssVat
-        | EuVat
-        | GbVat
-        | GeVat
-        | HkBr
-        | HuTin
-        | IdNpwp
-        | IlVat
-        | InGst
-        | IsVat
-        | JpCn
-        | JpRn
-        | JpTrn
-        | KePin
-        | KrBrn
-        | LiUid
-        | MxRfc
-        | MyFrp
-        | MyItn
-        | MySst
-        | NoVat
-        | NzGst
-        | PeRuc
-        | PhTin
-        | RoTin
-        | RsPib
-        | RuInn
-        | RuKpp
-        | SaVat
-        | SgGst
-        | SgUen
-        | SiTin
-        | SvNit
-        | ThVat
-        | TrTin
-        | TwVat
-        | UaVat
-        | Unknown
-        | UsEin
-        | UyRuc
-        | VeRif
-        | VnTin
-        | ZaVat
 
     and InvoicesResourceLineItemsCreditedItems = {
         ///Invoice containing the credited invoice line items
@@ -7781,26 +13090,9 @@ module StripeModel =
                 IssuingAuthorization.Treasury = treasury |> Option.flatten
             }
 
-    and IssuingAuthorizationAuthorizationMethod =
-        | Chip
-        | Contactless
-        | KeyedIn
-        | Online
-        | Swipe
-
     and IssuingAuthorizationCardholder'AnyOf =
         | String of string
         | IssuingCardholder of IssuingCardholder
-
-    and IssuingAuthorizationStatus =
-        | Closed
-        | Pending
-        | Reversed
-
-    and IssuingAuthorizationWallet =
-        | ApplePay
-        | GooglePay
-        | SamsungPay
 
     ///You can [create physical or virtual cards](https://stripe.com/docs/issuing/cards) that are issued to cardholders.
     and IssuingCard = {
@@ -7877,11 +13169,6 @@ module StripeModel =
                 IssuingCard.Number = number
             }
 
-    and IssuingCardCancellationReason =
-        | DesignRejected
-        | Lost
-        | Stolen
-
     and IssuingCardReplacedBy'AnyOf =
         | String of string
         | IssuingCard of IssuingCard
@@ -7889,21 +13176,6 @@ module StripeModel =
     and IssuingCardReplacementFor'AnyOf =
         | String of string
         | IssuingCard of IssuingCard
-
-    and IssuingCardReplacementReason =
-        | Damaged
-        | Expired
-        | Lost
-        | Stolen
-
-    and IssuingCardStatus =
-        | Active
-        | Canceled
-        | Inactive
-
-    and IssuingCardType =
-        | Physical
-        | Virtual
 
     ///An Issuing `Cardholder` object represents an individual or business entity who is [issued](https://stripe.com/docs/issuing) cards.
     ///Related guide: [How to create a cardholder](https://stripe.com/docs/issuing/cards#create-cardholder)
@@ -7961,22 +13233,6 @@ module StripeModel =
                 IssuingCardholder.Type = ``type`` //required
             }
 
-    and IssuingCardholderStatus =
-        | Active
-        | Blocked
-        | Inactive
-
-    and IssuingCardholderType =
-        | Company
-        | Individual
-
-    and IssuingCardholderPreferredLocales =
-        | De
-        | En
-        | Es
-        | Fr
-        | It
-
     ///As a [card issuer](https://stripe.com/docs/issuing), you can dispute transactions that the cardholder does not recognize, suspects to be fraudulent, or has other issues with.
     ///Related guide: [Issuing disputes](https://stripe.com/docs/issuing/purchases/disputes)
     and IssuingDispute = {
@@ -8020,13 +13276,6 @@ module StripeModel =
                 IssuingDispute.Transaction = transaction //required
                 IssuingDispute.Treasury = treasury |> Option.flatten
             }
-
-    and IssuingDisputeStatus =
-        | Expired
-        | Lost
-        | Submitted
-        | Unsubmitted
-        | Won
 
     and IssuingDisputeTransaction'AnyOf =
         | String of string
@@ -8121,15 +13370,6 @@ module StripeModel =
     and IssuingTransactionDispute'AnyOf =
         | String of string
         | IssuingDispute of IssuingDispute
-
-    and IssuingTransactionType =
-        | Capture
-        | Refund
-
-    and IssuingTransactionWallet =
-        | ApplePay
-        | GooglePay
-        | SamsungPay
 
     and IssuingAuthorizationAmountDetails = {
         ///The fee charged by the ATM for the cash withdrawal.
@@ -8244,22 +13484,6 @@ module StripeModel =
                 IssuingAuthorizationRequest.ReasonMessage = reasonMessage //required
             }
 
-    and IssuingAuthorizationRequestReason =
-        | AccountDisabled
-        | CardActive
-        | CardInactive
-        | CardholderInactive
-        | CardholderVerificationRequired
-        | InsufficientFunds
-        | NotAllowed
-        | SpendingControls
-        | SuspectedFraud
-        | VerificationFailed
-        | WebhookApproved
-        | WebhookDeclined
-        | WebhookError
-        | WebhookTimeout
-
     and IssuingAuthorizationTreasury = {
         ///The array of [ReceivedCredits](https://stripe.com/docs/api/treasury/received_credits) associated with this authorization
         ReceivedCredits: string list
@@ -8295,26 +13519,6 @@ module StripeModel =
                 IssuingAuthorizationVerificationData.ExpiryCheck = expiryCheck //required
             }
 
-    and IssuingAuthorizationVerificationDataAddressLine1Check =
-        | Match
-        | Mismatch
-        | NotProvided
-
-    and IssuingAuthorizationVerificationDataAddressPostalCodeCheck =
-        | Match
-        | Mismatch
-        | NotProvided
-
-    and IssuingAuthorizationVerificationDataCvcCheck =
-        | Match
-        | Mismatch
-        | NotProvided
-
-    and IssuingAuthorizationVerificationDataExpiryCheck =
-        | Match
-        | Mismatch
-        | NotProvided
-
     and IssuingCardApplePay = {
         ///Apple Pay Eligibility
         Eligible: bool
@@ -8327,11 +13531,6 @@ module StripeModel =
                 IssuingCardApplePay.Eligible = eligible //required
                 IssuingCardApplePay.IneligibleReason = ineligibleReason //required
             }
-
-    and IssuingCardApplePayIneligibleReason =
-        | MissingAgreement
-        | MissingCardholderContact
-        | UnsupportedRegion
 
     and IssuingCardAuthorizationControls = {
         ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
@@ -8352,600 +13551,6 @@ module StripeModel =
                 IssuingCardAuthorizationControls.SpendingLimitsCurrency = spendingLimitsCurrency //required
             }
 
-    and IssuingCardAuthorizationControlsAllowedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricVehicleCharging
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmergencyServicesGcasVisaUseOnly
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentLicensedHorseDogRacingUsRegionOnly
-        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
-        | GovernmentOwnedLotteriesNonUsRegion
-        | GovernmentOwnedLotteriesUsRegionOnly
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | Marketplaces
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
-
-    and IssuingCardAuthorizationControlsBlockedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricVehicleCharging
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmergencyServicesGcasVisaUseOnly
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentLicensedHorseDogRacingUsRegionOnly
-        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
-        | GovernmentOwnedLotteriesNonUsRegion
-        | GovernmentOwnedLotteriesUsRegionOnly
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | Marketplaces
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
-
     and IssuingCardGooglePay = {
         ///Google Pay Eligibility
         Eligible: bool
@@ -8958,11 +13563,6 @@ module StripeModel =
                 IssuingCardGooglePay.Eligible = eligible //required
                 IssuingCardGooglePay.IneligibleReason = ineligibleReason //required
             }
-
-    and IssuingCardGooglePayIneligibleReason =
-        | MissingAgreement
-        | MissingCardholderContact
-        | UnsupportedRegion
 
     and IssuingCardShipping = {
         Address: Address
@@ -9006,29 +13606,6 @@ module StripeModel =
                 IssuingCardShipping.Type = ``type`` //required
             }
 
-    and IssuingCardShippingCarrier =
-        | Dhl
-        | Fedex
-        | RoyalMail
-        | Usps
-
-    and IssuingCardShippingService =
-        | Express
-        | Priority
-        | Standard
-
-    and IssuingCardShippingStatus =
-        | Canceled
-        | Delivered
-        | Failure
-        | Pending
-        | Returned
-        | Shipped
-
-    and IssuingCardShippingType =
-        | Bulk
-        | Individual
-
     and IssuingCardShippingCustoms = {
         ///A registration number used for customs in Europe. See [https://www.gov.uk/eori](https://www.gov.uk/eori) for the UK and [https://ec.europa.eu/taxation_customs/business/customs-procedures-import-and-export/customs-procedures/economic-operators-registration-and-identification-number-eori_en](https://ec.europa.eu/taxation_customs/business/customs-procedures-import-and-export/customs-procedures/economic-operators-registration-and-identification-number-eori_en) for the EU.
         EoriNumber: string option
@@ -9054,311 +13631,6 @@ module StripeModel =
                 IssuingCardSpendingLimit.Categories = categories //required
                 IssuingCardSpendingLimit.Interval = interval //required
             }
-
-    and IssuingCardSpendingLimitInterval =
-        | AllTime
-        | Daily
-        | Monthly
-        | PerAuthorization
-        | Weekly
-        | Yearly
-
-    and IssuingCardSpendingLimitCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricVehicleCharging
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmergencyServicesGcasVisaUseOnly
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentLicensedHorseDogRacingUsRegionOnly
-        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
-        | GovernmentOwnedLotteriesNonUsRegion
-        | GovernmentOwnedLotteriesUsRegionOnly
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | Marketplaces
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
 
     and IssuingCardWallets = {
         ApplePay: IssuingCardApplePay
@@ -9401,600 +13673,6 @@ module StripeModel =
                 IssuingCardholderAuthorizationControls.SpendingLimits = spendingLimits //required
                 IssuingCardholderAuthorizationControls.SpendingLimitsCurrency = spendingLimitsCurrency //required
             }
-
-    and IssuingCardholderAuthorizationControlsAllowedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricVehicleCharging
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmergencyServicesGcasVisaUseOnly
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentLicensedHorseDogRacingUsRegionOnly
-        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
-        | GovernmentOwnedLotteriesNonUsRegion
-        | GovernmentOwnedLotteriesUsRegionOnly
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | Marketplaces
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
-
-    and IssuingCardholderAuthorizationControlsBlockedCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricVehicleCharging
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmergencyServicesGcasVisaUseOnly
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentLicensedHorseDogRacingUsRegionOnly
-        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
-        | GovernmentOwnedLotteriesNonUsRegion
-        | GovernmentOwnedLotteriesUsRegionOnly
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | Marketplaces
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
 
     and IssuingCardholderCardIssuing = {
         ///Information about cardholder acceptance of [Authorized User Terms](https://stripe.com/docs/issuing/cards).
@@ -10088,23 +13766,6 @@ module StripeModel =
                 IssuingCardholderRequirements.PastDue = pastDue //required
             }
 
-    and IssuingCardholderRequirementsDisabledReason =
-        | Listed
-        | [<JsonUnionCase("rejected.listed")>] RejectedListed
-        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
-        | UnderReview
-
-    and IssuingCardholderRequirementsPastDue =
-        | [<JsonUnionCase("company.tax_id")>] CompanyTaxId
-        | [<JsonUnionCase("individual.card_issuing.user_terms_acceptance.date")>] IndividualCardIssuingUserTermsAcceptanceDate
-        | [<JsonUnionCase("individual.card_issuing.user_terms_acceptance.ip")>] IndividualCardIssuingUserTermsAcceptanceIp
-        | [<JsonUnionCase("individual.dob.day")>] IndividualDobDay
-        | [<JsonUnionCase("individual.dob.month")>] IndividualDobMonth
-        | [<JsonUnionCase("individual.dob.year")>] IndividualDobYear
-        | [<JsonUnionCase("individual.first_name")>] IndividualFirstName
-        | [<JsonUnionCase("individual.last_name")>] IndividualLastName
-        | [<JsonUnionCase("individual.verification.document")>] IndividualVerificationDocument
-
     and IssuingCardholderSpendingLimit = {
         ///Maximum amount allowed to spend per interval. This amount is in the card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
         Amount: int
@@ -10120,311 +13781,6 @@ module StripeModel =
                 IssuingCardholderSpendingLimit.Categories = categories //required
                 IssuingCardholderSpendingLimit.Interval = interval //required
             }
-
-    and IssuingCardholderSpendingLimitInterval =
-        | AllTime
-        | Daily
-        | Monthly
-        | PerAuthorization
-        | Weekly
-        | Yearly
-
-    and IssuingCardholderSpendingLimitCategories =
-        | AcRefrigerationRepair
-        | AccountingBookkeepingServices
-        | AdvertisingServices
-        | AgriculturalCooperative
-        | AirlinesAirCarriers
-        | AirportsFlyingFields
-        | AmbulanceServices
-        | AmusementParksCarnivals
-        | AntiqueReproductions
-        | AntiqueShops
-        | Aquariums
-        | ArchitecturalSurveyingServices
-        | ArtDealersAndGalleries
-        | ArtistsSupplyAndCraftShops
-        | AutoAndHomeSupplyStores
-        | AutoBodyRepairShops
-        | AutoPaintShops
-        | AutoServiceShops
-        | AutomatedCashDisburse
-        | AutomatedFuelDispensers
-        | AutomobileAssociations
-        | AutomotivePartsAndAccessoriesStores
-        | AutomotiveTireStores
-        | BailAndBondPayments
-        | Bakeries
-        | BandsOrchestras
-        | BarberAndBeautyShops
-        | BettingCasinoGambling
-        | BicycleShops
-        | BilliardPoolEstablishments
-        | BoatDealers
-        | BoatRentalsAndLeases
-        | BookStores
-        | BooksPeriodicalsAndNewspapers
-        | BowlingAlleys
-        | BusLines
-        | BusinessSecretarialSchools
-        | BuyingShoppingServices
-        | CableSatelliteAndOtherPayTelevisionAndRadio
-        | CameraAndPhotographicSupplyStores
-        | CandyNutAndConfectioneryStores
-        | CarAndTruckDealersNewUsed
-        | CarAndTruckDealersUsedOnly
-        | CarRentalAgencies
-        | CarWashes
-        | CarpentryServices
-        | CarpetUpholsteryCleaning
-        | Caterers
-        | CharitableAndSocialServiceOrganizationsFundraising
-        | ChemicalsAndAlliedProducts
-        | ChildCareServices
-        | ChildrensAndInfantsWearStores
-        | ChiropodistsPodiatrists
-        | Chiropractors
-        | CigarStoresAndStands
-        | CivicSocialFraternalAssociations
-        | CleaningAndMaintenance
-        | ClothingRental
-        | CollegesUniversities
-        | CommercialEquipment
-        | CommercialFootwear
-        | CommercialPhotographyArtAndGraphics
-        | CommuterTransportAndFerries
-        | ComputerNetworkServices
-        | ComputerProgramming
-        | ComputerRepair
-        | ComputerSoftwareStores
-        | ComputersPeripheralsAndSoftware
-        | ConcreteWorkServices
-        | ConstructionMaterials
-        | ConsultingPublicRelations
-        | CorrespondenceSchools
-        | CosmeticStores
-        | CounselingServices
-        | CountryClubs
-        | CourierServices
-        | CourtCosts
-        | CreditReportingAgencies
-        | CruiseLines
-        | DairyProductsStores
-        | DanceHallStudiosSchools
-        | DatingEscortServices
-        | DentistsOrthodontists
-        | DepartmentStores
-        | DetectiveAgencies
-        | DigitalGoodsApplications
-        | DigitalGoodsGames
-        | DigitalGoodsLargeVolume
-        | DigitalGoodsMedia
-        | DirectMarketingCatalogMerchant
-        | DirectMarketingCombinationCatalogAndRetailMerchant
-        | DirectMarketingInboundTelemarketing
-        | DirectMarketingInsuranceServices
-        | DirectMarketingOther
-        | DirectMarketingOutboundTelemarketing
-        | DirectMarketingSubscription
-        | DirectMarketingTravel
-        | DiscountStores
-        | Doctors
-        | DoorToDoorSales
-        | DraperyWindowCoveringAndUpholsteryStores
-        | DrinkingPlaces
-        | DrugStoresAndPharmacies
-        | DrugsDrugProprietariesAndDruggistSundries
-        | DryCleaners
-        | DurableGoods
-        | DutyFreeStores
-        | EatingPlacesRestaurants
-        | EducationalServices
-        | ElectricRazorStores
-        | ElectricVehicleCharging
-        | ElectricalPartsAndEquipment
-        | ElectricalServices
-        | ElectronicsRepairShops
-        | ElectronicsStores
-        | ElementarySecondarySchools
-        | EmergencyServicesGcasVisaUseOnly
-        | EmploymentTempAgencies
-        | EquipmentRental
-        | ExterminatingServices
-        | FamilyClothingStores
-        | FastFoodRestaurants
-        | FinancialInstitutions
-        | FinesGovernmentAdministrativeEntities
-        | FireplaceFireplaceScreensAndAccessoriesStores
-        | FloorCoveringStores
-        | Florists
-        | FloristsSuppliesNurseryStockAndFlowers
-        | FreezerAndLockerMeatProvisioners
-        | FuelDealersNonAutomotive
-        | FuneralServicesCrematories
-        | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
-        | FurnitureRepairRefinishing
-        | FurriersAndFurShops
-        | GeneralServices
-        | GiftCardNoveltyAndSouvenirShops
-        | GlassPaintAndWallpaperStores
-        | GlasswareCrystalStores
-        | GolfCoursesPublic
-        | GovernmentLicensedHorseDogRacingUsRegionOnly
-        | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
-        | GovernmentOwnedLotteriesNonUsRegion
-        | GovernmentOwnedLotteriesUsRegionOnly
-        | GovernmentServices
-        | GroceryStoresSupermarkets
-        | HardwareEquipmentAndSupplies
-        | HardwareStores
-        | HealthAndBeautySpas
-        | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
-        | HobbyToyAndGameShops
-        | HomeSupplyWarehouseStores
-        | Hospitals
-        | HotelsMotelsAndResorts
-        | HouseholdApplianceStores
-        | IndustrialSupplies
-        | InformationRetrievalServices
-        | InsuranceDefault
-        | InsuranceUnderwritingPremiums
-        | IntraCompanyPurchases
-        | JewelryStoresWatchesClocksAndSilverwareStores
-        | LandscapingServices
-        | Laundries
-        | LaundryCleaningServices
-        | LegalServicesAttorneys
-        | LuggageAndLeatherGoodsStores
-        | LumberBuildingMaterialsStores
-        | ManualCashDisburse
-        | MarinasServiceAndSupplies
-        | Marketplaces
-        | MasonryStoneworkAndPlaster
-        | MassageParlors
-        | MedicalAndDentalLabs
-        | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
-        | MedicalServices
-        | MembershipOrganizations
-        | MensAndBoysClothingAndAccessoriesStores
-        | MensWomensClothingStores
-        | MetalServiceCenters
-        | Miscellaneous
-        | MiscellaneousApparelAndAccessoryShops
-        | MiscellaneousAutoDealers
-        | MiscellaneousBusinessServices
-        | MiscellaneousFoodStores
-        | MiscellaneousGeneralMerchandise
-        | MiscellaneousGeneralServices
-        | MiscellaneousHomeFurnishingSpecialtyStores
-        | MiscellaneousPublishingAndPrinting
-        | MiscellaneousRecreationServices
-        | MiscellaneousRepairShops
-        | MiscellaneousSpecialtyRetail
-        | MobileHomeDealers
-        | MotionPictureTheaters
-        | MotorFreightCarriersAndTrucking
-        | MotorHomesDealers
-        | MotorVehicleSuppliesAndNewParts
-        | MotorcycleShopsAndDealers
-        | MotorcycleShopsDealers
-        | MusicStoresMusicalInstrumentsPianosAndSheetMusic
-        | NewsDealersAndNewsstands
-        | NonFiMoneyOrders
-        | NonFiStoredValueCardPurchaseLoad
-        | NondurableGoods
-        | NurseriesLawnAndGardenSupplyStores
-        | NursingPersonalCare
-        | OfficeAndCommercialFurniture
-        | OpticiansEyeglasses
-        | OptometristsOphthalmologist
-        | OrthopedicGoodsProstheticDevices
-        | Osteopaths
-        | PackageStoresBeerWineAndLiquor
-        | PaintsVarnishesAndSupplies
-        | ParkingLotsGarages
-        | PassengerRailways
-        | PawnShops
-        | PetShopsPetFoodAndSupplies
-        | PetroleumAndPetroleumProducts
-        | PhotoDeveloping
-        | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
-        | PhotographicStudios
-        | PictureVideoProduction
-        | PieceGoodsNotionsAndOtherDryGoods
-        | PlumbingHeatingEquipmentAndSupplies
-        | PoliticalOrganizations
-        | PostalServicesGovernmentOnly
-        | PreciousStonesAndMetalsWatchesAndJewelry
-        | ProfessionalServices
-        | PublicWarehousingAndStorage
-        | QuickCopyReproAndBlueprint
-        | Railroads
-        | RealEstateAgentsAndManagersRentals
-        | RecordStores
-        | RecreationalVehicleRentals
-        | ReligiousGoodsStores
-        | ReligiousOrganizations
-        | RoofingSidingSheetMetal
-        | SecretarialSupportServices
-        | SecurityBrokersDealers
-        | ServiceStations
-        | SewingNeedleworkFabricAndPieceGoodsStores
-        | ShoeRepairHatCleaning
-        | ShoeStores
-        | SmallApplianceRepair
-        | SnowmobileDealers
-        | SpecialTradeServices
-        | SpecialtyCleaning
-        | SportingGoodsStores
-        | SportingRecreationCamps
-        | SportsAndRidingApparelStores
-        | SportsClubsFields
-        | StampAndCoinStores
-        | StationaryOfficeSuppliesPrintingAndWritingPaper
-        | StationeryStoresOfficeAndSchoolSupplyStores
-        | SwimmingPoolsSales
-        | TUiTravelGermany
-        | TailorsAlterations
-        | TaxPaymentsGovernmentAgencies
-        | TaxPreparationServices
-        | TaxicabsLimousines
-        | TelecommunicationEquipmentAndTelephoneSales
-        | TelecommunicationServices
-        | TelegraphServices
-        | TentAndAwningShops
-        | TestingLaboratories
-        | TheatricalTicketAgencies
-        | Timeshares
-        | TireRetreadingAndRepair
-        | TollsBridgeFees
-        | TouristAttractionsAndExhibits
-        | TowingServices
-        | TrailerParksCampgrounds
-        | TransportationServices
-        | TravelAgenciesTourOperators
-        | TruckStopIteration
-        | TruckUtilityTrailerRentals
-        | TypesettingPlateMakingAndRelatedServices
-        | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
-        | UniformsCommercialClothing
-        | UsedMerchandiseAndSecondhandStores
-        | Utilities
-        | VarietyStores
-        | VeterinaryServices
-        | VideoAmusementGameSupplies
-        | VideoGameArcades
-        | VideoTapeRentalStores
-        | VocationalTradeSchools
-        | WatchJewelryRepair
-        | WeldingRepair
-        | WholesaleClubs
-        | WigAndToupeeStores
-        | WiresMoneyOrders
-        | WomensAccessoryAndSpecialtyShops
-        | WomensReadyToWearStores
-        | WreckingAndSalvageYards
 
     and IssuingCardholderUserTermsAcceptance = {
         ///The Unix timestamp marking when the cardholder accepted the Authorized User Terms. Required for Celtic Spend Card users.
@@ -10493,14 +13849,6 @@ module StripeModel =
         | String of string
         | File of File
 
-    and IssuingDisputeCanceledEvidenceProductType =
-        | Merchandise
-        | Service
-
-    and IssuingDisputeCanceledEvidenceReturnStatus =
-        | MerchantRejected
-        | Successful
-
     and IssuingDisputeDuplicateEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         AdditionalDocumentation: IssuingDisputeDuplicateEvidenceAdditionalDocumentation'AnyOf option
@@ -10566,15 +13914,6 @@ module StripeModel =
                 IssuingDisputeEvidence.ServiceNotAsDescribed = serviceNotAsDescribed
             }
 
-    and IssuingDisputeEvidenceReason =
-        | Canceled
-        | Duplicate
-        | Fraudulent
-        | MerchandiseNotAsDescribed
-        | NotReceived
-        | Other
-        | ServiceNotAsDescribed
-
     and IssuingDisputeFraudulentEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         AdditionalDocumentation: IssuingDisputeFraudulentEvidenceAdditionalDocumentation'AnyOf option
@@ -10621,10 +13960,6 @@ module StripeModel =
         | String of string
         | File of File
 
-    and IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus =
-        | MerchantRejected
-        | Successful
-
     and IssuingDisputeNotReceivedEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         AdditionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf option
@@ -10651,10 +13986,6 @@ module StripeModel =
         | String of string
         | File of File
 
-    and IssuingDisputeNotReceivedEvidenceProductType =
-        | Merchandise
-        | Service
-
     and IssuingDisputeOtherEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         AdditionalDocumentation: IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf option
@@ -10677,10 +14008,6 @@ module StripeModel =
     and IssuingDisputeOtherEvidenceAdditionalDocumentation'AnyOf =
         | String of string
         | File of File
-
-    and IssuingDisputeOtherEvidenceProductType =
-        | Merchandise
-        | Service
 
     and IssuingDisputeServiceNotAsDescribedEvidence = {
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -10796,17 +14123,6 @@ module StripeModel =
                 IssuingTransactionFuelData.UnitCostDecimal = unitCostDecimal //required
                 IssuingTransactionFuelData.VolumeDecimal = volumeDecimal //required
             }
-
-    and IssuingTransactionFuelDataType =
-        | Diesel
-        | UnleadedPlus
-        | UnleadedRegular
-        | UnleadedSuper
-        | Other
-
-    and IssuingTransactionFuelDataUnit =
-        | UsGallon
-        | Liter
 
     and IssuingTransactionLodgingData = {
         ///The time of checking into the lodging.
@@ -10979,30 +14295,6 @@ module StripeModel =
                 LegalEntityCompany.Verification = verification |> Option.flatten
             }
 
-    and LegalEntityCompanyStructure =
-        | FreeZoneEstablishment
-        | FreeZoneLlc
-        | GovernmentInstrumentality
-        | GovernmentalUnit
-        | IncorporatedNonProfit
-        | IncorporatedPartnership
-        | LimitedLiabilityPartnership
-        | Llc
-        | MultiMemberLlc
-        | PrivateCompany
-        | PrivateCorporation
-        | PrivatePartnership
-        | PublicCompany
-        | PublicCorporation
-        | PublicPartnership
-        | SingleMemberLlc
-        | SoleEstablishment
-        | SoleProprietorship
-        | TaxExemptGovernmentInstrumentality
-        | UnincorporatedAssociation
-        | UnincorporatedNonProfit
-        | UnincorporatedPartnership
-
     and LegalEntityCompanyVerification = {
         Document: LegalEntityCompanyVerificationDocument
     }
@@ -11034,22 +14326,6 @@ module StripeModel =
     and LegalEntityCompanyVerificationDocumentBack'AnyOf =
         | String of string
         | File of File
-
-    and LegalEntityCompanyVerificationDocumentDetailsCode =
-        | DocumentCorrupt
-        | DocumentExpired
-        | DocumentFailedCopy
-        | DocumentFailedGreyscale
-        | DocumentFailedOther
-        | DocumentFailedTestMode
-        | DocumentFraudulent
-        | DocumentIncomplete
-        | DocumentInvalid
-        | DocumentManipulated
-        | DocumentNotReadable
-        | DocumentNotUploaded
-        | DocumentTypeNotSupported
-        | DocumentTooLarge
 
     and LegalEntityCompanyVerificationDocumentFront'AnyOf =
         | String of string
@@ -11120,21 +14396,6 @@ module StripeModel =
                 LegalEntityPersonVerification.Document = document
             }
 
-    and LegalEntityPersonVerificationDetailsCode =
-        | DocumentAddressMismatch
-        | DocumentDobMismatch
-        | DocumentDuplicateType
-        | DocumentIdNumberMismatch
-        | DocumentNameMismatch
-        | DocumentNationalityMismatch
-        | FailedKeyedIdentity
-        | FailedOther
-
-    and LegalEntityPersonVerificationStatus =
-        | Unverified
-        | Pending
-        | Verified
-
     and LegalEntityPersonVerificationDocument = {
         ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
         Back: LegalEntityPersonVerificationDocumentBack'AnyOf option
@@ -11157,26 +14418,6 @@ module StripeModel =
     and LegalEntityPersonVerificationDocumentBack'AnyOf =
         | String of string
         | File of File
-
-    and LegalEntityPersonVerificationDocumentDetailsCode =
-        | DocumentCorrupt
-        | DocumentCountryNotSupported
-        | DocumentExpired
-        | DocumentFailedCopy
-        | DocumentFailedOther
-        | DocumentFailedTestMode
-        | DocumentFraudulent
-        | DocumentFailedGreyscale
-        | DocumentIncomplete
-        | DocumentInvalid
-        | DocumentManipulated
-        | DocumentMissingBack
-        | DocumentMissingFront
-        | DocumentNotReadable
-        | DocumentNotUploaded
-        | DocumentPhotoMismatch
-        | DocumentTooLarge
-        | DocumentTypeNotSupported
 
     and LegalEntityPersonVerificationDocumentFront'AnyOf =
         | String of string
@@ -11326,10 +14567,6 @@ module StripeModel =
         | String of string
         | SubscriptionItem of SubscriptionItem
 
-    and LineItemType =
-        | Invoiceitem
-        | Subscription
-
     and LineItemDiscounts'AnyOf =
         | String of string
         | Discount of Discount
@@ -11364,23 +14601,6 @@ module StripeModel =
                 LineItemsTaxAmount.TaxableAmount = taxableAmount //required
             }
 
-    and LineItemsTaxAmountTaxabilityReason =
-        | CustomerExempt
-        | NotCollecting
-        | NotSubjectToTax
-        | NotSupported
-        | PortionProductExempt
-        | PortionReducedRated
-        | PortionStandardRated
-        | ProductExempt
-        | ProductExemptHoliday
-        | ProportionallyRated
-        | ReducedRated
-        | ReverseCharge
-        | StandardRated
-        | TaxableBasisReduced
-        | ZeroRated
-
     and LinkedAccountOptionsUsBankAccount = {
         ///The list of permissions to request. The `payment_method` permission must be included.
         Permissions: LinkedAccountOptionsUsBankAccountPermissions list option
@@ -11396,12 +14616,6 @@ module StripeModel =
                 LinkedAccountOptionsUsBankAccount.Permissions = permissions
                 LinkedAccountOptionsUsBankAccount.ReturnUrl = returnUrl
             }
-
-    and LinkedAccountOptionsUsBankAccountPermissions =
-        | Balances
-        | Ownership
-        | PaymentMethod
-        | Transactions
 
     ///Login Links are single-use login link for an Express account to access their Stripe dashboard.
     and LoginLink = {
@@ -11461,15 +14675,6 @@ module StripeModel =
         | String of string
         | PaymentMethod of PaymentMethod
 
-    and MandateStatus =
-        | Active
-        | Inactive
-        | Pending
-
-    and MandateType =
-        | MultiUse
-        | SingleUse
-
     and MandateAcssDebit = {
         ///List of Stripe products where this mandate can be selected automatically.
         DefaultFor: MandateAcssDebitDefaultFor list option
@@ -11488,19 +14693,6 @@ module StripeModel =
                 MandateAcssDebit.TransactionType = transactionType //required
                 MandateAcssDebit.DefaultFor = defaultFor
             }
-
-    and MandateAcssDebitPaymentSchedule =
-        | Combined
-        | Interval
-        | Sporadic
-
-    and MandateAcssDebitTransactionType =
-        | Business
-        | Personal
-
-    and MandateAcssDebitDefaultFor =
-        | Invoice
-        | Subscription
 
     and MandateAuBecsDebit = {
         ///The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
@@ -11527,12 +14719,6 @@ module StripeModel =
                 MandateBacsDebit.Reference = reference //required
                 MandateBacsDebit.Url = url //required
             }
-
-    and MandateBacsDebitNetworkStatus =
-        | Accepted
-        | Pending
-        | Refused
-        | Revoked
 
     and MandateCashapp = {
         MandateCashapp: string option
@@ -11714,10 +14900,6 @@ module StripeModel =
                 OutboundPaymentsPaymentMethodDetails.UsBankAccount = usBankAccount
             }
 
-    and OutboundPaymentsPaymentMethodDetailsType =
-        | FinancialAccount
-        | UsBankAccount
-
     and OutboundPaymentsPaymentMethodDetailsFinancialAccount = {
         ///Token of the FinancialAccount.
         Id: string
@@ -11758,18 +14940,6 @@ module StripeModel =
                 OutboundPaymentsPaymentMethodDetailsUsBankAccount.Network = network //required
                 OutboundPaymentsPaymentMethodDetailsUsBankAccount.RoutingNumber = routingNumber //required
             }
-
-    and OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType =
-        | Company
-        | Individual
-
-    and OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType =
-        | Checking
-        | Savings
-
-    and OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork =
-        | Ach
-        | UsDomesticWire
 
     and OutboundTransfersPaymentMethodDetails = {
         BillingDetails: TreasurySharedResourceBillingDetails
@@ -11812,18 +14982,6 @@ module StripeModel =
                 OutboundTransfersPaymentMethodDetailsUsBankAccount.Network = network //required
                 OutboundTransfersPaymentMethodDetailsUsBankAccount.RoutingNumber = routingNumber //required
             }
-
-    and OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
-        | Company
-        | Individual
-
-    and OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
-        | Checking
-        | Savings
-
-    and OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork =
-        | Ach
-        | UsDomesticWire
 
     and PackageDimensions = {
         ///Height, in inches.
@@ -11877,10 +15035,6 @@ module StripeModel =
                 PaymentFlowsAutomaticPaymentMethodsPaymentIntent.AllowRedirects = allowRedirects
             }
 
-    and PaymentFlowsAutomaticPaymentMethodsPaymentIntentAllowRedirects =
-        | Always
-        | Never
-
     and PaymentFlowsAutomaticPaymentMethodsSetupIntent = {
         ///Controls whether this SetupIntent will accept redirect-based payment methods.
         ///Redirect-based payment methods may require your customer to be redirected to a payment method's app or site for authentication or additional steps. To [confirm](https://stripe.com/docs/api/setup_intents/confirm) this SetupIntent, you may be required to provide a `return_url` to redirect customers back to your site after they authenticate or complete the setup.
@@ -11894,10 +15048,6 @@ module StripeModel =
                 PaymentFlowsAutomaticPaymentMethodsSetupIntent.Enabled = enabled //required
                 PaymentFlowsAutomaticPaymentMethodsSetupIntent.AllowRedirects = allowRedirects
             }
-
-    and PaymentFlowsAutomaticPaymentMethodsSetupIntentAllowRedirects =
-        | Always
-        | Never
 
     and PaymentFlowsInstallmentOptions = {
         Enabled: bool
@@ -12092,24 +15242,6 @@ module StripeModel =
         | String of string
         | Application of Application
 
-    and PaymentIntentCancellationReason =
-        | Abandoned
-        | Automatic
-        | Duplicate
-        | FailedInvoice
-        | Fraudulent
-        | RequestedByCustomer
-        | VoidInvoice
-
-    and PaymentIntentCaptureMethod =
-        | Automatic
-        | AutomaticAsync
-        | Manual
-
-    and PaymentIntentConfirmationMethod =
-        | Automatic
-        | Manual
-
     and PaymentIntentCustomer'AnyOf =
         | String of string
         | Customer of Customer
@@ -12135,23 +15267,10 @@ module StripeModel =
         | String of string
         | Review of Review
 
-    and PaymentIntentSetupFutureUsage =
-        | OffSession
-        | OnSession
-
     and PaymentIntentSource'AnyOf =
         | String of string
         | PaymentSource of PaymentSource
         | DeletedPaymentSource of DeletedPaymentSource
-
-    and PaymentIntentStatus =
-        | Canceled
-        | Processing
-        | RequiresAction
-        | RequiresCapture
-        | RequiresConfirmation
-        | RequiresPaymentMethod
-        | Succeeded
 
     and PaymentIntentCardProcessing = {
         CustomerNotification: PaymentIntentProcessingCustomerNotification option
@@ -12204,13 +15323,6 @@ module StripeModel =
                 PaymentIntentNextAction.WechatPayRedirectToAndroidApp = wechatPayRedirectToAndroidApp
                 PaymentIntentNextAction.WechatPayRedirectToIosApp = wechatPayRedirectToIosApp
             }
-
-    and PaymentIntentNextActionType =
-        | RedirectToUrl
-        | UseStripeSdk
-        | AlipayHandleRedirect
-        | OxxoDisplayDetails
-        | VerifyWithMicrodeposits
 
     and PaymentIntentNextActionAlipayHandleRedirect = {
         ///The native data to be used with Alipay SDK you must redirect your customer to in order to authenticate the payment in an Android App.
@@ -12318,13 +15430,6 @@ module StripeModel =
                 PaymentIntentNextActionDisplayBankTransferInstructions.Type = ``type`` //required
                 PaymentIntentNextActionDisplayBankTransferInstructions.FinancialAddresses = financialAddresses
             }
-
-    and PaymentIntentNextActionDisplayBankTransferInstructionsType =
-        | EuBankTransfer
-        | GbBankTransfer
-        | JpBankTransfer
-        | MxBankTransfer
-        | UsBankTransfer
 
     and PaymentIntentNextActionDisplayOxxoDetails = {
         ///The timestamp after which the OXXO voucher expires.
@@ -12517,10 +15622,6 @@ module StripeModel =
                 PaymentIntentNextActionVerifyWithMicrodeposits.MicrodepositType = microdepositType //required
             }
 
-    and PaymentIntentNextActionVerifyWithMicrodepositsMicrodepositType =
-        | Amounts
-        | DescriptorCode
-
     and PaymentIntentNextActionWechatPayDisplayQrCode = {
         ///The data being used to generate QR code
         Data: string
@@ -12671,16 +15772,6 @@ module StripeModel =
                 PaymentIntentPaymentMethodOptionsAcssDebit.VerificationMethod = verificationMethod
             }
 
-    and PaymentIntentPaymentMethodOptionsAcssDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
-    and PaymentIntentPaymentMethodOptionsAcssDebitVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
-
     and PaymentIntentPaymentMethodOptionsAuBecsDebit = {
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
         ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
@@ -12692,11 +15783,6 @@ module StripeModel =
             {
                 PaymentIntentPaymentMethodOptionsAuBecsDebit.SetupFutureUsage = setupFutureUsage
             }
-
-    and PaymentIntentPaymentMethodOptionsAuBecsDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
 
     and PaymentIntentPaymentMethodOptionsBlik = {
         PaymentIntentPaymentMethodOptionsBlik: string option
@@ -12741,29 +15827,6 @@ module StripeModel =
                 PaymentIntentPaymentMethodOptionsCard.StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
             }
 
-    and PaymentIntentPaymentMethodOptionsCardNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | EftposAu
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Unknown
-        | Visa
-
-    and PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure =
-        | Any
-        | Automatic
-        | ChallengeOnly
-
-    and PaymentIntentPaymentMethodOptionsCardSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
     and PaymentIntentPaymentMethodOptionsEps () = 
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
         ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
@@ -12789,10 +15852,6 @@ module StripeModel =
                 PaymentIntentPaymentMethodOptionsLink.SetupFutureUsage = setupFutureUsage
             }
 
-    and PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-
     and PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit = {
         ///A URL for custom mandate text
         CustomMandateUrl: string option
@@ -12811,15 +15870,6 @@ module StripeModel =
                 PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit.TransactionType = transactionType //required
                 PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit.CustomMandateUrl = customMandateUrl
             }
-
-    and PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule =
-        | Combined
-        | Interval
-        | Sporadic
-
-    and PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType =
-        | Business
-        | Personal
 
     and PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit = {
         PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option
@@ -12844,11 +15894,6 @@ module StripeModel =
                 PaymentIntentPaymentMethodOptionsSepaDebit.SetupFutureUsage = setupFutureUsage
             }
 
-    and PaymentIntentPaymentMethodOptionsSepaDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
     and PaymentIntentPaymentMethodOptionsUsBankAccount = {
         FinancialConnections: LinkedAccountOptionsUsBankAccount option
         ///Preferred transaction settlement speed
@@ -12868,20 +15913,6 @@ module StripeModel =
                 PaymentIntentPaymentMethodOptionsUsBankAccount.SetupFutureUsage = setupFutureUsage
                 PaymentIntentPaymentMethodOptionsUsBankAccount.VerificationMethod = verificationMethod
             }
-
-    and PaymentIntentPaymentMethodOptionsUsBankAccountPreferredSettlementSpeed =
-        | Fastest
-        | Standard
-
-    and PaymentIntentPaymentMethodOptionsUsBankAccountSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
-    and PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
 
     and PaymentIntentProcessing = {
         Card: PaymentIntentCardProcessing option
@@ -12927,20 +15958,6 @@ module StripeModel =
                 PaymentIntentTypeSpecificPaymentMethodOptionsClient.SetupFutureUsage = setupFutureUsage
                 PaymentIntentTypeSpecificPaymentMethodOptionsClient.VerificationMethod = verificationMethod
             }
-
-    and PaymentIntentTypeSpecificPaymentMethodOptionsClientCaptureMethod =
-        | Manual
-        | ManualPreferred
-
-    and PaymentIntentTypeSpecificPaymentMethodOptionsClientSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
-
-    and PaymentIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
 
     ///A payment link is a shareable URL that will take your customers to a hosted payment page. A payment link can be shared and used multiple times.
     ///When a customer opens a payment link it will open a new [checkout session](https://stripe.com/docs/api/checkout/sessions) to render the payment page. You can use [checkout session events](https://stripe.com/docs/api/events/types#event_types-checkout.session.completed) to track payments through payment links.
@@ -13045,27 +16062,9 @@ module StripeModel =
         | Application of Application
         | DeletedApplication of DeletedApplication
 
-    and PaymentLinkBillingAddressCollection =
-        | Auto
-        | Required
-
-    and PaymentLinkCustomerCreation =
-        | Always
-        | IfRequired
-
     and PaymentLinkOnBehalfOf'AnyOf =
         | String of string
         | Account of Account
-
-    and PaymentLinkPaymentMethodCollection =
-        | Always
-        | IfRequired
-
-    and PaymentLinkSubmitType =
-        | Auto
-        | Book
-        | Donate
-        | Pay
 
     ///The line items representing what is being sold.
     and PaymentLinkLineItems = {
@@ -13087,36 +16086,6 @@ module StripeModel =
                 PaymentLinkLineItems.Url = url //required
             }
 
-    and PaymentLinkPaymentMethodTypes =
-        | Affirm
-        | AfterpayClearpay
-        | Alipay
-        | AuBecsDebit
-        | BacsDebit
-        | Bancontact
-        | Blik
-        | Boleto
-        | Card
-        | Cashapp
-        | Eps
-        | Fpx
-        | Giropay
-        | Grabpay
-        | Ideal
-        | Klarna
-        | Konbini
-        | Link
-        | Oxxo
-        | P24
-        | Paynow
-        | Paypal
-        | Pix
-        | Promptpay
-        | SepaDebit
-        | Sofort
-        | UsBankAccount
-        | WechatPay
-
     and PaymentLinksResourceAfterCompletion = {
         HostedConfirmation: PaymentLinksResourceCompletionBehaviorConfirmationPage option
         Redirect: PaymentLinksResourceCompletionBehaviorRedirect option
@@ -13130,10 +16099,6 @@ module StripeModel =
                 PaymentLinksResourceAfterCompletion.HostedConfirmation = hostedConfirmation
                 PaymentLinksResourceAfterCompletion.Redirect = redirect
             }
-
-    and PaymentLinksResourceAfterCompletionType =
-        | HostedConfirmation
-        | Redirect
 
     and PaymentLinksResourceAutomaticTax = {
         ///If `true`, tax will be calculated automatically using the customer's location.
@@ -13178,14 +16143,6 @@ module StripeModel =
                 PaymentLinksResourceConsentCollection.TermsOfService = termsOfService //required
             }
 
-    and PaymentLinksResourceConsentCollectionPromotions =
-        | Auto
-        | [<JsonUnionCase("none")>] None'
-
-    and PaymentLinksResourceConsentCollectionTermsOfService =
-        | [<JsonUnionCase("none")>] None'
-        | Required
-
     and PaymentLinksResourceCustomFields = {
         ///Configuration for `type=dropdown` fields.
         Dropdown: PaymentLinksResourceCustomFieldsDropdown option
@@ -13212,11 +16169,6 @@ module StripeModel =
                 PaymentLinksResourceCustomFields.Text = text //required
                 PaymentLinksResourceCustomFields.Type = ``type`` //required
             }
-
-    and PaymentLinksResourceCustomFieldsType =
-        | Dropdown
-        | Numeric
-        | Text
 
     and PaymentLinksResourceCustomFieldsDropdown = {
         ///The options available for the customer to select. Up to 200 options allowed.
@@ -13359,15 +16311,6 @@ module StripeModel =
                 PaymentLinksResourcePaymentIntentData.SetupFutureUsage = setupFutureUsage //required
             }
 
-    and PaymentLinksResourcePaymentIntentDataCaptureMethod =
-        | Automatic
-        | AutomaticAsync
-        | Manual
-
-    and PaymentLinksResourcePaymentIntentDataSetupFutureUsage =
-        | OffSession
-        | OnSession
-
     and PaymentLinksResourcePhoneNumberCollection = {
         ///If `true`, a phone number will be collected during checkout.
         Enabled: bool
@@ -13387,245 +16330,6 @@ module StripeModel =
             {
                 PaymentLinksResourceShippingAddressCollection.AllowedCountries = allowedCountries //required
             }
-
-    and PaymentLinksResourceShippingAddressCollectionAllowedCountries =
-        | [<JsonUnionCase("AC")>] AC
-        | [<JsonUnionCase("AD")>] AD
-        | [<JsonUnionCase("AE")>] AE
-        | [<JsonUnionCase("AF")>] AF
-        | [<JsonUnionCase("AG")>] AG
-        | [<JsonUnionCase("AI")>] AI
-        | [<JsonUnionCase("AL")>] AL
-        | [<JsonUnionCase("AM")>] AM
-        | [<JsonUnionCase("AO")>] AO
-        | [<JsonUnionCase("AQ")>] AQ
-        | [<JsonUnionCase("AR")>] AR
-        | [<JsonUnionCase("AT")>] AT
-        | [<JsonUnionCase("AU")>] AU
-        | [<JsonUnionCase("AW")>] AW
-        | [<JsonUnionCase("AX")>] AX
-        | [<JsonUnionCase("AZ")>] AZ
-        | [<JsonUnionCase("BA")>] BA
-        | [<JsonUnionCase("BB")>] BB
-        | [<JsonUnionCase("BD")>] BD
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("BF")>] BF
-        | [<JsonUnionCase("BG")>] BG
-        | [<JsonUnionCase("BH")>] BH
-        | [<JsonUnionCase("BI")>] BI
-        | [<JsonUnionCase("BJ")>] BJ
-        | [<JsonUnionCase("BL")>] BL
-        | [<JsonUnionCase("BM")>] BM
-        | [<JsonUnionCase("BN")>] BN
-        | [<JsonUnionCase("BO")>] BO
-        | [<JsonUnionCase("BQ")>] BQ
-        | [<JsonUnionCase("BR")>] BR
-        | [<JsonUnionCase("BS")>] BS
-        | [<JsonUnionCase("BT")>] BT
-        | [<JsonUnionCase("BV")>] BV
-        | [<JsonUnionCase("BW")>] BW
-        | [<JsonUnionCase("BY")>] BY
-        | [<JsonUnionCase("BZ")>] BZ
-        | [<JsonUnionCase("CA")>] CA
-        | [<JsonUnionCase("CD")>] CD
-        | [<JsonUnionCase("CF")>] CF
-        | [<JsonUnionCase("CG")>] CG
-        | [<JsonUnionCase("CH")>] CH
-        | [<JsonUnionCase("CI")>] CI
-        | [<JsonUnionCase("CK")>] CK
-        | [<JsonUnionCase("CL")>] CL
-        | [<JsonUnionCase("CM")>] CM
-        | [<JsonUnionCase("CN")>] CN
-        | [<JsonUnionCase("CO")>] CO
-        | [<JsonUnionCase("CR")>] CR
-        | [<JsonUnionCase("CV")>] CV
-        | [<JsonUnionCase("CW")>] CW
-        | [<JsonUnionCase("CY")>] CY
-        | [<JsonUnionCase("CZ")>] CZ
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("DJ")>] DJ
-        | [<JsonUnionCase("DK")>] DK
-        | [<JsonUnionCase("DM")>] DM
-        | [<JsonUnionCase("DO")>] DO
-        | [<JsonUnionCase("DZ")>] DZ
-        | [<JsonUnionCase("EC")>] EC
-        | [<JsonUnionCase("EE")>] EE
-        | [<JsonUnionCase("EG")>] EG
-        | [<JsonUnionCase("EH")>] EH
-        | [<JsonUnionCase("ER")>] ER
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("ET")>] ET
-        | [<JsonUnionCase("FI")>] FI
-        | [<JsonUnionCase("FJ")>] FJ
-        | [<JsonUnionCase("FK")>] FK
-        | [<JsonUnionCase("FO")>] FO
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("GA")>] GA
-        | [<JsonUnionCase("GB")>] GB
-        | [<JsonUnionCase("GD")>] GD
-        | [<JsonUnionCase("GE")>] GE
-        | [<JsonUnionCase("GF")>] GF
-        | [<JsonUnionCase("GG")>] GG
-        | [<JsonUnionCase("GH")>] GH
-        | [<JsonUnionCase("GI")>] GI
-        | [<JsonUnionCase("GL")>] GL
-        | [<JsonUnionCase("GM")>] GM
-        | [<JsonUnionCase("GN")>] GN
-        | [<JsonUnionCase("GP")>] GP
-        | [<JsonUnionCase("GQ")>] GQ
-        | [<JsonUnionCase("GR")>] GR
-        | [<JsonUnionCase("GS")>] GS
-        | [<JsonUnionCase("GT")>] GT
-        | [<JsonUnionCase("GU")>] GU
-        | [<JsonUnionCase("GW")>] GW
-        | [<JsonUnionCase("GY")>] GY
-        | [<JsonUnionCase("HK")>] HK
-        | [<JsonUnionCase("HN")>] HN
-        | [<JsonUnionCase("HR")>] HR
-        | [<JsonUnionCase("HT")>] HT
-        | [<JsonUnionCase("HU")>] HU
-        | [<JsonUnionCase("ID")>] ID
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("IL")>] IL
-        | [<JsonUnionCase("IM")>] IM
-        | [<JsonUnionCase("IN")>] IN
-        | [<JsonUnionCase("IO")>] IO
-        | [<JsonUnionCase("IQ")>] IQ
-        | [<JsonUnionCase("IS")>] IS
-        | [<JsonUnionCase("IT")>] IT
-        | [<JsonUnionCase("JE")>] JE
-        | [<JsonUnionCase("JM")>] JM
-        | [<JsonUnionCase("JO")>] JO
-        | [<JsonUnionCase("JP")>] JP
-        | [<JsonUnionCase("KE")>] KE
-        | [<JsonUnionCase("KG")>] KG
-        | [<JsonUnionCase("KH")>] KH
-        | [<JsonUnionCase("KI")>] KI
-        | [<JsonUnionCase("KM")>] KM
-        | [<JsonUnionCase("KN")>] KN
-        | [<JsonUnionCase("KR")>] KR
-        | [<JsonUnionCase("KW")>] KW
-        | [<JsonUnionCase("KY")>] KY
-        | [<JsonUnionCase("KZ")>] KZ
-        | [<JsonUnionCase("LA")>] LA
-        | [<JsonUnionCase("LB")>] LB
-        | [<JsonUnionCase("LC")>] LC
-        | [<JsonUnionCase("LI")>] LI
-        | [<JsonUnionCase("LK")>] LK
-        | [<JsonUnionCase("LR")>] LR
-        | [<JsonUnionCase("LS")>] LS
-        | [<JsonUnionCase("LT")>] LT
-        | [<JsonUnionCase("LU")>] LU
-        | [<JsonUnionCase("LV")>] LV
-        | [<JsonUnionCase("LY")>] LY
-        | [<JsonUnionCase("MA")>] MA
-        | [<JsonUnionCase("MC")>] MC
-        | [<JsonUnionCase("MD")>] MD
-        | [<JsonUnionCase("ME")>] ME
-        | [<JsonUnionCase("MF")>] MF
-        | [<JsonUnionCase("MG")>] MG
-        | [<JsonUnionCase("MK")>] MK
-        | [<JsonUnionCase("ML")>] ML
-        | [<JsonUnionCase("MM")>] MM
-        | [<JsonUnionCase("MN")>] MN
-        | [<JsonUnionCase("MO")>] MO
-        | [<JsonUnionCase("MQ")>] MQ
-        | [<JsonUnionCase("MR")>] MR
-        | [<JsonUnionCase("MS")>] MS
-        | [<JsonUnionCase("MT")>] MT
-        | [<JsonUnionCase("MU")>] MU
-        | [<JsonUnionCase("MV")>] MV
-        | [<JsonUnionCase("MW")>] MW
-        | [<JsonUnionCase("MX")>] MX
-        | [<JsonUnionCase("MY")>] MY
-        | [<JsonUnionCase("MZ")>] MZ
-        | [<JsonUnionCase("NA")>] NA
-        | [<JsonUnionCase("NC")>] NC
-        | [<JsonUnionCase("NE")>] NE
-        | [<JsonUnionCase("NG")>] NG
-        | [<JsonUnionCase("NI")>] NI
-        | [<JsonUnionCase("NL")>] NL
-        | [<JsonUnionCase("NO")>] NO
-        | [<JsonUnionCase("NP")>] NP
-        | [<JsonUnionCase("NR")>] NR
-        | [<JsonUnionCase("NU")>] NU
-        | [<JsonUnionCase("NZ")>] NZ
-        | [<JsonUnionCase("OM")>] OM
-        | [<JsonUnionCase("PA")>] PA
-        | [<JsonUnionCase("PE")>] PE
-        | [<JsonUnionCase("PF")>] PF
-        | [<JsonUnionCase("PG")>] PG
-        | [<JsonUnionCase("PH")>] PH
-        | [<JsonUnionCase("PK")>] PK
-        | [<JsonUnionCase("PL")>] PL
-        | [<JsonUnionCase("PM")>] PM
-        | [<JsonUnionCase("PN")>] PN
-        | [<JsonUnionCase("PR")>] PR
-        | [<JsonUnionCase("PS")>] PS
-        | [<JsonUnionCase("PT")>] PT
-        | [<JsonUnionCase("PY")>] PY
-        | [<JsonUnionCase("QA")>] QA
-        | [<JsonUnionCase("RE")>] RE
-        | [<JsonUnionCase("RO")>] RO
-        | [<JsonUnionCase("RS")>] RS
-        | [<JsonUnionCase("RU")>] RU
-        | [<JsonUnionCase("RW")>] RW
-        | [<JsonUnionCase("SA")>] SA
-        | [<JsonUnionCase("SB")>] SB
-        | [<JsonUnionCase("SC")>] SC
-        | [<JsonUnionCase("SE")>] SE
-        | [<JsonUnionCase("SG")>] SG
-        | [<JsonUnionCase("SH")>] SH
-        | [<JsonUnionCase("SI")>] SI
-        | [<JsonUnionCase("SJ")>] SJ
-        | [<JsonUnionCase("SK")>] SK
-        | [<JsonUnionCase("SL")>] SL
-        | [<JsonUnionCase("SM")>] SM
-        | [<JsonUnionCase("SN")>] SN
-        | [<JsonUnionCase("SO")>] SO
-        | [<JsonUnionCase("SR")>] SR
-        | [<JsonUnionCase("SS")>] SS
-        | [<JsonUnionCase("ST")>] ST
-        | [<JsonUnionCase("SV")>] SV
-        | [<JsonUnionCase("SX")>] SX
-        | [<JsonUnionCase("SZ")>] SZ
-        | [<JsonUnionCase("TA")>] TA
-        | [<JsonUnionCase("TC")>] TC
-        | [<JsonUnionCase("TD")>] TD
-        | [<JsonUnionCase("TF")>] TF
-        | [<JsonUnionCase("TG")>] TG
-        | [<JsonUnionCase("TH")>] TH
-        | [<JsonUnionCase("TJ")>] TJ
-        | [<JsonUnionCase("TK")>] TK
-        | [<JsonUnionCase("TL")>] TL
-        | [<JsonUnionCase("TM")>] TM
-        | [<JsonUnionCase("TN")>] TN
-        | [<JsonUnionCase("TO")>] TO
-        | [<JsonUnionCase("TR")>] TR
-        | [<JsonUnionCase("TT")>] TT
-        | [<JsonUnionCase("TV")>] TV
-        | [<JsonUnionCase("TW")>] TW
-        | [<JsonUnionCase("TZ")>] TZ
-        | [<JsonUnionCase("UA")>] UA
-        | [<JsonUnionCase("UG")>] UG
-        | [<JsonUnionCase("US")>] US
-        | [<JsonUnionCase("UY")>] UY
-        | [<JsonUnionCase("UZ")>] UZ
-        | [<JsonUnionCase("VA")>] VA
-        | [<JsonUnionCase("VC")>] VC
-        | [<JsonUnionCase("VE")>] VE
-        | [<JsonUnionCase("VG")>] VG
-        | [<JsonUnionCase("VN")>] VN
-        | [<JsonUnionCase("VU")>] VU
-        | [<JsonUnionCase("WF")>] WF
-        | [<JsonUnionCase("WS")>] WS
-        | [<JsonUnionCase("XK")>] XK
-        | [<JsonUnionCase("YE")>] YE
-        | [<JsonUnionCase("YT")>] YT
-        | [<JsonUnionCase("ZA")>] ZA
-        | [<JsonUnionCase("ZM")>] ZM
-        | [<JsonUnionCase("ZW")>] ZW
-        | [<JsonUnionCase("ZZ")>] ZZ
 
     and PaymentLinksResourceShippingOption = {
         ///A non-negative integer in cents representing how much to charge.
@@ -13790,41 +16494,6 @@ module StripeModel =
         | String of string
         | Customer of Customer
 
-    and PaymentMethodType =
-        | AcssDebit
-        | Affirm
-        | AfterpayClearpay
-        | Alipay
-        | AuBecsDebit
-        | BacsDebit
-        | Bancontact
-        | Blik
-        | Boleto
-        | Card
-        | CardPresent
-        | Cashapp
-        | CustomerBalance
-        | Eps
-        | Fpx
-        | Giropay
-        | Grabpay
-        | Ideal
-        | InteracPresent
-        | Klarna
-        | Konbini
-        | Link
-        | Oxxo
-        | P24
-        | Paynow
-        | Paypal
-        | Pix
-        | Promptpay
-        | SepaDebit
-        | Sofort
-        | UsBankAccount
-        | WechatPay
-        | Zip
-
     and PaymentMethodAcssDebit = {
         ///Name of the bank associated with the bank account.
         BankName: string option
@@ -13975,23 +16644,6 @@ module StripeModel =
                 PaymentMethodCard.Issuer = issuer |> Option.flatten
             }
 
-    and PaymentMethodCardBrand =
-        | Amex
-        | Diners
-        | Discover
-        | EftposAu
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
-    and PaymentMethodCardFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
     and PaymentMethodCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         [<JsonField(Name="address_line1_check")>]AddressLine1Check: PaymentMethodCardChecksAddressLine1Check option
@@ -14007,24 +16659,6 @@ module StripeModel =
                 PaymentMethodCardChecks.AddressPostalCodeCheck = addressPostalCodeCheck //required
                 PaymentMethodCardChecks.CvcCheck = cvcCheck //required
             }
-
-    and PaymentMethodCardChecksAddressLine1Check =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
-
-    and PaymentMethodCardChecksAddressPostalCodeCheck =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
-
-    and PaymentMethodCardChecksCvcCheck =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
 
     and PaymentMethodCardPresent = {
         ///Card brand. Can be `amex`, `diners`, `discover`, `eftpos_au`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -14073,30 +16707,6 @@ module StripeModel =
                 PaymentMethodCardPresent.Issuer = issuer |> Option.flatten
             }
 
-    and PaymentMethodCardPresentBrand =
-        | Amex
-        | Diners
-        | Discover
-        | EftposAu
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
-    and PaymentMethodCardPresentFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
-    and PaymentMethodCardPresentReadMethod =
-        | ContactEmv
-        | ContactlessEmv
-        | ContactlessMagstripeMode
-        | MagneticStripeFallback
-        | MagneticStripeTrack2
-
     and PaymentMethodCardPresentNetworks = {
         ///All available networks for the card.
         Available: string list
@@ -14136,15 +16746,6 @@ module StripeModel =
                 PaymentMethodCardWallet.SamsungPay = samsungPay
                 PaymentMethodCardWallet.VisaCheckout = visaCheckout
             }
-
-    and PaymentMethodCardWalletType =
-        | AmexExpressCheckout
-        | ApplePay
-        | GooglePay
-        | Link
-        | Masterpass
-        | SamsungPay
-        | VisaCheckout
 
     and PaymentMethodCardWalletAmexExpressCheckout = {
         PaymentMethodCardWalletAmexExpressCheckout: string option
@@ -14341,26 +16942,6 @@ module StripeModel =
                 PaymentMethodDetails.Zip = zip
             }
 
-    and PaymentMethodDetailsType =
-        | AchCreditTransfer
-        | AchDebit
-        | AcssDebit
-        | Alipay
-        | AuBecsDebit
-        | Bancontact
-        | Card
-        | CardPresent
-        | Eps
-        | Giropay
-        | Ideal
-        | Klarna
-        | Multibanco
-        | P24
-        | SepaDebit
-        | Sofort
-        | StripeAccount
-        | Wechat
-
     and PaymentMethodDetailsAchCreditTransfer = {
         ///Account number to transfer funds to.
         AccountNumber: string option
@@ -14404,10 +16985,6 @@ module StripeModel =
                 PaymentMethodDetailsAchDebit.Last4 = last4 //required
                 PaymentMethodDetailsAchDebit.RoutingNumber = routingNumber //required
             }
-
-    and PaymentMethodDetailsAchDebitAccountHolderType =
-        | Company
-        | Individual
 
     and PaymentMethodDetailsAcssDebit = {
         ///Name of the bank associated with the bank account.
@@ -14535,12 +17112,6 @@ module StripeModel =
         | String of string
         | Mandate of Mandate
 
-    and PaymentMethodDetailsBancontactPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
-
     and PaymentMethodDetailsBlik = {
         PaymentMethodDetailsBlik: string option
     }
@@ -14623,36 +17194,6 @@ module StripeModel =
                 PaymentMethodDetailsCard.NetworkToken = networkToken |> Option.flatten
             }
 
-    and PaymentMethodDetailsCardBrand =
-        | Amex
-        | Diners
-        | Discover
-        | EftposAu
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
-    and PaymentMethodDetailsCardFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
-    and PaymentMethodDetailsCardNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | EftposAu
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
     and PaymentMethodDetailsCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         [<JsonField(Name="address_line1_check")>]AddressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option
@@ -14668,24 +17209,6 @@ module StripeModel =
                 PaymentMethodDetailsCardChecks.AddressPostalCodeCheck = addressPostalCodeCheck //required
                 PaymentMethodDetailsCardChecks.CvcCheck = cvcCheck //required
             }
-
-    and PaymentMethodDetailsCardChecksAddressLine1Check =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
-
-    and PaymentMethodDetailsCardChecksAddressPostalCodeCheck =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
-
-    and PaymentMethodDetailsCardChecksCvcCheck =
-        | Pass
-        | Fail
-        | Unavailable
-        | Unchecked
 
     and PaymentMethodDetailsCardInstallments = {
         ///Installment plan selected for the payment.
@@ -14791,43 +17314,6 @@ module StripeModel =
                 PaymentMethodDetailsCardPresent.Issuer = issuer |> Option.flatten
             }
 
-    and PaymentMethodDetailsCardPresentBrand =
-        | Amex
-        | Diners
-        | Discover
-        | EftposAu
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
-    and PaymentMethodDetailsCardPresentFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
-    and PaymentMethodDetailsCardPresentNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | EftposAu
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
-    and PaymentMethodDetailsCardPresentReadMethod =
-        | ContactEmv
-        | ContactlessEmv
-        | ContactlessMagstripeMode
-        | MagneticStripeFallback
-        | MagneticStripeTrack2
-
     and PaymentMethodDetailsCardPresentReceipt = {
         ///The type of account being debited or credited
         AccountType: PaymentMethodDetailsCardPresentReceiptAccountType option
@@ -14862,12 +17348,6 @@ module StripeModel =
                 PaymentMethodDetailsCardPresentReceipt.AccountType = accountType
             }
 
-    and PaymentMethodDetailsCardPresentReceiptAccountType =
-        | Checking
-        | Credit
-        | Prepaid
-        | Unknown
-
     and PaymentMethodDetailsCardWallet = {
         AmexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout option
         ApplePay: PaymentMethodDetailsCardWalletApplePay option
@@ -14894,15 +17374,6 @@ module StripeModel =
                 PaymentMethodDetailsCardWallet.SamsungPay = samsungPay
                 PaymentMethodDetailsCardWallet.VisaCheckout = visaCheckout
             }
-
-    and PaymentMethodDetailsCardWalletType =
-        | AmexExpressCheckout
-        | ApplePay
-        | GooglePay
-        | Link
-        | Masterpass
-        | SamsungPay
-        | VisaCheckout
 
     and PaymentMethodDetailsCardWalletAmexExpressCheckout = {
         PaymentMethodDetailsCardWalletAmexExpressCheckout: string option
@@ -15024,36 +17495,6 @@ module StripeModel =
                 PaymentMethodDetailsEps.VerifiedName = verifiedName //required
             }
 
-    and PaymentMethodDetailsEpsBank =
-        | ArzteUndApothekerBank
-        | AustrianAnadiBankAg
-        | BankAustria
-        | BankhausCarlSpangler
-        | BankhausSchelhammerUndSchatteraAg
-        | BawagPskAg
-        | BksBankAg
-        | BrullKallmusBankAg
-        | BtvVierLanderBank
-        | CapitalBankGraweGruppeAg
-        | DeutscheBankAg
-        | Dolomitenbank
-        | EasybankAg
-        | ErsteBankUndSparkassen
-        | HypoAlpeadriabankInternationalAg
-        | HypoBankBurgenlandAktiengesellschaft
-        | HypoNoeLbFurNiederosterreichUWien
-        | HypoOberosterreichSalzburgSteiermark
-        | HypoTirolBankAg
-        | HypoVorarlbergBankAg
-        | MarchfelderBank
-        | OberbankAg
-        | RaiffeisenBankengruppeOsterreich
-        | SchoellerbankAg
-        | SpardaBankWien
-        | VolksbankGruppe
-        | VolkskreditbankAg
-        | VrBankBraunau
-
     and PaymentMethodDetailsFpx = {
         ///Account holder type, if provided. Can be one of `individual` or `company`.
         AccountHolderType: PaymentMethodDetailsFpxAccountHolderType option
@@ -15069,34 +17510,6 @@ module StripeModel =
                 PaymentMethodDetailsFpx.Bank = bank //required
                 PaymentMethodDetailsFpx.TransactionId = transactionId //required
             }
-
-    and PaymentMethodDetailsFpxAccountHolderType =
-        | Company
-        | Individual
-
-    and PaymentMethodDetailsFpxBank =
-        | AffinBank
-        | Agrobank
-        | AllianceBank
-        | Ambank
-        | BankIslam
-        | BankMuamalat
-        | BankOfChina
-        | BankRakyat
-        | Bsn
-        | Cimb
-        | DeutscheBank
-        | HongLeongBank
-        | Hsbc
-        | Kfh
-        | Maybank2e
-        | Maybank2u
-        | Ocbc
-        | PbEnterprise
-        | PublicBank
-        | Rhb
-        | StandardChartered
-        | Uob
 
     and PaymentMethodDetailsGiropay = {
         ///Bank code of bank associated with the bank account.
@@ -15154,39 +17567,6 @@ module StripeModel =
                 PaymentMethodDetailsIdeal.IbanLast4 = ibanLast4 //required
                 PaymentMethodDetailsIdeal.VerifiedName = verifiedName //required
             }
-
-    and PaymentMethodDetailsIdealBank =
-        | AbnAmro
-        | AsnBank
-        | Bunq
-        | Handelsbanken
-        | Ing
-        | Knab
-        | Moneyou
-        | Rabobank
-        | Regiobank
-        | Revolut
-        | SnsBank
-        | TriodosBank
-        | VanLanschot
-        | Yoursafe
-
-    and PaymentMethodDetailsIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("REVOIE23")>] REVOIE23
-        | [<JsonUnionCase("REVOLT21")>] REVOLT21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
 
     and PaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf =
         | String of string
@@ -15255,37 +17635,6 @@ module StripeModel =
                 PaymentMethodDetailsInteracPresent.Issuer = issuer |> Option.flatten
             }
 
-    and PaymentMethodDetailsInteracPresentBrand =
-        | Interac
-        | Mastercard
-        | Visa
-
-    and PaymentMethodDetailsInteracPresentFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
-    and PaymentMethodDetailsInteracPresentNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | EftposAu
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
-    and PaymentMethodDetailsInteracPresentReadMethod =
-        | ContactEmv
-        | ContactlessEmv
-        | ContactlessMagstripeMode
-        | MagneticStripeFallback
-        | MagneticStripeTrack2
-
     and PaymentMethodDetailsInteracPresentReceipt = {
         ///The type of account being debited or credited
         AccountType: PaymentMethodDetailsInteracPresentReceiptAccountType option
@@ -15319,11 +17668,6 @@ module StripeModel =
                 PaymentMethodDetailsInteracPresentReceipt.TransactionStatusInformation = transactionStatusInformation //required
                 PaymentMethodDetailsInteracPresentReceipt.AccountType = accountType
             }
-
-    and PaymentMethodDetailsInteracPresentReceiptAccountType =
-        | Checking
-        | Savings
-        | Unknown
 
     and PaymentMethodDetailsKlarna = {
         ///The Klarna payment method used for this transaction.
@@ -15359,12 +17703,6 @@ module StripeModel =
             {
                 PaymentMethodDetailsKonbiniStore.Chain = chain //required
             }
-
-    and PaymentMethodDetailsKonbiniStoreChain =
-        | Familymart
-        | Lawson
-        | Ministop
-        | Seicomart
 
     and PaymentMethodDetailsLink = {
         ///Two-letter ISO code representing the funding source country beneath the Link payment.
@@ -15417,33 +17755,6 @@ module StripeModel =
                 PaymentMethodDetailsP24.Reference = reference //required
                 PaymentMethodDetailsP24.VerifiedName = verifiedName //required
             }
-
-    and PaymentMethodDetailsP24Bank =
-        | AliorBank
-        | BankMillennium
-        | BankNowyBfgSa
-        | BankPekaoSa
-        | BankiSpbdzielcze
-        | Blik
-        | BnpParibas
-        | Boz
-        | CitiHandlowy
-        | CreditAgricole
-        | Envelobank
-        | EtransferPocztowy24
-        | GetinBank
-        | Ideabank
-        | Ing
-        | Inteligo
-        | MbankMtransfer
-        | NestPrzelew
-        | NoblePay
-        | PbacZIpko
-        | PlusBank
-        | SantanderPrzelew24
-        | TmobileUsbugiBankowe
-        | ToyotaBank
-        | VolkswagenBank
 
     and PaymentMethodDetailsPaynow = {
         ///Reference number associated with this PayNow payment
@@ -15584,15 +17895,6 @@ module StripeModel =
         | String of string
         | Mandate of Mandate
 
-    and PaymentMethodDetailsSofortPreferredLanguage =
-        | De
-        | En
-        | Es
-        | Fr
-        | It
-        | Nl
-        | Pl
-
     and PaymentMethodDetailsStripeAccount = {
         PaymentMethodDetailsStripeAccount: string option
     }
@@ -15626,14 +17928,6 @@ module StripeModel =
                 PaymentMethodDetailsUsBankAccount.Last4 = last4 //required
                 PaymentMethodDetailsUsBankAccount.RoutingNumber = routingNumber //required
             }
-
-    and PaymentMethodDetailsUsBankAccountAccountHolderType =
-        | Company
-        | Individual
-
-    and PaymentMethodDetailsUsBankAccountAccountType =
-        | Checking
-        | Savings
 
     and PaymentMethodDetailsWechat = {
         PaymentMethodDetailsWechat: string option
@@ -15676,36 +17970,6 @@ module StripeModel =
                 PaymentMethodEps.Bank = bank //required
             }
 
-    and PaymentMethodEpsBank =
-        | ArzteUndApothekerBank
-        | AustrianAnadiBankAg
-        | BankAustria
-        | BankhausCarlSpangler
-        | BankhausSchelhammerUndSchatteraAg
-        | BawagPskAg
-        | BksBankAg
-        | BrullKallmusBankAg
-        | BtvVierLanderBank
-        | CapitalBankGraweGruppeAg
-        | DeutscheBankAg
-        | Dolomitenbank
-        | EasybankAg
-        | ErsteBankUndSparkassen
-        | HypoAlpeadriabankInternationalAg
-        | HypoBankBurgenlandAktiengesellschaft
-        | HypoNoeLbFurNiederosterreichUWien
-        | HypoOberosterreichSalzburgSteiermark
-        | HypoTirolBankAg
-        | HypoVorarlbergBankAg
-        | MarchfelderBank
-        | OberbankAg
-        | RaiffeisenBankengruppeOsterreich
-        | SchoellerbankAg
-        | SpardaBankWien
-        | VolksbankGruppe
-        | VolkskreditbankAg
-        | VrBankBraunau
-
     and PaymentMethodFpx = {
         ///Account holder type, if provided. Can be one of `individual` or `company`.
         AccountHolderType: PaymentMethodFpxAccountHolderType option
@@ -15718,34 +17982,6 @@ module StripeModel =
                 PaymentMethodFpx.AccountHolderType = accountHolderType //required
                 PaymentMethodFpx.Bank = bank //required
             }
-
-    and PaymentMethodFpxAccountHolderType =
-        | Company
-        | Individual
-
-    and PaymentMethodFpxBank =
-        | AffinBank
-        | Agrobank
-        | AllianceBank
-        | Ambank
-        | BankIslam
-        | BankMuamalat
-        | BankOfChina
-        | BankRakyat
-        | Bsn
-        | Cimb
-        | DeutscheBank
-        | HongLeongBank
-        | Hsbc
-        | Kfh
-        | Maybank2e
-        | Maybank2u
-        | Ocbc
-        | PbEnterprise
-        | PublicBank
-        | Rhb
-        | StandardChartered
-        | Uob
 
     and PaymentMethodGiropay = {
         PaymentMethodGiropay: string option
@@ -15777,39 +18013,6 @@ module StripeModel =
                 PaymentMethodIdeal.Bank = bank //required
                 PaymentMethodIdeal.Bic = bic //required
             }
-
-    and PaymentMethodIdealBank =
-        | AbnAmro
-        | AsnBank
-        | Bunq
-        | Handelsbanken
-        | Ing
-        | Knab
-        | Moneyou
-        | Rabobank
-        | Regiobank
-        | Revolut
-        | SnsBank
-        | TriodosBank
-        | VanLanschot
-        | Yoursafe
-
-    and PaymentMethodIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("REVOIE23")>] REVOIE23
-        | [<JsonUnionCase("REVOLT21")>] REVOLT21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
 
     and PaymentMethodInteracPresent = {
         ///Card brand. Can be `interac`, `mastercard` or `visa`.
@@ -15860,24 +18063,6 @@ module StripeModel =
                 PaymentMethodInteracPresent.Iin = iin |> Option.flatten
                 PaymentMethodInteracPresent.Issuer = issuer |> Option.flatten
             }
-
-    and PaymentMethodInteracPresentBrand =
-        | Interac
-        | Mastercard
-        | Visa
-
-    and PaymentMethodInteracPresentFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
-    and PaymentMethodInteracPresentReadMethod =
-        | ContactEmv
-        | ContactlessEmv
-        | ContactlessMagstripeMode
-        | MagneticStripeFallback
-        | MagneticStripeTrack2
 
     and PaymentMethodKlarna = {
         ///The customer's date of birth, if provided.
@@ -15958,10 +18143,6 @@ module StripeModel =
                 PaymentMethodOptionsAlipay.SetupFutureUsage = setupFutureUsage
             }
 
-    and PaymentMethodOptionsAlipaySetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-
     and PaymentMethodOptionsBacsDebit = {
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
         ///Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
@@ -15973,11 +18154,6 @@ module StripeModel =
             {
                 PaymentMethodOptionsBacsDebit.SetupFutureUsage = setupFutureUsage
             }
-
-    and PaymentMethodOptionsBacsDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
 
     and PaymentMethodOptionsBancontact = {
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
@@ -15994,16 +18170,6 @@ module StripeModel =
                 PaymentMethodOptionsBancontact.SetupFutureUsage = setupFutureUsage
             }
 
-    and PaymentMethodOptionsBancontactPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
-
-    and PaymentMethodOptionsBancontactSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-
     and PaymentMethodOptionsBoleto = {
         ///The number of calendar days before a Boleto voucher expires. For example, if you create a Boleto voucher on Monday and you set expires_after_days to 2, the Boleto voucher will expire on Wednesday at 23:59 America/Sao_Paulo time.
         ExpiresAfterDays: int
@@ -16018,11 +18184,6 @@ module StripeModel =
                 PaymentMethodOptionsBoleto.ExpiresAfterDays = expiresAfterDays //required
                 PaymentMethodOptionsBoleto.SetupFutureUsage = setupFutureUsage
             }
-
-    and PaymentMethodOptionsBoletoSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
 
     and PaymentMethodOptionsCardInstallments = {
         ///Installment plans that may be selected for this PaymentIntent.
@@ -16074,17 +18235,6 @@ module StripeModel =
                 PaymentMethodOptionsCardMandateOptions.SupportedTypes = supportedTypes //required
             }
 
-    and PaymentMethodOptionsCardMandateOptionsAmountType =
-        | Fixed
-        | Maximum
-
-    and PaymentMethodOptionsCardMandateOptionsInterval =
-        | Day
-        | Month
-        | Sporadic
-        | Week
-        | Year
-
     and PaymentMethodOptionsCardPresent = {
         ///Request ability to capture this payment beyond the standard [authorization validity window](https://stripe.com/docs/terminal/features/extended-authorizations#authorization-validity)
         RequestExtendedAuthorization: bool option
@@ -16112,11 +18262,6 @@ module StripeModel =
             {
                 PaymentMethodOptionsCashapp.SetupFutureUsage = setupFutureUsage
             }
-
-    and PaymentMethodOptionsCashappSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-        | OnSession
 
     and PaymentMethodOptionsCustomerBalance = {
         BankTransfer: PaymentMethodOptionsCustomerBalanceBankTransfer option
@@ -16150,22 +18295,6 @@ module StripeModel =
                 PaymentMethodOptionsCustomerBalanceBankTransfer.RequestedAddressTypes = requestedAddressTypes
             }
 
-    and PaymentMethodOptionsCustomerBalanceBankTransferType =
-        | EuBankTransfer
-        | GbBankTransfer
-        | JpBankTransfer
-        | MxBankTransfer
-        | UsBankTransfer
-
-    and PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes =
-        | Aba
-        | Iban
-        | Sepa
-        | SortCode
-        | Spei
-        | Swift
-        | Zengin
-
     and PaymentMethodOptionsCustomerBalanceEuBankAccount = {
         ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
         Country: PaymentMethodOptionsCustomerBalanceEuBankAccountCountry
@@ -16175,14 +18304,6 @@ module StripeModel =
             {
                 PaymentMethodOptionsCustomerBalanceEuBankAccount.Country = country //required
             }
-
-    and PaymentMethodOptionsCustomerBalanceEuBankAccountCountry =
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("NL")>] NL
 
     and PaymentMethodOptionsFpx () = 
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -16216,10 +18337,6 @@ module StripeModel =
             {
                 PaymentMethodOptionsIdeal.SetupFutureUsage = setupFutureUsage
             }
-
-    and PaymentMethodOptionsIdealSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
 
     and PaymentMethodOptionsInteracPresent = {
         PaymentMethodOptionsInteracPresent: string option
@@ -16321,10 +18438,6 @@ module StripeModel =
                 PaymentMethodOptionsPaypal.SetupFutureUsage = setupFutureUsage
             }
 
-    and PaymentMethodOptionsPaypalSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-
     and PaymentMethodOptionsPix = {
         ///The number of seconds (between 10 and 1209600) after which Pix payment will expire.
         ExpiresAfterSeconds: int option
@@ -16365,19 +18478,6 @@ module StripeModel =
                 PaymentMethodOptionsSofort.SetupFutureUsage = setupFutureUsage
             }
 
-    and PaymentMethodOptionsSofortPreferredLanguage =
-        | De
-        | En
-        | Es
-        | Fr
-        | It
-        | Nl
-        | Pl
-
-    and PaymentMethodOptionsSofortSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
-        | OffSession
-
     and PaymentMethodOptionsWechatPay = {
         ///The app ID registered with WeChat Pay. Only required when client is ios or android.
         AppId: string option
@@ -16395,11 +18495,6 @@ module StripeModel =
                 PaymentMethodOptionsWechatPay.AppId = appId //required
                 PaymentMethodOptionsWechatPay.Client = client //required
             }
-
-    and PaymentMethodOptionsWechatPayClient =
-        | Android
-        | Ios
-        | Web
 
     and PaymentMethodOptionsZip () = 
         ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -16426,33 +18521,6 @@ module StripeModel =
             {
                 PaymentMethodP24.Bank = bank //required
             }
-
-    and PaymentMethodP24Bank =
-        | AliorBank
-        | BankMillennium
-        | BankNowyBfgSa
-        | BankPekaoSa
-        | BankiSpbdzielcze
-        | Blik
-        | BnpParibas
-        | Boz
-        | CitiHandlowy
-        | CreditAgricole
-        | Envelobank
-        | EtransferPocztowy24
-        | GetinBank
-        | Ideabank
-        | Ing
-        | Inteligo
-        | MbankMtransfer
-        | NestPrzelew
-        | NoblePay
-        | PbacZIpko
-        | PlusBank
-        | SantanderPrzelew24
-        | TmobileUsbugiBankowe
-        | ToyotaBank
-        | VolkswagenBank
 
     and PaymentMethodPaynow = {
         PaymentMethodPaynow: string option
@@ -16564,14 +18632,6 @@ module StripeModel =
                 PaymentMethodUsBankAccount.StatusDetails = statusDetails |> Option.flatten
             }
 
-    and PaymentMethodUsBankAccountAccountHolderType =
-        | Company
-        | Individual
-
-    and PaymentMethodUsBankAccountAccountType =
-        | Checking
-        | Savings
-
     and PaymentMethodUsBankAccountBlocked = {
         ///The ACH network code that resulted in this block.
         NetworkCode: PaymentMethodUsBankAccountBlockedNetworkCode option
@@ -16584,28 +18644,6 @@ module StripeModel =
                 PaymentMethodUsBankAccountBlocked.NetworkCode = networkCode //required
                 PaymentMethodUsBankAccountBlocked.Reason = reason //required
             }
-
-    and PaymentMethodUsBankAccountBlockedNetworkCode =
-        | [<JsonUnionCase("R02")>] R02
-        | [<JsonUnionCase("R03")>] R03
-        | [<JsonUnionCase("R04")>] R04
-        | [<JsonUnionCase("R05")>] R05
-        | [<JsonUnionCase("R07")>] R07
-        | [<JsonUnionCase("R08")>] R08
-        | [<JsonUnionCase("R10")>] R10
-        | [<JsonUnionCase("R11")>] R11
-        | [<JsonUnionCase("R16")>] R16
-        | [<JsonUnionCase("R20")>] R20
-        | [<JsonUnionCase("R29")>] R29
-        | [<JsonUnionCase("R31")>] R31
-
-    and PaymentMethodUsBankAccountBlockedReason =
-        | BankAccountClosed
-        | BankAccountFrozen
-        | BankAccountInvalidDetails
-        | BankAccountRestricted
-        | BankAccountUnusable
-        | DebitNotAuthorized
 
     and PaymentMethodUsBankAccountStatusDetails = {
         Blocked: PaymentMethodUsBankAccountBlocked option
@@ -16678,11 +18716,6 @@ module StripeModel =
                 PaymentPagesCheckoutSessionAutomaticTax.Status = status //required
             }
 
-    and PaymentPagesCheckoutSessionAutomaticTaxStatus =
-        | Complete
-        | Failed
-        | RequiresLocationInputs
-
     and PaymentPagesCheckoutSessionConsent = {
         ///If `opt_in`, the customer consents to receiving promotional communications
         ///from the merchant about this Checkout Session.
@@ -16696,10 +18729,6 @@ module StripeModel =
             {
                 PaymentPagesCheckoutSessionConsent.Promotions = promotions //required
             }
-
-    and PaymentPagesCheckoutSessionConsentPromotions =
-        | OptIn
-        | OptOut
 
     and PaymentPagesCheckoutSessionConsentCollection = {
         ///If set to `auto`, enables the collection of customer consent for promotional communications. The Checkout
@@ -16715,14 +18744,6 @@ module StripeModel =
                 PaymentPagesCheckoutSessionConsentCollection.Promotions = promotions //required
                 PaymentPagesCheckoutSessionConsentCollection.TermsOfService = termsOfService //required
             }
-
-    and PaymentPagesCheckoutSessionConsentCollectionPromotions =
-        | Auto
-        | [<JsonUnionCase("none")>] None'
-
-    and PaymentPagesCheckoutSessionConsentCollectionTermsOfService =
-        | [<JsonUnionCase("none")>] None'
-        | Required
 
     and PaymentPagesCheckoutSessionCurrencyConversion = {
         ///Total of all items in source currency before discounts or taxes are applied.
@@ -16769,11 +18790,6 @@ module StripeModel =
                 PaymentPagesCheckoutSessionCustomFields.Text = text //required
                 PaymentPagesCheckoutSessionCustomFields.Type = ``type`` //required
             }
-
-    and PaymentPagesCheckoutSessionCustomFieldsType =
-        | Dropdown
-        | Numeric
-        | Text
 
     and PaymentPagesCheckoutSessionCustomFieldsDropdown = {
         ///The options available for the customer to select. Up to 200 options allowed.
@@ -16895,11 +18911,6 @@ module StripeModel =
                 PaymentPagesCheckoutSessionCustomerDetails.TaxIds = taxIds //required
             }
 
-    and PaymentPagesCheckoutSessionCustomerDetailsTaxExempt =
-        | Exempt
-        | [<JsonUnionCase("none")>] None'
-        | Reverse
-
     and PaymentPagesCheckoutSessionInvoiceCreation = {
         ///Indicates whether invoice creation is enabled for the Checkout Session.
         Enabled: bool
@@ -16963,245 +18974,6 @@ module StripeModel =
                 PaymentPagesCheckoutSessionShippingAddressCollection.AllowedCountries = allowedCountries //required
             }
 
-    and PaymentPagesCheckoutSessionShippingAddressCollectionAllowedCountries =
-        | [<JsonUnionCase("AC")>] AC
-        | [<JsonUnionCase("AD")>] AD
-        | [<JsonUnionCase("AE")>] AE
-        | [<JsonUnionCase("AF")>] AF
-        | [<JsonUnionCase("AG")>] AG
-        | [<JsonUnionCase("AI")>] AI
-        | [<JsonUnionCase("AL")>] AL
-        | [<JsonUnionCase("AM")>] AM
-        | [<JsonUnionCase("AO")>] AO
-        | [<JsonUnionCase("AQ")>] AQ
-        | [<JsonUnionCase("AR")>] AR
-        | [<JsonUnionCase("AT")>] AT
-        | [<JsonUnionCase("AU")>] AU
-        | [<JsonUnionCase("AW")>] AW
-        | [<JsonUnionCase("AX")>] AX
-        | [<JsonUnionCase("AZ")>] AZ
-        | [<JsonUnionCase("BA")>] BA
-        | [<JsonUnionCase("BB")>] BB
-        | [<JsonUnionCase("BD")>] BD
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("BF")>] BF
-        | [<JsonUnionCase("BG")>] BG
-        | [<JsonUnionCase("BH")>] BH
-        | [<JsonUnionCase("BI")>] BI
-        | [<JsonUnionCase("BJ")>] BJ
-        | [<JsonUnionCase("BL")>] BL
-        | [<JsonUnionCase("BM")>] BM
-        | [<JsonUnionCase("BN")>] BN
-        | [<JsonUnionCase("BO")>] BO
-        | [<JsonUnionCase("BQ")>] BQ
-        | [<JsonUnionCase("BR")>] BR
-        | [<JsonUnionCase("BS")>] BS
-        | [<JsonUnionCase("BT")>] BT
-        | [<JsonUnionCase("BV")>] BV
-        | [<JsonUnionCase("BW")>] BW
-        | [<JsonUnionCase("BY")>] BY
-        | [<JsonUnionCase("BZ")>] BZ
-        | [<JsonUnionCase("CA")>] CA
-        | [<JsonUnionCase("CD")>] CD
-        | [<JsonUnionCase("CF")>] CF
-        | [<JsonUnionCase("CG")>] CG
-        | [<JsonUnionCase("CH")>] CH
-        | [<JsonUnionCase("CI")>] CI
-        | [<JsonUnionCase("CK")>] CK
-        | [<JsonUnionCase("CL")>] CL
-        | [<JsonUnionCase("CM")>] CM
-        | [<JsonUnionCase("CN")>] CN
-        | [<JsonUnionCase("CO")>] CO
-        | [<JsonUnionCase("CR")>] CR
-        | [<JsonUnionCase("CV")>] CV
-        | [<JsonUnionCase("CW")>] CW
-        | [<JsonUnionCase("CY")>] CY
-        | [<JsonUnionCase("CZ")>] CZ
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("DJ")>] DJ
-        | [<JsonUnionCase("DK")>] DK
-        | [<JsonUnionCase("DM")>] DM
-        | [<JsonUnionCase("DO")>] DO
-        | [<JsonUnionCase("DZ")>] DZ
-        | [<JsonUnionCase("EC")>] EC
-        | [<JsonUnionCase("EE")>] EE
-        | [<JsonUnionCase("EG")>] EG
-        | [<JsonUnionCase("EH")>] EH
-        | [<JsonUnionCase("ER")>] ER
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("ET")>] ET
-        | [<JsonUnionCase("FI")>] FI
-        | [<JsonUnionCase("FJ")>] FJ
-        | [<JsonUnionCase("FK")>] FK
-        | [<JsonUnionCase("FO")>] FO
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("GA")>] GA
-        | [<JsonUnionCase("GB")>] GB
-        | [<JsonUnionCase("GD")>] GD
-        | [<JsonUnionCase("GE")>] GE
-        | [<JsonUnionCase("GF")>] GF
-        | [<JsonUnionCase("GG")>] GG
-        | [<JsonUnionCase("GH")>] GH
-        | [<JsonUnionCase("GI")>] GI
-        | [<JsonUnionCase("GL")>] GL
-        | [<JsonUnionCase("GM")>] GM
-        | [<JsonUnionCase("GN")>] GN
-        | [<JsonUnionCase("GP")>] GP
-        | [<JsonUnionCase("GQ")>] GQ
-        | [<JsonUnionCase("GR")>] GR
-        | [<JsonUnionCase("GS")>] GS
-        | [<JsonUnionCase("GT")>] GT
-        | [<JsonUnionCase("GU")>] GU
-        | [<JsonUnionCase("GW")>] GW
-        | [<JsonUnionCase("GY")>] GY
-        | [<JsonUnionCase("HK")>] HK
-        | [<JsonUnionCase("HN")>] HN
-        | [<JsonUnionCase("HR")>] HR
-        | [<JsonUnionCase("HT")>] HT
-        | [<JsonUnionCase("HU")>] HU
-        | [<JsonUnionCase("ID")>] ID
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("IL")>] IL
-        | [<JsonUnionCase("IM")>] IM
-        | [<JsonUnionCase("IN")>] IN
-        | [<JsonUnionCase("IO")>] IO
-        | [<JsonUnionCase("IQ")>] IQ
-        | [<JsonUnionCase("IS")>] IS
-        | [<JsonUnionCase("IT")>] IT
-        | [<JsonUnionCase("JE")>] JE
-        | [<JsonUnionCase("JM")>] JM
-        | [<JsonUnionCase("JO")>] JO
-        | [<JsonUnionCase("JP")>] JP
-        | [<JsonUnionCase("KE")>] KE
-        | [<JsonUnionCase("KG")>] KG
-        | [<JsonUnionCase("KH")>] KH
-        | [<JsonUnionCase("KI")>] KI
-        | [<JsonUnionCase("KM")>] KM
-        | [<JsonUnionCase("KN")>] KN
-        | [<JsonUnionCase("KR")>] KR
-        | [<JsonUnionCase("KW")>] KW
-        | [<JsonUnionCase("KY")>] KY
-        | [<JsonUnionCase("KZ")>] KZ
-        | [<JsonUnionCase("LA")>] LA
-        | [<JsonUnionCase("LB")>] LB
-        | [<JsonUnionCase("LC")>] LC
-        | [<JsonUnionCase("LI")>] LI
-        | [<JsonUnionCase("LK")>] LK
-        | [<JsonUnionCase("LR")>] LR
-        | [<JsonUnionCase("LS")>] LS
-        | [<JsonUnionCase("LT")>] LT
-        | [<JsonUnionCase("LU")>] LU
-        | [<JsonUnionCase("LV")>] LV
-        | [<JsonUnionCase("LY")>] LY
-        | [<JsonUnionCase("MA")>] MA
-        | [<JsonUnionCase("MC")>] MC
-        | [<JsonUnionCase("MD")>] MD
-        | [<JsonUnionCase("ME")>] ME
-        | [<JsonUnionCase("MF")>] MF
-        | [<JsonUnionCase("MG")>] MG
-        | [<JsonUnionCase("MK")>] MK
-        | [<JsonUnionCase("ML")>] ML
-        | [<JsonUnionCase("MM")>] MM
-        | [<JsonUnionCase("MN")>] MN
-        | [<JsonUnionCase("MO")>] MO
-        | [<JsonUnionCase("MQ")>] MQ
-        | [<JsonUnionCase("MR")>] MR
-        | [<JsonUnionCase("MS")>] MS
-        | [<JsonUnionCase("MT")>] MT
-        | [<JsonUnionCase("MU")>] MU
-        | [<JsonUnionCase("MV")>] MV
-        | [<JsonUnionCase("MW")>] MW
-        | [<JsonUnionCase("MX")>] MX
-        | [<JsonUnionCase("MY")>] MY
-        | [<JsonUnionCase("MZ")>] MZ
-        | [<JsonUnionCase("NA")>] NA
-        | [<JsonUnionCase("NC")>] NC
-        | [<JsonUnionCase("NE")>] NE
-        | [<JsonUnionCase("NG")>] NG
-        | [<JsonUnionCase("NI")>] NI
-        | [<JsonUnionCase("NL")>] NL
-        | [<JsonUnionCase("NO")>] NO
-        | [<JsonUnionCase("NP")>] NP
-        | [<JsonUnionCase("NR")>] NR
-        | [<JsonUnionCase("NU")>] NU
-        | [<JsonUnionCase("NZ")>] NZ
-        | [<JsonUnionCase("OM")>] OM
-        | [<JsonUnionCase("PA")>] PA
-        | [<JsonUnionCase("PE")>] PE
-        | [<JsonUnionCase("PF")>] PF
-        | [<JsonUnionCase("PG")>] PG
-        | [<JsonUnionCase("PH")>] PH
-        | [<JsonUnionCase("PK")>] PK
-        | [<JsonUnionCase("PL")>] PL
-        | [<JsonUnionCase("PM")>] PM
-        | [<JsonUnionCase("PN")>] PN
-        | [<JsonUnionCase("PR")>] PR
-        | [<JsonUnionCase("PS")>] PS
-        | [<JsonUnionCase("PT")>] PT
-        | [<JsonUnionCase("PY")>] PY
-        | [<JsonUnionCase("QA")>] QA
-        | [<JsonUnionCase("RE")>] RE
-        | [<JsonUnionCase("RO")>] RO
-        | [<JsonUnionCase("RS")>] RS
-        | [<JsonUnionCase("RU")>] RU
-        | [<JsonUnionCase("RW")>] RW
-        | [<JsonUnionCase("SA")>] SA
-        | [<JsonUnionCase("SB")>] SB
-        | [<JsonUnionCase("SC")>] SC
-        | [<JsonUnionCase("SE")>] SE
-        | [<JsonUnionCase("SG")>] SG
-        | [<JsonUnionCase("SH")>] SH
-        | [<JsonUnionCase("SI")>] SI
-        | [<JsonUnionCase("SJ")>] SJ
-        | [<JsonUnionCase("SK")>] SK
-        | [<JsonUnionCase("SL")>] SL
-        | [<JsonUnionCase("SM")>] SM
-        | [<JsonUnionCase("SN")>] SN
-        | [<JsonUnionCase("SO")>] SO
-        | [<JsonUnionCase("SR")>] SR
-        | [<JsonUnionCase("SS")>] SS
-        | [<JsonUnionCase("ST")>] ST
-        | [<JsonUnionCase("SV")>] SV
-        | [<JsonUnionCase("SX")>] SX
-        | [<JsonUnionCase("SZ")>] SZ
-        | [<JsonUnionCase("TA")>] TA
-        | [<JsonUnionCase("TC")>] TC
-        | [<JsonUnionCase("TD")>] TD
-        | [<JsonUnionCase("TF")>] TF
-        | [<JsonUnionCase("TG")>] TG
-        | [<JsonUnionCase("TH")>] TH
-        | [<JsonUnionCase("TJ")>] TJ
-        | [<JsonUnionCase("TK")>] TK
-        | [<JsonUnionCase("TL")>] TL
-        | [<JsonUnionCase("TM")>] TM
-        | [<JsonUnionCase("TN")>] TN
-        | [<JsonUnionCase("TO")>] TO
-        | [<JsonUnionCase("TR")>] TR
-        | [<JsonUnionCase("TT")>] TT
-        | [<JsonUnionCase("TV")>] TV
-        | [<JsonUnionCase("TW")>] TW
-        | [<JsonUnionCase("TZ")>] TZ
-        | [<JsonUnionCase("UA")>] UA
-        | [<JsonUnionCase("UG")>] UG
-        | [<JsonUnionCase("US")>] US
-        | [<JsonUnionCase("UY")>] UY
-        | [<JsonUnionCase("UZ")>] UZ
-        | [<JsonUnionCase("VA")>] VA
-        | [<JsonUnionCase("VC")>] VC
-        | [<JsonUnionCase("VE")>] VE
-        | [<JsonUnionCase("VG")>] VG
-        | [<JsonUnionCase("VN")>] VN
-        | [<JsonUnionCase("VU")>] VU
-        | [<JsonUnionCase("WF")>] WF
-        | [<JsonUnionCase("WS")>] WS
-        | [<JsonUnionCase("XK")>] XK
-        | [<JsonUnionCase("YE")>] YE
-        | [<JsonUnionCase("YT")>] YT
-        | [<JsonUnionCase("ZA")>] ZA
-        | [<JsonUnionCase("ZM")>] ZM
-        | [<JsonUnionCase("ZW")>] ZW
-        | [<JsonUnionCase("ZZ")>] ZZ
-
     and PaymentPagesCheckoutSessionShippingCost = {
         ///Total shipping cost before any discounts or taxes are applied.
         AmountSubtotal: int
@@ -17257,75 +19029,6 @@ module StripeModel =
                 PaymentPagesCheckoutSessionTaxId.Type = ``type`` //required
                 PaymentPagesCheckoutSessionTaxId.Value = value //required
             }
-
-    and PaymentPagesCheckoutSessionTaxIdType =
-        | AdNrt
-        | AeTrn
-        | ArCuit
-        | AuAbn
-        | AuArn
-        | BgUic
-        | BoTin
-        | BrCnpj
-        | BrCpf
-        | CaBn
-        | CaGstHst
-        | CaPstBc
-        | CaPstMb
-        | CaPstSk
-        | CaQst
-        | ChVat
-        | ClTin
-        | CnTin
-        | CoNit
-        | CrTin
-        | DoRcn
-        | EcRuc
-        | EgTin
-        | EsCif
-        | EuOssVat
-        | EuVat
-        | GbVat
-        | GeVat
-        | HkBr
-        | HuTin
-        | IdNpwp
-        | IlVat
-        | InGst
-        | IsVat
-        | JpCn
-        | JpRn
-        | JpTrn
-        | KePin
-        | KrBrn
-        | LiUid
-        | MxRfc
-        | MyFrp
-        | MyItn
-        | MySst
-        | NoVat
-        | NzGst
-        | PeRuc
-        | PhTin
-        | RoTin
-        | RsPib
-        | RuInn
-        | RuKpp
-        | SaVat
-        | SgGst
-        | SgUen
-        | SiTin
-        | SvNit
-        | ThVat
-        | TrTin
-        | TwVat
-        | UaVat
-        | Unknown
-        | UsEin
-        | UyRuc
-        | VeRif
-        | VnTin
-        | ZaVat
 
     and PaymentPagesCheckoutSessionTaxIdCollection = {
         ///Indicates whether tax ID collection is enabled for the session
@@ -17470,38 +19173,13 @@ module StripeModel =
         | String of string
         | BalanceTransaction of BalanceTransaction
 
-    and PayoutMethod =
-        | Standard
-        | Instant
-
     and PayoutOriginalPayout'AnyOf =
         | String of string
         | Payout of Payout
 
-    and PayoutReconciliationStatus =
-        | Completed
-        | InProgress
-        | NotApplicable
-
     and PayoutReversedBy'AnyOf =
         | String of string
         | Payout of Payout
-
-    and PayoutSourceType =
-        | Card
-        | Fpx
-        | BankAccount
-
-    and PayoutStatus =
-        | Paid
-        | Pending
-        | InTransit
-        | Canceled
-        | Failed
-
-    and PayoutType =
-        | BankAccount
-        | Card
 
     and PaypalSellerProtection = {
         ///An array of conditions that are covered for the transaction, if applicable.
@@ -17515,15 +19193,6 @@ module StripeModel =
                 PaypalSellerProtection.DisputeCategories = disputeCategories //required
                 PaypalSellerProtection.Status = status //required
             }
-
-    and PaypalSellerProtectionStatus =
-        | Eligible
-        | NotEligible
-        | PartiallyEligible
-
-    and PaypalSellerProtectionDisputeCategories =
-        | Fraudulent
-        | ProductNotReceived
 
     and Period = {
         ///The end date of this usage period. All usage up to and including this point in time is included.
@@ -17633,10 +19302,6 @@ module StripeModel =
                 Person.SsnLast4Provided = ssnLast4Provided
                 Person.Verification = verification
             }
-
-    and PersonPoliticalExposure =
-        | Existing
-        | [<JsonUnionCase("none")>] None'
 
     and PersonFutureRequirements = {
         ///Fields that are due and can be satisfied by providing the corresponding alternative fields instead.
@@ -17785,34 +19450,10 @@ module StripeModel =
                 Plan.Tiers = tiers
             }
 
-    and PlanAggregateUsage =
-        | LastDuringPeriod
-        | LastEver
-        | Max
-        | Sum
-
-    and PlanBillingScheme =
-        | PerUnit
-        | Tiered
-
-    and PlanInterval =
-        | Day
-        | Month
-        | Week
-        | Year
-
     and PlanProduct'AnyOf =
         | String of string
         | Product of Product
         | DeletedProduct of DeletedProduct
-
-    and PlanTiersMode =
-        | Graduated
-        | Volume
-
-    and PlanUsageType =
-        | Licensed
-        | Metered
 
     and PlanTier = {
         ///Price for the entire tier.
@@ -17887,14 +19528,6 @@ module StripeModel =
                 PortalCustomerUpdate.Enabled = enabled //required
             }
 
-    and PortalCustomerUpdateAllowedUpdates =
-        | Address
-        | Email
-        | Name
-        | Phone
-        | Shipping
-        | TaxId
-
     and PortalFeatures = {
         CustomerUpdate: PortalCustomerUpdate
         InvoiceHistory: PortalInvoiceList
@@ -17965,12 +19598,6 @@ module StripeModel =
                 PortalFlowsFlow.Type = ``type`` //required
             }
 
-    and PortalFlowsFlowType =
-        | PaymentMethodUpdate
-        | SubscriptionCancel
-        | SubscriptionUpdate
-        | SubscriptionUpdateConfirm
-
     and PortalFlowsFlowAfterCompletion = {
         ///Configuration when `after_completion.type=hosted_confirmation`.
         HostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option
@@ -17986,11 +19613,6 @@ module StripeModel =
                 PortalFlowsFlowAfterCompletion.Redirect = redirect //required
                 PortalFlowsFlowAfterCompletion.Type = ``type`` //required
             }
-
-    and PortalFlowsFlowAfterCompletionType =
-        | HostedConfirmation
-        | PortalHomepage
-        | Redirect
 
     and PortalFlowsFlowSubscriptionCancel = {
         ///Specify a retention strategy to be used in the cancellation flow.
@@ -18125,15 +19747,6 @@ module StripeModel =
                 PortalSubscriptionCancel.ProrationBehavior = prorationBehavior //required
             }
 
-    and PortalSubscriptionCancelMode =
-        | AtPeriodEnd
-        | Immediately
-
-    and PortalSubscriptionCancelProrationBehavior =
-        | AlwaysInvoice
-        | CreateProrations
-        | [<JsonUnionCase("none")>] None'
-
     and PortalSubscriptionCancellationReason = {
         ///Whether the feature is enabled.
         Enabled: bool
@@ -18146,16 +19759,6 @@ module StripeModel =
                 PortalSubscriptionCancellationReason.Enabled = enabled //required
                 PortalSubscriptionCancellationReason.Options = options //required
             }
-
-    and PortalSubscriptionCancellationReasonOptions =
-        | CustomerService
-        | LowQuality
-        | MissingFeatures
-        | Other
-        | SwitchedService
-        | TooComplex
-        | TooExpensive
-        | Unused
 
     and PortalSubscriptionPause = {
         ///Whether the feature is enabled.
@@ -18185,16 +19788,6 @@ module StripeModel =
                 PortalSubscriptionUpdate.Products = products //required
                 PortalSubscriptionUpdate.ProrationBehavior = prorationBehavior //required
             }
-
-    and PortalSubscriptionUpdateProrationBehavior =
-        | AlwaysInvoice
-        | CreateProrations
-        | [<JsonUnionCase("none")>] None'
-
-    and PortalSubscriptionUpdateDefaultAllowedUpdates =
-        | Price
-        | PromotionCode
-        | Quantity
 
     and PortalSubscriptionUpdateProduct = {
         ///The list of price IDs which, when subscribed to, a subscription can be updated.
@@ -18283,27 +19876,10 @@ module StripeModel =
                 Price.Tiers = tiers
             }
 
-    and PriceBillingScheme =
-        | PerUnit
-        | Tiered
-
     and PriceProduct'AnyOf =
         | String of string
         | Product of Product
         | DeletedProduct of DeletedProduct
-
-    and PriceTaxBehavior =
-        | Exclusive
-        | Inclusive
-        | Unspecified
-
-    and PriceTiersMode =
-        | Graduated
-        | Volume
-
-    and PriceType =
-        | OneTime
-        | Recurring
 
     and PriceTier = {
         ///Price for the entire tier.
@@ -18402,10 +19978,6 @@ module StripeModel =
     and ProductTaxCode'AnyOf =
         | String of string
         | TaxCode of TaxCode
-
-    and ProductType =
-        | Good
-        | Service
 
     ///A Promotion Code represents a customer-redeemable code for a [coupon](https://stripe.com/docs/api#coupons). It can be used to
     ///create multiple codes for a single coupon.
@@ -18601,10 +20173,6 @@ module StripeModel =
         | Application of Application
         | DeletedApplication of DeletedApplication
 
-    and QuoteCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
-
     and QuoteCustomer'AnyOf =
         | String of string
         | Customer of Customer
@@ -18618,12 +20186,6 @@ module StripeModel =
     and QuoteOnBehalfOf'AnyOf =
         | String of string
         | Account of Account
-
-    and QuoteStatus =
-        | Accepted
-        | Canceled
-        | Draft
-        | Open
 
     and QuoteSubscription'AnyOf =
         | String of string
@@ -18678,11 +20240,6 @@ module StripeModel =
                 QuotesResourceAutomaticTax.Status = status //required
             }
 
-    and QuotesResourceAutomaticTaxStatus =
-        | Complete
-        | Failed
-        | RequiresLocationInputs
-
     and QuotesResourceComputed = {
         ///The definitive totals and line items the customer will be charged on a recurring basis. Takes into account the line items with recurring prices and discounts with `duration=forever` coupons only. Defaults to `null` if no inputted line items with recurring prices.
         Recurring: QuotesResourceRecurring option
@@ -18732,12 +20289,6 @@ module StripeModel =
                 QuotesResourceRecurring.IntervalCount = intervalCount //required
                 QuotesResourceRecurring.TotalDetails = totalDetails //required
             }
-
-    and QuotesResourceRecurringInterval =
-        | Day
-        | Month
-        | Week
-        | Year
 
     and QuotesResourceStatusTransitions = {
         ///The time that the quote was accepted. Measured in seconds since Unix epoch.
@@ -18941,18 +20492,6 @@ module StripeModel =
                 RadarValueList.Name = name //required
             }
 
-    and RadarValueListItemType =
-        | CardBin
-        | CardFingerprint
-        | CaseSensitiveString
-        | Country
-        | CustomerId
-        | Email
-        | IpAddress
-        | SepaDebitFingerprint
-        | String
-        | UsBankAccountFingerprint
-
     ///List of items contained within this value list.
     and RadarValueListListItems = {
         ///Details about each object.
@@ -19090,22 +20629,6 @@ module StripeModel =
                 Recurring.UsageType = usageType //required
             }
 
-    and RecurringAggregateUsage =
-        | LastDuringPeriod
-        | LastEver
-        | Max
-        | Sum
-
-    and RecurringInterval =
-        | Day
-        | Month
-        | Week
-        | Year
-
-    and RecurringUsageType =
-        | Licensed
-        | Metered
-
     ///`Refund` objects allow you to refund a charge that has previously been created
     ///but not yet refunded. Funds will be refunded to the credit or debit card that
     ///was originally charged.
@@ -19185,33 +20708,13 @@ module StripeModel =
         | String of string
         | BalanceTransaction of BalanceTransaction
 
-    and RefundFailureReason =
-        | LostOrStolenCard
-        | ExpiredOrCanceledCard
-        | ChargeForPendingRefundDisputed
-        | InsufficientFunds
-        | Declined
-        | MerchantRequest
-        | Unknown
-
     and RefundPaymentIntent'AnyOf =
         | String of string
         | PaymentIntent of PaymentIntent
 
-    and RefundReason =
-        | Duplicate
-        | ExpiredUncapturedCharge
-        | Fraudulent
-        | RequestedByCustomer
-
     and RefundSourceTransferReversal'AnyOf =
         | String of string
         | TransferReversal of TransferReversal
-
-    and RefundStatus =
-        | Pending
-        | Succeeded
-        | Failed
 
     and RefundTransferReversal'AnyOf =
         | String of string
@@ -19408,29 +20911,9 @@ module StripeModel =
         | String of string
         | Charge of Charge
 
-    and ReviewClosedReason =
-        | Approved
-        | Disputed
-        | Redacted
-        | Refunded
-        | RefundedAsFraud
-
-    and ReviewOpenedReason =
-        | Manual
-        | Rule
-
     and ReviewPaymentIntent'AnyOf =
         | String of string
         | PaymentIntent of PaymentIntent
-
-    and ReviewReason =
-        | Rule
-        | Manual
-        | Approved
-        | Refunded
-        | RefundedAsFraud
-        | Disputed
-        | Redacted
 
     and Rule = {
         ///The action taken on the payment.
@@ -19513,10 +20996,6 @@ module StripeModel =
                 SecretServiceResourceScope.Type = ``type`` //required
                 SecretServiceResourceScope.User = user
             }
-
-    and SecretServiceResourceScopeType =
-        | Account
-        | User
 
     and SepaDebitGeneratedFrom = {
         ///The ID of the Charge that generated this PaymentMethod, if any.
@@ -19616,22 +21095,6 @@ module StripeModel =
     and SetupAttemptSetupIntent'AnyOf =
         | String of string
         | SetupIntent of SetupIntent
-
-    and SetupAttemptStatus =
-        | RequiresConfirmation
-        | RequiresAction
-        | Processing
-        | Succeeded
-        | Failed
-        | Abandoned
-
-    and SetupAttemptUsage =
-        | OffSession
-        | OnSession
-
-    and SetupAttemptFlowDirections =
-        | Inbound
-        | Outbound
 
     and SetupAttemptPaymentMethodDetails = {
         AcssDebit: SetupAttemptPaymentMethodDetailsAcssDebit option
@@ -19741,12 +21204,6 @@ module StripeModel =
         | String of string
         | Mandate of Mandate
 
-    and SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
-
     and SetupAttemptPaymentMethodDetailsBoleto = {
         SetupAttemptPaymentMethodDetailsBoleto: string option
     }
@@ -19806,36 +21263,6 @@ module StripeModel =
                 SetupAttemptPaymentMethodDetailsCard.Issuer = issuer |> Option.flatten
             }
 
-    and SetupAttemptPaymentMethodDetailsCardBrand =
-        | Amex
-        | Diners
-        | Discover
-        | EftposAu
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
-    and SetupAttemptPaymentMethodDetailsCardFunding =
-        | Credit
-        | Debit
-        | Prepaid
-        | Unknown
-
-    and SetupAttemptPaymentMethodDetailsCardNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | EftposAu
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Visa
-        | Unknown
-
     and SetupAttemptPaymentMethodDetailsCardPresent = {
         ///The ID of the Card PaymentMethod which was generated by this SetupAttempt.
         GeneratedCard: SetupAttemptPaymentMethodDetailsCardPresentGeneratedCard'AnyOf option
@@ -19863,11 +21290,6 @@ module StripeModel =
                 SetupAttemptPaymentMethodDetailsCardWallet.ApplePay = applePay
                 SetupAttemptPaymentMethodDetailsCardWallet.GooglePay = googlePay
             }
-
-    and SetupAttemptPaymentMethodDetailsCardWalletType =
-        | ApplePay
-        | GooglePay
-        | Link
 
     and SetupAttemptPaymentMethodDetailsCashapp = {
         SetupAttemptPaymentMethodDetailsCashapp: string option
@@ -19903,39 +21325,6 @@ module StripeModel =
                 SetupAttemptPaymentMethodDetailsIdeal.IbanLast4 = ibanLast4 //required
                 SetupAttemptPaymentMethodDetailsIdeal.VerifiedName = verifiedName //required
             }
-
-    and SetupAttemptPaymentMethodDetailsIdealBank =
-        | AbnAmro
-        | AsnBank
-        | Bunq
-        | Handelsbanken
-        | Ing
-        | Knab
-        | Moneyou
-        | Rabobank
-        | Regiobank
-        | Revolut
-        | SnsBank
-        | TriodosBank
-        | VanLanschot
-        | Yoursafe
-
-    and SetupAttemptPaymentMethodDetailsIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("REVOIE23")>] REVOIE23
-        | [<JsonUnionCase("REVOLT21")>] REVOLT21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
 
     and SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebit'AnyOf =
         | String of string
@@ -20021,12 +21410,6 @@ module StripeModel =
     and SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf =
         | String of string
         | Mandate of Mandate
-
-    and SetupAttemptPaymentMethodDetailsSofortPreferredLanguage =
-        | De
-        | En
-        | Fr
-        | Nl
 
     and SetupAttemptPaymentMethodDetailsUsBankAccount = {
         SetupAttemptPaymentMethodDetailsUsBankAccount: string option
@@ -20143,11 +21526,6 @@ module StripeModel =
         | String of string
         | Application of Application
 
-    and SetupIntentCancellationReason =
-        | Abandoned
-        | Duplicate
-        | RequestedByCustomer
-
     and SetupIntentCustomer'AnyOf =
         | String of string
         | Customer of Customer
@@ -20173,18 +21551,6 @@ module StripeModel =
         | String of string
         | Mandate of Mandate
 
-    and SetupIntentStatus =
-        | Canceled
-        | Processing
-        | RequiresAction
-        | RequiresConfirmation
-        | RequiresPaymentMethod
-        | Succeeded
-
-    and SetupIntentFlowDirections =
-        | Inbound
-        | Outbound
-
     and SetupIntentNextAction = {
         CashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode option
         RedirectToUrl: SetupIntentNextActionRedirectToUrl option
@@ -20203,13 +21569,6 @@ module StripeModel =
                 SetupIntentNextAction.UseStripeSdk = useStripeSdk
                 SetupIntentNextAction.VerifyWithMicrodeposits = verifyWithMicrodeposits
             }
-
-    and SetupIntentNextActionType =
-        | RedirectToUrl
-        | UseStripeSdk
-        | AlipayHandleRedirect
-        | OxxoDisplayDetails
-        | VerifyWithMicrodeposits
 
     and SetupIntentNextActionRedirectToUrl = {
         ///If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion.
@@ -20239,10 +21598,6 @@ module StripeModel =
                 SetupIntentNextActionVerifyWithMicrodeposits.HostedVerificationUrl = hostedVerificationUrl //required
                 SetupIntentNextActionVerifyWithMicrodeposits.MicrodepositType = microdepositType //required
             }
-
-    and SetupIntentNextActionVerifyWithMicrodepositsMicrodepositType =
-        | Amounts
-        | DescriptorCode
 
     and SetupIntentPaymentMethodOptions = {
         AcssDebit: SetupIntentPaymentMethodOptionsAcssDebit option
@@ -20278,15 +21633,6 @@ module StripeModel =
                 SetupIntentPaymentMethodOptionsAcssDebit.VerificationMethod = verificationMethod
             }
 
-    and SetupIntentPaymentMethodOptionsAcssDebitCurrency =
-        | Cad
-        | Usd
-
-    and SetupIntentPaymentMethodOptionsAcssDebitVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
-
     and SetupIntentPaymentMethodOptionsCard = {
         ///Configuration options for setting up an eMandate for cards issued in India.
         MandateOptions: SetupIntentPaymentMethodOptionsCardMandateOptions option
@@ -20302,24 +21648,6 @@ module StripeModel =
                 SetupIntentPaymentMethodOptionsCard.Network = network //required
                 SetupIntentPaymentMethodOptionsCard.RequestThreeDSecure = requestThreeDSecure //required
             }
-
-    and SetupIntentPaymentMethodOptionsCardNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | EftposAu
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Unknown
-        | Visa
-
-    and SetupIntentPaymentMethodOptionsCardRequestThreeDSecure =
-        | Any
-        | Automatic
-        | ChallengeOnly
 
     and SetupIntentPaymentMethodOptionsCardMandateOptions = {
         ///Amount to be charged for future payments.
@@ -20358,17 +21686,6 @@ module StripeModel =
                 SetupIntentPaymentMethodOptionsCardMandateOptions.SupportedTypes = supportedTypes //required
             }
 
-    and SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType =
-        | Fixed
-        | Maximum
-
-    and SetupIntentPaymentMethodOptionsCardMandateOptionsInterval =
-        | Day
-        | Month
-        | Sporadic
-        | Week
-        | Year
-
     and SetupIntentPaymentMethodOptionsLink = {
         ///[Deprecated] This is a legacy parameter that no longer has any function.
         PersistentToken: string option
@@ -20400,19 +21717,6 @@ module StripeModel =
                 SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit.CustomMandateUrl = customMandateUrl
                 SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit.DefaultFor = defaultFor
             }
-
-    and SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule =
-        | Combined
-        | Interval
-        | Sporadic
-
-    and SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType =
-        | Business
-        | Personal
-
-    and SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitDefaultFor =
-        | Invoice
-        | Subscription
 
     and SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit = {
         SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit: string option
@@ -20454,11 +21758,6 @@ module StripeModel =
                 SetupIntentPaymentMethodOptionsUsBankAccount.VerificationMethod = verificationMethod
             }
 
-    and SetupIntentPaymentMethodOptionsUsBankAccountVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
-
     and SetupIntentTypeSpecificPaymentMethodOptionsClient = {
         ///Bank account verification method.
         VerificationMethod: SetupIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod option
@@ -20468,11 +21767,6 @@ module StripeModel =
             {
                 SetupIntentTypeSpecificPaymentMethodOptionsClient.VerificationMethod = verificationMethod
             }
-
-    and SetupIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod =
-        | Automatic
-        | Instant
-        | Microdeposits
 
     and Shipping = {
         Address: Address option
@@ -20538,11 +21832,6 @@ module StripeModel =
                 ShippingRate.FixedAmount = fixedAmount
             }
 
-    and ShippingRateTaxBehavior =
-        | Exclusive
-        | Inclusive
-        | Unspecified
-
     and ShippingRateTaxCode'AnyOf =
         | String of string
         | TaxCode of TaxCode
@@ -20559,11 +21848,6 @@ module StripeModel =
                 ShippingRateCurrencyOption.Amount = amount //required
                 ShippingRateCurrencyOption.TaxBehavior = taxBehavior //required
             }
-
-    and ShippingRateCurrencyOptionTaxBehavior =
-        | Exclusive
-        | Inclusive
-        | Unspecified
 
     and ShippingRateDeliveryEstimate = {
         ///The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -20590,13 +21874,6 @@ module StripeModel =
                 ShippingRateDeliveryEstimateBound.Unit = unit //required
                 ShippingRateDeliveryEstimateBound.Value = value //required
             }
-
-    and ShippingRateDeliveryEstimateBoundUnit =
-        | BusinessDay
-        | Day
-        | Hour
-        | Month
-        | Week
 
     and ShippingRateFixedAmount = {
         ///A non-negative integer in cents representing how much to charge.
@@ -20730,38 +22007,6 @@ module StripeModel =
                 Source.Wechat = wechat
             }
 
-    and SourceStatus =
-        | Canceled
-        | Chargeable
-        | Consumed
-        | Failed
-        | Pending
-
-    and SourceType =
-        | AchCreditTransfer
-        | AchDebit
-        | AcssDebit
-        | Alipay
-        | AuBecsDebit
-        | Bancontact
-        | Card
-        | CardPresent
-        | Eps
-        | Giropay
-        | Ideal
-        | Klarna
-        | Multibanco
-        | P24
-        | SepaCreditTransfer
-        | SepaDebit
-        | Sofort
-        | ThreeDSecure
-        | Wechat
-
-    and SourceUsage =
-        | Reusable
-        | SingleUse
-
     and SourceCodeVerificationFlow = {
         ///The number of attempts remaining to authenticate the source object with a verification code.
         AttemptsRemaining: int
@@ -20816,14 +22061,6 @@ module StripeModel =
                 SourceMandateNotification.BacsDebit = bacsDebit
                 SourceMandateNotification.SepaDebit = sepaDebit
             }
-
-    and SourceMandateNotificationReason =
-        | MandateConfirmed
-        | DebitInitiated
-
-    and SourceMandateNotificationStatus =
-        | Pending
-        | Submitted
 
     and SourceMandateNotificationAcssDebitData = {
         ///The statement descriptor associate with the debit.
@@ -20907,11 +22144,6 @@ module StripeModel =
                 SourceOrderItem.Quantity = quantity
             }
 
-    and SourceOrderItemType =
-        | Sku
-        | Tax
-        | Shipping
-
     and SourceOwner = {
         ///Owner's address.
         Address: Address option
@@ -20967,16 +22199,6 @@ module StripeModel =
                 SourceReceiverFlow.RefundAttributesMethod = refundAttributesMethod //required
                 SourceReceiverFlow.RefundAttributesStatus = refundAttributesStatus //required
             }
-
-    and SourceReceiverFlowRefundAttributesMethod =
-        | Email
-        | Manual
-        | [<JsonUnionCase("none")>] None'
-
-    and SourceReceiverFlowRefundAttributesStatus =
-        | Missing
-        | Requested
-        | Available
 
     and SourceRedirectFlow = {
         ///The failure reason for the redirect, either `user_abort` (the customer aborted or dropped out of the redirect flow), `declined` (the authentication failed or the transaction was declined), or `processing_error` (the redirect failed due to a technical error). Present only if the redirect status is `failed`.
@@ -21044,29 +22266,6 @@ module StripeModel =
                 SourceTransaction.PaperCheck = paperCheck
                 SourceTransaction.SepaCreditTransfer = sepaCreditTransfer
             }
-
-    and SourceTransactionStatus =
-        | Succeeded
-        | Pending
-        | Failed
-
-    and SourceTransactionType =
-        | AchCreditTransfer
-        | AchDebit
-        | Alipay
-        | Bancontact
-        | Card
-        | CardPresent
-        | Eps
-        | Giropay
-        | Ideal
-        | Klarna
-        | Multibanco
-        | P24
-        | SepaDebit
-        | Sofort
-        | ThreeDSecure
-        | Wechat
 
     and SourceTransactionAchCreditTransferData = {
         ///Customer data associated with the transfer.
@@ -21793,10 +22992,6 @@ module StripeModel =
         | Application of Application
         | DeletedApplication of DeletedApplication
 
-    and SubscriptionCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
-
     and SubscriptionCustomer'AnyOf =
         | String of string
         | Customer of Customer
@@ -21825,16 +23020,6 @@ module StripeModel =
     and SubscriptionSchedule'AnyOf =
         | String of string
         | SubscriptionSchedule of SubscriptionSchedule
-
-    and SubscriptionStatus =
-        | Active
-        | Canceled
-        | Incomplete
-        | IncompleteExpired
-        | PastDue
-        | Paused
-        | Trialing
-        | Unpaid
 
     and SubscriptionTestClock'AnyOf =
         | String of string
@@ -21955,23 +23140,6 @@ module StripeModel =
                 SubscriptionPaymentMethodOptionsCard.MandateOptions = mandateOptions
             }
 
-    and SubscriptionPaymentMethodOptionsCardNetwork =
-        | Amex
-        | CartesBancaires
-        | Diners
-        | Discover
-        | EftposAu
-        | Interac
-        | Jcb
-        | Mastercard
-        | Unionpay
-        | Unknown
-        | Visa
-
-    and SubscriptionPaymentMethodOptionsCardRequestThreeDSecure =
-        | Any
-        | Automatic
-
     and SubscriptionPendingInvoiceItemInterval = {
         ///Specifies invoicing frequency. Either `day`, `week`, `month` or `year`.
         Interval: SubscriptionPendingInvoiceItemIntervalInterval
@@ -21984,12 +23152,6 @@ module StripeModel =
                 SubscriptionPendingInvoiceItemInterval.Interval = interval //required
                 SubscriptionPendingInvoiceItemInterval.IntervalCount = intervalCount //required
             }
-
-    and SubscriptionPendingInvoiceItemIntervalInterval =
-        | Day
-        | Month
-        | Week
-        | Year
 
     ///A subscription schedule allows you to create and manage the lifecycle of a subscription by predefining expected changes.
     ///Related guide: [Subscription schedules](https://stripe.com/docs/billing/subscriptions/subscription-schedules)
@@ -22062,19 +23224,6 @@ module StripeModel =
         | String of string
         | Customer of Customer
         | DeletedCustomer of DeletedCustomer
-
-    and SubscriptionScheduleEndBehavior =
-        | Cancel
-        | [<JsonUnionCase("none")>] None'
-        | Release
-        | Renew
-
-    and SubscriptionScheduleStatus =
-        | Active
-        | Canceled
-        | Completed
-        | NotStarted
-        | Released
 
     and SubscriptionScheduleSubscription'AnyOf =
         | String of string
@@ -22222,14 +23371,6 @@ module StripeModel =
                 SubscriptionSchedulePhaseConfiguration.DefaultTaxRates = defaultTaxRates |> Option.flatten
             }
 
-    and SubscriptionSchedulePhaseConfigurationBillingCycleAnchor =
-        | Automatic
-        | PhaseStart
-
-    and SubscriptionSchedulePhaseConfigurationCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
-
     and SubscriptionSchedulePhaseConfigurationCoupon'AnyOf =
         | String of string
         | Coupon of Coupon
@@ -22242,11 +23383,6 @@ module StripeModel =
     and SubscriptionSchedulePhaseConfigurationOnBehalfOf'AnyOf =
         | String of string
         | Account of Account
-
-    and SubscriptionSchedulePhaseConfigurationProrationBehavior =
-        | AlwaysInvoice
-        | CreateProrations
-        | [<JsonUnionCase("none")>] None'
 
     and SubscriptionSchedulesResourceDefaultSettings = {
         ///A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account during this phase of the schedule.
@@ -22283,14 +23419,6 @@ module StripeModel =
                 SubscriptionSchedulesResourceDefaultSettings.TransferData = transferData //required
                 SubscriptionSchedulesResourceDefaultSettings.AutomaticTax = automaticTax
             }
-
-    and SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor =
-        | Automatic
-        | PhaseStart
-
-    and SubscriptionSchedulesResourceDefaultSettingsCollectionMethod =
-        | ChargeAutomatically
-        | SendInvoice
 
     and SubscriptionSchedulesResourceDefaultSettingsDefaultPaymentMethod'AnyOf =
         | String of string
@@ -22342,11 +23470,6 @@ module StripeModel =
                 SubscriptionsResourcePauseCollection.ResumesAt = resumesAt //required
             }
 
-    and SubscriptionsResourcePauseCollectionBehavior =
-        | KeepAsDraft
-        | MarkUncollectible
-        | Void
-
     and SubscriptionsResourcePaymentMethodOptions = {
         ///This sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to invoices created by the subscription.
         AcssDebit: InvoicePaymentMethodOptionsAcssDebit option
@@ -22388,36 +23511,6 @@ module StripeModel =
                 SubscriptionsResourcePaymentSettings.SaveDefaultPaymentMethod = saveDefaultPaymentMethod //required
             }
 
-    and SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod =
-        | Off
-        | OnSubscription
-
-    and SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
-        | AchCreditTransfer
-        | AchDebit
-        | AcssDebit
-        | AuBecsDebit
-        | BacsDebit
-        | Bancontact
-        | Boleto
-        | Card
-        | Cashapp
-        | CustomerBalance
-        | Fpx
-        | Giropay
-        | Grabpay
-        | Ideal
-        | Konbini
-        | Link
-        | Paynow
-        | Paypal
-        | Promptpay
-        | SepaCreditTransfer
-        | SepaDebit
-        | Sofort
-        | UsBankAccount
-        | WechatPay
-
     ///Pending Updates store the changes pending from a previous update that will be applied
     ///to the Subscription upon successful payment.
     and SubscriptionsResourcePendingUpdate = {
@@ -22452,11 +23545,6 @@ module StripeModel =
             {
                 SubscriptionsTrialsResourceEndBehavior.MissingPaymentMethod = missingPaymentMethod //required
             }
-
-    and SubscriptionsTrialsResourceEndBehaviorMissingPaymentMethod =
-        | Cancel
-        | CreateInvoice
-        | Pause
 
     ///Configures how this subscription behaves during the trial period.
     and SubscriptionsTrialsResourceTrialSettings = {
@@ -22578,10 +23666,6 @@ module StripeModel =
                 TaxCalculationLineItem.TaxCode = taxCode //required
             }
 
-    and TaxCalculationLineItemTaxBehavior =
-        | Exclusive
-        | Inclusive
-
     ///You can use Tax `Settings` to manage configurations used by Stripe Tax calculations.
     ///Related guide: [Using the Settings API](https://stripe.com/docs/tax/settings-api)
     and TaxSettings = {
@@ -22606,10 +23690,6 @@ module StripeModel =
                 TaxSettings.Status = status //required
                 TaxSettings.StatusDetails = statusDetails //required
             }
-
-    and TaxSettingsStatus =
-        | Active
-        | Pending
 
     ///A Tax Transaction records the tax collected from or refunded to your customer.
     ///Related guide: [Calculate tax in your custom payment flow](https://stripe.com/docs/tax/custom#tax-transaction)
@@ -22660,10 +23740,6 @@ module StripeModel =
                 TaxTransaction.TaxDate = taxDate //required
                 TaxTransaction.Type = ``type`` //required
             }
-
-    and TaxTransactionType =
-        | Reversal
-        | Transaction
 
     ///The tax collected or refunded, by line item.
     and TaxTransactionLineItems = {
@@ -22730,14 +23806,6 @@ module StripeModel =
                 TaxTransactionLineItem.TaxCode = taxCode //required
                 TaxTransactionLineItem.Type = ``type`` //required
             }
-
-    and TaxTransactionLineItemTaxBehavior =
-        | Exclusive
-        | Inclusive
-
-    and TaxTransactionLineItemType =
-        | Reversal
-        | Transaction
 
     ///[Tax codes](https://stripe.com/docs/tax/tax-categories) classify goods and services for tax purposes.
     and TaxCode = {
@@ -22822,75 +23890,6 @@ module StripeModel =
         | String of string
         | Customer of Customer
 
-    and TaxIdType =
-        | AdNrt
-        | AeTrn
-        | ArCuit
-        | AuAbn
-        | AuArn
-        | BgUic
-        | BoTin
-        | BrCnpj
-        | BrCpf
-        | CaBn
-        | CaGstHst
-        | CaPstBc
-        | CaPstMb
-        | CaPstSk
-        | CaQst
-        | ChVat
-        | ClTin
-        | CnTin
-        | CoNit
-        | CrTin
-        | DoRcn
-        | EcRuc
-        | EgTin
-        | EsCif
-        | EuOssVat
-        | EuVat
-        | GbVat
-        | GeVat
-        | HkBr
-        | HuTin
-        | IdNpwp
-        | IlVat
-        | InGst
-        | IsVat
-        | JpCn
-        | JpRn
-        | JpTrn
-        | KePin
-        | KrBrn
-        | LiUid
-        | MxRfc
-        | MyFrp
-        | MyItn
-        | MySst
-        | NoVat
-        | NzGst
-        | PeRuc
-        | PhTin
-        | RoTin
-        | RsPib
-        | RuInn
-        | RuKpp
-        | SaVat
-        | SgGst
-        | SgUen
-        | SiTin
-        | SvNit
-        | ThVat
-        | TrTin
-        | TwVat
-        | UaVat
-        | Unknown
-        | UsEin
-        | UyRuc
-        | VeRif
-        | VnTin
-        | ZaVat
-
     and TaxIdVerification = {
         ///Verification status, one of `pending`, `verified`, `unverified`, or `unavailable`.
         Status: TaxIdVerificationStatus
@@ -22906,12 +23905,6 @@ module StripeModel =
                 TaxIdVerification.VerifiedAddress = verifiedAddress //required
                 TaxIdVerification.VerifiedName = verifiedName //required
             }
-
-    and TaxIdVerificationStatus =
-        | Pending
-        | Unavailable
-        | Unverified
-        | Verified
 
     and TaxProductResourceCustomerDetails = {
         ///The customer's postal address (for example, home or business location).
@@ -22935,15 +23928,6 @@ module StripeModel =
                 TaxProductResourceCustomerDetails.TaxabilityOverride = taxabilityOverride //required
             }
 
-    and TaxProductResourceCustomerDetailsAddressSource =
-        | Billing
-        | Shipping
-
-    and TaxProductResourceCustomerDetailsTaxabilityOverride =
-        | CustomerExempt
-        | [<JsonUnionCase("none")>] None'
-        | ReverseCharge
-
     and TaxProductResourceCustomerDetailsResourceTaxId = {
         ///The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, or `unknown`
         Type: TaxProductResourceCustomerDetailsResourceTaxIdType
@@ -22956,75 +23940,6 @@ module StripeModel =
                 TaxProductResourceCustomerDetailsResourceTaxId.Type = ``type`` //required
                 TaxProductResourceCustomerDetailsResourceTaxId.Value = value //required
             }
-
-    and TaxProductResourceCustomerDetailsResourceTaxIdType =
-        | AdNrt
-        | AeTrn
-        | ArCuit
-        | AuAbn
-        | AuArn
-        | BgUic
-        | BoTin
-        | BrCnpj
-        | BrCpf
-        | CaBn
-        | CaGstHst
-        | CaPstBc
-        | CaPstMb
-        | CaPstSk
-        | CaQst
-        | ChVat
-        | ClTin
-        | CnTin
-        | CoNit
-        | CrTin
-        | DoRcn
-        | EcRuc
-        | EgTin
-        | EsCif
-        | EuOssVat
-        | EuVat
-        | GbVat
-        | GeVat
-        | HkBr
-        | HuTin
-        | IdNpwp
-        | IlVat
-        | InGst
-        | IsVat
-        | JpCn
-        | JpRn
-        | JpTrn
-        | KePin
-        | KrBrn
-        | LiUid
-        | MxRfc
-        | MyFrp
-        | MyItn
-        | MySst
-        | NoVat
-        | NzGst
-        | PeRuc
-        | PhTin
-        | RoTin
-        | RsPib
-        | RuInn
-        | RuKpp
-        | SaVat
-        | SgGst
-        | SgUen
-        | SiTin
-        | SvNit
-        | ThVat
-        | TrTin
-        | TwVat
-        | UaVat
-        | Unknown
-        | UsEin
-        | UyRuc
-        | VeRif
-        | VnTin
-        | ZaVat
 
     and TaxProductResourceJurisdiction = {
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
@@ -23044,13 +23959,6 @@ module StripeModel =
                 TaxProductResourceJurisdiction.Level = level //required
                 TaxProductResourceJurisdiction.State = state //required
             }
-
-    and TaxProductResourceJurisdictionLevel =
-        | City
-        | Country
-        | County
-        | District
-        | State
 
     and TaxProductResourceLineItemTaxBreakdown = {
         ///The amount of tax, in integer cents.
@@ -23076,27 +23984,6 @@ module StripeModel =
                 TaxProductResourceLineItemTaxBreakdown.TaxableAmount = taxableAmount //required
             }
 
-    and TaxProductResourceLineItemTaxBreakdownSourcing =
-        | Destination
-        | Origin
-
-    and TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
-        | CustomerExempt
-        | NotCollecting
-        | NotSubjectToTax
-        | NotSupported
-        | PortionProductExempt
-        | PortionReducedRated
-        | PortionStandardRated
-        | ProductExempt
-        | ProductExemptHoliday
-        | ProportionallyRated
-        | ReducedRated
-        | ReverseCharge
-        | StandardRated
-        | TaxableBasisReduced
-        | ZeroRated
-
     and TaxProductResourceLineItemTaxRateDetails = {
         ///A localized display name for tax type, intended to be human-readable. For example, "Local Sales and Use Tax", "Value-added tax (VAT)", or "Umsatzsteuer (USt.)".
         DisplayName: string
@@ -23112,20 +23999,6 @@ module StripeModel =
                 TaxProductResourceLineItemTaxRateDetails.PercentageDecimal = percentageDecimal //required
                 TaxProductResourceLineItemTaxRateDetails.TaxType = taxType //required
             }
-
-    and TaxProductResourceLineItemTaxRateDetailsTaxType =
-        | AmusementTax
-        | CommunicationsTax
-        | Gst
-        | Hst
-        | Igst
-        | Jct
-        | LeaseTax
-        | Pst
-        | Qst
-        | Rst
-        | SalesTax
-        | Vat
 
     and TaxProductResourcePostalAddress = {
         ///City, district, suburb, town, or village.
@@ -23173,23 +24046,6 @@ module StripeModel =
                 TaxProductResourceTaxBreakdown.TaxableAmount = taxableAmount //required
             }
 
-    and TaxProductResourceTaxBreakdownTaxabilityReason =
-        | CustomerExempt
-        | NotCollecting
-        | NotSubjectToTax
-        | NotSupported
-        | PortionProductExempt
-        | PortionReducedRated
-        | PortionStandardRated
-        | ProductExempt
-        | ProductExemptHoliday
-        | ProportionallyRated
-        | ReducedRated
-        | ReverseCharge
-        | StandardRated
-        | TaxableBasisReduced
-        | ZeroRated
-
     and TaxProductResourceTaxCalculationShippingCost = {
         ///The shipping amount in integer cents. If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
         Amount: int
@@ -23215,10 +24071,6 @@ module StripeModel =
                 TaxProductResourceTaxCalculationShippingCost.TaxBreakdown = taxBreakdown
             }
 
-    and TaxProductResourceTaxCalculationShippingCostTaxBehavior =
-        | Exclusive
-        | Inclusive
-
     and TaxProductResourceTaxRateDetails = {
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: string option
@@ -23238,20 +24090,6 @@ module StripeModel =
                 TaxProductResourceTaxRateDetails.TaxType = taxType //required
             }
 
-    and TaxProductResourceTaxRateDetailsTaxType =
-        | AmusementTax
-        | CommunicationsTax
-        | Gst
-        | Hst
-        | Igst
-        | Jct
-        | LeaseTax
-        | Pst
-        | Qst
-        | Rst
-        | SalesTax
-        | Vat
-
     and TaxProductResourceTaxSettingsDefaults = {
         ///Default [tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#tax-behavior) used to specify whether the price is considered inclusive of taxes or exclusive of taxes. If the item's price has a tax behavior set, it will take precedence over the default tax behavior.
         TaxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option
@@ -23264,11 +24102,6 @@ module StripeModel =
                 TaxProductResourceTaxSettingsDefaults.TaxBehavior = taxBehavior //required
                 TaxProductResourceTaxSettingsDefaults.TaxCode = taxCode //required
             }
-
-    and TaxProductResourceTaxSettingsDefaultsTaxBehavior =
-        | Exclusive
-        | Inclusive
-        | InferredByCurrency
 
     and TaxProductResourceTaxSettingsHeadOffice = {
         Address: Address
@@ -23354,10 +24187,6 @@ module StripeModel =
                 TaxProductResourceTaxTransactionShippingCost.TaxBreakdown = taxBreakdown
             }
 
-    and TaxProductResourceTaxTransactionShippingCostTaxBehavior =
-        | Exclusive
-        | Inclusive
-
     ///Tax rates can be applied to [invoices](https://stripe.com/docs/billing/invoices/tax-rates), [subscriptions](https://stripe.com/docs/billing/subscriptions/taxes) and [Checkout Sessions](https://stripe.com/docs/payments/checkout/set-up-a-subscription#tax-rates) to collect tax.
     ///Related guide: [Tax rates](https://stripe.com/docs/billing/taxes/tax-rates)
     and TaxRate = {
@@ -23413,21 +24242,6 @@ module StripeModel =
                 TaxRate.State = state //required
                 TaxRate.TaxType = taxType //required
             }
-
-    and TaxRateTaxType =
-        | AmusementTax
-        | CommunicationsTax
-        | Gst
-        | Hst
-        | Igst
-        | Jct
-        | LeaseTax
-        | Pst
-        | Qst
-        | Rst
-        | SalesTax
-        | ServiceTax
-        | Vat
 
     ///A Configurations object represents how features should be configured for terminal readers.
     and TerminalConfiguration = {
@@ -23546,14 +24360,6 @@ module StripeModel =
                 TerminalReader.SerialNumber = serialNumber //required
                 TerminalReader.Status = status //required
             }
-
-    and TerminalReaderDeviceType =
-        | BbposChipper2x
-        | BbposWisepad3
-        | BbposWiseposE
-        | SimulatedWiseposE
-        | StripeM2
-        | VerifoneP400
 
     and TerminalReaderLocation'AnyOf =
         | String of string
@@ -23750,17 +24556,6 @@ module StripeModel =
                 TerminalReaderReaderResourceReaderAction.SetReaderDisplay = setReaderDisplay
             }
 
-    and TerminalReaderReaderResourceReaderActionStatus =
-        | Failed
-        | InProgress
-        | Succeeded
-
-    and TerminalReaderReaderResourceReaderActionType =
-        | ProcessPaymentIntent
-        | ProcessSetupIntent
-        | RefundPayment
-        | SetReaderDisplay
-
     ///Represents a reader action to refund a payment
     and TerminalReaderReaderResourceRefundPaymentAction = {
         ///The amount being refunded.
@@ -23800,11 +24595,6 @@ module StripeModel =
     and TerminalReaderReaderResourceRefundPaymentActionPaymentIntent'AnyOf =
         | String of string
         | PaymentIntent of PaymentIntent
-
-    and TerminalReaderReaderResourceRefundPaymentActionReason =
-        | Duplicate
-        | Fraudulent
-        | RequestedByCustomer
 
     and TerminalReaderReaderResourceRefundPaymentActionRefund'AnyOf =
         | String of string
@@ -23869,11 +24659,6 @@ module StripeModel =
                 TestHelpersTestClock.Status = status //required
             }
 
-    and TestHelpersTestClockStatus =
-        | Advancing
-        | InternalFailure
-        | Ready
-
     and ThreeDSecureDetails = {
         ///For authenticated transactions: how the customer was authenticated by
         ///the issuing bank.
@@ -23895,32 +24680,6 @@ module StripeModel =
                 ThreeDSecureDetails.Version = version //required
             }
 
-    and ThreeDSecureDetailsAuthenticationFlow =
-        | Challenge
-        | Frictionless
-
-    and ThreeDSecureDetailsResult =
-        | AttemptAcknowledged
-        | Authenticated
-        | Exempted
-        | Failed
-        | NotSupported
-        | ProcessingError
-
-    and ThreeDSecureDetailsResultReason =
-        | Abandoned
-        | Bypassed
-        | Canceled
-        | CardNotEnrolled
-        | NetworkNotSupported
-        | ProtocolError
-        | Rejected
-
-    and ThreeDSecureDetailsVersion =
-        | [<JsonUnionCase("1.0.2")>] Numeric102
-        | [<JsonUnionCase("2.1.0")>] Numeric210
-        | [<JsonUnionCase("2.2.0")>] Numeric220
-
     and ThreeDSecureDetailsCharge = {
         ///For authenticated transactions: how the customer was authenticated by
         ///the issuing bank.
@@ -23941,32 +24700,6 @@ module StripeModel =
                 ThreeDSecureDetailsCharge.ResultReason = resultReason //required
                 ThreeDSecureDetailsCharge.Version = version //required
             }
-
-    and ThreeDSecureDetailsChargeAuthenticationFlow =
-        | Challenge
-        | Frictionless
-
-    and ThreeDSecureDetailsChargeResult =
-        | AttemptAcknowledged
-        | Authenticated
-        | Exempted
-        | Failed
-        | NotSupported
-        | ProcessingError
-
-    and ThreeDSecureDetailsChargeResultReason =
-        | Abandoned
-        | Bypassed
-        | Canceled
-        | CardNotEnrolled
-        | NetworkNotSupported
-        | ProtocolError
-        | Rejected
-
-    and ThreeDSecureDetailsChargeVersion =
-        | [<JsonUnionCase("1.0.2")>] Numeric102
-        | [<JsonUnionCase("2.1.0")>] Numeric210
-        | [<JsonUnionCase("2.2.0")>] Numeric220
 
     and ThreeDSecureUsage = {
         ///Whether 3D Secure is supported on this card.
@@ -24027,12 +24760,6 @@ module StripeModel =
                 Token.BankAccount = bankAccount
                 Token.Card = card
             }
-
-    and TokenType =
-        | Account
-        | BankAccount
-        | Card
-        | Pii
 
     ///To top up your Stripe balance, you create a top-up object. You can retrieve
     ///individual top-ups, as well as list all top-ups. Top-ups are identified by a
@@ -24096,13 +24823,6 @@ module StripeModel =
     and TopupBalanceTransaction'AnyOf =
         | String of string
         | BalanceTransaction of BalanceTransaction
-
-    and TopupStatus =
-        | Canceled
-        | Failed
-        | Pending
-        | Reversed
-        | Succeeded
 
     ///A `Transfer` object is created when you move funds between Stripe accounts as
     ///part of Connect.
@@ -24185,11 +24905,6 @@ module StripeModel =
     and TransferSourceTransaction'AnyOf =
         | String of string
         | Charge of Charge
-
-    and TransferSourceType =
-        | Card
-        | Fpx
-        | BankAccount
 
     ///A list of reversals that have been applied to the transfer.
     and TransferReversals = {
@@ -24313,12 +25028,6 @@ module StripeModel =
                 TransferSchedule.WeeklyAnchor = weeklyAnchor
             }
 
-    and TransferScheduleInterval =
-        | Manual
-        | Daily
-        | Weekly
-        | Monthly
-
     and TransformQuantity = {
         ///Divide usage by this number.
         DivideBy: int
@@ -24332,10 +25041,6 @@ module StripeModel =
                 TransformQuantity.Round = round //required
             }
 
-    and TransformQuantityRound =
-        | Down
-        | Up
-
     and TransformUsage = {
         ///Divide usage by this number.
         DivideBy: int
@@ -24348,10 +25053,6 @@ module StripeModel =
                 TransformUsage.DivideBy = divideBy //required
                 TransformUsage.Round = round //required
             }
-
-    and TransformUsageRound =
-        | Down
-        | Up
 
     ///You can reverse some [ReceivedCredits](https://stripe.com/docs/api#received_credits) depending on their network and source flow. Reversing a ReceivedCredit leads to the creation of a new object known as a CreditReversal.
     and TreasuryCreditReversal = {
@@ -24401,15 +25102,6 @@ module StripeModel =
                 TreasuryCreditReversal.StatusTransitions = statusTransitions //required
                 TreasuryCreditReversal.Transaction = transaction //required
             }
-
-    and TreasuryCreditReversalNetwork =
-        | Ach
-        | Stripe
-
-    and TreasuryCreditReversalStatus =
-        | Canceled
-        | Posted
-        | Processing
 
     and TreasuryCreditReversalTransaction'AnyOf =
         | String of string
@@ -24466,15 +25158,6 @@ module StripeModel =
                 TreasuryDebitReversal.StatusTransitions = statusTransitions //required
                 TreasuryDebitReversal.Transaction = transaction //required
             }
-
-    and TreasuryDebitReversalNetwork =
-        | Ach
-        | Card
-
-    and TreasuryDebitReversalStatus =
-        | Failed
-        | Processing
-        | Succeeded
 
     and TreasuryDebitReversalTransaction'AnyOf =
         | String of string
@@ -24533,46 +25216,6 @@ module StripeModel =
                 TreasuryFinancialAccount.PlatformRestrictions = platformRestrictions |> Option.flatten
                 TreasuryFinancialAccount.RestrictedFeatures = restrictedFeatures
             }
-
-    and TreasuryFinancialAccountStatus =
-        | Closed
-        | Open
-
-    and TreasuryFinancialAccountActiveFeatures =
-        | CardIssuing
-        | DepositInsurance
-        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
-        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
-        | IntraStripeFlows
-        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
-        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
-        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
-        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
-        | RemoteDepositCapture
-
-    and TreasuryFinancialAccountPendingFeatures =
-        | CardIssuing
-        | DepositInsurance
-        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
-        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
-        | IntraStripeFlows
-        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
-        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
-        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
-        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
-        | RemoteDepositCapture
-
-    and TreasuryFinancialAccountRestrictedFeatures =
-        | CardIssuing
-        | DepositInsurance
-        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
-        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
-        | IntraStripeFlows
-        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
-        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
-        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
-        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
-        | RemoteDepositCapture
 
     ///Encodes whether a FinancialAccount has access to a particular Feature, with a `status` enum and associated `status_details`.
     ///Stripe or the platform can control Features via the requested field.
@@ -24666,12 +25309,6 @@ module StripeModel =
                 TreasuryInboundTransfer.Transaction = transaction //required
             }
 
-    and TreasuryInboundTransferStatus =
-        | Canceled
-        | Failed
-        | Processing
-        | Succeeded
-
     and TreasuryInboundTransferTransaction'AnyOf =
         | String of string
         | TreasuryTransaction of TreasuryTransaction
@@ -24747,13 +25384,6 @@ module StripeModel =
                 TreasuryOutboundPayment.Transaction = transaction //required
             }
 
-    and TreasuryOutboundPaymentStatus =
-        | Canceled
-        | Failed
-        | Posted
-        | Processing
-        | Returned
-
     and TreasuryOutboundPaymentTransaction'AnyOf =
         | String of string
         | TreasuryTransaction of TreasuryTransaction
@@ -24822,13 +25452,6 @@ module StripeModel =
                 TreasuryOutboundTransfer.Transaction = transaction //required
             }
 
-    and TreasuryOutboundTransferStatus =
-        | Canceled
-        | Failed
-        | Posted
-        | Processing
-        | Returned
-
     and TreasuryOutboundTransferTransaction'AnyOf =
         | String of string
         | TreasuryTransaction of TreasuryTransaction
@@ -24886,21 +25509,6 @@ module StripeModel =
                 TreasuryReceivedCredit.Status = status //required
                 TreasuryReceivedCredit.Transaction = transaction //required
             }
-
-    and TreasuryReceivedCreditFailureCode =
-        | AccountClosed
-        | AccountFrozen
-        | Other
-
-    and TreasuryReceivedCreditNetwork =
-        | Ach
-        | Card
-        | Stripe
-        | UsDomesticWire
-
-    and TreasuryReceivedCreditStatus =
-        | Failed
-        | Succeeded
 
     and TreasuryReceivedCreditTransaction'AnyOf =
         | String of string
@@ -24960,21 +25568,6 @@ module StripeModel =
                 TreasuryReceivedDebit.InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
             }
 
-    and TreasuryReceivedDebitFailureCode =
-        | AccountClosed
-        | AccountFrozen
-        | InsufficientFunds
-        | Other
-
-    and TreasuryReceivedDebitNetwork =
-        | Ach
-        | Card
-        | Stripe
-
-    and TreasuryReceivedDebitStatus =
-        | Failed
-        | Succeeded
-
     and TreasuryReceivedDebitTransaction'AnyOf =
         | String of string
         | TreasuryTransaction of TreasuryTransaction
@@ -25029,22 +25622,6 @@ module StripeModel =
                 TreasuryTransaction.Status = status //required
                 TreasuryTransaction.StatusTransitions = statusTransitions //required
             }
-
-    and TreasuryTransactionFlowType =
-        | CreditReversal
-        | DebitReversal
-        | InboundTransfer
-        | IssuingAuthorization
-        | Other
-        | OutboundPayment
-        | OutboundTransfer
-        | ReceivedCredit
-        | ReceivedDebit
-
-    and TreasuryTransactionStatus =
-        | Open
-        | Posted
-        | Void
 
     ///A list of TransactionEntries that are part of this Transaction. This cannot be expanded in any list endpoints.
     and TreasuryTransactionEntries = {
@@ -25112,42 +25689,9 @@ module StripeModel =
                 TreasuryTransactionEntry.Type = ``type`` //required
             }
 
-    and TreasuryTransactionEntryFlowType =
-        | CreditReversal
-        | DebitReversal
-        | InboundTransfer
-        | IssuingAuthorization
-        | Other
-        | OutboundPayment
-        | OutboundTransfer
-        | ReceivedCredit
-        | ReceivedDebit
-
     and TreasuryTransactionEntryTransaction'AnyOf =
         | String of string
         | TreasuryTransaction of TreasuryTransaction
-
-    and TreasuryTransactionEntryType =
-        | CreditReversal
-        | CreditReversalPosting
-        | DebitReversal
-        | InboundTransfer
-        | InboundTransferReturn
-        | IssuingAuthorizationHold
-        | IssuingAuthorizationRelease
-        | Other
-        | OutboundPayment
-        | OutboundPaymentCancellation
-        | OutboundPaymentFailure
-        | OutboundPaymentPosting
-        | OutboundPaymentReturn
-        | OutboundTransfer
-        | OutboundTransferCancellation
-        | OutboundTransferFailure
-        | OutboundTransferPosting
-        | OutboundTransferReturn
-        | ReceivedCredit
-        | ReceivedDebit
 
     ///ABA Records contain U.S. bank account details per the ABA format.
     and TreasuryFinancialAccountsResourceAbaRecord = {
@@ -25189,11 +25733,6 @@ module StripeModel =
                 TreasuryFinancialAccountsResourceAbaToggleSettings.StatusDetails = statusDetails //required
             }
 
-    and TreasuryFinancialAccountsResourceAbaToggleSettingsStatus =
-        | Active
-        | Pending
-        | Restricted
-
     ///Toggle settings for enabling/disabling an ACH specific feature
     and TreasuryFinancialAccountsResourceAchToggleSettings = {
         ///Whether the FinancialAccount should have the Feature.
@@ -25210,11 +25749,6 @@ module StripeModel =
                 TreasuryFinancialAccountsResourceAchToggleSettings.Status = status //required
                 TreasuryFinancialAccountsResourceAchToggleSettings.StatusDetails = statusDetails //required
             }
-
-    and TreasuryFinancialAccountsResourceAchToggleSettingsStatus =
-        | Active
-        | Pending
-        | Restricted
 
     ///Balance information for the FinancialAccount
     and TreasuryFinancialAccountsResourceBalance = {
@@ -25243,11 +25777,6 @@ module StripeModel =
                 TreasuryFinancialAccountsResourceClosedStatusDetails.Reasons = reasons //required
             }
 
-    and TreasuryFinancialAccountsResourceClosedStatusDetailsReasons =
-        | AccountRejected
-        | ClosedByPlatform
-        | Other
-
     ///FinancialAddresses contain identifying information that resolves to a FinancialAccount.
     and TreasuryFinancialAccountsResourceFinancialAddress = {
         Aba: TreasuryFinancialAccountsResourceAbaRecord option
@@ -25263,10 +25792,6 @@ module StripeModel =
                 TreasuryFinancialAccountsResourceFinancialAddress.Aba = aba
                 TreasuryFinancialAccountsResourceFinancialAddress.SupportedNetworks = supportedNetworks
             }
-
-    and TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks =
-        | Ach
-        | UsDomesticWire
 
     ///Settings related to Financial Addresses features on a Financial Account
     and TreasuryFinancialAccountsResourceFinancialAddressesFeatures = {
@@ -25326,14 +25851,6 @@ module StripeModel =
                 TreasuryFinancialAccountsResourcePlatformRestrictions.OutboundFlows = outboundFlows //required
             }
 
-    and TreasuryFinancialAccountsResourcePlatformRestrictionsInboundFlows =
-        | Restricted
-        | Unrestricted
-
-    and TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows =
-        | Restricted
-        | Unrestricted
-
     and TreasuryFinancialAccountsResourceStatusDetails = {
         ///Details related to the closure of this FinancialAccount
         Closed: TreasuryFinancialAccountsResourceClosedStatusDetails option
@@ -25361,11 +25878,6 @@ module StripeModel =
                 TreasuryFinancialAccountsResourceToggleSettings.StatusDetails = statusDetails //required
             }
 
-    and TreasuryFinancialAccountsResourceToggleSettingsStatus =
-        | Active
-        | Pending
-        | Restricted
-
     ///Additional details on the FinancialAccount Features information.
     and TreasuryFinancialAccountsResourceTogglesSettingStatusDetails = {
         ///Represents the reason why the status is `pending` or `restricted`.
@@ -25383,26 +25895,6 @@ module StripeModel =
                 TreasuryFinancialAccountsResourceTogglesSettingStatusDetails.Restriction = restriction
             }
 
-    and TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode =
-        | Activating
-        | CapabilityNotRequested
-        | FinancialAccountClosed
-        | RejectedOther
-        | RejectedUnsupportedBusiness
-        | RequirementsPastDue
-        | RequirementsPendingVerification
-        | RestrictedByPlatform
-        | RestrictedOther
-
-    and TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution =
-        | ContactStripe
-        | ProvideInformation
-        | RemoveRestriction
-
-    and TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction =
-        | InboundFlows
-        | OutboundFlows
-
     and TreasuryInboundTransfersResourceFailureDetails = {
         ///Reason for the failure.
         Code: TreasuryInboundTransfersResourceFailureDetailsCode
@@ -25412,21 +25904,6 @@ module StripeModel =
             {
                 TreasuryInboundTransfersResourceFailureDetails.Code = code //required
             }
-
-    and TreasuryInboundTransfersResourceFailureDetailsCode =
-        | AccountClosed
-        | AccountFrozen
-        | BankAccountRestricted
-        | BankOwnershipChanged
-        | DebitNotAuthorized
-        | IncorrectAccountHolderAddress
-        | IncorrectAccountHolderName
-        | IncorrectAccountHolderTaxId
-        | InsufficientFunds
-        | InvalidAccountNumber
-        | InvalidCurrency
-        | NoAccount
-        | Other
 
     and TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows = {
         ///If funds for this flow were returned after the flow went to the `succeeded` state, this field contains a reference to the ReceivedDebit return.
@@ -25499,18 +25976,6 @@ module StripeModel =
                 TreasuryOutboundPaymentsResourceReturnedStatus.Transaction = transaction //required
             }
 
-    and TreasuryOutboundPaymentsResourceReturnedStatusCode =
-        | AccountClosed
-        | AccountFrozen
-        | BankAccountRestricted
-        | BankOwnershipChanged
-        | Declined
-        | IncorrectAccountHolderName
-        | InvalidAccountNumber
-        | InvalidCurrency
-        | NoAccount
-        | Other
-
     and TreasuryOutboundPaymentsResourceReturnedStatusTransaction'AnyOf =
         | String of string
         | TreasuryTransaction of TreasuryTransaction
@@ -25527,18 +25992,6 @@ module StripeModel =
                 TreasuryOutboundTransfersResourceReturnedDetails.Code = code //required
                 TreasuryOutboundTransfersResourceReturnedDetails.Transaction = transaction //required
             }
-
-    and TreasuryOutboundTransfersResourceReturnedDetailsCode =
-        | AccountClosed
-        | AccountFrozen
-        | BankAccountRestricted
-        | BankOwnershipChanged
-        | Declined
-        | IncorrectAccountHolderName
-        | InvalidAccountNumber
-        | InvalidCurrency
-        | NoAccount
-        | Other
 
     and TreasuryOutboundTransfersResourceReturnedDetailsTransaction'AnyOf =
         | String of string
@@ -25601,13 +26054,6 @@ module StripeModel =
                 TreasuryReceivedCreditsResourceReversalDetails.RestrictedReason = restrictedReason //required
             }
 
-    and TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason =
-        | AlreadyReversed
-        | DeadlinePassed
-        | NetworkRestricted
-        | Other
-        | SourceFlowRestricted
-
     and TreasuryReceivedCreditsResourceSourceFlowsDetails = {
         CreditReversal: TreasuryCreditReversal option
         OutboundPayment: TreasuryOutboundPayment option
@@ -25623,12 +26069,6 @@ module StripeModel =
                 TreasuryReceivedCreditsResourceSourceFlowsDetails.OutboundPayment = outboundPayment
                 TreasuryReceivedCreditsResourceSourceFlowsDetails.Payout = payout
             }
-
-    and TreasuryReceivedCreditsResourceSourceFlowsDetailsType =
-        | CreditReversal
-        | Other
-        | OutboundPayment
-        | Payout
 
     and TreasuryReceivedCreditsResourceStatusTransitions = {
         ///Timestamp describing when the CreditReversal changed status to `posted`
@@ -25682,13 +26122,6 @@ module StripeModel =
                 TreasuryReceivedDebitsResourceReversalDetails.RestrictedReason = restrictedReason //required
             }
 
-    and TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason =
-        | AlreadyReversed
-        | DeadlinePassed
-        | NetworkRestricted
-        | Other
-        | SourceFlowRestricted
-
     and TreasuryReceivedDebitsResourceStatusTransitions = {
         ///Timestamp describing when the DebitReversal changed status to `completed`.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CompletedAt: DateTime option
@@ -25735,13 +26168,6 @@ module StripeModel =
                 TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails.IssuingCard = issuingCard
                 TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails.UsBankAccount = usBankAccount
             }
-
-    and TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType =
-        | Balance
-        | FinancialAccount
-        | IssuingCard
-        | Stripe
-        | UsBankAccount
 
     and TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount = {
         ///Bank name.
@@ -25815,17 +26241,6 @@ module StripeModel =
                 TreasuryTransactionsResourceFlowDetails.ReceivedDebit = receivedDebit
             }
 
-    and TreasuryTransactionsResourceFlowDetailsType =
-        | CreditReversal
-        | DebitReversal
-        | InboundTransfer
-        | IssuingAuthorization
-        | Other
-        | OutboundPayment
-        | OutboundTransfer
-        | ReceivedCredit
-        | ReceivedDebit
-
     and UsBankAccountNetworks = {
         ///The preferred network.
         Preferred: string option
@@ -25838,10 +26253,6 @@ module StripeModel =
                 UsBankAccountNetworks.Preferred = preferred //required
                 UsBankAccountNetworks.Supported = supported //required
             }
-
-    and UsBankAccountNetworksSupported =
-        | Ach
-        | UsDomesticWire
 
     ///Usage records allow you to report customer usage and metrics to Stripe for
     ///metered billing of subscription prices.
@@ -25908,10 +26319,6 @@ module StripeModel =
                 VerificationSessionRedaction.Status = status //required
             }
 
-    and VerificationSessionRedactionStatus =
-        | Processing
-        | Redacted
-
     ///You can configure [webhook endpoints](https://stripe.com/docs/webhooks/) via the API to be
     ///notified about events that happen in your Stripe account or connected
     ///accounts.
@@ -25959,8 +26366,4 @@ module StripeModel =
                 WebhookEndpoint.Url = url //required
                 WebhookEndpoint.Secret = secret
             }
-
-    and WebhookEndpointStatus =
-        | Enabled
-        | Disabled
 

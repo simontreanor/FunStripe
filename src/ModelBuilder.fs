@@ -242,6 +242,7 @@ module ModelBuilder =
     type ModelAst =
     | ModelHeader
     | ModelEnum of Keyword: string * Name: string * Value: string * ModelAst
+    | ModelSimpleEnum of Keyword: string * Name: string * Value: string * ModelAst
     | ModelValue of ModelValueItem * ModelAst
     | ModelValueWithProperties of ModelValueItem * Properties: string * CreateFunction: string * ModelAst
 
@@ -303,7 +304,7 @@ module ModelBuilder =
                     td
             )
 
-        // Header is the start of the file
+        // Header is the start of the file. Header is also the terminator node for the AST.
         let header = ModelHeader
 
         //creates and formats a discriminated union
@@ -318,8 +319,15 @@ module ModelBuilder =
                 |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
                 |> String.concat "\n"
 
+            let noMembers =
+                not (values |> Seq.exists(fun v -> v.Contains " of "))
+
             //gather the type definition and members of the discriminated union
-            ModelEnum("and", name',valuesString, model)
+            if noMembers then
+                let keyword = if values.Length < 6 then "[<Struct>]\n\ttype" else "type"
+                ModelSimpleEnum(keyword, name',valuesString, model)
+            else
+                ModelEnum("and", name',valuesString, model)
 
         let gatherIntermediateListAndContainers (name: string) (description: string) values (model:ModelAst) : ModelAst = 
 
@@ -469,33 +477,40 @@ module ModelBuilder =
     /// Save the model to F# file.
     let serializeModel (version:string) fullModel =
 
-        //use a string builder to hold the output
-        let sb = Text.StringBuilder()
-
         ///Utility function for appending lines to a StringBuilder
         let write (s: string) (sb: Text.StringBuilder) =
             sb.AppendLine s |> ignore
+
+        //use a string builder to hold the output
+        let sb = Text.StringBuilder()
+        // The buffer will be added just after header
+        let buffer = Text.StringBuilder()
         
-        let rec writeModel model =
+        let rec writeModel model frontBuffer =
             match model with
             | ModelHeader ->
                 //Write the namespace, references and module title
                 let header = $"namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n"
                 sb |> write header
+                sb |> write (frontBuffer.ToString())
             | ModelEnum (keyword, name, valuesString, model) -> 
-                do writeModel model
+                do writeModel model frontBuffer
                 //Write the type definition and members of the discriminated union
                 sb |> write $"\t{keyword} {name} =\n{valuesString}\n"
+            | ModelSimpleEnum (keyword, name, valuesString, model) -> 
+                //Move simple enums to top of the file
+                frontBuffer |> write $"\t{keyword} {name} =\n{valuesString}\n"
+                do writeModel model frontBuffer
             | ModelValue (mve, model) ->
-                do writeModel model
+                do writeModel model frontBuffer
                 //Write the type definition and properties of the type
                 sb |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} () = {mve.StaticPropertiesString}\n"
             | ModelValueWithProperties (mve, propertiesString, createFunction, model) ->
-                writeModel model
+                writeModel model frontBuffer
                 //Write the type definition and properties of the type
                 sb |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} = {{\n{propertiesString}\n\t}}{mve.StaticPropertiesString}{createFunction}\n"
             
-        writeModel fullModel
+        writeModel fullModel buffer
 
         //return a string from the string builder, replacing tabs with four spaces
         sb.ToString().Replace("\t", "    ")
