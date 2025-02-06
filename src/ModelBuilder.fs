@@ -231,9 +231,19 @@ module ModelBuilder =
             let choices' = choices |> List.map(fun c -> $"{c |> pascalCasify} of {c}")
             { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"{prefix}{name |> pascalCasify}{suffix}"; EnumValues = Some choices'; SubValues = None; StaticValue = None }
 
-    ///Utility function for appending lines to a StringBuilder
-    let write (s: string) (sb: Text.StringBuilder) =
-        sb.AppendLine s |> ignore
+    type ModelValueItem = {
+        Description: string
+        Keyword: string
+        PascalName: string
+        StaticPropertiesString: string
+    }
+    
+    /// Intermediate Abstract Syntax Tree that can be analysed and processed if needed.
+    type ModelAst =
+    | ModelHeader
+    | ModelEnum of Keyword: string * Name: string * Value: string * ModelAst
+    | ModelValue of ModelValueItem * ModelAst
+    | ModelValueWithProperties of ModelValueItem * Properties: string * CreateFunction: string * ModelAst
 
     ///Parses the Stripe OpenAPI specification, outputting an F# module specifying the object model for all Stripe objects
     let parseModel filePath =
@@ -293,14 +303,11 @@ module ModelBuilder =
                     td
             )
 
-        //use a string builder to hold the output
-        let sb = Text.StringBuilder()
-
-        //write the namespace, references and module title
-        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\nmodule StripeModel =\n"
+        // Header is the start of the file
+        let header = ModelHeader
 
         //creates and formats a discriminated union
-        let writeEnum (name: string) values =
+        let gatherEnum (name: string) values model =
 
             //delete the suffix if an intermediate container has been used
             let name' = if name.EndsWith "'DU" then name.Replace("'DU", "") else name
@@ -311,132 +318,184 @@ module ModelBuilder =
                 |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
                 |> String.concat "\n"
 
-            //write the type definition and members of the discriminated union
-            sb |> write $"\tand {name'} =\n{valuesString}\n"
+            //gather the type definition and members of the discriminated union
+            ModelEnum("and", name',valuesString, model)
 
-        //recursively iterate through the values and write them to the string builder
-        let rec writeValues isFirstOccurrence (name: string) (description: string) values =
+        let gatherIntermediateListAndContainers (name: string) (description: string) values (model:ModelAst) : ModelAst = 
 
-            //hide intermediate lists and containers
-            if not (name.EndsWith " list" || name.EndsWith " hide") then
+            let isFirstOccurrence = 
+                match model with
+                | ModelHeader -> true
+                | _ -> false
 
-                //only write `type` on the first type definition in the module; otherwise write `and`
-                let keyword = if isFirstOccurrence then "type" else "and"
+            //only write `type` on the first type definition in the module; otherwise write `and`
+            let keyword = if isFirstOccurrence then "type" else "and"
 
-                //get the type's dynamic properties and their types
-                let properties =
+            //get the type's dynamic properties and their types
+            let properties =
+                values
+                |> Array.filter(fun v -> v.StaticValue.IsNone)
+                |> Array.map(fun v ->
+                    let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify 2}\n"
+                    let req = if v.Required && (v.Nullable |> not) then "" else " option"
+                    let transform =
+                        if v.Type = "DateTime" then
+                            Some "Transforms.DateTimeEpoch"
+                        else
+                            None
+                    $"{comment}\t\t{v.Name |> fixJsonNaming transform None}: {v.Type}{req}"
+                )
+
+            let propertiesString =
+                properties
+                |> String.concat "\n"
+
+            //get the type's static properties; this is typically an `Object: string` property with a value set to the name of the type
+            let staticProperties =
+                values
+                |> Array.filter(fun v -> v.StaticValue.IsSome)
+                |> Array.map(fun v ->
+                    let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify 2}\n"
+                    let name' = v.Name |> fixJsonNaming None (Some "member _.")
+                    $"{comment}\t\t{name'} = \"{v.StaticValue.Value}\""
+                )
+
+            let staticPropertiesString =
+                staticProperties
+                |> String.concat "\n"
+                |> fun s ->
+                    //if there are any static properties, prefix them with `with`
+                    match staticProperties, properties with
+                    | [||], _ -> ""
+                    | _, [||] -> $"\n{s}\n"
+                    | _, _ -> $"\n\twith\n{s}\n"
+
+            //add a static `create` function with optional parameters to simplify record creation
+            let createFunction =
+
+                //format parameters
+                let functionParameters =
                     values
                     |> Array.filter(fun v -> v.StaticValue.IsNone)
+                    |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
                     |> Array.map(fun v ->
-                        let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify 2}\n"
-                        let req = if v.Required && (v.Nullable |> not) then "" else " option"
-                        let transform =
-                            if v.Type = "DateTime" then
-                                Some "Transforms.DateTimeEpoch"
-                            else
-                                None
-                        $"{comment}\t\t{v.Name |> fixJsonNaming transform None}: {v.Type}{req}"
+                        let o = if v.Required then "" else "?"
+                        let n = if v.Nullable then " option" else ""
+                        $"{o}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}{n}"
                     )
 
-                let propertiesString =
-                    properties
-                    |> String.concat "\n"
+                let functionParametersString =
+                    functionParameters
+                    |> String.concat ", "
 
-                //get the type's static properties; this is typically an `Object: string` property with a value set to the name of the type
-                let staticProperties =
+                //format property initialisers
+                let functionProperties =
                     values
-                    |> Array.filter(fun v -> v.StaticValue.IsSome)
+                    |> Array.filter(fun v -> v.StaticValue.IsNone)
+                    |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
                     |> Array.map(fun v ->
-                        let comment = if v.Description |> String.IsNullOrWhiteSpace then "" else $"\t\t///{v.Description |> commentify 2}\n"
-                        let name' = v.Name |> fixJsonNaming None (Some "member _.")
-                        $"{comment}\t\t{name'} = \"{v.StaticValue.Value}\""
+                        let flatten = if (v.Required |> not) && v.Nullable then " |> Option.flatten" else ""
+                        let comment = if v.Required then " //required" else ""
+                        $"\t\t\t\t{name |> pascalCasify}.{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}{flatten}{comment}"
                     )
 
-                let staticPropertiesString =
-                    staticProperties
+                let functionPropertiesString =
+                    functionProperties
                     |> String.concat "\n"
-                    |> fun s ->
-                        //if there are any static properties, prefix them with `with`
-                        match staticProperties, properties with
-                        | [||], _ -> ""
-                        | _, [||] -> $"\n{s}\n"
-                        | _, _ -> $"\n\twith\n{s}\n"
 
-                //add a static `create` function with optional parameters to simplify record creation
-                let createFunction =
+                //if there are no static properties, prefix `create` function with `with`
+                let withPrefix = if staticPropertiesString |> String.IsNullOrWhiteSpace then $"\n\twith" else ""
 
-                    //format parameters
-                    let functionParameters =
-                        values
-                        |> Array.filter(fun v -> v.StaticValue.IsNone)
-                        |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
-                        |> Array.map(fun v ->
-                            let o = if v.Required then "" else "?"
-                            let n = if v.Nullable then " option" else ""
-                            $"{o}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}{n}"
-                        )
+                //compose `create` function
+                $"{withPrefix}\n\t\tstatic member New ({functionParametersString}) =\n\t\t\t{{\n{functionPropertiesString}\n\t\t\t}}"
 
-                    let functionParametersString =
-                        functionParameters
-                        |> String.concat ", "
-
-                    //format property initialisers
-                    let functionProperties =
-                        values
-                        |> Array.filter(fun v -> v.StaticValue.IsNone)
-                        |> Array.sortBy(fun v -> ((if v.Required then 1 else 2), v.Name))
-                        |> Array.map(fun v ->
-                            let flatten = if (v.Required |> not) && v.Nullable then " |> Option.flatten" else ""
-                            let comment = if v.Required then " //required" else ""
-                            $"\t\t\t\t{name |> pascalCasify}.{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}{flatten}{comment}"
-                        )
-
-                    let functionPropertiesString =
-                        functionProperties
-                        |> String.concat "\n"
-
-                    //if there are no static properties, prefix `create` function with `with`
-                    let withPrefix = if staticPropertiesString |> String.IsNullOrWhiteSpace then $"\n\twith" else ""
-
-                    //compose `create` function
-                    $"{withPrefix}\n\t\tstatic member New ({functionParametersString}) =\n\t\t\t{{\n{functionPropertiesString}\n\t\t\t}}"
-
-                //if there is a description, format it using comments
-                let desc = if description |> String.IsNullOrWhiteSpace then "" else $"\t///{description |> commentify 1}\n"
+            //if there is a description, format it using comments
+            let desc = if description |> String.IsNullOrWhiteSpace then "" else $"\t///{description |> commentify 1}\n"
                     
-                //write the type definition and properties of the type
-                if properties |> Array.isEmpty then
-                    sb |> write $"{desc}\t{keyword} {name |> pascalCasify} () = {staticPropertiesString}\n"
-                else
-                    sb |> write $"{desc}\t{keyword} {name |> pascalCasify} = {{\n{propertiesString}\n\t}}{staticPropertiesString}{createFunction}\n"
+            //gather the type definition and properties of the type
+            if properties |> Array.isEmpty then
+                ModelValue({
+                    Description = desc
+                    Keyword = keyword
+                    PascalName = name |> pascalCasify
+                    StaticPropertiesString = staticPropertiesString
+                }, model)
+            else
+                ModelValueWithProperties({
+                    Description = desc
+                    Keyword = keyword
+                    PascalName = name |> pascalCasify
+                    StaticPropertiesString = staticPropertiesString
+                }, propertiesString, createFunction, model)
+
+        //recursively iterate through the values and write them to the string builder
+        let rec gatherValues (name: string) (description: string) values (model:ModelAst) : ModelAst =
+
+            let model = 
+                //hide intermediate lists and containers
+                if not (name.EndsWith " list" || name.EndsWith " hide") then
+                    gatherIntermediateListAndContainers (name: string) (description: string) values (model:ModelAst) 
+                else model
 
             //write out any enumerations
-            values
-            |> Array.filter(fun v -> v.EnumValues.IsSome)
-            |> Array.iter(fun v ->
-                writeEnum (v.Type) (v.EnumValues.Value)
-            )
+            let modelWithEnumerations =
+                values
+                |> Array.filter(fun v -> v.EnumValues.IsSome)
+                |> Array.fold(fun model v ->
+                    gatherEnum (v.Type) (v.EnumValues.Value) model
+                ) model
 
-            //write out any sub-values
-            values
-            |> Array.filter(fun v -> v.SubValues.IsSome)
-            |> Array.iter(fun v ->
-                writeValues false (v.Type) (v.Description) (v.SubValues.Value)
-            )
+            let modelWithSubValues =
+                //write out any sub-values
+                values
+                |> Array.filter(fun v -> v.SubValues.IsSome)
+                |> Array.fold(fun model v ->
+                    gatherValues (v.Type) (v.Description) (v.SubValues.Value) model
+                ) modelWithEnumerations
 
-        //declare a flag for the first occurence of the `type` keyword
-        let mutable isFirstOccurrence = true
+            modelWithSubValues
 
-        //write the values and enumerations to the string builder
-        typeDefinitions
-        |> Array.iter(fun (name, desc, value) ->
+        let model = 
+            //write the values and enumerations to the string builder
+            typeDefinitions
+            |> Array.fold(fun model (name, desc, value) ->
 
-            //start off the recursive iteration through the values
-            writeValues isFirstOccurrence name desc value
+                //start off the recursive iteration through the values
+                gatherValues name desc value model
 
-            //set the first-occurrence flag to false once it is used
-            isFirstOccurrence <- false
-        )
+            ) header
+        model
+
+    /// Save the model to F# file.
+    let serializeModel (version:string) fullModel =
+
+        //use a string builder to hold the output
+        let sb = Text.StringBuilder()
+
+        ///Utility function for appending lines to a StringBuilder
+        let write (s: string) (sb: Text.StringBuilder) =
+            sb.AppendLine s |> ignore
+        
+        let rec writeModel model =
+            match model with
+            | ModelHeader ->
+                //Write the namespace, references and module title
+                let header = $"namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n"
+                sb |> write header
+            | ModelEnum (keyword, name, valuesString, model) -> 
+                do writeModel model
+                //Write the type definition and members of the discriminated union
+                sb |> write $"\t{keyword} {name} =\n{valuesString}\n"
+            | ModelValue (mve, model) ->
+                do writeModel model
+                //Write the type definition and properties of the type
+                sb |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} () = {mve.StaticPropertiesString}\n"
+            | ModelValueWithProperties (mve, propertiesString, createFunction, model) ->
+                writeModel model
+                //Write the type definition and properties of the type
+                sb |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} = {{\n{propertiesString}\n\t}}{mve.StaticPropertiesString}{createFunction}\n"
+            
+        writeModel fullModel
 
         //return a string from the string builder, replacing tabs with four spaces
         sb.ToString().Replace("\t", "    ")
@@ -444,6 +503,7 @@ module ModelBuilder =
 #if INTERACTIVE
     ;;
     open ModelBuilder;;
-    let s = parseModel None;;
+    let m = parseModel None;;
+    let s = serializeModel "0.11.1" m;;
     System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeModel.fs", s);;
 #endif

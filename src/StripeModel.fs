@@ -4,6 +4,7 @@ open FunStripe.Json
 open FunStripe.Util
 open System
 
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "0.11.1")>]
 module StripeModel =
 
     ///This is an object representing a Stripe account. You can retrieve it to see
