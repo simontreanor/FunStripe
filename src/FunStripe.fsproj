@@ -12,6 +12,7 @@
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library</PackageDescription>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -37,6 +38,7 @@
     <Compile Include="RestApi.fs" />
     <Compile Include="StripeRequest.fs" />
     <Compile Include="Program.fs" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="9.0.101" />
