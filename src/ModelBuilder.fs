@@ -121,6 +121,9 @@ module ModelBuilder =
     ///Regular expression to match enumerations specified in the description
     let enumRegex = @"`([\w "".]+)`(?:(?: \([^)]+\))?,? `([\w "".]+)`)*(?: \([^)]+\))?,? (?:and|or) (?:`([\w ""\.]+)`|null)\."
 
+    ///Types that are non-Stripe types
+    let basicTypes = ["bool"; "decimal"; "DateTime"; "int"; "string"] |> Set.ofList
+
     ///Parses an enumeration from values specified in the description (where the enumeration is not specified explicitly in fields)
     let parseStringEnum desc =
         let m = Regex.Match(desc, enumRegex)
@@ -244,7 +247,9 @@ module ModelBuilder =
     | ModelEnum of Keyword: string * Name: string * Value: string * ModelAst
     | ModelSimpleEnum of Keyword: string * Name: string * Value: string * ModelAst
     | ModelValue of ModelValueItem * ModelAst
+    | ModelSimpleValue of ModelValueItem * ModelAst
     | ModelValueWithProperties of ModelValueItem * Properties: string * CreateFunction: string * ModelAst
+    | ModelSimpleValueWithProperties of ModelValueItem * Properties: string * CreateFunction: string * ModelAst
 
     ///Parses the Stripe OpenAPI specification, outputting an F# module specifying the object model for all Stripe objects
     let parseModel filePath =
@@ -420,21 +425,40 @@ module ModelBuilder =
             //if there is a description, format it using comments
             let desc = if description |> String.IsNullOrWhiteSpace then "" else $"\t///{description |> commentify 1}\n"
                     
+            let nonTrivialTypes = values |> Array.exists(fun x -> not (basicTypes |> Set.contains x.Type))
+
             //gather the type definition and properties of the type
             if properties |> Array.isEmpty then
-                ModelValue({
-                    Description = desc
-                    Keyword = keyword
-                    PascalName = name |> pascalCasify
-                    StaticPropertiesString = staticPropertiesString
-                }, model)
+
+                if nonTrivialTypes then
+                    ModelValue({
+                        Description = desc
+                        Keyword = keyword
+                        PascalName = name |> pascalCasify
+                        StaticPropertiesString = staticPropertiesString
+                    }, model)
+                else
+                    ModelSimpleValue({
+                        Description = desc
+                        Keyword = "type"
+                        PascalName = name |> pascalCasify
+                        StaticPropertiesString = staticPropertiesString
+                    }, model)
             else
-                ModelValueWithProperties({
-                    Description = desc
-                    Keyword = keyword
-                    PascalName = name |> pascalCasify
-                    StaticPropertiesString = staticPropertiesString
-                }, propertiesString, createFunction, model)
+                if nonTrivialTypes then
+                    ModelValueWithProperties({
+                        Description = desc
+                        Keyword = keyword
+                        PascalName = name |> pascalCasify
+                        StaticPropertiesString = staticPropertiesString
+                    }, propertiesString, createFunction, model)
+                else
+                    ModelSimpleValueWithProperties({
+                        Description = desc
+                        Keyword = "type"
+                        PascalName = name |> pascalCasify
+                        StaticPropertiesString = staticPropertiesString
+                    }, propertiesString, createFunction, model)
 
         //recursively iterate through the values and write them to the string builder
         let rec gatherValues (name: string) (description: string) values (model:ModelAst) : ModelAst =
@@ -505,10 +529,18 @@ module ModelBuilder =
                 do writeModel model frontBuffer
                 //Write the type definition and properties of the type
                 sb |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} () = {mve.StaticPropertiesString}\n"
+            | ModelSimpleValue (mve, model) ->
+                //Move simple enums to top of the file
+                frontBuffer |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} () = {mve.StaticPropertiesString}\n"
+                do writeModel model frontBuffer
             | ModelValueWithProperties (mve, propertiesString, createFunction, model) ->
                 writeModel model frontBuffer
                 //Write the type definition and properties of the type
                 sb |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} = {{\n{propertiesString}\n\t}}{mve.StaticPropertiesString}{createFunction}\n"
+            | ModelSimpleValueWithProperties (mve, propertiesString, createFunction, model) ->
+                //Move simple enums to top of the file
+                frontBuffer |> write $"{mve.Description}\t{mve.Keyword} {mve.PascalName} = {{\n{propertiesString}\n\t}}{mve.StaticPropertiesString}{createFunction}\n"
+                writeModel model frontBuffer
             
         writeModel fullModel buffer
 
