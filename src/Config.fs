@@ -5,8 +5,10 @@
 namespace FunStripe
 #endif
 
+#if !LITE
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Configuration.UserSecrets
+#endif
 open System
 
 module Config =
@@ -19,6 +21,7 @@ module Config =
     /// Defines the base URL for the Stripe API
     let StripeBaseUrl = "https://api.stripe.com"
 
+#if !LITE
     /// Looks up the `UserSecrets` store on the developer's computer and retrieves the Stripe API
     /// test key (see README for link to documentation). To set the Stripe API key in `UserSecrets`
     /// on your development computer, switch to the tests directory and use cmd: ```dotnet user-secrets init```
@@ -32,3 +35,6 @@ module Config =
     // lines below, and specify your Stripe API key manually:
     // /// Manually set the default Stripe API key instead of using `UserSecrets`
     // let StripeTestApiKey = "sk_test_..."
+#else
+    let StripeTestApiKey = ""
+#endif

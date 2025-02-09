@@ -2,7 +2,6 @@ namespace FunStripe
 
 open FSharp.Data
 open FunStripe
-open System
 
 module RestApi =
 
