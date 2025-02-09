@@ -4,6 +4,7 @@ open FunStripe.Json
 open StripeModel
 open System
 
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "0.11.1")>]
 module StripeRequest =
 
     module Account =
