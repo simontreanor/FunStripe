@@ -174,10 +174,6 @@ module RequestBuilder =
         SubValues: Value array option
     }
 
-    ///Utility function for appending lines to a StringBuilder
-    let write s (sb: Text.StringBuilder) =
-        if s |> String.IsNullOrWhiteSpace |> not then sb.AppendLine s |> ignore
-
     ///Parse form parameters
     let rec parseValue prefix name req isChoice (jv: JsonValue) =
         let name' = name |> pascalCasify
@@ -276,6 +272,27 @@ module RequestBuilder =
             m.Groups.[1].Value
         else
             failwith $"Unparsable reference: {s}"
+
+    type ModelRequest = {
+        Description: string
+        Method: string
+        OptionsString: string
+        QueryDeclaration: string
+        Path: string
+        Verb: string
+        ResponseType: string
+        Query: string
+        FormOptions: Value array
+        PathOptions: Value array
+    }
+
+    /// Intermediate Abstract Syntax Tree that can be analysed and processed if needed.
+    type ModelAst =
+    | ModelHeader
+    | ModelDu of Name: string * Value: string * ModelAst
+    | ModelType of Name: string * PropertiesString: string * ParametersString: string * Assignments: string * ModelAst
+    | ModelRequest of ModelRequest * ModelAst
+    | ModelModule of Module: string * ModelAst
 
     ///Parses the Stripe OpenAPI specification, outputting an F# module specifying the object model for all body form parameters in Stripe API requests
     let parseRequest filePath =
@@ -405,66 +422,69 @@ module RequestBuilder =
                 (moduleName, methods)
             )
 
-        let sb = Text.StringBuilder()
+        let header = ModelHeader
 
-        sb |> write "namespace FunStripe\n\nopen FunStripe.Json\nopen StripeModel\nopen System\n\nmodule StripeRequest =\n"
-
-        ///Write a discriminated union
-        let writeDU (name: string) values =
+        ///Gather a discriminated union
+        let gatherDU (name: string) values model =
             let valuesString =
                 values
                 |> List.map(fun s -> $"\t\t| {s |> escapeForJson}")
                 |> String.concat "\n"
-            sb |> write $"\t\ttype {name} =\n{valuesString}\n"
+            ModelDu(name, valuesString, model)
 
         ///Write a type definition and static create method for a method's options
-        let rec writeOptions (name: string) values =
+        let rec gatherOptions (name: string) values model =
 
-            values
-            |> Array.filter(fun v -> v.SubValues.IsSome)
-            |> Array.iter(fun v ->
-                writeOptions (v.Type) (v.SubValues.Value)
-            )
+            let modelWithOptions =
+                values
+                |> Array.filter(fun v -> v.SubValues.IsSome)
+                |> Array.fold(fun model v ->
+                    gatherOptions (v.Type) (v.SubValues.Value) model
+                ) model
 
-            values
-            |> Array.filter(fun v -> v.EnumValues.IsSome)
-            |> Array.iter(fun v ->
-                writeDU (v.Type) (v.EnumValues.Value)
-            )
+            let modelWithValues =
+                values
+                |> Array.filter(fun v -> v.EnumValues.IsSome)
+                |> Array.fold(fun model v ->
+                    gatherDU (v.Type) (v.EnumValues.Value) model
+                ) modelWithOptions
 
-            if not (name.StartsWith "Choice<" || name.EndsWith " list") then
+            let modelWithTypes =
+                if not (name.StartsWith "Choice<" || name.EndsWith " list") then
 
-                let parametersString =
-                    values
-                    |> Array.sortBy(fun v -> if v.Required then 0 else 1)
-                    |> Array.map(fun v ->
-                        let req = if v.Required then "" else "?"
-                        $"{req}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}"
-                    )
-                    |> String.concat ", "
+                    let parametersString =
+                        values
+                        |> Array.sortBy(fun v -> if v.Required then 0 else 1)
+                        |> Array.map(fun v ->
+                            let req = if v.Required then "" else "?"
+                            $"{req}{v.Name |> camelCasify |> escapeReservedName}: {v.Type}"
+                        )
+                        |> String.concat ", "
 
-                let propertiesString =
-                    values
-                    |> Array.map(fun v ->
-                        let req = if v.Required then "" else " option"
-                        let desc = if v.Description |> String.IsNullOrWhiteSpace then "" else $"{v.Description |> commentify 3}\n"
-                        $"{desc}\t\t\t[<Config.{v.OptionType |> string}>]{v.Name |> pascalCasify}: {v.Type}{req}"
-                    )
-                    |> String.concat "\n"
+                    let propertiesString =
+                        values
+                        |> Array.map(fun v ->
+                            let req = if v.Required then "" else " option"
+                            let desc = if v.Description |> String.IsNullOrWhiteSpace then "" else $"{v.Description |> commentify 3}\n"
+                            $"{desc}\t\t\t[<Config.{v.OptionType |> string}>]{v.Name |> pascalCasify}: {v.Type}{req}"
+                        )
+                        |> String.concat "\n"
 
-                let assignments =
-                    values
-                    |> Array.map(fun v ->
-                        $"\t\t\t\t\t{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}"
-                    )
-                    |> String.concat "\n"
+                    let assignments =
+                        values
+                        |> Array.map(fun v ->
+                            $"\t\t\t\t\t{v.Name |> pascalCasify} = {v.Name |> camelCasify |> escapeReservedName}"
+                        )
+                        |> String.concat "\n"
 
-                sb |> write $"\t\ttype {name} = {{\n{propertiesString}\n\t\t}}"
+                    ModelType(name, propertiesString, parametersString, assignments, modelWithValues)
 
-                sb |> write $"\t\twith\n\t\t\tstatic member New({parametersString}) =\n\t\t\t\t{{\n{assignments}\n\t\t\t\t}}\n"
+                else modelWithValues
+
+            modelWithTypes
 
         ///Write a method to make a request from the API
-        let writeMethod method verb path description options responseType =
+        let gatherMethod method verb path description options responseType model =
             let formOptions = options |> Array.filter(fun o -> o.OptionType = Form)
             let pathOptions = options |> Array.filter(fun o -> o.OptionType = Path)
             let queryOptions = options |> Array.filter(fun o -> o.OptionType = Query)
@@ -477,41 +497,89 @@ module RequestBuilder =
                 else
                     $"\t\t\tlet qs = [{queryString}] |> Map.ofList", " qs"
 
-            sb |> write (description |> commentify 2)
-            sb |> write $"\t\tlet {method} settings{optionsString} ="
-            sb |> write queryDeclaration
-            sb |> write $"\t\t\t$\"{path |> formatPathOptions}\""
+            ModelRequest ({
+                Description = description
+                Method = method
+                OptionsString = optionsString
+                QueryDeclaration = queryDeclaration
+                Path = path
+                Verb = verb
+                ResponseType = responseType
+                Query = query
+                FormOptions = formOptions
+                PathOptions = pathOptions
+            }, model)
 
-            //set API method
-            match verb with
-            | "get" when formOptions.Any() ->
-                sb |> write $"\t\t\t|> RestApi.getWithAsync<_, {responseType}> settings{query} options\n"
-            | "get" ->
-                sb |> write $"\t\t\t|> RestApi.getAsync<{responseType}> settings{query}\n"
-            | "post" when formOptions.Any() |> not ->
-                sb |> write $"\t\t\t|> RestApi.postWithoutAsync<{responseType}> settings{query}\n"
-            | "post" ->
-                sb |> write $"\t\t\t|> RestApi.postAsync<_, {responseType}> settings{query} options\n"
-            | "delete" ->
-                sb |> write $"\t\t\t|> RestApi.deleteAsync<{responseType}> settings{query}\n"
-            | _ ->
-                failwith $"Unhandled verb: {verb}"
+        let model =
+            requests
+            |> Array.fold(fun model (module', methods) ->
+                let modelWithModule = ModelModule(module', model)
+                methods
+                |> Array.fold(fun modelm (method, verb, path, desc, options, responseType) ->
+                    let modelWithOpts = gatherOptions $"{method}Options" options modelm
+                    gatherMethod method verb path desc options responseType modelWithOpts
+                ) modelWithModule
+            ) header
 
-        requests
-        |> Array.iter(fun (module', methods) ->
-            sb |> write $"\tmodule {module'} =\n"
-            methods
-            |> Array.iter(fun (method, verb, path, desc, options, responseType) ->
-                writeOptions $"{method}Options" options
-                writeMethod method verb path desc options responseType
-            )
-        )
+        model
+
+    /// Save the model to F# file.
+    let serializeModel (version:string) fullModel =
+
+        //use a string builder to hold the output
+        let sb = Text.StringBuilder()
+
+        ///Utility function for appending lines to a StringBuilder
+        let write s (sb: Text.StringBuilder) =
+            if s |> String.IsNullOrWhiteSpace |> not then sb.AppendLine s |> ignore
+        
+        let rec writeModel model =
+            match model with
+            | ModelHeader ->
+                sb |> write $"namespace FunStripe\n\nopen FunStripe.Json\nopen StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeRequest =\n"
+            | ModelDu (name, valuesString, model) ->
+                do writeModel model
+                ///Write a discriminated union
+                sb |> write $"\t\ttype {name} =\n{valuesString}\n"
+            | ModelType (name, propertiesString, parametersString, assignments, model) ->
+                do writeModel model
+                sb |> write $"\t\ttype {name} = {{\n{propertiesString}\n\t\t}}"
+                sb |> write $"\t\twith\n\t\t\tstatic member New({parametersString}) =\n\t\t\t\t{{\n{assignments}\n\t\t\t\t}}\n"
+
+            | ModelRequest (modelRequest, model) ->
+                do writeModel model
+                sb |> write (modelRequest.Description |> commentify 2)
+                sb |> write $"\t\tlet {modelRequest.Method} settings{modelRequest.OptionsString} ="
+                sb |> write modelRequest.QueryDeclaration
+                sb |> write $"\t\t\t$\"{modelRequest.Path |> formatPathOptions}\""
+
+                //set API method
+                match modelRequest.Verb with
+                | "get" when modelRequest.FormOptions.Any() ->
+                    sb |> write $"\t\t\t|> RestApi.getWithAsync<_, {modelRequest.ResponseType}> settings{modelRequest.Query} options\n"
+                | "get" ->
+                    sb |> write $"\t\t\t|> RestApi.getAsync<{modelRequest.ResponseType}> settings{modelRequest.Query}\n"
+                | "post" when modelRequest.FormOptions.Any() |> not ->
+                    sb |> write $"\t\t\t|> RestApi.postWithoutAsync<{modelRequest.ResponseType}> settings{modelRequest.Query}\n"
+                | "post" ->
+                    sb |> write $"\t\t\t|> RestApi.postAsync<_, {modelRequest.ResponseType}> settings{modelRequest.Query} options\n"
+                | "delete" ->
+                    sb |> write $"\t\t\t|> RestApi.deleteAsync<{modelRequest.ResponseType}> settings{modelRequest.Query}\n"
+                | verb ->
+                    failwith $"Unhandled verb: {verb}"
+
+            | ModelModule (module', model) ->
+                do writeModel model
+                sb |> write $"\tmodule {module'} =\n"
+
+        writeModel fullModel
 
         sb.ToString().Replace("\t", "    ")
 
 #if INTERACTIVE
     ;;
     open RequestBuilder;;
-    let s = parseRequest None;;
+    let m = parseRequest None;;
+    let s = serializeModel "0.11.1" m;;
     System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeRequest.fs", s);;
 #endif
