@@ -6,7 +6,7 @@ module AsyncResultCE =
     type AsyncResult<'ok,'error> = Async<Result<'ok,'error>>
 
     ///Builds the `AsyncResult` computation expression
-    type AsyncResultBuilder() = 
+    type AsyncResultBuilder() =
 
         member _.Bind(x: AsyncResult<_, _>, f: 'a -> AsyncResult<'b, 'c>) : AsyncResult<_, _> =
             async {
@@ -31,4 +31,3 @@ module AsyncResultCE =
 
     ///Instantiates the `AsyncResult` computation expression
     let asyncResult = AsyncResultBuilder()
-    

@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <PackageId>FunStripeLite</PackageId>
+    <Version>1.4.0</Version>
+    <Authors>Simon Treanor</Authors>
+    <Company>Fund Ourselves</Company>
+    <PackageDescription>F# Lightweight Stripe Library</PackageDescription>
+    <RepositoryUrl>https://github.com/simontreanor/FunStripeLite</RepositoryUrl>
+    <DefineConstants>$(DefineConstants);LITE</DefineConstants>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Json/InterfaceTypes.fs" Link="Json/InterfaceTypes.fs"/>
+    <Compile Include="../Json/JsonValueHelpers.fs" Link="Json/JsonValueHelpers.fs" />
+    <Compile Include="../Json/Reflection.fs" Link="Json/Reflection.fs" />
+    <Compile Include="../Json/Core.fs" Link="Json/Core.fs" />
+    <Compile Include="../Json/Transforms.fs" Link="Json/Transforms.fs" />
+    <Compile Include="../Config.fs" Link="Config.fs" />
+    <Compile Include="../Util.fs" Link="Util.fs" />
+    <Compile Include="../AsyncResult.fs" Link="AsyncResult.fs" />
+    <Compile Include="../StripeModel.fs" Link="StripeModel.fs" />
+    <Compile Include="../StripeError.fs" Link="StripeError.fs" />
+    <Compile Include="../RestApi.fs" Link="RestApi.fs" />
+    <Compile Include="../StripeRequest.fs" Link="StripeRequest.fs" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="9.0.101" />
+    <PackageReference Include="FSharp.Data" Version="6.4.1" />
+  </ItemGroup>
+</Project>

@@ -19,7 +19,7 @@ module Util =
     let spitNameRegex = Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])")
     let choiceRegex = Regex(@"Choice\d+Of\d+")
 
-     /// Converts names into snake case. Use in [JsonConfig].
+    /// Converts names into snake case. Use in [JsonConfig].
     let snakeCase (name: string): string =
         if name.Contains "_" then name else //don't double-snake-case!
         let words = spitNameRegex.Split name |> List.ofArray |> List.map(fun s -> s.ToLower())
