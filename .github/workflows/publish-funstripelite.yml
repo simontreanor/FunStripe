@@ -1,0 +1,52 @@
+name: Publish FunStripeLite to NuGet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New FunStripeLet version number'
+        required: true
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  VERSION: ${{ github.event.inputs.version }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_FILE: src/FunStripeLite/FunStripeLite.fsproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
+      - name: Update version number
+        run: |
+          echo "Updating version to $VERSION"
+          sed -i "s/<Version>[0-9]\+\.[0-9]\+\.[0-9]\+<\/Version>/<Version>$VERSION<\/Version>/" ${{ env.PROJECT_FILE }}
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add ${{ env.PROJECT_FILE }}
+          git commit -m "Update version to $VERSION"
+          git push origin HEAD:${{ github.ref }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_FILE }} -c Release
+
+      - name: Publish NuGet package
+        run: dotnet nuget push src/FunStripeLite/bin/Release/FunStripeLite.$VERSION.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+
+      - name: Create Git tag
+        run: |
+          git tag $VERSION
+          git push origin $VERSION
