@@ -51,5 +51,5 @@ jobs:
 
       - name: Create Git tag
         run: |
-          git tag $VERSION
-          git push origin $VERSION
+          git tag "fsl-$VERSION"
+          git push origin "fsl-$VERSION"
