@@ -43,6 +43,9 @@ jobs:
       - name: Build
         run: dotnet build -c Release
 
+      - name: Pack
+        run: dotnet pack -c Release
+
       - name: Publish NuGet package
         run: dotnet nuget push src/bin/Release/FunStripe.$VERSION.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
 

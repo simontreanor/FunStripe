@@ -43,6 +43,9 @@ jobs:
       - name: Build
         run: dotnet build ${{ env.PROJECT_FILE }} -c Release
 
+      - name: Pack
+        run: dotnet pack ${{ env.PROJECT_FILE }} -c Release
+
       - name: Publish NuGet package
         run: dotnet nuget push src/FunStripeLite/bin/Release/FunStripeLite.$VERSION.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
 
