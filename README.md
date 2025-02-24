@@ -4,6 +4,8 @@ An F# library to connect to the Stripe API, including code generators to update 
 
 ## Latest updates
 
+2025-02-24: version 0.11.2 implements changes to the order of generated types to reduce the need for recursive type declarations (thank [Thorium](https://github.com/Thorium) for that!). [FunStripeLite](https://github.com/simontreanor/FunStripeLite) has been added as a subproject and will be maintained here from now on.
+
 2025-01-21: version 0.11.0 changes the target frameworks to .NET Standard 2.0 and .NET Standard 2.1 and updates FSharp.Core to version 9.0.101 and FSharp.Data to 6.4.1.
 
 2023-11-13: version 0.10.2 makes some minor performance enhancements.
