@@ -26,7 +26,7 @@ An F# library to connect to the Stripe API, including code generators to update 
 
 ## Installation
 
-Get the latest version from [Nuget](https://www.nuget.org/packages/FunStripe/)
+Get the latest version of FunStripe (which includes the model builders) from [Nuget](https://www.nuget.org/packages/FunStripe/) or the lite version, which just contains the models, from [Nuget](https://www.nuget.org/packages/FunStripeLite/).
 
 ## Usage
 
