@@ -9,7 +9,7 @@
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Lightweight Stripe Library</PackageDescription>
-    <RepositoryUrl>https://github.com/simontreanor/FunStripeLite</RepositoryUrl>
+    <RepositoryUrl>https://github.com/simontreanor/FunStripe/blob/master/src/FunStripeLite</RepositoryUrl>
     <DefineConstants>$(DefineConstants);LITE</DefineConstants>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
