@@ -4,6 +4,8 @@ A lightweight F# library to connect to the Stripe API. Targets .NET Standard 2.0
 
 ## Latest updates
 
+2025-02-24: version 1.4.3 updates model generation. Moved FunStripeLite repository under FunStripe.
+
 2025-01-21: version 1.4.1 updates FSharp.Core to version 9.0.101 and FSharp.Data to 6.4.1.
 
 2023-12-06: version 1.4.0 changes the target frameworks to .NET Standard 2.0 and .NET Standard 2.1 and updates FSharp.Core to version 8.0.100.
