@@ -29,20 +29,11 @@ body:
   - type: textarea
     id: desktop-info
     attributes:
-      label: Desktop
+      label: Environment
       value: |
         - OS: [e.g. Windows 11]
         - Browser: [e.g. Chrome, Edge]
-        - Version: [e.g. 122]
-      render: shell
-  - type: textarea
-    id: smartphone-info
-    attributes:
-      label: Smartphone
-      value: |
-        - Device: [e.g. iPhone 15]
-        - OS: [e.g. iOS 17.4]
-        - Browser: [e.g. Stock browser, Safari]
+        - Product: [FunStripe / FunStripeLite]
         - Version: [e.g. 122]
       render: shell
   - type: textarea
