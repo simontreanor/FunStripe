@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="9.0.101" />
-    <PackageReference Include="FSharp.Data" Version="6.4.1" />
+    <PackageReference Include="FSharp.Data.Json.Core" Version="6.4.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.1" />
   </ItemGroup>
