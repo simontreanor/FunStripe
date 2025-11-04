@@ -41,33 +41,38 @@ module RestApi =
 
         authHeader :: stripeHeaders
 
-    ///Format query string values if present
+    ///Format query string values if present with proper URL encoding
     let formatQueryString (options: Map<string, obj>) =
+        let urlEncode (s:string) = System.Web.HttpUtility.UrlEncode s
+        
         let options' =
             options
             |> Map.toArray
             |> Array.choose(fun (k, v) ->
+                let encodedKey = urlEncode k
                 match v with
                 | :? Option<List<string>> as o ->
                     o
                     |> Option.map(fun ss ->
                         ss
+                        |> List.map urlEncode
                         |> String.concat ";"
-                        |> fun s -> $"{k}[]={s}"
+                        |> fun s -> $"{encodedKey}[]={s}"
                     )
                 | :? Option<int> as o ->
-                    o |> Option.map(fun i -> $"{k}={i |> string}")
+                    o |> Option.map(fun i -> $"{encodedKey}={urlEncode (i |> string)}")
                 | :? Option<string> as o ->
-                    o |> Option.map(fun s -> $"{k}={s}")
+                    o |> Option.map(fun s -> $"{encodedKey}={urlEncode s}")
                 | :? List<string> as ss ->
                     ss
+                    |> List.map urlEncode
                     |> String.concat ";"
-                    |> fun s -> $"{k}[]={s}"
+                    |> fun s -> $"{encodedKey}[]={s}"
                     |> Some
                 | :? int as i ->
-                    $"{k}={i |> string}" |> Some
+                    $"{encodedKey}={urlEncode (i |> string)}" |> Some
                 | :? string as s ->
-                    $"{k}={s}" |> Some
+                    $"{encodedKey}={urlEncode s}" |> Some
                 | _ ->
                     None
             )

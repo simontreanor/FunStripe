@@ -62,7 +62,21 @@ module Util =
             | :? string as s ->
                 seq {key', s}
             | :? DateTime as dt ->
-                let unixTimestamp = (DateTimeOffset dt).ToUnixTimeSeconds().ToString CultureInfo.InvariantCulture
+                // Ensure DateTime is treated as UTC to avoid timezone ambiguity
+                // If DateTime.Kind is Unspecified, assume it's UTC (Stripe API expectation)
+                let utcDt = 
+                    match dt.Kind with
+                    | DateTimeKind.Utc -> dt
+                    | DateTimeKind.Local -> dt.ToUniversalTime()
+                    | DateTimeKind.Unspecified -> 
+                        // Unspecified is ambiguous - treat as UTC and log warning in debug
+                        #if DEBUG
+                        System.Diagnostics.Debug.WriteLine($"Warning: DateTime with Unspecified kind being sent to Stripe API. Consider using DateTime.SpecifyKind or DateTimeOffset. Key: {key'}, Value: {dt}")
+                        #endif
+                        DateTime.SpecifyKind(dt, DateTimeKind.Utc)
+                    | _ -> dt
+                
+                let unixTimestamp = (DateTimeOffset utcDt).ToUnixTimeSeconds().ToString CultureInfo.InvariantCulture
                 seq {key', unixTimestamp}
             | :? Map<string,string> as m when m |> Map.isEmpty -> 
                 Seq.empty
