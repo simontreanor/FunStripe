@@ -150,18 +150,18 @@ module RequestBuilder =
         member this.ToPropertyString() =
             $"\t\tmember _.{this.Name |> camelCasify |> escapeReservedName} = {this.Name |> camelCasify |> escapeReservedName}"
 
-    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line, and also formatting the HTML to display all paragraphs correctly
+    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line, and also formatting the HTML to display all paragraphs correctly. Wraps content in XML doc summary tags to ensure visibility in IDEs.
     let commentify indent (s: string) =
         if s |> String.IsNullOrWhiteSpace then
             ""
         elif s.Contains("<p>") then
             let tabs = "\t" |> String.replicate indent
-            let formatted = s.Replace("<p>", "").Replace("</p>", "").Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")
-            $"{tabs}///<p>{formatted}</p>"
+            let formatted = s.Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")
+            $"{tabs}///<summary>{formatted}</summary>"
         else
             let tabs = "\t" |> String.replicate indent
             let formatted = s.Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")
-            $"{tabs}///{formatted}"
+            $"{tabs}///<summary>{formatted}</summary>"
 
     ///Recursive record for holding type definitions
     type Value = {
@@ -404,7 +404,7 @@ module RequestBuilder =
                                         match responseSchema.TryGetProperty("properties") with
                                         | Some jv ->
                                             let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
-                                            $"{listType |> parseRef |> pascalCasify} list"
+                                            $"StripeList<{listType |> parseRef |> pascalCasify}>"
                                         | _ ->
                                             failwith $"Unhandled response type: {moduleName} %A{responseSchema}"
 

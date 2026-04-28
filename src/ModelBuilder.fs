@@ -514,7 +514,7 @@ module ModelBuilder =
             match model with
             | ModelHeader ->
                 //Write the namespace, references and module title
-                let header = $"namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n"
+                let header = $"namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n\n\t///A generic type representing a paginated list of Stripe objects, including pagination metadata.\n\ttype StripeList<'T> = {{\n\t\t///The list of objects in this page.\n\t\tData: 'T list\n\t\t///True if this list has another page of items after this one that can be fetched.\n\t\tHasMore: bool\n\t\t///The URL where this list can be accessed.\n\t\tUrl: string\n\t}}\n\twith\n\t\t///String representing the object's type. Always has the value `list`.\n\t\tmember _.Object = \"list\"\n\n\t\tstatic member New (data: 'T list, hasMore: bool, url: string) =\n\t\t\t{{\n\t\t\t\tStripeList.Data = data\n\t\t\t\tStripeList.HasMore = hasMore\n\t\t\t\tStripeList.Url = url\n\t\t\t}}\n"
                 sb |> write header
                 sb |> write (frontBuffer.ToString())
             | ModelEnum (keyword, name, valuesString, model) -> 

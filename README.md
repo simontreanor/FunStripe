@@ -4,6 +4,12 @@ An F# library to connect to the Stripe API, including code generators to update 
 
 ## Latest updates
 
+2026-04-28: version 0.11.3 improves list and pagination handling and XML documentation visibility:
+- Added generic `StripeList<'T>` type that represents Stripe's paginated list envelope, providing access to `Data`, `HasMore`, and `Url` in all list API calls.
+- All list endpoints now return `StripeList<'T>` instead of `'T list`, giving access to pagination metadata.
+- Added `RestApi.listAllAsync` helper to automatically traverse all pages of a paginated list endpoint.
+- Fixed XML documentation comments on API methods to use `<summary>` tags, ensuring they are properly visible in IDE IntelliSense tooltips.
+
 2025-02-24: version 0.11.2 implements changes to the order of generated types to reduce the need for recursive type declarations (thank [Thorium](https://github.com/Thorium) for that!). [FunStripeLite](https://github.com/simontreanor/FunStripeLite) has been added as a subproject and will be maintained here from now on.
 
 2025-01-21: version 0.11.0 changes the target frameworks to .NET Standard 2.0 and .NET Standard 2.1 and updates FSharp.Core to version 9.0.101 and FSharp.Data to 6.4.1.
@@ -57,6 +63,31 @@ To instantiate the `settings` you need to pass in your Stripe API key. Having lo
 If you don't specify the API key in the settings record, it will look for a default test API key to use, and to keep the keys out of source code, it uses [UserSecrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=windows). It is recommended to use `UserSecrets` during development and web-server configuration settings in production, but if your source code will not be made public you can simply specify the API key as a string, at least for testing purposes. `Config.fs` contains some notes to help you.
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
+
+### Paginated Lists
+
+All list endpoints return a `StripeList<'T>` that includes the current page of items alongside the pagination metadata:
+
+```F#
+let listOptions = Customers.ListOptions.New(limit = 10)
+let! page = Customers.List settings listOptions
+// page.Data  — the current page of Customer records
+// page.HasMore — true if more pages are available
+// page.Url    — the endpoint URL
+```
+
+To automatically fetch all pages and combine them into a single list, use `RestApi.listAllAsync`:
+
+```F#
+let! allCustomers =
+    RestApi.listAllAsync
+        Customers.List
+        (fun id opts -> { opts with StartingAfter = Some id })
+        (fun (c: Customer) -> c.Id)
+        settings
+        (Customers.ListOptions.New())
+// allCustomers is Result<Customer list, ErrorResponse>
+```
 
 ## Code Generation
 
