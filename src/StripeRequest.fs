@@ -4292,7 +4292,7 @@ module StripeRequest =
         type ListOptions = {
             [<Config.Query>]Created: int option
             ///Only return transactions in a certain currency. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Query>]Currency: string option
+            [<Config.Query>]Currency: IsoTypes.IsoCurrencyCode option
             ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
             [<Config.Query>]EndingBefore: string option
             ///Specifies which fields in the response should be expanded.
@@ -4309,7 +4309,7 @@ module StripeRequest =
             [<Config.Query>]Type: string option
         }
         with
-            static member New(?created: int, ?currency: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?payout: string, ?source: string, ?startingAfter: string, ?type': string) =
+            static member New(?created: int, ?currency: IsoTypes.IsoCurrencyCode, ?endingBefore: string, ?expand: string list, ?limit: int, ?payout: string, ?source: string, ?startingAfter: string, ?type': string) =
                 {
                     Created = created
                     Currency = currency
@@ -7714,12 +7714,12 @@ module StripeRequest =
             |> RestApi.getAsync<CountrySpec list> settings qs
 
         type RetrieveOptions = {
-            [<Config.Path>]Country: string
+            [<Config.Path>]Country: IsoTypes.IsoCountryCode
             ///Specifies which fields in the response should be expanded.
             [<Config.Query>]Expand: string list option
         }
         with
-            static member New(country: string, ?expand: string list) =
+            static member New(country: IsoTypes.IsoCountryCode, ?expand: string list) =
                 {
                     Country = country
                     Expand = expand
@@ -12237,7 +12237,7 @@ module StripeRequest =
             ///The code of the coupon to apply. If `subscription` or `subscription_items` is provided, the invoice returned will preview updating or creating a subscription with that coupon. Otherwise, it will preview applying that coupon to the customer for the next upcoming invoice from among the customer's subscriptions. The invoice can be previewed without a coupon by passing this value as an empty string.
             [<Config.Query>]Coupon: string option
             ///The currency to preview this invoice in. Defaults to that of `customer` if not specified.
-            [<Config.Query>]Currency: string option
+            [<Config.Query>]Currency: IsoTypes.IsoCurrencyCode option
             ///The identifier of the customer whose upcoming invoice you'd like to retrieve. If `automatic_tax` is enabled then one of `customer`, `customer_details`, `subscription`, or `schedule` must be set.
             [<Config.Query>]Customer: string option
             ///Details about the customer you want to invoice or overrides for an existing customer. If `automatic_tax` is enabled then one of `customer`, `customer_details`, `subscription`, or `schedule` must be set.
@@ -12278,7 +12278,7 @@ module StripeRequest =
             [<Config.Query>]SubscriptionTrialFromPlan: bool option
         }
         with
-            static member New(?automaticTax: Map<string, string>, ?subscriptionStartDate: int, ?subscriptionResumeAt: string, ?subscriptionProrationDate: int, ?subscriptionProrationBehavior: string, ?subscriptionItems: string list, ?subscriptionDefaultTaxRates: string list, ?subscriptionCancelNow: bool, ?subscriptionCancelAtPeriodEnd: bool, ?subscriptionCancelAt: int, ?subscriptionBillingCycleAnchor: string, ?subscription: string, ?schedule: string, ?invoiceItems: string list, ?expand: string list, ?discounts: string list, ?customerDetails: Map<string, string>, ?customer: string, ?currency: string, ?coupon: string, ?subscriptionTrialEnd: string, ?subscriptionTrialFromPlan: bool) =
+            static member New(?automaticTax: Map<string, string>, ?subscriptionStartDate: int, ?subscriptionResumeAt: string, ?subscriptionProrationDate: int, ?subscriptionProrationBehavior: string, ?subscriptionItems: string list, ?subscriptionDefaultTaxRates: string list, ?subscriptionCancelNow: bool, ?subscriptionCancelAtPeriodEnd: bool, ?subscriptionCancelAt: int, ?subscriptionBillingCycleAnchor: string, ?subscription: string, ?schedule: string, ?invoiceItems: string list, ?expand: string list, ?discounts: string list, ?customerDetails: Map<string, string>, ?customer: string, ?currency: IsoTypes.IsoCurrencyCode, ?coupon: string, ?subscriptionTrialEnd: string, ?subscriptionTrialFromPlan: bool) =
                 {
                     AutomaticTax = automaticTax
                     Coupon = coupon
@@ -12320,7 +12320,7 @@ module StripeRequest =
             ///The code of the coupon to apply. If `subscription` or `subscription_items` is provided, the invoice returned will preview updating or creating a subscription with that coupon. Otherwise, it will preview applying that coupon to the customer for the next upcoming invoice from among the customer's subscriptions. The invoice can be previewed without a coupon by passing this value as an empty string.
             [<Config.Query>]Coupon: string option
             ///The currency to preview this invoice in. Defaults to that of `customer` if not specified.
-            [<Config.Query>]Currency: string option
+            [<Config.Query>]Currency: IsoTypes.IsoCurrencyCode option
             ///The identifier of the customer whose upcoming invoice you'd like to retrieve. If `automatic_tax` is enabled then one of `customer`, `customer_details`, `subscription`, or `schedule` must be set.
             [<Config.Query>]Customer: string option
             ///Details about the customer you want to invoice or overrides for an existing customer. If `automatic_tax` is enabled then one of `customer`, `customer_details`, `subscription`, or `schedule` must be set.
@@ -12367,7 +12367,7 @@ module StripeRequest =
             [<Config.Query>]SubscriptionTrialFromPlan: bool option
         }
         with
-            static member New(?automaticTax: Map<string, string>, ?subscriptionStartDate: int, ?subscriptionResumeAt: string, ?subscriptionProrationDate: int, ?subscriptionProrationBehavior: string, ?subscriptionItems: string list, ?subscriptionDefaultTaxRates: string list, ?subscriptionCancelNow: bool, ?subscriptionCancelAtPeriodEnd: bool, ?subscriptionCancelAt: int, ?subscriptionBillingCycleAnchor: string, ?subscriptionTrialEnd: string, ?subscription: string, ?schedule: string, ?limit: int, ?invoiceItems: string list, ?expand: string list, ?endingBefore: string, ?discounts: string list, ?customerDetails: Map<string, string>, ?customer: string, ?currency: string, ?coupon: string, ?startingAfter: string, ?subscriptionTrialFromPlan: bool) =
+            static member New(?automaticTax: Map<string, string>, ?subscriptionStartDate: int, ?subscriptionResumeAt: string, ?subscriptionProrationDate: int, ?subscriptionProrationBehavior: string, ?subscriptionItems: string list, ?subscriptionDefaultTaxRates: string list, ?subscriptionCancelNow: bool, ?subscriptionCancelAtPeriodEnd: bool, ?subscriptionCancelAt: int, ?subscriptionBillingCycleAnchor: string, ?subscriptionTrialEnd: string, ?subscription: string, ?schedule: string, ?limit: int, ?invoiceItems: string list, ?expand: string list, ?endingBefore: string, ?discounts: string list, ?customerDetails: Map<string, string>, ?customer: string, ?currency: IsoTypes.IsoCurrencyCode, ?coupon: string, ?startingAfter: string, ?subscriptionTrialFromPlan: bool) =
                 {
                     AutomaticTax = automaticTax
                     Coupon = coupon
@@ -26188,7 +26188,7 @@ module StripeRequest =
             ///A filter on the list, based on the object `created` field. The value can be a string with an integer Unix timestamp, or it can be a dictionary with a number of different query options.
             [<Config.Query>]Created: int option
             ///Only return prices for the given currency.
-            [<Config.Query>]Currency: string option
+            [<Config.Query>]Currency: IsoTypes.IsoCurrencyCode option
             ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
             [<Config.Query>]EndingBefore: string option
             ///Specifies which fields in the response should be expanded.
@@ -26207,7 +26207,7 @@ module StripeRequest =
             [<Config.Query>]Type: string option
         }
         with
-            static member New(?active: bool, ?created: int, ?currency: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKeys: string list, ?product: string, ?recurring: Map<string, string>, ?startingAfter: string, ?type': string) =
+            static member New(?active: bool, ?created: int, ?currency: IsoTypes.IsoCurrencyCode, ?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKeys: string list, ?product: string, ?recurring: Map<string, string>, ?startingAfter: string, ?type': string) =
                 {
                     Active = active
                     Created = created
@@ -31614,7 +31614,7 @@ module StripeRequest =
             ///A filter on the list, based on the object `created` field. The value can be a string with an integer Unix timestamp, or it can be a dictionary with a number of different query options.
             [<Config.Query>]Created: int option
             ///Only return shipping rates for the given currency.
-            [<Config.Query>]Currency: string option
+            [<Config.Query>]Currency: IsoTypes.IsoCurrencyCode option
             ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
             [<Config.Query>]EndingBefore: string option
             ///Specifies which fields in the response should be expanded.
@@ -31625,7 +31625,7 @@ module StripeRequest =
             [<Config.Query>]StartingAfter: string option
         }
         with
-            static member New(?active: bool, ?created: int, ?currency: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            static member New(?active: bool, ?created: int, ?currency: IsoTypes.IsoCurrencyCode, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
                 {
                     Active = active
                     Created = created

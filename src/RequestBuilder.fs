@@ -261,7 +261,11 @@ module RequestBuilder =
             let name = po.Name
             let optionType = po.In
             let required = po.Required
-            let type' = po.Type
+            let type' =
+                if po.Type = "string" then
+                    isoTypeName name |> Option.defaultValue po.Type
+                else
+                    po.Type
             { Description = desc; Name = name; Required = required; Type = type'; OptionType = optionType; EnumValues = None; SubValues = None }
         )
 
