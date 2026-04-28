@@ -148,6 +148,15 @@ module ModelBuilder =
         StaticValue: string option
     }
 
+    ///Returns the ISO strongly-typed name for currency or country fields, or None if not applicable
+    let isoTypeName (name: string) =
+        if name = "currency" || (name.EndsWith("_currency") && name <> "default_for_currency") then
+            Some "IsoTypes.IsoCurrencyCode"
+        elif name = "country" || name.EndsWith("_country") then
+            Some "IsoTypes.IsoCountryCode"
+        else
+            None
+
     ///Recursively iterates through schema to create hierarchy of type definitions
     let rec parseValue prefix name req (jv: JsonValue) =
         let name' = name |> pascalCasify
@@ -175,9 +184,17 @@ module ModelBuilder =
                     | Some ee ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"{prefix}{name'}"; EnumValues = ee |> List.ofSeq |> Some; SubValues = None; StaticValue = None }
                     | None ->
-                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
+                        match isoTypeName name with
+                        | Some isoType ->
+                            { Description = desc; Name = name; Nullable = nullable; Required = req; Type = isoType; EnumValues = None; SubValues = None; StaticValue = None }
+                        | None ->
+                            { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
                 else
-                    { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
+                    match isoTypeName name with
+                    | Some isoType ->
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = isoType; EnumValues = None; SubValues = None; StaticValue = None }
+                    | None ->
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
         | Some t when t = "array" ->
             match name with
             | "expand" ->

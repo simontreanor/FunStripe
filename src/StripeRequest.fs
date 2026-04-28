@@ -98,10 +98,10 @@ module StripeRequest =
             ///A non-negative integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
         }
         with
-            static member New(?amount: int, ?currency: string) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode) =
                 {
                     Amount = amount
                     Currency = currency
@@ -111,7 +111,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -122,7 +122,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -645,7 +645,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -656,7 +656,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -670,7 +670,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -683,7 +683,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -698,7 +698,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -711,7 +711,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -951,7 +951,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -962,7 +962,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -976,7 +976,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -989,7 +989,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -1004,7 +1004,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -1017,7 +1017,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -1048,7 +1048,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -1059,7 +1059,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -1424,9 +1424,9 @@ module StripeRequest =
             ///Information about the company or business. This field is available for any `business_type`.
             [<Config.Form>]Company: Create'Company option
             ///The country in which the account holder resides, or in which the business is legally established. This should be an ISO 3166-1 alpha-2 country code. For example, if you are in the United States and the business for which you're creating an account is legally represented in Canada, you would use `CA` as the country for the account being created. Available countries include [Stripe's global markets](https://stripe.com/global) as well as countries where [cross-border payouts](https://stripe.com/docs/connect/cross-border-payouts) are supported.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
-            [<Config.Form>]DefaultCurrency: string option
+            [<Config.Form>]DefaultCurrency: IsoTypes.IsoCurrencyCode option
             ///Documents that may be submitted to satisfy various informational requests.
             [<Config.Form>]Documents: Create'Documents option
             ///The email address of the account holder. This is only to make the account easier to identify to you. Stripe only emails Custom accounts with your consent.
@@ -1447,7 +1447,7 @@ module StripeRequest =
             [<Config.Form>]Type: Create'Type option
         }
         with
-            static member New(?accountToken: string, ?businessProfile: Create'BusinessProfile, ?businessType: Create'BusinessType, ?capabilities: Create'Capabilities, ?company: Create'Company, ?country: string, ?defaultCurrency: string, ?documents: Create'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Create'Individual, ?metadata: Map<string, string>, ?settings: Create'Settings, ?tosAcceptance: Create'TosAcceptance, ?type': Create'Type) =
+            static member New(?accountToken: string, ?businessProfile: Create'BusinessProfile, ?businessType: Create'BusinessType, ?capabilities: Create'Capabilities, ?company: Create'Company, ?country: IsoTypes.IsoCountryCode, ?defaultCurrency: IsoTypes.IsoCurrencyCode, ?documents: Create'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Create'Individual, ?metadata: Map<string, string>, ?settings: Create'Settings, ?tosAcceptance: Create'TosAcceptance, ?type': Create'Type) =
                 {
                     AccountToken = accountToken
                     BusinessProfile = businessProfile
@@ -1514,10 +1514,10 @@ module StripeRequest =
             ///A non-negative integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
         }
         with
-            static member New(?amount: int, ?currency: string) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode) =
                 {
                     Amount = amount
                     Currency = currency
@@ -1527,7 +1527,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -1538,7 +1538,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -2061,7 +2061,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -2072,7 +2072,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -2086,7 +2086,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -2099,7 +2099,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -2114,7 +2114,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -2127,7 +2127,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -2367,7 +2367,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -2378,7 +2378,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -2392,7 +2392,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -2405,7 +2405,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -2420,7 +2420,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -2433,7 +2433,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -2464,7 +2464,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -2475,7 +2475,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -2836,7 +2836,7 @@ module StripeRequest =
             ///Information about the company or business. This field is available for any `business_type`.
             [<Config.Form>]Company: Update'Company option
             ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
-            [<Config.Form>]DefaultCurrency: string option
+            [<Config.Form>]DefaultCurrency: IsoTypes.IsoCurrencyCode option
             ///Documents that may be submitted to satisfy various informational requests.
             [<Config.Form>]Documents: Update'Documents option
             ///The email address of the account holder. This is only to make the account easier to identify to you. Stripe only emails Custom accounts with your consent.
@@ -2855,7 +2855,7 @@ module StripeRequest =
             [<Config.Form>]TosAcceptance: Update'TosAcceptance option
         }
         with
-            static member New(account: string, ?accountToken: string, ?businessProfile: Update'BusinessProfile, ?businessType: Update'BusinessType, ?capabilities: Update'Capabilities, ?company: Update'Company, ?defaultCurrency: string, ?documents: Update'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Update'Individual, ?metadata: Map<string, string>, ?settings: Update'Settings, ?tosAcceptance: Update'TosAcceptance) =
+            static member New(account: string, ?accountToken: string, ?businessProfile: Update'BusinessProfile, ?businessType: Update'BusinessType, ?capabilities: Update'Capabilities, ?company: Update'Company, ?defaultCurrency: IsoTypes.IsoCurrencyCode, ?documents: Update'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?individual: Update'Individual, ?metadata: Map<string, string>, ?settings: Update'Settings, ?tosAcceptance: Update'TosAcceptance) =
                 {
                     Account = account
                     AccountToken = accountToken
@@ -3081,7 +3081,7 @@ module StripeRequest =
             ///City/District/Suburb/Town/Village.
             [<Config.Form>]AddressCity: string option
             ///Billing address country, if provided when creating card.
-            [<Config.Form>]AddressCountry: string option
+            [<Config.Form>]AddressCountry: IsoTypes.IsoCountryCode option
             ///Address line 1 (Street address/PO Box/Company name).
             [<Config.Form>]AddressLine1: string option
             ///Address line 2 (Apartment/Suite/Unit/Building).
@@ -3106,7 +3106,7 @@ module StripeRequest =
             [<Config.Form>]Name: string option
         }
         with
-            static member New(account: string, id: string, ?expand: string list, ?expYear: string, ?expMonth: string, ?documents: Update'Documents, ?defaultForCurrency: bool, ?addressZip: string, ?addressState: string, ?addressLine2: string, ?addressLine1: string, ?addressCountry: string, ?addressCity: string, ?accountType: Update'AccountType, ?accountHolderType: Update'AccountHolderType, ?accountHolderName: string, ?metadata: Map<string, string>, ?name: string) =
+            static member New(account: string, id: string, ?expand: string list, ?expYear: string, ?expMonth: string, ?documents: Update'Documents, ?defaultForCurrency: bool, ?addressZip: string, ?addressState: string, ?addressLine2: string, ?addressLine1: string, ?addressCountry: IsoTypes.IsoCountryCode, ?addressCity: string, ?accountType: Update'AccountType, ?accountHolderType: Update'AccountHolderType, ?accountHolderName: string, ?metadata: Map<string, string>, ?name: string) =
                 {
                     Account = account
                     Id = id
@@ -3190,7 +3190,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -3201,7 +3201,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -3215,7 +3215,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -3228,7 +3228,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -3243,7 +3243,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -3256,7 +3256,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -3333,7 +3333,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -3344,7 +3344,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -3553,7 +3553,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -3564,7 +3564,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -3578,7 +3578,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -3591,7 +3591,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -3606,7 +3606,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -3619,7 +3619,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -3696,7 +3696,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -3707,7 +3707,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -5167,7 +5167,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -5178,7 +5178,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -5232,7 +5232,7 @@ module StripeRequest =
             ///Whether to immediately capture the charge. Defaults to `true`. When `false`, the charge issues an authorization (or pre-authorization), and will need to be [captured](https://stripe.com/docs/api#capture_charge) later. Uncaptured charges expire after a set number of days (7 by default). For more information, see the [authorizing charges and settling later](https://stripe.com/docs/charges/placing-a-hold) documentation.
             [<Config.Form>]Capture: bool option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of an existing customer that will be charged in this request.
             [<Config.Form>]Customer: string option
             ///An arbitrary string which you can attach to a `Charge` object. It is displayed when in the web interface alongside the charge. Note that if you use Stripe to send automatic email receipts to your customers, your receipt emails will include the `description` of the charge(s) that they are describing.
@@ -5262,7 +5262,7 @@ module StripeRequest =
             [<Config.Form>]TransferGroup: string option
         }
         with
-            static member New(?amount: int, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?source: string, ?shipping: Create'Shipping, ?receiptEmail: string, ?radarOptions: Create'RadarOptions, ?onBehalfOf: string, ?transferData: Create'TransferData, ?metadata: Map<string, string>, ?destination: Create'Destination, ?description: string, ?customer: string, ?currency: string, ?capture: bool, ?applicationFeeAmount: int, ?applicationFee: int, ?expand: string list, ?transferGroup: string) =
+            static member New(?amount: int, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?source: string, ?shipping: Create'Shipping, ?receiptEmail: string, ?radarOptions: Create'RadarOptions, ?onBehalfOf: string, ?transferData: Create'TransferData, ?metadata: Map<string, string>, ?destination: Create'Destination, ?description: string, ?customer: string, ?currency: IsoTypes.IsoCurrencyCode, ?capture: bool, ?applicationFeeAmount: int, ?applicationFee: int, ?expand: string list, ?transferGroup: string) =
                 {
                     Amount = amount
                     ApplicationFee = applicationFee
@@ -5328,7 +5328,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -5339,7 +5339,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -5947,7 +5947,7 @@ module StripeRequest =
 
         type Create'LineItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to. One of `product` or `product_data` is required.
             [<Config.Form>]Product: string option
             ///Data used to generate a new product object inline. One of `product` or `product_data` is required.
@@ -5962,7 +5962,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?productData: Create'LineItemsPriceDataProductData, ?recurring: Create'LineItemsPriceDataRecurring, ?taxBehavior: Create'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?productData: Create'LineItemsPriceDataProductData, ?recurring: Create'LineItemsPriceDataRecurring, ?taxBehavior: Create'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -6002,7 +6002,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -6013,7 +6013,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -6372,10 +6372,10 @@ module StripeRequest =
 
         type Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -7241,12 +7241,12 @@ module StripeRequest =
             ///A non-negative integer in cents representing how much to charge.
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
             [<Config.Form>]CurrencyOptions: Map<string, string> option
         }
         with
-            static member New(?amount: int, ?currency: string, ?currencyOptions: Map<string, string>) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>) =
                 {
                     Amount = amount
                     Currency = currency
@@ -7485,7 +7485,7 @@ module StripeRequest =
             ///Configure fields for the Checkout Session to gather active consent from customers.
             [<Config.Form>]ConsentCollection: Create'ConsentCollection option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Collect additional information from your customer using custom fields. Up to 2 fields are supported.
             [<Config.Form>]CustomFields: Create'CustomFields list option
             ///Display additional text for your customers using custom text.
@@ -7576,7 +7576,7 @@ module StripeRequest =
             [<Config.Form>]TaxIdCollection: Create'TaxIdCollection option
         }
         with
-            static member New(successUrl: string, ?lineItems: Create'LineItems list, ?locale: Create'Locale, ?metadata: Map<string, string>, ?mode: Create'Mode, ?paymentIntentData: Create'PaymentIntentData, ?paymentMethodCollection: Create'PaymentMethodCollection, ?invoiceCreation: Create'InvoiceCreation, ?paymentMethodOptions: Create'PaymentMethodOptions, ?phoneNumberCollection: Create'PhoneNumberCollection, ?setupIntentData: Create'SetupIntentData, ?shippingAddressCollection: Create'ShippingAddressCollection, ?shippingOptions: Create'ShippingOptions list, ?submitType: Create'SubmitType, ?subscriptionData: Create'SubscriptionData, ?paymentMethodTypes: Create'PaymentMethodTypes list, ?afterExpiration: Create'AfterExpiration, ?expiresAt: DateTime, ?discounts: Create'Discounts list, ?customerUpdate: Create'CustomerUpdate, ?customerEmail: string, ?customerCreation: Create'CustomerCreation, ?customer: string, ?customText: Create'CustomText, ?customFields: Create'CustomFields list, ?currency: string, ?consentCollection: Create'ConsentCollection, ?clientReferenceId: string, ?cancelUrl: string, ?billingAddressCollection: Create'BillingAddressCollection, ?automaticTax: Create'AutomaticTax, ?allowPromotionCodes: bool, ?expand: string list, ?taxIdCollection: Create'TaxIdCollection) =
+            static member New(successUrl: string, ?lineItems: Create'LineItems list, ?locale: Create'Locale, ?metadata: Map<string, string>, ?mode: Create'Mode, ?paymentIntentData: Create'PaymentIntentData, ?paymentMethodCollection: Create'PaymentMethodCollection, ?invoiceCreation: Create'InvoiceCreation, ?paymentMethodOptions: Create'PaymentMethodOptions, ?phoneNumberCollection: Create'PhoneNumberCollection, ?setupIntentData: Create'SetupIntentData, ?shippingAddressCollection: Create'ShippingAddressCollection, ?shippingOptions: Create'ShippingOptions list, ?submitType: Create'SubmitType, ?subscriptionData: Create'SubscriptionData, ?paymentMethodTypes: Create'PaymentMethodTypes list, ?afterExpiration: Create'AfterExpiration, ?expiresAt: DateTime, ?discounts: Create'Discounts list, ?customerUpdate: Create'CustomerUpdate, ?customerEmail: string, ?customerCreation: Create'CustomerCreation, ?customer: string, ?customText: Create'CustomText, ?customFields: Create'CustomFields list, ?currency: IsoTypes.IsoCurrencyCode, ?consentCollection: Create'ConsentCollection, ?clientReferenceId: string, ?cancelUrl: string, ?billingAddressCollection: Create'BillingAddressCollection, ?automaticTax: Create'AutomaticTax, ?allowPromotionCodes: bool, ?expand: string list, ?taxIdCollection: Create'TaxIdCollection) =
                 {
                     AfterExpiration = afterExpiration
                     AllowPromotionCodes = allowPromotionCodes
@@ -7782,7 +7782,7 @@ module StripeRequest =
             ///A hash containing directions for what this Coupon will apply discounts to.
             [<Config.Form>]AppliesTo: Create'AppliesTo option
             ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the `amount_off` parameter (required if `amount_off` is passed).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Coupons defined in each available currency option (only supported if `amount_off` is passed). Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
             [<Config.Form>]CurrencyOptions: Map<string, string> option
             ///Specifies how long the discount will be in effect if used on a subscription. Defaults to `once`.
@@ -7805,7 +7805,7 @@ module StripeRequest =
             [<Config.Form>]RedeemBy: DateTime option
         }
         with
-            static member New(?amountOff: int, ?appliesTo: Create'AppliesTo, ?currency: string, ?currencyOptions: Map<string, string>, ?duration: Create'Duration, ?durationInMonths: int, ?expand: string list, ?id: string, ?maxRedemptions: int, ?metadata: Map<string, string>, ?name: string, ?percentOff: decimal, ?redeemBy: DateTime) =
+            static member New(?amountOff: int, ?appliesTo: Create'AppliesTo, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>, ?duration: Create'Duration, ?durationInMonths: int, ?expand: string list, ?id: string, ?maxRedemptions: int, ?metadata: Map<string, string>, ?name: string, ?percentOff: decimal, ?redeemBy: DateTime) =
                 {
                     AmountOff = amountOff
                     AppliesTo = appliesTo
@@ -8276,7 +8276,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -8287,7 +8287,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -8373,7 +8373,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -8384,7 +8384,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -8619,7 +8619,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -8630,7 +8630,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -8716,7 +8716,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -8727,7 +8727,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -8909,7 +8909,7 @@ module StripeRequest =
             ///The integer amount in **cents (or local equivalent)** to apply to the customer's credit balance.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). Specifies the [`invoice_credit_balance`](https://stripe.com/docs/api/customers/object#customer_object-invoice_credit_balance) that this transaction will apply to. If the customer's `currency` is not set, it will be updated to this value.
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///Specifies which fields in the response should be expanded.
@@ -8918,7 +8918,7 @@ module StripeRequest =
             [<Config.Form>]Metadata: Map<string, string> option
         }
         with
-            static member New(customer: string, amount: int, currency: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
+            static member New(customer: string, amount: int, currency: IsoTypes.IsoCurrencyCode, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
                 {
                     Customer = customer
                     Amount = amount
@@ -9102,10 +9102,10 @@ module StripeRequest =
 
         type CreateFundingInstructions'BankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -9148,14 +9148,14 @@ module StripeRequest =
             ///Additional parameters for `bank_transfer` funding types
             [<Config.Form>]BankTransfer: CreateFundingInstructions'BankTransfer
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///Specifies which fields in the response should be expanded.
             [<Config.Form>]Expand: string list option
             ///The `funding_type` to get the instructions for.
             [<Config.Form>]FundingType: CreateFundingInstructions'FundingType
         }
         with
-            static member New(customer: string, bankTransfer: CreateFundingInstructions'BankTransfer, currency: string, fundingType: CreateFundingInstructions'FundingType, ?expand: string list) =
+            static member New(customer: string, bankTransfer: CreateFundingInstructions'BankTransfer, currency: IsoTypes.IsoCurrencyCode, fundingType: CreateFundingInstructions'FundingType, ?expand: string list) =
                 {
                     Customer = customer
                     BankTransfer = bankTransfer
@@ -9326,7 +9326,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -9337,7 +9337,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -9380,7 +9380,7 @@ module StripeRequest =
             ///City/District/Suburb/Town/Village.
             [<Config.Form>]AddressCity: string option
             ///Billing address country, if provided when creating card.
-            [<Config.Form>]AddressCountry: string option
+            [<Config.Form>]AddressCountry: IsoTypes.IsoCountryCode option
             ///Address line 1 (Street address/PO Box/Company name).
             [<Config.Form>]AddressLine1: string option
             ///Address line 2 (Apartment/Suite/Unit/Building).
@@ -9402,7 +9402,7 @@ module StripeRequest =
             [<Config.Form>]Owner: Update'Owner option
         }
         with
-            static member New(customer: string, id: string, ?accountHolderName: string, ?accountHolderType: Update'AccountHolderType, ?addressCity: string, ?addressCountry: string, ?addressLine1: string, ?addressLine2: string, ?addressState: string, ?addressZip: string, ?expMonth: string, ?expYear: string, ?expand: string list, ?metadata: Map<string, string>, ?name: string, ?owner: Update'Owner) =
+            static member New(customer: string, id: string, ?accountHolderName: string, ?accountHolderType: Update'AccountHolderType, ?addressCity: string, ?addressCountry: IsoTypes.IsoCountryCode, ?addressLine1: string, ?addressLine2: string, ?addressState: string, ?addressZip: string, ?expMonth: string, ?expYear: string, ?expand: string list, ?metadata: Map<string, string>, ?name: string, ?owner: Update'Owner) =
                 {
                     Customer = customer
                     Id = id
@@ -10727,7 +10727,7 @@ module StripeRequest =
 
         type Create'PriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///Only required if a [default tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
@@ -10738,7 +10738,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?taxBehavior: Create'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Create'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -10756,7 +10756,7 @@ module StripeRequest =
             ///The integer amount in cents (or local equivalent) of the charge to be applied to the upcoming invoice. Passing in a negative `amount` will reduce the `amount_due` on the invoice.
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the customer who will be billed when this invoice item is billed.
             [<Config.Form>]Customer: string
             ///An arbitrary string which you can attach to the invoice item. The description is displayed in the invoice for easy tracking.
@@ -10793,7 +10793,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(customer: string, ?amount: int, ?taxRates: string list, ?taxCode: Choice<string,string>, ?taxBehavior: Create'TaxBehavior, ?subscription: string, ?quantity: int, ?priceData: Create'PriceData, ?price: string, ?period: Create'Period, ?metadata: Map<string, string>, ?invoice: string, ?expand: string list, ?discounts: Choice<Create'Discounts list,string>, ?discountable: bool, ?description: string, ?currency: string, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(customer: string, ?amount: int, ?taxRates: string list, ?taxCode: Choice<string,string>, ?taxBehavior: Create'TaxBehavior, ?subscription: string, ?quantity: int, ?priceData: Create'PriceData, ?price: string, ?period: Create'Period, ?metadata: Map<string, string>, ?invoice: string, ?expand: string list, ?discounts: Choice<Create'Discounts list,string>, ?discountable: bool, ?description: string, ?currency: IsoTypes.IsoCurrencyCode, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Amount = amount
                     Currency = currency
@@ -10886,7 +10886,7 @@ module StripeRequest =
 
         type Update'PriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///Only required if a [default tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
@@ -10897,7 +10897,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?taxBehavior: Update'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Update'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -11170,10 +11170,10 @@ module StripeRequest =
 
         type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -11382,12 +11382,12 @@ module StripeRequest =
             ///A non-negative integer in cents representing how much to charge.
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
             [<Config.Form>]CurrencyOptions: Map<string, string> option
         }
         with
-            static member New(?amount: int, ?currency: string, ?currencyOptions: Map<string, string>) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>) =
                 {
                     Amount = amount
                     Currency = currency
@@ -11447,7 +11447,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -11458,7 +11458,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -11518,7 +11518,7 @@ module StripeRequest =
             ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this invoice using the default source attached to the customer. When sending an invoice, Stripe will email this invoice to the customer with payment instructions. Defaults to `charge_automatically`.
             [<Config.Form>]CollectionMethod: Create'CollectionMethod option
             ///The currency to create this invoice in. Defaults to that of `customer` if not specified.
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///A list of up to 4 custom fields to be displayed on the invoice.
             [<Config.Form>]CustomFields: Choice<Create'CustomFields list,string> option
             ///The ID of the customer who will be billed.
@@ -11567,7 +11567,7 @@ module StripeRequest =
             [<Config.Form>]TransferData: Create'TransferData option
         }
         with
-            static member New(?accountTaxIds: Choice<string list,string>, ?statementDescriptor: string, ?shippingDetails: Create'ShippingDetails, ?shippingCost: Create'ShippingCost, ?renderingOptions: Choice<Create'RenderingOptionsRenderingOptions,string>, ?pendingInvoiceItemsBehavior: Create'PendingInvoiceItemsBehavior, ?paymentSettings: Create'PaymentSettings, ?onBehalfOf: string, ?metadata: Map<string, string>, ?fromInvoice: Create'FromInvoice, ?footer: string, ?expand: string list, ?effectiveAt: DateTime, ?subscription: string, ?dueDate: DateTime, ?description: string, ?defaultTaxRates: string list, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?customer: string, ?customFields: Choice<Create'CustomFields list,string>, ?currency: string, ?collectionMethod: Create'CollectionMethod, ?automaticTax: Create'AutomaticTax, ?autoAdvance: bool, ?applicationFeeAmount: int, ?discounts: Choice<Create'Discounts list,string>, ?transferData: Create'TransferData) =
+            static member New(?accountTaxIds: Choice<string list,string>, ?statementDescriptor: string, ?shippingDetails: Create'ShippingDetails, ?shippingCost: Create'ShippingCost, ?renderingOptions: Choice<Create'RenderingOptionsRenderingOptions,string>, ?pendingInvoiceItemsBehavior: Create'PendingInvoiceItemsBehavior, ?paymentSettings: Create'PaymentSettings, ?onBehalfOf: string, ?metadata: Map<string, string>, ?fromInvoice: Create'FromInvoice, ?footer: string, ?expand: string list, ?effectiveAt: DateTime, ?subscription: string, ?dueDate: DateTime, ?description: string, ?defaultTaxRates: string list, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?customer: string, ?customFields: Choice<Create'CustomFields list,string>, ?currency: IsoTypes.IsoCurrencyCode, ?collectionMethod: Create'CollectionMethod, ?automaticTax: Create'AutomaticTax, ?autoAdvance: bool, ?applicationFeeAmount: int, ?discounts: Choice<Create'Discounts list,string>, ?transferData: Create'TransferData) =
                 {
                     AccountTaxIds = accountTaxIds
                     ApplicationFeeAmount = applicationFeeAmount
@@ -11778,10 +11778,10 @@ module StripeRequest =
 
         type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -11990,12 +11990,12 @@ module StripeRequest =
             ///A non-negative integer in cents representing how much to charge.
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
             [<Config.Form>]CurrencyOptions: Map<string, string> option
         }
         with
-            static member New(?amount: int, ?currency: string, ?currencyOptions: Map<string, string>) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>) =
                 {
                     Amount = amount
                     Currency = currency
@@ -12055,7 +12055,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -12066,7 +12066,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -12721,7 +12721,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -12732,7 +12732,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -13779,10 +13779,10 @@ module StripeRequest =
             ///Limit spending with amount-based rules that apply across this cardholder's cards.
             [<Config.Form>]SpendingLimits: Create'SpendingControlsSpendingLimits list option
             ///Currency of amounts within `spending_limits`. Defaults to your merchant country's currency.
-            [<Config.Form>]SpendingLimitsCurrency: string option
+            [<Config.Form>]SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
         }
         with
-            static member New(?allowedCategories: Create'SpendingControlsAllowedCategories list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?spendingLimits: Create'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: string) =
+            static member New(?allowedCategories: Create'SpendingControlsAllowedCategories list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?spendingLimits: Create'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: IsoTypes.IsoCurrencyCode) =
                 {
                     AllowedCategories = allowedCategories
                     BlockedCategories = blockedCategories
@@ -13869,7 +13869,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -13880,7 +13880,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -14927,10 +14927,10 @@ module StripeRequest =
             ///Limit spending with amount-based rules that apply across this cardholder's cards.
             [<Config.Form>]SpendingLimits: Update'SpendingControlsSpendingLimits list option
             ///Currency of amounts within `spending_limits`. Defaults to your merchant country's currency.
-            [<Config.Form>]SpendingLimitsCurrency: string option
+            [<Config.Form>]SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
         }
         with
-            static member New(?allowedCategories: Update'SpendingControlsAllowedCategories list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?spendingLimits: Update'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: string) =
+            static member New(?allowedCategories: Update'SpendingControlsAllowedCategories list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?spendingLimits: Update'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: IsoTypes.IsoCurrencyCode) =
                 {
                     AllowedCategories = allowedCategories
                     BlockedCategories = blockedCategories
@@ -15039,7 +15039,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -15050,7 +15050,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -16056,7 +16056,7 @@ module StripeRequest =
             ///The [Cardholder](https://stripe.com/docs/api#issuing_cardholder_object) object with which the card will be associated.
             [<Config.Form>]Cardholder: string option
             ///The currency for the card.
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///Specifies which fields in the response should be expanded.
             [<Config.Form>]Expand: string list option
             [<Config.Form>]FinancialAccount: string option
@@ -16076,7 +16076,7 @@ module StripeRequest =
             [<Config.Form>]Type: Create'Type
         }
         with
-            static member New(currency: string, type': Create'Type, ?cardholder: string, ?expand: string list, ?financialAccount: string, ?metadata: Map<string, string>, ?replacementFor: string, ?replacementReason: Create'ReplacementReason, ?shipping: Create'Shipping, ?spendingControls: Create'SpendingControls, ?status: Create'Status) =
+            static member New(currency: IsoTypes.IsoCurrencyCode, type': Create'Type, ?cardholder: string, ?expand: string list, ?financialAccount: string, ?metadata: Map<string, string>, ?replacementFor: string, ?replacementReason: Create'ReplacementReason, ?shipping: Create'Shipping, ?spendingControls: Create'SpendingControls, ?status: Create'Status) =
                 {
                     Cardholder = cardholder
                     Currency = currency
@@ -17928,7 +17928,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -17939,7 +17939,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -18782,10 +18782,10 @@ module StripeRequest =
 
         type Create'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptionsBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -19496,7 +19496,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -19507,7 +19507,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -19586,7 +19586,7 @@ module StripeRequest =
             [<Config.Form>]Confirm: bool option
             [<Config.Form>]ConfirmationMethod: Create'ConfirmationMethod option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///ID of the Customer this PaymentIntent belongs to, if one exists.
             ///Payment methods attached to other Customers cannot be used with this PaymentIntent.
             ///If present in combination with [setup_future_usage](https://stripe.com/docs/api#payment_intent_object-setup_future_usage), this PaymentIntent's payment method will be attached to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete.
@@ -19643,7 +19643,7 @@ module StripeRequest =
             [<Config.Form>]UseStripeSdk: bool option
         }
         with
-            static member New(amount: int, currency: string, ?transferData: Create'TransferData, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: Create'Shipping, ?setupFutureUsage: Create'SetupFutureUsage, ?returnUrl: string, ?receiptEmail: string, ?radarOptions: Create'RadarOptions, ?paymentMethodTypes: string list, ?paymentMethodOptions: Create'PaymentMethodOptions, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethod: string, ?onBehalfOf: string, ?offSession: Choice<bool,Create'OffSession>, ?metadata: Map<string, string>, ?mandateData: Choice<Create'MandateDataSecretKey,string>, ?mandate: string, ?expand: string list, ?errorOnRequiresAction: bool, ?description: string, ?customer: string, ?confirmationMethod: Create'ConfirmationMethod, ?confirm: bool, ?captureMethod: Create'CaptureMethod, ?automaticPaymentMethods: Create'AutomaticPaymentMethods, ?applicationFeeAmount: int, ?transferGroup: string, ?useStripeSdk: bool) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?transferData: Create'TransferData, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: Create'Shipping, ?setupFutureUsage: Create'SetupFutureUsage, ?returnUrl: string, ?receiptEmail: string, ?radarOptions: Create'RadarOptions, ?paymentMethodTypes: string list, ?paymentMethodOptions: Create'PaymentMethodOptions, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethod: string, ?onBehalfOf: string, ?offSession: Choice<bool,Create'OffSession>, ?metadata: Map<string, string>, ?mandateData: Choice<Create'MandateDataSecretKey,string>, ?mandate: string, ?expand: string list, ?errorOnRequiresAction: bool, ?description: string, ?customer: string, ?confirmationMethod: Create'ConfirmationMethod, ?confirm: bool, ?captureMethod: Create'CaptureMethod, ?automaticPaymentMethods: Create'AutomaticPaymentMethods, ?applicationFeeAmount: int, ?transferGroup: string, ?useStripeSdk: bool) =
                 {
                     Amount = amount
                     ApplicationFeeAmount = applicationFeeAmount
@@ -19758,7 +19758,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -19769,7 +19769,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -20612,10 +20612,10 @@ module StripeRequest =
 
         type Update'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptionsBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -21316,7 +21316,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -21327,7 +21327,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -21387,7 +21387,7 @@ module StripeRequest =
             ///Controls when the funds will be captured from the customer's account.
             [<Config.Form>]CaptureMethod: Update'CaptureMethod option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///ID of the Customer this PaymentIntent belongs to, if one exists.
             ///Payment methods attached to other Customers cannot be used with this PaymentIntent.
             ///If present in combination with [setup_future_usage](https://stripe.com/docs/api#payment_intent_object-setup_future_usage), this PaymentIntent's payment method will be attached to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete.
@@ -21427,7 +21427,7 @@ module StripeRequest =
             [<Config.Form>]TransferGroup: string option
         }
         with
-            static member New(intent: string, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: Choice<Update'ShippingOptionalFieldsShipping,string>, ?setupFutureUsage: Update'SetupFutureUsage, ?receiptEmail: Choice<string,string>, ?paymentMethodTypes: string list, ?paymentMethodOptions: Update'PaymentMethodOptions, ?paymentMethodData: Update'PaymentMethodData, ?paymentMethod: string, ?metadata: Map<string, string>, ?expand: string list, ?description: string, ?customer: string, ?currency: string, ?captureMethod: Update'CaptureMethod, ?applicationFeeAmount: Choice<int,string>, ?amount: int, ?transferData: Update'TransferData, ?transferGroup: string) =
+            static member New(intent: string, ?statementDescriptorSuffix: string, ?statementDescriptor: string, ?shipping: Choice<Update'ShippingOptionalFieldsShipping,string>, ?setupFutureUsage: Update'SetupFutureUsage, ?receiptEmail: Choice<string,string>, ?paymentMethodTypes: string list, ?paymentMethodOptions: Update'PaymentMethodOptions, ?paymentMethodData: Update'PaymentMethodData, ?paymentMethod: string, ?metadata: Map<string, string>, ?expand: string list, ?description: string, ?customer: string, ?currency: IsoTypes.IsoCurrencyCode, ?captureMethod: Update'CaptureMethod, ?applicationFeeAmount: Choice<int,string>, ?amount: int, ?transferData: Update'TransferData, ?transferGroup: string) =
                 {
                     Intent = intent
                     Amount = amount
@@ -21501,12 +21501,12 @@ module StripeRequest =
             ///When omitted, the amount defaults to the remaining amount requested on the PaymentIntent.
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Specifies which fields in the response should be expanded.
             [<Config.Form>]Expand: string list option
         }
         with
-            static member New(intent: string, ?amount: int, ?currency: string, ?expand: string list) =
+            static member New(intent: string, ?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?expand: string list) =
                 {
                     Intent = intent
                     Amount = amount
@@ -21736,7 +21736,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -21747,7 +21747,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -22590,10 +22590,10 @@ module StripeRequest =
 
         type Confirm'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptionsBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -23304,7 +23304,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -23315,7 +23315,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -24268,7 +24268,7 @@ module StripeRequest =
             ///Configure fields to gather active consent from customers.
             [<Config.Form>]ConsentCollection: Create'ConsentCollection option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies) and supported by each line item's price.
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Collect additional information from your customer using custom fields. Up to 2 fields are supported.
             [<Config.Form>]CustomFields: Create'CustomFields list option
             ///Display additional text for your customers using custom text.
@@ -24310,7 +24310,7 @@ module StripeRequest =
             [<Config.Form>]TransferData: Create'TransferData option
         }
         with
-            static member New(lineItems: Create'LineItems list, ?afterCompletion: Create'AfterCompletion, ?subscriptionData: Create'SubscriptionData, ?submitType: Create'SubmitType, ?shippingOptions: Create'ShippingOptions list, ?shippingAddressCollection: Create'ShippingAddressCollection, ?phoneNumberCollection: Create'PhoneNumberCollection, ?paymentMethodTypes: Create'PaymentMethodTypes list, ?paymentMethodCollection: Create'PaymentMethodCollection, ?paymentIntentData: Create'PaymentIntentData, ?onBehalfOf: string, ?metadata: Map<string, string>, ?invoiceCreation: Create'InvoiceCreation, ?expand: string list, ?customerCreation: Create'CustomerCreation, ?customText: Create'CustomText, ?customFields: Create'CustomFields list, ?currency: string, ?consentCollection: Create'ConsentCollection, ?billingAddressCollection: Create'BillingAddressCollection, ?automaticTax: Create'AutomaticTax, ?applicationFeePercent: decimal, ?applicationFeeAmount: int, ?allowPromotionCodes: bool, ?taxIdCollection: Create'TaxIdCollection, ?transferData: Create'TransferData) =
+            static member New(lineItems: Create'LineItems list, ?afterCompletion: Create'AfterCompletion, ?subscriptionData: Create'SubscriptionData, ?submitType: Create'SubmitType, ?shippingOptions: Create'ShippingOptions list, ?shippingAddressCollection: Create'ShippingAddressCollection, ?phoneNumberCollection: Create'PhoneNumberCollection, ?paymentMethodTypes: Create'PaymentMethodTypes list, ?paymentMethodCollection: Create'PaymentMethodCollection, ?paymentIntentData: Create'PaymentIntentData, ?onBehalfOf: string, ?metadata: Map<string, string>, ?invoiceCreation: Create'InvoiceCreation, ?expand: string list, ?customerCreation: Create'CustomerCreation, ?customText: Create'CustomText, ?customFields: Create'CustomFields list, ?currency: IsoTypes.IsoCurrencyCode, ?consentCollection: Create'ConsentCollection, ?billingAddressCollection: Create'BillingAddressCollection, ?automaticTax: Create'AutomaticTax, ?applicationFeePercent: decimal, ?applicationFeeAmount: int, ?allowPromotionCodes: bool, ?taxIdCollection: Create'TaxIdCollection, ?transferData: Create'TransferData) =
                 {
                     AfterCompletion = afterCompletion
                     AllowPromotionCodes = allowPromotionCodes
@@ -25102,7 +25102,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -25113,7 +25113,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -25603,7 +25603,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -25614,7 +25614,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -25803,7 +25803,7 @@ module StripeRequest =
             ///A positive integer in cents representing how much to payout.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///The ID of a bank account or a card to send the payout to. If no destination is supplied, the default external account for the specified currency will be used.
@@ -25820,7 +25820,7 @@ module StripeRequest =
             [<Config.Form>]StatementDescriptor: string option
         }
         with
-            static member New(amount: int, currency: string, ?description: string, ?destination: string, ?expand: string list, ?metadata: Map<string, string>, ?method: Create'Method, ?sourceType: Create'SourceType, ?statementDescriptor: string) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?description: string, ?destination: string, ?expand: string list, ?metadata: Map<string, string>, ?method: Create'Method, ?sourceType: Create'SourceType, ?statementDescriptor: string) =
                 {
                     Amount = amount
                     Currency = currency
@@ -26063,7 +26063,7 @@ module StripeRequest =
             ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `amount`) will be charged per unit in `quantity` (for plans with `usage_type=licensed`), or per unit of total usage (for plans with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
             [<Config.Form>]BillingScheme: Create'BillingScheme option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///Specifies which fields in the response should be expanded.
             [<Config.Form>]Expand: string list option
             ///An identifier randomly generated by Stripe. Used to identify this plan when subscribing a customer. You can optionally override this ID, but the ID must be unique across all plans in your Stripe account. You can, however, use the same plan ID in both live and test modes.
@@ -26089,7 +26089,7 @@ module StripeRequest =
             [<Config.Form>]UsageType: Create'UsageType option
         }
         with
-            static member New(interval: Create'Interval, currency: string, ?transformUsage: Create'TransformUsage, ?tiersMode: Create'TiersMode, ?tiers: Create'Tiers list, ?product: Choice<Create'ProductInlineProductParams,string>, ?nickname: string, ?metadata: Map<string, string>, ?intervalCount: int, ?active: bool, ?id: string, ?expand: string list, ?billingScheme: Create'BillingScheme, ?amountDecimal: string, ?amount: int, ?aggregateUsage: Create'AggregateUsage, ?trialPeriodDays: int, ?usageType: Create'UsageType) =
+            static member New(interval: Create'Interval, currency: IsoTypes.IsoCurrencyCode, ?transformUsage: Create'TransformUsage, ?tiersMode: Create'TiersMode, ?tiers: Create'Tiers list, ?product: Choice<Create'ProductInlineProductParams,string>, ?nickname: string, ?metadata: Map<string, string>, ?intervalCount: int, ?active: bool, ?id: string, ?expand: string list, ?billingScheme: Create'BillingScheme, ?amountDecimal: string, ?amount: int, ?aggregateUsage: Create'AggregateUsage, ?trialPeriodDays: int, ?usageType: Create'UsageType) =
                 {
                     Active = active
                     AggregateUsage = aggregateUsage
@@ -26375,7 +26375,7 @@ module StripeRequest =
             ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `unit_amount` or `unit_amount_decimal`) will be charged per unit in `quantity` (for prices with `usage_type=licensed`), or per unit of total usage (for prices with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
             [<Config.Form>]BillingScheme: Create'BillingScheme option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
             [<Config.Form>]CurrencyOptions: Map<string, string> option
             ///When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
@@ -26410,7 +26410,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(currency: string, ?active: bool, ?transformQuantity: Create'TransformQuantity, ?transferLookupKey: bool, ?tiersMode: Create'TiersMode, ?tiers: Create'Tiers list, ?taxBehavior: Create'TaxBehavior, ?recurring: Create'Recurring, ?productData: Create'ProductData, ?product: string, ?nickname: string, ?metadata: Map<string, string>, ?lookupKey: string, ?expand: string list, ?customUnitAmount: Create'CustomUnitAmount, ?currencyOptions: Map<string, string>, ?billingScheme: Create'BillingScheme, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(currency: IsoTypes.IsoCurrencyCode, ?active: bool, ?transformQuantity: Create'TransformQuantity, ?transferLookupKey: bool, ?tiersMode: Create'TiersMode, ?tiers: Create'Tiers list, ?taxBehavior: Create'TaxBehavior, ?recurring: Create'Recurring, ?productData: Create'ProductData, ?product: string, ?nickname: string, ?metadata: Map<string, string>, ?lookupKey: string, ?expand: string list, ?customUnitAmount: Create'CustomUnitAmount, ?currencyOptions: Map<string, string>, ?billingScheme: Create'BillingScheme, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Active = active
                     BillingScheme = billingScheme
@@ -26600,7 +26600,7 @@ module StripeRequest =
 
         type Create'DefaultPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
             [<Config.Form>]CurrencyOptions: Map<string, string> option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -26613,7 +26613,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?currencyOptions: Map<string, string>, ?recurring: Create'DefaultPriceDataRecurring, ?taxBehavior: Create'DefaultPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>, ?recurring: Create'DefaultPriceDataRecurring, ?taxBehavior: Create'DefaultPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     CurrencyOptions = currencyOptions
@@ -26891,10 +26891,10 @@ module StripeRequest =
             ///Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
             [<Config.Form>]MinimumAmount: int option
             ///Three-letter [ISO code](https://stripe.com/docs/currencies) for minimum_amount
-            [<Config.Form>]MinimumAmountCurrency: string option
+            [<Config.Form>]MinimumAmountCurrency: IsoTypes.IsoCurrencyCode option
         }
         with
-            static member New(?currencyOptions: Map<string, string>, ?firstTimeTransaction: bool, ?minimumAmount: int, ?minimumAmountCurrency: string) =
+            static member New(?currencyOptions: Map<string, string>, ?firstTimeTransaction: bool, ?minimumAmount: int, ?minimumAmountCurrency: IsoTypes.IsoCurrencyCode) =
                 {
                     CurrencyOptions = currencyOptions
                     FirstTimeTransaction = firstTimeTransaction
@@ -27103,7 +27103,7 @@ module StripeRequest =
 
         type Create'LineItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -27116,7 +27116,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Create'LineItemsPriceDataRecurring, ?taxBehavior: Create'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Create'LineItemsPriceDataRecurring, ?taxBehavior: Create'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -27333,7 +27333,7 @@ module StripeRequest =
 
         type Update'LineItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -27346,7 +27346,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Update'LineItemsPriceDataRecurring, ?taxBehavior: Update'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Update'LineItemsPriceDataRecurring, ?taxBehavior: Update'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -27943,7 +27943,7 @@ module StripeRequest =
             [<Config.Form>]Amount: int option
             [<Config.Form>]Charge: string option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Customer whose customer balance to refund from.
             [<Config.Form>]Customer: string option
             ///Specifies which fields in the response should be expanded.
@@ -27960,7 +27960,7 @@ module StripeRequest =
             [<Config.Form>]ReverseTransfer: bool option
         }
         with
-            static member New(?amount: int, ?charge: string, ?currency: string, ?customer: string, ?expand: string list, ?instructionsEmail: string, ?metadata: Map<string, string>, ?origin: Create'Origin, ?paymentIntent: string, ?reason: Create'Reason, ?refundApplicationFee: bool, ?reverseTransfer: bool) =
+            static member New(?amount: int, ?charge: string, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?expand: string list, ?instructionsEmail: string, ?metadata: Map<string, string>, ?origin: Create'Origin, ?paymentIntent: string, ?reason: Create'Reason, ?refundApplicationFee: bool, ?reverseTransfer: bool) =
                 {
                     Amount = amount
                     Charge = charge
@@ -28711,7 +28711,7 @@ module StripeRequest =
             ///Connected account ID to filter for in the report run.
             [<Config.Form>]ConnectedAccount: string option
             ///Currency of objects to be included in the report run.
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Ending timestamp of data to be included in the report run (exclusive).
             [<Config.Form>]IntervalEnd: DateTime option
             ///Starting timestamp of data to be included in the report run.
@@ -28724,7 +28724,7 @@ module StripeRequest =
             [<Config.Form>]Timezone: Create'ParametersTimezone option
         }
         with
-            static member New(?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: Create'ParametersReportingCategory, ?timezone: Create'ParametersTimezone) =
+            static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: Create'ParametersReportingCategory, ?timezone: Create'ParametersTimezone) =
                 {
                     Columns = columns
                     ConnectedAccount = connectedAccount
@@ -29067,7 +29067,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -29078,7 +29078,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -29581,7 +29581,7 @@ module StripeRequest =
             ///One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
             [<Config.Form>]AmountType: Create'PaymentMethodOptionsCardMandateOptionsAmountType option
             ///Currency in which future payments will be charged. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///A description of the mandate or subscription that is meant to be displayed to the customer.
             [<Config.Form>]Description: string option
             ///End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date.
@@ -29598,7 +29598,7 @@ module StripeRequest =
             [<Config.Form>]SupportedTypes: Create'PaymentMethodOptionsCardMandateOptionsSupportedTypes list option
         }
         with
-            static member New(?amount: int, ?amountType: Create'PaymentMethodOptionsCardMandateOptionsAmountType, ?currency: string, ?description: string, ?endDate: DateTime, ?interval: Create'PaymentMethodOptionsCardMandateOptionsInterval, ?intervalCount: int, ?reference: string, ?startDate: DateTime, ?supportedTypes: Create'PaymentMethodOptionsCardMandateOptionsSupportedTypes list) =
+            static member New(?amount: int, ?amountType: Create'PaymentMethodOptionsCardMandateOptionsAmountType, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?endDate: DateTime, ?interval: Create'PaymentMethodOptionsCardMandateOptionsInterval, ?intervalCount: int, ?reference: string, ?startDate: DateTime, ?supportedTypes: Create'PaymentMethodOptionsCardMandateOptionsSupportedTypes list) =
                 {
                     Amount = amount
                     AmountType = amountType
@@ -29769,10 +29769,10 @@ module StripeRequest =
             ///Amount the customer is granting permission to collect later. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
         }
         with
-            static member New(?amount: int, ?currency: string) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode) =
                 {
                     Amount = amount
                     Currency = currency
@@ -29927,7 +29927,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -29938,7 +29938,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -30441,7 +30441,7 @@ module StripeRequest =
             ///One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
             [<Config.Form>]AmountType: Update'PaymentMethodOptionsCardMandateOptionsAmountType option
             ///Currency in which future payments will be charged. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///A description of the mandate or subscription that is meant to be displayed to the customer.
             [<Config.Form>]Description: string option
             ///End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date.
@@ -30458,7 +30458,7 @@ module StripeRequest =
             [<Config.Form>]SupportedTypes: Update'PaymentMethodOptionsCardMandateOptionsSupportedTypes list option
         }
         with
-            static member New(?amount: int, ?amountType: Update'PaymentMethodOptionsCardMandateOptionsAmountType, ?currency: string, ?description: string, ?endDate: DateTime, ?interval: Update'PaymentMethodOptionsCardMandateOptionsInterval, ?intervalCount: int, ?reference: string, ?startDate: DateTime, ?supportedTypes: Update'PaymentMethodOptionsCardMandateOptionsSupportedTypes list) =
+            static member New(?amount: int, ?amountType: Update'PaymentMethodOptionsCardMandateOptionsAmountType, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?endDate: DateTime, ?interval: Update'PaymentMethodOptionsCardMandateOptionsInterval, ?intervalCount: int, ?reference: string, ?startDate: DateTime, ?supportedTypes: Update'PaymentMethodOptionsCardMandateOptionsSupportedTypes list) =
                 {
                     Amount = amount
                     AmountType = amountType
@@ -30834,7 +30834,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -30845,7 +30845,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -31348,7 +31348,7 @@ module StripeRequest =
             ///One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
             [<Config.Form>]AmountType: Confirm'PaymentMethodOptionsCardMandateOptionsAmountType option
             ///Currency in which future payments will be charged. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///A description of the mandate or subscription that is meant to be displayed to the customer.
             [<Config.Form>]Description: string option
             ///End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date.
@@ -31365,7 +31365,7 @@ module StripeRequest =
             [<Config.Form>]SupportedTypes: Confirm'PaymentMethodOptionsCardMandateOptionsSupportedTypes list option
         }
         with
-            static member New(?amount: int, ?amountType: Confirm'PaymentMethodOptionsCardMandateOptionsAmountType, ?currency: string, ?description: string, ?endDate: DateTime, ?interval: Confirm'PaymentMethodOptionsCardMandateOptionsInterval, ?intervalCount: int, ?reference: string, ?startDate: DateTime, ?supportedTypes: Confirm'PaymentMethodOptionsCardMandateOptionsSupportedTypes list) =
+            static member New(?amount: int, ?amountType: Confirm'PaymentMethodOptionsCardMandateOptionsAmountType, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?endDate: DateTime, ?interval: Confirm'PaymentMethodOptionsCardMandateOptionsInterval, ?intervalCount: int, ?reference: string, ?startDate: DateTime, ?supportedTypes: Confirm'PaymentMethodOptionsCardMandateOptionsSupportedTypes list) =
                 {
                     Amount = amount
                     AmountType = amountType
@@ -31699,12 +31699,12 @@ module StripeRequest =
             ///A non-negative integer in cents representing how much to charge.
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
             [<Config.Form>]CurrencyOptions: Map<string, string> option
         }
         with
-            static member New(?amount: int, ?currency: string, ?currencyOptions: Map<string, string>) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>) =
                 {
                     Amount = amount
                     Currency = currency
@@ -31946,14 +31946,14 @@ module StripeRequest =
             ///The amount specified by the mandate. (Leave null for a mandate covering all amounts)
             [<Config.Form>]Amount: Choice<int,string> option
             ///The currency specified by the mandate. (Must match `currency` of the source)
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The interval of debits permitted by the mandate. Either `one_time` (just permitting a single debit), `scheduled` (with debits on an agreed schedule or for clearly-defined events), or `variable`(for debits with any frequency)
             [<Config.Form>]Interval: Create'MandateInterval option
             ///The method Stripe should use to notify the customer of upcoming debit instructions and/or mandate confirmation as required by the underlying debit network. Either `email` (an email is sent directly to the customer), `manual` (a `source.mandate_notification` event is sent to your webhooks endpoint and you should handle the notification) or `none` (the underlying debit network does not require any notification).
             [<Config.Form>]NotificationMethod: Create'MandateNotificationMethod option
         }
         with
-            static member New(?acceptance: Create'MandateAcceptance, ?amount: Choice<int,string>, ?currency: string, ?interval: Create'MandateInterval, ?notificationMethod: Create'MandateNotificationMethod) =
+            static member New(?acceptance: Create'MandateAcceptance, ?amount: Choice<int,string>, ?currency: IsoTypes.IsoCurrencyCode, ?interval: Create'MandateInterval, ?notificationMethod: Create'MandateNotificationMethod) =
                 {
                     Acceptance = acceptance
                     Amount = amount
@@ -31966,7 +31966,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -31977,7 +31977,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -32039,7 +32039,7 @@ module StripeRequest =
 
         type Create'SourceOrderItems = {
             [<Config.Form>]Amount: int option
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             [<Config.Form>]Description: string option
             ///The ID of the SKU being ordered.
             [<Config.Form>]Parent: string option
@@ -32048,7 +32048,7 @@ module StripeRequest =
             [<Config.Form>]Type: Create'SourceOrderItemsType option
         }
         with
-            static member New(?amount: int, ?currency: string, ?description: string, ?parent: string, ?quantity: int, ?type': Create'SourceOrderItemsType) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?parent: string, ?quantity: int, ?type': Create'SourceOrderItemsType) =
                 {
                     Amount = amount
                     Currency = currency
@@ -32062,7 +32062,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -32073,7 +32073,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -32132,7 +32132,7 @@ module StripeRequest =
             ///Amount associated with the source. This is the amount for which the source will be chargeable once ready. Required for `single_use` sources. Not supported for `receiver` type sources, where charge amount may not be specified until funds land.
             [<Config.Form>]Amount: int option
             ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready.
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The `Customer` to whom the original source is attached to. Must be set when the original source is not a `Source` (e.g., `Card`).
             [<Config.Form>]Customer: string option
             ///Specifies which fields in the response should be expanded.
@@ -32161,7 +32161,7 @@ module StripeRequest =
             [<Config.Form>]Usage: Create'Usage option
         }
         with
-            static member New(?amount: int, ?currency: string, ?customer: string, ?expand: string list, ?flow: Create'Flow, ?mandate: Create'Mandate, ?metadata: Map<string, string>, ?originalSource: string, ?owner: Create'Owner, ?receiver: Create'Receiver, ?redirect: Create'Redirect, ?sourceOrder: Create'SourceOrder, ?statementDescriptor: string, ?token: string, ?type': string, ?usage: Create'Usage) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?expand: string list, ?flow: Create'Flow, ?mandate: Create'Mandate, ?metadata: Map<string, string>, ?originalSource: string, ?owner: Create'Owner, ?receiver: Create'Receiver, ?redirect: Create'Redirect, ?sourceOrder: Create'SourceOrder, ?statementDescriptor: string, ?token: string, ?type': string, ?usage: Create'Usage) =
                 {
                     Amount = amount
                     Currency = currency
@@ -32289,14 +32289,14 @@ module StripeRequest =
             ///The amount specified by the mandate. (Leave null for a mandate covering all amounts)
             [<Config.Form>]Amount: Choice<int,string> option
             ///The currency specified by the mandate. (Must match `currency` of the source)
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The interval of debits permitted by the mandate. Either `one_time` (just permitting a single debit), `scheduled` (with debits on an agreed schedule or for clearly-defined events), or `variable`(for debits with any frequency)
             [<Config.Form>]Interval: Update'MandateInterval option
             ///The method Stripe should use to notify the customer of upcoming debit instructions and/or mandate confirmation as required by the underlying debit network. Either `email` (an email is sent directly to the customer), `manual` (a `source.mandate_notification` event is sent to your webhooks endpoint and you should handle the notification) or `none` (the underlying debit network does not require any notification).
             [<Config.Form>]NotificationMethod: Update'MandateNotificationMethod option
         }
         with
-            static member New(?acceptance: Update'MandateAcceptance, ?amount: Choice<int,string>, ?currency: string, ?interval: Update'MandateInterval, ?notificationMethod: Update'MandateNotificationMethod) =
+            static member New(?acceptance: Update'MandateAcceptance, ?amount: Choice<int,string>, ?currency: IsoTypes.IsoCurrencyCode, ?interval: Update'MandateInterval, ?notificationMethod: Update'MandateNotificationMethod) =
                 {
                     Acceptance = acceptance
                     Amount = amount
@@ -32309,7 +32309,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -32320,7 +32320,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -32357,7 +32357,7 @@ module StripeRequest =
 
         type Update'SourceOrderItems = {
             [<Config.Form>]Amount: int option
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             [<Config.Form>]Description: string option
             ///The ID of the SKU being ordered.
             [<Config.Form>]Parent: string option
@@ -32366,7 +32366,7 @@ module StripeRequest =
             [<Config.Form>]Type: Update'SourceOrderItemsType option
         }
         with
-            static member New(?amount: int, ?currency: string, ?description: string, ?parent: string, ?quantity: int, ?type': Update'SourceOrderItemsType) =
+            static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?parent: string, ?quantity: int, ?type': Update'SourceOrderItemsType) =
                 {
                     Amount = amount
                     Currency = currency
@@ -32380,7 +32380,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -32391,7 +32391,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -32586,7 +32586,7 @@ module StripeRequest =
 
         type Create'PriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -32599,7 +32599,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Create'PriceDataRecurring, ?taxBehavior: Create'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Create'PriceDataRecurring, ?taxBehavior: Create'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -32753,7 +32753,7 @@ module StripeRequest =
 
         type Update'PriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -32766,7 +32766,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Update'PriceDataRecurring, ?taxBehavior: Update'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Update'PriceDataRecurring, ?taxBehavior: Update'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -33051,7 +33051,7 @@ module StripeRequest =
 
         type Create'PhasesAddInvoiceItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///Only required if a [default tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
@@ -33062,7 +33062,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?taxBehavior: Create'PhasesAddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Create'PhasesAddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -33159,7 +33159,7 @@ module StripeRequest =
 
         type Create'PhasesItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -33172,7 +33172,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Create'PhasesItemsPriceDataRecurring, ?taxBehavior: Create'PhasesItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Create'PhasesItemsPriceDataRecurring, ?taxBehavior: Create'PhasesItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -33252,7 +33252,7 @@ module StripeRequest =
             ///The identifier of the coupon to apply to this phase of the subscription schedule.
             [<Config.Form>]Coupon: string option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
             [<Config.Form>]DefaultPaymentMethod: string option
             ///A list of [Tax Rate](https://stripe.com/docs/api/tax_rates) ids. These Tax Rates will set the Subscription's [`default_tax_rates`](https://stripe.com/docs/api/subscriptions/create#create_subscription-default_tax_rates), which means they will be the Invoice's [`default_tax_rates`](https://stripe.com/docs/api/invoices/create#create_invoice-default_tax_rates) for any Invoices issued by the Subscription during this Phase.
@@ -33281,7 +33281,7 @@ module StripeRequest =
             [<Config.Form>]TrialEnd: DateTime option
         }
         with
-            static member New(?addInvoiceItems: Create'PhasesAddInvoiceItems list, ?transferData: Create'PhasesTransferData, ?prorationBehavior: Create'PhasesProrationBehavior, ?onBehalfOf: string, ?metadata: Map<string, string>, ?iterations: int, ?items: Create'PhasesItems list, ?invoiceSettings: Create'PhasesInvoiceSettings, ?endDate: DateTime, ?trial: bool, ?description: Choice<string,string>, ?defaultPaymentMethod: string, ?currency: string, ?coupon: string, ?collectionMethod: Create'PhasesCollectionMethod, ?billingThresholds: Choice<Create'PhasesBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: Create'PhasesBillingCycleAnchor, ?automaticTax: Create'PhasesAutomaticTax, ?applicationFeePercent: decimal, ?defaultTaxRates: Choice<string list,string>, ?trialEnd: DateTime) =
+            static member New(?addInvoiceItems: Create'PhasesAddInvoiceItems list, ?transferData: Create'PhasesTransferData, ?prorationBehavior: Create'PhasesProrationBehavior, ?onBehalfOf: string, ?metadata: Map<string, string>, ?iterations: int, ?items: Create'PhasesItems list, ?invoiceSettings: Create'PhasesInvoiceSettings, ?endDate: DateTime, ?trial: bool, ?description: Choice<string,string>, ?defaultPaymentMethod: string, ?currency: IsoTypes.IsoCurrencyCode, ?coupon: string, ?collectionMethod: Create'PhasesCollectionMethod, ?billingThresholds: Choice<Create'PhasesBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: Create'PhasesBillingCycleAnchor, ?automaticTax: Create'PhasesAutomaticTax, ?applicationFeePercent: decimal, ?defaultTaxRates: Choice<string list,string>, ?trialEnd: DateTime) =
                 {
                     AddInvoiceItems = addInvoiceItems
                     ApplicationFeePercent = applicationFeePercent
@@ -33467,7 +33467,7 @@ module StripeRequest =
 
         type Update'PhasesAddInvoiceItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///Only required if a [default tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
@@ -33478,7 +33478,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?taxBehavior: Update'PhasesAddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Update'PhasesAddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -33578,7 +33578,7 @@ module StripeRequest =
 
         type Update'PhasesItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -33591,7 +33591,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Update'PhasesItemsPriceDataRecurring, ?taxBehavior: Update'PhasesItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Update'PhasesItemsPriceDataRecurring, ?taxBehavior: Update'PhasesItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -33677,7 +33677,7 @@ module StripeRequest =
             ///The identifier of the coupon to apply to this phase of the subscription schedule.
             [<Config.Form>]Coupon: string option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
             [<Config.Form>]DefaultPaymentMethod: string option
             ///A list of [Tax Rate](https://stripe.com/docs/api/tax_rates) ids. These Tax Rates will set the Subscription's [`default_tax_rates`](https://stripe.com/docs/api/subscriptions/create#create_subscription-default_tax_rates), which means they will be the Invoice's [`default_tax_rates`](https://stripe.com/docs/api/invoices/create#create_invoice-default_tax_rates) for any Invoices issued by the Subscription during this Phase.
@@ -33708,7 +33708,7 @@ module StripeRequest =
             [<Config.Form>]TrialEnd: Choice<int,Update'PhasesTrialEnd> option
         }
         with
-            static member New(?addInvoiceItems: Update'PhasesAddInvoiceItems list, ?transferData: Update'PhasesTransferData, ?startDate: Choice<int,Update'PhasesStartDate>, ?prorationBehavior: Update'PhasesProrationBehavior, ?onBehalfOf: string, ?metadata: Map<string, string>, ?iterations: int, ?items: Update'PhasesItems list, ?invoiceSettings: Update'PhasesInvoiceSettings, ?endDate: Choice<int,Update'PhasesEndDate>, ?description: Choice<string,string>, ?defaultTaxRates: Choice<string list,string>, ?defaultPaymentMethod: string, ?currency: string, ?coupon: string, ?collectionMethod: Update'PhasesCollectionMethod, ?billingThresholds: Choice<Update'PhasesBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: Update'PhasesBillingCycleAnchor, ?automaticTax: Update'PhasesAutomaticTax, ?applicationFeePercent: decimal, ?trial: bool, ?trialEnd: Choice<int,Update'PhasesTrialEnd>) =
+            static member New(?addInvoiceItems: Update'PhasesAddInvoiceItems list, ?transferData: Update'PhasesTransferData, ?startDate: Choice<int,Update'PhasesStartDate>, ?prorationBehavior: Update'PhasesProrationBehavior, ?onBehalfOf: string, ?metadata: Map<string, string>, ?iterations: int, ?items: Update'PhasesItems list, ?invoiceSettings: Update'PhasesInvoiceSettings, ?endDate: Choice<int,Update'PhasesEndDate>, ?description: Choice<string,string>, ?defaultTaxRates: Choice<string list,string>, ?defaultPaymentMethod: string, ?currency: IsoTypes.IsoCurrencyCode, ?coupon: string, ?collectionMethod: Update'PhasesCollectionMethod, ?billingThresholds: Choice<Update'PhasesBillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: Update'PhasesBillingCycleAnchor, ?automaticTax: Update'PhasesAutomaticTax, ?applicationFeePercent: decimal, ?trial: bool, ?trialEnd: Choice<int,Update'PhasesTrialEnd>) =
                 {
                     AddInvoiceItems = addInvoiceItems
                     ApplicationFeePercent = applicationFeePercent
@@ -33885,7 +33885,7 @@ module StripeRequest =
 
         type Create'AddInvoiceItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///Only required if a [default tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
@@ -33896,7 +33896,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?taxBehavior: Create'AddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Create'AddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -33983,7 +33983,7 @@ module StripeRequest =
 
         type Create'ItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -33996,7 +33996,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Create'ItemsPriceDataRecurring, ?taxBehavior: Create'ItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Create'ItemsPriceDataRecurring, ?taxBehavior: Create'ItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -34137,10 +34137,10 @@ module StripeRequest =
 
         type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -34379,7 +34379,7 @@ module StripeRequest =
             ///The ID of the coupon to apply to this subscription. A coupon applied to a subscription will only affect invoices created for that particular subscription.
             [<Config.Form>]Coupon: string option
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The identifier of the customer to subscribe.
             [<Config.Form>]Customer: string
             ///Number of days a customer has to pay invoices generated by this subscription. Valid only for subscriptions where `collection_method` is set to `send_invoice`.
@@ -34429,7 +34429,7 @@ module StripeRequest =
             [<Config.Form>]TrialSettings: Create'TrialSettings option
         }
         with
-            static member New(customer: string, ?addInvoiceItems: Create'AddInvoiceItems list, ?trialFromPlan: bool, ?trialEnd: Choice<Create'TrialEnd,DateTime>, ?transferData: Create'TransferData, ?prorationBehavior: Create'ProrationBehavior, ?promotionCode: string, ?pendingInvoiceItemInterval: Choice<Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?paymentSettings: Create'PaymentSettings, ?paymentBehavior: Create'PaymentBehavior, ?onBehalfOf: Choice<string,string>, ?offSession: bool, ?metadata: Map<string, string>, ?items: Create'Items list, ?expand: string list, ?description: string, ?defaultTaxRates: Choice<string list,string>, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?currency: string, ?coupon: string, ?collectionMethod: Create'CollectionMethod, ?cancelAtPeriodEnd: bool, ?cancelAt: DateTime, ?billingThresholds: Choice<Create'BillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: DateTime, ?backdateStartDate: DateTime, ?automaticTax: Create'AutomaticTax, ?applicationFeePercent: decimal, ?trialPeriodDays: int, ?trialSettings: Create'TrialSettings) =
+            static member New(customer: string, ?addInvoiceItems: Create'AddInvoiceItems list, ?trialFromPlan: bool, ?trialEnd: Choice<Create'TrialEnd,DateTime>, ?transferData: Create'TransferData, ?prorationBehavior: Create'ProrationBehavior, ?promotionCode: string, ?pendingInvoiceItemInterval: Choice<Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?paymentSettings: Create'PaymentSettings, ?paymentBehavior: Create'PaymentBehavior, ?onBehalfOf: Choice<string,string>, ?offSession: bool, ?metadata: Map<string, string>, ?items: Create'Items list, ?expand: string list, ?description: string, ?defaultTaxRates: Choice<string list,string>, ?defaultSource: string, ?defaultPaymentMethod: string, ?daysUntilDue: int, ?currency: IsoTypes.IsoCurrencyCode, ?coupon: string, ?collectionMethod: Create'CollectionMethod, ?cancelAtPeriodEnd: bool, ?cancelAt: DateTime, ?billingThresholds: Choice<Create'BillingThresholdsBillingThresholds,string>, ?billingCycleAnchor: DateTime, ?backdateStartDate: DateTime, ?automaticTax: Create'AutomaticTax, ?applicationFeePercent: decimal, ?trialPeriodDays: int, ?trialSettings: Create'TrialSettings) =
                 {
                     AddInvoiceItems = addInvoiceItems
                     ApplicationFeePercent = applicationFeePercent
@@ -34550,7 +34550,7 @@ module StripeRequest =
 
         type Update'AddInvoiceItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///Only required if a [default tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
@@ -34561,7 +34561,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?taxBehavior: Update'AddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Update'AddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -34671,7 +34671,7 @@ module StripeRequest =
 
         type Update'ItemsPriceData = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The ID of the product that this price will belong to.
             [<Config.Form>]Product: string option
             ///The recurring components of a price such as `interval` and `interval_count`.
@@ -34684,7 +34684,7 @@ module StripeRequest =
             [<Config.Form>]UnitAmountDecimal: string option
         }
         with
-            static member New(?currency: string, ?product: string, ?recurring: Update'ItemsPriceDataRecurring, ?taxBehavior: Update'ItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Update'ItemsPriceDataRecurring, ?taxBehavior: Update'ItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
                 {
                     Currency = currency
                     Product = product
@@ -34852,10 +34852,10 @@ module StripeRequest =
 
         type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer = {
             ///The desired country code of the bank account information. Permitted values include: `BE`, `DE`, `ES`, `FR`, `IE`, or `NL`.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
         }
         with
-            static member New(?country: string) =
+            static member New(?country: IsoTypes.IsoCountryCode) =
                 {
                     Country = country
                 }
@@ -35275,7 +35275,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: Choice<string,string> option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: Choice<string,string> option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -35286,7 +35286,7 @@ module StripeRequest =
             [<Config.Form>]State: Choice<string,string> option
         }
         with
-            static member New(?city: Choice<string,string>, ?country: string, ?line1: Choice<string,string>, ?line2: Choice<string,string>, ?postalCode: Choice<string,string>, ?state: Choice<string,string>) =
+            static member New(?city: Choice<string,string>, ?country: IsoTypes.IsoCountryCode, ?line1: Choice<string,string>, ?line2: Choice<string,string>, ?postalCode: Choice<string,string>, ?state: Choice<string,string>) =
                 {
                     City = city
                     Country = country
@@ -35462,7 +35462,7 @@ module StripeRequest =
 
         type CreateOptions = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///The ID of an existing customer to use for this calculation. If provided, the customer's address and tax IDs are copied to `customer_details`.
             [<Config.Form>]Customer: string option
             ///Details about the customer, including address and tax IDs.
@@ -35477,7 +35477,7 @@ module StripeRequest =
             [<Config.Form>]TaxDate: int option
         }
         with
-            static member New(currency: string, lineItems: Create'LineItems list, ?customer: string, ?customerDetails: Create'CustomerDetails, ?expand: string list, ?shippingCost: Create'ShippingCost, ?taxDate: int) =
+            static member New(currency: IsoTypes.IsoCurrencyCode, lineItems: Create'LineItems list, ?customer: string, ?customerDetails: Create'CustomerDetails, ?expand: string list, ?shippingCost: Create'ShippingCost, ?taxDate: int) =
                 {
                     Currency = currency
                     Customer = customer
@@ -35562,7 +35562,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -35573,7 +35573,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -35869,7 +35869,7 @@ module StripeRequest =
             ///Flag determining whether the tax rate is active or inactive (archived). Inactive tax rates cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
             [<Config.Form>]Active: bool option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
             [<Config.Form>]Description: string option
             ///The display name of the tax rate, which will be shown to users.
@@ -35890,7 +35890,7 @@ module StripeRequest =
             [<Config.Form>]TaxType: Create'TaxType option
         }
         with
-            static member New(displayName: string, inclusive: bool, percentage: decimal, ?active: bool, ?country: string, ?description: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string, ?taxType: Create'TaxType) =
+            static member New(displayName: string, inclusive: bool, percentage: decimal, ?active: bool, ?country: IsoTypes.IsoCountryCode, ?description: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string, ?taxType: Create'TaxType) =
                 {
                     Active = active
                     Country = country
@@ -35948,7 +35948,7 @@ module StripeRequest =
             ///Flag determining whether the tax rate is active or inactive (archived). Inactive tax rates cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
             [<Config.Form>]Active: bool option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
             [<Config.Form>]Description: string option
             ///The display name of the tax rate, which will be shown to users.
@@ -35965,7 +35965,7 @@ module StripeRequest =
             [<Config.Form>]TaxType: Update'TaxType option
         }
         with
-            static member New(taxRate: string, ?active: bool, ?country: string, ?description: string, ?displayName: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string, ?taxType: Update'TaxType) =
+            static member New(taxRate: string, ?active: bool, ?country: IsoTypes.IsoCountryCode, ?description: string, ?displayName: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string, ?taxType: Update'TaxType) =
                 {
                     TaxRate = taxRate
                     Active = active
@@ -36733,7 +36733,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -36744,7 +36744,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -36818,7 +36818,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -36829,7 +36829,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -37138,7 +37138,7 @@ module StripeRequest =
 
         type SetReaderDisplay'Cart = {
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///Array of line items that were purchased.
             [<Config.Form>]LineItems: SetReaderDisplay'CartLineItems list option
             ///The amount of tax in cents.
@@ -37147,7 +37147,7 @@ module StripeRequest =
             [<Config.Form>]Total: int option
         }
         with
-            static member New(?currency: string, ?lineItems: SetReaderDisplay'CartLineItems list, ?tax: int, ?total: int) =
+            static member New(?currency: IsoTypes.IsoCurrencyCode, ?lineItems: SetReaderDisplay'CartLineItems list, ?tax: int, ?total: int) =
                 {
                     Currency = currency
                     LineItems = lineItems
@@ -37188,14 +37188,14 @@ module StripeRequest =
             ///Amount to be used for this test cash balance transaction. A positive integer representing how much to fund in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to fund $1.00 or 100 to fund ¥100, a zero-decimal currency).
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///Specifies which fields in the response should be expanded.
             [<Config.Form>]Expand: string list option
             ///A description of the test funding. This simulates free-text references supplied by customers when making bank transfers to their cash balance. You can use this to test how Stripe's [reconciliation algorithm](https://stripe.com/docs/payments/customer-balance/reconciliation) applies to different user inputs.
             [<Config.Form>]Reference: string option
         }
         with
-            static member New(customer: string, amount: int, currency: string, ?expand: string list, ?reference: string) =
+            static member New(customer: string, amount: int, currency: IsoTypes.IsoCurrencyCode, ?expand: string list, ?reference: string) =
                 {
                     Customer = customer
                     Amount = amount
@@ -37752,7 +37752,7 @@ module StripeRequest =
             ///Amount (in cents) to be transferred.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///Specifies which fields in the response should be expanded.
@@ -37765,7 +37765,7 @@ module StripeRequest =
             [<Config.Form>]Network: Create'Network
         }
         with
-            static member New(amount: int, currency: string, financialAccount: string, network: Create'Network, ?description: string, ?expand: string list, ?initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, network: Create'Network, ?description: string, ?expand: string list, ?initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails) =
                 {
                     Amount = amount
                     Currency = currency
@@ -37822,7 +37822,7 @@ module StripeRequest =
             ///Amount (in cents) to be transferred.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///Specifies which fields in the response should be expanded.
@@ -37835,7 +37835,7 @@ module StripeRequest =
             [<Config.Form>]Network: Create'Network
         }
         with
-            static member New(amount: int, currency: string, financialAccount: string, network: Create'Network, ?description: string, ?expand: string list, ?initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, network: Create'Network, ?description: string, ?expand: string list, ?initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails) =
                 {
                     Amount = amount
                     Currency = currency
@@ -37857,7 +37857,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -37868,7 +37868,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -37882,7 +37882,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -37895,7 +37895,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -37910,7 +37910,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -37923,7 +37923,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -38068,7 +38068,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -38079,7 +38079,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -38093,7 +38093,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -38106,7 +38106,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -38121,7 +38121,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -38134,7 +38134,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -38165,7 +38165,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -38176,7 +38176,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -38347,14 +38347,14 @@ module StripeRequest =
             ///The bank account type. This can only be `checking` or `savings` in most countries. In Japan, this can only be `futsu` or `toza`.
             [<Config.Form>]AccountType: Create'BankAccountAccountType option
             ///The country in which the bank account is located.
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///The currency the bank account is in. This must be a country/currency pairing that [Stripe supports.](https://stripe.com/docs/payouts)
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             ///The routing number, sort code, or other country-appropriateinstitution number for the bank account. For US bank accounts, this is required and should bethe ACH routing number, not the wire routing number. If you are providing an IBAN for`account_number`, this field is not required.
             [<Config.Form>]RoutingNumber: string option
         }
         with
-            static member New(?accountHolderName: string, ?accountHolderType: Create'BankAccountAccountHolderType, ?accountNumber: string, ?accountType: Create'BankAccountAccountType, ?country: string, ?currency: string, ?routingNumber: string) =
+            static member New(?accountHolderName: string, ?accountHolderType: Create'BankAccountAccountHolderType, ?accountNumber: string, ?accountType: Create'BankAccountAccountType, ?country: IsoTypes.IsoCountryCode, ?currency: IsoTypes.IsoCurrencyCode, ?routingNumber: string) =
                 {
                     AccountHolderName = accountHolderName
                     AccountHolderType = accountHolderType
@@ -38367,12 +38367,12 @@ module StripeRequest =
 
         type Create'CardCreditCardSpecs = {
             [<Config.Form>]AddressCity: string option
-            [<Config.Form>]AddressCountry: string option
+            [<Config.Form>]AddressCountry: IsoTypes.IsoCountryCode option
             [<Config.Form>]AddressLine1: string option
             [<Config.Form>]AddressLine2: string option
             [<Config.Form>]AddressState: string option
             [<Config.Form>]AddressZip: string option
-            [<Config.Form>]Currency: string option
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
             [<Config.Form>]Cvc: string option
             [<Config.Form>]ExpMonth: string option
             [<Config.Form>]ExpYear: string option
@@ -38380,7 +38380,7 @@ module StripeRequest =
             [<Config.Form>]Number: string option
         }
         with
-            static member New(?addressCity: string, ?addressCountry: string, ?addressLine1: string, ?addressLine2: string, ?addressState: string, ?addressZip: string, ?currency: string, ?cvc: string, ?expMonth: string, ?expYear: string, ?name: string, ?number: string) =
+            static member New(?addressCity: string, ?addressCountry: IsoTypes.IsoCountryCode, ?addressLine1: string, ?addressLine2: string, ?addressState: string, ?addressZip: string, ?currency: IsoTypes.IsoCurrencyCode, ?cvc: string, ?expMonth: string, ?expYear: string, ?name: string, ?number: string) =
                 {
                     AddressCity = addressCity
                     AddressCountry = addressCountry
@@ -38410,7 +38410,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -38421,7 +38421,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -38435,7 +38435,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -38448,7 +38448,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -38463,7 +38463,7 @@ module StripeRequest =
             ///City or ward.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Block or building number.
             [<Config.Form>]Line1: string option
             ///Building details.
@@ -38476,7 +38476,7 @@ module StripeRequest =
             [<Config.Form>]Town: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
                 {
                     City = city
                     Country = country
@@ -38553,7 +38553,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -38564,7 +38564,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -38824,7 +38824,7 @@ module StripeRequest =
             ///A positive integer representing how much to transfer.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///Specifies which fields in the response should be expanded.
@@ -38839,7 +38839,7 @@ module StripeRequest =
             [<Config.Form>]TransferGroup: string option
         }
         with
-            static member New(amount: int, currency: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string, ?statementDescriptor: string, ?transferGroup: string) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string, ?statementDescriptor: string, ?transferGroup: string) =
                 {
                     Amount = amount
                     Currency = currency
@@ -38960,7 +38960,7 @@ module StripeRequest =
             ///A positive integer in cents (or local equivalent) representing how much to transfer.
             [<Config.Form>]Amount: int option
             ///3-letter [ISO code for currency](https://stripe.com/docs/payouts).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///The ID of a connected Stripe account. <a href="/docs/connect/separate-charges-and-transfers">See the Connect documentation</a> for details.
@@ -38977,7 +38977,7 @@ module StripeRequest =
             [<Config.Form>]TransferGroup: string option
         }
         with
-            static member New(currency: string, destination: string, ?amount: int, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?sourceTransaction: string, ?sourceType: Create'SourceType, ?transferGroup: string) =
+            static member New(currency: IsoTypes.IsoCurrencyCode, destination: string, ?amount: int, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?sourceTransaction: string, ?sourceType: Create'SourceType, ?transferGroup: string) =
                 {
                     Amount = amount
                     Currency = currency
@@ -39994,7 +39994,7 @@ module StripeRequest =
             ///Amount (in cents) to be transferred.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///Specifies which fields in the response should be expanded.
@@ -40009,7 +40009,7 @@ module StripeRequest =
             [<Config.Form>]StatementDescriptor: string option
         }
         with
-            static member New(amount: int, currency: string, financialAccount: string, originPaymentMethod: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, originPaymentMethod: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
                 {
                     Amount = amount
                     Currency = currency
@@ -40103,7 +40103,7 @@ module StripeRequest =
             ///City, district, suburb, town, or village.
             [<Config.Form>]City: string option
             ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-            [<Config.Form>]Country: string option
+            [<Config.Form>]Country: IsoTypes.IsoCountryCode option
             ///Address line 1 (e.g., street, PO Box, or company name).
             [<Config.Form>]Line1: string option
             ///Address line 2 (e.g., apartment, suite, unit, or building).
@@ -40114,7 +40114,7 @@ module StripeRequest =
             [<Config.Form>]State: string option
         }
         with
-            static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
                 {
                     City = city
                     Country = country
@@ -40240,7 +40240,7 @@ module StripeRequest =
             ///Amount (in cents) to be transferred.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///ID of the customer to whom the OutboundPayment is sent. Must match the Customer attached to the `destination_payment_method` passed in.
             [<Config.Form>]Customer: string option
             ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -40263,7 +40263,7 @@ module StripeRequest =
             [<Config.Form>]StatementDescriptor: string option
         }
         with
-            static member New(amount: int, currency: string, financialAccount: string, ?customer: string, ?description: string, ?destinationPaymentMethod: string, ?destinationPaymentMethodData: Create'DestinationPaymentMethodData, ?destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions, ?endUserDetails: Create'EndUserDetails, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, ?customer: string, ?description: string, ?destinationPaymentMethod: string, ?destinationPaymentMethodData: Create'DestinationPaymentMethodData, ?destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions, ?endUserDetails: Create'EndUserDetails, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
                 {
                     Amount = amount
                     Currency = currency
@@ -40382,7 +40382,7 @@ module StripeRequest =
             ///Amount (in cents) to be transferred.
             [<Config.Form>]Amount: int
             ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-            [<Config.Form>]Currency: string
+            [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
             ///An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]Description: string option
             ///The PaymentMethod to use as the payment instrument for the OutboundTransfer.
@@ -40399,7 +40399,7 @@ module StripeRequest =
             [<Config.Form>]StatementDescriptor: string option
         }
         with
-            static member New(amount: int, currency: string, financialAccount: string, ?description: string, ?destinationPaymentMethod: string, ?destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
+            static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, ?description: string, ?destinationPaymentMethod: string, ?destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
                 {
                     Amount = amount
                     Currency = currency

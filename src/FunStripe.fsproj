@@ -33,6 +33,7 @@
     <Compile Include="AsyncResult.fs" />
     <Compile Include="ModelBuilder.fs" />
     <Compile Include="RequestBuilder.fs" />
+    <Compile Include="IsoTypes.fs" />
     <Compile Include="StripeModel.fs" />
     <Compile Include="StripeError.fs" />
     <Compile Include="RestApi.fs" />
