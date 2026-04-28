@@ -150,14 +150,13 @@ module RequestBuilder =
         member this.ToPropertyString() =
             $"\t\tmember _.{this.Name |> camelCasify |> escapeReservedName} = {this.Name |> camelCasify |> escapeReservedName}"
 
-    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line, and also formatting the HTML to display all paragraphs correctly. Wraps content in XML doc summary tags to ensure visibility in IDEs.
+    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line.
+    ///Wraps content in XML doc <c>&lt;summary&gt;</c> tags to ensure visibility in IDEs.
+    ///HTML elements (e.g. <c>&lt;p&gt;</c>, <c>&lt;a&gt;</c>) from the OpenAPI spec are preserved inside
+    ///<c>&lt;summary&gt;</c> as valid XML documentation markup.
     let commentify indent (s: string) =
         if s |> String.IsNullOrWhiteSpace then
             ""
-        elif s.Contains("<p>") then
-            let tabs = "\t" |> String.replicate indent
-            let formatted = s.Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")
-            $"{tabs}///<summary>{formatted}</summary>"
         else
             let tabs = "\t" |> String.replicate indent
             let formatted = s.Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")

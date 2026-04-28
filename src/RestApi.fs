@@ -147,21 +147,22 @@ module RestApi =
     ///<param name="options">The initial list options.</param>
     ///<returns>An async result containing all items from all pages combined into a single list.</returns>
     let listAllAsync<'item, 'options> (listFunc: StripeApiSettings -> 'options -> Async<Result<StripeModel.StripeList<'item>, StripeError.ErrorResponse>>) (withStartingAfter: string -> 'options -> 'options) (getId: 'item -> string) settings options =
-        let rec loop (acc: 'item list) (opts: 'options) =
+        // Accumulate pages as a list-of-lists (each prepend is O(1)), then concat once at the end (O(n total)).
+        let rec loop (acc: 'item list list) (opts: 'options) =
             async {
                 let! result = listFunc settings opts
                 match result with
                 | Error e -> return Error e
                 | Ok page ->
-                    let acc' = acc @ page.Data
+                    let acc' = page.Data :: acc
                     if page.HasMore then
                         match page.Data |> List.tryLast with
                         | Some lastItem ->
                             let opts' = withStartingAfter (getId lastItem) opts
                             return! loop acc' opts'
                         | None ->
-                            return Ok acc'
+                            return Ok (acc' |> List.rev |> List.concat)
                     else
-                        return Ok acc'
+                        return Ok (acc' |> List.rev |> List.concat)
             }
         loop [] options
