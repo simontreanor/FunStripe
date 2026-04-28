@@ -35,6 +35,7 @@
     <Compile Include="RequestBuilder.fs" />
     <Compile Include="StripeModel.fs" />
     <Compile Include="StripeError.fs" />
+    <Compile Include="WebhookSigning.fs" />
     <Compile Include="RestApi.fs" />
     <Compile Include="StripeRequest.fs" />
     <Compile Include="Program.fs" />
