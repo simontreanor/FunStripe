@@ -37,7 +37,7 @@ module Util =
                 value'
                 |> unbox
                 |> Seq.mapi (fun i o ->
-                    $"{key'}[{i |> string}]", (o |> string |> snakeCase)
+                    $"{key'}[{i |> string}]", (o |> string)
                 )
             | _ when FSharpType.IsUnion (value'.GetType()) ->
                 match value'.GetType().Name with
