@@ -1,9 +1,10 @@
 namespace FunStripe
 
+#if !FABLE_COMPILER
 open FSharp.Data
+#endif
 open FSharp.Reflection
 open System
-open System.Linq
 open System.Globalization
 open System.Text.RegularExpressions
 open System.Reflection
@@ -13,8 +14,7 @@ module Util =
     ///Unwrap objects in discriminated-union fields into the underlying object
     let unwrap t (value: obj) =
         let _, fields = FSharpValue.GetUnionFields(value, t)
-        fields.Cast<obj>()
-        |> Seq.tryExactlyOne
+        fields |> Seq.tryExactlyOne
 
     let spitNameRegex = Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])")
     let choiceRegex = Regex(@"Choice\d+Of\d+")
@@ -99,19 +99,25 @@ module Util =
     let config = Json.JsonConfig.New(allowUntyped = true, jsonFieldNaming = snakeCase, unformatted = true)
 
     ///Convert JSON strings to F# objects
+#if FABLE_COMPILER
+    let deserialise<'a> (data: string) =
+        Json.FableCore.deserializeString config typeof<'a> data :?> 'a
+#else
     let deserialise<'a> data =
         let value = JsonValue.Parse(data)
         (Json.Core.deserialize config Json.JsonPath.Root typeof<'a> value) :?> 'a
+#endif
 
     ///Serialise F# record as form
     let serialiseForm<'a> (parameters:'a) =
         FSharpType.GetRecordFields typeof<'a>
-        |> Array.filter(fun pi -> pi.CustomAttributes.Cast<CustomAttributeData>() |> Seq.exists(fun cad -> cad.AttributeType = typeof<Config.FormAttribute>))
+        |> Array.filter(fun pi -> pi.GetCustomAttributes(typeof<Config.FormAttribute>, false).Length > 0)
         |> Seq.collect (fun pi -> format config pi parameters)
 
     //following functions are not required by the library but are useful utilities:
 
    ///Convert F# objects to JSON strings
+#if !FABLE_COMPILER
     let serialise data =
         let json = Json.Core.serialize config (data.GetType()) data
         let saveOptions =
@@ -119,11 +125,13 @@ module Util =
             | true -> JsonSaveOptions.DisableFormatting
             | false -> JsonSaveOptions.None
         json.ToString(saveOptions)
+#endif
         
     let getUnionCaseFromString<'a> (value: string) =
         typeof<'a>.UnderlyingSystemType.GetProperties()
         |> Array.map(fun pi ->
-            pi.GetMethod.GetCustomAttributes(typeof<Json.JsonField>, false).Cast<Json.JsonField>()
+            pi.GetMethod.GetCustomAttributes(typeof<Json.JsonField>, false)
+            |> Seq.cast<Json.JsonField>
             |> Seq.map(fun jf -> (pi.Name, jf.Name))
             |> Seq.tryExactlyOne
         )
