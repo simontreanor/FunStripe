@@ -538,7 +538,9 @@ module internal Core =
                             let uci = unionCases |> Array.find (fun c -> c.Name = t'.Name)
                             FSharpValue.MakeUnion (uci, [| record |])
                         | None ->
-                            // The object type may be nested within a union case type (e.g. CustomerDefaultSource'AnyOf.PaymentSource wraps PaymentSource.Card)
+                            // The object type may not be a direct case of this union - it may be wrapped in an intermediate union case.
+                            // For example, when Stripe expands a field like `default_source`, the returned Card/BankAccount/Source object
+                            // maps to PaymentSource.Card but the field type is CustomerDefaultSource'AnyOf.PaymentSource(PaymentSource.Card).
                             let nestedMatch =
                                 getUnderlyingTypes t
                                 |> Seq.tryPick (fun (wrapperCaseType, wrapperUt) ->
@@ -557,7 +559,7 @@ module internal Core =
                                 let uci = unionCases |> Array.find (fun c -> c.Name = wrapperCaseType.Name)
                                 FSharpValue.MakeUnion (uci, [| innerValue |])
                             | None ->
-                                failDeserialization path <| sprintf "Failed to parse union, unable to find union case for object type: %s." objectTypeName
+                                failDeserialization path <| sprintf "Failed to parse union, unable to find union case (direct or nested) for object type: %s." objectTypeName
                 | _ -> failDeserialization path "Failed to parse union from JSON that is not object."
 
         match t with
