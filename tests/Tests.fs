@@ -16,6 +16,41 @@ module Tests =
     let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
     [<TestFixture>]
+    type IdempotencyKeyUnitTests () =
+
+        [<Test>]
+        member _.``test idempotency key header is included when set via New``() =
+            let key = "test-idempotency-key-123"
+            let settingsWithKey = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey, idempotencyKey = key)
+            let headers = RestApi.createHeader settingsWithKey
+            Assert.That(headers |> List.exists (fun (name, value) -> name = "Idempotency-Key" && value = key), Is.True)
+
+        [<Test>]
+        member _.``test idempotency key header is not included when not set``() =
+            let settingsWithoutKey = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
+            let headers = RestApi.createHeader settingsWithoutKey
+            Assert.That(headers |> List.exists (fun (name, _) -> name = "Idempotency-Key"), Is.False)
+
+        [<Test>]
+        member _.``test WithIdempotencyKey returns settings with key applied``() =
+            let key = "per-request-idempotency-key"
+            let settingsWithKey = settings.WithIdempotencyKey(key)
+            Assert.That(settingsWithKey.IdempotencyKey, Is.EqualTo (Some key))
+
+        [<Test>]
+        member _.``test WithIdempotencyKey does not mutate original settings``() =
+            let key = "per-request-idempotency-key"
+            let _ = settings.WithIdempotencyKey(key)
+            Assert.That(settings.IdempotencyKey, Is.EqualTo None)
+
+        [<Test>]
+        member _.``test WithIdempotencyKey header is included in request headers``() =
+            let key = "per-request-idempotency-key"
+            let settingsWithKey = settings.WithIdempotencyKey(key)
+            let headers = RestApi.createHeader settingsWithKey
+            Assert.That(headers |> List.exists (fun (name, value) -> name = "Idempotency-Key" && value = key), Is.True)
+
+    [<TestFixture>]
     type PaymentMethodUnitTests () =
 
         let testCustomer = "cus_HxEURwENT9MKb3"

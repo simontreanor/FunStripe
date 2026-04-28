@@ -23,6 +23,10 @@ module RestApi =
                 StripeVersion = stripeVersion
             }
 
+        ///Return a copy of these settings with the given idempotency key applied, for use on a single mutating request
+        member this.WithIdempotencyKey(key: string) =
+            { this with IdempotencyKey = Some key }
+
     ///Create request header
     let createHeader settings =
         let authHeader = HttpRequestHeaders.BasicAuth settings.ApiKey ""
