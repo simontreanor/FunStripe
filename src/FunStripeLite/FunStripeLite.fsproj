@@ -8,7 +8,9 @@
     <Version>1.4.3</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
-    <PackageDescription>F# Lightweight Stripe Library</PackageDescription>
+    <StripeApiVersion>2023-08-16</StripeApiVersion>
+    <PackageDescription>F# Lightweight Stripe Library (targets Stripe API $(StripeApiVersion))</PackageDescription>
+    <PackageTags>stripe;fsharp;api;payments;$(StripeApiVersion)</PackageTags>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe/blob/master/src/FunStripeLite</RepositoryUrl>
     <DefineConstants>$(DefineConstants);LITE</DefineConstants>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -28,6 +30,7 @@
     <Compile Include="../Json/Core.fs" Link="Json/Core.fs" />
     <Compile Include="../Json/Transforms.fs" Link="Json/Transforms.fs" />
     <Compile Include="../Config.fs" Link="Config.fs" />
+    <Compile Include="../AssemblyInfo.fs" Link="AssemblyInfo.fs" />
     <Compile Include="../Util.fs" Link="Util.fs" />
     <Compile Include="../AsyncResult.fs" Link="AsyncResult.fs" />
     <Compile Include="../StripeModel.fs" Link="StripeModel.fs" />

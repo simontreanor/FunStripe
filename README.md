@@ -58,6 +58,38 @@ If you don't specify the API key in the settings record, it will look for a defa
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 
+## Stripe API version
+
+FunStripe targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:
+
+```F#
+Config.DefaultStripeApiVersion  // e.g. "2023-08-16"
+```
+
+It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
+
+By default, FunStripe does **not** send a `Stripe-Version` request header, so Stripe uses the version pinned to your account. If you want every request to be explicitly tied to the library's target API version — useful when upgrading or for forward-compatibility testing — pass it through `StripeApiSettings`:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = Config.StripeTestApiKey,
+        stripeVersion = Config.DefaultStripeApiVersion
+    )
+```
+
+To test against a **newer** Stripe API version before upgrading the library, supply the target date directly:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = Config.StripeTestApiKey,
+        stripeVersion = "2024-06-20"   // override for forward-compatibility testing
+    )
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for the full FunStripe version → Stripe API version compatibility table.
+
 ## Code Generation
 
 By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and `StripeRequest.fs` respectively.
