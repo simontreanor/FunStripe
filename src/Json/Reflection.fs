@@ -45,6 +45,9 @@ module internal Reflection =
         t.GetGenericArguments() |> FSharpType.MakeTupleType
 
 #if FABLE_COMPILER
+    // JavaScript is single-threaded, so a plain Dictionary is safe here.
+    // Note: Node.js Worker Threads run in separate JS contexts and do not share memory,
+    // so there is no risk of concurrent dictionary mutation across workers.
     let cacheResult (theFunction: 'P -> 'R) =
         let cache = System.Collections.Generic.Dictionary<'P, 'R>()
         fun parameter ->

@@ -81,7 +81,8 @@ open FunStripe
 open FunStripe.RestApi
 open FunStripe.StripeRequest
 
-let settings = StripeApiSettings.New(apiKey = "<your-publishable-key>")
+let settings = StripeApiSettings.New(apiKey = "<your-publishable-key>")  // pk_test_... or pk_live_...
+                                                                          // Find yours at https://dashboard.stripe.com/apikeys
 
 let createPaymentMethod () =
     asyncResult {
