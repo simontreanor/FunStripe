@@ -118,6 +118,46 @@ let settings =
 
 See the [FunStripe CHANGELOG](https://github.com/simontreanor/FunStripe/blob/master/CHANGELOG.md) for the full FunStripeLite version → Stripe API version compatibility table.
 
+## Partial API Loading
+
+FunStripeLite's API requests are split into resource groups to reduce compile-time overhead, especially for WASM/browser targets. The `Core` group is always included. All other groups are included by default but can be excluded via MSBuild properties.
+
+| Group                  | MSBuild Property                           |
+|------------------------|--------------------------------------------|
+| Core                   | *(always included)*                        |
+| Connect                | `FunStripeExcludeConnect=true`             |
+| Billing                | `FunStripeExcludeBilling=true`             |
+| Checkout               | `FunStripeExcludeCheckout=true`            |
+| FinancialConnections   | `FunStripeExcludeFinancialConnections=true`|
+| Identity               | `FunStripeExcludeIdentity=true`            |
+| Issuing                | `FunStripeExcludeIssuing=true`             |
+| PaymentLinks           | `FunStripeExcludePaymentLinks=true`        |
+| Radar                  | `FunStripeExcludeRadar=true`               |
+| Reporting              | `FunStripeExcludeReporting=true`           |
+| Sigma                  | `FunStripeExcludeSigma=true`               |
+| Terminal               | `FunStripeExcludeTerminal=true`            |
+| TestHelpers            | `FunStripeExcludeTestHelpers=true`         |
+| Treasury               | `FunStripeExcludeTreasury=true`            |
+
+Example — include only Core and Billing:
+
+```xml
+<PropertyGroup>
+  <FunStripeExcludeConnect>true</FunStripeExcludeConnect>
+  <FunStripeExcludeCheckout>true</FunStripeExcludeCheckout>
+  <FunStripeExcludeFinancialConnections>true</FunStripeExcludeFinancialConnections>
+  <FunStripeExcludeIdentity>true</FunStripeExcludeIdentity>
+  <FunStripeExcludeIssuing>true</FunStripeExcludeIssuing>
+  <FunStripeExcludePaymentLinks>true</FunStripeExcludePaymentLinks>
+  <FunStripeExcludeRadar>true</FunStripeExcludeRadar>
+  <FunStripeExcludeReporting>true</FunStripeExcludeReporting>
+  <FunStripeExcludeSigma>true</FunStripeExcludeSigma>
+  <FunStripeExcludeTerminal>true</FunStripeExcludeTerminal>
+  <FunStripeExcludeTestHelpers>true</FunStripeExcludeTestHelpers>
+  <FunStripeExcludeTreasury>true</FunStripeExcludeTreasury>
+</PropertyGroup>
+```
+
 ## References
 
 [Stripe Documentation](https://stripe.com/docs)

@@ -187,13 +187,65 @@ Code generation (`ModelBuilder.fs`, `RequestBuilder.fs`) uses `Fabulous.AST` whi
 `dotnet fsi` on the .NET side and commit the generated `StripeModel.fs` /
 `StripeRequest.fs` into your repository.
 
+## Partial API Loading
+
+FunStripe's API requests are split into resource groups to reduce compile-time overhead and improve build performance, especially for WASM/browser targets. The `Core` group is always included. All other groups are included by default but can be excluded via MSBuild properties.
+
+### Available Resource Groups
+
+| Group                  | Description                                                  | MSBuild Property                           |
+|------------------------|--------------------------------------------------------------|--------------------------------------------|
+| Core                   | Accounts, Payments, Customers, Transfers, etc. (always on) | *(always included)*                        |
+| Connect                | Platform accounts, application fees, secrets               | `FunStripeExcludeConnect=true`             |
+| Billing                | Subscriptions, Invoices, Coupons, Quotes, Tax, etc.        | `FunStripeExcludeBilling=true`             |
+| Checkout               | Checkout Sessions                                          | `FunStripeExcludeCheckout=true`            |
+| FinancialConnections   | Financial Connections accounts and sessions                | `FunStripeExcludeFinancialConnections=true`|
+| Identity               | Identity Verification Reports and Sessions                 | `FunStripeExcludeIdentity=true`            |
+| Issuing                | Issuing cards, cardholders, authorisations, etc.           | `FunStripeExcludeIssuing=true`             |
+| PaymentLinks           | Payment Links                                              | `FunStripeExcludePaymentLinks=true`        |
+| Radar                  | Radar fraud warnings and value lists                       | `FunStripeExcludeRadar=true`               |
+| Reporting              | Reporting runs and report types                            | `FunStripeExcludeReporting=true`           |
+| Sigma                  | Sigma scheduled query runs                                 | `FunStripeExcludeSigma=true`               |
+| Terminal               | Terminal configurations, locations, readers, etc.          | `FunStripeExcludeTerminal=true`            |
+| TestHelpers            | Test mode helper endpoints                                 | `FunStripeExcludeTestHelpers=true`         |
+| Treasury               | Treasury financial accounts, transfers, etc.               | `FunStripeExcludeTreasury=true`            |
+
+### Example: Core + Billing only
+
+To compile only Core and Billing (skipping all other groups), add the following to your project file:
+
+```xml
+<PropertyGroup>
+  <FunStripeExcludeConnect>true</FunStripeExcludeConnect>
+  <FunStripeExcludeCheckout>true</FunStripeExcludeCheckout>
+  <FunStripeExcludeFinancialConnections>true</FunStripeExcludeFinancialConnections>
+  <FunStripeExcludeIdentity>true</FunStripeExcludeIdentity>
+  <FunStripeExcludeIssuing>true</FunStripeExcludeIssuing>
+  <FunStripeExcludePaymentLinks>true</FunStripeExcludePaymentLinks>
+  <FunStripeExcludeRadar>true</FunStripeExcludeRadar>
+  <FunStripeExcludeReporting>true</FunStripeExcludeReporting>
+  <FunStripeExcludeSigma>true</FunStripeExcludeSigma>
+  <FunStripeExcludeTerminal>true</FunStripeExcludeTerminal>
+  <FunStripeExcludeTestHelpers>true</FunStripeExcludeTestHelpers>
+  <FunStripeExcludeTreasury>true</FunStripeExcludeTreasury>
+</PropertyGroup>
+```
+
+Or pass directly to `dotnet build`:
+
+```sh
+dotnet build -p:FunStripeExcludeIssuing=true -p:FunStripeExcludeTreasury=true
+```
+
 ## Code Generation
 
-By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and `StripeRequest.fs` respectively.
+By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and the per-resource-group `StripeRequest.<Group>.fs` files respectively.
 
 Using Visual Studio Code, you simply select all the text in each document and hit `Alt + Enter` to send the code to F# Interactive. This will overwrite the contents of the target modules.
 
 The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2026-04-22.dahlia.json` used as the default for code generation. The current default path is set in `ModelBuilder.fs` and `RequestBuilder.fs`. To regenerate against a different version, pass the desired spec file path as a parameter, or update the default path in those files. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
+
+Running the `RequestBuilder.fs` interactive code generates all per-group files (`StripeRequest.Core.fs`, `StripeRequest.Billing.fs`, etc.) as well as the legacy monolithic `StripeRequest.fs` for reference. The per-group files are the ones included in the compiled project.
 
 You could also customise how the source code is represented by editing the builder code files.
 
