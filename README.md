@@ -4,7 +4,9 @@ An F# library to connect to the Stripe API, including code generators to update 
 
 ## Latest updates
 
-2025-02-24: version 0.11.2 implements changes to the order of generated types to reduce the need for recursive type declarations (thank [Thorium](https://github.com/Thorium) for that!). [FunStripeLite](https://github.com/simontreanor/FunStripeLite) has been added as a subproject and will be maintained here from now on.
+2026-04-29: FunStripe and FunStripeLite have been superseded by [FunStripe.Core](https://www.nuget.org/packages/FunStripe.Core/) (.NET) and [FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) (Fable/Node.js). The code generators have been separated into a non-published `FunStripe.Generator` project.
+
+2025-02-24: version 0.11.2 implements changes to the order of generated types to reduce the need for recursive type declarations (thank [Thorium](https://github.com/Thorium) for that!).
 
 2025-01-21: version 0.11.0 changes the target frameworks to .NET Standard 2.0 and .NET Standard 2.1 and updates FSharp.Core to version 9.0.101 and FSharp.Data to 6.4.1.
 
@@ -20,13 +22,11 @@ An F# library to connect to the Stripe API, including code generators to update 
 
 2022-10-04: version 0.9.0 updates the Stripe API from version 2020-08-27 to 2022-08-01, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
 
-2022-04-22: a lightweight version of this library without the code generators is now available as [FunStripeLite](https://github.com/simontreanor/FunStripeLite). 
-
 2021-07-18: version 0.8.0 updates the Stripe API from version 2020-03-02 to 2020-08-27, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
 
 ## Installation
 
-Get the latest version of FunStripe (which includes the model builders) from [Nuget](https://www.nuget.org/packages/FunStripe/) or the lite version, which just contains the models, from [Nuget](https://www.nuget.org/packages/FunStripeLite/).
+Get the latest version of FunStripe.Core from [NuGet](https://www.nuget.org/packages/FunStripe.Core/). For Fable/Node.js projects, use [FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) instead.
 
 ## Usage
 
@@ -60,8 +60,8 @@ The `options` can be provided using record notation or if there are many uniniti
 
 ## Fable (Node.js) Support
 
-FunStripeLite can be compiled to JavaScript via [Fable](https://fable.io) using the companion
-`FunStripeLite.Fable` project.  This targets **Node.js server-side** scripts written in F#.
+FunStripe.Core can be compiled to JavaScript via [Fable](https://fable.io) using the companion
+[FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) package.  This targets **Node.js server-side** scripts written in F#.
 
 > [!WARNING]
 > **Do not use this package in browser applications.**
@@ -76,8 +76,8 @@ FunStripeLite can be compiled to JavaScript via [Fable](https://fable.io) using 
 
 ### Installation
 
-Reference the `FunStripeLite.Fable` NuGet package from your Fable/Node.js project instead of
-`FunStripeLite`.  `Fable.SimpleHttp` and `Thoth.Json` are pulled in automatically as
+Reference the `FunStripe.Core.Fable` NuGet package from your Fable/Node.js project instead of
+`FunStripe.Core`.  `Fable.SimpleHttp` and `Thoth.Json` are pulled in automatically as
 transitive dependencies.
 
 ### Usage
@@ -107,13 +107,13 @@ let createPaymentMethod () =
 
 ### Platform differences
 
-| Feature | .NET (`FunStripeLite`) | Fable (`FunStripeLite.Fable`) |
-|---------|----------------------|-------------------------------|
+| Feature | .NET (`FunStripe.Core`) | Fable (`FunStripe.Core.Fable`) |
+|---------|------------------------|--------------------------------|
 | Target runtime | .NET (server) | Node.js (server) |
 | HTTP layer | `FSharp.Data` (`HttpClient`) | `Fable.SimpleHttp` (Node.js fetch) |
 | JSON parsing | `FSharp.Data.JsonValue` | `Thoth.Json` |
 | JSON serialisation (`Util.serialise`) | ✅ available | ❌ not available |
-| Code generation (`ModelBuilder`, `RequestBuilder`) | ✅ dotnet tool only | ❌ not needed |
+| Code generation (`ModelBuilder`, `RequestBuilder`) | ✅ via `FunStripe.Generator` | ❌ not needed |
 
 ### Code generation
 

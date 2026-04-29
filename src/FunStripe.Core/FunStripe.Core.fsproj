@@ -34,7 +34,7 @@
     <Compile Include="../StripeError.fs" Link="StripeError.fs" />
     <Compile Include="../RestApi.fs" Link="RestApi.fs" />
     <Compile Include="../StripeRequest.fs" Link="StripeRequest.fs" />
-    <None Include="../FunStripeLite/README.md" Pack="true" PackagePath="\" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" />
