@@ -109,9 +109,7 @@ By cloning the source repository, as a developer you can use `ModelBuilder.fs` a
 
 Using Visual Studio Code, you simply select all the text in each document and hit `Alt + Enter` to send the code to F# Interactive. This will overwrite the contents of the target modules.
 
-The Stripe OpenAPI specification is stored locally as `/res/spec3.sdk.json`. See the references below for the link to the latest online version.
-
-By replacing the local copy with the latest one from online, you can regenerate the source code and build it to get the latest changes.
+The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2023-08-16.json` used as the default for code generation. The current default path is set in `ModelBuilder.fs` and `RequestBuilder.fs`. To regenerate against a different version, pass the desired spec file path as a parameter, or update the default path in those files. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
 
 You could also customise how the source code is represented by editing the builder code files.
 
