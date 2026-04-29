@@ -1,0 +1,10 @@
+<Project>
+  <!-- Both FunStripe.Core.fsproj and FunStripe.Core.Fable.fsproj live in this directory.
+       Without this, they share obj\project.assets.json and the last restore wins.
+       Setting MSBuildProjectExtensionsPath here (before Microsoft.Common.props is imported)
+       ensures NuGet writes its restore artefacts to a separate folder for the Fable project. -->
+  <PropertyGroup Condition="'$(MSBuildProjectFile)' == 'FunStripe.Core.Fable.fsproj'">
+    <MSBuildProjectExtensionsPath>$(MSBuildProjectDirectory)\obj\Fable\</MSBuildProjectExtensionsPath>
+    <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)\obj\Fable\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

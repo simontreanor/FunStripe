@@ -67,6 +67,7 @@ module ModelBuilder =
     let escapeReservedName name =
         match name with
         | "end"
+        | "in"
         | "open"
         | "type" ->
             $"``{name}``"
@@ -75,7 +76,7 @@ module ModelBuilder =
 
     ///Remove problematic chars from discriminated-union names
     let clean (s: string) =
-        s.Replace("-", "").Replace(" ", "")
+        s.Replace("-", "").Replace(" ", "").Replace("[", "").Replace("]", "")
 
     ///Prepend `Numeric` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =
@@ -85,7 +86,7 @@ module ModelBuilder =
     let escapeForJson (s: string) =
         if s.Contains(" of ") then
             s
-        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") then
+        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") || s.Contains("[") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         elif s = "none" then
             $@"[<JsonUnionCase(""{s}"")>] {s|> pascalCasify}'"
@@ -148,6 +149,15 @@ module ModelBuilder =
         StaticValue: string option
     }
 
+    ///Returns the ISO strongly-typed name for currency or country fields, or None if not applicable
+    let isoTypeName (name: string) =
+        if name = "currency" || (name.EndsWith("_currency") && name <> "default_for_currency") then
+            Some "IsoTypes.IsoCurrencyCode"
+        elif name = "country" || name.EndsWith("_country") then
+            Some "IsoTypes.IsoCountryCode"
+        else
+            None
+
     ///Recursively iterates through schema to create hierarchy of type definitions
     let rec parseValue prefix name req (jv: JsonValue) =
         let name' = name |> pascalCasify
@@ -175,9 +185,17 @@ module ModelBuilder =
                     | Some ee ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"{prefix}{name'}"; EnumValues = ee |> List.ofSeq |> Some; SubValues = None; StaticValue = None }
                     | None ->
-                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
+                        match isoTypeName name with
+                        | Some isoType ->
+                            { Description = desc; Name = name; Nullable = nullable; Required = req; Type = isoType; EnumValues = None; SubValues = None; StaticValue = None }
+                        | None ->
+                            { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
                 else
-                    { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
+                    match isoTypeName name with
+                    | Some isoType ->
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = isoType; EnumValues = None; SubValues = None; StaticValue = None }
+                    | None ->
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = t; EnumValues = None; SubValues = None; StaticValue = None }
         | Some t when t = "array" ->
             match name with
             | "expand" ->
@@ -256,7 +274,7 @@ module ModelBuilder =
         
         //parse Open API specification file
         let root = __SOURCE_DIRECTORY__
-        let filePath' = defaultArg filePath $"{root}/res/spec3.sdk.json"
+        let filePath' = defaultArg filePath $"{root}/../spec/stripe-openapi-2026-04-22.dahlia.json"
         let json = File.ReadAllText(filePath')
         
         //get schema root
@@ -267,6 +285,7 @@ module ModelBuilder =
         //parse schemas into type definitions
         let typeDefinitions =
             schemas.Properties
+            |> Array.filter(fun (_, schema) -> schema.TryGetProperty("x-stripeEvent") |> Option.isNone)
             |> Array.map (fun (key, schema) ->
 
                 //parse individual schema
@@ -514,7 +533,7 @@ module ModelBuilder =
             match model with
             | ModelHeader ->
                 //Write the namespace, references and module title
-                let header = $"namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n"
+                let header = $"namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n\n\t///A generic type representing a paginated list of Stripe objects, including pagination metadata.\n\ttype StripeList<'T> = {{\n\t\t///The list of objects in this page.\n\t\tData: 'T list\n\t\t///True if this list has another page of items after this one that can be fetched.\n\t\tHasMore: bool\n\t\t///The URL where this list can be accessed.\n\t\tUrl: string\n\t}}\n\twith\n\t\t///String representing the object's type. Always has the value `list`.\n\t\tmember _.Object = \"list\"\n\n\t\tstatic member New (data: 'T list, hasMore: bool, url: string) =\n\t\t\t{{\n\t\t\t\tStripeList.Data = data\n\t\t\t\tStripeList.HasMore = hasMore\n\t\t\t\tStripeList.Url = url\n\t\t\t}}\n"
                 sb |> write header
                 sb |> write (frontBuffer.ToString())
             | ModelEnum (keyword, name, valuesString, model) -> 
@@ -551,6 +570,6 @@ module ModelBuilder =
     ;;
     open ModelBuilder;;
     let m = parseModel None;;
-    let s = serializeModel "0.11.1" m;;
+    let s = serializeModel "1.0.0" m;;
     System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeModel.fs", s);;
 #endif

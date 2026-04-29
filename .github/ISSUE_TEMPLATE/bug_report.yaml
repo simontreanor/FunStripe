@@ -33,7 +33,7 @@ body:
       value: |
         - OS: [e.g. Windows 11]
         - Browser: [e.g. Chrome, Edge]
-        - Product: [FunStripe / FunStripeLite]
+        - Product: [FunStripe.Core / FunStripe.Core.Fable / FunStripe.Generator]
         - Version: [e.g. 122]
       render: shell
   - type: textarea
