@@ -7,6 +7,26 @@ open System
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "0.11.1")>]
 module StripeModel =
 
+    ///A generic type representing a paginated list of Stripe objects, including pagination metadata.
+    type StripeList<'T> = {
+        ///The list of objects in this page.
+        Data: 'T list
+        ///True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        ///The URL where this list can be accessed.
+        Url: string
+    }
+    with
+        ///String representing the object's type. Always has the value `list`.
+        member _.Object = "list"
+
+        static member New (data: 'T list, hasMore: bool, url: string) =
+            {
+                StripeList.Data = data
+                StripeList.HasMore = hasMore
+                StripeList.Url = url
+            }
+
     [<Struct>]
     type WebhookEndpointStatus =
         | Enabled

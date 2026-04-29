@@ -40,6 +40,31 @@ If you don't specify the API key in the settings record, it will look for a defa
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 
+### Paginated Lists
+
+All list endpoints return a `StripeList<'T>` that includes the current page of items alongside the pagination metadata:
+
+```F#
+let listOptions = Customers.ListOptions.New(limit = 10)
+let! page = Customers.List settings listOptions
+// page.Data  — the current page of Customer records
+// page.HasMore — true if more pages are available
+// page.Url    — the endpoint URL
+```
+
+To automatically fetch all pages and combine them into a single list, use `RestApi.listAllAsync`:
+
+```F#
+let! allCustomers =
+    RestApi.listAllAsync
+        Customers.List
+        (fun id opts -> { opts with StartingAfter = Some id })
+        (fun (c: Customer) -> c.Id)
+        settings
+        (Customers.ListOptions.New())
+// allCustomers is Result<Customer list, ErrorResponse>
+```
+
 ## Stripe API version
 
 FunStripe targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:
@@ -136,6 +161,7 @@ Code generation (`ModelBuilder.fs`, `RequestBuilder.fs`) uses `Fabulous.AST` whi
 `dotnet fsi` on the .NET side and commit the generated `StripeModel.fs` /
 `StripeRequest.fs` into your repository.
 
+## Code Generation
 
 By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and `StripeRequest.fs` respectively.
 
