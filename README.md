@@ -40,6 +40,38 @@ If you don't specify the API key in the settings record, it will look for a defa
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 
+## Stripe API version
+
+FunStripe targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:
+
+```F#
+Config.DefaultStripeApiVersion  // e.g. "2026-04-22.dahlia"
+```
+
+It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
+
+By default, FunStripe does **not** send a `Stripe-Version` request header, so Stripe uses the version pinned to your account. If you want every request to be explicitly tied to the library's target API version — useful when upgrading or for forward-compatibility testing — pass it through `StripeApiSettings`:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = Config.StripeTestApiKey,
+        stripeVersion = Config.DefaultStripeApiVersion
+    )
+```
+
+To test against a **newer** Stripe API version before upgrading the library, supply the target date directly:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = Config.StripeTestApiKey,
+        stripeVersion = "2026-04-22.dahlia"   // override for forward-compatibility testing
+    )
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for the full FunStripe version → Stripe API version compatibility table.
+
 ## Fable (Node.js) Support
 
 FunStripe.Core can be compiled to JavaScript via [Fable](https://fable.io) using the companion
@@ -109,7 +141,7 @@ By cloning the source repository, as a developer you can use `ModelBuilder.fs` a
 
 Using Visual Studio Code, you simply select all the text in each document and hit `Alt + Enter` to send the code to F# Interactive. This will overwrite the contents of the target modules.
 
-The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2023-08-16.json` used as the default for code generation. The current default path is set in `ModelBuilder.fs` and `RequestBuilder.fs`. To regenerate against a different version, pass the desired spec file path as a parameter, or update the default path in those files. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
+The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2026-04-22.dahlia.json` used as the default for code generation. The current default path is set in `ModelBuilder.fs` and `RequestBuilder.fs`. To regenerate against a different version, pass the desired spec file path as a parameter, or update the default path in those files. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
 
 You could also customise how the source code is represented by editing the builder code files.
 

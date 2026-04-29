@@ -8,7 +8,9 @@
     <Version>1.0.0</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
-    <PackageDescription>F# Stripe Library — Fable (Node.js server-side) edition</PackageDescription>
+    <PackageDescription>F# Stripe Library — Fable (Node.js server-side) edition (targets Stripe API $(StripeApiVersion))</PackageDescription>
+    <StripeApiVersion>2026-04-22.dahlia</StripeApiVersion>
+    <PackageTags>stripe;fsharp;fable;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
     <DefineConstants>$(DefineConstants);LITE;FABLE_COMPILER</DefineConstants>
     <PackageReadmeFile>README.md</PackageReadmeFile>
