@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="FSharp.Core" Version="10.1.203" />
+    <!-- .NET JSON parsing (not used in Fable projects) -->
+    <PackageVersion Include="FSharp.Data.Json.Core" Version="8.1.11" />
+    <!-- Fable HTTP client -->
+    <PackageVersion Include="Fable.SimpleHttp" Version="3.6.0" />
+    <!-- Fable JSON parsing -->
+    <PackageVersion Include="Thoth.Json" Version="10.5.0" />
+    <!-- Dev-tool only (FunStripe code generator) -->
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.7" />
+    <!-- Test dependencies -->
+    <PackageVersion Include="NUnit" Version="4.5.1" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="6.2.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+  </ItemGroup>
+</Project>

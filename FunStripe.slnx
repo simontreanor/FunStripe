@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/FunStripe.Core/FunStripe.Core.Fable.fsproj" />
+    <Project Path="src/FunStripe.Core/FunStripe.Core.fsproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/FunStripe.Generator/FunStripe.Generator.fsproj" />
+  </Folder>
+  <Project Path="tests/FunStripe.Tests.fsproj" />
+</Solution>
