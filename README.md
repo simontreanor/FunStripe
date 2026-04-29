@@ -36,9 +36,35 @@ The general format of API requests is `<module>`.`<method>` `settings` `options`
 
 To instantiate the `settings` you need to pass in your Stripe API key. Having local rather than global settings allows you to use different keys for different Stripe accounts if you need to.
 
+## Idempotency Keys
+
+For mutating requests (e.g. creating a charge), Stripe supports an `Idempotency-Key` header to safely retry requests without accidentally performing the same operation twice. You should supply a deterministic key derived from the operation — typically a stable GUID you generate and store alongside the operation.
+
+You can set an idempotency key when creating settings:
+
+```F#
+let settings = RestApi.StripeApiSettings.New(apiKey = "<your Stripe API key>", idempotencyKey = "my-unique-operation-id")
+```
+
+Or, more conveniently, use `WithIdempotencyKey` to apply a key per-request without affecting your base settings:
+
+```F#
+let createPaymentMethod idempotencyKey =
+    asyncResult {
+        return!
+            PaymentMethods.CreateOptions.New(
+                card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                type' = PaymentMethods.Create'Type.Card
+            )
+            |> PaymentMethods.Create (settings.WithIdempotencyKey(idempotencyKey))
+    }
+```
+
+The idempotency key is propagated transparently through the `AsyncResult`-based wrappers. Keys are never auto-generated — the caller always controls key derivation to guarantee retry safety.
+
 If you don't specify the API key in the settings record, it will look for a default test API key to use, and to keep the keys out of source code, it uses [UserSecrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=windows). It is recommended to use `UserSecrets` during development and web-server configuration settings in production, but if your source code will not be made public you can simply specify the API key as a string, at least for testing purposes. `Config.fs` contains some notes to help you.
 
-The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
+The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more efficiently.
 
 ### Paginated Lists
 

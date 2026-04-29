@@ -58,7 +58,33 @@ The general format of API requests is `<module>`.`<method>` `settings` `options`
 
 To instantiate the `settings` you need to pass in your Stripe API key. Having local rather than global settings allows you to use different keys for different Stripe accounts if you need to.
 
-The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
+## Idempotency Keys
+
+For mutating requests (e.g. creating a charge), Stripe supports an `Idempotency-Key` header to safely retry requests without accidentally performing the same operation twice. You should supply a deterministic key derived from the operation — typically a stable GUID you generate and store alongside the operation.
+
+You can set an idempotency key when creating settings:
+
+```F#
+let settings = RestApi.StripeApiSettings.New(apiKey = "<your Stripe API key>", idempotencyKey = "my-unique-operation-id")
+```
+
+Or, more conveniently, use `WithIdempotencyKey` to apply a key per-request without affecting your base settings:
+
+```F#
+let createPaymentMethod idempotencyKey =
+    asyncResult {
+        return!
+            PaymentMethods.CreateOptions.New(
+                card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                type' = PaymentMethods.Create'Type.Card
+            )
+            |> PaymentMethods.Create (settings.WithIdempotencyKey(idempotencyKey))
+    }
+```
+
+The idempotency key is propagated transparently through the `AsyncResult`-based wrappers. Keys are never auto-generated — the caller always controls key derivation to guarantee retry safety.
+
+The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more efficiently.
 
 ## Stripe API version
 
