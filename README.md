@@ -173,27 +173,19 @@ You could also customise how the source code is represented by editing the build
 
 ## Comparison with Stripe.net
 
-[Stripe.net](https://github.com/stripe/stripe-dotnet) is the official Stripe library for .NET and is maintained by the Stripe team. FunStripe is a community-maintained library written specifically for F#. Here are some reasons why an F# developer might prefer FunStripe:
+[Stripe.net](https://github.com/stripe/stripe-dotnet) is the official Stripe library for .NET, maintained by the Stripe team. FunStripe is a community-maintained library written specifically for F#. Here are some reasons why an F# developer might prefer FunStripe:
 
 ### Idiomatic F# design
 
-FunStripe is written in F# for F# developers. API responses are returned as `AsyncResult<'T, ErrorResponse>`, which integrates naturally with F# async workflows and computation expressions. This means you can handle success and error cases without exceptions, using standard F# pattern matching. Stripe.net, being a C# library, uses exceptions for error handling and does not provide the same level of F# ergonomics.
+FunStripe is written in F# for F# developers. API responses are returned as `AsyncResult<'T, ErrorResponse>`, which integrates naturally with F# async workflows and computation expressions, letting you handle success and error cases without exceptions using standard F# pattern matching. Stripe.net, being a C# library, uses exceptions for error handling and does not provide the same level of F# ergonomics.
 
 ### Strong typing with discriminated unions
 
-All enumerated values — including field types, event types, error codes, and webhook event kinds — are represented as F# discriminated unions rather than plain strings. This eliminates typos, enables exhaustive pattern matching, and gives you full compile-time confidence that all cases are handled. In Stripe.net, these values are typically plain strings or string constants, which are easy to mistype and cannot be checked exhaustively by the compiler.
+All enumerated values (field types, event types, error codes, webhook event kinds) are represented as F# discriminated unions rather than plain strings. This enables exhaustive pattern matching and gives compile-time confidence that all cases are handled. In Stripe.net, these values are typically plain strings or string constants.
 
-### Focused simplicity
+### Full API coverage
 
-FunStripe focuses on a practical subset of the Stripe API that covers most real-world use cases: "I have an F# project and I want to take a payment." It avoids the full complexity of every API feature and edge case, making it easier to get started and to understand what the library does.
-
-### Stability and lower maintenance overhead
-
-Stripe.net follows every Stripe API refactoring closely, including internal naming changes that are not driven by business requirements. With a history of [43+ major releases](https://www.nuget.org/packages/Stripe.net/#versions-body-tab), upgrading Stripe.net can require significant work to adapt to breaking changes on a regular basis. FunStripe aims to minimise unnecessary churn and expose a stable, predictable interface.
-
-### Code generation for API updates
-
-When Stripe releases a new API version, FunStripe includes `ModelBuilder.fs` and `RequestBuilder.fs` — code generators that regenerate `StripeModel.fs` and `StripeRequest.fs` directly from the Stripe OpenAPI specification. This makes it straightforward to adopt new API versions in a controlled way.
+FunStripe aims to cover the full Stripe API surface and tracks each Stripe API release version. `ModelBuilder.fs` and `RequestBuilder.fs` regenerate `StripeModel.fs` and `StripeRequest.fs` directly from the Stripe OpenAPI specification, making it straightforward to adopt new API versions. Stripe.net's model is maintained by Stripe rather than derived from the public OpenAPI spec, so the generation process is not available to contributors.
 
 ### Summary
 
@@ -203,11 +195,11 @@ When Stripe releases a new API version, FunStripe includes `ModelBuilder.fs` and
 | Error handling | `AsyncResult` | Exceptions |
 | Enum types | Discriminated unions | Strings |
 | Webhook event types | Discriminated unions | Strings |
-| API coverage | Core payment APIs | Full API |
+| API coverage | Full | Full |
 | Code generation | Yes (from OpenAPI spec) | No |
 | Maintained by | Community (F# focused) | Stripe |
 
-If you need access to the full breadth of the Stripe API, or require official Stripe support, Stripe.net is the right choice. If you want idiomatic F#, strong typing, and a simple ergonomic interface for the most common Stripe use cases, FunStripe is a great fit.
+If you need official Stripe support or are working primarily in C#, Stripe.net is the right choice. If you want idiomatic F# with strong typing and tracked Stripe API versions, FunStripe is a great fit.
 
 ## References
 
