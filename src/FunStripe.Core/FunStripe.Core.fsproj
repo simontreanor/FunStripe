@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <PackageId>FunStripe.Core</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Simon Treanor</Authors>
+    <Company>Fund Ourselves</Company>
+    <StripeApiVersion>2026-04-22.dahlia</StripeApiVersion>
+    <PackageDescription>F# Stripe Library for .NET (targets Stripe API $(StripeApiVersion))</PackageDescription>
+    <PackageTags>stripe;fsharp;api;payments;$(StripeApiVersion)</PackageTags>
+    <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
+    <DefineConstants>$(DefineConstants);LITE</DefineConstants>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Json/InterfaceTypes.fs" Link="Json/InterfaceTypes.fs" />
+    <Compile Include="../Json/JsonValueHelpers.fs" Link="Json/JsonValueHelpers.fs" />
+    <Compile Include="../Json/Reflection.fs" Link="Json/Reflection.fs" />
+    <Compile Include="../Json/Core.fs" Link="Json/Core.fs" />
+    <Compile Include="../Json/Transforms.fs" Link="Json/Transforms.fs" />
+    <Compile Include="../Config.fs" Link="Config.fs" />
+    <Compile Include="../AssemblyInfo.fs" Link="AssemblyInfo.fs" />
+    <Compile Include="../Util.fs" Link="Util.fs" />
+    <Compile Include="../AsyncResult.fs" Link="AsyncResult.fs" />
+    <Compile Include="../StripeModel.fs" Link="StripeModel.fs" />
+    <Compile Include="../StripeError.fs" Link="StripeError.fs" />
+    <Compile Include="../RestApi.fs" Link="RestApi.fs" />
+    <Compile Include="../StripeRequest.fs" Link="StripeRequest.fs" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" />
+    <PackageReference Include="FSharp.Data.Json.Core" />
+  </ItemGroup>
+</Project>

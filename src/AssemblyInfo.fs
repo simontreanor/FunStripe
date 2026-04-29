@@ -6,5 +6,5 @@
 // <StripeApiVersion> property in both .fsproj files.
 module FunStripe.AssemblyInfo
 
-[<assembly: FunStripe.Config.StripeApiVersionAttribute("2023-08-16")>]
+[<assembly: FunStripe.Config.StripeApiVersionAttribute("2026-04-22.dahlia")>]
 do ()
