@@ -25,6 +25,8 @@ module RestApi =
 
         ///Return a copy of these settings with the given idempotency key applied, for use on a single mutating request
         member this.WithIdempotencyKey(key: string) =
+            if System.String.IsNullOrWhiteSpace(key) then
+                invalidArg (nameof key) "Idempotency key must not be null or empty"
             { this with IdempotencyKey = Some key }
 
     ///Create request header

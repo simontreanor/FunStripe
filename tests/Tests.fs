@@ -50,6 +50,14 @@ module Tests =
             let headers = RestApi.createHeader settingsWithKey
             Assert.That(headers |> List.exists (fun (name, value) -> name = "Idempotency-Key" && value = key), Is.True)
 
+        [<Test>]
+        member _.``test WithIdempotencyKey throws on empty key``() =
+            Assert.Throws<System.ArgumentException>(fun () -> settings.WithIdempotencyKey("") |> ignore) |> ignore
+
+        [<Test>]
+        member _.``test WithIdempotencyKey throws on whitespace key``() =
+            Assert.Throws<System.ArgumentException>(fun () -> settings.WithIdempotencyKey("   ") |> ignore) |> ignore
+
     [<TestFixture>]
     type PaymentMethodUnitTests () =
 
