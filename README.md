@@ -58,31 +58,41 @@ If you don't specify the API key in the settings record, it will look for a defa
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 
-## Fable (Browser / Node.js) Support
+## Fable (Node.js) Support
 
 FunStripeLite can be compiled to JavaScript via [Fable](https://fable.io) using the companion
-`FunStripeLite.Fable` project.  This enables Stripe integrations in:
+`FunStripeLite.Fable` project.  This targets **Node.js server-side** scripts written in F#.
 
-- **Browser** single-page applications (Elmish, Feliz, Fable.React, …)
-- **Node.js** back-end scripts written in F#
+> [!WARNING]
+> **Do not use this package in browser applications.**
+> Calling the Stripe REST API directly from a browser requires embedding a Stripe API key in
+> the client, where it is trivially extractable from network traffic or the JS bundle.  Even
+> a *publishable* key grants more access than should be exposed client-side, and a *secret*
+> key would expose your full Stripe account to anyone who inspects your app.
+>
+> For browser-side card collection, use
+> [Stripe.js / Stripe Elements](https://stripe.com/docs/js) instead — it keeps all sensitive
+> data within Stripe's own iframe and never touches your server with raw card details.
 
 ### Installation
 
-Reference the `FunStripeLite.Fable` NuGet package from your Fable project instead of
-`FunStripeLite`.  Ensure your project also has `Fable.SimpleHttp` and `Thoth.Json` as
-transitive dependencies (they are pulled in automatically).
+Reference the `FunStripeLite.Fable` NuGet package from your Fable/Node.js project instead of
+`FunStripeLite`.  `Fable.SimpleHttp` and `Thoth.Json` are pulled in automatically as
+transitive dependencies.
 
 ### Usage
 
-The public API is identical to the regular .NET edition:
+The public API is identical to the regular .NET edition.  Your Stripe **secret key**
+(`sk_test_...` / `sk_live_...`) stays on the server, exactly as in the .NET version:
 
 ```fsharp
 open FunStripe
 open FunStripe.RestApi
 open FunStripe.StripeRequest
 
-let settings = StripeApiSettings.New(apiKey = "<your-publishable-key>")  // pk_test_... or pk_live_...
-                                                                          // Find yours at https://dashboard.stripe.com/apikeys
+// Secret key — server-side only, never expose this in a browser bundle.
+// Find yours at https://dashboard.stripe.com/apikeys
+let settings = StripeApiSettings.New(apiKey = "<your-secret-key>")
 
 let createPaymentMethod () =
     asyncResult {
@@ -95,23 +105,12 @@ let createPaymentMethod () =
     }
 ```
 
-### ⚠️ Security — publishable keys only
-
-When using FunStripeLite.Fable in a **browser** application the API key is necessarily
-visible to end users.  You **must** use a Stripe *publishable key* (prefix `pk_`), never a
-*secret key* (prefix `sk_`).
-
-- Publishable keys can only perform a limited set of client-safe operations (creating payment
-  methods, confirming PaymentIntents, etc.).
-- Secret keys grant full API access and must stay on your server at all times.
-
-See [Stripe's API key documentation](https://stripe.com/docs/keys) for details.
-
 ### Platform differences
 
 | Feature | .NET (`FunStripeLite`) | Fable (`FunStripeLite.Fable`) |
 |---------|----------------------|-------------------------------|
-| HTTP layer | `FSharp.Data` (`HttpClient`) | `Fable.SimpleHttp` (browser XHR / Node.js fetch) |
+| Target runtime | .NET (server) | Node.js (server) |
+| HTTP layer | `FSharp.Data` (`HttpClient`) | `Fable.SimpleHttp` (Node.js fetch) |
 | JSON parsing | `FSharp.Data.JsonValue` | `Thoth.Json` |
 | JSON serialisation (`Util.serialise`) | ✅ available | ❌ not available |
 | Code generation (`ModelBuilder`, `RequestBuilder`) | ✅ dotnet tool only | ❌ not needed |
@@ -122,7 +121,6 @@ Code generation (`ModelBuilder.fs`, `RequestBuilder.fs`) uses `Fabulous.AST` whi
 .NET-only.  It is intentionally excluded from the Fable package.  Run code generation with
 `dotnet fsi` on the .NET side and commit the generated `StripeModel.fs` /
 `StripeRequest.fs` into your repository.
-
 
 
 By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and `StripeRequest.fs` respectively.

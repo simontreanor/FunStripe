@@ -8,7 +8,7 @@
     <Version>1.4.3</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
-    <PackageDescription>F# Lightweight Stripe Library — Fable (browser/Node.js) edition</PackageDescription>
+    <PackageDescription>F# Lightweight Stripe Library — Fable (Node.js server-side) edition</PackageDescription>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe/blob/master/src/FunStripeLite</RepositoryUrl>
     <DefineConstants>$(DefineConstants);LITE;FABLE_COMPILER</DefineConstants>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="10.1.203" />
-    <!-- Fable HTTP client (browser XHR / Node.js fetch) -->
+    <!-- Fable HTTP client (Node.js fetch via XMLHttpRequest polyfill) -->
     <PackageReference Include="Fable.SimpleHttp" Version="3.6.0" />
     <!-- JSON parsing for Fable (replaces FSharp.Data.Json.Core) -->
     <PackageReference Include="Thoth.Json" Version="10.5.0" />
