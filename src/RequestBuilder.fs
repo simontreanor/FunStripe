@@ -750,7 +750,9 @@ module RequestBuilder =
             let group =
                 match moduleGroupMapping.TryGetValue moduleName with
                 | true, g -> g
-                | _ -> "Core"
+                | _ ->
+                    eprintfn $"Warning: module '{moduleName}' not found in moduleGroupMapping, defaulting to Core"
+                    "Core"
 
             // Dedent by 4 spaces (remove the outer `module StripeRequest =` indentation)
             let dedented =
@@ -767,7 +769,7 @@ module RequestBuilder =
             let content = groupBuilders.[group].ToString().Trim()
             if content <> "" then
                 let header =
-                    $"namespace FunStripe.StripeRequest\n\nopen FunStripe\nopen FunStripe.Json\nopen FunStripe.StripeModel\nopen System\n\n"
+                    $"namespace FunStripe.StripeRequest\n\nopen FunStripe\nopen FunStripe.Json\nopen FunStripe.StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\n"
                 let fileName = IO.Path.Combine(outputDir, $"StripeRequest.{group}.fs")
                 IO.File.WriteAllText(fileName, header + content + "\n")
 

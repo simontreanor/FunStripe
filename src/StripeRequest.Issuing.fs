@@ -5,6 +5,7 @@ open FunStripe.Json
 open FunStripe.StripeModel
 open System
 
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module IssuingAuthorizations =
 
     type ListOptions = {
