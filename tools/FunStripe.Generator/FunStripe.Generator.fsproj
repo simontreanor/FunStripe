@@ -23,6 +23,7 @@
     <Compile Include="../../src/RequestBuilder.fs" Link="RequestBuilder.fs" />
     <Compile Include="../../src/StripeModel.fs" Link="StripeModel.fs" />
     <Compile Include="../../src/StripeError.fs" Link="StripeError.fs" />
+    <Compile Include="../../src/WebhookSigning.fs" Link="WebhookSigning.fs" />
     <Compile Include="../../src/RestApi.fs" Link="RestApi.fs" />
     <Compile Include="../../src/StripeRequest.fs" Link="StripeRequest.fs" />
     <Compile Include="../../src/Program.fs" Link="Program.fs" />

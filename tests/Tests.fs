@@ -379,7 +379,6 @@ module Tests =
             let actual = Util.deserialise<Customer> response
             Assert.That(expected, Is.EqualTo actual)
 
-<<<<<<< HEAD
     [<TestFixture>]
     type WebhookSigningTests () =
 
