@@ -5,7 +5,7 @@ open FunStripe.WebhookSigning
 open IsoTypes
 open NUnit.Framework
 open StripeModel
-open StripeRequest
+open FunStripe.StripeRequest
 open System
 open System.Security.Cryptography
 open System.Text

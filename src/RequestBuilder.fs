@@ -314,6 +314,125 @@ module RequestBuilder =
     | ModelRequest of ModelRequest * ModelAst
     | ModelModule of Module: string * ModelAst
 
+    /// Maps each Stripe API module name to its resource group for modular file generation.
+    let moduleGroupMapping =
+        dict [
+            // Core
+            "Account", "Core"; "Balance", "Core"; "BalanceTransactions", "Core"
+            "Charges", "Core"; "ChargesSearch", "Core"; "ChargesCapture", "Core"; "ChargesRefunds", "Core"
+            "CountrySpecs", "Core"; "Customers", "Core"; "CustomersSearch", "Core"
+            "CustomersBalanceTransactions", "Core"; "CustomersCashBalance", "Core"
+            "CustomersCashBalanceTransactions", "Core"; "CustomersDiscount", "Core"
+            "CustomersFundingInstructions", "Core"; "CustomersPaymentMethods", "Core"
+            "CustomersSources", "Core"; "CustomersSourcesVerify", "Core"; "CustomersTaxIds", "Core"
+            "Disputes", "Core"; "DisputesClose", "Core"; "EphemeralKeys", "Core"
+            "Events", "Core"; "ExchangeRates", "Core"; "FileLinks", "Core"; "Files", "Core"
+            "Mandates", "Core"; "PaymentIntents", "Core"; "PaymentIntentsSearch", "Core"
+            "PaymentIntentsApplyCustomerBalance", "Core"; "PaymentIntentsCancel", "Core"
+            "PaymentIntentsCapture", "Core"; "PaymentIntentsConfirm", "Core"
+            "PaymentIntentsIncrementAuthorization", "Core"; "PaymentIntentsVerifyMicrodeposits", "Core"
+            "PaymentMethods", "Core"; "PaymentMethodsAttach", "Core"; "PaymentMethodsDetach", "Core"
+            "Payouts", "Core"; "PayoutsCancel", "Core"; "PayoutsReverse", "Core"
+            "Products", "Core"; "ProductsSearch", "Core"
+            "Refunds", "Core"; "RefundsCancel", "Core"
+            "Reviews", "Core"; "ReviewsApprove", "Core"
+            "SetupAttempts", "Core"; "SetupIntents", "Core"
+            "SetupIntentsCancel", "Core"; "SetupIntentsConfirm", "Core"; "SetupIntentsVerifyMicrodeposits", "Core"
+            "Sources", "Core"; "SourcesSourceTransactions", "Core"; "SourcesVerify", "Core"
+            "Tokens", "Core"; "Topups", "Core"; "TopupsCancel", "Core"
+            "Transfers", "Core"; "TransfersReversals", "Core"; "WebhookEndpoints", "Core"
+            // Connect
+            "AccountLinks", "Connect"; "Accounts", "Connect"
+            "AccountsCapabilities", "Connect"; "AccountsExternalAccounts", "Connect"
+            "AccountsLoginLinks", "Connect"; "AccountsPersons", "Connect"; "AccountsReject", "Connect"
+            "ApplePayDomains", "Connect"; "ApplicationFees", "Connect"; "ApplicationFeesRefunds", "Connect"
+            "AppsSecrets", "Connect"; "AppsSecretsDelete", "Connect"; "AppsSecretsFind", "Connect"
+            // Billing
+            "BillingPortalConfigurations", "Billing"; "BillingPortalSessions", "Billing"
+            "Coupons", "Billing"; "CreditNotes", "Billing"; "CreditNotesPreview", "Billing"
+            "CreditNotesPreviewLines", "Billing"; "CreditNotesLines", "Billing"; "CreditNotesVoid", "Billing"
+            "Invoiceitems", "Billing"; "Invoices", "Billing"; "InvoicesSearch", "Billing"
+            "InvoicesUpcoming", "Billing"; "InvoicesUpcomingLines", "Billing"; "InvoicesFinalize", "Billing"
+            "InvoicesLines", "Billing"; "InvoicesMarkUncollectible", "Billing"
+            "InvoicesPay", "Billing"; "InvoicesSend", "Billing"; "InvoicesVoid", "Billing"
+            "Plans", "Billing"; "Prices", "Billing"; "PricesSearch", "Billing"
+            "PromotionCodes", "Billing"; "Quotes", "Billing"; "QuotesAccept", "Billing"
+            "QuotesCancel", "Billing"; "QuotesComputedUpfrontLineItems", "Billing"
+            "QuotesFinalize", "Billing"; "QuotesLineItems", "Billing"; "QuotesPdf", "Billing"
+            "ShippingRates", "Billing"; "SubscriptionItems", "Billing"
+            "SubscriptionSchedules", "Billing"; "SubscriptionSchedulesCancel", "Billing"
+            "SubscriptionSchedulesRelease", "Billing"; "Subscriptions", "Billing"
+            "SubscriptionsSearch", "Billing"; "SubscriptionsDiscount", "Billing"; "SubscriptionsResume", "Billing"
+            "TaxCalculations", "Billing"; "TaxCalculationsLineItems", "Billing"
+            "TaxCodes", "Billing"; "TaxRates", "Billing"; "TaxSettings", "Billing"
+            "TaxTransactionsCreateFromCalculation", "Billing"; "TaxTransactionsCreateReversal", "Billing"
+            "TaxTransactions", "Billing"; "TaxTransactionsLineItems", "Billing"
+            // Checkout
+            "CheckoutSessions", "Checkout"; "CheckoutSessionsExpire", "Checkout"; "CheckoutSessionsLineItems", "Checkout"
+            // FinancialConnections
+            "FinancialConnectionsAccounts", "FinancialConnections"
+            "FinancialConnectionsAccountsDisconnect", "FinancialConnections"
+            "FinancialConnectionsAccountsOwners", "FinancialConnections"
+            "FinancialConnectionsAccountsRefresh", "FinancialConnections"
+            "FinancialConnectionsSessions", "FinancialConnections"
+            // Identity
+            "IdentityVerificationReports", "Identity"; "IdentityVerificationSessions", "Identity"
+            "IdentityVerificationSessionsCancel", "Identity"; "IdentityVerificationSessionsRedact", "Identity"
+            // Issuing
+            "IssuingAuthorizations", "Issuing"; "IssuingAuthorizationsApprove", "Issuing"
+            "IssuingAuthorizationsDecline", "Issuing"; "IssuingCardholders", "Issuing"
+            "IssuingCards", "Issuing"; "IssuingDisputes", "Issuing"
+            "IssuingDisputesSubmit", "Issuing"; "IssuingTransactions", "Issuing"
+            // PaymentLinks
+            "PaymentLinks", "PaymentLinks"; "PaymentLinksLineItems", "PaymentLinks"
+            // Radar
+            "RadarEarlyFraudWarnings", "Radar"; "RadarValueListItems", "Radar"; "RadarValueLists", "Radar"
+            // Reporting
+            "ReportingReportRuns", "Reporting"; "ReportingReportTypes", "Reporting"
+            // Sigma
+            "SigmaScheduledQueryRuns", "Sigma"
+            // Terminal
+            "TerminalConfigurations", "Terminal"; "TerminalConnectionTokens", "Terminal"
+            "TerminalLocations", "Terminal"; "TerminalReaders", "Terminal"
+            "TerminalReadersCancelAction", "Terminal"; "TerminalReadersProcessPaymentIntent", "Terminal"
+            "TerminalReadersProcessSetupIntent", "Terminal"; "TerminalReadersRefundPayment", "Terminal"
+            "TerminalReadersSetReaderDisplay", "Terminal"
+            // TestHelpers
+            "TestHelpersCustomersFundCashBalance", "TestHelpers"
+            "TestHelpersIssuingCardsShippingDeliver", "TestHelpers"
+            "TestHelpersIssuingCardsShippingFail", "TestHelpers"
+            "TestHelpersIssuingCardsShippingReturn", "TestHelpers"
+            "TestHelpersIssuingCardsShippingShip", "TestHelpers"
+            "TestHelpersRefundsExpire", "TestHelpers"
+            "TestHelpersTerminalReadersPresentPaymentMethod", "TestHelpers"
+            "TestHelpersTestClocks", "TestHelpers"; "TestHelpersTestClocksAdvance", "TestHelpers"
+            "TestHelpersTreasuryInboundTransfersFail", "TestHelpers"
+            "TestHelpersTreasuryInboundTransfersReturn", "TestHelpers"
+            "TestHelpersTreasuryInboundTransfersSucceed", "TestHelpers"
+            "TestHelpersTreasuryOutboundPaymentsFail", "TestHelpers"
+            "TestHelpersTreasuryOutboundPaymentsPost", "TestHelpers"
+            "TestHelpersTreasuryOutboundPaymentsReturn", "TestHelpers"
+            "TestHelpersTreasuryOutboundTransfersFail", "TestHelpers"
+            "TestHelpersTreasuryOutboundTransfersPost", "TestHelpers"
+            "TestHelpersTreasuryOutboundTransfersReturn", "TestHelpers"
+            "TestHelpersTreasuryReceivedCredits", "TestHelpers"; "TestHelpersTreasuryReceivedDebits", "TestHelpers"
+            // Treasury
+            "TreasuryCreditReversals", "Treasury"; "TreasuryDebitReversals", "Treasury"
+            "TreasuryFinancialAccounts", "Treasury"; "TreasuryFinancialAccountsFeatures", "Treasury"
+            "TreasuryInboundTransfers", "Treasury"; "TreasuryInboundTransfersCancel", "Treasury"
+            "TreasuryOutboundPayments", "Treasury"; "TreasuryOutboundPaymentsCancel", "Treasury"
+            "TreasuryOutboundTransfers", "Treasury"; "TreasuryOutboundTransfersCancel", "Treasury"
+            "TreasuryReceivedCredits", "Treasury"; "TreasuryReceivedDebits", "Treasury"
+            "TreasuryTransactionEntries", "Treasury"; "TreasuryTransactions", "Treasury"
+        ]
+
+    /// Ordered list of resource groups for deterministic file generation.
+    let groupOrder = [
+        "Core"; "Connect"; "Billing"; "Checkout"; "FinancialConnections"
+        "Identity"; "Issuing"; "PaymentLinks"; "Radar"; "Reporting"
+        "Sigma"; "Terminal"; "TestHelpers"; "Treasury"
+    ]
+
     ///Parses the Stripe OpenAPI specification, outputting an F# module specifying the object model for all body form parameters in Stripe API requests
     let parseRequest filePath =
         let root = __SOURCE_DIRECTORY__
@@ -594,10 +713,74 @@ module RequestBuilder =
 
         sb.ToString().Replace("\t", "    ")
 
+    /// Generates per-resource-group StripeRequest files from the parsed model AST.
+    /// Each group is written to a separate file named StripeRequest.<Group>.fs in the same directory.
+    /// This supports partial API loading via MSBuild properties (see FunStripe.fsproj).
+    let serializeModelByGroups (version: string) (outputDir: string) fullModel =
+
+        // Generate the monolithic content first
+        let fullContent = serializeModel version fullModel
+
+        // Module header pattern: "    module <Name> ="
+        let modulePattern = Regex(@"^    module (\w+) =$", RegexOptions.Multiline)
+
+        // Find all module block boundaries
+        let matches =
+            modulePattern.Matches fullContent
+            |> Seq.cast<System.Text.RegularExpressions.Match>
+            |> Array.ofSeq
+
+        // Collect per-group content builders
+        let groupBuilders =
+            groupOrder
+            |> List.map (fun g -> g, Text.StringBuilder())
+            |> dict
+
+        for i in 0 .. matches.Length - 1 do
+            let m = matches.[i]
+            let moduleName = m.Groups.[1].Value
+            let startIdx = m.Index
+            let endIdx =
+                if i + 1 < matches.Length then matches.[i + 1].Index
+                else fullContent.Length
+
+            let moduleContent = fullContent.[startIdx .. endIdx - 1]
+
+            // Determine which group this module belongs to
+            let group =
+                match moduleGroupMapping.TryGetValue moduleName with
+                | true, g -> g
+                | _ ->
+                    eprintfn $"Warning: module '{moduleName}' not found in moduleGroupMapping, defaulting to Core"
+                    "Core"
+
+            // Dedent by 4 spaces (remove the outer `module StripeRequest =` indentation)
+            let dedented =
+                moduleContent.Split('\n')
+                |> Array.map (fun line ->
+                    if line.Length >= 4 && line.[0..3] = "    " then line.[4..]
+                    else line)
+                |> String.concat "\n"
+
+            groupBuilders.[group].Append dedented |> ignore
+
+        // Write per-group files
+        for group in groupOrder do
+            let content = groupBuilders.[group].ToString().Trim()
+            if content <> "" then
+                let header =
+                    $"namespace FunStripe.StripeRequest\n\nopen FunStripe\nopen FunStripe.Json\nopen FunStripe.StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\n"
+                let fileName = IO.Path.Combine(outputDir, $"StripeRequest.{group}.fs")
+                IO.File.WriteAllText(fileName, header + content + "\n")
+
 #if INTERACTIVE
     ;;
     open RequestBuilder;;
     let m = parseRequest None;;
+    let sourceDir = __SOURCE_DIRECTORY__;;
+    // Generate modular per-resource-group files (used for partial API loading)
+    serializeModelByGroups "1.0.0" sourceDir m;;
+    // Also regenerate the legacy monolithic file for reference
     let s = serializeModel "1.0.0" m;;
-    System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeRequest.fs", s);;
+    System.IO.File.WriteAllText($"{sourceDir}/StripeRequest.fs", s);;
 #endif
