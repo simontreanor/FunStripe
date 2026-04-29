@@ -33,6 +33,7 @@
     <Compile Include="../AssemblyInfo.fs" Link="AssemblyInfo.fs" />
     <Compile Include="../Util.fs" Link="Util.fs" />
     <Compile Include="../AsyncResult.fs" Link="AsyncResult.fs" />
+    <Compile Include="../IsoTypes.fs" Link="IsoTypes.fs" />
     <Compile Include="../StripeModel.fs" Link="StripeModel.fs" />
     <Compile Include="../StripeError.fs" Link="StripeError.fs" />
     <Compile Include="../RestApi.fs" Link="RestApi.fs" />

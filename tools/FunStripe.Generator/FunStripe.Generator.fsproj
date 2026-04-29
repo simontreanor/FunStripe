@@ -18,6 +18,7 @@
     <Compile Include="../../src/Config.fs" Link="Config.fs" />
     <Compile Include="../../src/Util.fs" Link="Util.fs" />
     <Compile Include="../../src/AsyncResult.fs" Link="AsyncResult.fs" />
+    <Compile Include="../../src/IsoTypes.fs" Link="IsoTypes.fs" />
     <Compile Include="../../src/ModelBuilder.fs" Link="ModelBuilder.fs" />
     <Compile Include="../../src/RequestBuilder.fs" Link="RequestBuilder.fs" />
     <Compile Include="../../src/StripeModel.fs" Link="StripeModel.fs" />

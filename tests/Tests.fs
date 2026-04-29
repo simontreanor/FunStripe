@@ -1,6 +1,7 @@
 namespace FunStripe
 
 open FunStripe.AsyncResultCE
+open IsoTypes
 open NUnit.Framework
 open StripeModel
 open StripeRequest
@@ -50,7 +51,7 @@ module Tests =
                 PaymentMethodCard.New(
                     brand = PaymentMethodCardBrand.Visa,
                     checks = Some paymentMethodCardChecks,
-                    country = Some "US",
+                    country = Some IsoCountryCode.US,
                     displayBrand = None,
                     expMonth = 10,
                     expYear = 2027,
@@ -256,7 +257,7 @@ module Tests =
                                         addressZip =  None,
                                         addressZipCheck =  None,
                                         brand = CardBrand.Visa,
-                                        country = Some "US",
+                                        country = Some IsoCountryCode.US,
                                         customer = Some (CardCustomer'AnyOf.String "cus_IhzR2Msjq0lILS"),
                                         cvcCheck = Some (CardCvcCheck.Pass),
                                         dynamicLast4 =  None,
@@ -389,7 +390,7 @@ module Tests =
                     addressZip =  None,
                     addressZipCheck =  None,
                     brand = CardBrand.Visa,
-                    country = Some "US",
+                    country = Some IsoCountryCode.US,
                     customer = Some (CardCustomer'AnyOf.String "cus_IhzR2Msjq0lILS"),
                     cvcCheck = Some (CardCvcCheck.Pass),
                     dynamicLast4 =  None,
@@ -400,6 +401,7 @@ module Tests =
                     last4 = "4242",
                     metadata = Some (Map.empty),
                     name =  None,
+                    regulatedStatus = None,
                     tokenizationMethod =  None
                 )
             let response = """

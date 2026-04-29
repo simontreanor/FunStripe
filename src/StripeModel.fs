@@ -1107,20 +1107,6 @@ module StripeModel =
                 TerminalConnectionToken.Location = location
             }
 
-    ///The amount of the tax rate when the `rate_type`` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.
-    type TaxRateFlatAmount = {
-        ///Amount of the tax when the `rate_type` is `flat_amount`. This positive integer represents how much to charge in the smallest currency unit (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
-        Amount: int
-        ///Three-letter ISO currency code, in lowercase.
-        Currency: string
-    }
-    with
-        static member New (amount: int, currency: string) =
-            {
-                TaxRateFlatAmount.Amount = amount //required
-                TaxRateFlatAmount.Currency = currency //required
-            }
-
     type TaxRateTaxType =
         | AmusementTax
         | CommunicationsTax
@@ -1262,31 +1248,6 @@ module StripeModel =
     type TaxProductResourceTaxAssociationTransactionAttemptsStatus =
         | Errored
         | Committed
-
-    type TaxProductResourcePostalAddress = {
-        ///City, district, suburb, town, or village.
-        City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string
-        ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
-        ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
-        ///ZIP or postal code.
-        PostalCode: string option
-        ///State/province as an [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) subdivision code, without country prefix, such as "NY" or "TX".
-        State: string option
-    }
-    with
-        static member New (city: string option, country: string, line1: string option, line2: string option, postalCode: string option, state: string option) =
-            {
-                TaxProductResourcePostalAddress.City = city //required
-                TaxProductResourcePostalAddress.Country = country //required
-                TaxProductResourcePostalAddress.Line1 = line1 //required
-                TaxProductResourcePostalAddress.Line2 = line2 //required
-                TaxProductResourcePostalAddress.PostalCode = postalCode //required
-                TaxProductResourcePostalAddress.State = state //required
-            }
 
     type TaxProductResourceLineItemTaxRateDetailsTaxType =
         | AmusementTax
@@ -1765,16 +1726,6 @@ module StripeModel =
         | CreateInvoice
         | Pause
 
-    type SubscriptionsResourceSubscriptionPresentmentDetails = {
-        ///Currency used for customer payments.
-        PresentmentCurrency: string
-    }
-    with
-        static member New (presentmentCurrency: string) =
-            {
-                SubscriptionsResourceSubscriptionPresentmentDetails.PresentmentCurrency = presentmentCurrency //required
-            }
-
     type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
         | AchCreditTransfer
         | AchDebit
@@ -2022,124 +1973,6 @@ module StripeModel =
                 SourceTypeWechat.StatementDescriptor = statementDescriptor
             }
 
-    type SourceTypeThreeDSecure = {
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
-        AddressZipCheck: string option
-        Authenticated: bool option
-        Brand: string option
-        Card: string option
-        Country: string option
-        Customer: string option
-        CvcCheck: string option
-        Description: string option
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
-        ExpMonth: int option
-        ExpYear: int option
-        Fingerprint: string option
-        Funding: string option
-        Iin: string option
-        Issuer: string option
-        [<JsonField(Name="last4")>]Last4: string option
-        Name: string option
-        ThreeDSecure: string option
-        TokenizationMethod: string option
-    }
-    with
-        static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?authenticated: bool option, ?brand: string option, ?card: string option, ?country: string option, ?customer: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
-            {
-                SourceTypeThreeDSecure.AddressLine1Check = addressLine1Check |> Option.flatten
-                SourceTypeThreeDSecure.AddressZipCheck = addressZipCheck |> Option.flatten
-                SourceTypeThreeDSecure.Authenticated = authenticated |> Option.flatten
-                SourceTypeThreeDSecure.Brand = brand |> Option.flatten
-                SourceTypeThreeDSecure.Card = card |> Option.flatten
-                SourceTypeThreeDSecure.Country = country |> Option.flatten
-                SourceTypeThreeDSecure.Customer = customer |> Option.flatten
-                SourceTypeThreeDSecure.CvcCheck = cvcCheck |> Option.flatten
-                SourceTypeThreeDSecure.Description = description
-                SourceTypeThreeDSecure.DynamicLast4 = dynamicLast4 |> Option.flatten
-                SourceTypeThreeDSecure.ExpMonth = expMonth |> Option.flatten
-                SourceTypeThreeDSecure.ExpYear = expYear |> Option.flatten
-                SourceTypeThreeDSecure.Fingerprint = fingerprint
-                SourceTypeThreeDSecure.Funding = funding |> Option.flatten
-                SourceTypeThreeDSecure.Iin = iin
-                SourceTypeThreeDSecure.Issuer = issuer
-                SourceTypeThreeDSecure.Last4 = last4 |> Option.flatten
-                SourceTypeThreeDSecure.Name = name |> Option.flatten
-                SourceTypeThreeDSecure.ThreeDSecure = threeDSecure
-                SourceTypeThreeDSecure.TokenizationMethod = tokenizationMethod |> Option.flatten
-            }
-
-    type SourceTypeSofort = {
-        BankCode: string option
-        BankName: string option
-        Bic: string option
-        Country: string option
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
-        PreferredLanguage: string option
-        StatementDescriptor: string option
-    }
-    with
-        static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?country: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
-            {
-                SourceTypeSofort.BankCode = bankCode |> Option.flatten
-                SourceTypeSofort.BankName = bankName |> Option.flatten
-                SourceTypeSofort.Bic = bic |> Option.flatten
-                SourceTypeSofort.Country = country |> Option.flatten
-                SourceTypeSofort.IbanLast4 = ibanLast4 |> Option.flatten
-                SourceTypeSofort.PreferredLanguage = preferredLanguage |> Option.flatten
-                SourceTypeSofort.StatementDescriptor = statementDescriptor |> Option.flatten
-            }
-
-    type SourceTypeSepaDebit = {
-        BankCode: string option
-        BranchCode: string option
-        Country: string option
-        Fingerprint: string option
-        [<JsonField(Name="last4")>]Last4: string option
-        MandateReference: string option
-        MandateUrl: string option
-    }
-    with
-        static member New (?bankCode: string option, ?branchCode: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?mandateReference: string option, ?mandateUrl: string option) =
-            {
-                SourceTypeSepaDebit.BankCode = bankCode |> Option.flatten
-                SourceTypeSepaDebit.BranchCode = branchCode |> Option.flatten
-                SourceTypeSepaDebit.Country = country |> Option.flatten
-                SourceTypeSepaDebit.Fingerprint = fingerprint |> Option.flatten
-                SourceTypeSepaDebit.Last4 = last4 |> Option.flatten
-                SourceTypeSepaDebit.MandateReference = mandateReference |> Option.flatten
-                SourceTypeSepaDebit.MandateUrl = mandateUrl |> Option.flatten
-            }
-
-    type SourceTypeSepaCreditTransfer = {
-        BankName: string option
-        Bic: string option
-        Iban: string option
-        RefundAccountHolderAddressCity: string option
-        RefundAccountHolderAddressCountry: string option
-        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
-        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
-        RefundAccountHolderAddressPostalCode: string option
-        RefundAccountHolderAddressState: string option
-        RefundAccountHolderName: string option
-        RefundIban: string option
-    }
-    with
-        static member New (?bankName: string option, ?bic: string option, ?iban: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
-            {
-                SourceTypeSepaCreditTransfer.BankName = bankName |> Option.flatten
-                SourceTypeSepaCreditTransfer.Bic = bic |> Option.flatten
-                SourceTypeSepaCreditTransfer.Iban = iban |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundAccountHolderName = refundAccountHolderName |> Option.flatten
-                SourceTypeSepaCreditTransfer.RefundIban = refundIban |> Option.flatten
-            }
-
     type SourceTypeP24 = {
         Reference: string option
     }
@@ -2147,92 +1980,6 @@ module StripeModel =
         static member New (?reference: string option) =
             {
                 SourceTypeP24.Reference = reference |> Option.flatten
-            }
-
-    type SourceTypeMultibanco = {
-        Entity: string option
-        Reference: string option
-        RefundAccountHolderAddressCity: string option
-        RefundAccountHolderAddressCountry: string option
-        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
-        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
-        RefundAccountHolderAddressPostalCode: string option
-        RefundAccountHolderAddressState: string option
-        RefundAccountHolderName: string option
-        RefundIban: string option
-    }
-    with
-        static member New (?entity: string option, ?reference: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: string option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
-            {
-                SourceTypeMultibanco.Entity = entity |> Option.flatten
-                SourceTypeMultibanco.Reference = reference |> Option.flatten
-                SourceTypeMultibanco.RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
-                SourceTypeMultibanco.RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
-                SourceTypeMultibanco.RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
-                SourceTypeMultibanco.RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
-                SourceTypeMultibanco.RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
-                SourceTypeMultibanco.RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
-                SourceTypeMultibanco.RefundAccountHolderName = refundAccountHolderName |> Option.flatten
-                SourceTypeMultibanco.RefundIban = refundIban |> Option.flatten
-            }
-
-    type SourceTypeKlarna = {
-        BackgroundImageUrl: string option
-        ClientToken: string option
-        FirstName: string option
-        LastName: string option
-        Locale: string option
-        LogoUrl: string option
-        PageTitle: string option
-        PayLaterAssetUrlsDescriptive: string option
-        PayLaterAssetUrlsStandard: string option
-        PayLaterName: string option
-        PayLaterRedirectUrl: string option
-        PayNowAssetUrlsDescriptive: string option
-        PayNowAssetUrlsStandard: string option
-        PayNowName: string option
-        PayNowRedirectUrl: string option
-        PayOverTimeAssetUrlsDescriptive: string option
-        PayOverTimeAssetUrlsStandard: string option
-        PayOverTimeName: string option
-        PayOverTimeRedirectUrl: string option
-        PaymentMethodCategories: string option
-        PurchaseCountry: string option
-        PurchaseType: string option
-        RedirectUrl: string option
-        ShippingDelay: int option
-        ShippingFirstName: string option
-        ShippingLastName: string option
-    }
-    with
-        static member New (?backgroundImageUrl: string, ?clientToken: string option, ?firstName: string, ?lastName: string, ?locale: string, ?logoUrl: string, ?pageTitle: string, ?payLaterAssetUrlsDescriptive: string, ?payLaterAssetUrlsStandard: string, ?payLaterName: string, ?payLaterRedirectUrl: string, ?payNowAssetUrlsDescriptive: string, ?payNowAssetUrlsStandard: string, ?payNowName: string, ?payNowRedirectUrl: string, ?payOverTimeAssetUrlsDescriptive: string, ?payOverTimeAssetUrlsStandard: string, ?payOverTimeName: string, ?payOverTimeRedirectUrl: string, ?paymentMethodCategories: string, ?purchaseCountry: string, ?purchaseType: string, ?redirectUrl: string, ?shippingDelay: int, ?shippingFirstName: string, ?shippingLastName: string) =
-            {
-                SourceTypeKlarna.BackgroundImageUrl = backgroundImageUrl
-                SourceTypeKlarna.ClientToken = clientToken |> Option.flatten
-                SourceTypeKlarna.FirstName = firstName
-                SourceTypeKlarna.LastName = lastName
-                SourceTypeKlarna.Locale = locale
-                SourceTypeKlarna.LogoUrl = logoUrl
-                SourceTypeKlarna.PageTitle = pageTitle
-                SourceTypeKlarna.PayLaterAssetUrlsDescriptive = payLaterAssetUrlsDescriptive
-                SourceTypeKlarna.PayLaterAssetUrlsStandard = payLaterAssetUrlsStandard
-                SourceTypeKlarna.PayLaterName = payLaterName
-                SourceTypeKlarna.PayLaterRedirectUrl = payLaterRedirectUrl
-                SourceTypeKlarna.PayNowAssetUrlsDescriptive = payNowAssetUrlsDescriptive
-                SourceTypeKlarna.PayNowAssetUrlsStandard = payNowAssetUrlsStandard
-                SourceTypeKlarna.PayNowName = payNowName
-                SourceTypeKlarna.PayNowRedirectUrl = payNowRedirectUrl
-                SourceTypeKlarna.PayOverTimeAssetUrlsDescriptive = payOverTimeAssetUrlsDescriptive
-                SourceTypeKlarna.PayOverTimeAssetUrlsStandard = payOverTimeAssetUrlsStandard
-                SourceTypeKlarna.PayOverTimeName = payOverTimeName
-                SourceTypeKlarna.PayOverTimeRedirectUrl = payOverTimeRedirectUrl
-                SourceTypeKlarna.PaymentMethodCategories = paymentMethodCategories
-                SourceTypeKlarna.PurchaseCountry = purchaseCountry
-                SourceTypeKlarna.PurchaseType = purchaseType
-                SourceTypeKlarna.RedirectUrl = redirectUrl
-                SourceTypeKlarna.ShippingDelay = shippingDelay
-                SourceTypeKlarna.ShippingFirstName = shippingFirstName
-                SourceTypeKlarna.ShippingLastName = shippingLastName
             }
 
     type SourceTypeIdeal = {
@@ -2274,106 +2021,6 @@ module StripeModel =
             {
                 SourceTypeEps.Reference = reference |> Option.flatten
                 SourceTypeEps.StatementDescriptor = statementDescriptor |> Option.flatten
-            }
-
-    type SourceTypeCardPresent = {
-        ApplicationCryptogram: string option
-        ApplicationPreferredName: string option
-        AuthorizationCode: string option
-        AuthorizationResponseCode: string option
-        Brand: string option
-        Country: string option
-        CvmType: string option
-        DataType: string option
-        DedicatedFileName: string option
-        Description: string option
-        EmvAuthData: string option
-        EvidenceCustomerSignature: string option
-        EvidenceTransactionCertificate: string option
-        ExpMonth: int option
-        ExpYear: int option
-        Fingerprint: string option
-        Funding: string option
-        Iin: string option
-        Issuer: string option
-        [<JsonField(Name="last4")>]Last4: string option
-        PosDeviceId: string option
-        PosEntryMode: string option
-        ReadMethod: string option
-        Reader: string option
-        TerminalVerificationResults: string option
-        TransactionStatusInformation: string option
-    }
-    with
-        static member New (?applicationCryptogram: string, ?applicationPreferredName: string, ?authorizationCode: string option, ?authorizationResponseCode: string, ?brand: string option, ?country: string option, ?cvmType: string, ?dataType: string option, ?dedicatedFileName: string, ?description: string, ?emvAuthData: string, ?evidenceCustomerSignature: string option, ?evidenceTransactionCertificate: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?posDeviceId: string option, ?posEntryMode: string, ?readMethod: string option, ?reader: string option, ?terminalVerificationResults: string, ?transactionStatusInformation: string) =
-            {
-                SourceTypeCardPresent.ApplicationCryptogram = applicationCryptogram
-                SourceTypeCardPresent.ApplicationPreferredName = applicationPreferredName
-                SourceTypeCardPresent.AuthorizationCode = authorizationCode |> Option.flatten
-                SourceTypeCardPresent.AuthorizationResponseCode = authorizationResponseCode
-                SourceTypeCardPresent.Brand = brand |> Option.flatten
-                SourceTypeCardPresent.Country = country |> Option.flatten
-                SourceTypeCardPresent.CvmType = cvmType
-                SourceTypeCardPresent.DataType = dataType |> Option.flatten
-                SourceTypeCardPresent.DedicatedFileName = dedicatedFileName
-                SourceTypeCardPresent.Description = description
-                SourceTypeCardPresent.EmvAuthData = emvAuthData
-                SourceTypeCardPresent.EvidenceCustomerSignature = evidenceCustomerSignature |> Option.flatten
-                SourceTypeCardPresent.EvidenceTransactionCertificate = evidenceTransactionCertificate |> Option.flatten
-                SourceTypeCardPresent.ExpMonth = expMonth |> Option.flatten
-                SourceTypeCardPresent.ExpYear = expYear |> Option.flatten
-                SourceTypeCardPresent.Fingerprint = fingerprint
-                SourceTypeCardPresent.Funding = funding |> Option.flatten
-                SourceTypeCardPresent.Iin = iin
-                SourceTypeCardPresent.Issuer = issuer
-                SourceTypeCardPresent.Last4 = last4 |> Option.flatten
-                SourceTypeCardPresent.PosDeviceId = posDeviceId |> Option.flatten
-                SourceTypeCardPresent.PosEntryMode = posEntryMode
-                SourceTypeCardPresent.ReadMethod = readMethod |> Option.flatten
-                SourceTypeCardPresent.Reader = reader |> Option.flatten
-                SourceTypeCardPresent.TerminalVerificationResults = terminalVerificationResults
-                SourceTypeCardPresent.TransactionStatusInformation = transactionStatusInformation
-            }
-
-    type SourceTypeCard = {
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
-        AddressZipCheck: string option
-        Brand: string option
-        Country: string option
-        CvcCheck: string option
-        Description: string option
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
-        ExpMonth: int option
-        ExpYear: int option
-        Fingerprint: string option
-        Funding: string option
-        Iin: string option
-        Issuer: string option
-        [<JsonField(Name="last4")>]Last4: string option
-        Name: string option
-        ThreeDSecure: string option
-        TokenizationMethod: string option
-    }
-    with
-        static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?brand: string option, ?country: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
-            {
-                SourceTypeCard.AddressLine1Check = addressLine1Check |> Option.flatten
-                SourceTypeCard.AddressZipCheck = addressZipCheck |> Option.flatten
-                SourceTypeCard.Brand = brand |> Option.flatten
-                SourceTypeCard.Country = country |> Option.flatten
-                SourceTypeCard.CvcCheck = cvcCheck |> Option.flatten
-                SourceTypeCard.Description = description
-                SourceTypeCard.DynamicLast4 = dynamicLast4 |> Option.flatten
-                SourceTypeCard.ExpMonth = expMonth |> Option.flatten
-                SourceTypeCard.ExpYear = expYear |> Option.flatten
-                SourceTypeCard.Fingerprint = fingerprint
-                SourceTypeCard.Funding = funding |> Option.flatten
-                SourceTypeCard.Iin = iin
-                SourceTypeCard.Issuer = issuer
-                SourceTypeCard.Last4 = last4 |> Option.flatten
-                SourceTypeCard.Name = name |> Option.flatten
-                SourceTypeCard.ThreeDSecure = threeDSecure
-                SourceTypeCard.TokenizationMethod = tokenizationMethod |> Option.flatten
             }
 
     type SourceTypeBancontact = {
@@ -2419,52 +2066,6 @@ module StripeModel =
                 SourceTypeAlipay.DataString = dataString |> Option.flatten
                 SourceTypeAlipay.NativeUrl = nativeUrl |> Option.flatten
                 SourceTypeAlipay.StatementDescriptor = statementDescriptor |> Option.flatten
-            }
-
-    type SourceTypeAcssDebit = {
-        BankAddressCity: string option
-        BankAddressLine1: string option
-        BankAddressLine2: string option
-        BankAddressPostalCode: string option
-        BankName: string option
-        Category: string option
-        Country: string option
-        Fingerprint: string option
-        [<JsonField(Name="last4")>]Last4: string option
-        RoutingNumber: string option
-    }
-    with
-        static member New (?bankAddressCity: string option, ?bankAddressLine1: string option, ?bankAddressLine2: string option, ?bankAddressPostalCode: string option, ?bankName: string option, ?category: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option) =
-            {
-                SourceTypeAcssDebit.BankAddressCity = bankAddressCity |> Option.flatten
-                SourceTypeAcssDebit.BankAddressLine1 = bankAddressLine1 |> Option.flatten
-                SourceTypeAcssDebit.BankAddressLine2 = bankAddressLine2 |> Option.flatten
-                SourceTypeAcssDebit.BankAddressPostalCode = bankAddressPostalCode |> Option.flatten
-                SourceTypeAcssDebit.BankName = bankName |> Option.flatten
-                SourceTypeAcssDebit.Category = category |> Option.flatten
-                SourceTypeAcssDebit.Country = country |> Option.flatten
-                SourceTypeAcssDebit.Fingerprint = fingerprint |> Option.flatten
-                SourceTypeAcssDebit.Last4 = last4 |> Option.flatten
-                SourceTypeAcssDebit.RoutingNumber = routingNumber |> Option.flatten
-            }
-
-    type SourceTypeAchDebit = {
-        BankName: string option
-        Country: string option
-        Fingerprint: string option
-        [<JsonField(Name="last4")>]Last4: string option
-        RoutingNumber: string option
-        Type: string option
-    }
-    with
-        static member New (?bankName: string option, ?country: string option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option, ?``type``: string option) =
-            {
-                SourceTypeAchDebit.BankName = bankName |> Option.flatten
-                SourceTypeAchDebit.Country = country |> Option.flatten
-                SourceTypeAchDebit.Fingerprint = fingerprint |> Option.flatten
-                SourceTypeAchDebit.Last4 = last4 |> Option.flatten
-                SourceTypeAchDebit.RoutingNumber = routingNumber |> Option.flatten
-                SourceTypeAchDebit.Type = ``type`` |> Option.flatten
             }
 
     type SourceTypeAchCreditTransfer = {
@@ -2545,28 +2146,6 @@ module StripeModel =
                 SourceTransactionGbpCreditTransferData.SenderAccountNumber = senderAccountNumber
                 SourceTransactionGbpCreditTransferData.SenderName = senderName
                 SourceTransactionGbpCreditTransferData.SenderSortCode = senderSortCode
-            }
-
-    type SourceTransactionChfCreditTransferData = {
-        ///Reference associated with the transfer.
-        Reference: string option
-        ///Sender's country address.
-        SenderAddressCountry: string option
-        ///Sender's line 1 address.
-        [<JsonField(Name="sender_address_line1")>]SenderAddressLine1: string option
-        ///Sender's bank account IBAN.
-        SenderIban: string option
-        ///Sender's name.
-        SenderName: string option
-    }
-    with
-        static member New (?reference: string, ?senderAddressCountry: string, ?senderAddressLine1: string, ?senderIban: string, ?senderName: string) =
-            {
-                SourceTransactionChfCreditTransferData.Reference = reference
-                SourceTransactionChfCreditTransferData.SenderAddressCountry = senderAddressCountry
-                SourceTransactionChfCreditTransferData.SenderAddressLine1 = senderAddressLine1
-                SourceTransactionChfCreditTransferData.SenderIban = senderIban
-                SourceTransactionChfCreditTransferData.SenderName = senderName
             }
 
     type SourceTransactionAchCreditTransferData = {
@@ -2882,19 +2461,6 @@ module StripeModel =
         static member New (persistentToken: string option) =
             {
                 SetupIntentPaymentMethodOptionsLink.PersistentToken = persistentToken //required
-            }
-
-    type SetupIntentPaymentMethodOptionsKlarna = {
-        ///The currency of the setup intent. Three letter ISO currency code.
-        Currency: string option
-        ///Preferred locale of the Klarna checkout page that the customer is redirected to.
-        PreferredLocale: string option
-    }
-    with
-        static member New (currency: string option, preferredLocale: string option) =
-            {
-                SetupIntentPaymentMethodOptionsKlarna.Currency = currency //required
-                SetupIntentPaymentMethodOptionsKlarna.PreferredLocale = preferredLocale //required
             }
 
     type SetupIntentPaymentMethodOptionsCardPresent = {
@@ -3482,27 +3048,6 @@ module StripeModel =
                 ReservesReserveHoldsResourcesReleaseSchedule.ScheduledRelease = scheduledRelease //required
             }
 
-    type ReserveTransaction = {
-        Amount: int
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-        ///An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
-        ///Unique identifier for the object.
-        Id: string
-    }
-    with
-        ///String representing the object's type. Objects of the same type share the same value.
-        member _.Object = "reserve_transaction"
-
-        static member New (amount: int, currency: string, description: string option, id: string) =
-            {
-                ReserveTransaction.Amount = amount //required
-                ReserveTransaction.Currency = currency //required
-                ReserveTransaction.Description = description //required
-                ReserveTransaction.Id = id //required
-            }
-
     [<Struct>]
     type ReserveReleaseReason =
         | BulkHoldExpiry
@@ -3723,28 +3268,6 @@ module StripeModel =
                 RadarReviewResourceSession.Device = device //required
                 RadarReviewResourceSession.Platform = platform //required
                 RadarReviewResourceSession.Version = version //required
-            }
-
-    type RadarReviewResourceLocation = {
-        ///The city where the payment originated.
-        City: string option
-        ///Two-letter ISO code representing the country where the payment originated.
-        Country: string option
-        ///The geographic latitude where the payment originated.
-        Latitude: decimal option
-        ///The geographic longitude where the payment originated.
-        Longitude: decimal option
-        ///The state/county/province/region where the payment originated.
-        Region: string option
-    }
-    with
-        static member New (city: string option, country: string option, latitude: decimal option, longitude: decimal option, region: string option) =
-            {
-                RadarReviewResourceLocation.City = city //required
-                RadarReviewResourceLocation.Country = country //required
-                RadarReviewResourceLocation.Latitude = latitude //required
-                RadarReviewResourceLocation.Longitude = longitude //required
-                RadarReviewResourceLocation.Region = region //required
             }
 
     ///Options to configure Radar. See [Radar Session](https://docs.stripe.com/radar/radar-session) for more information.
@@ -4324,28 +3847,6 @@ module StripeModel =
                 PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails.PaymentReference = paymentReference //required
             }
 
-    type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard = {
-        ///Brand of the card used in the transaction
-        Brand: string option
-        ///Two-letter ISO code representing the country of the card
-        Country: string option
-        ///Two digit number representing the card's expiration month
-        ExpMonth: int option
-        ///Two digit number representing the card's expiration year
-        ExpYear: int option
-        ///The last 4 digits of the card
-        [<JsonField(Name="last4")>]Last4: string option
-    }
-    with
-        static member New (brand: string option, country: string option, expMonth: int option, expYear: int option, last4: string option) =
-            {
-                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.Brand = brand //required
-                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.Country = country //required
-                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.ExpMonth = expMonth //required
-                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.ExpYear = expYear //required
-                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.Last4 = last4 //required
-            }
-
     [<Struct>]
     type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStoreChain =
         | Familymart
@@ -4555,46 +4056,6 @@ module StripeModel =
                 PaymentsPrimitivesPaymentRecordsResourceCustomerDetails.Email = email //required
                 PaymentsPrimitivesPaymentRecordsResourceCustomerDetails.Name = name //required
                 PaymentsPrimitivesPaymentRecordsResourceCustomerDetails.Phone = phone //required
-            }
-
-    ///A representation of an amount of money, consisting of an amount and a currency.
-    type PaymentsPrimitivesPaymentRecordsResourceAmount = {
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-        ///A positive integer representing the amount in the currency's [minor unit](https://docs.stripe.com/currencies#zero-decimal). For example, `100` can represent 1 USD or 100 JPY.
-        Value: int
-    }
-    with
-        static member New (currency: string, value: int) =
-            {
-                PaymentsPrimitivesPaymentRecordsResourceAmount.Currency = currency //required
-                PaymentsPrimitivesPaymentRecordsResourceAmount.Value = value //required
-            }
-
-    ///A representation of a physical address.
-    type PaymentsPrimitivesPaymentRecordsResourceAddress = {
-        ///City, district, suburb, town, or village.
-        City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
-        ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
-        ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
-        ///ZIP or postal code.
-        PostalCode: string option
-        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-        State: string option
-    }
-    with
-        static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
-            {
-                PaymentsPrimitivesPaymentRecordsResourceAddress.City = city //required
-                PaymentsPrimitivesPaymentRecordsResourceAddress.Country = country //required
-                PaymentsPrimitivesPaymentRecordsResourceAddress.Line1 = line1 //required
-                PaymentsPrimitivesPaymentRecordsResourceAddress.Line2 = line2 //required
-                PaymentsPrimitivesPaymentRecordsResourceAddress.PostalCode = postalCode //required
-                PaymentsPrimitivesPaymentRecordsResourceAddress.State = state //required
             }
 
     [<Struct>]
@@ -5139,25 +4600,6 @@ module StripeModel =
         | Numeric
         | Text
 
-    type PaymentPagesCheckoutSessionCurrencyConversion = {
-        ///Total of all items in source currency before discounts or taxes are applied.
-        AmountSubtotal: int
-        ///Total of all items in source currency after discounts and taxes are applied.
-        AmountTotal: int
-        ///Exchange rate used to convert source currency amounts to customer currency amounts
-        FxRate: string
-        ///Creation currency of the CheckoutSession before localization
-        SourceCurrency: string
-    }
-    with
-        static member New (amountSubtotal: int, amountTotal: int, fxRate: string, sourceCurrency: string) =
-            {
-                PaymentPagesCheckoutSessionCurrencyConversion.AmountSubtotal = amountSubtotal //required
-                PaymentPagesCheckoutSessionCurrencyConversion.AmountTotal = amountTotal //required
-                PaymentPagesCheckoutSessionCurrencyConversion.FxRate = fxRate //required
-                PaymentPagesCheckoutSessionCurrencyConversion.SourceCurrency = sourceCurrency //required
-            }
-
     [<Struct>]
     type PaymentPagesCheckoutSessionConsentCollectionTermsOfService =
         | [<JsonUnionCase("none")>] None'
@@ -5327,16 +4769,6 @@ module StripeModel =
                 PaymentMethodSunbit.PaymentMethodSunbit = paymentMethodSunbit |> Option.flatten
             }
 
-    type PaymentMethodSofort = {
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
-    }
-    with
-        static member New (country: string option) =
-            {
-                PaymentMethodSofort.Country = country //required
-            }
-
     type PaymentMethodSatispay = {
         PaymentMethodSatispay: string option
     }
@@ -5396,23 +4828,6 @@ module StripeModel =
                 PaymentMethodPayto.BsbNumber = bsbNumber //required
                 PaymentMethodPayto.Last4 = last4 //required
                 PaymentMethodPayto.PayId = payId //required
-            }
-
-    type PaymentMethodPaypal = {
-        ///Two-letter ISO code representing the buyer's country. Values are provided by PayPal directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Country: string option
-        ///Owner's email. Values are provided by PayPal directly
-        ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        PayerEmail: string option
-        ///PayPal account PayerID. This identifier uniquely identifies the PayPal customer.
-        PayerId: string option
-    }
-    with
-        static member New (country: string option, payerEmail: string option, payerId: string option) =
-            {
-                PaymentMethodPaypal.Country = country //required
-                PaymentMethodPaypal.PayerEmail = payerEmail //required
-                PaymentMethodPaypal.PayerId = payerId //required
             }
 
     type PaymentMethodPaynow = {
@@ -6230,34 +5645,6 @@ module StripeModel =
         | Nl
         | Pl
 
-    type PaymentMethodDetailsSepaDebit = {
-        ///Bank code of bank associated with the bank account.
-        BankCode: string option
-        ///Branch code of bank associated with the bank account.
-        BranchCode: string option
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
-        ///Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
-        ExpectedDebitDate: string option
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
-        ///Last four characters of the IBAN.
-        [<JsonField(Name="last4")>]Last4: string option
-        ///Find the ID of the mandate used for this payment under the [payment_method_details.sepa_debit.mandate](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-sepa_debit-mandate) property on the Charge. Use this mandate ID to [retrieve the Mandate](https://docs.stripe.com/api/mandates/retrieve).
-        Mandate: string option
-    }
-    with
-        static member New (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, last4: string option, mandate: string option, ?expectedDebitDate: string) =
-            {
-                PaymentMethodDetailsSepaDebit.BankCode = bankCode //required
-                PaymentMethodDetailsSepaDebit.BranchCode = branchCode //required
-                PaymentMethodDetailsSepaDebit.Country = country //required
-                PaymentMethodDetailsSepaDebit.Fingerprint = fingerprint //required
-                PaymentMethodDetailsSepaDebit.Last4 = last4 //required
-                PaymentMethodDetailsSepaDebit.Mandate = mandate //required
-                PaymentMethodDetailsSepaDebit.ExpectedDebitDate = expectedDebitDate
-            }
-
     type PaymentMethodDetailsSepaCreditTransfer = {
         ///Name of the bank associated with the bank account.
         BankName: string option
@@ -6436,34 +5823,6 @@ module StripeModel =
         | It
         | Nl
         | Pl
-
-    type PaymentMethodDetailsPaymentRecordSepaDebit = {
-        ///Bank code of bank associated with the bank account.
-        BankCode: string option
-        ///Branch code of bank associated with the bank account.
-        BranchCode: string option
-        ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
-        ///Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
-        ExpectedDebitDate: string option
-        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
-        ///Last four characters of the IBAN.
-        [<JsonField(Name="last4")>]Last4: string option
-        ///Find the ID of the mandate used for this payment under the [payment_method_details.sepa_debit.mandate](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-sepa_debit-mandate) property on the Charge. Use this mandate ID to [retrieve the Mandate](https://docs.stripe.com/api/mandates/retrieve).
-        Mandate: string option
-    }
-    with
-        static member New (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, last4: string option, mandate: string option, ?expectedDebitDate: string) =
-            {
-                PaymentMethodDetailsPaymentRecordSepaDebit.BankCode = bankCode //required
-                PaymentMethodDetailsPaymentRecordSepaDebit.BranchCode = branchCode //required
-                PaymentMethodDetailsPaymentRecordSepaDebit.Country = country //required
-                PaymentMethodDetailsPaymentRecordSepaDebit.Fingerprint = fingerprint //required
-                PaymentMethodDetailsPaymentRecordSepaDebit.Last4 = last4 //required
-                PaymentMethodDetailsPaymentRecordSepaDebit.Mandate = mandate //required
-                PaymentMethodDetailsPaymentRecordSepaDebit.ExpectedDebitDate = expectedDebitDate
-            }
 
     type PaymentMethodDetailsPaymentRecordSamsungPay = {
         ///A unique identifier for the buyer as determined by the local payment processor.
@@ -6942,17 +6301,6 @@ module StripeModel =
         static member New (?paymentMethodDetailsMbWay: string option) =
             {
                 PaymentMethodDetailsMbWay.PaymentMethodDetailsMbWay = paymentMethodDetailsMbWay |> Option.flatten
-            }
-
-    type PaymentMethodDetailsLink = {
-        ///Two-letter ISO code representing the funding source country beneath the Link payment.
-        ///You could use this attribute to get a sense of international fees.
-        Country: string option
-    }
-    with
-        static member New (country: string option) =
-            {
-                PaymentMethodDetailsLink.Country = country //required
             }
 
     type PaymentMethodDetailsKrCardBrand =
@@ -9285,19 +8633,6 @@ module StripeModel =
                 PaymentFlowsPrivatePaymentMethodsAlipay.PaymentFlowsPrivatePaymentMethodsAlipay = paymentFlowsPrivatePaymentMethodsAlipay |> Option.flatten
             }
 
-    type PaymentFlowsPaymentIntentPresentmentDetails = {
-        ///Amount intended to be collected by this payment, denominated in `presentment_currency`.
-        PresentmentAmount: int
-        ///Currency presented to the customer during payment.
-        PresentmentCurrency: string
-    }
-    with
-        static member New (presentmentAmount: int, presentmentCurrency: string) =
-            {
-                PaymentFlowsPaymentIntentPresentmentDetails.PresentmentAmount = presentmentAmount //required
-                PaymentFlowsPaymentIntentPresentmentDetails.PresentmentCurrency = presentmentCurrency //required
-            }
-
     type PaymentFlowsPaymentIntentAsyncWorkflowsResourceInputsResourceTax = {
         ///The [TaxCalculation](https://docs.stripe.com/api/tax/calculations) id
         Calculation: string
@@ -9539,19 +8874,6 @@ module StripeModel =
         | Fixed
         | Maximum
 
-    type MandateSingleUse = {
-        ///The amount of the payment on a single use mandate.
-        Amount: int
-        ///The currency of the payment on a single use mandate.
-        Currency: string
-    }
-    with
-        static member New (amount: int, currency: string) =
-            {
-                MandateSingleUse.Amount = amount //required
-                MandateSingleUse.Currency = currency //required
-            }
-
     type MandateSepaDebit = {
         ///The unique reference of the mandate.
         Reference: string
@@ -9682,19 +9004,6 @@ module StripeModel =
         static member New (?mandateNaverPay: string option) =
             {
                 MandateNaverPay.MandateNaverPay = mandateNaverPay |> Option.flatten
-            }
-
-    type MandateMultiUse = {
-        ///The amount of the payment on a multi use mandate.
-        Amount: int option
-        ///The currency of the payment on a multi use mandate.
-        Currency: string option
-    }
-    with
-        static member New (?amount: int, ?currency: string) =
-            {
-                MandateMultiUse.Amount = amount
-                MandateMultiUse.Currency = currency
             }
 
     type MandateLink = {
@@ -9967,34 +9276,6 @@ module StripeModel =
         | FailedKeyedIdentity
         | FailedOther
 
-    type LegalEntityJapanAddress = {
-        ///City/Ward.
-        City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
-        ///Block/Building number.
-        [<JsonField(Name="line1")>]Line1: string option
-        ///Building details.
-        [<JsonField(Name="line2")>]Line2: string option
-        ///ZIP or postal code.
-        PostalCode: string option
-        ///Prefecture.
-        State: string option
-        ///Town/cho-me.
-        Town: string option
-    }
-    with
-        static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option, town: string option) =
-            {
-                LegalEntityJapanAddress.City = city //required
-                LegalEntityJapanAddress.Country = country //required
-                LegalEntityJapanAddress.Line1 = line1 //required
-                LegalEntityJapanAddress.Line2 = line2 //required
-                LegalEntityJapanAddress.PostalCode = postalCode //required
-                LegalEntityJapanAddress.State = state //required
-                LegalEntityJapanAddress.Town = town //required
-            }
-
     type LegalEntityDob = {
         ///The day of birth, between 1 and 31.
         Day: int option
@@ -10072,16 +9353,6 @@ module StripeModel =
     type LegalEntityCompanyOwnershipExemptionReason =
         | QualifiedEntityExceedsOwnershipThreshold
         | QualifiesAsFinancialInstitution
-
-    type KlarnaAddress = {
-        ///The payer address country
-        Country: string option
-    }
-    with
-        static member New (country: string option) =
-            {
-                KlarnaAddress.Country = country //required
-            }
 
     type IssuingTransactionTreasury = {
         ///The Treasury [ReceivedCredit](https://docs.stripe.com/api/treasury/received_credits) representing this Issuing transaction if it is a refund
@@ -12514,46 +11785,6 @@ module StripeModel =
                 IssuingAuthorizationNetworkData.TransactionId = transactionId //required
             }
 
-    type IssuingAuthorizationMerchantData = {
-        ///A categorization of the seller's type of business. See our [merchant categories guide](https://docs.stripe.com/issuing/merchant-categories) for a list of possible values.
-        Category: string
-        ///The merchant category code for the seller’s business
-        CategoryCode: string
-        ///City where the seller is located
-        City: string option
-        ///Country where the seller is located
-        Country: string option
-        ///Name of the seller
-        Name: string option
-        ///Identifier assigned to the seller by the card network. Different card networks may assign different network_id fields to the same merchant.
-        NetworkId: string
-        ///Postal code where the seller is located
-        PostalCode: string option
-        ///State where the seller is located
-        State: string option
-        ///The seller's tax identification number. Currently populated for French merchants only.
-        TaxId: string option
-        ///An ID assigned by the seller to the location of the sale.
-        TerminalId: string option
-        ///URL provided by the merchant on a 3DS request
-        Url: string option
-    }
-    with
-        static member New (category: string, categoryCode: string, city: string option, country: string option, name: string option, networkId: string, postalCode: string option, state: string option, taxId: string option, terminalId: string option, url: string option) =
-            {
-                IssuingAuthorizationMerchantData.Category = category //required
-                IssuingAuthorizationMerchantData.CategoryCode = categoryCode //required
-                IssuingAuthorizationMerchantData.City = city //required
-                IssuingAuthorizationMerchantData.Country = country //required
-                IssuingAuthorizationMerchantData.Name = name //required
-                IssuingAuthorizationMerchantData.NetworkId = networkId //required
-                IssuingAuthorizationMerchantData.PostalCode = postalCode //required
-                IssuingAuthorizationMerchantData.State = state //required
-                IssuingAuthorizationMerchantData.TaxId = taxId //required
-                IssuingAuthorizationMerchantData.TerminalId = terminalId //required
-                IssuingAuthorizationMerchantData.Url = url //required
-            }
-
     type IssuingAuthorizationFuelDataUnit =
         | ChargingMinute
         | ImperialGallon
@@ -13272,28 +12503,6 @@ module StripeModel =
         | SubscriptionUpdate
         | Upcoming
 
-    type InternalCard = {
-        ///Brand of the card used in the transaction
-        Brand: string option
-        ///Two-letter ISO code representing the country of the card
-        Country: string option
-        ///Two digit number representing the card's expiration month
-        ExpMonth: int option
-        ///Two digit number representing the card's expiration year
-        ExpYear: int option
-        ///The last 4 digits of the card
-        [<JsonField(Name="last4")>]Last4: string option
-    }
-    with
-        static member New (brand: string option, country: string option, expMonth: int option, expYear: int option, last4: string option) =
-            {
-                InternalCard.Brand = brand //required
-                InternalCard.Country = country //required
-                InternalCard.ExpMonth = expMonth //required
-                InternalCard.ExpYear = expYear //required
-                InternalCard.Last4 = last4 //required
-            }
-
     [<Struct>]
     type InsightsResourcesPaymentEvaluationUserInterventionResolvedOutcome =
         | Abandoned
@@ -13475,32 +12684,6 @@ module StripeModel =
         static member New (radarSession: string) =
             {
                 InsightsResourcesPaymentEvaluationClientDeviceMetadata.RadarSession = radarSession //required
-            }
-
-    ///Address data.
-    type InsightsResourcesPaymentEvaluationAddress = {
-        ///City, district, suburb, town, or village.
-        City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
-        ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
-        ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
-        ///ZIP or postal code.
-        PostalCode: string option
-        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-        State: string option
-    }
-    with
-        static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
-            {
-                InsightsResourcesPaymentEvaluationAddress.City = city //required
-                InsightsResourcesPaymentEvaluationAddress.Country = country //required
-                InsightsResourcesPaymentEvaluationAddress.Line1 = line1 //required
-                InsightsResourcesPaymentEvaluationAddress.Line2 = line2 //required
-                InsightsResourcesPaymentEvaluationAddress.PostalCode = postalCode //required
-                InsightsResourcesPaymentEvaluationAddress.State = state //required
             }
 
     [<Struct>]
@@ -14293,31 +13476,6 @@ module StripeModel =
         | Merchandise
         | Services
 
-    type DisputeTransactionShippingAddress = {
-        ///City, district, suburb, town, or village.
-        City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
-        ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
-        ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
-        ///ZIP or postal code.
-        PostalCode: string option
-        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-        State: string option
-    }
-    with
-        static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
-            {
-                DisputeTransactionShippingAddress.City = city //required
-                DisputeTransactionShippingAddress.Country = country //required
-                DisputeTransactionShippingAddress.Line1 = line1 //required
-                DisputeTransactionShippingAddress.Line2 = line2 //required
-                DisputeTransactionShippingAddress.PostalCode = postalCode //required
-                DisputeTransactionShippingAddress.State = state //required
-            }
-
     type DisputePaymentMethodDetailsPaypal = {
         ///The ID of the dispute in PayPal.
         CaseId: string option
@@ -14730,44 +13888,6 @@ module StripeModel =
             {
                 DeletedCoupon.Deleted = deleted //required
                 DeletedCoupon.Id = id //required
-            }
-
-    type DeletedCard = {
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string option
-        ///Always true for a deleted object
-        Deleted: bool
-        ///Unique identifier for the object.
-        Id: string
-    }
-    with
-        ///String representing the object's type. Objects of the same type share the same value.
-        member _.Object = "card"
-
-        static member New (deleted: bool, id: string, ?currency: string option) =
-            {
-                DeletedCard.Deleted = deleted //required
-                DeletedCard.Id = id //required
-                DeletedCard.Currency = currency |> Option.flatten
-            }
-
-    type DeletedBankAccount = {
-        ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string option
-        ///Always true for a deleted object
-        Deleted: bool
-        ///Unique identifier for the object.
-        Id: string
-    }
-    with
-        ///String representing the object's type. Objects of the same type share the same value.
-        member _.Object = "bank_account"
-
-        static member New (deleted: bool, id: string, ?currency: string option) =
-            {
-                DeletedBankAccount.Deleted = deleted //required
-                DeletedBankAccount.Id = id //required
-                DeletedBankAccount.Currency = currency |> Option.flatten
             }
 
     type DeletedApplication = {
@@ -15413,28 +14533,6 @@ module StripeModel =
                 ClimateRemovalsProductsPrice.AmountFees = amountFees //required
                 ClimateRemovalsProductsPrice.AmountSubtotal = amountSubtotal //required
                 ClimateRemovalsProductsPrice.AmountTotal = amountTotal //required
-            }
-
-    type ClimateRemovalsLocation = {
-        ///The city where the supplier is located.
-        City: string option
-        ///Two-letter ISO code representing the country where the supplier is located.
-        Country: string
-        ///The geographic latitude where the supplier is located.
-        Latitude: decimal option
-        ///The geographic longitude where the supplier is located.
-        Longitude: decimal option
-        ///The state/county/province/region where the supplier is located.
-        Region: string option
-    }
-    with
-        static member New (city: string option, country: string, latitude: decimal option, longitude: decimal option, region: string option) =
-            {
-                ClimateRemovalsLocation.City = city //required
-                ClimateRemovalsLocation.Country = country //required
-                ClimateRemovalsLocation.Latitude = latitude //required
-                ClimateRemovalsLocation.Longitude = longitude //required
-                ClimateRemovalsLocation.Region = region //required
             }
 
     type ClimateRemovalsBeneficiary = {
@@ -16245,19 +15343,6 @@ module StripeModel =
         | Last
         | Sum
 
-    type BillingCreditGrantsResourceMonetaryAmount = {
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-        ///A positive integer representing the amount.
-        Value: int
-    }
-    with
-        static member New (currency: string, value: int) =
-            {
-                BillingCreditGrantsResourceMonetaryAmount.Currency = currency //required
-                BillingCreditGrantsResourceMonetaryAmount.Value = value //required
-            }
-
     [<Struct>]
     type BillingCreditGrantsResourceBalanceDebitType =
         | CreditsApplied
@@ -16856,31 +15941,6 @@ module StripeModel =
                 AlmaInstallments.Count = count //required
             }
 
-    type Address = {
-        ///City, district, suburb, town, or village.
-        City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
-        ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
-        ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
-        ///ZIP or postal code.
-        PostalCode: string option
-        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-        State: string option
-    }
-    with
-        static member New (city: string option, country: string option, line1: string option, line2: string option, postalCode: string option, state: string option) =
-            {
-                Address.City = city //required
-                Address.Country = country //required
-                Address.Line1 = line1 //required
-                Address.Line2 = line2 //required
-                Address.PostalCode = postalCode //required
-                Address.State = state //required
-            }
-
     [<Struct>]
     type AccountUnificationAccountControllerStripeDashboardType =
         | Express
@@ -17090,19 +16150,6 @@ module StripeModel =
                 AccountPaymentsSettings.StatementDescriptorKanji = statementDescriptorKanji //required
                 AccountPaymentsSettings.StatementDescriptorPrefixKana = statementDescriptorPrefixKana //required
                 AccountPaymentsSettings.StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji //required
-            }
-
-    type AccountMonthlyEstimatedRevenue = {
-        ///A non-negative integer representing how much to charge in the [smallest currency unit](/currencies#zero-decimal).
-        Amount: int
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
-    }
-    with
-        static member New (amount: int, currency: string) =
-            {
-                AccountMonthlyEstimatedRevenue.Amount = amount //required
-                AccountMonthlyEstimatedRevenue.Currency = currency //required
             }
 
     ///Account Links are the means by which a Connect platform grants a connected account permission to access
@@ -17615,22 +16662,6 @@ module StripeModel =
                 AccountBacsDebitPaymentsSettings.ServiceUserNumber = serviceUserNumber //required
             }
 
-    type AccountAnnualRevenue = {
-        ///A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
-        Amount: int option
-        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string option
-        ///The close-out date of the preceding fiscal year in ISO 8601 format. E.g. 2023-12-31 for the 31st of December, 2023.
-        FiscalYearEnd: string option
-    }
-    with
-        static member New (amount: int option, currency: string option, fiscalYearEnd: string option) =
-            {
-                AccountAnnualRevenue.Amount = amount //required
-                AccountAnnualRevenue.Currency = currency //required
-                AccountAnnualRevenue.FiscalYearEnd = fiscalYearEnd //required
-            }
-
     [<Struct>]
     type AccountType =
         | Custom
@@ -17668,11 +16699,11 @@ module StripeModel =
         Company: LegalEntityCompany option
         Controller: AccountUnificationAccountController option
         ///The account's country.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Time at which the account was connected. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime option
         ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
-        DefaultCurrency: string option
+        DefaultCurrency: IsoTypes.IsoCurrencyCode option
         ///Whether account details have been submitted. Accounts with Stripe Dashboard access, which includes Standard accounts, cannot receive payouts before this is true. Accounts where this is false should be directed to [an onboarding flow](/connect/onboarding) to finish submitting account details.
         DetailsSubmitted: bool option
         ///An email address associated with the account. It's not used for authentication and Stripe doesn't market to this field without explicit approval from the platform.
@@ -17700,7 +16731,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "account"
 
-        static member New (id: string, ?businessProfile: AccountBusinessProfile option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?controller: AccountUnificationAccountController, ?country: string, ?created: DateTime, ?defaultCurrency: string, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: AccountExternalAccounts, ?futureRequirements: AccountFutureRequirements, ?groups: AccountGroupMembership option, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettings option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
+        static member New (id: string, ?businessProfile: AccountBusinessProfile option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?controller: AccountUnificationAccountController, ?country: IsoTypes.IsoCountryCode, ?created: DateTime, ?defaultCurrency: IsoTypes.IsoCurrencyCode, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: AccountExternalAccounts, ?futureRequirements: AccountFutureRequirements, ?groups: AccountGroupMembership option, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettings option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
             {
                 Account.Id = id //required
                 Account.BusinessProfile = businessProfile |> Option.flatten
@@ -17744,6 +16775,22 @@ module StripeModel =
                 AccountExternalAccounts.Data = data //required
                 AccountExternalAccounts.HasMore = hasMore //required
                 AccountExternalAccounts.Url = url //required
+            }
+
+    and AccountAnnualRevenue = {
+        ///A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
+        Amount: int option
+        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode option
+        ///The close-out date of the preceding fiscal year in ISO 8601 format. E.g. 2023-12-31 for the 31st of December, 2023.
+        FiscalYearEnd: string option
+    }
+    with
+        static member New (amount: int option, currency: IsoTypes.IsoCurrencyCode option, fiscalYearEnd: string option) =
+            {
+                AccountAnnualRevenue.Amount = amount //required
+                AccountAnnualRevenue.Currency = currency //required
+                AccountAnnualRevenue.FiscalYearEnd = fiscalYearEnd //required
             }
 
     and AccountBrandingSettings = {
@@ -18151,6 +17198,19 @@ module StripeModel =
         | String of string
         | TaxId of TaxId
 
+    and AccountMonthlyEstimatedRevenue = {
+        ///A non-negative integer representing how much to charge in the [smallest currency unit](/currencies#zero-decimal).
+        Amount: int
+        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+    }
+    with
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode) =
+            {
+                AccountMonthlyEstimatedRevenue.Amount = amount //required
+                AccountMonthlyEstimatedRevenue.Currency = currency //required
+            }
+
     and AccountPayoutSettings = {
         ///A Boolean indicating if Stripe should try to reclaim negative balances from an attached bank account. See [Understanding Connect account balances](/connect/account-balances) for details. The default value is `false` when [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts, otherwise `true`.
         DebitNegativeBalances: bool
@@ -18345,6 +17405,31 @@ module StripeModel =
                 AccountUnificationAccountControllerStripeDashboard.Type = ``type`` //required
             }
 
+    and Address = {
+        ///City, district, suburb, town, or village.
+        City: string option
+        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        ///Address line 1, such as the street, PO Box, or company name.
+        [<JsonField(Name="line1")>]Line1: string option
+        ///Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonField(Name="line2")>]Line2: string option
+        ///ZIP or postal code.
+        PostalCode: string option
+        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+            {
+                Address.City = city //required
+                Address.Country = country //required
+                Address.Line1 = line1 //required
+                Address.Line2 = line2 //required
+                Address.PostalCode = postalCode //required
+                Address.State = state //required
+            }
+
     and AmazonPayUnderlyingPaymentMethodFundingDetails = {
         Card: PaymentMethodDetailsPassthroughCard option
     }
@@ -18424,7 +17509,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Polymorphic source of the application fee. Includes the ID of the object the application fee was created from.
         FeeSource: PlatformEarningFeeSource option
         ///Unique identifier for the object.
@@ -18442,7 +17527,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "application_fee"
 
-        static member New (account: ApplicationFeeAccount'AnyOf, amount: int, amountRefunded: int, application: ApplicationFeeApplication'AnyOf, balanceTransaction: ApplicationFeeBalanceTransaction'AnyOf option, charge: ApplicationFeeCharge'AnyOf, created: DateTime, currency: string, feeSource: PlatformEarningFeeSource option, id: string, livemode: bool, originatingTransaction: ApplicationFeeOriginatingTransaction'AnyOf option, refunded: bool, refunds: ApplicationFeeRefunds) =
+        static member New (account: ApplicationFeeAccount'AnyOf, amount: int, amountRefunded: int, application: ApplicationFeeApplication'AnyOf, balanceTransaction: ApplicationFeeBalanceTransaction'AnyOf option, charge: ApplicationFeeCharge'AnyOf, created: DateTime, currency: IsoTypes.IsoCurrencyCode, feeSource: PlatformEarningFeeSource option, id: string, livemode: bool, originatingTransaction: ApplicationFeeOriginatingTransaction'AnyOf option, refunded: bool, refunds: ApplicationFeeRefunds) =
             {
                 ApplicationFee.Account = account //required
                 ApplicationFee.Amount = amount //required
@@ -18597,11 +17682,11 @@ module StripeModel =
         ///Balance amount.
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         SourceTypes: BalanceAmountBySourceType option
     }
     with
-        static member New (amount: int, currency: string, ?sourceTypes: BalanceAmountBySourceType) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, ?sourceTypes: BalanceAmountBySourceType) =
             {
                 BalanceAmount.Amount = amount //required
                 BalanceAmount.Currency = currency //required
@@ -18612,13 +17697,13 @@ module StripeModel =
         ///Balance amount.
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Breakdown of balance by destination.
         NetAvailable: BalanceNetAvailable list option
         SourceTypes: BalanceAmountBySourceType option
     }
     with
-        static member New (amount: int, currency: string, ?netAvailable: BalanceNetAvailable list, ?sourceTypes: BalanceAmountBySourceType) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, ?netAvailable: BalanceNetAvailable list, ?sourceTypes: BalanceAmountBySourceType) =
             {
                 BalanceAmountNet.Amount = amount //required
                 BalanceAmountNet.Currency = currency //required
@@ -18740,7 +17825,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///If applicable, this transaction uses an exchange rate. If money converts from currency A to currency B, then the `amount` in currency A, multipled by the `exchange_rate`, equals the `amount` in currency B. For example, if you charge a customer 10.00 EUR, the PaymentIntent's `amount` is `1000` and `currency` is `eur`. If this converts to 12.34 USD in your Stripe account, the BalanceTransaction's `amount` is `1234`, its `currency` is `usd`, and the `exchange_rate` is `1.234`.
@@ -18766,7 +17851,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "balance_transaction"
 
-        static member New (amount: int, availableOn: DateTime, balanceType: BalanceTransactionBalanceType, created: DateTime, currency: string, description: string option, exchangeRate: decimal option, fee: int, feeDetails: Fee list, id: string, net: int, reportingCategory: string, source: BalanceTransactionSource'AnyOf option, status: BalanceTransactionStatus, ``type``: BalanceTransactionType) =
+        static member New (amount: int, availableOn: DateTime, balanceType: BalanceTransactionBalanceType, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, exchangeRate: decimal option, fee: int, feeDetails: Fee list, id: string, net: int, reportingCategory: string, source: BalanceTransactionSource'AnyOf option, status: BalanceTransactionStatus, ``type``: BalanceTransactionType) =
             {
                 BalanceTransaction.Amount = amount //required
                 BalanceTransaction.AvailableOn = availableOn //required
@@ -18826,9 +17911,9 @@ module StripeModel =
         ///Name of the bank associated with the routing number (e.g., `WELLS FARGO`).
         BankName: string option
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string
+        Country: IsoTypes.IsoCountryCode
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The ID of the customer that the bank account is associated with.
         Customer: BankAccountCustomer'AnyOf option
         ///Whether this bank account is the default external account for its currency.
@@ -18855,7 +17940,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "bank_account"
 
-        static member New (accountHolderName: string option, accountHolderType: BankAccountAccountHolderType option, accountType: BankAccountAccountType option, bankName: string option, country: string, currency: string, fingerprint: string option, id: string, last4: string, routingNumber: string option, status: BankAccountStatus, ?account: BankAccountAccount'AnyOf option, ?availablePayoutMethods: BankAccountAvailablePayoutMethods list option, ?customer: BankAccountCustomer'AnyOf option, ?defaultForCurrency: bool option, ?futureRequirements: ExternalAccountRequirements option, ?metadata: Map<string, string> option, ?requirements: ExternalAccountRequirements option) =
+        static member New (accountHolderName: string option, accountHolderType: BankAccountAccountHolderType option, accountType: BankAccountAccountType option, bankName: string option, country: IsoTypes.IsoCountryCode, currency: IsoTypes.IsoCurrencyCode, fingerprint: string option, id: string, last4: string, routingNumber: string option, status: BankAccountStatus, ?account: BankAccountAccount'AnyOf option, ?availablePayoutMethods: BankAccountAvailablePayoutMethods list option, ?customer: BankAccountCustomer'AnyOf option, ?defaultForCurrency: bool option, ?futureRequirements: ExternalAccountRequirements option, ?metadata: Map<string, string> option, ?requirements: ExternalAccountRequirements option) =
             {
                 BankAccount.AccountHolderName = accountHolderName //required
                 BankAccount.AccountHolderType = accountHolderType //required
@@ -19628,6 +18713,19 @@ module StripeModel =
                 BillingCreditGrantsResourceBalanceDebit.Type = ``type`` //required
             }
 
+    and BillingCreditGrantsResourceMonetaryAmount = {
+        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        ///A positive integer representing the amount.
+        Value: int
+    }
+    with
+        static member New (currency: IsoTypes.IsoCurrencyCode, value: int) =
+            {
+                BillingCreditGrantsResourceMonetaryAmount.Currency = currency //required
+                BillingCreditGrantsResourceMonetaryAmount.Value = value //required
+            }
+
     and BillingCreditGrantsResourceScope = {
         ///The prices that credit grants can apply to. We currently only support `metered` prices. This refers to prices that have a [Billing Meter](https://docs.stripe.com/api/billing/meter) attached to them. Cannot be used in combination with `price_type`.
         Prices: BillingCreditGrantsResourceApplicablePrice list option
@@ -19843,7 +18941,7 @@ module StripeModel =
         ///City/District/Suburb/Town/Village.
         AddressCity: string option
         ///Billing address country, if provided when creating card.
-        AddressCountry: string option
+        AddressCountry: IsoTypes.IsoCountryCode option
         ///Address line 1 (Street address/PO Box/Company name).
         [<JsonField(Name="address_line1")>]AddressLine1: string option
         ///If `address_line1` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -19863,9 +18961,9 @@ module StripeModel =
         ///Card brand. Can be `American Express`, `Cartes Bancaires`, `Diners Club`, `Discover`, `Eftpos Australia`, `Girocard`, `JCB`, `MasterCard`, `UnionPay`, `Visa`, or `Unknown`.
         Brand: CardBrand
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Three-letter [ISO code for currency](https://www.iso.org/iso-4217-currency-codes.html) in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies). Only applicable on accounts (not customers or recipients). The card can be used as a transfer destination for funds in this currency. This property is only available when returned as an [External Account](/api/external_account_cards/object) where [controller.is_controller](/api/accounts/object#account_object-controller-is_controller) is `true`.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead.
         Customer: CardCustomer'AnyOf option
         ///If a CVC was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. A result of unchecked indicates that CVC was provided but hasn't been checked yet. Checks are typically performed when attaching a card to a Customer object, or when creating a charge. For more details, see [Check if a card is valid without a charge](https://support.stripe.com/questions/check-if-a-card-is-valid-without-a-charge).
@@ -19909,7 +19007,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "card"
 
-        static member New (addressCity: string option, addressCountry: string option, addressLine1: string option, addressLine1Check: CardAddressLine1Check option, addressLine2: string option, addressState: string option, addressZip: string option, addressZipCheck: CardAddressZipCheck option, brand: CardBrand, country: string option, cvcCheck: CardCvcCheck option, dynamicLast4: string option, expMonth: int, expYear: int, funding: CardFunding, id: string, last4: string, metadata: Map<string, string> option, name: string option, regulatedStatus: CardRegulatedStatus option, tokenizationMethod: CardTokenizationMethod option, ?account: CardAccount'AnyOf option, ?allowRedisplay: CardAllowRedisplay option, ?availablePayoutMethods: CardAvailablePayoutMethods list option, ?currency: string option, ?customer: CardCustomer'AnyOf option, ?defaultForCurrency: bool option, ?description: string, ?fingerprint: string option, ?iin: string, ?issuer: string, ?networks: TokenCardNetworks, ?status: CardStatus option) =
+        static member New (addressCity: string option, addressCountry: IsoTypes.IsoCountryCode option, addressLine1: string option, addressLine1Check: CardAddressLine1Check option, addressLine2: string option, addressState: string option, addressZip: string option, addressZipCheck: CardAddressZipCheck option, brand: CardBrand, country: IsoTypes.IsoCountryCode option, cvcCheck: CardCvcCheck option, dynamicLast4: string option, expMonth: int, expYear: int, funding: CardFunding, id: string, last4: string, metadata: Map<string, string> option, name: string option, regulatedStatus: CardRegulatedStatus option, tokenizationMethod: CardTokenizationMethod option, ?account: CardAccount'AnyOf option, ?allowRedisplay: CardAllowRedisplay option, ?availablePayoutMethods: CardAvailablePayoutMethods list option, ?currency: IsoTypes.IsoCurrencyCode option, ?customer: CardCustomer'AnyOf option, ?defaultForCurrency: bool option, ?description: string, ?fingerprint: string option, ?iin: string, ?issuer: string, ?networks: TokenCardNetworks, ?status: CardStatus option) =
             {
                 Card.AddressCity = addressCity //required
                 Card.AddressCountry = addressCountry //required
@@ -20020,7 +19118,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the customer this charge is for if one exists.
         Customer: ChargeCustomer'AnyOf option
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -20092,7 +19190,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "charge"
 
-        static member New (amount: int, amountCaptured: int, amountRefunded: int, application: ChargeApplication'AnyOf option, applicationFee: ChargeApplicationFee'AnyOf option, applicationFeeAmount: int option, balanceTransaction: ChargeBalanceTransaction'AnyOf option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: DateTime, currency: string, customer: ChargeCustomer'AnyOf option, description: string option, disputed: bool, failureBalanceTransaction: ChargeFailureBalanceTransaction'AnyOf option, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetails option, id: string, livemode: bool, metadata: Map<string, string>, onBehalfOf: ChargeOnBehalfOf'AnyOf option, outcome: ChargeOutcome option, paid: bool, paymentIntent: ChargePaymentIntent'AnyOf option, paymentMethod: string option, paymentMethodDetails: PaymentMethodDetails option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, review: ChargeReview'AnyOf option, shipping: Shipping option, source: PaymentSource option, sourceTransfer: ChargeSourceTransfer'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: ChargeStatus, transferData: ChargeTransferData option, transferGroup: string option, ?authorizationCode: string, ?level3: Level3, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?radarOptions: RadarRadarOptions, ?refunds: ChargeRefunds option, ?transfer: ChargeTransfer'AnyOf) =
+        static member New (amount: int, amountCaptured: int, amountRefunded: int, application: ChargeApplication'AnyOf option, applicationFee: ChargeApplicationFee'AnyOf option, applicationFeeAmount: int option, balanceTransaction: ChargeBalanceTransaction'AnyOf option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: ChargeCustomer'AnyOf option, description: string option, disputed: bool, failureBalanceTransaction: ChargeFailureBalanceTransaction'AnyOf option, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetails option, id: string, livemode: bool, metadata: Map<string, string>, onBehalfOf: ChargeOnBehalfOf'AnyOf option, outcome: ChargeOutcome option, paid: bool, paymentIntent: ChargePaymentIntent'AnyOf option, paymentMethod: string option, paymentMethodDetails: PaymentMethodDetails option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, review: ChargeReview'AnyOf option, shipping: Shipping option, source: PaymentSource option, sourceTransfer: ChargeSourceTransfer'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: ChargeStatus, transferData: ChargeTransferData option, transferGroup: string option, ?authorizationCode: string, ?level3: Level3, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?radarOptions: RadarRadarOptions, ?refunds: ChargeRefunds option, ?transfer: ChargeTransfer'AnyOf) =
             {
                 Charge.Amount = amount //required
                 Charge.AmountCaptured = amountCaptured //required
@@ -20319,7 +19417,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing) sessions created before 2025-03-31.
         CurrencyConversion: PaymentPagesCheckoutSessionCurrencyConversion option
         ///Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
@@ -20437,7 +19535,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "checkout.session"
 
-        static member New (adaptivePricing: PaymentPagesCheckoutSessionAdaptivePricing option, afterExpiration: PaymentPagesCheckoutSessionAfterExpiration option, allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, automaticTax: PaymentPagesCheckoutSessionAutomaticTax, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string option, clientReferenceId: string option, clientSecret: string option, collectedInformation: PaymentPagesCheckoutSessionCollectedInformation option, consent: PaymentPagesCheckoutSessionConsent option, consentCollection: PaymentPagesCheckoutSessionConsentCollection option, created: DateTime, currency: string option, currencyConversion: PaymentPagesCheckoutSessionCurrencyConversion option, customFields: PaymentPagesCheckoutSessionCustomFields list, customText: PaymentPagesCheckoutSessionCustomText, customer: CheckoutSessionCustomer'AnyOf option, customerAccount: string option, customerCreation: CheckoutSessionCustomerCreation option, customerDetails: PaymentPagesCheckoutSessionCustomerDetails option, customerEmail: string option, discounts: PaymentPagesCheckoutSessionDiscount list option, expiresAt: DateTime, id: string, integrationIdentifier: string option, invoice: CheckoutSessionInvoice'AnyOf option, invoiceCreation: PaymentPagesCheckoutSessionInvoiceCreation option, livemode: bool, locale: CheckoutSessionLocale option, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string> option, mode: CheckoutSessionMode, originContext: CheckoutSessionOriginContext option, paymentIntent: CheckoutSessionPaymentIntent'AnyOf option, paymentLink: CheckoutSessionPaymentLink'AnyOf option, paymentMethodCollection: CheckoutSessionPaymentMethodCollection option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: CheckoutSessionPaymentMethodOptions option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, permissions: PaymentPagesCheckoutSessionPermissions option, recoveredFrom: string option, savedPaymentMethodOptions: PaymentPagesCheckoutSessionSavedPaymentMethodOptions option, setupIntent: CheckoutSessionSetupIntent'AnyOf option, shippingAddressCollection: PaymentPagesCheckoutSessionShippingAddressCollection option, shippingCost: PaymentPagesCheckoutSessionShippingCost option, shippingOptions: PaymentPagesCheckoutSessionShippingOption list, status: CheckoutSessionStatus option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscription'AnyOf option, successUrl: string option, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, uiMode: CheckoutSessionUiMode option, url: string option, walletOptions: CheckoutSessionWalletOptions option, ?brandingSettings: PaymentPagesCheckoutSessionBrandingSettings, ?excludedPaymentMethodTypes: string list, ?lineItems: CheckoutSessionLineItems, ?nameCollection: PaymentPagesCheckoutSessionNameCollection, ?optionalItems: PaymentPagesCheckoutSessionOptionalItem list option, ?phoneNumberCollection: PaymentPagesCheckoutSessionPhoneNumberCollection, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?redirectOnCompletion: CheckoutSessionRedirectOnCompletion, ?returnUrl: string, ?taxIdCollection: PaymentPagesCheckoutSessionTaxIdCollection) =
+        static member New (adaptivePricing: PaymentPagesCheckoutSessionAdaptivePricing option, afterExpiration: PaymentPagesCheckoutSessionAfterExpiration option, allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, automaticTax: PaymentPagesCheckoutSessionAutomaticTax, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string option, clientReferenceId: string option, clientSecret: string option, collectedInformation: PaymentPagesCheckoutSessionCollectedInformation option, consent: PaymentPagesCheckoutSessionConsent option, consentCollection: PaymentPagesCheckoutSessionConsentCollection option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, currencyConversion: PaymentPagesCheckoutSessionCurrencyConversion option, customFields: PaymentPagesCheckoutSessionCustomFields list, customText: PaymentPagesCheckoutSessionCustomText, customer: CheckoutSessionCustomer'AnyOf option, customerAccount: string option, customerCreation: CheckoutSessionCustomerCreation option, customerDetails: PaymentPagesCheckoutSessionCustomerDetails option, customerEmail: string option, discounts: PaymentPagesCheckoutSessionDiscount list option, expiresAt: DateTime, id: string, integrationIdentifier: string option, invoice: CheckoutSessionInvoice'AnyOf option, invoiceCreation: PaymentPagesCheckoutSessionInvoiceCreation option, livemode: bool, locale: CheckoutSessionLocale option, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string> option, mode: CheckoutSessionMode, originContext: CheckoutSessionOriginContext option, paymentIntent: CheckoutSessionPaymentIntent'AnyOf option, paymentLink: CheckoutSessionPaymentLink'AnyOf option, paymentMethodCollection: CheckoutSessionPaymentMethodCollection option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: CheckoutSessionPaymentMethodOptions option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, permissions: PaymentPagesCheckoutSessionPermissions option, recoveredFrom: string option, savedPaymentMethodOptions: PaymentPagesCheckoutSessionSavedPaymentMethodOptions option, setupIntent: CheckoutSessionSetupIntent'AnyOf option, shippingAddressCollection: PaymentPagesCheckoutSessionShippingAddressCollection option, shippingCost: PaymentPagesCheckoutSessionShippingCost option, shippingOptions: PaymentPagesCheckoutSessionShippingOption list, status: CheckoutSessionStatus option, submitType: CheckoutSessionSubmitType option, subscription: CheckoutSessionSubscription'AnyOf option, successUrl: string option, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, uiMode: CheckoutSessionUiMode option, url: string option, walletOptions: CheckoutSessionWalletOptions option, ?brandingSettings: PaymentPagesCheckoutSessionBrandingSettings, ?excludedPaymentMethodTypes: string list, ?lineItems: CheckoutSessionLineItems, ?nameCollection: PaymentPagesCheckoutSessionNameCollection, ?optionalItems: PaymentPagesCheckoutSessionOptionalItem list option, ?phoneNumberCollection: PaymentPagesCheckoutSessionPhoneNumberCollection, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?redirectOnCompletion: CheckoutSessionRedirectOnCompletion, ?returnUrl: string, ?taxIdCollection: PaymentPagesCheckoutSessionTaxIdCollection) =
             {
                 CheckoutSession.AdaptivePricing = adaptivePricing //required
                 CheckoutSession.AfterExpiration = afterExpiration //required
@@ -21064,7 +20162,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase, representing the currency for this order.
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Time at which the order's expected_delivery_year was delayed. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DelayedAt: DateTime option
         ///Time at which the order was delivered. Measured in seconds since the Unix epoch.
@@ -21092,7 +20190,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "climate.order"
 
-        static member New (amountFees: int, amountSubtotal: int, amountTotal: int, canceledAt: DateTime option, cancellationReason: ClimateOrderCancellationReason option, certificate: string option, confirmedAt: DateTime option, created: DateTime, currency: string, delayedAt: DateTime option, deliveredAt: DateTime option, deliveryDetails: ClimateRemovalsOrderDeliveries list, expectedDeliveryYear: int, id: string, livemode: bool, metadata: Map<string, string>, metricTons: string, product: ClimateOrderProduct'AnyOf, productSubstitutedAt: DateTime option, status: ClimateOrderStatus, ?beneficiary: ClimateRemovalsBeneficiary) =
+        static member New (amountFees: int, amountSubtotal: int, amountTotal: int, canceledAt: DateTime option, cancellationReason: ClimateOrderCancellationReason option, certificate: string option, confirmedAt: DateTime option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, delayedAt: DateTime option, deliveredAt: DateTime option, deliveryDetails: ClimateRemovalsOrderDeliveries list, expectedDeliveryYear: int, id: string, livemode: bool, metadata: Map<string, string>, metricTons: string, product: ClimateOrderProduct'AnyOf, productSubstitutedAt: DateTime option, status: ClimateOrderStatus, ?beneficiary: ClimateRemovalsBeneficiary) =
             {
                 ClimateOrder.AmountFees = amountFees //required
                 ClimateOrder.AmountSubtotal = amountSubtotal //required
@@ -21186,6 +20284,28 @@ module StripeModel =
                 ClimateSupplier.Locations = locations //required
                 ClimateSupplier.Name = name //required
                 ClimateSupplier.RemovalPathway = removalPathway //required
+            }
+
+    and ClimateRemovalsLocation = {
+        ///The city where the supplier is located.
+        City: string option
+        ///Two-letter ISO code representing the country where the supplier is located.
+        Country: IsoTypes.IsoCountryCode
+        ///The geographic latitude where the supplier is located.
+        Latitude: decimal option
+        ///The geographic longitude where the supplier is located.
+        Longitude: decimal option
+        ///The state/county/province/region where the supplier is located.
+        Region: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode, latitude: decimal option, longitude: decimal option, region: string option) =
+            {
+                ClimateRemovalsLocation.City = city //required
+                ClimateRemovalsLocation.Country = country //required
+                ClimateRemovalsLocation.Latitude = latitude //required
+                ClimateRemovalsLocation.Longitude = longitude //required
+                ClimateRemovalsLocation.Region = region //required
             }
 
     ///The delivery of a specified quantity of carbon for an order.
@@ -21493,7 +20613,7 @@ module StripeModel =
         ///Amount transferred, in cents (or local equivalent).
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the account that funds are being collected for.
         Destination: ConnectCollectionTransferDestination'AnyOf
         ///Unique identifier for the object.
@@ -21505,7 +20625,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "connect_collection_transfer"
 
-        static member New (amount: int, currency: string, destination: ConnectCollectionTransferDestination'AnyOf, id: string, livemode: bool) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, destination: ConnectCollectionTransferDestination'AnyOf, id: string, livemode: bool) =
             {
                 ConnectCollectionTransfer.Amount = amount //required
                 ConnectCollectionTransfer.Currency = currency //required
@@ -21706,7 +20826,7 @@ module StripeModel =
     ///guide](/docs/connect/required-verification-information).
     and CountrySpec = {
         ///The default currency for this country. This applies to both payment methods and bank accounts.
-        DefaultCurrency: string
+        DefaultCurrency: IsoTypes.IsoCurrencyCode
         ///Unique identifier for the object. Represented as the ISO country code for this country.
         Id: string
         ///Currencies that can be accepted in the specific country (for transfers).
@@ -21723,7 +20843,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "country_spec"
 
-        static member New (defaultCurrency: string, id: string, supportedBankAccountCurrencies: Map<string, string list>, supportedPaymentCurrencies: string list, supportedPaymentMethods: string list, supportedTransferCountries: string list, verificationFields: CountrySpecVerificationFields) =
+        static member New (defaultCurrency: IsoTypes.IsoCurrencyCode, id: string, supportedBankAccountCurrencies: Map<string, string list>, supportedPaymentCurrencies: string list, supportedPaymentMethods: string list, supportedTransferCountries: string list, verificationFields: CountrySpecVerificationFields) =
             {
                 CountrySpec.DefaultCurrency = defaultCurrency //required
                 CountrySpec.Id = id //required
@@ -21768,7 +20888,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///If `amount_off` has been set, the three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the amount to take off.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///Coupons defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
         CurrencyOptions: Map<string, string list> option
         ///One of `forever`, `once`, or `repeating`. Describes how long a customer who applies this coupon will get the discount.
@@ -21798,7 +20918,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "coupon"
 
-        static member New (amountOff: int option, created: DateTime, currency: string option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, percentOff: decimal option, redeemBy: DateTime option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo, ?currencyOptions: Map<string, string list>) =
+        static member New (amountOff: int option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, percentOff: decimal option, redeemBy: DateTime option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo, ?currencyOptions: Map<string, string list>) =
             {
                 Coupon.AmountOff = amountOff //required
                 Coupon.Created = created //required
@@ -21849,7 +20969,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the customer.
         Customer: CreditNoteCustomer'AnyOf
         ///ID of the account representing the customer.
@@ -21913,7 +21033,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "credit_note"
 
-        static member New (amount: int, amountShipping: int, created: DateTime, currency: string, customer: CreditNoteCustomer'AnyOf, customerAccount: string option, customerBalanceTransaction: CreditNoteCustomerBalanceTransaction'AnyOf option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, effectiveAt: DateTime option, id: string, invoice: CreditNoteInvoice'AnyOf, lines: CreditNoteLines, livemode: bool, memo: string option, metadata: Map<string, string> option, number: string, outOfBandAmount: int option, pdf: string, postPaymentAmount: int, prePaymentAmount: int, pretaxCreditAmounts: CreditNotesPretaxCreditAmount list, reason: CreditNoteReason option, refunds: CreditNoteRefund list, shippingCost: InvoicesResourceShippingCost option, status: CreditNoteStatus, subtotal: int, subtotalExcludingTax: int option, total: int, totalExcludingTax: int option, totalTaxes: BillingBillResourceInvoicingTaxesTax list option, ``type``: CreditNoteType, voidedAt: DateTime option) =
+        static member New (amount: int, amountShipping: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: CreditNoteCustomer'AnyOf, customerAccount: string option, customerBalanceTransaction: CreditNoteCustomerBalanceTransaction'AnyOf option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, effectiveAt: DateTime option, id: string, invoice: CreditNoteInvoice'AnyOf, lines: CreditNoteLines, livemode: bool, memo: string option, metadata: Map<string, string> option, number: string, outOfBandAmount: int option, pdf: string, postPaymentAmount: int, prePaymentAmount: int, pretaxCreditAmounts: CreditNotesPretaxCreditAmount list, reason: CreditNoteReason option, refunds: CreditNoteRefund list, shippingCost: InvoicesResourceShippingCost option, status: CreditNoteStatus, subtotal: int, subtotalExcludingTax: int option, total: int, totalExcludingTax: int option, totalTaxes: BillingBillResourceInvoicingTaxesTax list option, ``type``: CreditNoteType, voidedAt: DateTime option) =
             {
                 CreditNote.Amount = amount //required
                 CreditNote.AmountShipping = amountShipping //required
@@ -22126,7 +21246,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) the customer can be charged in for recurring billing purposes.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///The ID of an Account representing a customer. You can use this ID with any v1 API that accepts a customer_account parameter.
         CustomerAccount: string option
         ///ID of the default payment source for the customer.
@@ -22181,7 +21301,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "customer"
 
-        static member New (created: DateTime, defaultSource: CustomerDefaultSource'AnyOf option, description: string option, email: string option, id: string, livemode: bool, shipping: Shipping option, ?address: Address option, ?balance: int, ?businessName: string, ?cashBalance: CashBalance option, ?currency: string option, ?customerAccount: string option, ?delinquent: bool option, ?discount: Discount option, ?individualName: string, ?invoiceCreditBalance: Map<string, string list>, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: CustomerSources, ?subscriptions: CustomerSubscriptions, ?tax: CustomerTax, ?taxExempt: CustomerTaxExempt option, ?taxIds: CustomerTaxIds, ?testClock: CustomerTestClock'AnyOf option) =
+        static member New (created: DateTime, defaultSource: CustomerDefaultSource'AnyOf option, description: string option, email: string option, id: string, livemode: bool, shipping: Shipping option, ?address: Address option, ?balance: int, ?businessName: string, ?cashBalance: CashBalance option, ?currency: IsoTypes.IsoCurrencyCode option, ?customerAccount: string option, ?delinquent: bool option, ?discount: Discount option, ?individualName: string, ?invoiceCreditBalance: Map<string, string list>, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: CustomerSources, ?subscriptions: CustomerSubscriptions, ?tax: CustomerTax, ?taxExempt: CustomerTaxExempt option, ?taxIds: CustomerTaxIds, ?testClock: CustomerTestClock'AnyOf option) =
             {
                 Customer.Created = created //required
                 Customer.DefaultSource = defaultSource //required
@@ -22448,7 +21568,7 @@ module StripeModel =
         ///The ID of the credit note (if any) related to the transaction.
         CreditNote: CustomerBalanceTransactionCreditNote'AnyOf option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The ID of the customer the transaction belongs to.
         Customer: CustomerBalanceTransactionCustomer'AnyOf
         ///The ID of an Account representing a customer that the transaction belongs to.
@@ -22472,7 +21592,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "customer_balance_transaction"
 
-        static member New (amount: int, checkoutSession: CustomerBalanceTransactionCheckoutSession'AnyOf option, created: DateTime, creditNote: CustomerBalanceTransactionCreditNote'AnyOf option, currency: string, customer: CustomerBalanceTransactionCustomer'AnyOf, customerAccount: string option, description: string option, endingBalance: int, id: string, invoice: CustomerBalanceTransactionInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, ``type``: CustomerBalanceTransactionType) =
+        static member New (amount: int, checkoutSession: CustomerBalanceTransactionCheckoutSession'AnyOf option, created: DateTime, creditNote: CustomerBalanceTransactionCreditNote'AnyOf option, currency: IsoTypes.IsoCurrencyCode, customer: CustomerBalanceTransactionCustomer'AnyOf, customerAccount: string option, description: string option, endingBalance: int, id: string, invoice: CustomerBalanceTransactionInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, ``type``: CustomerBalanceTransactionType) =
             {
                 CustomerBalanceTransaction.Amount = amount //required
                 CustomerBalanceTransaction.CheckoutSession = checkoutSession //required
@@ -22516,7 +21636,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The customer whose available cash balance changed as a result of this transaction.
         Customer: CustomerCashBalanceTransactionCustomer'AnyOf
         ///The ID of an Account representing a customer whose available cash balance changed as a result of this transaction.
@@ -22540,7 +21660,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "customer_cash_balance_transaction"
 
-        static member New (created: DateTime, currency: string, customer: CustomerCashBalanceTransactionCustomer'AnyOf, customerAccount: string option, endingBalance: int, id: string, livemode: bool, netAmount: int, ``type``: CustomerCashBalanceTransactionType, ?adjustedForOverdraft: CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft, ?appliedToPayment: CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction, ?funded: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction, ?refundedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction, ?transferredToBalance: CustomerBalanceResourceCashBalanceTransactionResourceTransferredToBalance, ?unappliedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction) =
+        static member New (created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: CustomerCashBalanceTransactionCustomer'AnyOf, customerAccount: string option, endingBalance: int, id: string, livemode: bool, netAmount: int, ``type``: CustomerCashBalanceTransactionType, ?adjustedForOverdraft: CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft, ?appliedToPayment: CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction, ?funded: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction, ?refundedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction, ?transferredToBalance: CustomerBalanceResourceCashBalanceTransactionResourceTransferredToBalance, ?unappliedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction) =
             {
                 CustomerCashBalanceTransaction.Created = created //required
                 CustomerCashBalanceTransaction.Currency = currency //required
@@ -22757,18 +21877,56 @@ module StripeModel =
 
     and CustomerTaxLocation = {
         ///The identified tax country of the customer.
-        Country: string
+        Country: IsoTypes.IsoCountryCode
         ///The data source used to infer the customer's location.
         Source: CustomerTaxLocationSource
         ///The identified tax state, county, province, or region of the customer.
         State: string option
     }
     with
-        static member New (country: string, source: CustomerTaxLocationSource, state: string option) =
+        static member New (country: IsoTypes.IsoCountryCode, source: CustomerTaxLocationSource, state: string option) =
             {
                 CustomerTaxLocation.Country = country //required
                 CustomerTaxLocation.Source = source //required
                 CustomerTaxLocation.State = state //required
+            }
+
+    and DeletedBankAccount = {
+        ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
+        Currency: IsoTypes.IsoCurrencyCode option
+        ///Always true for a deleted object
+        Deleted: bool
+        ///Unique identifier for the object.
+        Id: string
+    }
+    with
+        ///String representing the object's type. Objects of the same type share the same value.
+        member _.Object = "bank_account"
+
+        static member New (deleted: bool, id: string, ?currency: IsoTypes.IsoCurrencyCode option) =
+            {
+                DeletedBankAccount.Deleted = deleted //required
+                DeletedBankAccount.Id = id //required
+                DeletedBankAccount.Currency = currency |> Option.flatten
+            }
+
+    and DeletedCard = {
+        ///Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
+        Currency: IsoTypes.IsoCurrencyCode option
+        ///Always true for a deleted object
+        Deleted: bool
+        ///Unique identifier for the object.
+        Id: string
+    }
+    with
+        ///String representing the object's type. Objects of the same type share the same value.
+        member _.Object = "card"
+
+        static member New (deleted: bool, id: string, ?currency: IsoTypes.IsoCurrencyCode option) =
+            {
+                DeletedCard.Deleted = deleted //required
+                DeletedCard.Id = id //required
+                DeletedCard.Currency = currency |> Option.flatten
             }
 
     and DeletedDiscount = {
@@ -22989,7 +22147,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///List of eligibility types that are included in `enhanced_evidence`.
         EnhancedEligibilityTypes: DisputeEnhancedEligibilityTypes list
         Evidence: DisputeEvidence
@@ -23016,7 +22174,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "dispute"
 
-        static member New (amount: int, balanceTransactions: BalanceTransaction list, charge: DisputeCharge'AnyOf, created: DateTime, currency: string, enhancedEligibilityTypes: DisputeEnhancedEligibilityTypes list, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, paymentIntent: DisputePaymentIntent'AnyOf option, reason: DisputeReason, status: DisputeStatus, ?networkReasonCode: string option, ?paymentMethodDetails: DisputePaymentMethodDetails) =
+        static member New (amount: int, balanceTransactions: BalanceTransaction list, charge: DisputeCharge'AnyOf, created: DateTime, currency: IsoTypes.IsoCurrencyCode, enhancedEligibilityTypes: DisputeEnhancedEligibilityTypes list, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, paymentIntent: DisputePaymentIntent'AnyOf option, reason: DisputeReason, status: DisputeStatus, ?networkReasonCode: string option, ?paymentMethodDetails: DisputePaymentMethodDetails) =
             {
                 Dispute.Amount = amount //required
                 Dispute.BalanceTransactions = balanceTransactions //required
@@ -23292,6 +22450,31 @@ module StripeModel =
                 DisputePaymentMethodDetailsCard.Brand = brand //required
                 DisputePaymentMethodDetailsCard.CaseType = caseType //required
                 DisputePaymentMethodDetailsCard.NetworkReasonCode = networkReasonCode //required
+            }
+
+    and DisputeTransactionShippingAddress = {
+        ///City, district, suburb, town, or village.
+        City: string option
+        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        ///Address line 1, such as the street, PO Box, or company name.
+        [<JsonField(Name="line1")>]Line1: string option
+        ///Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonField(Name="line2")>]Line2: string option
+        ///ZIP or postal code.
+        PostalCode: string option
+        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+            {
+                DisputeTransactionShippingAddress.City = city //required
+                DisputeTransactionShippingAddress.Country = country //required
+                DisputeTransactionShippingAddress.Line1 = line1 //required
+                DisputeTransactionShippingAddress.Line2 = line2 //required
+                DisputeTransactionShippingAddress.PostalCode = postalCode //required
+                DisputeTransactionShippingAddress.State = state //required
             }
 
     and DisputeVisaCompellingEvidence3DisputedTransaction = {
@@ -23581,14 +22764,14 @@ module StripeModel =
         ///ID of the Connect application that earned the fee.
         Application: string option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///Type of the fee, one of: `application_fee`, `payment_method_passthrough_fee`, `stripe_fee`, `tax`, or `withheld_tax`.
         Type: FeeType
     }
     with
-        static member New (amount: int, application: string option, currency: string, description: string option, ``type``: FeeType) =
+        static member New (amount: int, application: string option, currency: IsoTypes.IsoCurrencyCode, description: string option, ``type``: FeeType) =
             {
                 Fee.Amount = amount //required
                 Fee.Application = application //required
@@ -23609,7 +22792,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the application fee that was refunded.
         Fee: FeeRefundFee'AnyOf
         ///Unique identifier for the object.
@@ -23621,7 +22804,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "fee_refund"
 
-        static member New (amount: int, balanceTransaction: FeeRefundBalanceTransaction'AnyOf option, created: DateTime, currency: string, fee: FeeRefundFee'AnyOf, id: string, metadata: Map<string, string> option) =
+        static member New (amount: int, balanceTransaction: FeeRefundBalanceTransaction'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, fee: FeeRefundFee'AnyOf, id: string, metadata: Map<string, string> option) =
             {
                 FeeRefund.Amount = amount //required
                 FeeRefund.BalanceTransaction = balanceTransaction //required
@@ -23932,7 +23115,7 @@ module StripeModel =
         ///The amount of this transaction, in cents (or local equivalent).
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The description of this transaction.
         Description: string
         ///Unique identifier for the object.
@@ -23953,7 +23136,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "financial_connections.transaction"
 
-        static member New (account: string, amount: int, currency: string, description: string, id: string, livemode: bool, status: FinancialConnectionsTransactionStatus, statusTransitions: BankConnectionsResourceTransactionResourceStatusTransitions, transactedAt: DateTime, transactionRefresh: string, updated: DateTime) =
+        static member New (account: string, amount: int, currency: IsoTypes.IsoCurrencyCode, description: string, id: string, livemode: bool, status: FinancialConnectionsTransactionStatus, statusTransitions: BankConnectionsResourceTransactionResourceStatusTransitions, transactedAt: DateTime, transactionRefresh: string, updated: DateTime) =
             {
                 FinancialConnectionsTransaction.Account = account //required
                 FinancialConnectionsTransaction.Amount = amount //required
@@ -23974,7 +23157,7 @@ module StripeModel =
         ///Connected account ID by which to filter the report run.
         ConnectedAccount: string option
         ///Currency of objects to be included in the report run.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///Ending timestamp of data to be included in the report run. Can be any UTC timestamp between 1 second after the user specified `interval_start` and 1 second before this report's last `data_available_end` value.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]IntervalEnd: DateTime option
         ///Starting timestamp of data to be included in the report run. Can be any UTC timestamp between 1 second after this report's `data_available_start` and 1 second before the user specified `interval_end` value.
@@ -23987,7 +23170,7 @@ module StripeModel =
         Timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
     }
     with
-        static member New (?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
+        static member New (?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
             {
                 FinancialReportingFinanceReportRunRunParameters.Columns = columns
                 FinancialReportingFinanceReportRunRunParameters.ConnectedAccount = connectedAccount
@@ -24093,7 +23276,7 @@ module StripeModel =
     and FundingInstructions = {
         BankTransfer: FundingInstructionsBankTransfer
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
     }
@@ -24103,7 +23286,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "funding_instructions"
 
-        static member New (bankTransfer: FundingInstructionsBankTransfer, currency: string, livemode: bool) =
+        static member New (bankTransfer: FundingInstructionsBankTransfer, currency: IsoTypes.IsoCurrencyCode, livemode: bool) =
             {
                 FundingInstructions.BankTransfer = bankTransfer //required
                 FundingInstructions.Currency = currency //required
@@ -24112,14 +23295,14 @@ module StripeModel =
 
     and FundingInstructionsBankTransfer = {
         ///The country of the bank account to fund
-        Country: string
+        Country: IsoTypes.IsoCountryCode
         ///A list of financial addresses that can be used to fund a particular balance
         FinancialAddresses: FundingInstructionsBankTransferFinancialAddress list
         ///The bank_transfer type
         Type: FundingInstructionsBankTransferType
     }
     with
-        static member New (country: string, financialAddresses: FundingInstructionsBankTransferFinancialAddress list, ``type``: FundingInstructionsBankTransferType) =
+        static member New (country: IsoTypes.IsoCountryCode, financialAddresses: FundingInstructionsBankTransferFinancialAddress list, ``type``: FundingInstructionsBankTransferType) =
             {
                 FundingInstructionsBankTransfer.Country = country //required
                 FundingInstructionsBankTransfer.FinancialAddresses = financialAddresses //required
@@ -24188,12 +23371,12 @@ module StripeModel =
         ///The BIC/SWIFT code of the account.
         Bic: string
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string
+        Country: IsoTypes.IsoCountryCode
         ///The IBAN of the account.
         Iban: string
     }
     with
-        static member New (accountHolderAddress: Address, accountHolderName: string, bankAddress: Address, bic: string, country: string, iban: string) =
+        static member New (accountHolderAddress: Address, accountHolderName: string, bankAddress: Address, bic: string, country: IsoTypes.IsoCountryCode, iban: string) =
             {
                 FundingInstructionsBankTransferIbanRecord.AccountHolderAddress = accountHolderAddress //required
                 FundingInstructionsBankTransferIbanRecord.AccountHolderName = accountHolderName //required
@@ -24325,7 +23508,7 @@ module StripeModel =
         ///Issued date of the document.
         IssuedDate: GelatoDataDocumentReportIssuedDate option
         ///Issuing country of the document.
-        IssuingCountry: string option
+        IssuingCountry: IsoTypes.IsoCountryCode option
         ///Last name as it appears in the document.
         LastName: string option
         ///Document ID number.
@@ -24342,7 +23525,7 @@ module StripeModel =
         UnparsedSex: string option
     }
     with
-        static member New (address: Address option, error: GelatoDocumentReportError option, files: string list option, firstName: string option, issuedDate: GelatoDataDocumentReportIssuedDate option, issuingCountry: string option, lastName: string option, status: GelatoDocumentReportStatus, ``type``: GelatoDocumentReportType option, ?dob: GelatoDataDocumentReportDateOfBirth option, ?expirationDate: GelatoDataDocumentReportExpirationDate option, ?number: string option, ?sex: GelatoDocumentReportSex option, ?unparsedPlaceOfBirth: string option, ?unparsedSex: string option) =
+        static member New (address: Address option, error: GelatoDocumentReportError option, files: string list option, firstName: string option, issuedDate: GelatoDataDocumentReportIssuedDate option, issuingCountry: IsoTypes.IsoCountryCode option, lastName: string option, status: GelatoDocumentReportStatus, ``type``: GelatoDocumentReportType option, ?dob: GelatoDataDocumentReportDateOfBirth option, ?expirationDate: GelatoDataDocumentReportExpirationDate option, ?number: string option, ?sex: GelatoDocumentReportSex option, ?unparsedPlaceOfBirth: string option, ?unparsedSex: string option) =
             {
                 GelatoDocumentReport.Address = address //required
                 GelatoDocumentReport.Error = error //required
@@ -24822,6 +24005,32 @@ module StripeModel =
         | String of string
         | Mandate of Mandate
 
+    ///Address data.
+    and InsightsResourcesPaymentEvaluationAddress = {
+        ///City, district, suburb, town, or village.
+        City: string option
+        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        ///Address line 1, such as the street, PO Box, or company name.
+        [<JsonField(Name="line1")>]Line1: string option
+        ///Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonField(Name="line2")>]Line2: string option
+        ///ZIP or postal code.
+        PostalCode: string option
+        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+            {
+                InsightsResourcesPaymentEvaluationAddress.City = city //required
+                InsightsResourcesPaymentEvaluationAddress.Country = country //required
+                InsightsResourcesPaymentEvaluationAddress.Line1 = line1 //required
+                InsightsResourcesPaymentEvaluationAddress.Line2 = line2 //required
+                InsightsResourcesPaymentEvaluationAddress.PostalCode = postalCode //required
+                InsightsResourcesPaymentEvaluationAddress.State = state //required
+            }
+
     ///Billing details attached to this payment evaluation.
     and InsightsResourcesPaymentEvaluationBillingDetails = {
         Address: InsightsResourcesPaymentEvaluationAddress
@@ -24846,12 +24055,12 @@ module StripeModel =
         ///Amount to dispute for this payment. A positive integer representing how much to charge in [the smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (for example, 100 cents to charge 1.00 USD or 100 to charge 100 Yen, a zero-decimal currency).
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Reason given by cardholder for dispute.
         Reason: InsightsResourcesPaymentEvaluationDisputeOpenedReason
     }
     with
-        static member New (amount: int, currency: string, reason: InsightsResourcesPaymentEvaluationDisputeOpenedReason) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, reason: InsightsResourcesPaymentEvaluationDisputeOpenedReason) =
             {
                 InsightsResourcesPaymentEvaluationDisputeOpened.Amount = amount //required
                 InsightsResourcesPaymentEvaluationDisputeOpened.Currency = currency //required
@@ -24957,7 +24166,7 @@ module StripeModel =
         ///Amount intended to be collected by this payment. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///Details about the payment's customer presence and type.
@@ -24970,7 +24179,7 @@ module StripeModel =
         StatementDescriptor: string option
     }
     with
-        static member New (amount: int, currency: string, description: string option, moneyMovementDetails: InsightsResourcesPaymentEvaluationMoneyMovementDetails option, paymentMethodDetails: InsightsResourcesPaymentEvaluationPaymentMethodDetails option, shippingDetails: InsightsResourcesPaymentEvaluationShipping option, statementDescriptor: string option) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, description: string option, moneyMovementDetails: InsightsResourcesPaymentEvaluationMoneyMovementDetails option, paymentMethodDetails: InsightsResourcesPaymentEvaluationPaymentMethodDetails option, shippingDetails: InsightsResourcesPaymentEvaluationShipping option, statementDescriptor: string option) =
             {
                 InsightsResourcesPaymentEvaluationPaymentDetails.Amount = amount //required
                 InsightsResourcesPaymentEvaluationPaymentDetails.Currency = currency //required
@@ -25004,12 +24213,12 @@ module StripeModel =
         ///Amount refunded for this payment. A positive integer representing how much to charge in [the smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (for example, 100 cents to charge 1.00 USD or 100 to charge 100 Yen, a zero-decimal currency).
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Indicates the reason for the refund.
         Reason: InsightsResourcesPaymentEvaluationRefundedReason
     }
     with
-        static member New (amount: int, currency: string, reason: InsightsResourcesPaymentEvaluationRefundedReason) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, reason: InsightsResourcesPaymentEvaluationRefundedReason) =
             {
                 InsightsResourcesPaymentEvaluationRefunded.Amount = amount //required
                 InsightsResourcesPaymentEvaluationRefunded.Currency = currency //required
@@ -25146,6 +24355,28 @@ module StripeModel =
                 InsightsResourcesPaymentEvaluationUserInterventionResolved.Outcome = outcome //required
             }
 
+    and InternalCard = {
+        ///Brand of the card used in the transaction
+        Brand: string option
+        ///Two-letter ISO code representing the country of the card
+        Country: IsoTypes.IsoCountryCode option
+        ///Two digit number representing the card's expiration month
+        ExpMonth: int option
+        ///Two digit number representing the card's expiration year
+        ExpYear: int option
+        ///The last 4 digits of the card
+        [<JsonField(Name="last4")>]Last4: string option
+    }
+    with
+        static member New (brand: string option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, last4: string option) =
+            {
+                InternalCard.Brand = brand //required
+                InternalCard.Country = country //required
+                InternalCard.ExpMonth = expMonth //required
+                InternalCard.ExpYear = expYear //required
+                InternalCard.Last4 = last4 //required
+            }
+
     ///Invoices are statements of amounts owed by a customer, and are either
     ///generated one-off, or generated periodically from a subscription.
     ///They contain [invoice items](https://api.stripe.com#invoiceitems), and proration adjustments
@@ -25174,7 +24405,7 @@ module StripeModel =
     ///Related guide: [Send invoices to customers](https://docs.stripe.com/billing/invoices/sending)
     and Invoice = {
         ///The country of the business associated with this invoice, most often the business creating the invoice.
-        AccountCountry: string option
+        AccountCountry: IsoTypes.IsoCountryCode option
         ///The public name of the business associated with this invoice, most often the business creating the invoice.
         AccountName: string option
         ///The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
@@ -25216,7 +24447,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Custom fields displayed on the invoice.
         CustomFields: InvoiceSettingCustomField list option
         ///The ID of the customer to bill.
@@ -25333,7 +24564,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoice"
 
-        static member New (accountCountry: string option, accountName: string option, accountTaxIds: InvoiceAccountTaxIds'AnyOf list option, amountDue: int, amountOverpaid: int, amountPaid: int, amountRemaining: int, amountShipping: int, application: InvoiceApplication'AnyOf option, attemptCount: int, attempted: bool, automaticTax: AutomaticTax, automaticallyFinalizesAt: DateTime option, billingReason: InvoiceBillingReason option, collectionMethod: InvoiceCollectionMethod, created: DateTime, currency: string, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomer'AnyOf option, customerAccount: string option, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option, defaultSource: InvoiceDefaultSource'AnyOf option, defaultTaxRates: TaxRate list, description: string option, discounts: InvoiceDiscounts'AnyOf list, dueDate: DateTime option, effectiveAt: DateTime option, endingBalance: int option, footer: string option, fromInvoice: InvoicesResourceFromInvoice option, issuer: ConnectAccountReference, lastFinalizationError: ApiErrors option, latestRevision: InvoiceLatestRevision'AnyOf option, lines: InvoiceLines, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: DateTime option, number: string option, onBehalfOf: InvoiceOnBehalfOf'AnyOf option, parent: BillingBillResourceInvoicingParentsInvoiceParent option, paymentSettings: InvoicesPaymentSettings, periodEnd: DateTime, periodStart: DateTime, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, rendering: InvoicesResourceInvoiceRendering option, shippingCost: InvoicesResourceShippingCost option, shippingDetails: Shipping option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesResourceStatusTransitions, subtotal: int, subtotalExcludingTax: int option, testClock: InvoiceTestClock'AnyOf option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalExcludingTax: int option, totalPretaxCreditAmounts: InvoicesResourcePretaxCreditAmount list option, totalTaxes: BillingBillResourceInvoicingTaxesTax list option, webhooksDeliveredAt: DateTime option, ?autoAdvance: bool, ?confirmationSecret: InvoicesResourceConfirmationSecret option, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?payments: InvoicePayments, ?subscription: InvoiceSubscription'AnyOf option, ?thresholdReason: InvoiceThresholdReason) =
+        static member New (accountCountry: IsoTypes.IsoCountryCode option, accountName: string option, accountTaxIds: InvoiceAccountTaxIds'AnyOf list option, amountDue: int, amountOverpaid: int, amountPaid: int, amountRemaining: int, amountShipping: int, application: InvoiceApplication'AnyOf option, attemptCount: int, attempted: bool, automaticTax: AutomaticTax, automaticallyFinalizesAt: DateTime option, billingReason: InvoiceBillingReason option, collectionMethod: InvoiceCollectionMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomer'AnyOf option, customerAccount: string option, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: InvoiceDefaultPaymentMethod'AnyOf option, defaultSource: InvoiceDefaultSource'AnyOf option, defaultTaxRates: TaxRate list, description: string option, discounts: InvoiceDiscounts'AnyOf list, dueDate: DateTime option, effectiveAt: DateTime option, endingBalance: int option, footer: string option, fromInvoice: InvoicesResourceFromInvoice option, issuer: ConnectAccountReference, lastFinalizationError: ApiErrors option, latestRevision: InvoiceLatestRevision'AnyOf option, lines: InvoiceLines, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: DateTime option, number: string option, onBehalfOf: InvoiceOnBehalfOf'AnyOf option, parent: BillingBillResourceInvoicingParentsInvoiceParent option, paymentSettings: InvoicesPaymentSettings, periodEnd: DateTime, periodStart: DateTime, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, rendering: InvoicesResourceInvoiceRendering option, shippingCost: InvoicesResourceShippingCost option, shippingDetails: Shipping option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesResourceStatusTransitions, subtotal: int, subtotalExcludingTax: int option, testClock: InvoiceTestClock'AnyOf option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalExcludingTax: int option, totalPretaxCreditAmounts: InvoicesResourcePretaxCreditAmount list option, totalTaxes: BillingBillResourceInvoicingTaxesTax list option, webhooksDeliveredAt: DateTime option, ?autoAdvance: bool, ?confirmationSecret: InvoicesResourceConfirmationSecret option, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?payments: InvoicePayments, ?subscription: InvoiceSubscription'AnyOf option, ?thresholdReason: InvoiceThresholdReason) =
             {
                 Invoice.AccountCountry = accountCountry //required
                 Invoice.AccountName = accountName //required
@@ -25558,7 +24789,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Unique identifier for the object.
         Id: string
         ///The invoice that was paid.
@@ -25576,7 +24807,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoice_payment"
 
-        static member New (amountPaid: int option, amountRequested: int, created: DateTime, currency: string, id: string, invoice: InvoicePaymentInvoice'AnyOf, isDefault: bool, livemode: bool, payment: InvoicesPaymentsInvoicePaymentAssociatedPayment, status: InvoicePaymentStatus, statusTransitions: InvoicesPaymentsInvoicePaymentStatusTransitions) =
+        static member New (amountPaid: int option, amountRequested: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, invoice: InvoicePaymentInvoice'AnyOf, isDefault: bool, livemode: bool, payment: InvoicesPaymentsInvoicePaymentAssociatedPayment, status: InvoicePaymentStatus, statusTransitions: InvoicesPaymentsInvoicePaymentStatusTransitions) =
             {
                 InvoicePayment.AmountPaid = amountPaid //required
                 InvoicePayment.AmountRequested = amountRequested //required
@@ -25903,7 +25134,7 @@ module StripeModel =
         ///Amount (in the `currency` specified) of the invoice item. This should always be equal to `unit_amount * quantity`.
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The ID of the customer to bill for this invoice item.
         Customer: InvoiceitemCustomer'AnyOf
         ///The ID of the account to bill for this invoice item.
@@ -25947,7 +25178,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "invoiceitem"
 
-        static member New (amount: int, currency: string, customer: InvoiceitemCustomer'AnyOf, customerAccount: string option, date: DateTime, description: string option, discountable: bool, discounts: InvoiceitemDiscounts'AnyOf list option, id: string, invoice: InvoiceitemInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option, period: InvoiceLineItemPeriod, pricing: BillingBillResourceInvoicingPricingPricing option, proration: bool, quantity: int, quantityDecimal: string, taxRates: TaxRate list option, testClock: InvoiceitemTestClock'AnyOf option, ?netAmount: int, ?prorationDetails: ProrationDetails) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, customer: InvoiceitemCustomer'AnyOf, customerAccount: string option, date: DateTime, description: string option, discountable: bool, discounts: InvoiceitemDiscounts'AnyOf list option, id: string, invoice: InvoiceitemInvoice'AnyOf option, livemode: bool, metadata: Map<string, string> option, parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option, period: InvoiceLineItemPeriod, pricing: BillingBillResourceInvoicingPricingPricing option, proration: bool, quantity: int, quantityDecimal: string, taxRates: TaxRate list option, testClock: InvoiceitemTestClock'AnyOf option, ?netAmount: int, ?prorationDetails: ProrationDetails) =
             {
                 Invoiceitem.Amount = amount //required
                 Invoiceitem.Currency = currency //required
@@ -26200,7 +25431,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///The currency of the cardholder. This currency can be different from the currency presented at authorization and the `merchant_currency` field on this authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Fleet-specific information for authorizations using Fleet cards.
         Fleet: IssuingAuthorizationFleetData option
         ///Fraud challenges sent to the cardholder, if this authorization was declined for fraud risk reasons.
@@ -26214,7 +25445,7 @@ module StripeModel =
         ///The total amount that was authorized or rejected. This amount is in the `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). `merchant_amount` should be the same as `amount`, unless `merchant_currency` and `currency` are different.
         MerchantAmount: int
         ///The local currency that was presented to the cardholder for the authorization. This currency can be different from the cardholder currency and the `currency` field on this authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        MerchantCurrency: string
+        MerchantCurrency: IsoTypes.IsoCurrencyCode
         MerchantData: IssuingAuthorizationMerchantData
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
@@ -26242,7 +25473,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.authorization"
 
-        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardPresence: IssuingAuthorizationCardPresence option, cardholder: IssuingAuthorizationCardholder'AnyOf option, created: DateTime, currency: string, fleet: IssuingAuthorizationFleetData option, fuel: IssuingAuthorizationFuelData option, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, networkData: IssuingAuthorizationNetworkData option, pendingRequest: IssuingAuthorizationPendingRequest option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, verifiedByFraudChallenge: bool option, wallet: IssuingAuthorizationWallet option, ?fraudChallenges: IssuingAuthorizationFraudChallenge list option, ?token: IssuingAuthorizationToken'AnyOf option, ?treasury: IssuingAuthorizationTreasury option) =
+        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardPresence: IssuingAuthorizationCardPresence option, cardholder: IssuingAuthorizationCardholder'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, fleet: IssuingAuthorizationFleetData option, fuel: IssuingAuthorizationFuelData option, id: string, livemode: bool, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, networkData: IssuingAuthorizationNetworkData option, pendingRequest: IssuingAuthorizationPendingRequest option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, verifiedByFraudChallenge: bool option, wallet: IssuingAuthorizationWallet option, ?fraudChallenges: IssuingAuthorizationFraudChallenge list option, ?token: IssuingAuthorizationToken'AnyOf option, ?treasury: IssuingAuthorizationTreasury option) =
             {
                 IssuingAuthorization.Amount = amount //required
                 IssuingAuthorization.AmountDetails = amountDetails //required
@@ -26293,7 +25524,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Supported currencies are `usd` in the US, `eur` in the EU, and `gbp` in the UK.
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The card's CVC. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://docs.stripe.com/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://docs.stripe.com/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
         Cvc: string option
         ///The expiration month of the card.
@@ -26340,7 +25571,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.card"
 
-        static member New (brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: DateTime, currency: string, expMonth: int, expYear: int, id: string, last4: string, latestFraudWarning: IssuingCardFraudWarning option, lifecycleControls: IssuingCardLifecycleControls option, livemode: bool, metadata: Map<string, string>, personalizationDesign: IssuingCardPersonalizationDesign'AnyOf option, replacedBy: IssuingCardReplacedBy'AnyOf option, replacementFor: IssuingCardReplacementFor'AnyOf option, replacementReason: IssuingCardReplacementReason option, secondLine: string option, shipping: IssuingCardShipping option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, wallets: IssuingCardWallets option, ?cvc: string, ?financialAccount: string option, ?number: string) =
+        static member New (brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: DateTime, currency: IsoTypes.IsoCurrencyCode, expMonth: int, expYear: int, id: string, last4: string, latestFraudWarning: IssuingCardFraudWarning option, lifecycleControls: IssuingCardLifecycleControls option, livemode: bool, metadata: Map<string, string>, personalizationDesign: IssuingCardPersonalizationDesign'AnyOf option, replacedBy: IssuingCardReplacedBy'AnyOf option, replacementFor: IssuingCardReplacementFor'AnyOf option, replacementReason: IssuingCardReplacementReason option, secondLine: string option, shipping: IssuingCardShipping option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, wallets: IssuingCardWallets option, ?cvc: string, ?financialAccount: string option, ?number: string) =
             {
                 IssuingCard.Brand = brand //required
                 IssuingCard.CancellationReason = cancellationReason //required
@@ -26448,7 +25679,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///The currency the `transaction` was made in.
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         Evidence: IssuingDisputeEvidence
         ///Unique identifier for the object.
         Id: string
@@ -26469,7 +25700,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.dispute"
 
-        static member New (amount: int, created: DateTime, currency: string, evidence: IssuingDisputeEvidence, id: string, livemode: bool, metadata: Map<string, string>, status: IssuingDisputeStatus, transaction: IssuingDisputeTransaction'AnyOf, ?balanceTransactions: BalanceTransaction list option, ?lossReason: IssuingDisputeLossReason, ?treasury: IssuingDisputeTreasury option) =
+        static member New (amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, evidence: IssuingDisputeEvidence, id: string, livemode: bool, metadata: Map<string, string>, status: IssuingDisputeStatus, transaction: IssuingDisputeTransaction'AnyOf, ?balanceTransactions: BalanceTransaction list option, ?lossReason: IssuingDisputeLossReason, ?treasury: IssuingDisputeTreasury option) =
             {
                 IssuingDispute.Amount = amount //required
                 IssuingDispute.Created = created //required
@@ -26637,7 +25868,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///If you've disputed the transaction, the ID of the dispute.
         Dispute: IssuingTransactionDispute'AnyOf option
         ///Unique identifier for the object.
@@ -26647,7 +25878,7 @@ module StripeModel =
         ///The amount that the merchant will receive, denominated in `merchant_currency` and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal). It will be different from `amount` if the merchant is taking payment in a different currency.
         MerchantAmount: int
         ///The currency with which the merchant is taking payment.
-        MerchantCurrency: string
+        MerchantCurrency: IsoTypes.IsoCurrencyCode
         MerchantData: IssuingAuthorizationMerchantData
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
@@ -26668,7 +25899,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "issuing.transaction"
 
-        static member New (amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: IssuingTransactionAuthorization'AnyOf option, balanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option, card: IssuingTransactionCard'AnyOf, cardholder: IssuingTransactionCardholder'AnyOf option, created: DateTime, currency: string, dispute: IssuingTransactionDispute'AnyOf option, id: string, livemode: bool, merchantAmount: int, merchantCurrency: string, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, networkData: IssuingTransactionNetworkData option, ``type``: IssuingTransactionType, wallet: IssuingTransactionWallet option, ?purchaseDetails: IssuingTransactionPurchaseDetails option, ?token: IssuingTransactionToken'AnyOf option, ?treasury: IssuingTransactionTreasury option) =
+        static member New (amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: IssuingTransactionAuthorization'AnyOf option, balanceTransaction: IssuingTransactionBalanceTransaction'AnyOf option, card: IssuingTransactionCard'AnyOf, cardholder: IssuingTransactionCardholder'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, dispute: IssuingTransactionDispute'AnyOf option, id: string, livemode: bool, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, networkData: IssuingTransactionNetworkData option, ``type``: IssuingTransactionType, wallet: IssuingTransactionWallet option, ?purchaseDetails: IssuingTransactionPurchaseDetails option, ?token: IssuingTransactionToken'AnyOf option, ?treasury: IssuingTransactionTreasury option) =
             {
                 IssuingTransaction.Amount = amount //required
                 IssuingTransaction.AmountDetails = amountDetails //required
@@ -26803,24 +26034,64 @@ module StripeModel =
                 IssuingAuthorizationFuelData.UnitCostDecimal = unitCostDecimal //required
             }
 
+    and IssuingAuthorizationMerchantData = {
+        ///A categorization of the seller's type of business. See our [merchant categories guide](https://docs.stripe.com/issuing/merchant-categories) for a list of possible values.
+        Category: string
+        ///The merchant category code for the seller’s business
+        CategoryCode: string
+        ///City where the seller is located
+        City: string option
+        ///Country where the seller is located
+        Country: IsoTypes.IsoCountryCode option
+        ///Name of the seller
+        Name: string option
+        ///Identifier assigned to the seller by the card network. Different card networks may assign different network_id fields to the same merchant.
+        NetworkId: string
+        ///Postal code where the seller is located
+        PostalCode: string option
+        ///State where the seller is located
+        State: string option
+        ///The seller's tax identification number. Currently populated for French merchants only.
+        TaxId: string option
+        ///An ID assigned by the seller to the location of the sale.
+        TerminalId: string option
+        ///URL provided by the merchant on a 3DS request
+        Url: string option
+    }
+    with
+        static member New (category: string, categoryCode: string, city: string option, country: IsoTypes.IsoCountryCode option, name: string option, networkId: string, postalCode: string option, state: string option, taxId: string option, terminalId: string option, url: string option) =
+            {
+                IssuingAuthorizationMerchantData.Category = category //required
+                IssuingAuthorizationMerchantData.CategoryCode = categoryCode //required
+                IssuingAuthorizationMerchantData.City = city //required
+                IssuingAuthorizationMerchantData.Country = country //required
+                IssuingAuthorizationMerchantData.Name = name //required
+                IssuingAuthorizationMerchantData.NetworkId = networkId //required
+                IssuingAuthorizationMerchantData.PostalCode = postalCode //required
+                IssuingAuthorizationMerchantData.State = state //required
+                IssuingAuthorizationMerchantData.TaxId = taxId //required
+                IssuingAuthorizationMerchantData.TerminalId = terminalId //required
+                IssuingAuthorizationMerchantData.Url = url //required
+            }
+
     and IssuingAuthorizationPendingRequest = {
         ///The additional amount Stripe will hold if the authorization is approved, in the card's [currency](https://docs.stripe.com/api#issuing_authorization_object-pending-request-currency) and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         Amount: int
         ///Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         AmountDetails: IssuingAuthorizationAmountDetails option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///If set `true`, you may provide [amount](https://docs.stripe.com/api/issuing/authorizations/approve#approve_issuing_authorization-amount) to control how much to hold for the authorization.
         IsAmountControllable: bool
         ///The amount the merchant is requesting to be authorized in the `merchant_currency`. The amount is in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         MerchantAmount: int
         ///The local currency the merchant is requesting to authorize.
-        MerchantCurrency: string
+        MerchantCurrency: IsoTypes.IsoCurrencyCode
         ///The card network's estimate of the likelihood that an authorization is fraudulent. Takes on values between 1 and 99.
         NetworkRiskScore: int option
     }
     with
-        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, currency: string, isAmountControllable: bool, merchantAmount: int, merchantCurrency: string, networkRiskScore: int option) =
+        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, currency: IsoTypes.IsoCurrencyCode, isAmountControllable: bool, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, networkRiskScore: int option) =
             {
                 IssuingAuthorizationPendingRequest.Amount = amount //required
                 IssuingAuthorizationPendingRequest.AmountDetails = amountDetails //required
@@ -26843,11 +26114,11 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The `pending_request.merchant_amount` at the time of the request, presented in the `merchant_currency` and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         MerchantAmount: int
         ///The currency that was collected by the merchant and presented to the cardholder for the authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        MerchantCurrency: string
+        MerchantCurrency: IsoTypes.IsoCurrencyCode
         ///The card network's estimate of the likelihood that an authorization is fraudulent. Takes on values between 1 and 99.
         NetworkRiskScore: int option
         ///When an authorization is approved or declined by you or by Stripe, this field provides additional detail on the reason for the outcome.
@@ -26858,7 +26129,7 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]RequestedAt: DateTime option
     }
     with
-        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationCode: string option, created: DateTime, currency: string, merchantAmount: int, merchantCurrency: string, networkRiskScore: int option, reason: IssuingAuthorizationRequestReason, reasonMessage: string option, requestedAt: DateTime option) =
+        static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationCode: string option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, networkRiskScore: int option, reason: IssuingAuthorizationRequestReason, reasonMessage: string option, requestedAt: DateTime option) =
             {
                 IssuingAuthorizationRequest.Amount = amount //required
                 IssuingAuthorizationRequest.AmountDetails = amountDetails //required
@@ -26957,10 +26228,10 @@ module StripeModel =
         ///Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).
         SpendingLimits: IssuingCardSpendingLimit list option
         ///Currency of the amounts within `spending_limits`. Always the same as the currency of the card.
-        SpendingLimitsCurrency: string option
+        SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
     }
     with
-        static member New (allowedCardPresences: IssuingCardAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: string option) =
+        static member New (allowedCardPresences: IssuingCardAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option) =
             {
                 IssuingCardAuthorizationControls.AllowedCardPresences = allowedCardPresences //required
                 IssuingCardAuthorizationControls.AllowedCategories = allowedCategories //required
@@ -27123,10 +26394,10 @@ module StripeModel =
         ///Limit spending with amount-based rules that apply across this cardholder's cards.
         SpendingLimits: IssuingCardholderSpendingLimit list option
         ///Currency of the amounts within `spending_limits`.
-        SpendingLimitsCurrency: string option
+        SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
     }
     with
-        static member New (allowedCardPresences: IssuingCardholderAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardholderAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: string option) =
+        static member New (allowedCardPresences: IssuingCardholderAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardholderAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option) =
             {
                 IssuingCardholderAuthorizationControls.AllowedCardPresences = allowedCardPresences //required
                 IssuingCardholderAuthorizationControls.AllowedCategories = allowedCategories //required
@@ -27700,7 +26971,7 @@ module StripeModel =
         ///Total after discounts and taxes.
         AmountTotal: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users. Defaults to product name.
         Description: string option
         ///The discounts applied to the line item.
@@ -27720,7 +26991,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "item"
 
-        static member New (adjustableQuantity: LineItemsAdjustableQuantity option, amountDiscount: int, amountSubtotal: int, amountTax: int, amountTotal: int, currency: string, description: string option, id: string, metadata: Map<string, string> option, price: Price option, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
+        static member New (adjustableQuantity: LineItemsAdjustableQuantity option, amountDiscount: int, amountSubtotal: int, amountTax: int, amountTotal: int, currency: IsoTypes.IsoCurrencyCode, description: string option, id: string, metadata: Map<string, string> option, price: Price option, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
             {
                 Item.AdjustableQuantity = adjustableQuantity //required
                 Item.AmountDiscount = amountDiscount //required
@@ -27735,6 +27006,16 @@ module StripeModel =
                 Item.Quantity = quantity //required
                 Item.Discounts = discounts
                 Item.Taxes = taxes
+            }
+
+    and KlarnaAddress = {
+        ///The payer address country
+        Country: IsoTypes.IsoCountryCode option
+    }
+    with
+        static member New (country: IsoTypes.IsoCountryCode option) =
+            {
+                KlarnaAddress.Country = country //required
             }
 
     and KlarnaPayerDetails = {
@@ -27854,6 +27135,34 @@ module StripeModel =
         | String of string
         | File of File
 
+    and LegalEntityJapanAddress = {
+        ///City/Ward.
+        City: string option
+        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        ///Block/Building number.
+        [<JsonField(Name="line1")>]Line1: string option
+        ///Building details.
+        [<JsonField(Name="line2")>]Line2: string option
+        ///ZIP or postal code.
+        PostalCode: string option
+        ///Prefecture.
+        State: string option
+        ///Town/cho-me.
+        Town: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option, town: string option) =
+            {
+                LegalEntityJapanAddress.City = city //required
+                LegalEntityJapanAddress.Country = country //required
+                LegalEntityJapanAddress.Line1 = line1 //required
+                LegalEntityJapanAddress.Line2 = line2 //required
+                LegalEntityJapanAddress.PostalCode = postalCode //required
+                LegalEntityJapanAddress.State = state //required
+                LegalEntityJapanAddress.Town = town //required
+            }
+
     and LegalEntityPersonVerification = {
         ///A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
         AdditionalDocument: LegalEntityPersonVerificationDocument option
@@ -27927,7 +27236,7 @@ module StripeModel =
         ///The amount, in cents (or local equivalent).
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///The amount of discount calculated per discount for this line item.
@@ -27965,7 +27274,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "line_item"
 
-        static member New (amount: int, currency: string, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: LineItemDiscounts'AnyOf list, id: string, invoice: string option, livemode: bool, metadata: Map<string, string>, parent: BillingBillResourceInvoicingLinesParentsInvoiceLineItemParent option, period: InvoiceLineItemPeriod, pretaxCreditAmounts: InvoicesResourcePretaxCreditAmount list option, pricing: BillingBillResourceInvoicingPricingPricing option, quantity: int option, quantityDecimal: string option, subscription: LineItemSubscription'AnyOf option, subtotal: int, taxes: BillingBillResourceInvoicingTaxesTax list option) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: LineItemDiscounts'AnyOf list, id: string, invoice: string option, livemode: bool, metadata: Map<string, string>, parent: BillingBillResourceInvoicingLinesParentsInvoiceLineItemParent option, period: InvoiceLineItemPeriod, pretaxCreditAmounts: InvoicesResourcePretaxCreditAmount list option, pricing: BillingBillResourceInvoicingPricingPricing option, quantity: int option, quantityDecimal: string option, subscription: LineItemSubscription'AnyOf option, subtotal: int, taxes: BillingBillResourceInvoicingTaxesTax list option) =
             {
                 LineItem.Amount = amount //required
                 LineItem.Currency = currency //required
@@ -28129,6 +27438,19 @@ module StripeModel =
                 MandateBacsDebit.Url = url //required
             }
 
+    and MandateMultiUse = {
+        ///The amount of the payment on a multi use mandate.
+        Amount: int option
+        ///The currency of the payment on a multi use mandate.
+        Currency: IsoTypes.IsoCurrencyCode option
+    }
+    with
+        static member New (?amount: int, ?currency: IsoTypes.IsoCurrencyCode) =
+            {
+                MandateMultiUse.Amount = amount
+                MandateMultiUse.Currency = currency
+            }
+
     and MandateOptionsPayto = {
         ///Amount that will be collected. It is required when `amount_type` is `fixed`.
         Amount: int option
@@ -28275,6 +27597,19 @@ module StripeModel =
                 MandatePix.PaymentSchedule = paymentSchedule
                 MandatePix.Reference = reference
                 MandatePix.StartDate = startDate
+            }
+
+    and MandateSingleUse = {
+        ///The amount of the payment on a single use mandate.
+        Amount: int
+        ///The currency of the payment on a single use mandate.
+        Currency: IsoTypes.IsoCurrencyCode
+    }
+    with
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode) =
+            {
+                MandateSingleUse.Amount = amount //required
+                MandateSingleUse.Currency = currency //required
             }
 
     and MandateUpi = {
@@ -28613,6 +27948,19 @@ module StripeModel =
                 PaymentFlowsPaymentIntentAsyncWorkflowsResourceInputs.Tax = tax
             }
 
+    and PaymentFlowsPaymentIntentPresentmentDetails = {
+        ///Amount intended to be collected by this payment, denominated in `presentment_currency`.
+        PresentmentAmount: int
+        ///Currency presented to the customer during payment.
+        PresentmentCurrency: IsoTypes.IsoCurrencyCode
+    }
+    with
+        static member New (presentmentAmount: int, presentmentCurrency: IsoTypes.IsoCurrencyCode) =
+            {
+                PaymentFlowsPaymentIntentPresentmentDetails.PresentmentAmount = presentmentAmount //required
+                PaymentFlowsPaymentIntentPresentmentDetails.PresentmentCurrency = presentmentCurrency //required
+            }
+
     and PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization = {
         ///Indicates whether or not the capture window is extended beyond the standard authorization.
         Status: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorizationStatus
@@ -28762,7 +28110,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the Customer this PaymentIntent belongs to, if one exists.
         ///Payment methods attached to other Customers cannot be used with this PaymentIntent.
         ///If [setup_future_usage](https://api.stripe.com#payment_intent_object-setup_future_usage) is set and this PaymentIntent's payment method is not `card_present`, then the payment method attaches to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete. If the payment method is `card_present` and isn't a digital wallet, then a [generated_card](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card is created and attached to the Customer instead.
@@ -28834,7 +28182,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "payment_intent"
 
-        static member New (amount: int, amountCapturable: int, amountReceived: int, application: PaymentIntentApplication'AnyOf option, applicationFeeAmount: int option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: string, customer: PaymentIntentCustomer'AnyOf option, customerAccount: string option, description: string option, excludedPaymentMethodTypes: PaymentIntentExcludedPaymentMethodTypes list option, id: string, lastPaymentError: ApiErrors option, latestCharge: PaymentIntentLatestCharge'AnyOf option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: PaymentIntentOnBehalfOf'AnyOf option, paymentMethod: PaymentIntentPaymentMethod'AnyOf option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, processing: PaymentIntentProcessing option, receiptEmail: string option, review: PaymentIntentReview'AnyOf option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferGroup: string option, ?amountDetails: PaymentFlowsAmountDetails, ?hooks: PaymentFlowsPaymentIntentAsyncWorkflows, ?paymentDetails: PaymentFlowsPaymentDetails, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?transferData: TransferData option) =
+        static member New (amount: int, amountCapturable: int, amountReceived: int, application: PaymentIntentApplication'AnyOf option, applicationFeeAmount: int option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: PaymentIntentCustomer'AnyOf option, customerAccount: string option, description: string option, excludedPaymentMethodTypes: PaymentIntentExcludedPaymentMethodTypes list option, id: string, lastPaymentError: ApiErrors option, latestCharge: PaymentIntentLatestCharge'AnyOf option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: PaymentIntentOnBehalfOf'AnyOf option, paymentMethod: PaymentIntentPaymentMethod'AnyOf option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, processing: PaymentIntentProcessing option, receiptEmail: string option, review: PaymentIntentReview'AnyOf option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferGroup: string option, ?amountDetails: PaymentFlowsAmountDetails, ?hooks: PaymentFlowsPaymentIntentAsyncWorkflows, ?paymentDetails: PaymentFlowsPaymentDetails, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?transferData: TransferData option) =
             {
                 PaymentIntent.Amount = amount //required
                 PaymentIntent.AmountCapturable = amountCapturable //required
@@ -29030,7 +28378,7 @@ module StripeModel =
         ///The remaining amount that needs to be transferred to complete the payment.
         AmountRemaining: int option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///A list of financial addresses that can be used to fund the customer balance
         FinancialAddresses: FundingInstructionsBankTransferFinancialAddress list option
         ///A link to a hosted page that guides your customer through completing the transfer.
@@ -29041,7 +28389,7 @@ module StripeModel =
         Type: PaymentIntentNextActionDisplayBankTransferInstructionsType
     }
     with
-        static member New (amountRemaining: int option, currency: string option, hostedInstructionsUrl: string option, reference: string option, ``type``: PaymentIntentNextActionDisplayBankTransferInstructionsType, ?financialAddresses: FundingInstructionsBankTransferFinancialAddress list) =
+        static member New (amountRemaining: int option, currency: IsoTypes.IsoCurrencyCode option, hostedInstructionsUrl: string option, reference: string option, ``type``: PaymentIntentNextActionDisplayBankTransferInstructionsType, ?financialAddresses: FundingInstructionsBankTransferFinancialAddress list) =
             {
                 PaymentIntentNextActionDisplayBankTransferInstructions.AmountRemaining = amountRemaining //required
                 PaymentIntentNextActionDisplayBankTransferInstructions.Currency = currency //required
@@ -29548,7 +28896,7 @@ module StripeModel =
         ///When set, provides configuration to gather active consent from customers.
         ConsentCollection: PaymentLinksResourceConsentCollection option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
         CustomFields: PaymentLinksResourceCustomFields list
         CustomText: PaymentLinksResourceCustomText
@@ -29600,7 +28948,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "payment_link"
 
-        static member New (active: bool, afterCompletion: PaymentLinksResourceAfterCompletion, allowPromotionCodes: bool, application: PaymentLinkApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: PaymentLinksResourceAutomaticTax, billingAddressCollection: PaymentLinkBillingAddressCollection, consentCollection: PaymentLinksResourceConsentCollection option, currency: string, customFields: PaymentLinksResourceCustomFields list, customText: PaymentLinksResourceCustomText, customerCreation: PaymentLinkCustomerCreation, id: string, inactiveMessage: string option, invoiceCreation: PaymentLinksResourceInvoiceCreation option, livemode: bool, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string>, onBehalfOf: PaymentLinkOnBehalfOf'AnyOf option, paymentIntentData: PaymentLinksResourcePaymentIntentData option, paymentMethodCollection: PaymentLinkPaymentMethodCollection, paymentMethodTypes: PaymentLinkPaymentMethodTypes list option, phoneNumberCollection: PaymentLinksResourcePhoneNumberCollection, restrictions: PaymentLinksResourceRestrictions option, shippingAddressCollection: PaymentLinksResourceShippingAddressCollection option, shippingOptions: PaymentLinksResourceShippingOption list, submitType: PaymentLinkSubmitType, subscriptionData: PaymentLinksResourceSubscriptionData option, taxIdCollection: PaymentLinksResourceTaxIdCollection, transferData: PaymentLinksResourceTransferData option, url: string, ?lineItems: PaymentLinkLineItems, ?nameCollection: PaymentLinksResourceNameCollection, ?optionalItems: PaymentLinksResourceOptionalItem list option) =
+        static member New (active: bool, afterCompletion: PaymentLinksResourceAfterCompletion, allowPromotionCodes: bool, application: PaymentLinkApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: PaymentLinksResourceAutomaticTax, billingAddressCollection: PaymentLinkBillingAddressCollection, consentCollection: PaymentLinksResourceConsentCollection option, currency: IsoTypes.IsoCurrencyCode, customFields: PaymentLinksResourceCustomFields list, customText: PaymentLinksResourceCustomText, customerCreation: PaymentLinkCustomerCreation, id: string, inactiveMessage: string option, invoiceCreation: PaymentLinksResourceInvoiceCreation option, livemode: bool, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string>, onBehalfOf: PaymentLinkOnBehalfOf'AnyOf option, paymentIntentData: PaymentLinksResourcePaymentIntentData option, paymentMethodCollection: PaymentLinkPaymentMethodCollection, paymentMethodTypes: PaymentLinkPaymentMethodTypes list option, phoneNumberCollection: PaymentLinksResourcePhoneNumberCollection, restrictions: PaymentLinksResourceRestrictions option, shippingAddressCollection: PaymentLinksResourceShippingAddressCollection option, shippingOptions: PaymentLinksResourceShippingOption list, submitType: PaymentLinkSubmitType, subscriptionData: PaymentLinksResourceSubscriptionData option, taxIdCollection: PaymentLinksResourceTaxIdCollection, transferData: PaymentLinksResourceTransferData option, url: string, ?lineItems: PaymentLinkLineItems, ?nameCollection: PaymentLinksResourceNameCollection, ?optionalItems: PaymentLinksResourceOptionalItem list option) =
             {
                 PaymentLink.Active = active //required
                 PaymentLink.AfterCompletion = afterCompletion //required
@@ -30132,7 +29480,7 @@ module StripeModel =
         ///Checks on Card address and CVC if provided.
         Checks: PaymentMethodCardChecks option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///The brand to use when displaying the card, this accounts for customer's brand choice on dual-branded cards. Can be `american_express`, `cartes_bancaires`, `diners_club`, `discover`, `eftpos_australia`, `interac`, `jcb`, `mastercard`, `union_pay`, `visa`, or `other` and may contain more values in the future.
@@ -30164,7 +29512,7 @@ module StripeModel =
         Wallet: PaymentMethodCardWallet option
     }
     with
-        static member New (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecks option, country: string option, displayBrand: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, generatedFrom: PaymentMethodCardGeneratedCard option, last4: string, networks: Networks option, regulatedStatus: PaymentMethodCardRegulatedStatus option, threeDSecureUsage: ThreeDSecureUsage option, wallet: PaymentMethodCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
+        static member New (brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecks option, country: IsoTypes.IsoCountryCode option, displayBrand: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, generatedFrom: PaymentMethodCardGeneratedCard option, last4: string, networks: Networks option, regulatedStatus: PaymentMethodCardRegulatedStatus option, threeDSecureUsage: ThreeDSecureUsage option, wallet: PaymentMethodCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodCard.Brand = brand //required
                 PaymentMethodCard.Checks = checks //required
@@ -30229,7 +29577,7 @@ module StripeModel =
         ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay.
         CardholderName: string option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///Two-digit number representing the card's expiration month.
@@ -30258,7 +29606,7 @@ module StripeModel =
         Wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet option
     }
     with
-        static member New (brand: PaymentMethodCardPresentBrand option, brandProduct: string option, cardholderName: string option, country: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodCardPresentFunding option, last4: string option, networks: PaymentMethodCardPresentNetworks option, offline: PaymentMethodDetailsCardPresentOffline option, preferredLocales: string list option, readMethod: PaymentMethodCardPresentReadMethod option, ?description: string option, ?iin: string option, ?issuer: string option, ?wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet) =
+        static member New (brand: PaymentMethodCardPresentBrand option, brandProduct: string option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodCardPresentFunding option, last4: string option, networks: PaymentMethodCardPresentNetworks option, offline: PaymentMethodDetailsCardPresentOffline option, preferredLocales: string list option, readMethod: PaymentMethodCardPresentReadMethod option, ?description: string option, ?iin: string option, ?issuer: string option, ?wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet) =
             {
                 PaymentMethodCardPresent.Brand = brand //required
                 PaymentMethodCardPresent.BrandProduct = brandProduct //required
@@ -30689,7 +30037,7 @@ module StripeModel =
         ///Name of the bank associated with the bank account.
         BankName: string option
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
@@ -30698,7 +30046,7 @@ module StripeModel =
         RoutingNumber: string option
     }
     with
-        static member New (accountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option, bankName: string option, country: string option, fingerprint: string option, last4: string option, routingNumber: string option) =
+        static member New (accountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option, bankName: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, last4: string option, routingNumber: string option) =
             {
                 PaymentMethodDetailsAchDebit.AccountHolderType = accountHolderType //required
                 PaymentMethodDetailsAchDebit.BankName = bankName //required
@@ -30785,7 +30133,7 @@ module StripeModel =
         ///Check results by Card networks on Card address and CVC at time of payment.
         Checks: PaymentMethodDetailsCardChecks option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///Two-digit number representing the card's expiration month.
@@ -30828,7 +30176,7 @@ module StripeModel =
         Wallet: PaymentMethodDetailsCardWallet option
     }
     with
-        static member New (amountAuthorized: int option, authorizationCode: string option, brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, mandate: string option, network: PaymentMethodDetailsCardNetwork option, networkTransactionId: string option, regulatedStatus: PaymentMethodDetailsCardRegulatedStatus option, threeDSecure: ThreeDSecureDetailsCharge option, wallet: PaymentMethodDetailsCardWallet option, ?captureBefore: DateTime, ?description: string option, ?extendedAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization, ?fingerprint: string option, ?iin: string option, ?incrementalAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization, ?issuer: string option, ?moto: bool option, ?multicapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticapture, ?networkToken: PaymentMethodDetailsCardNetworkToken option, ?overcapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture) =
+        static member New (amountAuthorized: int option, authorizationCode: string option, brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, mandate: string option, network: PaymentMethodDetailsCardNetwork option, networkTransactionId: string option, regulatedStatus: PaymentMethodDetailsCardRegulatedStatus option, threeDSecure: ThreeDSecureDetailsCharge option, wallet: PaymentMethodDetailsCardWallet option, ?captureBefore: DateTime, ?description: string option, ?extendedAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization, ?fingerprint: string option, ?iin: string option, ?incrementalAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization, ?issuer: string option, ?moto: bool option, ?multicapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticapture, ?networkToken: PaymentMethodDetailsCardNetworkToken option, ?overcapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture) =
             {
                 PaymentMethodDetailsCard.AmountAuthorized = amountAuthorized //required
                 PaymentMethodDetailsCard.AuthorizationCode = authorizationCode //required
@@ -30914,7 +30262,7 @@ module StripeModel =
         ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay.
         CardholderName: string option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///Authorization response cryptogram.
@@ -30959,7 +30307,7 @@ module StripeModel =
         Wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet option
     }
     with
-        static member New (amountAuthorized: int option, brand: PaymentMethodDetailsCardPresentBrand option, brandProduct: string option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, incrementalAuthorizationSupported: bool, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, networkTransactionId: string option, offline: PaymentMethodDetailsCardPresentOffline option, overcaptureSupported: bool, preferredLocales: string list option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceipt option, ?captureBefore: DateTime, ?description: string option, ?iin: string option, ?issuer: string option, ?location: string, ?reader: string, ?wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet) =
+        static member New (amountAuthorized: int option, brand: PaymentMethodDetailsCardPresentBrand option, brandProduct: string option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, incrementalAuthorizationSupported: bool, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, networkTransactionId: string option, offline: PaymentMethodDetailsCardPresentOffline option, overcaptureSupported: bool, preferredLocales: string list option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceipt option, ?captureBefore: DateTime, ?description: string option, ?iin: string option, ?issuer: string option, ?location: string, ?reader: string, ?wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet) =
             {
                 PaymentMethodDetailsCardPresent.AmountAuthorized = amountAuthorized //required
                 PaymentMethodDetailsCardPresent.Brand = brand //required
@@ -31182,7 +30530,7 @@ module StripeModel =
         ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay.
         CardholderName: string option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///Authorization response cryptogram.
@@ -31220,7 +30568,7 @@ module StripeModel =
         Receipt: PaymentMethodDetailsInteracPresentReceipt option
     }
     with
-        static member New (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: string option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, networkTransactionId: string option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option, ?location: string, ?reader: string) =
+        static member New (brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, networkTransactionId: string option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option, ?location: string, ?reader: string) =
             {
                 PaymentMethodDetailsInteracPresent.Brand = brand //required
                 PaymentMethodDetailsInteracPresent.CardholderName = cardholderName //required
@@ -31341,6 +30689,17 @@ module StripeModel =
                 PaymentMethodDetailsKrCard.TransactionId = transactionId //required
             }
 
+    and PaymentMethodDetailsLink = {
+        ///Two-letter ISO code representing the funding source country beneath the Link payment.
+        ///You could use this attribute to get a sense of international fees.
+        Country: IsoTypes.IsoCountryCode option
+    }
+    with
+        static member New (country: IsoTypes.IsoCountryCode option) =
+            {
+                PaymentMethodDetailsLink.Country = country //required
+            }
+
     and PaymentMethodDetailsMobilepay = {
         ///Internal card details
         Card: InternalCard option
@@ -31373,7 +30732,7 @@ module StripeModel =
         ///Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
         Brand: PaymentMethodDetailsPassthroughCardBrand option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Two-digit number representing the card's expiration month.
         ExpMonth: int option
         ///Four-digit number representing the card's expiration year.
@@ -31384,7 +30743,7 @@ module StripeModel =
         [<JsonField(Name="last4")>]Last4: string option
     }
     with
-        static member New (brand: PaymentMethodDetailsPassthroughCardBrand option, country: string option, expMonth: int option, expYear: int option, funding: PaymentMethodDetailsPassthroughCardFunding option, last4: string option) =
+        static member New (brand: PaymentMethodDetailsPassthroughCardBrand option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentMethodDetailsPassthroughCardFunding option, last4: string option) =
             {
                 PaymentMethodDetailsPassthroughCard.Brand = brand //required
                 PaymentMethodDetailsPassthroughCard.Country = country //required
@@ -31526,6 +30885,34 @@ module StripeModel =
                 PaymentMethodDetailsPaymentRecordMobilepay.Card = card //required
             }
 
+    and PaymentMethodDetailsPaymentRecordSepaDebit = {
+        ///Bank code of bank associated with the bank account.
+        BankCode: string option
+        ///Branch code of bank associated with the bank account.
+        BranchCode: string option
+        ///Two-letter ISO code representing the country the bank account is located in.
+        Country: IsoTypes.IsoCountryCode option
+        ///Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
+        ExpectedDebitDate: string option
+        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
+        Fingerprint: string option
+        ///Last four characters of the IBAN.
+        [<JsonField(Name="last4")>]Last4: string option
+        ///Find the ID of the mandate used for this payment under the [payment_method_details.sepa_debit.mandate](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-sepa_debit-mandate) property on the Charge. Use this mandate ID to [retrieve the Mandate](https://docs.stripe.com/api/mandates/retrieve).
+        Mandate: string option
+    }
+    with
+        static member New (bankCode: string option, branchCode: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, last4: string option, mandate: string option, ?expectedDebitDate: string) =
+            {
+                PaymentMethodDetailsPaymentRecordSepaDebit.BankCode = bankCode //required
+                PaymentMethodDetailsPaymentRecordSepaDebit.BranchCode = branchCode //required
+                PaymentMethodDetailsPaymentRecordSepaDebit.Country = country //required
+                PaymentMethodDetailsPaymentRecordSepaDebit.Fingerprint = fingerprint //required
+                PaymentMethodDetailsPaymentRecordSepaDebit.Last4 = last4 //required
+                PaymentMethodDetailsPaymentRecordSepaDebit.Mandate = mandate //required
+                PaymentMethodDetailsPaymentRecordSepaDebit.ExpectedDebitDate = expectedDebitDate
+            }
+
     and PaymentMethodDetailsPaymentRecordSofort = {
         ///Bank code of bank associated with the bank account.
         BankCode: string option
@@ -31534,7 +30921,7 @@ module StripeModel =
         ///Bank Identifier Code of the bank associated with the bank account.
         Bic: string option
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebit: PaymentMethodDetailsPaymentRecordSofortGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
@@ -31547,7 +30934,7 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-        static member New (bankCode: string option, bankName: string option, bic: string option, country: string option, generatedSepaDebit: PaymentMethodDetailsPaymentRecordSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsPaymentRecordSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsPaymentRecordSofortPreferredLanguage option, verifiedName: string option) =
+        static member New (bankCode: string option, bankName: string option, bic: string option, country: IsoTypes.IsoCountryCode option, generatedSepaDebit: PaymentMethodDetailsPaymentRecordSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsPaymentRecordSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsPaymentRecordSofortPreferredLanguage option, verifiedName: string option) =
             {
                 PaymentMethodDetailsPaymentRecordSofort.BankCode = bankCode //required
                 PaymentMethodDetailsPaymentRecordSofort.BankName = bankName //required
@@ -31608,7 +30995,7 @@ module StripeModel =
 
     and PaymentMethodDetailsPaypal = {
         ///Two-letter ISO code representing the buyer's country. Values are provided by PayPal directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Owner's email. Values are provided by PayPal directly
         ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
         PayerEmail: string option
@@ -31623,7 +31010,7 @@ module StripeModel =
         TransactionId: string option
     }
     with
-        static member New (country: string option, payerEmail: string option, payerId: string option, payerName: string option, sellerProtection: PaypalSellerProtection option, transactionId: string option) =
+        static member New (country: IsoTypes.IsoCountryCode option, payerEmail: string option, payerId: string option, payerName: string option, sellerProtection: PaypalSellerProtection option, transactionId: string option) =
             {
                 PaymentMethodDetailsPaypal.Country = country //required
                 PaymentMethodDetailsPaypal.PayerEmail = payerEmail //required
@@ -31645,6 +31032,34 @@ module StripeModel =
                 PaymentMethodDetailsRevolutPay.Funding = funding
             }
 
+    and PaymentMethodDetailsSepaDebit = {
+        ///Bank code of bank associated with the bank account.
+        BankCode: string option
+        ///Branch code of bank associated with the bank account.
+        BranchCode: string option
+        ///Two-letter ISO code representing the country the bank account is located in.
+        Country: IsoTypes.IsoCountryCode option
+        ///Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
+        ExpectedDebitDate: string option
+        ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
+        Fingerprint: string option
+        ///Last four characters of the IBAN.
+        [<JsonField(Name="last4")>]Last4: string option
+        ///Find the ID of the mandate used for this payment under the [payment_method_details.sepa_debit.mandate](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-sepa_debit-mandate) property on the Charge. Use this mandate ID to [retrieve the Mandate](https://docs.stripe.com/api/mandates/retrieve).
+        Mandate: string option
+    }
+    with
+        static member New (bankCode: string option, branchCode: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, last4: string option, mandate: string option, ?expectedDebitDate: string) =
+            {
+                PaymentMethodDetailsSepaDebit.BankCode = bankCode //required
+                PaymentMethodDetailsSepaDebit.BranchCode = branchCode //required
+                PaymentMethodDetailsSepaDebit.Country = country //required
+                PaymentMethodDetailsSepaDebit.Fingerprint = fingerprint //required
+                PaymentMethodDetailsSepaDebit.Last4 = last4 //required
+                PaymentMethodDetailsSepaDebit.Mandate = mandate //required
+                PaymentMethodDetailsSepaDebit.ExpectedDebitDate = expectedDebitDate
+            }
+
     and PaymentMethodDetailsSofort = {
         ///Bank code of bank associated with the bank account.
         BankCode: string option
@@ -31653,7 +31068,7 @@ module StripeModel =
         ///Bank Identifier Code of the bank associated with the bank account.
         Bic: string option
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
@@ -31668,7 +31083,7 @@ module StripeModel =
         VerifiedName: string option
     }
     with
-        static member New (bankCode: string option, bankName: string option, bic: string option, country: string option, generatedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
+        static member New (bankCode: string option, bankName: string option, bic: string option, country: IsoTypes.IsoCountryCode option, generatedSepaDebit: PaymentMethodDetailsSofortGeneratedSepaDebit'AnyOf option, generatedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
             {
                 PaymentMethodDetailsSofort.BankCode = bankCode //required
                 PaymentMethodDetailsSofort.BankName = bankName //required
@@ -31822,7 +31237,7 @@ module StripeModel =
         ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay.
         CardholderName: string option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///Two-digit number representing the card's expiration month.
@@ -31848,7 +31263,7 @@ module StripeModel =
         ReadMethod: PaymentMethodInteracPresentReadMethod option
     }
     with
-        static member New (brand: PaymentMethodInteracPresentBrand option, cardholderName: string option, country: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodInteracPresentFunding option, last4: string option, networks: PaymentMethodCardPresentNetworks option, preferredLocales: string list option, readMethod: PaymentMethodInteracPresentReadMethod option, ?description: string option, ?iin: string option, ?issuer: string option) =
+        static member New (brand: PaymentMethodInteracPresentBrand option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodInteracPresentFunding option, last4: string option, networks: PaymentMethodCardPresentNetworks option, preferredLocales: string list option, readMethod: PaymentMethodInteracPresentReadMethod option, ?description: string option, ?iin: string option, ?issuer: string option) =
             {
                 PaymentMethodInteracPresent.Brand = brand //required
                 PaymentMethodInteracPresent.CardholderName = cardholderName //required
@@ -32156,7 +31571,7 @@ module StripeModel =
         ///Type of amount.
         AmountType: PaymentMethodOptionsMandateOptionsPixAmountType option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///Date when the mandate expires and no further payments will be charged, in `YYYY-MM-DD`.
         EndDate: string option
         ///Schedule at which the future payments will be charged.
@@ -32167,7 +31582,7 @@ module StripeModel =
         StartDate: string option
     }
     with
-        static member New (?amount: int, ?amountIncludesIof: PaymentMethodOptionsMandateOptionsPixAmountIncludesIof, ?amountType: PaymentMethodOptionsMandateOptionsPixAmountType, ?currency: string, ?endDate: string, ?paymentSchedule: PaymentMethodOptionsMandateOptionsPixPaymentSchedule, ?reference: string, ?startDate: string) =
+        static member New (?amount: int, ?amountIncludesIof: PaymentMethodOptionsMandateOptionsPixAmountIncludesIof, ?amountType: PaymentMethodOptionsMandateOptionsPixAmountType, ?currency: IsoTypes.IsoCurrencyCode, ?endDate: string, ?paymentSchedule: PaymentMethodOptionsMandateOptionsPixPaymentSchedule, ?reference: string, ?startDate: string) =
             {
                 PaymentMethodOptionsMandateOptionsPix.Amount = amount
                 PaymentMethodOptionsMandateOptionsPix.AmountIncludesIof = amountIncludesIof
@@ -32318,13 +31733,30 @@ module StripeModel =
                 PaymentMethodP24.Bank = bank //required
             }
 
+    and PaymentMethodPaypal = {
+        ///Two-letter ISO code representing the buyer's country. Values are provided by PayPal directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+        Country: IsoTypes.IsoCountryCode option
+        ///Owner's email. Values are provided by PayPal directly
+        ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
+        PayerEmail: string option
+        ///PayPal account PayerID. This identifier uniquely identifies the PayPal customer.
+        PayerId: string option
+    }
+    with
+        static member New (country: IsoTypes.IsoCountryCode option, payerEmail: string option, payerId: string option) =
+            {
+                PaymentMethodPaypal.Country = country //required
+                PaymentMethodPaypal.PayerEmail = payerEmail //required
+                PaymentMethodPaypal.PayerId = payerId //required
+            }
+
     and PaymentMethodSepaDebit = {
         ///Bank code of bank associated with the bank account.
         BankCode: string option
         ///Branch code of bank associated with the bank account.
         BranchCode: string option
         ///Two-letter ISO code representing the country the bank account is located in.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Information about the object that generated this PaymentMethod.
@@ -32333,7 +31765,7 @@ module StripeModel =
         [<JsonField(Name="last4")>]Last4: string option
     }
     with
-        static member New (bankCode: string option, branchCode: string option, country: string option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
+        static member New (bankCode: string option, branchCode: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
             {
                 PaymentMethodSepaDebit.BankCode = bankCode //required
                 PaymentMethodSepaDebit.BranchCode = branchCode //required
@@ -32341,6 +31773,16 @@ module StripeModel =
                 PaymentMethodSepaDebit.Fingerprint = fingerprint //required
                 PaymentMethodSepaDebit.GeneratedFrom = generatedFrom //required
                 PaymentMethodSepaDebit.Last4 = last4 //required
+            }
+
+    and PaymentMethodSofort = {
+        ///Two-letter ISO code representing the country the bank account is located in.
+        Country: IsoTypes.IsoCountryCode option
+    }
+    with
+        static member New (country: IsoTypes.IsoCountryCode option) =
+            {
+                PaymentMethodSofort.Country = country //required
             }
 
     and PaymentMethodUsBankAccount = {
@@ -32546,6 +31988,25 @@ module StripeModel =
                 PaymentPagesCheckoutSessionConsentCollection.PaymentMethodReuseAgreement = paymentMethodReuseAgreement //required
                 PaymentPagesCheckoutSessionConsentCollection.Promotions = promotions //required
                 PaymentPagesCheckoutSessionConsentCollection.TermsOfService = termsOfService //required
+            }
+
+    and PaymentPagesCheckoutSessionCurrencyConversion = {
+        ///Total of all items in source currency before discounts or taxes are applied.
+        AmountSubtotal: int
+        ///Total of all items in source currency after discounts and taxes are applied.
+        AmountTotal: int
+        ///Exchange rate used to convert source currency amounts to customer currency amounts
+        FxRate: string
+        ///Creation currency of the CheckoutSession before localization
+        SourceCurrency: IsoTypes.IsoCurrencyCode
+    }
+    with
+        static member New (amountSubtotal: int, amountTotal: int, fxRate: string, sourceCurrency: IsoTypes.IsoCurrencyCode) =
+            {
+                PaymentPagesCheckoutSessionCurrencyConversion.AmountSubtotal = amountSubtotal //required
+                PaymentPagesCheckoutSessionCurrencyConversion.AmountTotal = amountTotal //required
+                PaymentPagesCheckoutSessionCurrencyConversion.FxRate = fxRate //required
+                PaymentPagesCheckoutSessionCurrencyConversion.SourceCurrency = sourceCurrency //required
             }
 
     and PaymentPagesCheckoutSessionCustomFields = {
@@ -32961,6 +32422,46 @@ module StripeModel =
         | Card of Card
         | Source of Source
 
+    ///A representation of a physical address.
+    and PaymentsPrimitivesPaymentRecordsResourceAddress = {
+        ///City, district, suburb, town, or village.
+        City: string option
+        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        ///Address line 1, such as the street, PO Box, or company name.
+        [<JsonField(Name="line1")>]Line1: string option
+        ///Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonField(Name="line2")>]Line2: string option
+        ///ZIP or postal code.
+        PostalCode: string option
+        ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+            {
+                PaymentsPrimitivesPaymentRecordsResourceAddress.City = city //required
+                PaymentsPrimitivesPaymentRecordsResourceAddress.Country = country //required
+                PaymentsPrimitivesPaymentRecordsResourceAddress.Line1 = line1 //required
+                PaymentsPrimitivesPaymentRecordsResourceAddress.Line2 = line2 //required
+                PaymentsPrimitivesPaymentRecordsResourceAddress.PostalCode = postalCode //required
+                PaymentsPrimitivesPaymentRecordsResourceAddress.State = state //required
+            }
+
+    ///A representation of an amount of money, consisting of an amount and a currency.
+    and PaymentsPrimitivesPaymentRecordsResourceAmount = {
+        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        ///A positive integer representing the amount in the currency's [minor unit](https://docs.stripe.com/currencies#zero-decimal). For example, `100` can represent 1 USD or 100 JPY.
+        Value: int
+    }
+    with
+        static member New (currency: IsoTypes.IsoCurrencyCode, value: int) =
+            {
+                PaymentsPrimitivesPaymentRecordsResourceAmount.Currency = currency //required
+                PaymentsPrimitivesPaymentRecordsResourceAmount.Value = value //required
+            }
+
     ///Billing details used by the customer for this payment.
     and PaymentsPrimitivesPaymentRecordsResourceBillingDetails = {
         Address: PaymentsPrimitivesPaymentRecordsResourceAddress
@@ -32996,7 +32497,7 @@ module StripeModel =
         ///Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
         Brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Two-digit number representing the card's expiration month.
         ExpMonth: int option
         ///Four-digit number representing the card's expiration year.
@@ -33007,7 +32508,7 @@ module StripeModel =
         [<JsonField(Name="last4")>]Last4: string option
     }
     with
-        static member New (brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand option, country: string option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardFunding option, last4: string option) =
+        static member New (brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardFunding option, last4: string option) =
             {
                 PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard.Brand = brand //required
                 PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard.Country = country //required
@@ -33028,7 +32529,7 @@ module StripeModel =
         ///Check results by Card networks on Card address and CVC at time of payment.
         Checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range.
         Description: string option
         ///Two-digit number representing the card's expiration month.
@@ -33068,7 +32569,7 @@ module StripeModel =
         Wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option
     }
     with
-        static member New (authorizationCode: string option, brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option, checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option, country: string option, description: string option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option, iin: string option, installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option, issuer: string option, last4: string option, network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option, networkAdviceCode: string option, networkDeclineCode: string option, networkTransactionId: string option, storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option, threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option, wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option, ?captureBefore: DateTime, ?fingerprint: string option, ?moto: bool option, ?networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option) =
+        static member New (authorizationCode: string option, brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option, checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option, country: IsoTypes.IsoCountryCode option, description: string option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option, iin: string option, installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option, issuer: string option, last4: string option, network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option, networkAdviceCode: string option, networkDeclineCode: string option, networkTransactionId: string option, storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option, threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option, wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option, ?captureBefore: DateTime, ?fingerprint: string option, ?moto: bool option, ?networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option) =
             {
                 PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails.AuthorizationCode = authorizationCode //required
                 PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails.Brand = brand //required
@@ -33344,6 +32845,28 @@ module StripeModel =
                 PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStore.Chain = chain //required
             }
 
+    and PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard = {
+        ///Brand of the card used in the transaction
+        Brand: string option
+        ///Two-letter ISO code representing the country of the card
+        Country: IsoTypes.IsoCountryCode option
+        ///Two digit number representing the card's expiration month
+        ExpMonth: int option
+        ///Two digit number representing the card's expiration year
+        ExpYear: int option
+        ///The last 4 digits of the card
+        [<JsonField(Name="last4")>]Last4: string option
+    }
+    with
+        static member New (brand: string option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, last4: string option) =
+            {
+                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.Brand = brand //required
+                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.Country = country //required
+                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.ExpMonth = expMonth //required
+                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.ExpYear = expYear //required
+                PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard.Last4 = last4 //required
+            }
+
     ///Processor information associated with this payment.
     and PaymentsPrimitivesPaymentRecordsResourceProcessorDetails = {
         Custom: PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails option
@@ -33396,7 +32919,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///ID of the bank account or card the payout is sent to.
@@ -33438,7 +32961,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "payout"
 
-        static member New (amount: int, applicationFee: PayoutApplicationFee'AnyOf option, applicationFeeAmount: int option, arrivalDate: DateTime, automatic: bool, balanceTransaction: PayoutBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, destination: PayoutDestination'AnyOf option, failureBalanceTransaction: PayoutFailureBalanceTransaction'AnyOf option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string> option, method: PayoutMethod, originalPayout: PayoutOriginalPayout'AnyOf option, payoutMethod: string option, reconciliationStatus: PayoutReconciliationStatus, reversedBy: PayoutReversedBy'AnyOf option, sourceType: PayoutSourceType, statementDescriptor: string option, status: PayoutStatus, traceId: PayoutsTraceId option, ``type``: PayoutType) =
+        static member New (amount: int, applicationFee: PayoutApplicationFee'AnyOf option, applicationFeeAmount: int option, arrivalDate: DateTime, automatic: bool, balanceTransaction: PayoutBalanceTransaction'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, destination: PayoutDestination'AnyOf option, failureBalanceTransaction: PayoutFailureBalanceTransaction'AnyOf option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string> option, method: PayoutMethod, originalPayout: PayoutOriginalPayout'AnyOf option, payoutMethod: string option, reconciliationStatus: PayoutReconciliationStatus, reversedBy: PayoutReversedBy'AnyOf option, sourceType: PayoutSourceType, statementDescriptor: string option, status: PayoutStatus, traceId: PayoutsTraceId option, ``type``: PayoutType) =
             {
                 Payout.Amount = amount //required
                 Payout.ApplicationFee = applicationFee //required
@@ -33738,7 +33261,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Unique identifier for the object.
         Id: string
         ///The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
@@ -33770,7 +33293,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "plan"
 
-        static member New (active: bool, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: DateTime, currency: string, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, meter: string option, nickname: string option, product: PlanProduct'AnyOf option, tiersMode: PlanTiersMode option, transformUsage: TransformUsage option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
+        static member New (active: bool, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, meter: string option, nickname: string option, product: PlanProduct'AnyOf option, tiersMode: PlanTiersMode option, transformUsage: TransformUsage option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
             {
                 Plan.Active = active //required
                 Plan.Amount = amount //required
@@ -34028,7 +33551,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
         CurrencyOptions: Map<string, string list> option
         ///When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
@@ -34066,7 +33589,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "price"
 
-        static member New (active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: string, customUnitAmount: CustomUnitAmount option, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, taxBehavior: PriceTaxBehavior option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?currencyOptions: Map<string, string list>, ?tiers: PriceTier list) =
+        static member New (active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customUnitAmount: CustomUnitAmount option, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, taxBehavior: PriceTaxBehavior option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?currencyOptions: Map<string, string list>, ?tiers: PriceTier list) =
             {
                 Price.Active = active //required
                 Price.BillingScheme = billingScheme //required
@@ -34275,10 +33798,10 @@ module StripeModel =
         ///Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
         MinimumAmount: int option
         ///Three-letter [ISO code](https://stripe.com/docs/currencies) for minimum_amount
-        MinimumAmountCurrency: string option
+        MinimumAmountCurrency: IsoTypes.IsoCurrencyCode option
     }
     with
-        static member New (firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: string option, ?currencyOptions: Map<string, string list>) =
+        static member New (firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: IsoTypes.IsoCurrencyCode option, ?currencyOptions: Map<string, string list>) =
             {
                 PromotionCodesResourceRestrictions.FirstTimeTransaction = firstTimeTransaction //required
                 PromotionCodesResourceRestrictions.MinimumAmount = minimumAmount //required
@@ -34316,7 +33839,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///The customer who received this quote. A customer is required to finalize the quote. Once specified, you can't change it.
         Customer: QuoteCustomer'AnyOf option
         ///The account representing the customer who received this quote. A customer or account is required to finalize the quote. Once specified, you can't change it.
@@ -34368,7 +33891,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "quote"
 
-        static member New (amountSubtotal: int, amountTotal: int, application: QuoteApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: QuotesResourceAutomaticTax, collectionMethod: QuoteCollectionMethod, computed: QuotesResourceComputed, created: DateTime, currency: string option, customer: QuoteCustomer'AnyOf option, customerAccount: string option, description: string option, discounts: QuoteDiscounts'AnyOf list, expiresAt: DateTime, footer: string option, fromQuote: QuotesResourceFromQuote option, header: string option, id: string, invoice: QuoteInvoice'AnyOf option, invoiceSettings: InvoiceSettingQuoteSetting, livemode: bool, metadata: Map<string, string>, number: string option, onBehalfOf: QuoteOnBehalfOf'AnyOf option, status: QuoteStatus, statusTransitions: QuotesResourceStatusTransitions, subscription: QuoteSubscription'AnyOf option, subscriptionData: QuotesResourceSubscriptionDataSubscriptionData, subscriptionSchedule: QuoteSubscriptionSchedule'AnyOf option, testClock: QuoteTestClock'AnyOf option, totalDetails: QuotesResourceTotalDetails, transferData: QuotesResourceTransferData option, ?defaultTaxRates: QuoteDefaultTaxRates'AnyOf list, ?lineItems: QuoteLineItems) =
+        static member New (amountSubtotal: int, amountTotal: int, application: QuoteApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: QuotesResourceAutomaticTax, collectionMethod: QuoteCollectionMethod, computed: QuotesResourceComputed, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, customer: QuoteCustomer'AnyOf option, customerAccount: string option, description: string option, discounts: QuoteDiscounts'AnyOf list, expiresAt: DateTime, footer: string option, fromQuote: QuotesResourceFromQuote option, header: string option, id: string, invoice: QuoteInvoice'AnyOf option, invoiceSettings: InvoiceSettingQuoteSetting, livemode: bool, metadata: Map<string, string>, number: string option, onBehalfOf: QuoteOnBehalfOf'AnyOf option, status: QuoteStatus, statusTransitions: QuotesResourceStatusTransitions, subscription: QuoteSubscription'AnyOf option, subscriptionData: QuotesResourceSubscriptionDataSubscriptionData, subscriptionSchedule: QuoteSubscriptionSchedule'AnyOf option, testClock: QuoteTestClock'AnyOf option, totalDetails: QuotesResourceTotalDetails, transferData: QuotesResourceTransferData option, ?defaultTaxRates: QuoteDefaultTaxRates'AnyOf list, ?lineItems: QuoteLineItems) =
             {
                 Quote.AmountSubtotal = amountSubtotal //required
                 Quote.AmountTotal = amountTotal //required
@@ -34799,6 +34322,28 @@ module StripeModel =
                 RadarValueListListItems.Url = url //required
             }
 
+    and RadarReviewResourceLocation = {
+        ///The city where the payment originated.
+        City: string option
+        ///Two-letter ISO code representing the country where the payment originated.
+        Country: IsoTypes.IsoCountryCode option
+        ///The geographic latitude where the payment originated.
+        Latitude: decimal option
+        ///The geographic longitude where the payment originated.
+        Longitude: decimal option
+        ///The state/county/province/region where the payment originated.
+        Region: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode option, latitude: decimal option, longitude: decimal option, region: string option) =
+            {
+                RadarReviewResourceLocation.City = city //required
+                RadarReviewResourceLocation.Country = country //required
+                RadarReviewResourceLocation.Latitude = latitude //required
+                RadarReviewResourceLocation.Longitude = longitude //required
+                RadarReviewResourceLocation.Region = region //required
+            }
+
     and Recurring = {
         ///The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
         Interval: RecurringInterval
@@ -34835,7 +34380,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. You can use this for displaying to users (available on non-card refunds only).
         Description: string option
         DestinationDetails: RefundDestinationDetails option
@@ -34870,7 +34415,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "refund"
 
-        static member New (amount: int, balanceTransaction: RefundBalanceTransaction'AnyOf option, charge: RefundCharge'AnyOf option, created: DateTime, currency: string, id: string, metadata: Map<string, string> option, paymentIntent: RefundPaymentIntent'AnyOf option, reason: RefundReason option, receiptNumber: string option, sourceTransferReversal: RefundSourceTransferReversal'AnyOf option, status: RefundStatus option, transferReversal: RefundTransferReversal'AnyOf option, ?description: string, ?destinationDetails: RefundDestinationDetails, ?failureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf, ?failureReason: RefundFailureReason, ?instructionsEmail: string, ?nextAction: RefundNextAction, ?pendingReason: RefundPendingReason, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails) =
+        static member New (amount: int, balanceTransaction: RefundBalanceTransaction'AnyOf option, charge: RefundCharge'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, metadata: Map<string, string> option, paymentIntent: RefundPaymentIntent'AnyOf option, reason: RefundReason option, receiptNumber: string option, sourceTransferReversal: RefundSourceTransferReversal'AnyOf option, status: RefundStatus option, transferReversal: RefundTransferReversal'AnyOf option, ?description: string, ?destinationDetails: RefundDestinationDetails, ?failureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf, ?failureReason: RefundFailureReason, ?instructionsEmail: string, ?nextAction: RefundNextAction, ?pendingReason: RefundPendingReason, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails) =
             {
                 Refund.Amount = amount //required
                 Refund.BalanceTransaction = balanceTransaction //required
@@ -35304,7 +34849,7 @@ module StripeModel =
         ///Indicates which party created this ReserveHold.
         CreatedBy: ReserveHoldCreatedBy
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Unique identifier for the object.
         Id: string
         ///Whether there are any funds available to release on this ReserveHold. Note that if the ReserveHold is in the process of being released, this could be false, even though the funds haven't been fully released yet.
@@ -35327,7 +34872,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "reserve.hold"
 
-        static member New (amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: string, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: ReserveHoldReservePlan'AnyOf option, sourceCharge: ReserveHoldSourceCharge'AnyOf option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>) =
+        static member New (amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: ReserveHoldReservePlan'AnyOf option, sourceCharge: ReserveHoldSourceCharge'AnyOf option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>) =
             {
                 ReserveHold.Amount = amount //required
                 ReserveHold.Created = created //required
@@ -35360,7 +34905,7 @@ module StripeModel =
         ///Indicates which party created this ReservePlan.
         CreatedBy: ReservePlanCreatedBy
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). An unset currency indicates that the plan applies to all currencies.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///Time at which the ReservePlan was disabled.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DisabledAt: DateTime option
         FixedRelease: ReservesReservePlansResourcesFixedRelease option
@@ -35382,7 +34927,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "reserve.plan"
 
-        static member New (created: DateTime, createdBy: ReservePlanCreatedBy, currency: string option, disabledAt: DateTime option, id: string, livemode: bool, percent: int, status: ReservePlanStatus, ``type``: ReservePlanType, ?fixedRelease: ReservesReservePlansResourcesFixedRelease, ?metadata: Map<string, string>, ?rollingRelease: ReservesReservePlansResourcesRollingRelease) =
+        static member New (created: DateTime, createdBy: ReservePlanCreatedBy, currency: IsoTypes.IsoCurrencyCode option, disabledAt: DateTime option, id: string, livemode: bool, percent: int, status: ReservePlanStatus, ``type``: ReservePlanType, ?fixedRelease: ReservesReservePlansResourcesFixedRelease, ?metadata: Map<string, string>, ?rollingRelease: ReservesReservePlansResourcesRollingRelease) =
             {
                 ReservePlan.Created = created //required
                 ReservePlan.CreatedBy = createdBy //required
@@ -35407,7 +34952,7 @@ module StripeModel =
         ///Indicates which party created this ReserveRelease.
         CreatedBy: ReserveReleaseCreatedBy
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -35428,7 +34973,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "reserve.release"
 
-        static member New (amount: int, created: DateTime, createdBy: ReserveReleaseCreatedBy, currency: string, id: string, livemode: bool, reason: ReserveReleaseReason, releasedAt: DateTime, reserveHold: ReserveReleaseReserveHold'AnyOf option, reservePlan: ReserveReleaseReservePlan'AnyOf option, ?metadata: Map<string, string>, ?sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction) =
+        static member New (amount: int, created: DateTime, createdBy: ReserveReleaseCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveReleaseReason, releasedAt: DateTime, reserveHold: ReserveReleaseReserveHold'AnyOf option, reservePlan: ReserveReleaseReservePlan'AnyOf option, ?metadata: Map<string, string>, ?sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction) =
             {
                 ReserveRelease.Amount = amount //required
                 ReserveRelease.Created = created //required
@@ -35451,6 +34996,27 @@ module StripeModel =
     and ReserveReleaseReservePlan'AnyOf =
         | String of string
         | ReservePlan of ReservePlan
+
+    and ReserveTransaction = {
+        Amount: int
+        ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        ///An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        ///Unique identifier for the object.
+        Id: string
+    }
+    with
+        ///String representing the object's type. Objects of the same type share the same value.
+        member _.Object = "reserve_transaction"
+
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, description: string option, id: string) =
+            {
+                ReserveTransaction.Amount = amount //required
+                ReserveTransaction.Currency = currency //required
+                ReserveTransaction.Description = description //required
+                ReserveTransaction.Id = id //required
+            }
 
     and ReservesReserveReleasesResourcesSourceTransaction = {
         ///The ID of the dispute.
@@ -35827,7 +35393,7 @@ module StripeModel =
         ///Check results by Card networks on Card address and CVC at the time of authorization
         Checks: SetupAttemptPaymentMethodDetailsCardChecks option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///Two-digit number representing the card's expiration month.
@@ -35855,7 +35421,7 @@ module StripeModel =
         Wallet: SetupAttemptPaymentMethodDetailsCardWallet option
     }
     with
-        static member New (brand: SetupAttemptPaymentMethodDetailsCardBrand option, checks: SetupAttemptPaymentMethodDetailsCardChecks option, country: string option, expMonth: int option, expYear: int option, funding: SetupAttemptPaymentMethodDetailsCardFunding option, last4: string option, network: SetupAttemptPaymentMethodDetailsCardNetwork option, threeDSecure: ThreeDSecureDetails option, wallet: SetupAttemptPaymentMethodDetailsCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool) =
+        static member New (brand: SetupAttemptPaymentMethodDetailsCardBrand option, checks: SetupAttemptPaymentMethodDetailsCardChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: SetupAttemptPaymentMethodDetailsCardFunding option, last4: string option, network: SetupAttemptPaymentMethodDetailsCardNetwork option, threeDSecure: ThreeDSecureDetails option, wallet: SetupAttemptPaymentMethodDetailsCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool) =
             {
                 SetupAttemptPaymentMethodDetailsCard.Brand = brand //required
                 SetupAttemptPaymentMethodDetailsCard.Checks = checks //required
@@ -36256,7 +35822,7 @@ module StripeModel =
         ///One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
         AmountType: SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///A description of the mandate or subscription that is meant to be displayed to the customer.
         Description: string option
         ///End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date.
@@ -36273,7 +35839,7 @@ module StripeModel =
         SupportedTypes: string list option
     }
     with
-        static member New (amount: int, amountType: SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType, currency: string, description: string option, endDate: DateTime option, interval: SetupIntentPaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
+        static member New (amount: int, amountType: SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType, currency: IsoTypes.IsoCurrencyCode, description: string option, endDate: DateTime option, interval: SetupIntentPaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
             {
                 SetupIntentPaymentMethodOptionsCardMandateOptions.Amount = amount //required
                 SetupIntentPaymentMethodOptionsCardMandateOptions.AmountType = amountType //required
@@ -36285,6 +35851,19 @@ module StripeModel =
                 SetupIntentPaymentMethodOptionsCardMandateOptions.Reference = reference //required
                 SetupIntentPaymentMethodOptionsCardMandateOptions.StartDate = startDate //required
                 SetupIntentPaymentMethodOptionsCardMandateOptions.SupportedTypes = supportedTypes //required
+            }
+
+    and SetupIntentPaymentMethodOptionsKlarna = {
+        ///The currency of the setup intent. Three letter ISO currency code.
+        Currency: IsoTypes.IsoCurrencyCode option
+        ///Preferred locale of the Klarna checkout page that the customer is redirected to.
+        PreferredLocale: string option
+    }
+    with
+        static member New (currency: IsoTypes.IsoCurrencyCode option, preferredLocale: string option) =
+            {
+                SetupIntentPaymentMethodOptionsKlarna.Currency = currency //required
+                SetupIntentPaymentMethodOptionsKlarna.PreferredLocale = preferredLocale //required
             }
 
     and SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit = {
@@ -36510,12 +36089,12 @@ module StripeModel =
         ///A non-negative integer in cents representing how much to charge.
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
         CurrencyOptions: Map<string, string list> option
     }
     with
-        static member New (amount: int, currency: string, ?currencyOptions: Map<string, string list>) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string list>) =
             {
                 ShippingRateFixedAmount.Amount = amount //required
                 ShippingRateFixedAmount.Currency = currency //required
@@ -36549,7 +36128,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer.
         Customer: string option
         Eps: SourceTypeEps option
@@ -36589,7 +36168,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source"
 
-        static member New (allowRedisplay: SourceAllowRedisplay option, amount: int option, clientSecret: string, created: DateTime, currency: string option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, owner: SourceOwner option, statementDescriptor: string option, status: SourceStatus, ``type``: SourceType, usage: SourceUsage option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
+        static member New (allowRedisplay: SourceAllowRedisplay option, amount: int option, clientSecret: string, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, owner: SourceOwner option, statementDescriptor: string option, status: SourceStatus, ``type``: SourceType, usage: SourceUsage option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
             {
                 Source.AllowRedisplay = allowRedisplay //required
                 Source.Amount = amount //required
@@ -36677,7 +36256,7 @@ module StripeModel =
         ///A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the order.
         Amount: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The email address of the customer placing the order.
         Email: string option
         ///List of items constituting the order.
@@ -36685,7 +36264,7 @@ module StripeModel =
         Shipping: Shipping option
     }
     with
-        static member New (amount: int, currency: string, items: SourceOrderItem list option, ?email: string, ?shipping: Shipping) =
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode, items: SourceOrderItem list option, ?email: string, ?shipping: Shipping) =
             {
                 SourceOrder.Amount = amount //required
                 SourceOrder.Currency = currency //required
@@ -36698,7 +36277,7 @@ module StripeModel =
         ///The amount (price) for this order item.
         Amount: int option
         ///This currency of this order item. Required when `amount` is present.
-        Currency: string option
+        Currency: IsoTypes.IsoCurrencyCode option
         ///Human-readable description for this order item.
         Description: string option
         ///The ID of the associated object for this line item. Expandable if not null (e.g., expandable to a SKU).
@@ -36709,7 +36288,7 @@ module StripeModel =
         Type: SourceOrderItemType option
     }
     with
-        static member New (amount: int option, currency: string option, description: string option, parent: string option, ``type``: SourceOrderItemType option, ?quantity: int) =
+        static member New (amount: int option, currency: IsoTypes.IsoCurrencyCode option, description: string option, parent: string option, ``type``: SourceOrderItemType option, ?quantity: int) =
             {
                 SourceOrderItem.Amount = amount //required
                 SourceOrderItem.Currency = currency //required
@@ -36787,7 +36366,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         GbpCreditTransfer: SourceTransactionGbpCreditTransferData option
         ///Unique identifier for the object.
         Id: string
@@ -36806,7 +36385,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "source_transaction"
 
-        static member New (amount: int, created: DateTime, currency: string, id: string, livemode: bool, source: string, status: SourceTransactionStatus, ``type``: SourceTransactionType, ?achCreditTransfer: SourceTransactionAchCreditTransferData, ?chfCreditTransfer: SourceTransactionChfCreditTransferData, ?gbpCreditTransfer: SourceTransactionGbpCreditTransferData, ?paperCheck: SourceTransactionPaperCheckData, ?sepaCreditTransfer: SourceTransactionSepaCreditTransferData) =
+        static member New (amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, source: string, status: SourceTransactionStatus, ``type``: SourceTransactionType, ?achCreditTransfer: SourceTransactionAchCreditTransferData, ?chfCreditTransfer: SourceTransactionChfCreditTransferData, ?gbpCreditTransfer: SourceTransactionGbpCreditTransferData, ?paperCheck: SourceTransactionPaperCheckData, ?sepaCreditTransfer: SourceTransactionSepaCreditTransferData) =
             {
                 SourceTransaction.Amount = amount //required
                 SourceTransaction.Created = created //required
@@ -36821,6 +36400,378 @@ module StripeModel =
                 SourceTransaction.GbpCreditTransfer = gbpCreditTransfer
                 SourceTransaction.PaperCheck = paperCheck
                 SourceTransaction.SepaCreditTransfer = sepaCreditTransfer
+            }
+
+    and SourceTransactionChfCreditTransferData = {
+        ///Reference associated with the transfer.
+        Reference: string option
+        ///Sender's country address.
+        SenderAddressCountry: IsoTypes.IsoCountryCode option
+        ///Sender's line 1 address.
+        [<JsonField(Name="sender_address_line1")>]SenderAddressLine1: string option
+        ///Sender's bank account IBAN.
+        SenderIban: string option
+        ///Sender's name.
+        SenderName: string option
+    }
+    with
+        static member New (?reference: string, ?senderAddressCountry: IsoTypes.IsoCountryCode, ?senderAddressLine1: string, ?senderIban: string, ?senderName: string) =
+            {
+                SourceTransactionChfCreditTransferData.Reference = reference
+                SourceTransactionChfCreditTransferData.SenderAddressCountry = senderAddressCountry
+                SourceTransactionChfCreditTransferData.SenderAddressLine1 = senderAddressLine1
+                SourceTransactionChfCreditTransferData.SenderIban = senderIban
+                SourceTransactionChfCreditTransferData.SenderName = senderName
+            }
+
+    and SourceTypeAchDebit = {
+        BankName: string option
+        Country: IsoTypes.IsoCountryCode option
+        Fingerprint: string option
+        [<JsonField(Name="last4")>]Last4: string option
+        RoutingNumber: string option
+        Type: string option
+    }
+    with
+        static member New (?bankName: string option, ?country: IsoTypes.IsoCountryCode option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option, ?``type``: string option) =
+            {
+                SourceTypeAchDebit.BankName = bankName |> Option.flatten
+                SourceTypeAchDebit.Country = country |> Option.flatten
+                SourceTypeAchDebit.Fingerprint = fingerprint |> Option.flatten
+                SourceTypeAchDebit.Last4 = last4 |> Option.flatten
+                SourceTypeAchDebit.RoutingNumber = routingNumber |> Option.flatten
+                SourceTypeAchDebit.Type = ``type`` |> Option.flatten
+            }
+
+    and SourceTypeAcssDebit = {
+        BankAddressCity: string option
+        BankAddressLine1: string option
+        BankAddressLine2: string option
+        BankAddressPostalCode: string option
+        BankName: string option
+        Category: string option
+        Country: IsoTypes.IsoCountryCode option
+        Fingerprint: string option
+        [<JsonField(Name="last4")>]Last4: string option
+        RoutingNumber: string option
+    }
+    with
+        static member New (?bankAddressCity: string option, ?bankAddressLine1: string option, ?bankAddressLine2: string option, ?bankAddressPostalCode: string option, ?bankName: string option, ?category: string option, ?country: IsoTypes.IsoCountryCode option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option) =
+            {
+                SourceTypeAcssDebit.BankAddressCity = bankAddressCity |> Option.flatten
+                SourceTypeAcssDebit.BankAddressLine1 = bankAddressLine1 |> Option.flatten
+                SourceTypeAcssDebit.BankAddressLine2 = bankAddressLine2 |> Option.flatten
+                SourceTypeAcssDebit.BankAddressPostalCode = bankAddressPostalCode |> Option.flatten
+                SourceTypeAcssDebit.BankName = bankName |> Option.flatten
+                SourceTypeAcssDebit.Category = category |> Option.flatten
+                SourceTypeAcssDebit.Country = country |> Option.flatten
+                SourceTypeAcssDebit.Fingerprint = fingerprint |> Option.flatten
+                SourceTypeAcssDebit.Last4 = last4 |> Option.flatten
+                SourceTypeAcssDebit.RoutingNumber = routingNumber |> Option.flatten
+            }
+
+    and SourceTypeCard = {
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
+        AddressZipCheck: string option
+        Brand: string option
+        Country: IsoTypes.IsoCountryCode option
+        CvcCheck: string option
+        Description: string option
+        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        ExpMonth: int option
+        ExpYear: int option
+        Fingerprint: string option
+        Funding: string option
+        Iin: string option
+        Issuer: string option
+        [<JsonField(Name="last4")>]Last4: string option
+        Name: string option
+        ThreeDSecure: string option
+        TokenizationMethod: string option
+    }
+    with
+        static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?brand: string option, ?country: IsoTypes.IsoCountryCode option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+            {
+                SourceTypeCard.AddressLine1Check = addressLine1Check |> Option.flatten
+                SourceTypeCard.AddressZipCheck = addressZipCheck |> Option.flatten
+                SourceTypeCard.Brand = brand |> Option.flatten
+                SourceTypeCard.Country = country |> Option.flatten
+                SourceTypeCard.CvcCheck = cvcCheck |> Option.flatten
+                SourceTypeCard.Description = description
+                SourceTypeCard.DynamicLast4 = dynamicLast4 |> Option.flatten
+                SourceTypeCard.ExpMonth = expMonth |> Option.flatten
+                SourceTypeCard.ExpYear = expYear |> Option.flatten
+                SourceTypeCard.Fingerprint = fingerprint
+                SourceTypeCard.Funding = funding |> Option.flatten
+                SourceTypeCard.Iin = iin
+                SourceTypeCard.Issuer = issuer
+                SourceTypeCard.Last4 = last4 |> Option.flatten
+                SourceTypeCard.Name = name |> Option.flatten
+                SourceTypeCard.ThreeDSecure = threeDSecure
+                SourceTypeCard.TokenizationMethod = tokenizationMethod |> Option.flatten
+            }
+
+    and SourceTypeCardPresent = {
+        ApplicationCryptogram: string option
+        ApplicationPreferredName: string option
+        AuthorizationCode: string option
+        AuthorizationResponseCode: string option
+        Brand: string option
+        Country: IsoTypes.IsoCountryCode option
+        CvmType: string option
+        DataType: string option
+        DedicatedFileName: string option
+        Description: string option
+        EmvAuthData: string option
+        EvidenceCustomerSignature: string option
+        EvidenceTransactionCertificate: string option
+        ExpMonth: int option
+        ExpYear: int option
+        Fingerprint: string option
+        Funding: string option
+        Iin: string option
+        Issuer: string option
+        [<JsonField(Name="last4")>]Last4: string option
+        PosDeviceId: string option
+        PosEntryMode: string option
+        ReadMethod: string option
+        Reader: string option
+        TerminalVerificationResults: string option
+        TransactionStatusInformation: string option
+    }
+    with
+        static member New (?applicationCryptogram: string, ?applicationPreferredName: string, ?authorizationCode: string option, ?authorizationResponseCode: string, ?brand: string option, ?country: IsoTypes.IsoCountryCode option, ?cvmType: string, ?dataType: string option, ?dedicatedFileName: string, ?description: string, ?emvAuthData: string, ?evidenceCustomerSignature: string option, ?evidenceTransactionCertificate: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?posDeviceId: string option, ?posEntryMode: string, ?readMethod: string option, ?reader: string option, ?terminalVerificationResults: string, ?transactionStatusInformation: string) =
+            {
+                SourceTypeCardPresent.ApplicationCryptogram = applicationCryptogram
+                SourceTypeCardPresent.ApplicationPreferredName = applicationPreferredName
+                SourceTypeCardPresent.AuthorizationCode = authorizationCode |> Option.flatten
+                SourceTypeCardPresent.AuthorizationResponseCode = authorizationResponseCode
+                SourceTypeCardPresent.Brand = brand |> Option.flatten
+                SourceTypeCardPresent.Country = country |> Option.flatten
+                SourceTypeCardPresent.CvmType = cvmType
+                SourceTypeCardPresent.DataType = dataType |> Option.flatten
+                SourceTypeCardPresent.DedicatedFileName = dedicatedFileName
+                SourceTypeCardPresent.Description = description
+                SourceTypeCardPresent.EmvAuthData = emvAuthData
+                SourceTypeCardPresent.EvidenceCustomerSignature = evidenceCustomerSignature |> Option.flatten
+                SourceTypeCardPresent.EvidenceTransactionCertificate = evidenceTransactionCertificate |> Option.flatten
+                SourceTypeCardPresent.ExpMonth = expMonth |> Option.flatten
+                SourceTypeCardPresent.ExpYear = expYear |> Option.flatten
+                SourceTypeCardPresent.Fingerprint = fingerprint
+                SourceTypeCardPresent.Funding = funding |> Option.flatten
+                SourceTypeCardPresent.Iin = iin
+                SourceTypeCardPresent.Issuer = issuer
+                SourceTypeCardPresent.Last4 = last4 |> Option.flatten
+                SourceTypeCardPresent.PosDeviceId = posDeviceId |> Option.flatten
+                SourceTypeCardPresent.PosEntryMode = posEntryMode
+                SourceTypeCardPresent.ReadMethod = readMethod |> Option.flatten
+                SourceTypeCardPresent.Reader = reader |> Option.flatten
+                SourceTypeCardPresent.TerminalVerificationResults = terminalVerificationResults
+                SourceTypeCardPresent.TransactionStatusInformation = transactionStatusInformation
+            }
+
+    and SourceTypeKlarna = {
+        BackgroundImageUrl: string option
+        ClientToken: string option
+        FirstName: string option
+        LastName: string option
+        Locale: string option
+        LogoUrl: string option
+        PageTitle: string option
+        PayLaterAssetUrlsDescriptive: string option
+        PayLaterAssetUrlsStandard: string option
+        PayLaterName: string option
+        PayLaterRedirectUrl: string option
+        PayNowAssetUrlsDescriptive: string option
+        PayNowAssetUrlsStandard: string option
+        PayNowName: string option
+        PayNowRedirectUrl: string option
+        PayOverTimeAssetUrlsDescriptive: string option
+        PayOverTimeAssetUrlsStandard: string option
+        PayOverTimeName: string option
+        PayOverTimeRedirectUrl: string option
+        PaymentMethodCategories: string option
+        PurchaseCountry: IsoTypes.IsoCountryCode option
+        PurchaseType: string option
+        RedirectUrl: string option
+        ShippingDelay: int option
+        ShippingFirstName: string option
+        ShippingLastName: string option
+    }
+    with
+        static member New (?backgroundImageUrl: string, ?clientToken: string option, ?firstName: string, ?lastName: string, ?locale: string, ?logoUrl: string, ?pageTitle: string, ?payLaterAssetUrlsDescriptive: string, ?payLaterAssetUrlsStandard: string, ?payLaterName: string, ?payLaterRedirectUrl: string, ?payNowAssetUrlsDescriptive: string, ?payNowAssetUrlsStandard: string, ?payNowName: string, ?payNowRedirectUrl: string, ?payOverTimeAssetUrlsDescriptive: string, ?payOverTimeAssetUrlsStandard: string, ?payOverTimeName: string, ?payOverTimeRedirectUrl: string, ?paymentMethodCategories: string, ?purchaseCountry: IsoTypes.IsoCountryCode, ?purchaseType: string, ?redirectUrl: string, ?shippingDelay: int, ?shippingFirstName: string, ?shippingLastName: string) =
+            {
+                SourceTypeKlarna.BackgroundImageUrl = backgroundImageUrl
+                SourceTypeKlarna.ClientToken = clientToken |> Option.flatten
+                SourceTypeKlarna.FirstName = firstName
+                SourceTypeKlarna.LastName = lastName
+                SourceTypeKlarna.Locale = locale
+                SourceTypeKlarna.LogoUrl = logoUrl
+                SourceTypeKlarna.PageTitle = pageTitle
+                SourceTypeKlarna.PayLaterAssetUrlsDescriptive = payLaterAssetUrlsDescriptive
+                SourceTypeKlarna.PayLaterAssetUrlsStandard = payLaterAssetUrlsStandard
+                SourceTypeKlarna.PayLaterName = payLaterName
+                SourceTypeKlarna.PayLaterRedirectUrl = payLaterRedirectUrl
+                SourceTypeKlarna.PayNowAssetUrlsDescriptive = payNowAssetUrlsDescriptive
+                SourceTypeKlarna.PayNowAssetUrlsStandard = payNowAssetUrlsStandard
+                SourceTypeKlarna.PayNowName = payNowName
+                SourceTypeKlarna.PayNowRedirectUrl = payNowRedirectUrl
+                SourceTypeKlarna.PayOverTimeAssetUrlsDescriptive = payOverTimeAssetUrlsDescriptive
+                SourceTypeKlarna.PayOverTimeAssetUrlsStandard = payOverTimeAssetUrlsStandard
+                SourceTypeKlarna.PayOverTimeName = payOverTimeName
+                SourceTypeKlarna.PayOverTimeRedirectUrl = payOverTimeRedirectUrl
+                SourceTypeKlarna.PaymentMethodCategories = paymentMethodCategories
+                SourceTypeKlarna.PurchaseCountry = purchaseCountry
+                SourceTypeKlarna.PurchaseType = purchaseType
+                SourceTypeKlarna.RedirectUrl = redirectUrl
+                SourceTypeKlarna.ShippingDelay = shippingDelay
+                SourceTypeKlarna.ShippingFirstName = shippingFirstName
+                SourceTypeKlarna.ShippingLastName = shippingLastName
+            }
+
+    and SourceTypeMultibanco = {
+        Entity: string option
+        Reference: string option
+        RefundAccountHolderAddressCity: string option
+        RefundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option
+        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
+        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
+        RefundAccountHolderAddressPostalCode: string option
+        RefundAccountHolderAddressState: string option
+        RefundAccountHolderName: string option
+        RefundIban: string option
+    }
+    with
+        static member New (?entity: string option, ?reference: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+            {
+                SourceTypeMultibanco.Entity = entity |> Option.flatten
+                SourceTypeMultibanco.Reference = reference |> Option.flatten
+                SourceTypeMultibanco.RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
+                SourceTypeMultibanco.RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
+                SourceTypeMultibanco.RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
+                SourceTypeMultibanco.RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
+                SourceTypeMultibanco.RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
+                SourceTypeMultibanco.RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
+                SourceTypeMultibanco.RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+                SourceTypeMultibanco.RefundIban = refundIban |> Option.flatten
+            }
+
+    and SourceTypeSepaCreditTransfer = {
+        BankName: string option
+        Bic: string option
+        Iban: string option
+        RefundAccountHolderAddressCity: string option
+        RefundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option
+        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
+        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
+        RefundAccountHolderAddressPostalCode: string option
+        RefundAccountHolderAddressState: string option
+        RefundAccountHolderName: string option
+        RefundIban: string option
+    }
+    with
+        static member New (?bankName: string option, ?bic: string option, ?iban: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+            {
+                SourceTypeSepaCreditTransfer.BankName = bankName |> Option.flatten
+                SourceTypeSepaCreditTransfer.Bic = bic |> Option.flatten
+                SourceTypeSepaCreditTransfer.Iban = iban |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+                SourceTypeSepaCreditTransfer.RefundIban = refundIban |> Option.flatten
+            }
+
+    and SourceTypeSepaDebit = {
+        BankCode: string option
+        BranchCode: string option
+        Country: IsoTypes.IsoCountryCode option
+        Fingerprint: string option
+        [<JsonField(Name="last4")>]Last4: string option
+        MandateReference: string option
+        MandateUrl: string option
+    }
+    with
+        static member New (?bankCode: string option, ?branchCode: string option, ?country: IsoTypes.IsoCountryCode option, ?fingerprint: string option, ?last4: string option, ?mandateReference: string option, ?mandateUrl: string option) =
+            {
+                SourceTypeSepaDebit.BankCode = bankCode |> Option.flatten
+                SourceTypeSepaDebit.BranchCode = branchCode |> Option.flatten
+                SourceTypeSepaDebit.Country = country |> Option.flatten
+                SourceTypeSepaDebit.Fingerprint = fingerprint |> Option.flatten
+                SourceTypeSepaDebit.Last4 = last4 |> Option.flatten
+                SourceTypeSepaDebit.MandateReference = mandateReference |> Option.flatten
+                SourceTypeSepaDebit.MandateUrl = mandateUrl |> Option.flatten
+            }
+
+    and SourceTypeSofort = {
+        BankCode: string option
+        BankName: string option
+        Bic: string option
+        Country: IsoTypes.IsoCountryCode option
+        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        PreferredLanguage: string option
+        StatementDescriptor: string option
+    }
+    with
+        static member New (?bankCode: string option, ?bankName: string option, ?bic: string option, ?country: IsoTypes.IsoCountryCode option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
+            {
+                SourceTypeSofort.BankCode = bankCode |> Option.flatten
+                SourceTypeSofort.BankName = bankName |> Option.flatten
+                SourceTypeSofort.Bic = bic |> Option.flatten
+                SourceTypeSofort.Country = country |> Option.flatten
+                SourceTypeSofort.IbanLast4 = ibanLast4 |> Option.flatten
+                SourceTypeSofort.PreferredLanguage = preferredLanguage |> Option.flatten
+                SourceTypeSofort.StatementDescriptor = statementDescriptor |> Option.flatten
+            }
+
+    and SourceTypeThreeDSecure = {
+        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
+        AddressZipCheck: string option
+        Authenticated: bool option
+        Brand: string option
+        Card: string option
+        Country: IsoTypes.IsoCountryCode option
+        Customer: string option
+        CvcCheck: string option
+        Description: string option
+        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        ExpMonth: int option
+        ExpYear: int option
+        Fingerprint: string option
+        Funding: string option
+        Iin: string option
+        Issuer: string option
+        [<JsonField(Name="last4")>]Last4: string option
+        Name: string option
+        ThreeDSecure: string option
+        TokenizationMethod: string option
+    }
+    with
+        static member New (?addressLine1Check: string option, ?addressZipCheck: string option, ?authenticated: bool option, ?brand: string option, ?card: string option, ?country: IsoTypes.IsoCountryCode option, ?customer: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+            {
+                SourceTypeThreeDSecure.AddressLine1Check = addressLine1Check |> Option.flatten
+                SourceTypeThreeDSecure.AddressZipCheck = addressZipCheck |> Option.flatten
+                SourceTypeThreeDSecure.Authenticated = authenticated |> Option.flatten
+                SourceTypeThreeDSecure.Brand = brand |> Option.flatten
+                SourceTypeThreeDSecure.Card = card |> Option.flatten
+                SourceTypeThreeDSecure.Country = country |> Option.flatten
+                SourceTypeThreeDSecure.Customer = customer |> Option.flatten
+                SourceTypeThreeDSecure.CvcCheck = cvcCheck |> Option.flatten
+                SourceTypeThreeDSecure.Description = description
+                SourceTypeThreeDSecure.DynamicLast4 = dynamicLast4 |> Option.flatten
+                SourceTypeThreeDSecure.ExpMonth = expMonth |> Option.flatten
+                SourceTypeThreeDSecure.ExpYear = expYear |> Option.flatten
+                SourceTypeThreeDSecure.Fingerprint = fingerprint
+                SourceTypeThreeDSecure.Funding = funding |> Option.flatten
+                SourceTypeThreeDSecure.Iin = iin
+                SourceTypeThreeDSecure.Issuer = issuer
+                SourceTypeThreeDSecure.Last4 = last4 |> Option.flatten
+                SourceTypeThreeDSecure.Name = name |> Option.flatten
+                SourceTypeThreeDSecure.ThreeDSecure = threeDSecure
+                SourceTypeThreeDSecure.TokenizationMethod = tokenizationMethod |> Option.flatten
             }
 
     and StackableDiscountWithDiscountSettings = {
@@ -36907,7 +36858,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the customer who owns the subscription.
         Customer: SubscriptionCustomer'AnyOf
         ///ID of the account representing the customer who owns the subscription.
@@ -36980,7 +36931,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "subscription"
 
-        static member New (application: SubscriptionApplication'AnyOf option, applicationFeePercent: decimal option, automaticTax: SubscriptionAutomaticTax, billingCycleAnchor: DateTime, billingCycleAnchorConfig: SubscriptionsResourceBillingCycleAnchorConfig option, billingMode: SubscriptionsResourceBillingMode, billingThresholds: SubscriptionBillingThresholds option, cancelAt: DateTime option, cancelAtPeriodEnd: bool, canceledAt: DateTime option, cancellationDetails: CancellationDetails option, collectionMethod: SubscriptionCollectionMethod, created: DateTime, currency: string, customer: SubscriptionCustomer'AnyOf, customerAccount: string option, daysUntilDue: int option, defaultPaymentMethod: SubscriptionDefaultPaymentMethod'AnyOf option, defaultSource: SubscriptionDefaultSource'AnyOf option, description: string option, discounts: SubscriptionDiscounts'AnyOf list, endedAt: DateTime option, id: string, invoiceSettings: SubscriptionsResourceSubscriptionInvoiceSettings, items: SubscriptionItems, latestInvoice: SubscriptionLatestInvoice'AnyOf option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: DateTime option, onBehalfOf: SubscriptionOnBehalfOf'AnyOf option, pauseCollection: SubscriptionsResourcePauseCollection option, paymentSettings: SubscriptionsResourcePaymentSettings option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option, pendingSetupIntent: SubscriptionPendingSetupIntent'AnyOf option, pendingUpdate: SubscriptionsResourcePendingUpdate option, schedule: SubscriptionSchedule'AnyOf option, startDate: DateTime, status: SubscriptionStatus, testClock: SubscriptionTestClock'AnyOf option, transferData: SubscriptionTransferData option, trialEnd: DateTime option, trialSettings: SubscriptionsResourceTrialSettingsTrialSettings option, trialStart: DateTime option, ?defaultTaxRates: TaxRate list option, ?presentmentDetails: SubscriptionsResourceSubscriptionPresentmentDetails) =
+        static member New (application: SubscriptionApplication'AnyOf option, applicationFeePercent: decimal option, automaticTax: SubscriptionAutomaticTax, billingCycleAnchor: DateTime, billingCycleAnchorConfig: SubscriptionsResourceBillingCycleAnchorConfig option, billingMode: SubscriptionsResourceBillingMode, billingThresholds: SubscriptionBillingThresholds option, cancelAt: DateTime option, cancelAtPeriodEnd: bool, canceledAt: DateTime option, cancellationDetails: CancellationDetails option, collectionMethod: SubscriptionCollectionMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: SubscriptionCustomer'AnyOf, customerAccount: string option, daysUntilDue: int option, defaultPaymentMethod: SubscriptionDefaultPaymentMethod'AnyOf option, defaultSource: SubscriptionDefaultSource'AnyOf option, description: string option, discounts: SubscriptionDiscounts'AnyOf list, endedAt: DateTime option, id: string, invoiceSettings: SubscriptionsResourceSubscriptionInvoiceSettings, items: SubscriptionItems, latestInvoice: SubscriptionLatestInvoice'AnyOf option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: DateTime option, onBehalfOf: SubscriptionOnBehalfOf'AnyOf option, pauseCollection: SubscriptionsResourcePauseCollection option, paymentSettings: SubscriptionsResourcePaymentSettings option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option, pendingSetupIntent: SubscriptionPendingSetupIntent'AnyOf option, pendingUpdate: SubscriptionsResourcePendingUpdate option, schedule: SubscriptionSchedule'AnyOf option, startDate: DateTime, status: SubscriptionStatus, testClock: SubscriptionTestClock'AnyOf option, transferData: SubscriptionTransferData option, trialEnd: DateTime option, trialSettings: SubscriptionsResourceTrialSettingsTrialSettings option, trialStart: DateTime option, ?defaultTaxRates: TaxRate list option, ?presentmentDetails: SubscriptionsResourceSubscriptionPresentmentDetails) =
             {
                 Subscription.Application = application //required
                 Subscription.ApplicationFeePercent = applicationFeePercent //required
@@ -37396,7 +37347,7 @@ module StripeModel =
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`.
         CollectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
         DefaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option
         ///The default tax rates to apply to the subscription during this phase of the subscription schedule.
@@ -37425,7 +37376,7 @@ module StripeModel =
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TrialEnd: DateTime option
     }
     with
-        static member New (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, currency: string, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option, description: string option, discounts: StackableDiscountWithDiscountSettingsAndDiscountEnd list, endDate: DateTime, invoiceSettings: InvoiceSettingSubscriptionSchedulePhaseSetting option, items: SubscriptionScheduleConfigurationItem list, metadata: Map<string, string> option, onBehalfOf: SubscriptionSchedulePhaseConfigurationOnBehalfOf'AnyOf option, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: DateTime, transferData: SubscriptionTransferData option, trialEnd: DateTime option, ?automaticTax: SchedulesPhaseAutomaticTax, ?defaultTaxRates: TaxRate list option) =
+        static member New (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, currency: IsoTypes.IsoCurrencyCode, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option, description: string option, discounts: StackableDiscountWithDiscountSettingsAndDiscountEnd list, endDate: DateTime, invoiceSettings: InvoiceSettingSubscriptionSchedulePhaseSetting option, items: SubscriptionScheduleConfigurationItem list, metadata: Map<string, string> option, onBehalfOf: SubscriptionSchedulePhaseConfigurationOnBehalfOf'AnyOf option, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: DateTime, transferData: SubscriptionTransferData option, trialEnd: DateTime option, ?automaticTax: SchedulesPhaseAutomaticTax, ?defaultTaxRates: TaxRate list option) =
             {
                 SubscriptionSchedulePhaseConfiguration.AddInvoiceItems = addInvoiceItems //required
                 SubscriptionSchedulePhaseConfiguration.ApplicationFeePercent = applicationFeePercent //required
@@ -37695,6 +37646,16 @@ module StripeModel =
         | TaxId of TaxId
         | DeletedTaxId of DeletedTaxId
 
+    and SubscriptionsResourceSubscriptionPresentmentDetails = {
+        ///Currency used for customer payments.
+        PresentmentCurrency: IsoTypes.IsoCurrencyCode
+    }
+    with
+        static member New (presentmentCurrency: IsoTypes.IsoCurrencyCode) =
+            {
+                SubscriptionsResourceSubscriptionPresentmentDetails.PresentmentCurrency = presentmentCurrency //required
+            }
+
     ///Defines how a subscription behaves when a trial ends.
     and SubscriptionsResourceTrialSettingsEndBehavior = {
         ///Indicates how the subscription should change when the trial ends if the user did not provide a payment method.
@@ -37766,7 +37727,7 @@ module StripeModel =
         ///Total amount after taxes in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
         AmountTotal: int
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The ID of an existing [Customer](https://docs.stripe.com/api/customers/object) used for the resource.
         Customer: string option
         CustomerDetails: TaxProductResourceCustomerDetails
@@ -37795,7 +37756,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax.calculation"
 
-        static member New (amountTotal: int, currency: string, customer: string option, customerDetails: TaxProductResourceCustomerDetails, expiresAt: DateTime option, id: string option, livemode: bool, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxCalculationShippingCost option, taxAmountExclusive: int, taxAmountInclusive: int, taxBreakdown: TaxProductResourceTaxBreakdown list, taxDate: DateTime, ?lineItems: TaxCalculationLineItems option) =
+        static member New (amountTotal: int, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, expiresAt: DateTime option, id: string option, livemode: bool, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxCalculationShippingCost option, taxAmountExclusive: int, taxAmountInclusive: int, taxBreakdown: TaxProductResourceTaxBreakdown list, taxDate: DateTime, ?lineItems: TaxCalculationLineItems option) =
             {
                 TaxCalculation.AmountTotal = amountTotal //required
                 TaxCalculation.Currency = currency //required
@@ -37883,7 +37844,7 @@ module StripeModel =
         ///Time at which the registration becomes active. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ActiveFrom: DateTime
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string
+        Country: IsoTypes.IsoCountryCode
         CountryOptions: TaxProductRegistrationsResourceCountryOptions
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
@@ -37900,7 +37861,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax.registration"
 
-        static member New (activeFrom: DateTime, country: string, countryOptions: TaxProductRegistrationsResourceCountryOptions, created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, status: TaxRegistrationStatus) =
+        static member New (activeFrom: DateTime, country: IsoTypes.IsoCountryCode, countryOptions: TaxProductRegistrationsResourceCountryOptions, created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, status: TaxRegistrationStatus) =
             {
                 TaxRegistration.ActiveFrom = activeFrom //required
                 TaxRegistration.Country = country //required
@@ -37943,7 +37904,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The ID of an existing [Customer](https://docs.stripe.com/api/customers/object) used for the resource.
         Customer: string option
         CustomerDetails: TaxProductResourceCustomerDetails
@@ -37974,7 +37935,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax.transaction"
 
-        static member New (created: DateTime, currency: string, customer: string option, customerDetails: TaxProductResourceCustomerDetails, id: string, livemode: bool, metadata: Map<string, string> option, postedAt: DateTime, reference: string, reversal: TaxProductResourceTaxTransactionResourceReversal option, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxTransactionShippingCost option, taxDate: DateTime, ``type``: TaxTransactionType, ?lineItems: TaxTransactionLineItems option) =
+        static member New (created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, id: string, livemode: bool, metadata: Map<string, string> option, postedAt: DateTime, reference: string, reversal: TaxProductResourceTaxTransactionResourceReversal option, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxTransactionShippingCost option, taxDate: DateTime, ``type``: TaxTransactionType, ?lineItems: TaxTransactionLineItems option) =
             {
                 TaxTransaction.Created = created //required
                 TaxTransaction.Currency = currency //required
@@ -38098,7 +38059,7 @@ module StripeModel =
     ///Related guides: [Customer tax identification numbers](https://docs.stripe.com/billing/taxes/tax-ids), [Account tax IDs](https://docs.stripe.com/invoicing/connect#account-tax-ids)
     and TaxId = {
         ///Two-letter ISO code representing the country of the tax ID.
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///ID of the customer.
@@ -38122,7 +38083,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax_id"
 
-        static member New (country: string option, created: DateTime, customer: TaxIdCustomer'AnyOf option, customerAccount: string option, id: string, livemode: bool, owner: TaxIDsOwner option, ``type``: TaxIdType, value: string, verification: TaxIdVerification option) =
+        static member New (country: IsoTypes.IsoCountryCode option, created: DateTime, customer: TaxIdCustomer'AnyOf option, customerAccount: string option, id: string, livemode: bool, owner: TaxIDsOwner option, ``type``: TaxIdType, value: string, verification: TaxIdVerification option) =
             {
                 TaxId.Country = country //required
                 TaxId.Created = created //required
@@ -38500,7 +38461,7 @@ module StripeModel =
 
     and TaxProductResourceJurisdiction = {
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string
+        Country: IsoTypes.IsoCountryCode
         ///A human-readable name for the jurisdiction imposing the tax.
         DisplayName: string
         ///Indicates the level of the jurisdiction imposing the tax.
@@ -38509,7 +38470,7 @@ module StripeModel =
         State: string option
     }
     with
-        static member New (country: string, displayName: string, level: TaxProductResourceJurisdictionLevel, state: string option) =
+        static member New (country: IsoTypes.IsoCountryCode, displayName: string, level: TaxProductResourceJurisdictionLevel, state: string option) =
             {
                 TaxProductResourceJurisdiction.Country = country //required
                 TaxProductResourceJurisdiction.DisplayName = displayName //required
@@ -38555,6 +38516,31 @@ module StripeModel =
                 TaxProductResourceLineItemTaxRateDetails.DisplayName = displayName //required
                 TaxProductResourceLineItemTaxRateDetails.PercentageDecimal = percentageDecimal //required
                 TaxProductResourceLineItemTaxRateDetails.TaxType = taxType //required
+            }
+
+    and TaxProductResourcePostalAddress = {
+        ///City, district, suburb, town, or village.
+        City: string option
+        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode
+        ///Address line 1, such as the street, PO Box, or company name.
+        [<JsonField(Name="line1")>]Line1: string option
+        ///Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonField(Name="line2")>]Line2: string option
+        ///ZIP or postal code.
+        PostalCode: string option
+        ///State/province as an [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) subdivision code, without country prefix, such as "NY" or "TX".
+        State: string option
+    }
+    with
+        static member New (city: string option, country: IsoTypes.IsoCountryCode, line1: string option, line2: string option, postalCode: string option, state: string option) =
+            {
+                TaxProductResourcePostalAddress.City = city //required
+                TaxProductResourcePostalAddress.Country = country //required
+                TaxProductResourcePostalAddress.Line1 = line1 //required
+                TaxProductResourcePostalAddress.Line2 = line2 //required
+                TaxProductResourcePostalAddress.PostalCode = postalCode //required
+                TaxProductResourcePostalAddress.State = state //required
             }
 
     and TaxProductResourceShipFromDetails = {
@@ -38641,7 +38627,7 @@ module StripeModel =
 
     and TaxProductResourceTaxRateDetails = {
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.
         FlatAmount: TaxRateFlatAmount option
         ///The tax rate percentage as a string. For example, 8.5% is represented as `"8.5"`.
@@ -38654,7 +38640,7 @@ module StripeModel =
         TaxType: TaxProductResourceTaxRateDetailsTaxType option
     }
     with
-        static member New (country: string option, flatAmount: TaxRateFlatAmount option, percentageDecimal: string, rateType: TaxProductResourceTaxRateDetailsRateType option, state: string option, taxType: TaxProductResourceTaxRateDetailsTaxType option) =
+        static member New (country: IsoTypes.IsoCountryCode option, flatAmount: TaxRateFlatAmount option, percentageDecimal: string, rateType: TaxProductResourceTaxRateDetailsRateType option, state: string option, taxType: TaxProductResourceTaxRateDetailsTaxType option) =
             {
                 TaxProductResourceTaxRateDetails.Country = country //required
                 TaxProductResourceTaxRateDetails.FlatAmount = flatAmount //required
@@ -38741,7 +38727,7 @@ module StripeModel =
         ///Defaults to `true`. When set to `false`, this tax rate cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.
         Active: bool
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string option
+        Country: IsoTypes.IsoCountryCode option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
@@ -38779,7 +38765,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "tax_rate"
 
-        static member New (active: bool, country: string option, created: DateTime, description: string option, displayName: string, effectivePercentage: decimal option, flatAmount: TaxRateFlatAmount option, id: string, inclusive: bool, jurisdiction: string option, jurisdictionLevel: TaxRateJurisdictionLevel option, livemode: bool, metadata: Map<string, string> option, percentage: decimal, rateType: TaxRateRateType option, state: string option, taxType: TaxRateTaxType option) =
+        static member New (active: bool, country: IsoTypes.IsoCountryCode option, created: DateTime, description: string option, displayName: string, effectivePercentage: decimal option, flatAmount: TaxRateFlatAmount option, id: string, inclusive: bool, jurisdiction: string option, jurisdictionLevel: TaxRateJurisdictionLevel option, livemode: bool, metadata: Map<string, string> option, percentage: decimal, rateType: TaxRateRateType option, state: string option, taxType: TaxRateTaxType option) =
             {
                 TaxRate.Active = active //required
                 TaxRate.Country = country //required
@@ -38798,6 +38784,20 @@ module StripeModel =
                 TaxRate.RateType = rateType //required
                 TaxRate.State = state //required
                 TaxRate.TaxType = taxType //required
+            }
+
+    ///The amount of the tax rate when the `rate_type`` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.
+    and TaxRateFlatAmount = {
+        ///Amount of the tax when the `rate_type` is `flat_amount`. This positive integer represents how much to charge in the smallest currency unit (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
+        Amount: int
+        ///Three-letter ISO currency code, in lowercase.
+        Currency: IsoTypes.IsoCurrencyCode
+    }
+    with
+        static member New (amount: int, currency: IsoTypes.IsoCurrencyCode) =
+            {
+                TaxRateFlatAmount.Amount = amount //required
+                TaxRateFlatAmount.Currency = currency //required
             }
 
     ///A Configurations object represents how features should be configured for terminal readers.
@@ -39067,7 +39067,7 @@ module StripeModel =
     ///Represents a cart to be displayed on the reader
     and TerminalReaderReaderResourceCart = {
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///List of line items in the cart.
         LineItems: TerminalReaderReaderResourceLineItem list
         ///Tax amount for the entire cart. A positive integer in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
@@ -39076,7 +39076,7 @@ module StripeModel =
         Total: int
     }
     with
-        static member New (currency: string, lineItems: TerminalReaderReaderResourceLineItem list, tax: int option, total: int) =
+        static member New (currency: IsoTypes.IsoCurrencyCode, lineItems: TerminalReaderReaderResourceLineItem list, tax: int option, total: int) =
             {
                 TerminalReaderReaderResourceCart.Currency = currency //required
                 TerminalReaderReaderResourceCart.LineItems = lineItems //required
@@ -39592,7 +39592,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///Date the funds are expected to arrive in your Stripe account for payouts. This factors in delays like weekends or bank holidays. May not be specified depending on status of top-up.
@@ -39620,7 +39620,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "topup"
 
-        static member New (amount: int, balanceTransaction: TopupBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string>, source: Source option, statementDescriptor: string option, status: TopupStatus, transferGroup: string option) =
+        static member New (amount: int, balanceTransaction: TopupBalanceTransaction'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string>, source: Source option, statementDescriptor: string option, status: TopupStatus, transferGroup: string option) =
             {
                 Topup.Amount = amount //required
                 Topup.BalanceTransaction = balanceTransaction //required
@@ -39661,7 +39661,7 @@ module StripeModel =
         ///Time that this record of the transfer was first created.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///ID of the Stripe account the transfer was sent to.
@@ -39689,7 +39689,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "transfer"
 
-        static member New (amount: int, amountReversed: int, balanceTransaction: TransferBalanceTransaction'AnyOf option, created: DateTime, currency: string, description: string option, destination: TransferDestination'AnyOf option, id: string, livemode: bool, metadata: Map<string, string>, reversals: TransferReversals, reversed: bool, sourceTransaction: TransferSourceTransaction'AnyOf option, transferGroup: string option, ?destinationPayment: TransferDestinationPayment'AnyOf, ?sourceType: TransferSourceType) =
+        static member New (amount: int, amountReversed: int, balanceTransaction: TransferBalanceTransaction'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, destination: TransferDestination'AnyOf option, id: string, livemode: bool, metadata: Map<string, string>, reversals: TransferReversals, reversed: bool, sourceTransaction: TransferSourceTransaction'AnyOf option, transferGroup: string option, ?destinationPayment: TransferDestinationPayment'AnyOf, ?sourceType: TransferSourceType) =
             {
                 Transfer.Amount = amount //required
                 Transfer.AmountReversed = amountReversed //required
@@ -39783,7 +39783,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///Linked payment refund for the transfer reversal.
         DestinationPaymentRefund: TransferReversalDestinationPaymentRefund'AnyOf option
         ///Unique identifier for the object.
@@ -39799,7 +39799,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "transfer_reversal"
 
-        static member New (amount: int, balanceTransaction: TransferReversalBalanceTransaction'AnyOf option, created: DateTime, currency: string, destinationPaymentRefund: TransferReversalDestinationPaymentRefund'AnyOf option, id: string, metadata: Map<string, string> option, sourceRefund: TransferReversalSourceRefund'AnyOf option, transfer: TransferReversalTransfer'AnyOf) =
+        static member New (amount: int, balanceTransaction: TransferReversalBalanceTransaction'AnyOf option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, destinationPaymentRefund: TransferReversalDestinationPaymentRefund'AnyOf option, id: string, metadata: Map<string, string> option, sourceRefund: TransferReversalSourceRefund'AnyOf option, transfer: TransferReversalTransfer'AnyOf) =
             {
                 TransferReversal.Amount = amount //required
                 TransferReversal.BalanceTransaction = balanceTransaction //required
@@ -39886,7 +39886,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The FinancialAccount to reverse funds from.
         FinancialAccount: string
         ///A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
@@ -39911,7 +39911,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.credit_reversal"
 
-        static member New (amount: int, created: DateTime, currency: string, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, network: TreasuryCreditReversalNetwork, receivedCredit: string, status: TreasuryCreditReversalStatus, statusTransitions: TreasuryReceivedCreditsResourceStatusTransitions, transaction: TreasuryCreditReversalTransaction'AnyOf option) =
+        static member New (amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, network: TreasuryCreditReversalNetwork, receivedCredit: string, status: TreasuryCreditReversalStatus, statusTransitions: TreasuryReceivedCreditsResourceStatusTransitions, transaction: TreasuryCreditReversalTransaction'AnyOf option) =
             {
                 TreasuryCreditReversal.Amount = amount //required
                 TreasuryCreditReversal.Created = created //required
@@ -39939,7 +39939,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///The FinancialAccount to reverse funds from.
         FinancialAccount: string option
         ///A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
@@ -39966,7 +39966,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.debit_reversal"
 
-        static member New (amount: int, created: DateTime, currency: string, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryReceivedDebitsResourceDebitReversalLinkedFlows option, livemode: bool, metadata: Map<string, string>, network: TreasuryDebitReversalNetwork, receivedDebit: string, status: TreasuryDebitReversalStatus, statusTransitions: TreasuryReceivedDebitsResourceStatusTransitions, transaction: TreasuryDebitReversalTransaction'AnyOf option) =
+        static member New (amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryReceivedDebitsResourceDebitReversalLinkedFlows option, livemode: bool, metadata: Map<string, string>, network: TreasuryDebitReversalNetwork, receivedDebit: string, status: TreasuryDebitReversalStatus, statusTransitions: TreasuryReceivedDebitsResourceStatusTransitions, transaction: TreasuryDebitReversalTransaction'AnyOf option) =
             {
                 TreasuryDebitReversal.Amount = amount //required
                 TreasuryDebitReversal.Created = created //required
@@ -39995,7 +39995,7 @@ module StripeModel =
         ActiveFeatures: TreasuryFinancialAccountActiveFeatures list option
         Balance: TreasuryFinancialAccountsResourceBalance
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: string
+        Country: IsoTypes.IsoCountryCode
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         Features: TreasuryFinancialAccountFeatures option
@@ -40026,7 +40026,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.financial_account"
 
-        static member New (balance: TreasuryFinancialAccountsResourceBalance, country: string, created: DateTime, financialAddresses: TreasuryFinancialAccountsResourceFinancialAddress list, id: string, livemode: bool, metadata: Map<string, string> option, status: TreasuryFinancialAccountStatus, statusDetails: TreasuryFinancialAccountsResourceStatusDetails, supportedCurrencies: string list, ?activeFeatures: TreasuryFinancialAccountActiveFeatures list, ?features: TreasuryFinancialAccountFeatures, ?isDefault: bool, ?nickname: string option, ?pendingFeatures: TreasuryFinancialAccountPendingFeatures list, ?platformRestrictions: TreasuryFinancialAccountsResourcePlatformRestrictions option, ?restrictedFeatures: TreasuryFinancialAccountRestrictedFeatures list) =
+        static member New (balance: TreasuryFinancialAccountsResourceBalance, country: IsoTypes.IsoCountryCode, created: DateTime, financialAddresses: TreasuryFinancialAccountsResourceFinancialAddress list, id: string, livemode: bool, metadata: Map<string, string> option, status: TreasuryFinancialAccountStatus, statusDetails: TreasuryFinancialAccountsResourceStatusDetails, supportedCurrencies: string list, ?activeFeatures: TreasuryFinancialAccountActiveFeatures list, ?features: TreasuryFinancialAccountFeatures, ?isDefault: bool, ?nickname: string option, ?pendingFeatures: TreasuryFinancialAccountPendingFeatures list, ?platformRestrictions: TreasuryFinancialAccountsResourcePlatformRestrictions option, ?restrictedFeatures: TreasuryFinancialAccountRestrictedFeatures list) =
             {
                 TreasuryFinancialAccount.Balance = balance //required
                 TreasuryFinancialAccount.Country = country //required
@@ -40083,7 +40083,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///Details about this InboundTransfer's failure. Only set when status is `failed`.
@@ -40117,7 +40117,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.inbound_transfer"
 
-        static member New (amount: int, cancelable: bool, created: DateTime, currency: string, description: string option, failureDetails: TreasuryInboundTransfersResourceFailureDetails option, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows, livemode: bool, metadata: Map<string, string>, originPaymentMethod: string option, originPaymentMethodDetails: InboundTransfers option, returned: bool option, statementDescriptor: string, status: TreasuryInboundTransferStatus, statusTransitions: TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions, transaction: TreasuryInboundTransferTransaction'AnyOf option) =
+        static member New (amount: int, cancelable: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, failureDetails: TreasuryInboundTransfersResourceFailureDetails option, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows, livemode: bool, metadata: Map<string, string>, originPaymentMethod: string option, originPaymentMethodDetails: InboundTransfers option, returned: bool option, statementDescriptor: string, status: TreasuryInboundTransferStatus, statusTransitions: TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions, transaction: TreasuryInboundTransferTransaction'AnyOf option) =
             {
                 TreasuryInboundTransfer.Amount = amount //required
                 TreasuryInboundTransfer.Cancelable = cancelable //required
@@ -40155,7 +40155,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///ID of the [customer](https://docs.stripe.com/api/customers) to whom an OutboundPayment is sent.
         Customer: string option
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -40194,7 +40194,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.outbound_payment"
 
-        static member New (amount: int, cancelable: bool, created: DateTime, currency: string, customer: string option, description: string option, destinationPaymentMethod: string option, destinationPaymentMethodDetails: OutboundPaymentsPaymentMethodDetails option, endUserDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails option, expectedArrivalDate: DateTime, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, returnedDetails: TreasuryOutboundPaymentsResourceReturnedStatus option, statementDescriptor: string, status: TreasuryOutboundPaymentStatus, statusTransitions: TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions, trackingDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails option, transaction: TreasuryOutboundPaymentTransaction'AnyOf) =
+        static member New (amount: int, cancelable: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: string option, description: string option, destinationPaymentMethod: string option, destinationPaymentMethodDetails: OutboundPaymentsPaymentMethodDetails option, endUserDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails option, expectedArrivalDate: DateTime, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, returnedDetails: TreasuryOutboundPaymentsResourceReturnedStatus option, statementDescriptor: string, status: TreasuryOutboundPaymentStatus, statusTransitions: TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions, trackingDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails option, transaction: TreasuryOutboundPaymentTransaction'AnyOf) =
             {
                 TreasuryOutboundPayment.Amount = amount //required
                 TreasuryOutboundPayment.Cancelable = cancelable //required
@@ -40234,7 +40234,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///The PaymentMethod used as the payment instrument for an OutboundTransfer.
@@ -40268,7 +40268,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.outbound_transfer"
 
-        static member New (amount: int, cancelable: bool, created: DateTime, currency: string, description: string option, destinationPaymentMethod: string option, destinationPaymentMethodDetails: OutboundTransfersPaymentMethodDetails, expectedArrivalDate: DateTime, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, returnedDetails: TreasuryOutboundTransfersResourceReturnedDetails option, statementDescriptor: string, status: TreasuryOutboundTransferStatus, statusTransitions: TreasuryOutboundTransfersResourceStatusTransitions, trackingDetails: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails option, transaction: TreasuryOutboundTransferTransaction'AnyOf) =
+        static member New (amount: int, cancelable: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, destinationPaymentMethod: string option, destinationPaymentMethodDetails: OutboundTransfersPaymentMethodDetails, expectedArrivalDate: DateTime, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, returnedDetails: TreasuryOutboundTransfersResourceReturnedDetails option, statementDescriptor: string, status: TreasuryOutboundTransferStatus, statusTransitions: TreasuryOutboundTransfersResourceStatusTransitions, trackingDetails: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails option, transaction: TreasuryOutboundTransferTransaction'AnyOf) =
             {
                 TreasuryOutboundTransfer.Amount = amount //required
                 TreasuryOutboundTransfer.Cancelable = cancelable //required
@@ -40302,7 +40302,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string
         ///Reason for the failure. A ReceivedCredit might fail because the receiving FinancialAccount is closed or frozen.
@@ -40330,7 +40330,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.received_credit"
 
-        static member New (amount: int, created: DateTime, currency: string, description: string, failureCode: TreasuryReceivedCreditFailureCode option, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails, linkedFlows: TreasuryReceivedCreditsResourceLinkedFlows, livemode: bool, network: TreasuryReceivedCreditNetwork, reversalDetails: TreasuryReceivedCreditsResourceReversalDetails option, status: TreasuryReceivedCreditStatus, transaction: TreasuryReceivedCreditTransaction'AnyOf option) =
+        static member New (amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string, failureCode: TreasuryReceivedCreditFailureCode option, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails, linkedFlows: TreasuryReceivedCreditsResourceLinkedFlows, livemode: bool, network: TreasuryReceivedCreditNetwork, reversalDetails: TreasuryReceivedCreditsResourceReversalDetails option, status: TreasuryReceivedCreditStatus, transaction: TreasuryReceivedCreditTransaction'AnyOf option) =
             {
                 TreasuryReceivedCredit.Amount = amount //required
                 TreasuryReceivedCredit.Created = created //required
@@ -40360,7 +40360,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string
         ///Reason for the failure. A ReceivedDebit might fail because the FinancialAccount doesn't have sufficient funds, is closed, or is frozen.
@@ -40388,7 +40388,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.received_debit"
 
-        static member New (amount: int, created: DateTime, currency: string, description: string, failureCode: TreasuryReceivedDebitFailureCode option, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryReceivedDebitsResourceLinkedFlows, livemode: bool, network: TreasuryReceivedDebitNetwork, reversalDetails: TreasuryReceivedDebitsResourceReversalDetails option, status: TreasuryReceivedDebitStatus, transaction: TreasuryReceivedDebitTransaction'AnyOf option, ?initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails) =
+        static member New (amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string, failureCode: TreasuryReceivedDebitFailureCode option, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryReceivedDebitsResourceLinkedFlows, livemode: bool, network: TreasuryReceivedDebitNetwork, reversalDetails: TreasuryReceivedDebitsResourceReversalDetails option, status: TreasuryReceivedDebitStatus, transaction: TreasuryReceivedDebitTransaction'AnyOf option, ?initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails) =
             {
                 TreasuryReceivedDebit.Amount = amount //required
                 TreasuryReceivedDebit.Created = created //required
@@ -40419,7 +40419,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string
         ///A list of TransactionEntries that are part of this Transaction. This cannot be expanded in any list endpoints.
@@ -40444,7 +40444,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.transaction"
 
-        static member New (amount: int, balanceImpact: TreasuryTransactionsResourceBalanceImpact, created: DateTime, currency: string, description: string, financialAccount: string, flow: string option, flowType: TreasuryTransactionFlowType, id: string, livemode: bool, status: TreasuryTransactionStatus, statusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions, ?entries: TreasuryTransactionEntries option, ?flowDetails: TreasuryTransactionsResourceFlowDetails option) =
+        static member New (amount: int, balanceImpact: TreasuryTransactionsResourceBalanceImpact, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string, financialAccount: string, flow: string option, flowType: TreasuryTransactionFlowType, id: string, livemode: bool, status: TreasuryTransactionStatus, statusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions, ?entries: TreasuryTransactionEntries option, ?flowDetails: TreasuryTransactionsResourceFlowDetails option) =
             {
                 TreasuryTransaction.Amount = amount //required
                 TreasuryTransaction.BalanceImpact = balanceImpact //required
@@ -40488,7 +40488,7 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: string
+        Currency: IsoTypes.IsoCurrencyCode
         ///When the TransactionEntry will impact the FinancialAccount's balance.
         [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EffectiveAt: DateTime
         ///The FinancialAccount associated with this object.
@@ -40512,7 +40512,7 @@ module StripeModel =
         ///String representing the object's type. Objects of the same type share the same value.
         member _.Object = "treasury.transaction_entry"
 
-        static member New (balanceImpact: TreasuryTransactionsResourceBalanceImpact, created: DateTime, currency: string, effectiveAt: DateTime, financialAccount: string, flow: string option, flowType: TreasuryTransactionEntryFlowType, id: string, livemode: bool, transaction: TreasuryTransactionEntryTransaction'AnyOf, ``type``: TreasuryTransactionEntryType, ?flowDetails: TreasuryTransactionsResourceFlowDetails option) =
+        static member New (balanceImpact: TreasuryTransactionsResourceBalanceImpact, created: DateTime, currency: IsoTypes.IsoCurrencyCode, effectiveAt: DateTime, financialAccount: string, flow: string option, flowType: TreasuryTransactionEntryFlowType, id: string, livemode: bool, transaction: TreasuryTransactionEntryTransaction'AnyOf, ``type``: TreasuryTransactionEntryType, ?flowDetails: TreasuryTransactionsResourceFlowDetails option) =
             {
                 TreasuryTransactionEntry.BalanceImpact = balanceImpact //required
                 TreasuryTransactionEntry.Created = created //required

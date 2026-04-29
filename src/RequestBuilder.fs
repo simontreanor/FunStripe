@@ -174,6 +174,15 @@ module RequestBuilder =
         SubValues: Value array option
     }
 
+    ///Returns the ISO strongly-typed name for currency or country fields, or None if not applicable
+    let isoTypeName (name: string) =
+        if name = "currency" || (name.EndsWith("_currency") && name <> "default_for_currency") then
+            Some "IsoTypes.IsoCurrencyCode"
+        elif name = "country" || name.EndsWith("_country") then
+            Some "IsoTypes.IsoCountryCode"
+        else
+            None
+
     ///Parse form parameters
     let rec parseValue prefix name req isChoice (jv: JsonValue) =
         let name' = name |> pascalCasify
@@ -189,7 +198,11 @@ module RequestBuilder =
                 else
                     { Description = desc; Name = name; Required = req; Type = $"{prefix}{name'}"; OptionType = Form; EnumValues = Some ev; SubValues = None }
             | None ->
-                { Description = desc; Name = name; Required = req; Type = t; OptionType = Form; EnumValues = None; SubValues = None }
+                match isoTypeName name with
+                | Some isoType ->
+                    { Description = desc; Name = name; Required = req; Type = isoType; OptionType = Form; EnumValues = None; SubValues = None }
+                | None ->
+                    { Description = desc; Name = name; Required = req; Type = t; OptionType = Form; EnumValues = None; SubValues = None }
         | Some t when t = "array" ->
             match so.Items with
             | Some i ->
@@ -251,7 +264,11 @@ module RequestBuilder =
             let name = po.Name
             let optionType = po.In
             let required = po.Required
-            let type' = po.Type
+            let type' =
+                if po.Type = "string" then
+                    isoTypeName name |> Option.defaultValue po.Type
+                else
+                    po.Type
             { Description = desc; Name = name; Required = required; Type = type'; OptionType = optionType; EnumValues = None; SubValues = None }
         )
 
