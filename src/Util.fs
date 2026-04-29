@@ -127,6 +127,7 @@ module Util =
         json.ToString(saveOptions)
 #endif
         
+#if !FABLE_COMPILER
     let getUnionCaseFromString<'a> (value: string) =
         typeof<'a>.UnderlyingSystemType.GetProperties()
         |> Array.map(fun pi ->
@@ -142,9 +143,10 @@ module Util =
             | [|c|] -> Some (FSharpValue.MakeUnion(c, [||]) :?> 'a)
             | _ -> None
         )
- 
+
     ///Converts a string option to a strongly-typed union case, or a default strongly-typed value
     let optionToUnionCaseOr<'a> (defaultValue: 'a) (s: string option) =
         s
         |> Option.bind getUnionCaseFromString<'a>
         |> Option.defaultValue defaultValue
+#endif
