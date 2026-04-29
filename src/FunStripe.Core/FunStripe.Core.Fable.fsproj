@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <PackageId>FunStripe.Core.Fable</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Simon Treanor</Authors>
+    <Company>Fund Ourselves</Company>
+    <PackageDescription>F# Stripe Library — Fable (Node.js server-side) edition (targets Stripe API $(StripeApiVersion))</PackageDescription>
+    <StripeApiVersion>2026-04-22.dahlia</StripeApiVersion>
+    <PackageTags>stripe;fsharp;fable;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
+    <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
+    <DefineConstants>$(DefineConstants);LITE;FABLE_COMPILER</DefineConstants>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+  </PropertyGroup>
+  <!--
+    Source files: same as FunStripe.Core.fsproj but:
+      - JsonValueHelpers.fs is omitted (FSharp.Data-only, not needed under FABLE_COMPILER)
+      - FableCore.fs is added (Fable-compatible JSON deserializer using Thoth.Json)
+    FABLE_COMPILER conditional compilation symbols in the shared source files gate
+    the platform-specific code paths automatically.
+  -->
+  <ItemGroup>
+    <Compile Include="../Json/InterfaceTypes.fs" Link="Json/InterfaceTypes.fs" />
+    <Compile Include="../Json/Reflection.fs" Link="Json/Reflection.fs" />
+    <Compile Include="../Json/Core.fs" Link="Json/Core.fs" />
+    <Compile Include="../Json/Transforms.fs" Link="Json/Transforms.fs" />
+    <Compile Include="../Json/FableCore.fs" Link="Json/FableCore.fs" />
+    <Compile Include="../Config.fs" Link="Config.fs" />
+    <Compile Include="../Util.fs" Link="Util.fs" />
+    <Compile Include="../AsyncResult.fs" Link="AsyncResult.fs" />
+    <Compile Include="../StripeModel.fs" Link="StripeModel.fs" />
+    <Compile Include="../StripeError.fs" Link="StripeError.fs" />
+    <Compile Include="../RestApi.fs" Link="RestApi.fs" />
+    <Compile Include="../StripeRequest.fs" Link="StripeRequest.fs" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Fable HTTP client (Node.js fetch) -->
+    <PackageReference Include="Fable.SimpleHttp" />
+    <!-- JSON parsing for Fable (replaces FSharp.Data.Json.Core) -->
+    <PackageReference Include="Thoth.Json" />
+  </ItemGroup>
+</Project>

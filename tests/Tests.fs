@@ -42,7 +42,7 @@ module Tests =
 
         let defaultPaymentMethod =
             let address = { Address.City = None; Country = None; Line1 = None; Line2 = None; PostalCode = None; State = None }
-            let billingDetails = { BillingDetails.Address = Some address; Email = None; Name = None; Phone = None }
+            let billingDetails = { BillingDetails.Address = Some address; Email = None; Name = None; Phone = None; TaxId = None }
             let paymentMethodCardChecks = { PaymentMethodCardChecks.AddressLine1Check = None; AddressPostalCodeCheck = None; CvcCheck = None }
             let networks = { Networks.Available = ["Visa"]; Preferred = None }
             let threeDSecureUsage = { Supported = true }
@@ -51,12 +51,15 @@ module Tests =
                     brand = PaymentMethodCardBrand.Visa,
                     checks = Some paymentMethodCardChecks,
                     country = Some "US",
+                    displayBrand = None,
                     expMonth = 10,
                     expYear = 2027,
                     fingerprint = Some "YfQddCBRsntX6npu",
                     funding = PaymentMethodCardFunding.Credit,
+                    generatedFrom = None,
                     last4 = "4242",
                     networks = Some networks,
+                    regulatedStatus = None,
                     threeDSecureUsage = Some threeDSecureUsage,
                     wallet = None
                 )
@@ -66,6 +69,7 @@ module Tests =
                     card = paymentMethodCard,
                     created = DateTime(2020, 10, 30, 16, 35, 0),
                     customer = None,
+                    customerAccount = None,
                     id = "IgnoreThisId",
                     livemode = false,
                     metadata = Some Map.empty,
@@ -209,15 +213,18 @@ module Tests =
                 {
                     Address = None
                     Balance = Some 0
+                    BusinessName = None
                     CashBalance = None
                     Created = DateTime(2021, 1, 6, 10, 42, 3)
                     Currency = None
+                    CustomerAccount = None
                     DefaultSource = Some (CustomerDefaultSource'AnyOf.String "card_1I6ZSoGXSUku3vEhr04df95L")
                     Delinquent = Some false
                     Description = Some "KEITH LILY"
                     Discount = None
                     Email = Some "KEITH_2614@mailinator.com"
                     Id = "cus_IhzR2Msjq0lILS"
+                    IndividualName = None
                     InvoiceCreditBalance = None
                     InvoicePrefix = Some "12F15AC4"
                     InvoiceSettings =
@@ -260,6 +267,7 @@ module Tests =
                                         last4 = "4242",
                                         metadata = Some (Map.empty),
                                         name =  None,
+                                        regulatedStatus = None,
                                         tokenizationMethod =  None
                                     )
                                 )

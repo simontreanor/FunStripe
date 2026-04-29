@@ -113,6 +113,7 @@ module RequestBuilder =
     let escapeReservedName name =
         match name with
         | "end"
+        | "in"
         | "open"
         | "type" ->
             $"{name}'"
@@ -150,18 +151,17 @@ module RequestBuilder =
         member this.ToPropertyString() =
             $"\t\tmember _.{this.Name |> camelCasify |> escapeReservedName} = {this.Name |> camelCasify |> escapeReservedName}"
 
-    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line, and also formatting the HTML to display all paragraphs correctly
+    ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line.
+    ///Wraps content in XML doc <c>&lt;summary&gt;</c> tags to ensure visibility in IDEs.
+    ///HTML elements (e.g. <c>&lt;p&gt;</c>, <c>&lt;a&gt;</c>) from the OpenAPI spec are preserved inside
+    ///<c>&lt;summary&gt;</c> as valid XML documentation markup.
     let commentify indent (s: string) =
         if s |> String.IsNullOrWhiteSpace then
             ""
-        elif s.Contains("<p>") then
-            let tabs = "\t" |> String.replicate indent
-            let formatted = s.Replace("<p>", "").Replace("</p>", "").Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")
-            $"{tabs}///<p>{formatted}</p>"
         else
             let tabs = "\t" |> String.replicate indent
             let formatted = s.Replace("\n\n", "\n").Replace("\n", $"\n{tabs}///")
-            $"{tabs}///{formatted}"
+            $"{tabs}///<summary>{formatted}</summary>"
 
     ///Recursive record for holding type definitions
     type Value = {
@@ -214,7 +214,10 @@ module RequestBuilder =
                 match name with
                 | "attributes"
                 | "currency_options"
-                | "metadata" ->
+                | "invoice_metadata"
+                | "metadata"
+                | "minimum_balance_by_currency"
+                | "payload" ->
                     { Description = desc; Name = name; Required = req; Type = "Map<string, string>"; OptionType = Form; EnumValues = None; SubValues = None }
                 | _ ->
                     failwith $"This `never` fails #2: {name}"
@@ -298,7 +301,7 @@ module RequestBuilder =
     let parseRequest filePath =
         let root = __SOURCE_DIRECTORY__
 
-        let filePath' = defaultArg filePath $"{root}/res/spec3.sdk.json"
+        let filePath' = defaultArg filePath $"{root}/../spec/stripe-openapi-2026-04-22.dahlia.json"
         let json = File.ReadAllText(filePath')
 
         let root = JsonValue.Parse json
@@ -404,7 +407,7 @@ module RequestBuilder =
                                         match responseSchema.TryGetProperty("properties") with
                                         | Some jv ->
                                             let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
-                                            $"{listType |> parseRef |> pascalCasify} list"
+                                            $"StripeList<{listType |> parseRef |> pascalCasify}>"
                                         | _ ->
                                             failwith $"Unhandled response type: {moduleName} %A{responseSchema}"
 
@@ -533,26 +536,28 @@ module RequestBuilder =
         let write s (sb: Text.StringBuilder) =
             if s |> String.IsNullOrWhiteSpace |> not then sb.AppendLine s |> ignore
         
-        let rec writeModel model =
+        let rec flatten acc model =
             match model with
+            | ModelHeader -> ModelHeader :: acc
+            | ModelDu (name, valuesString, rest) -> flatten (ModelDu(name, valuesString, ModelHeader) :: acc) rest
+            | ModelType (name, propertiesString, parametersString, assignments, rest) -> flatten (ModelType(name, propertiesString, parametersString, assignments, ModelHeader) :: acc) rest
+            | ModelRequest (modelRequest, rest) -> flatten (ModelRequest(modelRequest, ModelHeader) :: acc) rest
+            | ModelModule (module', rest) -> flatten (ModelModule(module', ModelHeader) :: acc) rest
+
+        for node in flatten [] fullModel do
+            match node with
             | ModelHeader ->
                 sb |> write $"namespace FunStripe\n\nopen FunStripe.Json\nopen StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeRequest =\n"
-            | ModelDu (name, valuesString, model) ->
-                do writeModel model
-                ///Write a discriminated union
+            | ModelDu (name, valuesString, _) ->
                 sb |> write $"\t\ttype {name} =\n{valuesString}\n"
-            | ModelType (name, propertiesString, parametersString, assignments, model) ->
-                do writeModel model
+            | ModelType (name, propertiesString, parametersString, assignments, _) ->
                 sb |> write $"\t\ttype {name} = {{\n{propertiesString}\n\t\t}}"
                 sb |> write $"\t\twith\n\t\t\tstatic member New({parametersString}) =\n\t\t\t\t{{\n{assignments}\n\t\t\t\t}}\n"
-
-            | ModelRequest (modelRequest, model) ->
-                do writeModel model
+            | ModelRequest (modelRequest, _) ->
                 sb |> write (modelRequest.Description |> commentify 2)
                 sb |> write $"\t\tlet {modelRequest.Method} settings{modelRequest.OptionsString} ="
                 sb |> write modelRequest.QueryDeclaration
                 sb |> write $"\t\t\t$\"{modelRequest.Path |> formatPathOptions}\""
-
                 //set API method
                 match modelRequest.Verb with
                 | "get" when modelRequest.FormOptions.Any() ->
@@ -567,12 +572,8 @@ module RequestBuilder =
                     sb |> write $"\t\t\t|> RestApi.deleteAsync<{modelRequest.ResponseType}> settings{modelRequest.Query}\n"
                 | verb ->
                     failwith $"Unhandled verb: {verb}"
-
-            | ModelModule (module', model) ->
-                do writeModel model
+            | ModelModule (module', _) ->
                 sb |> write $"\tmodule {module'} =\n"
-
-        writeModel fullModel
 
         sb.ToString().Replace("\t", "    ")
 
@@ -580,6 +581,6 @@ module RequestBuilder =
     ;;
     open RequestBuilder;;
     let m = parseRequest None;;
-    let s = serializeModel "0.11.1" m;;
+    let s = serializeModel "1.0.0" m;;
     System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeRequest.fs", s);;
 #endif

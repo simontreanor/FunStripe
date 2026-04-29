@@ -2,31 +2,13 @@
 
 An F# library to connect to the Stripe API, including code generators to update the model and requests. Targets .NET Standard 2.0 and .NET Standard 2.1.
 
-## Latest updates
+## Changelog
 
-2025-02-24: version 0.11.2 implements changes to the order of generated types to reduce the need for recursive type declarations (thank [Thorium](https://github.com/Thorium) for that!). [FunStripeLite](https://github.com/simontreanor/FunStripeLite) has been added as a subproject and will be maintained here from now on.
-
-2025-01-21: version 0.11.0 changes the target frameworks to .NET Standard 2.0 and .NET Standard 2.1 and updates FSharp.Core to version 9.0.101 and FSharp.Data to 6.4.1.
-
-2023-11-13: version 0.10.2 makes some minor performance enhancements.
-
-2023-10-13: version 0.10.1 makes some minor tweaks to normalise the folder structure.
-
-2023-10-11: version 0.10.0 fixes an issue with form serialisation that meant that JsonField names were only applied to the top level elements. It also tidies the code up a little.
-
-2023-08-29: version 0.9.3 updates the Stripe API from version 2022-11-15 to 2023-08-16, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details. It also updates the package dependencies for FSharp.Core and FSharp.Data to 6.0.7 and 6.2.0 respectively. 
-
-2022-11-22: version 0.9.2 updates the Stripe API from version 2022-08-01 to 2022-11-15, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details. As .NET 5 is out-of-support, this has been removed from the target frameworks.
-
-2022-10-04: version 0.9.0 updates the Stripe API from version 2020-08-27 to 2022-08-01, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
-
-2022-04-22: a lightweight version of this library without the code generators is now available as [FunStripeLite](https://github.com/simontreanor/FunStripeLite). 
-
-2021-07-18: version 0.8.0 updates the Stripe API from version 2020-03-02 to 2020-08-27, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Installation
 
-Get the latest version of FunStripe (which includes the model builders) from [Nuget](https://www.nuget.org/packages/FunStripe/) or the lite version, which just contains the models, from [Nuget](https://www.nuget.org/packages/FunStripeLite/).
+Get the latest version of FunStripe.Core from [NuGet](https://www.nuget.org/packages/FunStripe.Core/). For Fable/Node.js projects, use [FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) instead.
 
 ## Usage
 
@@ -58,15 +40,134 @@ If you don't specify the API key in the settings record, it will look for a defa
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 
+### Paginated Lists
+
+All list endpoints return a `StripeList<'T>` that includes the current page of items alongside the pagination metadata:
+
+```F#
+let listOptions = Customers.ListOptions.New(limit = 10)
+let! page = Customers.List settings listOptions
+// page.Data  — the current page of Customer records
+// page.HasMore — true if more pages are available
+// page.Url    — the endpoint URL
+```
+
+To automatically fetch all pages and combine them into a single list, use `RestApi.listAllAsync`:
+
+```F#
+let! allCustomers =
+    RestApi.listAllAsync
+        Customers.List
+        (fun id opts -> { opts with StartingAfter = Some id })
+        (fun (c: Customer) -> c.Id)
+        settings
+        (Customers.ListOptions.New())
+// allCustomers is Result<Customer list, ErrorResponse>
+```
+
+## Stripe API version
+
+FunStripe targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:
+
+```F#
+Config.DefaultStripeApiVersion  // e.g. "2026-04-22.dahlia"
+```
+
+It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
+
+By default, FunStripe does **not** send a `Stripe-Version` request header, so Stripe uses the version pinned to your account. If you want every request to be explicitly tied to the library's target API version — useful when upgrading or for forward-compatibility testing — pass it through `StripeApiSettings`:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = Config.StripeTestApiKey,
+        stripeVersion = Config.DefaultStripeApiVersion
+    )
+```
+
+To test against a **newer** Stripe API version before upgrading the library, supply the target date directly:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = Config.StripeTestApiKey,
+        stripeVersion = "2026-04-22.dahlia"   // override for forward-compatibility testing
+    )
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for the full FunStripe version → Stripe API version compatibility table.
+
+## Fable (Node.js) Support
+
+FunStripe.Core can be compiled to JavaScript via [Fable](https://fable.io) using the companion
+[FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) package.  This targets **Node.js server-side** scripts written in F#.
+
+> [!WARNING]
+> **Do not use this package in browser applications.**
+> Calling the Stripe REST API directly from a browser requires embedding a Stripe API key in
+> the client, where it is trivially extractable from network traffic or the JS bundle.  Even
+> a *publishable* key grants more access than should be exposed client-side, and a *secret*
+> key would expose your full Stripe account to anyone who inspects your app.
+>
+> For browser-side card collection, use
+> [Stripe.js / Stripe Elements](https://stripe.com/docs/js) instead — it keeps all sensitive
+> data within Stripe's own iframe and never touches your server with raw card details.
+
+### Installation
+
+Reference the `FunStripe.Core.Fable` NuGet package from your Fable/Node.js project instead of
+`FunStripe.Core`.  `Fable.SimpleHttp` and `Thoth.Json` are pulled in automatically as
+transitive dependencies.
+
+### Usage
+
+The public API is identical to the regular .NET edition.  Your Stripe **secret key**
+(`sk_test_...` / `sk_live_...`) stays on the server, exactly as in the .NET version:
+
+```fsharp
+open FunStripe
+open FunStripe.RestApi
+open FunStripe.StripeRequest
+
+// Secret key — server-side only, never expose this in a browser bundle.
+// Find yours at https://dashboard.stripe.com/apikeys
+let settings = StripeApiSettings.New(apiKey = "<your-secret-key>")
+
+let createPaymentMethod () =
+    asyncResult {
+        return!
+            PaymentMethods.CreateOptions.New(
+                card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                type' = PaymentMethods.Create'Type.Card
+            )
+            |> PaymentMethods.Create settings
+    }
+```
+
+### Platform differences
+
+| Feature | .NET (`FunStripe.Core`) | Fable (`FunStripe.Core.Fable`) |
+|---------|------------------------|--------------------------------|
+| Target runtime | .NET (server) | Node.js (server) |
+| HTTP layer | `FSharp.Data` (`HttpClient`) | `Fable.SimpleHttp` (Node.js fetch) |
+| JSON parsing | `FSharp.Data.JsonValue` | `Thoth.Json` |
+| JSON serialisation (`Util.serialise`) | ✅ available | ❌ not available |
+| Code generation (`ModelBuilder`, `RequestBuilder`) | ✅ via `FunStripe.Generator` | ❌ not needed |
+
+### Code generation
+
+Code generation (`ModelBuilder.fs`, `RequestBuilder.fs`) uses `Fabulous.AST` which is
+.NET-only.  It is intentionally excluded from the Fable package.  Run code generation with
+`dotnet fsi` on the .NET side and commit the generated `StripeModel.fs` /
+`StripeRequest.fs` into your repository.
+
 ## Code Generation
 
 By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and `StripeRequest.fs` respectively.
 
 Using Visual Studio Code, you simply select all the text in each document and hit `Alt + Enter` to send the code to F# Interactive. This will overwrite the contents of the target modules.
 
-The Stripe OpenAPI specification is stored locally as `/res/spec3.sdk.json`. See the references below for the link to the latest online version.
-
-By replacing the local copy with the latest one from online, you can regenerate the source code and build it to get the latest changes.
+The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2026-04-22.dahlia.json` used as the default for code generation. The current default path is set in `ModelBuilder.fs` and `RequestBuilder.fs`. To regenerate against a different version, pass the desired spec file path as a parameter, or update the default path in those files. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
 
 You could also customise how the source code is represented by editing the builder code files.
 
