@@ -2,27 +2,9 @@
 
 An F# library to connect to the Stripe API, including code generators to update the model and requests. Targets .NET Standard 2.0 and .NET Standard 2.1.
 
-## Latest updates
+## Changelog
 
-2026-04-29: FunStripe and FunStripeLite have been superseded by [FunStripe.Core](https://www.nuget.org/packages/FunStripe.Core/) (.NET) and [FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) (Fable/Node.js). The code generators have been separated into a non-published `FunStripe.Generator` project.
-
-2025-02-24: version 0.11.2 implements changes to the order of generated types to reduce the need for recursive type declarations (thank [Thorium](https://github.com/Thorium) for that!).
-
-2025-01-21: version 0.11.0 changes the target frameworks to .NET Standard 2.0 and .NET Standard 2.1 and updates FSharp.Core to version 9.0.101 and FSharp.Data to 6.4.1.
-
-2023-11-13: version 0.10.2 makes some minor performance enhancements.
-
-2023-10-13: version 0.10.1 makes some minor tweaks to normalise the folder structure.
-
-2023-10-11: version 0.10.0 fixes an issue with form serialisation that meant that JsonField names were only applied to the top level elements. It also tidies the code up a little.
-
-2023-08-29: version 0.9.3 updates the Stripe API from version 2022-11-15 to 2023-08-16, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details. It also updates the package dependencies for FSharp.Core and FSharp.Data to 6.0.7 and 6.2.0 respectively. 
-
-2022-11-22: version 0.9.2 updates the Stripe API from version 2022-08-01 to 2022-11-15, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details. As .NET 5 is out-of-support, this has been removed from the target frameworks.
-
-2022-10-04: version 0.9.0 updates the Stripe API from version 2020-08-27 to 2022-08-01, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
-
-2021-07-18: version 0.8.0 updates the Stripe API from version 2020-03-02 to 2020-08-27, which contains some breaking changes. See the [Stripe API changelog](https://stripe.com/docs/upgrades#api-changelog) for details.
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Installation
 
