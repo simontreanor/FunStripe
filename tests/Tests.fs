@@ -1,11 +1,14 @@
 namespace FunStripe
 
 open FunStripe.AsyncResultCE
+open FunStripe.WebhookSigning
 open IsoTypes
 open NUnit.Framework
 open StripeModel
 open StripeRequest
 open System
+open System.Security.Cryptography
+open System.Text
 
 module Tests =
 
@@ -375,6 +378,98 @@ module Tests =
             """
             let actual = Util.deserialise<Customer> response
             Assert.That(expected, Is.EqualTo actual)
+
+    [<TestFixture>]
+    type WebhookSigningTests () =
+
+        let secret = "whsec_test_secret"
+        let rawBody = """{"id":"evt_test","object":"event"}"""
+
+        ///Build a valid Stripe-Signature header for the given timestamp
+        let buildHeader (secret: string) (rawBody: string) (timestamp: int64) =
+            let signedPayload = sprintf "%d.%s" timestamp rawBody
+            let keyBytes = Encoding.UTF8.GetBytes(secret)
+            let payloadBytes = Encoding.UTF8.GetBytes(signedPayload)
+            use hmac = new HMACSHA256(keyBytes)
+            let sig' =
+                hmac.ComputeHash(payloadBytes)
+                |> Array.map (fun b -> b.ToString("x2"))
+                |> String.concat ""
+            sprintf "t=%d,v1=%s" timestamp sig'
+
+        [<Test>]
+        member _.``valid signature returns Ok``() =
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let header = buildHeader secret rawBody timestamp
+            let result = verifySignature secret rawBody header defaultTolerance
+            match result with
+            | Ok () -> Assert.Pass()
+            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+
+        [<Test>]
+        member _.``signature with multiple v1 entries accepts correct one``() =
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let validHeader = buildHeader secret rawBody timestamp
+            // Append a second (wrong) v1 entry after the valid one
+            let headerWithExtra = validHeader + ",v1=aabbccddeeff"
+            let result = verifySignature secret rawBody headerWithExtra defaultTolerance
+            match result with
+            | Ok () -> Assert.Pass()
+            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+
+        [<Test>]
+        member _.``signature with invalid v1 entry before valid one accepts correct one``() =
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let validHeader = buildHeader secret rawBody timestamp
+            // Prepend a wrong v1 entry before the valid one (e.g. "t=...,v1=bad,v1=good")
+            let parts = validHeader.Split(',')
+            let headerWithExtraFirst = sprintf "%s,v1=aabbccddeeff,%s" parts.[0] parts.[1]
+            let result = verifySignature secret rawBody headerWithExtraFirst defaultTolerance
+            match result with
+            | Ok () -> Assert.Pass()
+            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+
+        [<Test>]
+        member _.``timestamp outside tolerance returns TimestampOutOfTolerance``() =
+            let oldTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 600L
+            let header = buildHeader secret rawBody oldTimestamp
+            let result = verifySignature secret rawBody header defaultTolerance
+            match result with
+            | Error (TimestampOutOfTolerance _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected TimestampOutOfTolerance but got %A" other)
+
+        [<Test>]
+        member _.``wrong signature returns SignatureMismatch``() =
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let header = sprintf "t=%d,v1=%s" timestamp (String.replicate 64 "0")
+            let result = verifySignature secret rawBody header defaultTolerance
+            match result with
+            | Error (SignatureMismatch _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected SignatureMismatch but got %A" other)
+
+        [<Test>]
+        member _.``missing timestamp returns InvalidHeader``() =
+            let header = "v1=aabbccddeeff"
+            let result = verifySignature secret rawBody header defaultTolerance
+            match result with
+            | Error (InvalidHeader _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
+
+        [<Test>]
+        member _.``missing v1 signature returns InvalidHeader``() =
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let header = sprintf "t=%d" timestamp
+            let result = verifySignature secret rawBody header defaultTolerance
+            match result with
+            | Error (InvalidHeader _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
+
+        [<Test>]
+        member _.``malformed header returns InvalidHeader``() =
+            let result = verifySignature secret rawBody "not-a-valid-header" defaultTolerance
+            match result with
+            | Error (InvalidHeader _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
 
         [<Test>]
         member _.``test parsing customer object with expanded default_source``() =
