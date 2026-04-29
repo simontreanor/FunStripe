@@ -1,6 +1,10 @@
 namespace FunStripe
 
+#if !FABLE_COMPILER
 open FSharp.Data
+#else
+open Fable.SimpleHttp
+#endif
 open FunStripe
 
 module RestApi =
@@ -23,7 +27,32 @@ module RestApi =
                 StripeVersion = stripeVersion
             }
 
-    ///Create request header
+#if FABLE_COMPILER
+    ///Create Basic auth header value for the given API key
+    let private createBasicAuthValue (apiKey: string) =
+        let credentials = System.Text.Encoding.UTF8.GetBytes($"{apiKey}:")
+        let base64 = System.Convert.ToBase64String(credentials)
+        $"Basic {base64}"
+
+    ///Create request headers for Fable
+    let createHeader settings =
+        let authHeader = Headers.authorization (createBasicAuthValue settings.ApiKey)
+
+        let idempotencyHeader = settings.IdempotencyKey |> Option.map (fun ik -> Headers.create "Idempotency-Key" ik)
+        let stripeAccountHeader = settings.StripeAccount |> Option.map (fun sa -> Headers.create "Stripe-Account" sa)
+        let stripeVersionHeader = settings.StripeVersion |> Option.map (fun sv -> Headers.create "Stripe-Version" sv)
+
+        let stripeHeaders =
+            [
+                idempotencyHeader
+                stripeAccountHeader
+                stripeVersionHeader
+            ]
+            |> List.choose id
+
+        authHeader :: stripeHeaders
+#else
+    ///Create request headers
     let createHeader settings =
         let authHeader = HttpRequestHeaders.BasicAuth settings.ApiKey ""
 
@@ -40,10 +69,11 @@ module RestApi =
             |> List.choose id
 
         authHeader :: stripeHeaders
+#endif
 
     ///Format query string values if present with proper URL encoding
     let formatQueryString (options: Map<string, obj>) =
-        let urlEncode (s:string) = System.Web.HttpUtility.UrlEncode s
+        let urlEncode (s: string) = System.Uri.EscapeDataString s
         
         let options' =
             options
@@ -81,6 +111,90 @@ module RestApi =
         | "" -> ""
         | _ -> $"?{options'}"
 
+#if FABLE_COMPILER
+    ///Encode form values as application/x-www-form-urlencoded body
+    let private encodeFormBody (formValues: seq<string * string>) =
+        formValues
+        |> Seq.map (fun (k, v) -> $"{System.Uri.EscapeDataString k}={System.Uri.EscapeDataString v}")
+        |> String.concat "&"
+
+    ///Parse response from API and convert it to a `Result` (Fable version)
+    let private parseFableResponse<'a> (statusCode: int) (responseText: string) =
+        if statusCode >= 200 && statusCode <= 299 then
+            responseText
+            |> Util.deserialise<'a>
+            |> Ok
+        else
+            responseText
+            |> Util.deserialise<StripeError.ErrorResponse>
+            |> Error
+
+    ///Make a `GET` request (Fable version)
+    let getAsync<'a> settings queryStringOptions (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
+        async {
+            let! response =
+                Http.request $"{settings.BaseUrl}{url}{queryString}"
+                |> Http.method GET
+                |> Http.headers (createHeader settings)
+                |> Http.send
+            return parseFableResponse<'a> response.statusCode response.responseText
+        }
+
+    ///Make a `GET` request with form parameters in the body (Fable version)
+    let getWithAsync<'a, 'b> settings queryStringOptions (data: 'a) (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
+        let body = data |> Util.serialiseForm |> encodeFormBody
+        async {
+            let! response =
+                Http.request $"{settings.BaseUrl}{url}{queryString}"
+                |> Http.method GET
+                |> Http.headers (createHeader settings)
+                |> Http.header (Headers.contentType "application/x-www-form-urlencoded")
+                |> Http.content (BodyContent.Text body)
+                |> Http.send
+            return parseFableResponse<'b> response.statusCode response.responseText
+        }
+
+    ///Make a `POST` request (with form parameters in the body) (Fable version)
+    let postAsync<'a, 'b> settings queryStringOptions (data: 'a) (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
+        let body = data |> Util.serialiseForm |> encodeFormBody
+        async {
+            let! response =
+                Http.request $"{settings.BaseUrl}{url}{queryString}"
+                |> Http.method POST
+                |> Http.headers (createHeader settings)
+                |> Http.header (Headers.contentType "application/x-www-form-urlencoded")
+                |> Http.content (BodyContent.Text body)
+                |> Http.send
+            return parseFableResponse<'b> response.statusCode response.responseText
+        }
+
+    ///Make a `POST` request without form parameters in the body (Fable version)
+    let postWithoutAsync<'a> settings queryStringOptions (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
+        async {
+            let! response =
+                Http.request $"{settings.BaseUrl}{url}{queryString}"
+                |> Http.method POST
+                |> Http.headers (createHeader settings)
+                |> Http.send
+            return parseFableResponse<'a> response.statusCode response.responseText
+        }
+
+    ///Make a `DELETE` request (Fable version)
+    let deleteAsync<'a> settings queryStringOptions (url: string) =
+        let queryString = queryStringOptions |> formatQueryString
+        async {
+            let! response =
+                Http.request $"{settings.BaseUrl}{url}{queryString}"
+                |> Http.method DELETE
+                |> Http.headers (createHeader settings)
+                |> Http.send
+            return parseFableResponse<'a> response.statusCode response.responseText
+        }
+#else
     ///Parse response from API and convert it to a `Result`
     let parseResponse<'a> (r: HttpResponse) =
         match r.StatusCode with
@@ -136,3 +250,4 @@ module RestApi =
             let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Delete)
             return response |> parseResponse<'a>
         }
+#endif
