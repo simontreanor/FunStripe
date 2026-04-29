@@ -67,6 +67,7 @@ module ModelBuilder =
     let escapeReservedName name =
         match name with
         | "end"
+        | "in"
         | "open"
         | "type" ->
             $"``{name}``"
@@ -75,7 +76,7 @@ module ModelBuilder =
 
     ///Remove problematic chars from discriminated-union names
     let clean (s: string) =
-        s.Replace("-", "").Replace(" ", "")
+        s.Replace("-", "").Replace(" ", "").Replace("[", "").Replace("]", "")
 
     ///Prepend `Numeric` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =
@@ -85,7 +86,7 @@ module ModelBuilder =
     let escapeForJson (s: string) =
         if s.Contains(" of ") then
             s
-        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") then
+        elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") || s.Contains("[") then
             $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         elif s = "none" then
             $@"[<JsonUnionCase(""{s}"")>] {s|> pascalCasify}'"
@@ -256,7 +257,7 @@ module ModelBuilder =
         
         //parse Open API specification file
         let root = __SOURCE_DIRECTORY__
-        let filePath' = defaultArg filePath $"{root}/res/spec3.sdk.json"
+        let filePath' = defaultArg filePath $"{root}/../spec/stripe-openapi-2026-04-22.dahlia.json"
         let json = File.ReadAllText(filePath')
         
         //get schema root
@@ -267,6 +268,7 @@ module ModelBuilder =
         //parse schemas into type definitions
         let typeDefinitions =
             schemas.Properties
+            |> Array.filter(fun (_, schema) -> schema.TryGetProperty("x-stripeEvent") |> Option.isNone)
             |> Array.map (fun (key, schema) ->
 
                 //parse individual schema
