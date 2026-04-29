@@ -60,6 +60,38 @@ To instantiate the `settings` you need to pass in your Stripe API key. Having lo
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more effiently.
 
+## Stripe API version
+
+FunStripeLite targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:
+
+```F#
+Config.DefaultStripeApiVersion  // e.g. "2023-08-16"
+```
+
+It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
+
+By default, FunStripeLite does **not** send a `Stripe-Version` request header, so Stripe uses the version pinned to your account. If you want every request to be explicitly tied to the library's target API version — useful when upgrading or for forward-compatibility testing — pass it through `StripeApiSettings`:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = "<your Stripe API key>",
+        stripeVersion = Config.DefaultStripeApiVersion
+    )
+```
+
+To test against a **newer** Stripe API version before upgrading the library, supply the target date directly:
+
+```F#
+let settings =
+    RestApi.StripeApiSettings.New(
+        apiKey = "<your Stripe API key>",
+        stripeVersion = "2024-06-20"   // override for forward-compatibility testing
+    )
+```
+
+See the [FunStripe CHANGELOG](https://github.com/simontreanor/FunStripe/blob/master/CHANGELOG.md) for the full FunStripeLite version → Stripe API version compatibility table.
+
 ## References
 
 [Stripe Documentation](https://stripe.com/docs)

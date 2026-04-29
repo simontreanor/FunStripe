@@ -3,7 +3,9 @@
 module internal Reflection =
     open System
     open System.Reflection
+#if !FABLE_COMPILER
     open System.Collections.Concurrent
+#endif
     open Microsoft.FSharp.Reflection    
 
     let isOption' (t: Type): bool =
@@ -42,10 +44,25 @@ module internal Reflection =
     let getMapKvpTupleType' (t: Type) =
         t.GetGenericArguments() |> FSharpType.MakeTupleType
 
+#if FABLE_COMPILER
+    // JavaScript is single-threaded, so a plain Dictionary is safe here.
+    // Note: Node.js Worker Threads run in separate JS contexts and do not share memory,
+    // so there is no risk of concurrent dictionary mutation across workers.
+    let cacheResult (theFunction: 'P -> 'R) =
+        let cache = System.Collections.Generic.Dictionary<'P, 'R>()
+        fun parameter ->
+            match cache.TryGetValue(parameter) with
+            | true, result -> result
+            | false, _ ->
+                let result = theFunction parameter
+                cache.[parameter] <- result
+                result
+#else
     let cacheResult (theFunction:'P -> 'R) =
         let theFunction = new Func<_, _>(theFunction)
         let cache = new ConcurrentDictionary<'P, 'R>()
         fun parameter -> cache.GetOrAdd(parameter, theFunction)
+#endif
 
     let isRecord: Type -> bool = FSharpType.IsRecord |> cacheResult
     let getRecordFields: Type -> PropertyInfo [] = FSharpType.GetRecordFields |> cacheResult

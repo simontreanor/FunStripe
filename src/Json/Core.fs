@@ -2,11 +2,15 @@
 
 module internal Core =
     open System
+#if !FABLE_COMPILER
     open System.Collections
     open System.Globalization
     open System.Linq
+#endif
     open System.Text.RegularExpressions
+#if !FABLE_COMPILER
     open FSharp.Data
+#endif
     open Reflection
 
     let pascalReplaceRegex = Regex(@"(^|_|\.)(\w)")
@@ -23,9 +27,11 @@ module internal Core =
         | 1 -> (attributes.[0]) :?> 'T |> Some
         | _ -> None
 
+#if !FABLE_COMPILER
     let createTransform (transformType: Type): ITypeTransform =
         let theConstructor = transformType.GetConstructors().[0]
         theConstructor.Invoke([||]) :?> ITypeTransform
+#endif
 
     let getJsonFieldProperty: PropertyInfo -> JsonField =
         findAttributeMember<JsonField> >> Option.defaultValue JsonField.Default |> cacheResult
@@ -36,7 +42,9 @@ module internal Core =
     let getJsonUnionCase: UnionCaseInfo -> JsonUnionCase =
         findAttributeCase<JsonUnionCase> >> Option.defaultValue JsonUnionCase.Default |> cacheResult
     
+#if !FABLE_COMPILER
     let getTransform: Type -> ITypeTransform = createTransform |> cacheResult
+#endif
 
     let getJsonFieldName (config: JsonConfig) (attribute: JsonField) (prop: PropertyInfo) =
         match attribute.Name with
@@ -48,6 +56,7 @@ module internal Core =
         | null -> config.JsonFieldNaming caseInfo.Name
         | value -> value
 
+#if !FABLE_COMPILER
     let transformToTargetType (t: Type) (value: obj) (transform: Type): (Type*obj) =
         match transform with
         | null -> (t, value)
@@ -531,10 +540,35 @@ module internal Core =
                         FSharpValue.MakeUnion (caseInfo, values)
                     else
                         let objectTypeName = fields |> Array.find(fun (s, _) -> s = "object") |> (fun (_, jv) -> jv.AsString() |> pascalCasify)
-                        let (t', ut) = getUnderlyingTypes t |> Seq.find(fun (t'', _) -> t''.Name = objectTypeName)
-                        let record = deserializeRecord path ut jvalue
-                        let uci = unionCases |> Array.find (fun c -> c.Name = t'.Name)
-                        FSharpValue.MakeUnion (uci, [| record |])
+                        let directMatch = getUnderlyingTypes t |> Seq.tryFind(fun (t'', _) -> t''.Name = objectTypeName)
+                        match directMatch with
+                        | Some (t', ut) ->
+                            let record = deserializeRecord path ut jvalue
+                            let uci = unionCases |> Array.find (fun c -> c.Name = t'.Name)
+                            FSharpValue.MakeUnion (uci, [| record |])
+                        | None ->
+                            // The object type may not be a direct case of this union - it may be wrapped in an intermediate union case.
+                            // For example, when Stripe expands a field like `default_source`, the returned Card/BankAccount/Source object
+                            // maps to PaymentSource.Card but the field type is CustomerDefaultSource'AnyOf.PaymentSource(PaymentSource.Card).
+                            let nestedMatch =
+                                getUnderlyingTypes t
+                                |> Seq.tryPick (fun (wrapperCaseType, wrapperUt) ->
+                                    if isUnion wrapperUt then
+                                        getUnderlyingTypes wrapperUt
+                                        |> Seq.tryFind (fun (innerCaseType, _) -> innerCaseType.Name = objectTypeName)
+                                        |> Option.map (fun (innerCaseType, innerUt) -> (wrapperCaseType, wrapperUt, innerCaseType, innerUt))
+                                    else None
+                                )
+                            match nestedMatch with
+                            | Some (wrapperCaseType, wrapperUt, innerCaseType, innerUt) ->
+                                let innerRecord = deserialize config path innerUt jvalue
+                                let innerUnionCases = FSharpType.GetUnionCases wrapperUt
+                                let innerUci = innerUnionCases |> Array.find (fun c -> c.Name = innerCaseType.Name)
+                                let innerValue = FSharpValue.MakeUnion (innerUci, [| innerRecord |])
+                                let uci = unionCases |> Array.find (fun c -> c.Name = wrapperCaseType.Name)
+                                FSharpValue.MakeUnion (uci, [| innerValue |])
+                            | None ->
+                                failDeserialization path <| sprintf "Failed to parse union, unable to find union case (direct or nested) for object type: %s." objectTypeName
                 | _ -> failDeserialization path "Failed to parse union from JSON that is not object."
 
         match t with
@@ -545,4 +579,5 @@ module internal Core =
         | t when isTuple t -> deserializeTuple path t jvalue
         | t when isUnion t -> deserializeUnion path t jvalue
         | _ -> failDeserialization path <| sprintf "Failed to serialize, must be one of following types: record, map, array, list, tuple, union. Type is: %s." t.Name
+#endif
     
