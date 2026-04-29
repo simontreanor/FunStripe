@@ -390,7 +390,7 @@ module Tests =
                     addressZip =  None,
                     addressZipCheck =  None,
                     brand = CardBrand.Visa,
-                    country = Some "US",
+                    country = Some IsoCountryCode.US,
                     customer = Some (CardCustomer'AnyOf.String "cus_IhzR2Msjq0lILS"),
                     cvcCheck = Some (CardCvcCheck.Pass),
                     dynamicLast4 =  None,
@@ -401,6 +401,7 @@ module Tests =
                     last4 = "4242",
                     metadata = Some (Map.empty),
                     name =  None,
+                    regulatedStatus = None,
                     tokenizationMethod =  None
                 )
             let response = """
