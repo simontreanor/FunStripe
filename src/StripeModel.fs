@@ -4,7 +4,7 @@ open FunStripe.Json
 open FunStripe.Util
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "0.11.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module StripeModel =
 
     ///A generic type representing a paginated list of Stripe objects, including pagination metadata.

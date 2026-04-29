@@ -553,6 +553,6 @@ module ModelBuilder =
     ;;
     open ModelBuilder;;
     let m = parseModel None;;
-    let s = serializeModel "0.11.1" m;;
+    let s = serializeModel "1.0.0" m;;
     System.IO.File.WriteAllText($"{__SOURCE_DIRECTORY__}/StripeModel.fs", s);;
 #endif
