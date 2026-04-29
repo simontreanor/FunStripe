@@ -2,11 +2,15 @@
 
 module internal Core =
     open System
+#if !FABLE_COMPILER
     open System.Collections
     open System.Globalization
     open System.Linq
+#endif
     open System.Text.RegularExpressions
+#if !FABLE_COMPILER
     open FSharp.Data
+#endif
     open Reflection
 
     let pascalReplaceRegex = Regex(@"(^|_|\.)(\w)")
@@ -23,9 +27,11 @@ module internal Core =
         | 1 -> (attributes.[0]) :?> 'T |> Some
         | _ -> None
 
+#if !FABLE_COMPILER
     let createTransform (transformType: Type): ITypeTransform =
         let theConstructor = transformType.GetConstructors().[0]
         theConstructor.Invoke([||]) :?> ITypeTransform
+#endif
 
     let getJsonFieldProperty: PropertyInfo -> JsonField =
         findAttributeMember<JsonField> >> Option.defaultValue JsonField.Default |> cacheResult
@@ -36,7 +42,9 @@ module internal Core =
     let getJsonUnionCase: UnionCaseInfo -> JsonUnionCase =
         findAttributeCase<JsonUnionCase> >> Option.defaultValue JsonUnionCase.Default |> cacheResult
     
+#if !FABLE_COMPILER
     let getTransform: Type -> ITypeTransform = createTransform |> cacheResult
+#endif
 
     let getJsonFieldName (config: JsonConfig) (attribute: JsonField) (prop: PropertyInfo) =
         match attribute.Name with
@@ -48,6 +56,7 @@ module internal Core =
         | null -> config.JsonFieldNaming caseInfo.Name
         | value -> value
 
+#if !FABLE_COMPILER
     let transformToTargetType (t: Type) (value: obj) (transform: Type): (Type*obj) =
         match transform with
         | null -> (t, value)
@@ -545,4 +554,5 @@ module internal Core =
         | t when isTuple t -> deserializeTuple path t jvalue
         | t when isUnion t -> deserializeUnion path t jvalue
         | _ -> failDeserialization path <| sprintf "Failed to serialize, must be one of following types: record, map, array, list, tuple, union. Type is: %s." t.Name
+#endif
     

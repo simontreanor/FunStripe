@@ -1,0 +1,42 @@
+name: Publish FunStripe.Core to NuGet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New FunStripe.Core version number'
+        required: true
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  VERSION: ${{ github.event.inputs.version }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_FILE: src/FunStripe.Core/FunStripe.Core.fsproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_FILE }} -c Release
+
+      - name: Pack
+        run: dotnet pack ${{ env.PROJECT_FILE }} -c Release -p:Version=$VERSION
+
+      - name: Publish NuGet package
+        run: dotnet nuget push src/FunStripe.Core/bin/Release/FunStripe.Core.$VERSION.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+
+      - name: Create Git tag
+        run: |
+          git tag "fsc-$VERSION"
+          git push origin "fsc-$VERSION"
