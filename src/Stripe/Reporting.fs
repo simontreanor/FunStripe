@@ -4,7 +4,6 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 open Stripe.File
-open Stripe.Financial
 
 /// The Report Type resource corresponds to a particular type of report, such as
 /// the "Activity summary" or "Itemized payouts" reports. These objects are
@@ -13,7 +12,7 @@ open Stripe.Financial
 /// for those Report Type IDs, along with required and optional parameters.
 /// Note that certain report types can only be run based on your live-mode data (not test-mode
 /// data), and will error when queried without a [live-mode API key](https://docs.stripe.com/keys#test-live-modes).
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type ReportingReportType =
     {
         /// Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.
@@ -40,6 +39,31 @@ module ReportingReportType =
 
 /// Occurs whenever a `ReportType` is updated (typically to indicate that a new day's data has come available).
 type ReportingReportTypeUpdated = { Object: ReportingReportType }
+
+[<Struct>]
+type FinancialReportingFinanceReportRunRunParametersTimezone =
+    | IntervalStart
+    | IntervalEnd
+
+type FinancialReportingFinanceReportRunRunParameters =
+    {
+        /// The set of output columns requested for inclusion in the report run.
+        Columns: string list option
+        /// Connected account ID by which to filter the report run.
+        ConnectedAccount: string option
+        /// Currency of objects to be included in the report run.
+        Currency: IsoTypes.IsoCurrencyCode option
+        /// Ending timestamp of data to be included in the report run. Can be any UTC timestamp between 1 second after the user specified `interval_start` and 1 second before this report's last `data_available_end` value.
+        IntervalEnd: DateTime option
+        /// Starting timestamp of data to be included in the report run. Can be any UTC timestamp between 1 second after this report's `data_available_start` and 1 second before the user specified `interval_end` value.
+        IntervalStart: DateTime option
+        /// Payout ID by which to filter the report run.
+        Payout: string option
+        /// Category of balance transactions to be included in the report run.
+        ReportingCategory: string option
+        /// Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
+        Timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
+    }
 
 /// The Report Run object represents an instance of a report type generated with
 /// specific run parameters. Once the object is created, Stripe begins processing the report.

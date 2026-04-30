@@ -3,10 +3,10 @@ namespace Stripe.Payout
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Payment
+open Stripe.PaymentMethod
 
 /// Occurs whenever a payout is updated.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type PayoutUpdated = { Object: Payout }
 
 /// Occurs whenever balance transactions paid out in an automatic payout can be queried.

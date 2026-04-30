@@ -6,7 +6,7 @@ open Stripe.Deleted
 open Stripe.Invoiceitem
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module Invoiceitems =
 
     type ListOptions =

@@ -4,65 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
-type PortalFlowsAfterCompletionHostedConfirmation =
-    {
-        /// A custom message to display to the customer after the flow is completed.
-        CustomMessage: string option
-    }
-
-type PortalFlowsAfterCompletionRedirect =
-    {
-        /// The URL the customer will be redirected to after the flow is completed.
-        ReturnUrl: string
-    }
-
-[<Struct>]
-type PortalFlowsFlowAfterCompletionType =
-    | HostedConfirmation
-    | PortalHomepage
-    | Redirect
-
-type PortalFlowsFlowAfterCompletion =
-    {
-        /// Configuration when `after_completion.type=hosted_confirmation`.
-        HostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option
-        /// Configuration when `after_completion.type=redirect`.
-        Redirect: PortalFlowsAfterCompletionRedirect option
-        /// The specified type of behavior after the flow is completed.
-        Type: PortalFlowsFlowAfterCompletionType
-    }
-
-type PortalFlowsCouponOffer =
-    {
-        /// The ID of the coupon to be offered.
-        Coupon: string
-    }
-
-type PortalFlowsRetention =
-    {
-        /// Configuration when `retention.type=coupon_offer`.
-        CouponOffer: PortalFlowsCouponOffer option
-    }
-
-module PortalFlowsRetention =
-    ///Type of retention strategy that will be used.
-    let ``type`` = "coupon_offer"
-
-type PortalFlowsFlowSubscriptionCancel =
-    {
-        /// Specify a retention strategy to be used in the cancellation flow.
-        Retention: PortalFlowsRetention option
-        /// The ID of the subscription to be canceled.
-        Subscription: string
-    }
-
-type PortalFlowsFlowSubscriptionUpdate =
-    {
-        /// The ID of the subscription to be updated.
-        Subscription: string
-    }
-
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type PortalFlowsSubscriptionUpdateConfirmDiscount =
     {
         /// The ID of the coupon to apply to this subscription update.
@@ -91,103 +33,62 @@ type PortalFlowsFlowSubscriptionUpdateConfirm =
         Subscription: string
     }
 
-[<Struct>]
-type PortalFlowsFlowType =
-    | PaymentMethodUpdate
-    | SubscriptionCancel
-    | SubscriptionUpdate
-    | SubscriptionUpdateConfirm
-
-type PortalFlowsFlow =
+type PortalFlowsFlowSubscriptionUpdate =
     {
-        AfterCompletion: PortalFlowsFlowAfterCompletion
-        /// Configuration when `flow.type=subscription_cancel`.
-        SubscriptionCancel: PortalFlowsFlowSubscriptionCancel option
-        /// Configuration when `flow.type=subscription_update`.
-        SubscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option
-        /// Configuration when `flow.type=subscription_update_confirm`.
-        SubscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option
-        /// Type of flow that the customer will go through.
-        Type: PortalFlowsFlowType
+        /// The ID of the subscription to be updated.
+        Subscription: string
     }
 
-type PortalLoginPage =
+type PortalFlowsCouponOffer =
     {
-        /// If `true`, a shareable `url` will be generated that will take your customers to a hosted login page for the customer portal.
-        /// If `false`, the previously generated `url`, if any, will be deactivated.
-        Enabled: bool
-        /// A shareable URL to the hosted portal login page. Your customers will be able to log in with their [email](https://docs.stripe.com/api/customers/object#customer_object-email) and receive a link to their customer portal.
-        Url: string option
+        /// The ID of the coupon to be offered.
+        Coupon: string
     }
 
-type PortalCustomerUpdateAllowedUpdates =
-    | Address
-    | Email
-    | Name
-    | Phone
-    | Shipping
-    | TaxId
-
-type PortalCustomerUpdate =
+type PortalFlowsRetention =
     {
-        /// The types of customer updates that are supported. When empty, customers are not updateable.
-        AllowedUpdates: PortalCustomerUpdateAllowedUpdates list
-        /// Whether the feature is enabled.
-        Enabled: bool
+        /// Configuration when `retention.type=coupon_offer`.
+        CouponOffer: PortalFlowsCouponOffer option
     }
 
-type PortalInvoiceList =
+module PortalFlowsRetention =
+    ///Type of retention strategy that will be used.
+    let ``type`` = "coupon_offer"
+
+type PortalFlowsFlowSubscriptionCancel =
     {
-        /// Whether the feature is enabled.
-        Enabled: bool
+        /// Specify a retention strategy to be used in the cancellation flow.
+        Retention: PortalFlowsRetention option
+        /// The ID of the subscription to be canceled.
+        Subscription: string
     }
 
-type PortalPaymentMethodUpdate =
+type PortalFlowsAfterCompletionHostedConfirmation =
     {
-        /// Whether the feature is enabled.
-        Enabled: bool
-        /// The [Payment Method Configuration](/api/payment_method_configurations) to use for this portal session. When specified, customers will be able to update their payment method to one of the options specified by the payment method configuration. If not set, the default payment method configuration is used.
-        PaymentMethodConfiguration: string option
+        /// A custom message to display to the customer after the flow is completed.
+        CustomMessage: string option
+    }
+
+type PortalFlowsAfterCompletionRedirect =
+    {
+        /// The URL the customer will be redirected to after the flow is completed.
+        ReturnUrl: string
     }
 
 [<Struct>]
-type PortalSubscriptionCancelMode =
-    | AtPeriodEnd
-    | Immediately
+type PortalFlowsFlowAfterCompletionType =
+    | HostedConfirmation
+    | PortalHomepage
+    | Redirect
 
-[<Struct>]
-type PortalSubscriptionCancelProrationBehavior =
-    | AlwaysInvoice
-    | CreateProrations
-    | [<JsonPropertyName("none")>] None'
-
-type PortalSubscriptionCancellationReasonOptions =
-    | CustomerService
-    | LowQuality
-    | MissingFeatures
-    | Other
-    | SwitchedService
-    | TooComplex
-    | TooExpensive
-    | Unused
-
-type PortalSubscriptionCancellationReason =
+type PortalFlowsFlowAfterCompletion =
     {
-        /// Whether the feature is enabled.
-        Enabled: bool
-        /// Which cancellation reasons will be given as options to the customer.
-        Options: PortalSubscriptionCancellationReasonOptions list
-    }
-
-type PortalSubscriptionCancel =
-    {
-        CancellationReason: PortalSubscriptionCancellationReason
-        /// Whether the feature is enabled.
-        Enabled: bool
-        /// Whether to cancel subscriptions immediately or at the end of the billing period.
-        Mode: PortalSubscriptionCancelMode
-        /// Whether to create prorations when canceling subscriptions. Possible values are `none` and `create_prorations`.
-        ProrationBehavior: PortalSubscriptionCancelProrationBehavior
+        /// Configuration when `after_completion.type=hosted_confirmation`.
+        HostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option
+        /// Configuration when `after_completion.type=redirect`.
+        Redirect: PortalFlowsAfterCompletionRedirect option
+        /// The specified type of behavior after the flow is completed.
+        Type: PortalFlowsFlowAfterCompletionType
     }
 
 [<Struct>]
@@ -265,20 +166,73 @@ type PortalSubscriptionUpdate =
         TrialUpdateBehavior: PortalSubscriptionUpdateTrialUpdateBehavior
     }
 
-type PortalFeatures =
-    { CustomerUpdate: PortalCustomerUpdate
-      InvoiceHistory: PortalInvoiceList
-      PaymentMethodUpdate: PortalPaymentMethodUpdate
-      SubscriptionCancel: PortalSubscriptionCancel
-      SubscriptionUpdate: PortalSubscriptionUpdate }
+[<Struct>]
+type PortalSubscriptionCancelMode =
+    | AtPeriodEnd
+    | Immediately
 
-type PortalBusinessProfile =
+[<Struct>]
+type PortalSubscriptionCancelProrationBehavior =
+    | AlwaysInvoice
+    | CreateProrations
+    | [<JsonPropertyName("none")>] None'
+
+type PortalSubscriptionCancellationReasonOptions =
+    | CustomerService
+    | LowQuality
+    | MissingFeatures
+    | Other
+    | SwitchedService
+    | TooComplex
+    | TooExpensive
+    | Unused
+
+type PortalSubscriptionCancellationReason =
     {
-        /// The messaging shown to customers in the portal.
-        Headline: string option
-        /// A link to the business’s publicly available privacy policy.
-        PrivacyPolicyUrl: string option
-        /// A link to the business’s publicly available terms of service.
-        TermsOfServiceUrl: string option
+        /// Whether the feature is enabled.
+        Enabled: bool
+        /// Which cancellation reasons will be given as options to the customer.
+        Options: PortalSubscriptionCancellationReasonOptions list
+    }
+
+type PortalSubscriptionCancel =
+    {
+        CancellationReason: PortalSubscriptionCancellationReason
+        /// Whether the feature is enabled.
+        Enabled: bool
+        /// Whether to cancel subscriptions immediately or at the end of the billing period.
+        Mode: PortalSubscriptionCancelMode
+        /// Whether to create prorations when canceling subscriptions. Possible values are `none` and `create_prorations`.
+        ProrationBehavior: PortalSubscriptionCancelProrationBehavior
+    }
+
+type PortalPaymentMethodUpdate =
+    {
+        /// Whether the feature is enabled.
+        Enabled: bool
+        /// The [Payment Method Configuration](/api/payment_method_configurations) to use for this portal session. When specified, customers will be able to update their payment method to one of the options specified by the payment method configuration. If not set, the default payment method configuration is used.
+        PaymentMethodConfiguration: string option
+    }
+
+type PortalInvoiceList =
+    {
+        /// Whether the feature is enabled.
+        Enabled: bool
+    }
+
+type PortalCustomerUpdateAllowedUpdates =
+    | Address
+    | Email
+    | Name
+    | Phone
+    | Shipping
+    | TaxId
+
+type PortalCustomerUpdate =
+    {
+        /// The types of customer updates that are supported. When empty, customers are not updateable.
+        AllowedUpdates: PortalCustomerUpdateAllowedUpdates list
+        /// Whether the feature is enabled.
+        Enabled: bool
     }
 

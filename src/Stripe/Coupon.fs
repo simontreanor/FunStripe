@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type CouponCurrencyOption =
     {
         /// Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.

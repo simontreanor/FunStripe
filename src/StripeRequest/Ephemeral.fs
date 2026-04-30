@@ -2,10 +2,10 @@ namespace StripeRequest.Ephemeral
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Ephemeral
+open Stripe.EphemeralKey
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module EphemeralKeys =
 
     type CreateOptions =

@@ -6,7 +6,7 @@ open Stripe.Coupon
 open Stripe.Deleted
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module Coupons =
 
     type ListOptions =

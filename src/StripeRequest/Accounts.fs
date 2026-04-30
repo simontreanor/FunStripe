@@ -4,11 +4,11 @@ open FunStripe
 open System.Text.Json.Serialization
 open Stripe.Capability
 open Stripe.Deleted
-open Stripe.Login
-open Stripe.Payment
+open Stripe.LoginLink
+open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module Accounts =
 
     type ListOptions =

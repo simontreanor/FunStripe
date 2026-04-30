@@ -3,9 +3,9 @@ namespace Stripe.Capability
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Payment
+open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type CapabilityAccount'AnyOf =
     | String of string
     | Account of Account

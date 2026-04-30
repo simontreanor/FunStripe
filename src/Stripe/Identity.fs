@@ -4,9 +4,239 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 open Stripe.Gelato
-open Stripe.Verification
+open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type GelatoProvidedDetails =
+    {
+        /// Email of user being verified
+        Email: string option
+        /// Phone number of user being verified
+        Phone: string option
+    }
+
+type GelatoRelatedPerson =
+    {
+        /// Token referencing the associated Account of the related Person resource.
+        Account: string
+        /// Token referencing the related Person resource.
+        Person: string
+    }
+
+type GelatoSessionLastErrorCode =
+    | Abandoned
+    | ConsentDeclined
+    | CountryNotSupported
+    | DeviceNotSupported
+    | DocumentExpired
+    | DocumentTypeNotSupported
+    | DocumentUnverifiedOther
+    | EmailUnverifiedOther
+    | EmailVerificationDeclined
+    | IdNumberInsufficientDocumentData
+    | IdNumberMismatch
+    | IdNumberUnverifiedOther
+    | PhoneUnverifiedOther
+    | PhoneVerificationDeclined
+    | SelfieDocumentMissingPhoto
+    | SelfieFaceMismatch
+    | SelfieManipulated
+    | SelfieUnverifiedOther
+    | UnderSupportedAge
+
+/// Shows last VerificationSession error
+type GelatoSessionLastError =
+    {
+        /// A short machine-readable string giving the reason for the verification or user-session failure.
+        Code: GelatoSessionLastErrorCode option
+        /// A message that explains the reason for verification or user-session failure.
+        Reason: string option
+    }
+
+type GelatoVerificationSessionOptions =
+    { Document: GelatoSessionDocumentOptions option
+      Email: GelatoSessionEmailOptions option
+      IdNumber: GelatoSessionIdNumberOptions option
+      Matching: GelatoSessionMatchingOptions option
+      Phone: GelatoSessionPhoneOptions option }
+
+[<Struct>]
+type GelatoVerifiedOutputsIdNumberType =
+    | BrCpf
+    | SgNric
+    | UsSsn
+
+[<Struct>]
+type GelatoVerifiedOutputsSex =
+    | Redacted
+    | Female
+    | Male
+    | Unknown
+
+type GelatoVerifiedOutputs =
+    {
+        /// The user's verified address.
+        Address: Address option
+        /// The user’s verified date of birth.
+        Dob: GelatoDataVerifiedOutputsDate option
+        /// The user's verified email address
+        Email: string option
+        /// The user's verified first name.
+        FirstName: string option
+        /// The user's verified id number.
+        IdNumber: string option
+        /// The user's verified id number type.
+        IdNumberType: GelatoVerifiedOutputsIdNumberType option
+        /// The user's verified last name.
+        LastName: string option
+        /// The user's verified phone number
+        Phone: string option
+        /// The user's verified sex.
+        Sex: GelatoVerifiedOutputsSex option
+        /// The user's verified place of birth as it appears in the document.
+        UnparsedPlaceOfBirth: string option
+        /// The user's verified sex as it appears in the document.
+        UnparsedSex: string option
+    }
+
+[<Struct>]
+type GelatoDocumentReportSex =
+    | Redacted
+    | Female
+    | Male
+    | Unknown
+
+[<Struct>]
+type GelatoDocumentReportStatus =
+    | Unverified
+    | Verified
+
+[<Struct>]
+type GelatoDocumentReportType =
+    | DrivingLicense
+    | IdCard
+    | Passport
+
+/// Result from a document check
+type GelatoDocumentReport =
+    {
+        /// Address as it appears in the document.
+        Address: Address option
+        /// Date of birth as it appears in the document.
+        Dob: GelatoDataDocumentReportDateOfBirth option
+        /// Details on the verification error. Present when status is `unverified`.
+        Error: GelatoDocumentReportError option
+        /// Expiration date of the document.
+        ExpirationDate: GelatoDataDocumentReportExpirationDate option
+        /// Array of [File](https://docs.stripe.com/api/files) ids containing images for this document.
+        Files: string list option
+        /// First name as it appears in the document.
+        FirstName: string option
+        /// Issued date of the document.
+        IssuedDate: GelatoDataDocumentReportIssuedDate option
+        /// Issuing country of the document.
+        IssuingCountry: IsoTypes.IsoCountryCode option
+        /// Last name as it appears in the document.
+        LastName: string option
+        /// Document ID number.
+        Number: string option
+        /// Sex of the person in the document.
+        Sex: GelatoDocumentReportSex option
+        /// Status of this `document` check.
+        Status: GelatoDocumentReportStatus
+        /// Type of the document.
+        Type: GelatoDocumentReportType option
+        /// Place of birth as it appears in the document.
+        UnparsedPlaceOfBirth: string option
+        /// Sex as it appears in the document.
+        UnparsedSex: string option
+    }
+
+[<Struct>]
+type GelatoEmailReportStatus =
+    | Unverified
+    | Verified
+
+/// Result from a email check
+type GelatoEmailReport =
+    {
+        /// Email to be verified.
+        Email: string option
+        /// Details on the verification error. Present when status is `unverified`.
+        Error: GelatoEmailReportError option
+        /// Status of this `email` check.
+        Status: GelatoEmailReportStatus
+    }
+
+[<Struct>]
+type GelatoIdNumberReportIdNumberType =
+    | BrCpf
+    | SgNric
+    | UsSsn
+
+[<Struct>]
+type GelatoIdNumberReportStatus =
+    | Unverified
+    | Verified
+
+/// Result from an id_number check
+type GelatoIdNumberReport =
+    {
+        /// Date of birth.
+        Dob: GelatoDataIdNumberReportDate option
+        /// Details on the verification error. Present when status is `unverified`.
+        Error: GelatoIdNumberReportError option
+        /// First name.
+        FirstName: string option
+        /// ID number. When `id_number_type` is `us_ssn`, only the last 4 digits are present.
+        IdNumber: string option
+        /// Type of ID number.
+        IdNumberType: GelatoIdNumberReportIdNumberType option
+        /// Last name.
+        LastName: string option
+        /// Status of this `id_number` check.
+        Status: GelatoIdNumberReportStatus
+    }
+
+[<Struct>]
+type GelatoPhoneReportStatus =
+    | Unverified
+    | Verified
+
+/// Result from a phone check
+type GelatoPhoneReport =
+    {
+        /// Details on the verification error. Present when status is `unverified`.
+        Error: GelatoPhoneReportError option
+        /// Phone to be verified.
+        Phone: string option
+        /// Status of this `phone` check.
+        Status: GelatoPhoneReportStatus
+    }
+
+[<Struct>]
+type GelatoSelfieReportStatus =
+    | Unverified
+    | Verified
+
+/// Result from a selfie check
+type GelatoSelfieReport =
+    {
+        /// ID of the [File](https://docs.stripe.com/api/files) holding the image of the identity document used in this check.
+        Document: string option
+        /// Details on the verification error. Present when status is `unverified`.
+        Error: GelatoSelfieReportError option
+        /// ID of the [File](https://docs.stripe.com/api/files) holding the image of the selfie used in this check.
+        Selfie: string option
+        /// Status of this `selfie` check.
+        Status: GelatoSelfieReportStatus
+    }
+
+type GelatoVerificationReportOptions =
+    { Document: GelatoReportDocumentOptions option
+      IdNumber: GelatoReportIdNumberOptions option }
+
+[<Struct>]
 type IdentityVerificationReportType =
     | Document
     | IdNumber
@@ -65,6 +295,17 @@ type IdentityVerificationSessionType =
     | Document
     | IdNumber
     | VerificationFlow
+
+[<Struct>]
+type VerificationSessionRedactionStatus =
+    | Processing
+    | Redacted
+
+type VerificationSessionRedaction =
+    {
+        /// Indicates whether this object and its related objects have been redacted or not.
+        Status: VerificationSessionRedactionStatus
+    }
 
 /// A VerificationSession guides you through the process of collecting and verifying the identities
 /// of your users. It contains details about the type of verification, such as what [verification

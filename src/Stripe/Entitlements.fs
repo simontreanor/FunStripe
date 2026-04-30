@@ -6,7 +6,7 @@ open System
 
 /// A feature represents a monetizable ability or functionality in your system.
 /// Features can be assigned to products, and when those products are purchased, Stripe will create an entitlement to the feature for the purchasing customer.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type EntitlementsFeature =
     {
         /// Inactive features cannot be attached to new products and will not be returned from the features list endpoint.

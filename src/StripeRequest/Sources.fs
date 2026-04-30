@@ -2,10 +2,11 @@ namespace StripeRequest.Sources
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Source
+open Stripe.PaymentMethod
+open Stripe.SourceTransaction
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module Sources =
 
     type Create'Flow =

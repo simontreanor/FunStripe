@@ -3,20 +3,9 @@ namespace Stripe.Legal
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Address
 open Stripe.File
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
-type LegalEntityPersonVerificationDetailsCode =
-    | DocumentAddressMismatch
-    | DocumentDobMismatch
-    | DocumentDuplicateType
-    | DocumentIdNumberMismatch
-    | DocumentNameMismatch
-    | DocumentNationalityMismatch
-    | FailedKeyedIdentity
-    | FailedOther
-
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type LegalEntityPersonVerificationDocumentBack'AnyOf =
     | String of string
     | File of File
@@ -57,64 +46,45 @@ type LegalEntityPersonVerificationDocument =
         Front: LegalEntityPersonVerificationDocumentFront'AnyOf option
     }
 
-[<Struct>]
-type LegalEntityPersonVerificationStatus =
-    | Unverified
-    | Pending
-    | Verified
-
-type LegalEntityPersonVerification =
+type LegalEntityUboDeclaration =
     {
-        /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
-        AdditionalDocument: LegalEntityPersonVerificationDocument option
-        /// A user-displayable string describing the verification state for the person. For example, this may say "Provided identity information could not be verified".
-        Details: string option
-        /// One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person.
-        DetailsCode: LegalEntityPersonVerificationDetailsCode option
-        Document: LegalEntityPersonVerificationDocument option
-        /// The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`. Please refer [guide](https://docs.stripe.com/connect/handling-api-verification) to handle verification updates.
-        Status: LegalEntityPersonVerificationStatus
+        /// The Unix timestamp marking when the beneficial owner attestation was made.
+        Date: DateTime option
+        /// The IP address from which the beneficial owner attestation was made.
+        Ip: string option
+        /// The user-agent string from the browser where the beneficial owner attestation was made.
+        UserAgent: string option
     }
 
-type LegalEntityDob =
+type LegalEntityRepresentativeDeclaration =
     {
-        /// The day of birth, between 1 and 31.
+        /// The Unix timestamp marking when the representative declaration attestation was made.
+        Date: DateTime option
+        /// The IP address from which the representative declaration attestation was made.
+        Ip: string option
+        /// The user-agent string from the browser where the representative declaration attestation was made.
+        UserAgent: string option
+    }
+
+type LegalEntityRegistrationDate =
+    {
+        /// The day of registration, between 1 and 31.
         Day: int option
-        /// The month of birth, between 1 and 12.
+        /// The month of registration, between 1 and 12.
         Month: int option
-        /// The four-digit year of birth.
+        /// The four-digit year of registration.
         Year: int option
     }
 
-[<Struct>]
-type LegalEntityCompanyOwnershipExemptionReason =
-    | QualifiedEntityExceedsOwnershipThreshold
-    | QualifiesAsFinancialInstitution
-
-type LegalEntityCompanyStructure =
-    | FreeZoneEstablishment
-    | FreeZoneLlc
-    | GovernmentInstrumentality
-    | GovernmentalUnit
-    | IncorporatedNonProfit
-    | IncorporatedPartnership
-    | LimitedLiabilityPartnership
-    | Llc
-    | MultiMemberLlc
-    | PrivateCompany
-    | PrivateCorporation
-    | PrivatePartnership
-    | PublicCompany
-    | PublicCorporation
-    | PublicPartnership
-    | RegisteredCharity
-    | SingleMemberLlc
-    | SoleEstablishment
-    | SoleProprietorship
-    | TaxExemptGovernmentInstrumentality
-    | UnincorporatedAssociation
-    | UnincorporatedNonProfit
-    | UnincorporatedPartnership
+type LegalEntityDirectorshipDeclaration =
+    {
+        /// The Unix timestamp marking when the directorship declaration attestation was made.
+        Date: DateTime option
+        /// The IP address from which the directorship declaration attestation was made.
+        Ip: string option
+        /// The user-agent string from the browser where the directorship declaration attestation was made.
+        UserAgent: string option
+    }
 
 type LegalEntityCompanyVerificationDocumentBack'AnyOf =
     | String of string
@@ -154,110 +124,4 @@ type LegalEntityCompanyVerificationDocument =
 
 type LegalEntityCompanyVerification =
     { Document: LegalEntityCompanyVerificationDocument }
-
-type LegalEntityDirectorshipDeclaration =
-    {
-        /// The Unix timestamp marking when the directorship declaration attestation was made.
-        Date: DateTime option
-        /// The IP address from which the directorship declaration attestation was made.
-        Ip: string option
-        /// The user-agent string from the browser where the directorship declaration attestation was made.
-        UserAgent: string option
-    }
-
-type LegalEntityJapanAddress =
-    {
-        /// City/Ward.
-        City: string option
-        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: IsoTypes.IsoCountryCode option
-        /// Block/Building number.
-        [<JsonPropertyName("line1")>]
-        Line1: string option
-        /// Building details.
-        [<JsonPropertyName("line2")>]
-        Line2: string option
-        /// ZIP or postal code.
-        PostalCode: string option
-        /// Prefecture.
-        State: string option
-        /// Town/cho-me.
-        Town: string option
-    }
-
-type LegalEntityRegistrationDate =
-    {
-        /// The day of registration, between 1 and 31.
-        Day: int option
-        /// The month of registration, between 1 and 12.
-        Month: int option
-        /// The four-digit year of registration.
-        Year: int option
-    }
-
-type LegalEntityRepresentativeDeclaration =
-    {
-        /// The Unix timestamp marking when the representative declaration attestation was made.
-        Date: DateTime option
-        /// The IP address from which the representative declaration attestation was made.
-        Ip: string option
-        /// The user-agent string from the browser where the representative declaration attestation was made.
-        UserAgent: string option
-    }
-
-type LegalEntityUboDeclaration =
-    {
-        /// The Unix timestamp marking when the beneficial owner attestation was made.
-        Date: DateTime option
-        /// The IP address from which the beneficial owner attestation was made.
-        Ip: string option
-        /// The user-agent string from the browser where the beneficial owner attestation was made.
-        UserAgent: string option
-    }
-
-type LegalEntityCompany =
-    {
-        Address: Address option
-        /// The Kana variation of the company's primary address (Japan only).
-        AddressKana: LegalEntityJapanAddress option
-        /// The Kanji variation of the company's primary address (Japan only).
-        AddressKanji: LegalEntityJapanAddress option
-        /// Whether the company's directors have been provided. This Boolean will be `true` if you've manually indicated that all directors are provided via [the `directors_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-directors_provided).
-        DirectorsProvided: bool option
-        /// This hash is used to attest that the director information provided to Stripe is both current and correct.
-        DirectorshipDeclaration: LegalEntityDirectorshipDeclaration option
-        /// Whether the company's executives have been provided. This Boolean will be `true` if you've manually indicated that all executives are provided via [the `executives_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-executives_provided), or if Stripe determined that sufficient executives were provided.
-        ExecutivesProvided: bool option
-        /// The export license ID number of the company, also referred as Import Export Code (India only).
-        ExportLicenseId: string option
-        /// The purpose code to use for export transactions (India only).
-        ExportPurposeCode: string option
-        /// The company's legal name. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        Name: string option
-        /// The Kana variation of the company's legal name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        NameKana: string option
-        /// The Kanji variation of the company's legal name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        NameKanji: string option
-        /// Whether the company's owners have been provided. This Boolean will be `true` if you've manually indicated that all owners are provided via [the `owners_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-owners_provided), or if Stripe determined that sufficient owners were provided. Stripe determines ownership requirements using both the number of owners provided and their total percent ownership (calculated by adding the `percent_ownership` of each owner together).
-        OwnersProvided: bool option
-        /// This hash is used to attest that the beneficial owner information provided to Stripe is both current and correct.
-        OwnershipDeclaration: LegalEntityUboDeclaration option
-        /// This value is used to determine if a business is exempt from providing ultimate beneficial owners. See [this support article](https://support.stripe.com/questions/exemption-from-providing-ownership-details) and [changelog](https://docs.stripe.com/changelog/acacia/2025-01-27/ownership-exemption-reason-accounts-api) for more details.
-        OwnershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason option
-        /// The company's phone number (used for verification).
-        Phone: string option
-        RegistrationDate: LegalEntityRegistrationDate option
-        /// This hash is used to attest that the representative is authorized to act as the representative of their legal entity.
-        RepresentativeDeclaration: LegalEntityRepresentativeDeclaration option
-        /// The category identifying the legal structure of the company or legal entity. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`. See [Business structure](https://docs.stripe.com/connect/identity-verification#business-structure) for more details.
-        Structure: LegalEntityCompanyStructure option
-        /// Whether the company's business ID number was provided.
-        TaxIdProvided: bool option
-        /// The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
-        TaxIdRegistrar: string option
-        /// Whether the company's business VAT number was provided.
-        VatIdProvided: bool option
-        /// Information on the verification state of the company.
-        Verification: LegalEntityCompanyVerification option
-    }
 

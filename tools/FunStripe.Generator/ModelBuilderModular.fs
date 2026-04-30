@@ -17,20 +17,30 @@ module ModelBuilderModular =
     open ModelParsing
     open ModelBuilderAST
 
-    // --- module assignment (schema-level SCC with majority-vote) ---
+    // --- module assignment (canonical-domain prefix-match + schema-level SCC + majority-vote) ---
 
-    /// Normalize a schema name to its semantic module name using the first-token heuristic.
-    /// E.g. "account_branding_settings" -> "account", "checkout.session" -> "checkout"
-    let normalizedModuleForName (schemaName: string) =
-        schemaName.Split([|'.'; '_'|], StringSplitOptions.RemoveEmptyEntries)
-        |> Array.map (fun x -> x.Trim().ToLowerInvariant())
-        |> Array.tryHead
-        |> Option.defaultValue "misc"
+    /// Normalize a schema name by replacing '.' with '_' and lowercasing.
+    let private normalizeSchemaKey (schemaName: string) =
+        schemaName.ToLowerInvariant().Replace('.', '_')
 
-    /// For a type SCC, compute the module name by majority-vote of first-tokens.
-    let normalizedModuleForGroup (members: string list) =
+    /// Normalize a schema name to its semantic module name by longest-prefix match
+    /// against a list of canonical Stripe domains (sorted longest-first).
+    /// Falls back to the first underscore-separated token if no canonical match is found.
+    /// E.g. with canonical ["financial_connections"; "customer"], "financial_connections.account" -> "financial_connections",
+    /// "customer_balance_transaction" -> "customer_balance_transaction" (if it is itself canonical) or "customer".
+    let normalizedModuleForName (canonicalDomains: string list) (schemaName: string) =
+        let normalized = normalizeSchemaKey schemaName
+        canonicalDomains
+        |> List.tryFind (fun d -> normalized = d || normalized.StartsWith(d + "_"))
+        |> Option.defaultWith (fun () ->
+            normalized.Split([|'_'|], StringSplitOptions.RemoveEmptyEntries)
+            |> Array.tryHead
+            |> Option.defaultValue "misc")
+
+    /// For a type SCC, compute the module name by majority-vote of canonical-domain matches.
+    let normalizedModuleForGroup (canonicalDomains: string list) (members: string list) =
         members
-        |> List.map normalizedModuleForName
+        |> List.map (normalizedModuleForName canonicalDomains)
         |> List.countBy id
         |> List.sortBy (fun (name, count) -> (-count, name))
         |> List.head
@@ -73,6 +83,45 @@ module ModelBuilderModular =
         // Sorted by length descending for prefix matching
         let sortedPascalNames =
             pascalToSchema |> Map.keys |> Seq.toArray |> Array.sortByDescending String.length
+
+        // --- Build canonical Stripe domain list ---
+        // A canonical domain is either:
+        //   1. A dot-prefix from any schema name (e.g. "financial_connections" from "financial_connections.account")
+        //   2. A non-dot top-level resource: a schema with an `object` property whose enum value matches its own name
+        //      (e.g. "customer", "payment_intent", "subscription_schedule")
+        // Sorted longest-first so prefix matching prefers more specific domains.
+        let canonicalDomains =
+            let dotPrefixes =
+                schemas.Properties
+                |> Array.choose (fun (name, _) ->
+                    if name.Contains '.' then Some (name.Split('.').[0]) else None)
+                |> Set.ofArray
+            let topLevelNames =
+                schemas.Properties
+                |> Array.choose (fun (name, schema) ->
+                    if name.Contains '.' then None
+                    else
+                        match schema.TryGetProperty "properties" with
+                        | Some (JsonValue.Record _ as props) ->
+                            match props.TryGetProperty "object" with
+                            | Some (JsonValue.Record _ as objProp) ->
+                                match objProp.TryGetProperty "enum" with
+                                | Some (JsonValue.Array [| JsonValue.String s |]) when s = name -> Some name
+                                | _ -> None
+                            | _ -> None
+                        | _ -> None)
+                |> Set.ofArray
+            // Exclude "deleted_*" pseudo top-level resources (they're not real domains)
+            let combined =
+                Set.union dotPrefixes topLevelNames
+                |> Set.filter (fun d -> not (d.StartsWith "deleted_"))
+            combined
+            |> Set.toList
+            |> List.sortByDescending String.length
+
+        printfn "Canonical Stripe domains: %d (e.g. %s, ...)"
+            canonicalDomains.Length
+            (canonicalDomains |> List.truncate 5 |> String.concat ", ")
 
         // Build schema dependency graph from raw $ref links
         let dependencyGraph =
@@ -120,15 +169,70 @@ module ModelBuilderModular =
 
         let sccList = sSccs |> Seq.toList
 
-        // Assign each SCC to a module by majority vote
-        let sccToModule =
-            sccList |> List.mapi (fun i members -> i, normalizedModuleForGroup members) |> Map.ofList
+        // Assign each SCC to a module by majority vote against canonical domains
+        let initialSccToModule =
+            sccList |> List.mapi (fun i members -> i, normalizedModuleForGroup canonicalDomains members) |> Map.ofList
         let schemaToSccId =
             sccList
             |> List.mapi (fun i members -> members |> List.map (fun m -> m, i))
             |> List.collect id |> Map.ofList
+        let initialSchemaToModule =
+            schemaToSccId |> Map.map (fun _ sccId -> initialSccToModule.[sccId])
+
+        // --- Orphan reassignment ---
+        // Schemas whose initial module is NOT a canonical domain are "orphans"
+        // (e.g. bank_connections_resource_* -> "bank", which is not canonical).
+        // Reassign each orphan SCC to the canonical module that references it most frequently.
+        let canonicalSet = canonicalDomains |> Set.ofList
+        let isCanonical m = canonicalSet.Contains m
+
+        let orphanSccs =
+            initialSccToModule
+            |> Map.toList
+            |> List.filter (fun (_, m) -> not (isCanonical m))
+            |> List.map fst
+
+        let sccToModule =
+            let mutable mapping = initialSccToModule
+            for orphanSccId in orphanSccs do
+                let orphanSchemas = sccList.[orphanSccId] |> Set.ofList
+                // Count incoming references from each canonical module
+                let canonicalRefCounts =
+                    dependencyGraph
+                    |> Map.toSeq
+                    |> Seq.collect (fun (fromSchema, refs) ->
+                        let fromSccId = schemaToSccId.[fromSchema]
+                        if fromSccId = orphanSccId then Seq.empty
+                        else
+                            let fromModule = mapping.[fromSccId]
+                            if isCanonical fromModule then
+                                refs
+                                |> Set.toSeq
+                                |> Seq.filter orphanSchemas.Contains
+                                |> Seq.map (fun _ -> fromModule)
+                            else Seq.empty)
+                    |> Seq.countBy id
+                    |> Seq.sortByDescending snd
+                    |> Seq.toList
+                match canonicalRefCounts with
+                | (winner, _) :: _ -> mapping <- mapping.Add(orphanSccId, winner)
+                | [] -> ()  // No canonical module references it; leave as-is
+            mapping
+
         let schemaToModule =
             schemaToSccId |> Map.map (fun _ sccId -> sccToModule.[sccId])
+
+        // Report any remaining non-canonical orphans
+        let remainingOrphans =
+            sccToModule
+            |> Map.toSeq
+            |> Seq.map snd
+            |> Seq.distinct
+            |> Seq.filter (not << isCanonical)
+            |> Seq.toList
+        if not remainingOrphans.IsEmpty then
+            printfn "Non-canonical orphan modules (no canonical incoming refs): %s"
+                (String.concat ", " remainingOrphans)
 
         // Compute SCC-level dependency graph
         let sccDeps =
@@ -298,13 +402,22 @@ module ModelBuilderModular =
                 let merged = moduleToMergedName.[scc.[0]]
                 printfn "  Recursive: [%s] -> merged as '%s'" (String.concat ", " scc) merged
 
-        (typeToModule, moduleOrder)
+        // Final schema -> merged module mapping (canonical-domain assignment + orphan reassignment + module-SCC merging)
+        let schemaToMergedModule =
+            schemaToModule |> Map.map (fun _ rawModule -> moduleToMergedName.[rawModule])
+
+        (typeToModule, moduleOrder, schemaToMergedModule, moduleToMergedName)
 
     // --- module grouping ---
 
-    /// Convert a module name to PascalCase for the file/namespace name
+    /// Convert a module name (snake_case) to PascalCase for the file/namespace name.
+    /// E.g. "financial_connections" -> "FinancialConnections", "customer" -> "Customer".
     let pascalModuleName (moduleName: string) =
-        moduleName.Substring(0, 1).ToUpper() + moduleName.Substring(1)
+        moduleName.Split([|'_'|], StringSplitOptions.RemoveEmptyEntries)
+        |> Array.map (fun s ->
+            if s.Length = 0 then s
+            else s.Substring(0, 1).ToUpper() + s.Substring(1))
+        |> String.concat ""
 
     /// Topologically order type definitions for compilation (dependencies before dependents).
     let topologicallyOrderForCompilation (typeDefs: TypeDef list) : (TypeDef * bool) list =
@@ -691,7 +804,7 @@ module ModelBuilderModular =
         printfn "Topologically ordered %d types" orderedTypes.Length
 
         // Step 3: Compute module assignments from spec (schema-level SCC + majority vote)
-        let (typeToModule, moduleOrder) = computeModuleAssignmentsFromSpec specFilePath typeDefs
+        let (typeToModule, moduleOrder, _schemaToMergedModule, _moduleToMergedName) = computeModuleAssignmentsFromSpec specFilePath typeDefs
         printfn "Assigned types to modules, compilation order: %d modules" moduleOrder.Length
 
         // Step 4: Group by module

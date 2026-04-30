@@ -3,12 +3,10 @@ namespace Stripe.Invoiceitem
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Deleted
-open Stripe.Payment
-open Stripe.Proration
-open Stripe.Tax
+open Stripe.PaymentMethod
+open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type InvoiceitemCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -25,6 +23,12 @@ type InvoiceitemInvoice'AnyOf =
 type InvoiceitemTestClock'AnyOf =
     | String of string
     | TestHelpersTestClock of TestHelpersTestClock
+
+type ProrationDetails =
+    {
+        /// Discount amounts applied when the proration was created.
+        DiscountAmounts: DiscountsResourceDiscountAmount list
+    }
 
 /// Invoice Items represent the component lines of an [invoice](https://docs.stripe.com/api/invoices). When you create an invoice item with an `invoice` field, it is attached to the specified invoice and included as [an invoice line item](https://docs.stripe.com/api/invoices/line_item) within [invoice.lines](https://docs.stripe.com/api/invoices/object#invoice_object-lines).
 /// Invoice Items can be created before you are ready to actually send the invoice. This can be particularly useful when combined

@@ -3,10 +3,10 @@ namespace Stripe.Review
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Payment
+open Stripe.PaymentMethod
 
 /// Occurs whenever a review is opened.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type ReviewOpened = { Object: Review }
 
 /// Occurs whenever a review is closed. The review's `reason` field indicates why: `approved`, `disputed`, `refunded`, `refunded_as_fraud`, or `canceled`.

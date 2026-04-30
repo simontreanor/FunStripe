@@ -4,9 +4,10 @@ open FunStripe
 open System.Text.Json.Serialization
 open Stripe.Deleted
 open Stripe.Price
+open Stripe.ProductFeature
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module Products =
 
     type ListOptions =

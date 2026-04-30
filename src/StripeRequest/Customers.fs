@@ -2,12 +2,10 @@ namespace StripeRequest.Customers
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Deleted
-open Stripe.Funding
-open Stripe.Payment
+open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module Customers =
 
     type ListOptions =

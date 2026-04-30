@@ -2,10 +2,10 @@ namespace StripeRequest.Country
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Country
+open Stripe.CountrySpec
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module CountrySpecs =
 
     type ListOptions =

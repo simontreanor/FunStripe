@@ -3,11 +3,11 @@ namespace Stripe.Treasury
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Address
-open Stripe.Payment
-open Stripe.Received
+open Stripe.Inbound
+open Stripe.Outbound
+open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type TreasuryReceivedDebitFailureCode =
     | AccountClosed
     | AccountFrozen
@@ -110,39 +110,6 @@ type TreasuryReceivedDebitsResourceStatusTransitions =
         CompletedAt: DateTime option
     }
 
-[<Struct>]
-type InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
-    | Company
-    | Individual
-
-[<Struct>]
-type InboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
-    | Checking
-    | Savings
-
-type InboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf =
-    | String of string
-    | Mandate of Mandate
-
-type InboundTransfersPaymentMethodDetailsUsBankAccount =
-    {
-        /// Account holder type: individual or company.
-        AccountHolderType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option
-        /// Account type: checkings or savings. Defaults to checking if omitted.
-        AccountType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountType option
-        /// Name of the bank associated with the bank account.
-        BankName: string option
-        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
-        /// Last four digits of the bank account number.
-        [<JsonPropertyName("last4")>]
-        Last4: string option
-        /// ID of the mandate used to make this payment.
-        Mandate: InboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
-        /// Routing number of the bank account.
-        RoutingNumber: string option
-    }
-
 type TreasurySharedResourceBillingDetails =
     {
         Address: Address
@@ -200,56 +167,10 @@ type TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions =
         SucceededAt: DateTime option
     }
 
-type OutboundPaymentsPaymentMethodDetailsFinancialAccount =
-    {
-        /// Token of the FinancialAccount.
-        Id: string
-    }
-
 [<Struct>]
 type OutboundPaymentsPaymentMethodDetailsType =
     | FinancialAccount
     | UsBankAccount
-
-[<Struct>]
-type OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType =
-    | Company
-    | Individual
-
-[<Struct>]
-type OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType =
-    | Checking
-    | Savings
-
-type OutboundPaymentsPaymentMethodDetailsUsBankAccountMandate'AnyOf =
-    | String of string
-    | Mandate of Mandate
-
-[<Struct>]
-type OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork =
-    | Ach
-    | UsDomesticWire
-
-type OutboundPaymentsPaymentMethodDetailsUsBankAccount =
-    {
-        /// Account holder type: individual or company.
-        AccountHolderType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType option
-        /// Account type: checkings or savings. Defaults to checking if omitted.
-        AccountType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType option
-        /// Name of the bank associated with the bank account.
-        BankName: string option
-        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
-        /// Last four digits of the bank account number.
-        [<JsonPropertyName("last4")>]
-        Last4: string option
-        /// ID of the mandate used to make this payment.
-        Mandate: OutboundPaymentsPaymentMethodDetailsUsBankAccountMandate'AnyOf option
-        /// The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
-        Network: OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork
-        /// Routing number of the bank account.
-        RoutingNumber: string option
-    }
 
 type OutboundPaymentsPaymentMethodDetails =
     {
@@ -329,56 +250,10 @@ type TreasuryOutboundPaymentsResourceReturnedStatusCode =
     | NoAccount
     | Other
 
-type OutboundTransfersPaymentMethodDetailsFinancialAccount =
-    {
-        /// Token of the FinancialAccount.
-        Id: string
-    }
-
 [<Struct>]
 type OutboundTransfersPaymentMethodDetailsType =
     | FinancialAccount
     | UsBankAccount
-
-[<Struct>]
-type OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
-    | Company
-    | Individual
-
-[<Struct>]
-type OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
-    | Checking
-    | Savings
-
-type OutboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf =
-    | String of string
-    | Mandate of Mandate
-
-[<Struct>]
-type OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork =
-    | Ach
-    | UsDomesticWire
-
-type OutboundTransfersPaymentMethodDetailsUsBankAccount =
-    {
-        /// Account holder type: individual or company.
-        AccountHolderType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option
-        /// Account type: checkings or savings. Defaults to checking if omitted.
-        AccountType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType option
-        /// Name of the bank associated with the bank account.
-        BankName: string option
-        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
-        Fingerprint: string option
-        /// Last four digits of the bank account number.
-        [<JsonPropertyName("last4")>]
-        Last4: string option
-        /// ID of the mandate used to make this payment.
-        Mandate: OutboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
-        /// The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
-        Network: OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork
-        /// Routing number of the bank account.
-        RoutingNumber: string option
-    }
 
 type OutboundTransfersPaymentMethodDetails =
     {
@@ -491,6 +366,12 @@ type TreasuryReceivedCreditsResourceReversalDetails =
         Deadline: DateTime option
         /// Set if a ReceivedCredit cannot be reversed.
         RestrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option
+    }
+
+type ReceivedPaymentMethodDetailsFinancialAccount =
+    {
+        /// The FinancialAccount ID.
+        Id: string
     }
 
 [<Struct>]
@@ -1397,20 +1278,12 @@ type TreasuryCreditReversalPosted = { Object: TreasuryCreditReversal }
 /// Occurs whenever an CreditReversal is submitted and created.
 type TreasuryCreditReversalCreated = { Object: TreasuryCreditReversal }
 
-module InboundTransfersPaymentMethodDetailsUsBankAccount =
-    ///The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
-    let network = "ach"
-
 module InboundTransfers =
     ///The type of the payment method used in the InboundTransfer.
     let ``type`` = "us_bank_account"
 
-module OutboundPaymentsPaymentMethodDetailsFinancialAccount =
-    ///The rails used to send funds.
-    let network = "stripe"
-
-module OutboundTransfersPaymentMethodDetailsFinancialAccount =
-    ///The rails used to send funds.
+module ReceivedPaymentMethodDetailsFinancialAccount =
+    ///The rails the ReceivedCredit was sent over. A FinancialAccount can only send funds over `stripe`.
     let network = "stripe"
 
 module TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =

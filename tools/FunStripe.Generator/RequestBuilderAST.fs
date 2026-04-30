@@ -301,14 +301,24 @@ module RequestBuilderAST =
 
     // --- module assignment ---
 
-    /// Normalize a request module name to its semantic module using the first-token heuristic.
-    /// E.g. "AccountLinks" -> "account", "CheckoutSessions" -> "checkout"
-    let normalizeRequestModuleName (moduleName: string) =
-        // Split PascalCase into words
-        let words =
-            Regex.Replace(moduleName, @"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_")
-                 .ToLowerInvariant().Split('_')
-        words |> Array.tryHead |> Option.defaultValue "misc"
+    /// Normalize a PascalCase request module name to snake_case.
+    /// E.g. "AccountLinks" -> "account_links", "FinancialConnectionsAccounts" -> "financial_connections_accounts"
+    let private requestModuleToSnakeCase (moduleName: string) =
+        Regex.Replace(moduleName, @"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_")
+             .ToLowerInvariant()
+
+    /// Normalize a request module name to a canonical Stripe domain by longest-prefix match.
+    /// Falls back to the first token if no canonical domain matches.
+    /// E.g. with canonical ["financial_connections"; "account"], "FinancialConnectionsAccounts" -> "financial_connections",
+    /// "AccountLinks" -> "account".
+    let normalizeRequestModuleName (canonicalDomains: string list) (moduleName: string) =
+        let snake = requestModuleToSnakeCase moduleName
+        canonicalDomains
+        |> List.tryFind (fun d -> snake = d || snake.StartsWith(d + "_"))
+        |> Option.defaultWith (fun () ->
+            snake.Split([|'_'|], StringSplitOptions.RemoveEmptyEntries)
+            |> Array.tryHead
+            |> Option.defaultValue "misc")
 
     /// Compute request module assignments — maps each request module to a merged semantic module.
     let computeRequestModuleAssignments
@@ -317,12 +327,19 @@ module RequestBuilderAST =
         (requestModules: (string * RequestTypeDef list) list)
         : Map<string, string> * string list =
 
-        // First-token module assignment for each request module
+        // Use the keys of modelModuleToMergedName as the canonical domain list,
+        // sorted longest-first so prefix matching prefers more specific domains.
+        let canonicalDomains =
+            modelModuleToMergedName
+            |> Map.keys
+            |> Seq.toList
+            |> List.sortByDescending String.length
+
+        // Canonical-domain-aware module assignment for each request module
         let rawAssignments =
             requestModules
-            |> List.map (fun (moduleName, typeDefs) ->
-                let normalized = normalizeRequestModuleName moduleName
-                // Try to look up via the merged model module names
+            |> List.map (fun (moduleName, _) ->
+                let normalized = normalizeRequestModuleName canonicalDomains moduleName
                 let merged =
                     modelModuleToMergedName
                     |> Map.tryFind normalized
@@ -369,6 +386,12 @@ module RequestBuilderAST =
         (typeDefs: RequestTypeDef list)
         : string list =
         let referencedTypes = collectReferencedModelTypes typeDefs
+        let toPascal (s: string) =
+            s.Split([|'_'|], StringSplitOptions.RemoveEmptyEntries)
+            |> Array.map (fun w ->
+                if w.Length = 0 then w
+                else w.Substring(0, 1).ToUpper() + w.Substring(1))
+            |> String.concat ""
         referencedTypes
         |> Set.toList
         |> List.choose (fun typeName ->
@@ -380,7 +403,7 @@ module RequestBuilderAST =
                 |> Option.defaultValue rawMod))
         |> List.distinct
         |> List.sort
-        |> List.map (fun m -> m.Substring(0, 1).ToUpper() + m.Substring(1))
+        |> List.map toPascal
 
     // --- serialization ---
 
@@ -549,7 +572,7 @@ module RequestBuilderAST =
         (requestModules: (string * RequestTypeDef list) list)
         : string =
 
-        let pascalName = semanticModuleName.Substring(0, 1).ToUpper() + semanticModuleName.Substring(1)
+        let pascalName = ModelBuilderModular.pascalModuleName semanticModuleName
         let sb = Text.StringBuilder()
 
         // Header
@@ -633,152 +656,13 @@ module RequestBuilderAST =
         let typeDefs = ModelBuilderAST.parseModelFlat specFilePath
         printfn "Parsed %d model type definitions" typeDefs.Length
 
-        let (modelTypeToModule, modelModuleOrder) =
+        // computeModuleAssignmentsFromSpec now returns the full set of mappings,
+        // including the post-SCC schema-to-merged-module map and the raw->merged module map.
+        // RequestBuilderAST consumes them directly to keep request files in lock-step
+        // with the modular Stripe/*.fs files (canonical-domain naming).
+        let (modelTypeToModule, modelModuleOrder, _schemaToMergedModule, modelModuleToMergedName) =
             computeModuleAssignmentsFromSpec specFilePath typeDefs
         printfn "Computed model module assignments, %d modules" modelModuleOrder.Length
-
-        // Build model module merged name map
-        let root' = __SOURCE_DIRECTORY__
-        let filePath' = defaultArg specFilePath (Path.GetFullPath(Path.Combine(root', "../../spec/stripe-openapi-2026-04-22.dahlia.json")))
-        let jsonText = File.ReadAllText(filePath')
-        let specRoot = JsonValue.Parse jsonText
-        let schemas = specRoot?components?schemas
-
-        let schemaNames = schemas.Properties |> Array.map fst |> Set.ofArray
-        let schemaToModule =
-            let dependencyGraph =
-                schemas.Properties
-                |> Array.map (fun (key, schema) ->
-                    let refs = collectSchemaRefs schema |> Set.filter (fun d -> schemaNames.Contains d && d <> key)
-                    key, refs)
-                |> Map.ofArray
-            let allSchemasList = schemaNames |> Set.toList
-            let mutable sIdx = 0
-            let mutable sStack: string list = []
-            let sIndices = Collections.Generic.Dictionary<string, int>()
-            let sLowlinks = Collections.Generic.Dictionary<string, int>()
-            let sOnStack = Collections.Generic.Dictionary<string, bool>()
-            let sSccs = Collections.Generic.List<string list>()
-
-            let rec sStrongconnect (v: string) =
-                sIndices.[v] <- sIdx
-                sLowlinks.[v] <- sIdx
-                sIdx <- sIdx + 1
-                sStack <- v :: sStack
-                sOnStack.[v] <- true
-                let successors = dependencyGraph |> Map.tryFind v |> Option.defaultValue Set.empty
-                for w in successors do
-                    if not (sIndices.ContainsKey w) then
-                        sStrongconnect w
-                        sLowlinks.[v] <- min sLowlinks.[v] sLowlinks.[w]
-                    elif sOnStack.ContainsKey w && sOnStack.[w] then
-                        sLowlinks.[v] <- min sLowlinks.[v] sIndices.[w]
-                if sLowlinks.[v] = sIndices.[v] then
-                    let mutable scc = []
-                    let mutable cont = true
-                    while cont do
-                        let w = sStack.Head
-                        sStack <- sStack.Tail
-                        sOnStack.[w] <- false
-                        scc <- w :: scc
-                        if w = v then cont <- false
-                    sSccs.Add(scc |> List.sort)
-
-            for node in allSchemasList do
-                if not (sIndices.ContainsKey node) then sStrongconnect node
-
-            let sccList = sSccs |> Seq.toList
-            let sccToModule =
-                sccList |> List.mapi (fun i members ->
-                    i, normalizedModuleForGroup members) |> Map.ofList
-            let schemaToSccId =
-                sccList
-                |> List.mapi (fun i members -> members |> List.map (fun m -> m, i))
-                |> List.collect id |> Map.ofList
-
-            schemaToSccId |> Map.map (fun _ sccId -> sccToModule.[sccId])
-
-        // Build module-level merged name map (via module-level Tarjan SCC)
-        let allModules' = schemaToModule |> Map.values |> Set.ofSeq
-        let moduleDeps' =
-            allModules' |> Seq.map (fun moduleName ->
-                let outgoing =
-                    schemaToModule
-                    |> Map.toSeq
-                    |> Seq.filter (fun (_, v) -> v = moduleName)
-                    |> Seq.collect (fun (schemaName, _) ->
-                        let dg =
-                            schemas.Properties
-                            |> Array.tryFind (fun (k, _) -> k = schemaName)
-                            |> Option.map (fun (_, schema) ->
-                                collectSchemaRefs schema
-                                |> Set.filter (fun d -> schemaNames.Contains d && d <> schemaName))
-                            |> Option.defaultValue Set.empty
-                        dg |> Set.toSeq |> Seq.map (fun dep -> schemaToModule.[dep]))
-                    |> Seq.filter (fun t -> t <> moduleName)
-                    |> Set.ofSeq
-                moduleName, outgoing) |> Map.ofSeq
-
-        // Module-level Tarjan SCC
-        let mutable mIdx = 0
-        let mutable mStack: string list = []
-        let mIndices = Collections.Generic.Dictionary<string, int>()
-        let mLowlinks = Collections.Generic.Dictionary<string, int>()
-        let mOnStack = Collections.Generic.Dictionary<string, bool>()
-        let mSccs = Collections.Generic.List<string list>()
-
-        let rec mStrongconnect (v: string) =
-            mIndices.[v] <- mIdx
-            mLowlinks.[v] <- mIdx
-            mIdx <- mIdx + 1
-            mStack <- v :: mStack
-            mOnStack.[v] <- true
-            let successors = moduleDeps' |> Map.tryFind v |> Option.defaultValue Set.empty
-            for w in successors do
-                if not (mIndices.ContainsKey w) then
-                    mStrongconnect w
-                    mLowlinks.[v] <- min mLowlinks.[v] mLowlinks.[w]
-                elif mOnStack.ContainsKey w && mOnStack.[w] then
-                    mLowlinks.[v] <- min mLowlinks.[v] mIndices.[w]
-            if mLowlinks.[v] = mIndices.[v] then
-                let mutable scc = []
-                let mutable cont = true
-                while cont do
-                    let w = mStack.Head
-                    mStack <- mStack.Tail
-                    mOnStack.[w] <- false
-                    scc <- w :: scc
-                    if w = v then cont <- false
-                mSccs.Add(scc |> List.sort)
-
-        for m in allModules' do
-            if not (mIndices.ContainsKey m) then mStrongconnect m
-
-        let moduleSccList = mSccs |> Seq.toList
-
-        let modelModuleToMergedName =
-            moduleSccList
-            |> List.collect (fun scc ->
-                if scc.Length = 1 then
-                    [scc.[0], scc.[0]]
-                else
-                    let schemaCounts =
-                        scc |> List.map (fun m ->
-                            let count = schemaToModule |> Map.filter (fun _ v -> v = m) |> Map.count
-                            m, count)
-                    let mergedName =
-                        schemaCounts
-                        |> List.sortBy (fun (name, count) -> (-count, name))
-                        |> List.head |> fst
-                    scc |> List.map (fun m -> m, mergedName))
-            |> Map.ofList
-
-        printfn "Model module merging:"
-        for scc in moduleSccList do
-            if scc.Length > 1 then
-                printfn "  Recursive: [%s] -> merged as '%s'" (String.concat ", " scc) (modelModuleToMergedName.[scc.[0]])
-
-        // Step 2: Parse the spec requests into flat IR
         let requestModules = parseRequestFlat specFilePath
         printfn "Parsed %d request modules" requestModules.Length
 
@@ -819,7 +703,7 @@ module RequestBuilderAST =
                     computeRequestOpenStatements modelTypeToModule modelModuleToMergedName allTypeDefs
                 let content =
                     serializeRequestModuleFile version semanticModule openStatements requestModulesForFile
-                let pascalName = semanticModule.Substring(0, 1).ToUpper() + semanticModule.Substring(1)
+                let pascalName = ModelBuilderModular.pascalModuleName semanticModule
                 let fileName = $"{pascalName}.fs"
                 let filePath = Path.Combine(outputDir, fileName)
                 File.WriteAllText(filePath, content)

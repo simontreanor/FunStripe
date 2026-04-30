@@ -2,10 +2,10 @@ namespace StripeRequest.Confirmation
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Confirmation
+open Stripe.ConfirmationToken
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module ConfirmationTokens =
 
     type RetrieveOptions =

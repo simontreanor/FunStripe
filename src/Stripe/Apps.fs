@@ -3,14 +3,25 @@ namespace Stripe.Apps
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Secret
+
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type SecretServiceResourceScopeType =
+    | Account
+    | User
+
+type SecretServiceResourceScope =
+    {
+        /// The secret scope type.
+        Type: SecretServiceResourceScopeType
+        /// The user ID, if type is set to "user"
+        User: string option
+    }
 
 /// Secret Store is an API that allows Stripe Apps developers to securely persist secrets for use by UI Extensions and app backends.
 /// The primary resource in Secret Store is a `secret`. Other apps can't view secrets created by an app. Additionally, secrets are scoped to provide further permission control.
 /// All Dashboard users and the app backend share `account` scoped secrets. Use the `account` scope for secrets that don't change per-user, like a third-party API key.
 /// A `user` scoped secret is accessible by the app backend and one specific Dashboard user. Use the `user` scope for per-user secrets like per-user OAuth tokens, where different users might have different permissions.
 /// Related guide: [Store data between page reloads](https://docs.stripe.com/stripe-apps/store-auth-data-custom-objects)
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
 type AppsSecret =
     {
         /// Time at which the object was created. Measured in seconds since the Unix epoch.

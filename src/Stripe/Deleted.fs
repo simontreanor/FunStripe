@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type DeletedWebhookEndpoint =
     {
         /// Always true for a deleted object
@@ -190,80 +190,6 @@ module DeletedAccount =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "account"
 
-type DeletedPlan =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-module DeletedPlan =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "plan"
-
-type DeletedPrice =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-module DeletedPrice =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "price"
-
-type DeletedInvoice =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-module DeletedInvoice =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "invoice"
-
-type DeletedTaxId =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-module DeletedTaxId =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax_id"
-
-type DeletedProduct =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-module DeletedProduct =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "product"
-
-type DeletedBankAccount =
-    {
-        /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: IsoTypes.IsoCurrencyCode option
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-module DeletedBankAccount =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "bank_account"
-
 type DeletedCard =
     {
         /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
@@ -278,37 +204,17 @@ module DeletedCard =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "card"
 
-type DeletedPaymentSource =
-    | DeletedBankAccount of DeletedBankAccount
-    | DeletedCard of DeletedCard
-
-type DeletedExternalAccount =
-    | DeletedBankAccount of DeletedBankAccount
-    | DeletedCard of DeletedCard
-
-type DeletedApplication =
+type DeletedBankAccount =
     {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-        /// The name of the application.
-        Name: string option
-    }
-
-module DeletedApplication =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "application"
-
-type DeletedCustomer =
-    {
+        /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
+        Currency: IsoTypes.IsoCurrencyCode option
         /// Always true for a deleted object
         Deleted: bool
         /// Unique identifier for the object.
         Id: string
     }
 
-module DeletedCustomer =
+module DeletedBankAccount =
     ///String representing the object's type. Objects of the same type share the same value.
-    let object = "customer"
+    let object = "bank_account"
 
