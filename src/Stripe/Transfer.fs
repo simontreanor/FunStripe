@@ -26,7 +26,7 @@ type Transfer =
         /// Amount in cents (or local equivalent) reversed (can be less than the amount attribute on the transfer if a partial reversal was issued).
         AmountReversed: int
         /// Balance transaction that describes the impact of this transfer on your account balance.
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Time that this record of the transfer was first created.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -34,9 +34,9 @@ type Transfer =
         /// An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         /// ID of the Stripe account the transfer was sent to.
-        Destination: string option
+        Destination: StripeId<Markers.Account> option
         /// If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer.
-        DestinationPayment: string option
+        DestinationPayment: StripeId<Markers.Charge> option
         /// Unique identifier for the object.
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -48,7 +48,7 @@ type Transfer =
         /// Whether the transfer has been fully reversed. If the transfer is only partially reversed, this attribute will still be false.
         Reversed: bool
         /// ID of the charge that was used to fund the transfer. If null, the transfer was funded from the available balance.
-        SourceTransaction: string option
+        SourceTransaction: StripeId<Markers.Charge> option
         /// The source balance this transfer came from. One of `card`, `fpx`, or `bank_account`.
         SourceType: TransferSourceType option
         /// A string that identifies this transaction as part of a group. See the [Connect documentation](https://docs.stripe.com/connect/separate-charges-and-transfers#transfer-options) for details.
@@ -75,7 +75,7 @@ type TransferData =
         ///  representing how much to transfer in the smallest currency unit (e.g., 100 cents to charge $1.00).
         Amount: int option
         /// The account (if any) that the payment is attributed to for tax reporting, and where funds from the payment are transferred to after payment success.
-        Destination: string
+        Destination: StripeId<Markers.Account>
     }
 
 [<Struct>]

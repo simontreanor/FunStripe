@@ -489,7 +489,7 @@ type Topup =
         /// Amount transferred.
         Amount: int
         /// ID of the balance transaction that describes the impact of this top-up on your account balance. May not be specified depending on status of top-up.
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -548,13 +548,719 @@ type BankAccountAvailablePayoutMethods =
     | Instant
     | Standard
 
-type BankAccountStatus =
+[<Struct>]
+type CustomerBalanceCustomerBalanceSettingsReconciliationMode =
+    | Automatic
+    | Manual
+
+type CustomerBalanceCustomerBalanceSettings =
+    {
+        /// The configuration for how funds that land in the customer cash balance are reconciled.
+        ReconciliationMode: CustomerBalanceCustomerBalanceSettingsReconciliationMode
+        /// A flag to indicate if reconciliation mode returned is the user's default or is specific to this customer cash balance
+        UsingMerchantDefault: bool
+    }
+
+/// A customer's `Cash balance` represents real funds. Customers can add funds to their cash balance by sending a bank transfer. These funds can be used for payment and can eventually be paid out to your bank account.
+type CashBalance =
+    {
+        /// A hash of all cash balances available to this customer. You cannot delete a customer with any cash balances, even if the balance is 0. Amounts are represented in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
+        Available: Map<string, string list> option
+        /// The ID of the customer whose cash balance this object represents.
+        Customer: string
+        /// The ID of an Account representing a customer whose cash balance this object represents.
+        CustomerAccount: string option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        Settings: CustomerBalanceCustomerBalanceSettings
+    }
+
+type AccountAnnualRevenue =
+    {
+        /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
+        Amount: int option
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode option
+        /// The close-out date of the preceding fiscal year in ISO 8601 format. E.g. 2023-12-31 for the 31st of December, 2023.
+        FiscalYearEnd: string option
+    }
+
+[<Struct>]
+type AccountBusinessProfileMinorityOwnedBusinessDesignation =
+    | LgbtqiOwnedBusiness
+    | MinorityOwnedBusiness
+    | NoneOfTheseApply
+    | PreferNotToAnswer
+    | WomenOwnedBusiness
+
+type AccountMonthlyEstimatedRevenue =
+    {
+        /// A non-negative integer representing how much to charge in the [smallest currency unit](/currencies#zero-decimal).
+        Amount: int
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+    }
+
+type AccountBusinessProfile =
+    {
+        /// The applicant's gross annual revenue for its preceding fiscal year.
+        AnnualRevenue: AccountAnnualRevenue option
+        /// An estimated upper bound of employees, contractors, vendors, etc. currently working for the business.
+        EstimatedWorkerCount: int option
+        /// [The merchant category code for the account](/connect/setting-mcc). MCCs are used to classify businesses based on the goods or services they provide.
+        Mcc: string option
+        /// Whether the business is a minority-owned, women-owned, and/or LGBTQI+ -owned business.
+        MinorityOwnedBusinessDesignation: AccountBusinessProfileMinorityOwnedBusinessDesignation list option
+        MonthlyEstimatedRevenue: AccountMonthlyEstimatedRevenue option
+        /// The customer-facing business name.
+        Name: string option
+        /// Internal-only description of the product sold or service provided by the business. It's used by Stripe for risk and underwriting purposes.
+        ProductDescription: string option
+        /// A publicly available mailing address for sending support issues to.
+        SupportAddress: Address option
+        /// A publicly available email address for sending support issues to.
+        SupportEmail: string option
+        /// A publicly available phone number to call with support issues.
+        SupportPhone: string option
+        /// A publicly available website for handling support issues.
+        SupportUrl: string option
+        /// The business's publicly available website.
+        Url: string option
+    }
+
+[<Struct>]
+type AccountBusinessType =
+    | Company
+    | GovernmentEntity
+    | Individual
+    | NonProfit
+
+[<Struct>]
+type AccountCapabilitiesAcssDebitPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesAffirmPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesAfterpayClearpayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesAlmaPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesAmazonPayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesAppDistribution =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesAuBecsDebitPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesBacsDebitPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesBancontactPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesBankTransferPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesBilliePayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesBlikPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesBoletoPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesCardIssuing =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesCardPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesCartesBancairesPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesCashappPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesCryptoPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesEpsPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesFpxPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesGbBankTransferPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesGiropayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesGrabpayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesIdealPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesIndiaInternationalPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesJcbPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesJpBankTransferPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesKakaoPayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesKlarnaPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesKonbiniPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesKrCardPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesLegacyPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesLinkPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesMbWayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesMobilepayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesMultibancoPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesMxBankTransferPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesNaverPayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesNzBankAccountBecsDebitPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesOxxoPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesP24Payments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesPayByBankPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesPaycoPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesPaynowPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesPaytoPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesPixPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesPromptpayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesRevolutPayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesSamsungPayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesSatispayPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesSepaBankTransferPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesSepaDebitPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesSofortPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesSunbitPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesSwishPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesTaxReportingUs1099K =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesTaxReportingUs1099Misc =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesTransfers =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesTreasury =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesTwintPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesUpiPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesUsBankAccountAchPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesUsBankTransferPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
+type AccountCapabilitiesZipPayments =
+    | Active
+    | Inactive
+    | Pending
+
+type AccountCapabilities =
+    {
+        /// The status of the Canadian pre-authorized debits payments capability of the account, or whether the account can directly process Canadian pre-authorized debits charges.
+        AcssDebitPayments: AccountCapabilitiesAcssDebitPayments option
+        /// The status of the Affirm capability of the account, or whether the account can directly process Affirm charges.
+        AffirmPayments: AccountCapabilitiesAffirmPayments option
+        /// The status of the Afterpay Clearpay capability of the account, or whether the account can directly process Afterpay Clearpay charges.
+        AfterpayClearpayPayments: AccountCapabilitiesAfterpayClearpayPayments option
+        /// The status of the Alma capability of the account, or whether the account can directly process Alma payments.
+        AlmaPayments: AccountCapabilitiesAlmaPayments option
+        /// The status of the AmazonPay capability of the account, or whether the account can directly process AmazonPay payments.
+        AmazonPayPayments: AccountCapabilitiesAmazonPayPayments option
+        /// The status of the `app_distribution` capability of the account, or whether the platform can distribute apps to other accounts.
+        AppDistribution: AccountCapabilitiesAppDistribution option
+        /// The status of the BECS Direct Debit (AU) payments capability of the account, or whether the account can directly process BECS Direct Debit (AU) charges.
+        AuBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments option
+        /// The status of the Bacs Direct Debits payments capability of the account, or whether the account can directly process Bacs Direct Debits charges.
+        BacsDebitPayments: AccountCapabilitiesBacsDebitPayments option
+        /// The status of the Bancontact payments capability of the account, or whether the account can directly process Bancontact charges.
+        BancontactPayments: AccountCapabilitiesBancontactPayments option
+        /// The status of the customer_balance payments capability of the account, or whether the account can directly process customer_balance charges.
+        BankTransferPayments: AccountCapabilitiesBankTransferPayments option
+        /// The status of the Billie capability of the account, or whether the account can directly process Billie payments.
+        BilliePayments: AccountCapabilitiesBilliePayments option
+        /// The status of the blik payments capability of the account, or whether the account can directly process blik charges.
+        BlikPayments: AccountCapabilitiesBlikPayments option
+        /// The status of the boleto payments capability of the account, or whether the account can directly process boleto charges.
+        BoletoPayments: AccountCapabilitiesBoletoPayments option
+        /// The status of the card issuing capability of the account, or whether you can use Issuing to distribute funds on cards
+        CardIssuing: AccountCapabilitiesCardIssuing option
+        /// The status of the card payments capability of the account, or whether the account can directly process credit and debit card charges.
+        CardPayments: AccountCapabilitiesCardPayments option
+        /// The status of the Cartes Bancaires payments capability of the account, or whether the account can directly process Cartes Bancaires card charges in EUR currency.
+        CartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments option
+        /// The status of the Cash App Pay capability of the account, or whether the account can directly process Cash App Pay payments.
+        CashappPayments: AccountCapabilitiesCashappPayments option
+        /// The status of the Crypto capability of the account, or whether the account can directly process Crypto payments.
+        CryptoPayments: AccountCapabilitiesCryptoPayments option
+        /// The status of the EPS payments capability of the account, or whether the account can directly process EPS charges.
+        EpsPayments: AccountCapabilitiesEpsPayments option
+        /// The status of the FPX payments capability of the account, or whether the account can directly process FPX charges.
+        FpxPayments: AccountCapabilitiesFpxPayments option
+        /// The status of the GB customer_balance payments (GBP currency) capability of the account, or whether the account can directly process GB customer_balance charges.
+        GbBankTransferPayments: AccountCapabilitiesGbBankTransferPayments option
+        /// The status of the giropay payments capability of the account, or whether the account can directly process giropay charges.
+        GiropayPayments: AccountCapabilitiesGiropayPayments option
+        /// The status of the GrabPay payments capability of the account, or whether the account can directly process GrabPay charges.
+        GrabpayPayments: AccountCapabilitiesGrabpayPayments option
+        /// The status of the iDEAL payments capability of the account, or whether the account can directly process iDEAL charges.
+        IdealPayments: AccountCapabilitiesIdealPayments option
+        /// The status of the india_international_payments capability of the account, or whether the account can process international charges (non INR) in India.
+        IndiaInternationalPayments: AccountCapabilitiesIndiaInternationalPayments option
+        /// The status of the JCB payments capability of the account, or whether the account (Japan only) can directly process JCB credit card charges in JPY currency.
+        JcbPayments: AccountCapabilitiesJcbPayments option
+        /// The status of the Japanese customer_balance payments (JPY currency) capability of the account, or whether the account can directly process Japanese customer_balance charges.
+        JpBankTransferPayments: AccountCapabilitiesJpBankTransferPayments option
+        /// The status of the KakaoPay capability of the account, or whether the account can directly process KakaoPay payments.
+        KakaoPayPayments: AccountCapabilitiesKakaoPayPayments option
+        /// The status of the Klarna payments capability of the account, or whether the account can directly process Klarna charges.
+        KlarnaPayments: AccountCapabilitiesKlarnaPayments option
+        /// The status of the konbini payments capability of the account, or whether the account can directly process konbini charges.
+        KonbiniPayments: AccountCapabilitiesKonbiniPayments option
+        /// The status of the KrCard capability of the account, or whether the account can directly process KrCard payments.
+        KrCardPayments: AccountCapabilitiesKrCardPayments option
+        /// The status of the legacy payments capability of the account.
+        LegacyPayments: AccountCapabilitiesLegacyPayments option
+        /// The status of the link_payments capability of the account, or whether the account can directly process Link charges.
+        LinkPayments: AccountCapabilitiesLinkPayments option
+        /// The status of the MB WAY payments capability of the account, or whether the account can directly process MB WAY charges.
+        MbWayPayments: AccountCapabilitiesMbWayPayments option
+        /// The status of the MobilePay capability of the account, or whether the account can directly process MobilePay charges.
+        MobilepayPayments: AccountCapabilitiesMobilepayPayments option
+        /// The status of the Multibanco payments capability of the account, or whether the account can directly process Multibanco charges.
+        MultibancoPayments: AccountCapabilitiesMultibancoPayments option
+        /// The status of the Mexican customer_balance payments (MXN currency) capability of the account, or whether the account can directly process Mexican customer_balance charges.
+        MxBankTransferPayments: AccountCapabilitiesMxBankTransferPayments option
+        /// The status of the NaverPay capability of the account, or whether the account can directly process NaverPay payments.
+        NaverPayPayments: AccountCapabilitiesNaverPayPayments option
+        /// The status of the New Zealand BECS Direct Debit payments capability of the account, or whether the account can directly process New Zealand BECS Direct Debit charges.
+        NzBankAccountBecsDebitPayments: AccountCapabilitiesNzBankAccountBecsDebitPayments option
+        /// The status of the OXXO payments capability of the account, or whether the account can directly process OXXO charges.
+        OxxoPayments: AccountCapabilitiesOxxoPayments option
+        /// The status of the P24 payments capability of the account, or whether the account can directly process P24 charges.
+        [<JsonPropertyName("p24_payments")>]
+        P24Payments: AccountCapabilitiesP24Payments option
+        /// The status of the pay_by_bank payments capability of the account, or whether the account can directly process pay_by_bank charges.
+        PayByBankPayments: AccountCapabilitiesPayByBankPayments option
+        /// The status of the Payco capability of the account, or whether the account can directly process Payco payments.
+        PaycoPayments: AccountCapabilitiesPaycoPayments option
+        /// The status of the paynow payments capability of the account, or whether the account can directly process paynow charges.
+        PaynowPayments: AccountCapabilitiesPaynowPayments option
+        /// The status of the PayTo capability of the account, or whether the account can directly process PayTo charges.
+        PaytoPayments: AccountCapabilitiesPaytoPayments option
+        /// The status of the pix payments capability of the account, or whether the account can directly process pix charges.
+        PixPayments: AccountCapabilitiesPixPayments option
+        /// The status of the promptpay payments capability of the account, or whether the account can directly process promptpay charges.
+        PromptpayPayments: AccountCapabilitiesPromptpayPayments option
+        /// The status of the RevolutPay capability of the account, or whether the account can directly process RevolutPay payments.
+        RevolutPayPayments: AccountCapabilitiesRevolutPayPayments option
+        /// The status of the SamsungPay capability of the account, or whether the account can directly process SamsungPay payments.
+        SamsungPayPayments: AccountCapabilitiesSamsungPayPayments option
+        /// The status of the Satispay capability of the account, or whether the account can directly process Satispay payments.
+        SatispayPayments: AccountCapabilitiesSatispayPayments option
+        /// The status of the SEPA customer_balance payments (EUR currency) capability of the account, or whether the account can directly process SEPA customer_balance charges.
+        SepaBankTransferPayments: AccountCapabilitiesSepaBankTransferPayments option
+        /// The status of the SEPA Direct Debits payments capability of the account, or whether the account can directly process SEPA Direct Debits charges.
+        SepaDebitPayments: AccountCapabilitiesSepaDebitPayments option
+        /// The status of the Sofort payments capability of the account, or whether the account can directly process Sofort charges.
+        SofortPayments: AccountCapabilitiesSofortPayments option
+        /// The status of the Sunbit capability of the account, or whether the account can directly process Sunbit payments.
+        SunbitPayments: AccountCapabilitiesSunbitPayments option
+        /// The status of the Swish capability of the account, or whether the account can directly process Swish payments.
+        SwishPayments: AccountCapabilitiesSwishPayments option
+        /// The status of the tax reporting 1099-K (US) capability of the account.
+        [<JsonPropertyName("tax_reporting_us_1099_k")>]
+        TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
+        /// The status of the tax reporting 1099-MISC (US) capability of the account.
+        [<JsonPropertyName("tax_reporting_us_1099_misc")>]
+        TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
+        /// The status of the transfers capability of the account, or whether your platform can transfer funds to the account.
+        Transfers: AccountCapabilitiesTransfers option
+        /// The status of the banking capability, or whether the account can have bank accounts.
+        Treasury: AccountCapabilitiesTreasury option
+        /// The status of the TWINT capability of the account, or whether the account can directly process TWINT charges.
+        TwintPayments: AccountCapabilitiesTwintPayments option
+        /// The status of the upi payments capability of the account, or whether the account can directly process upi charges.
+        UpiPayments: AccountCapabilitiesUpiPayments option
+        /// The status of the US bank account ACH payments capability of the account, or whether the account can directly process US bank account charges.
+        UsBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments option
+        /// The status of the US customer_balance payments (USD currency) capability of the account, or whether the account can directly process US customer_balance charges.
+        UsBankTransferPayments: AccountCapabilitiesUsBankTransferPayments option
+        /// The status of the Zip capability of the account, or whether the account can directly process Zip charges.
+        ZipPayments: AccountCapabilitiesZipPayments option
+    }
+
+[<Struct>]
+type CardAddressLine1Check =
+    | Pass
+    | Fail
+    | Unavailable
+    | Unchecked
+
+[<Struct>]
+type CardAddressZipCheck =
+    | Pass
+    | Fail
+    | Unavailable
+    | Unchecked
+
+[<Struct>]
+type CardAllowRedisplay =
+    | Always
+    | Limited
+    | Unspecified
+
+[<Struct>]
+type CardAvailablePayoutMethods =
+    | Instant
+    | Standard
+
+type CardBrand =
+    | [<JsonPropertyName("American Express")>] AmericanExpress
+    | [<JsonPropertyName("Cartes Bancaires")>] CartesBancaires
+    | [<JsonPropertyName("Diners Club")>] DinersClub
+    | [<JsonPropertyName("Discover")>] Discover
+    | [<JsonPropertyName("Eftpos Australia")>] EftposAustralia
+    | [<JsonPropertyName("Girocard")>] Girocard
+    | [<JsonPropertyName("JCB")>] JCB
+    | [<JsonPropertyName("MasterCard")>] MasterCard
+    | [<JsonPropertyName("UnionPay")>] UnionPay
+    | [<JsonPropertyName("Visa")>] Visa
+    | [<JsonPropertyName("Unknown")>] Unknown
+
+type DeletedCustomer =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+[<Struct>]
+type CardCvcCheck =
+    | Pass
+    | Fail
+    | Unavailable
+    | Unchecked
+
+[<Struct>]
+type CardFunding =
+    | Credit
+    | Debit
+    | Prepaid
+    | Unknown
+
+[<Struct>]
+type CardRegulatedStatus =
+    | Regulated
+    | Unregulated
+
+[<Struct>]
+type CardStatus =
     | New
-    | Validated
-    | Verified
-    | VerificationFailed
-    | TokenizedAccountNumberDeactivated
     | Errored
+
+[<Struct>]
+type CardTokenizationMethod =
+    | AndroidPay
+    | ApplePay
+    | Masterpass
+    | VisaCheckout
+
+type TokenCardNetworks =
+    {
+        /// The preferred network for co-branded cards. Can be `cartes_bancaires`, `mastercard`, `visa` or `invalid_preference` if requested network is not valid for the card.
+        Preferred: string option
+    }
+
+type AccountFutureRequirementsDisabledReason =
+    | [<JsonPropertyName("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
+    | Listed
+    | Other
+    | PlatformPaused
+    | [<JsonPropertyName("rejected.fraud")>] RejectedFraud
+    | [<JsonPropertyName("rejected.incomplete_verification")>] RejectedIncompleteVerification
+    | [<JsonPropertyName("rejected.listed")>] RejectedListed
+    | [<JsonPropertyName("rejected.other")>] RejectedOther
+    | [<JsonPropertyName("rejected.platform_fraud")>] RejectedPlatformFraud
+    | [<JsonPropertyName("rejected.platform_other")>] RejectedPlatformOther
+    | [<JsonPropertyName("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
+    | [<JsonPropertyName("rejected.terms_of_service")>] RejectedTermsOfService
+    | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
+    | [<JsonPropertyName("requirements.pending_verification")>] RequirementsPendingVerification
+    | UnderReview
+
+type AccountRequirementsAlternative =
+    {
+        /// Fields that can be provided to resolve all fields in `original_fields_due`.
+        AlternativeFieldsDue: string list
+        /// Fields that are due and can be resolved by providing all fields in `alternative_fields_due`.
+        OriginalFieldsDue: string list
+    }
 
 type AccountRequirementsErrorCode =
     | ExternalRequest
@@ -665,6 +1371,1354 @@ type AccountRequirementsError =
         Requirement: string
     }
 
+type AccountFutureRequirements =
+    {
+        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
+        Alternatives: AccountRequirementsAlternative list option
+        /// Date on which `future_requirements` becomes the main `requirements` hash and `future_requirements` becomes empty. After the transition, `currently_due` requirements may immediately become `past_due`, but the account may also be given a grace period depending on its enablement state prior to transitioning.
+        CurrentDeadline: DateTime option
+        /// Fields that need to be resolved to keep the account enabled. If not resolved by `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash.
+        CurrentlyDue: string list option
+        /// This is typed as an enum for consistency with `requirements.disabled_reason`.
+        DisabledReason: AccountFutureRequirementsDisabledReason option
+        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        Errors: AccountRequirementsError list option
+        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well.
+        EventuallyDue: string list option
+        /// Fields that haven't been resolved by `requirements.current_deadline`. These fields need to be resolved to enable the capability on the account. `future_requirements.past_due` is a subset of `requirements.past_due`.
+        PastDue: string list option
+        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
+        PendingVerification: string list option
+    }
+
+type AccountGroupMembership =
+    {
+        /// The group the account is in to determine their payments pricing, and null if the account is on customized pricing. [See the Platform pricing tool documentation](https://docs.stripe.com/connect/platform-pricing-tools) for details.
+        PaymentsPricing: string option
+    }
+
+type AccountRequirementsDisabledReason =
+    | [<JsonPropertyName("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
+    | Listed
+    | Other
+    | PlatformPaused
+    | [<JsonPropertyName("rejected.fraud")>] RejectedFraud
+    | [<JsonPropertyName("rejected.incomplete_verification")>] RejectedIncompleteVerification
+    | [<JsonPropertyName("rejected.listed")>] RejectedListed
+    | [<JsonPropertyName("rejected.other")>] RejectedOther
+    | [<JsonPropertyName("rejected.platform_fraud")>] RejectedPlatformFraud
+    | [<JsonPropertyName("rejected.platform_other")>] RejectedPlatformOther
+    | [<JsonPropertyName("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
+    | [<JsonPropertyName("rejected.terms_of_service")>] RejectedTermsOfService
+    | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
+    | [<JsonPropertyName("requirements.pending_verification")>] RequirementsPendingVerification
+    | UnderReview
+
+type AccountRequirements =
+    {
+        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
+        Alternatives: AccountRequirementsAlternative list option
+        /// Date by which the fields in `currently_due` must be collected to keep the account enabled. These fields may disable the account sooner if the next threshold is reached before they are collected.
+        CurrentDeadline: DateTime option
+        /// Fields that need to be resolved to keep the account enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
+        CurrentlyDue: string list option
+        /// If the account is disabled, this enum describes why. [Learn more about handling verification issues](https://docs.stripe.com/connect/handling-api-verification).
+        DisabledReason: AccountRequirementsDisabledReason option
+        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        Errors: AccountRequirementsError list option
+        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set.
+        EventuallyDue: string list option
+        /// Fields that haven't been resolved by `current_deadline`. These fields need to be resolved to enable the account.
+        PastDue: string list option
+        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
+        PendingVerification: string list option
+    }
+
+type AccountBacsDebitPaymentsSettings =
+    {
+        /// The Bacs Direct Debit display name for this account. For payments made with Bacs Direct Debit, this name appears on the mandate as the statement descriptor. Mobile banking apps display it as the name of the business. To use custom branding, set the Bacs Direct Debit Display Name during or right after creation. Custom branding incurs an additional monthly fee for the platform. The fee appears 5 business days after requesting Bacs. If you don't set the display name before requesting Bacs capability, it's automatically set as "Stripe" and the account is onboarded to Stripe branding, which is free.
+        DisplayName: string option
+        /// The Bacs Direct Debit Service user number for this account. For payments made with Bacs Direct Debit, this number is a unique identifier of the account with our banking partners.
+        ServiceUserNumber: string option
+    }
+
+type AccountBrandingSettings =
+    {
+        /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px.
+        Icon: StripeId<Markers.File> option
+        /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A logo for the account that will be used in Checkout instead of the icon and without the account's name next to it if provided. Must be at least 128px x 128px.
+        Logo: StripeId<Markers.File> option
+        /// A CSS hex color value representing the primary branding color for this account
+        PrimaryColor: string option
+        /// A CSS hex color value representing the secondary branding color for this account
+        SecondaryColor: string option
+    }
+
+type CardIssuingAccountTermsOfService =
+    {
+        /// The Unix timestamp marking when the account representative accepted the service agreement.
+        Date: int option
+        /// The IP address from which the account representative accepted the service agreement.
+        Ip: string option
+        /// The user agent of the browser from which the account representative accepted the service agreement.
+        UserAgent: string option
+    }
+
+type AccountCardIssuingSettings =
+    { TosAcceptance: CardIssuingAccountTermsOfService option }
+
+type AccountDeclineChargeOn =
+    {
+        /// Whether Stripe automatically declines charges with an incorrect ZIP or postal code. This setting only applies when a ZIP or postal code is provided and they fail bank verification.
+        AvsFailure: bool
+        /// Whether Stripe automatically declines charges with an incorrect CVC. This setting only applies when a CVC is provided and it fails bank verification.
+        CvcFailure: bool
+    }
+
+type AccountCardPaymentsSettings =
+    {
+        DeclineOn: AccountDeclineChargeOn option
+        /// The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. `statement_descriptor_prefix` is useful for maximizing descriptor space for the dynamic portion.
+        StatementDescriptorPrefix: string option
+        /// The Kana variation of the default text that appears on credit card statements when a charge is made (Japan only). This field prefixes any dynamic `statement_descriptor_suffix_kana` specified on the charge. `statement_descriptor_prefix_kana` is useful for maximizing descriptor space for the dynamic portion.
+        StatementDescriptorPrefixKana: string option
+        /// The Kanji variation of the default text that appears on credit card statements when a charge is made (Japan only). This field prefixes any dynamic `statement_descriptor_suffix_kanji` specified on the charge. `statement_descriptor_prefix_kanji` is useful for maximizing descriptor space for the dynamic portion.
+        StatementDescriptorPrefixKanji: string option
+    }
+
+type AccountDashboardSettings =
+    {
+        /// The display name for this account. This is used on the Stripe Dashboard to differentiate between accounts.
+        DisplayName: string option
+        /// The timezone used in the Stripe Dashboard for this account. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones).
+        Timezone: string option
+    }
+
+[<Struct>]
+type AccountInvoicesSettingsHostedPaymentMethodSave =
+    | Always
+    | Never
+    | Offer
+
+type AccountInvoicesSettings =
+    {
+        /// The list of default Account Tax IDs to automatically include on invoices. Account Tax IDs get added when an invoice is finalized.
+        DefaultAccountTaxIds: StripeId<Markers.TaxId> list option
+        /// Whether to save the payment method after a payment is completed for a one-time invoice or a subscription invoice when the customer already has a default payment method on the hosted invoice page.
+        HostedPaymentMethodSave: AccountInvoicesSettingsHostedPaymentMethodSave option
+    }
+
+type AccountPaymentsSettings =
+    {
+        /// The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge.
+        StatementDescriptor: string option
+        /// The Kana variation of `statement_descriptor` used for charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
+        StatementDescriptorKana: string option
+        /// The Kanji variation of `statement_descriptor` used for charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
+        StatementDescriptorKanji: string option
+        /// The Kana variation of `statement_descriptor_prefix` used for card charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
+        StatementDescriptorPrefixKana: string option
+        /// The Kanji variation of `statement_descriptor_prefix` used for card charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
+        StatementDescriptorPrefixKanji: string option
+    }
+
+type AccountPayoutSettings =
+    {
+        /// A Boolean indicating if Stripe should try to reclaim negative balances from an attached bank account. See [Understanding Connect account balances](/connect/account-balances) for details. The default value is `false` when [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts, otherwise `true`.
+        DebitNegativeBalances: bool
+        Schedule: TransferSchedule
+        /// The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard.
+        StatementDescriptor: string option
+    }
+
+type AccountSepaDebitPaymentsSettings =
+    {
+        /// SEPA creditor identifier that identifies the company making the payment.
+        CreditorId: string option
+    }
+
+type AccountTermsOfService =
+    {
+        /// The Unix timestamp marking when the account representative accepted the service agreement.
+        Date: int option
+        /// The IP address from which the account representative accepted the service agreement.
+        Ip: string option
+        /// The user agent of the browser from which the account representative accepted the service agreement.
+        UserAgent: string option
+    }
+
+type AccountTreasurySettings =
+    { TosAcceptance: AccountTermsOfService option }
+
+type AccountSettings =
+    { BacsDebitPayments: AccountBacsDebitPaymentsSettings option
+      Branding: AccountBrandingSettings
+      CardIssuing: AccountCardIssuingSettings option
+      CardPayments: AccountCardPaymentsSettings
+      Dashboard: AccountDashboardSettings
+      Invoices: AccountInvoicesSettings option
+      Payments: AccountPaymentsSettings
+      Payouts: AccountPayoutSettings option
+      SepaDebitPayments: AccountSepaDebitPaymentsSettings option
+      Treasury: AccountTreasurySettings option }
+
+type AccountTosAcceptance =
+    {
+        /// The Unix timestamp marking when the account representative accepted their service agreement
+        Date: DateTime option
+        /// The IP address from which the account representative accepted their service agreement
+        Ip: string option
+        /// The user's service agreement type
+        ServiceAgreement: string option
+        /// The user agent of the browser from which the account representative accepted their service agreement
+        UserAgent: string option
+    }
+
+[<Struct>]
+type AccountType =
+    | Custom
+    | Express
+    | [<JsonPropertyName("none")>] None'
+    | Standard
+
+[<Struct>]
+type AccountUnificationAccountControllerFeesPayer =
+    | Account
+    | Application
+    | ApplicationCustom
+    | ApplicationExpress
+
+type AccountUnificationAccountControllerFees =
+    {
+        /// A value indicating the responsible payer of a bundle of Stripe fees for pricing-control eligible products on this account. Learn more about [fee behavior on connected accounts](https://docs.stripe.com/connect/direct-charges-fee-payer-behavior).
+        Payer: AccountUnificationAccountControllerFeesPayer
+    }
+
+[<Struct>]
+type AccountUnificationAccountControllerLossesPayments =
+    | Application
+    | Stripe
+
+type AccountUnificationAccountControllerLosses =
+    {
+        /// A value indicating who is liable when this account can't pay back negative balances from payments.
+        Payments: AccountUnificationAccountControllerLossesPayments
+    }
+
+[<Struct>]
+type AccountUnificationAccountControllerRequirementCollection =
+    | Application
+    | Stripe
+
+[<Struct>]
+type AccountUnificationAccountControllerStripeDashboardType =
+    | Express
+    | Full
+    | [<JsonPropertyName("none")>] None'
+
+type AccountUnificationAccountControllerStripeDashboard =
+    {
+        /// A value indicating the Stripe dashboard this account has access to independent of the Connect application.
+        Type: AccountUnificationAccountControllerStripeDashboardType
+    }
+
+[<Struct>]
+type AccountUnificationAccountControllerType =
+    | Account
+    | Application
+
+type AccountUnificationAccountController =
+    {
+        Fees: AccountUnificationAccountControllerFees option
+        /// `true` if the Connect application retrieving the resource controls the account and can therefore exercise [platform controls](https://docs.stripe.com/connect/platform-controls-for-standard-accounts). Otherwise, this field is null.
+        IsController: bool option
+        Losses: AccountUnificationAccountControllerLosses option
+        /// A value indicating responsibility for collecting requirements on this account. Only returned when the Connect application retrieving the resource controls the account.
+        RequirementCollection: AccountUnificationAccountControllerRequirementCollection option
+        StripeDashboard: AccountUnificationAccountControllerStripeDashboard option
+        /// The controller type. Can be `application`, if a Connect application controls the account, or `account`, if the account controls itself.
+        Type: AccountUnificationAccountControllerType
+    }
+
+[<Struct>]
+type LegalEntityCompanyOwnershipExemptionReason =
+    | QualifiedEntityExceedsOwnershipThreshold
+    | QualifiesAsFinancialInstitution
+
+type LegalEntityCompanyStructure =
+    | FreeZoneEstablishment
+    | FreeZoneLlc
+    | GovernmentInstrumentality
+    | GovernmentalUnit
+    | IncorporatedNonProfit
+    | IncorporatedPartnership
+    | LimitedLiabilityPartnership
+    | Llc
+    | MultiMemberLlc
+    | PrivateCompany
+    | PrivateCorporation
+    | PrivatePartnership
+    | PublicCompany
+    | PublicCorporation
+    | PublicPartnership
+    | RegisteredCharity
+    | SingleMemberLlc
+    | SoleEstablishment
+    | SoleProprietorship
+    | TaxExemptGovernmentInstrumentality
+    | UnincorporatedAssociation
+    | UnincorporatedNonProfit
+    | UnincorporatedPartnership
+
+type LegalEntityCompanyVerificationDocumentDetailsCode =
+    | DocumentCorrupt
+    | DocumentExpired
+    | DocumentFailedCopy
+    | DocumentFailedGreyscale
+    | DocumentFailedOther
+    | DocumentFailedTestMode
+    | DocumentFraudulent
+    | DocumentIncomplete
+    | DocumentInvalid
+    | DocumentManipulated
+    | DocumentNotReadable
+    | DocumentNotUploaded
+    | DocumentTypeNotSupported
+    | DocumentTooLarge
+
+type LegalEntityCompanyVerificationDocument =
+    {
+        /// The back of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `additional_verification`. Note that `additional_verification` files are [not downloadable](/file-upload#uploading-a-file).
+        Back: StripeId<Markers.File> option
+        /// A user-displayable string describing the verification state of this document.
+        Details: string option
+        /// One of `document_corrupt`, `document_expired`, `document_failed_copy`, `document_failed_greyscale`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_not_readable`, `document_not_uploaded`, `document_type_not_supported`, or `document_too_large`. A machine-readable code specifying the verification state for this document.
+        DetailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option
+        /// The front of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `additional_verification`. Note that `additional_verification` files are [not downloadable](/file-upload#uploading-a-file).
+        Front: StripeId<Markers.File> option
+    }
+
+type LegalEntityCompanyVerification =
+    { Document: LegalEntityCompanyVerificationDocument }
+
+type LegalEntityDirectorshipDeclaration =
+    {
+        /// The Unix timestamp marking when the directorship declaration attestation was made.
+        Date: DateTime option
+        /// The IP address from which the directorship declaration attestation was made.
+        Ip: string option
+        /// The user-agent string from the browser where the directorship declaration attestation was made.
+        UserAgent: string option
+    }
+
+type LegalEntityJapanAddress =
+    {
+        /// City/Ward.
+        City: string option
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        /// Block/Building number.
+        [<JsonPropertyName("line1")>]
+        Line1: string option
+        /// Building details.
+        [<JsonPropertyName("line2")>]
+        Line2: string option
+        /// ZIP or postal code.
+        PostalCode: string option
+        /// Prefecture.
+        State: string option
+        /// Town/cho-me.
+        Town: string option
+    }
+
+type LegalEntityRegistrationDate =
+    {
+        /// The day of registration, between 1 and 31.
+        Day: int option
+        /// The month of registration, between 1 and 12.
+        Month: int option
+        /// The four-digit year of registration.
+        Year: int option
+    }
+
+type LegalEntityRepresentativeDeclaration =
+    {
+        /// The Unix timestamp marking when the representative declaration attestation was made.
+        Date: DateTime option
+        /// The IP address from which the representative declaration attestation was made.
+        Ip: string option
+        /// The user-agent string from the browser where the representative declaration attestation was made.
+        UserAgent: string option
+    }
+
+type LegalEntityUboDeclaration =
+    {
+        /// The Unix timestamp marking when the beneficial owner attestation was made.
+        Date: DateTime option
+        /// The IP address from which the beneficial owner attestation was made.
+        Ip: string option
+        /// The user-agent string from the browser where the beneficial owner attestation was made.
+        UserAgent: string option
+    }
+
+type LegalEntityCompany =
+    {
+        Address: Address option
+        /// The Kana variation of the company's primary address (Japan only).
+        AddressKana: LegalEntityJapanAddress option
+        /// The Kanji variation of the company's primary address (Japan only).
+        AddressKanji: LegalEntityJapanAddress option
+        /// Whether the company's directors have been provided. This Boolean will be `true` if you've manually indicated that all directors are provided via [the `directors_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-directors_provided).
+        DirectorsProvided: bool option
+        /// This hash is used to attest that the director information provided to Stripe is both current and correct.
+        DirectorshipDeclaration: LegalEntityDirectorshipDeclaration option
+        /// Whether the company's executives have been provided. This Boolean will be `true` if you've manually indicated that all executives are provided via [the `executives_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-executives_provided), or if Stripe determined that sufficient executives were provided.
+        ExecutivesProvided: bool option
+        /// The export license ID number of the company, also referred as Import Export Code (India only).
+        ExportLicenseId: string option
+        /// The purpose code to use for export transactions (India only).
+        ExportPurposeCode: string option
+        /// The company's legal name. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        Name: string option
+        /// The Kana variation of the company's legal name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        NameKana: string option
+        /// The Kanji variation of the company's legal name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        NameKanji: string option
+        /// Whether the company's owners have been provided. This Boolean will be `true` if you've manually indicated that all owners are provided via [the `owners_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-owners_provided), or if Stripe determined that sufficient owners were provided. Stripe determines ownership requirements using both the number of owners provided and their total percent ownership (calculated by adding the `percent_ownership` of each owner together).
+        OwnersProvided: bool option
+        /// This hash is used to attest that the beneficial owner information provided to Stripe is both current and correct.
+        OwnershipDeclaration: LegalEntityUboDeclaration option
+        /// This value is used to determine if a business is exempt from providing ultimate beneficial owners. See [this support article](https://support.stripe.com/questions/exemption-from-providing-ownership-details) and [changelog](https://docs.stripe.com/changelog/acacia/2025-01-27/ownership-exemption-reason-accounts-api) for more details.
+        OwnershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason option
+        /// The company's phone number (used for verification).
+        Phone: string option
+        RegistrationDate: LegalEntityRegistrationDate option
+        /// This hash is used to attest that the representative is authorized to act as the representative of their legal entity.
+        RepresentativeDeclaration: LegalEntityRepresentativeDeclaration option
+        /// The category identifying the legal structure of the company or legal entity. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`. See [Business structure](https://docs.stripe.com/connect/identity-verification#business-structure) for more details.
+        Structure: LegalEntityCompanyStructure option
+        /// Whether the company's business ID number was provided.
+        TaxIdProvided: bool option
+        /// The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
+        TaxIdRegistrar: string option
+        /// Whether the company's business VAT number was provided.
+        VatIdProvided: bool option
+        /// Information on the verification state of the company.
+        Verification: LegalEntityCompanyVerification option
+    }
+
+type LegalEntityDob =
+    {
+        /// The day of birth, between 1 and 31.
+        Day: int option
+        /// The month of birth, between 1 and 12.
+        Month: int option
+        /// The four-digit year of birth.
+        Year: int option
+    }
+
+type LegalEntityPersonVerificationDetailsCode =
+    | DocumentAddressMismatch
+    | DocumentDobMismatch
+    | DocumentDuplicateType
+    | DocumentIdNumberMismatch
+    | DocumentNameMismatch
+    | DocumentNationalityMismatch
+    | FailedKeyedIdentity
+    | FailedOther
+
+type LegalEntityPersonVerificationDocumentDetailsCode =
+    | DocumentCorrupt
+    | DocumentCountryNotSupported
+    | DocumentExpired
+    | DocumentFailedCopy
+    | DocumentFailedOther
+    | DocumentFailedTestMode
+    | DocumentFraudulent
+    | DocumentFailedGreyscale
+    | DocumentIncomplete
+    | DocumentInvalid
+    | DocumentManipulated
+    | DocumentMissingBack
+    | DocumentMissingFront
+    | DocumentNotReadable
+    | DocumentNotUploaded
+    | DocumentPhotoMismatch
+    | DocumentTooLarge
+    | DocumentTypeNotSupported
+
+type LegalEntityPersonVerificationDocument =
+    {
+        /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+        Back: StripeId<Markers.File> option
+        /// A user-displayable string describing the verification state of this document. For example, if a document is uploaded and the picture is too fuzzy, this may say "Identity document is too unclear to read".
+        Details: string option
+        /// One of `document_corrupt`, `document_country_not_supported`, `document_expired`, `document_failed_copy`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_failed_greyscale`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_missing_back`, `document_missing_front`, `document_not_readable`, `document_not_uploaded`, `document_photo_mismatch`, `document_too_large`, or `document_type_not_supported`. A machine-readable code specifying the verification state for this document.
+        DetailsCode: LegalEntityPersonVerificationDocumentDetailsCode option
+        /// The front of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+        Front: StripeId<Markers.File> option
+    }
+
+[<Struct>]
+type LegalEntityPersonVerificationStatus =
+    | Unverified
+    | Pending
+    | Verified
+
+type LegalEntityPersonVerification =
+    {
+        /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
+        AdditionalDocument: LegalEntityPersonVerificationDocument option
+        /// A user-displayable string describing the verification state for the person. For example, this may say "Provided identity information could not be verified".
+        Details: string option
+        /// One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person.
+        DetailsCode: LegalEntityPersonVerificationDetailsCode option
+        Document: LegalEntityPersonVerificationDocument option
+        /// The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`. Please refer [guide](https://docs.stripe.com/connect/handling-api-verification) to handle verification updates.
+        Status: LegalEntityPersonVerificationStatus
+    }
+
+type PersonAdditionalTosAcceptance =
+    {
+        /// The Unix timestamp marking when the legal guardian accepted the service agreement.
+        Date: DateTime option
+        /// The IP address from which the legal guardian accepted the service agreement.
+        Ip: string option
+        /// The user agent of the browser from which the legal guardian accepted the service agreement.
+        UserAgent: string option
+    }
+
+type PersonAdditionalTosAcceptances =
+    {
+        /// Details on the legal guardian's acceptance of the main Stripe service agreement.
+        Account: PersonAdditionalTosAcceptance option
+    }
+
+type PersonFutureRequirements =
+    {
+        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
+        Alternatives: AccountRequirementsAlternative list option
+        /// Fields that need to be resolved to keep the person's account enabled. If not resolved by the account's `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash, and may immediately become `past_due`, but the account may also be given a grace period depending on the account's enablement state prior to transition.
+        CurrentlyDue: string list
+        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        Errors: AccountRequirementsError list
+        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `future_requirements[current_deadline]` becomes set.
+        EventuallyDue: string list
+        /// Fields that haven't been resolved by the account's `requirements.current_deadline`. These fields need to be resolved to enable the person's account. `future_requirements.past_due` is a subset of `requirements.past_due`.
+        PastDue: string list
+        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
+        PendingVerification: string list
+    }
+
+[<Struct>]
+type PersonPoliticalExposure =
+    | Existing
+    | [<JsonPropertyName("none")>] None'
+
+type PersonRelationship =
+    {
+        /// Whether the person is the authorizer of the account's representative.
+        Authorizer: bool option
+        /// Whether the person is a director of the account's legal entity. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
+        Director: bool option
+        /// Whether the person has significant responsibility to control, manage, or direct the organization.
+        Executive: bool option
+        /// Whether the person is the legal guardian of the account's representative.
+        LegalGuardian: bool option
+        /// Whether the person is an owner of the account’s legal entity.
+        Owner: bool option
+        /// The percent owned by the person of the account's legal entity.
+        PercentOwnership: decimal option
+        /// Whether the person is authorized as the primary representative of the account. This is the person nominated by the business to provide information about themselves, and general information about the account. There can only be one representative at any given time. At the time the account is created, this person should be set to the person responsible for opening the account.
+        Representative: bool option
+        /// The person's title (e.g., CEO, Support Engineer).
+        Title: string option
+    }
+
+type PersonRequirements =
+    {
+        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
+        Alternatives: AccountRequirementsAlternative list option
+        /// Fields that need to be resolved to keep the person's account enabled. If not resolved by the account's `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
+        CurrentlyDue: string list
+        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        Errors: AccountRequirementsError list
+        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `current_deadline` becomes set.
+        EventuallyDue: string list
+        /// Fields that haven't been resolved by `current_deadline`. These fields need to be resolved to enable the person's account.
+        PastDue: string list
+        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
+        PendingVerification: string list
+    }
+
+type PersonEthnicityDetailsEthnicity =
+    | Cuban
+    | HispanicOrLatino
+    | Mexican
+    | NotHispanicOrLatino
+    | OtherHispanicOrLatino
+    | PreferNotToAnswer
+    | PuertoRican
+
+type PersonEthnicityDetails =
+    {
+        /// The persons ethnicity
+        Ethnicity: PersonEthnicityDetailsEthnicity list option
+        /// Please specify your origin, when other is selected.
+        EthnicityOther: string option
+    }
+
+type PersonRaceDetailsRace =
+    | AfricanAmerican
+    | AmericanIndianOrAlaskaNative
+    | Asian
+    | AsianIndian
+    | BlackOrAfricanAmerican
+    | Chinese
+    | Ethiopian
+    | Filipino
+    | GuamanianOrChamorro
+    | Haitian
+    | Jamaican
+    | Japanese
+    | Korean
+    | NativeHawaiian
+    | NativeHawaiianOrOtherPacificIslander
+    | Nigerian
+    | OtherAsian
+    | OtherBlackOrAfricanAmerican
+    | OtherPacificIslander
+    | PreferNotToAnswer
+    | Samoan
+    | Somali
+    | Vietnamese
+    | White
+
+type PersonRaceDetails =
+    {
+        /// The persons race.
+        Race: PersonRaceDetailsRace list option
+        /// Please specify your race, when other is selected.
+        RaceOther: string option
+    }
+
+type PersonUsCfpbData =
+    {
+        /// The persons ethnicity details
+        EthnicityDetails: PersonEthnicityDetails option
+        /// The persons race details
+        RaceDetails: PersonRaceDetails option
+        /// The persons self-identified gender
+        SelfIdentifiedGender: string option
+    }
+
+/// This is an object representing a person associated with a Stripe account.
+/// A platform can only access a subset of data in a person for an account where [account.controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`, which includes Standard and Express accounts, after creating an Account Link or Account Session to start Connect onboarding.
+/// See the [Standard onboarding](/connect/standard-accounts) or [Express onboarding](/connect/express-accounts) documentation for information about prefilling information and account onboarding steps. Learn more about [handling identity verification with the API](/connect/handling-api-verification#person-information).
+type Person =
+    {
+        /// The account the person is associated with.
+        Account: string option
+        AdditionalTosAcceptances: PersonAdditionalTosAcceptances option
+        Address: Address option
+        /// The Kana variation of the person's address (Japan only).
+        AddressKana: LegalEntityJapanAddress option
+        /// The Kanji variation of the person's address (Japan only).
+        AddressKanji: LegalEntityJapanAddress option
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        Dob: LegalEntityDob option
+        /// The person's email address. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        Email: string option
+        /// The person's first name. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        FirstName: string option
+        /// The Kana variation of the person's first name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        FirstNameKana: string option
+        /// The Kanji variation of the person's first name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        FirstNameKanji: string option
+        /// A list of alternate names or aliases that the person is known by. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        FullNameAliases: string list option
+        /// Information about the [upcoming new requirements for this person](https://docs.stripe.com/connect/custom-accounts/future-requirements), including what information needs to be collected, and by when.
+        FutureRequirements: PersonFutureRequirements option
+        /// The person's gender.
+        Gender: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// Whether the person's `id_number` was provided. True if either the full ID number was provided or if only the required part of the ID number was provided (ex. last four of an individual's SSN for the US indicated by `ssn_last_4_provided`).
+        IdNumberProvided: bool option
+        /// Whether the person's `id_number_secondary` was provided.
+        IdNumberSecondaryProvided: bool option
+        /// The person's last name. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        LastName: string option
+        /// The Kana variation of the person's last name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        LastNameKana: string option
+        /// The Kanji variation of the person's last name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
+        LastNameKanji: string option
+        /// The person's maiden name.
+        MaidenName: string option
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The country where the person is a national.
+        Nationality: string option
+        /// The person's phone number.
+        Phone: string option
+        /// Indicates if the person or any of their representatives, family members, or other closely related persons, declares that they hold or have held an important public job or function, in any jurisdiction.
+        PoliticalExposure: PersonPoliticalExposure option
+        RegisteredAddress: Address option
+        Relationship: PersonRelationship option
+        /// Information about the requirements for this person, including what information needs to be collected, and by when.
+        Requirements: PersonRequirements option
+        /// Whether the last four digits of the person's Social Security number have been provided (U.S. only).
+        SsnLast4Provided: bool option
+        /// Demographic data related to the person.
+        UsCfpbData: PersonUsCfpbData option
+        Verification: LegalEntityPersonVerification option
+    }
+
+type CancellationDetailsFeedback =
+    | CustomerService
+    | LowQuality
+    | MissingFeatures
+    | Other
+    | SwitchedService
+    | TooComplex
+    | TooExpensive
+    | Unused
+
+[<Struct>]
+type CancellationDetailsReason =
+    | CanceledByRetentionPolicy
+    | CancellationRequested
+    | PaymentDisputed
+    | PaymentFailed
+
+type CancellationDetails =
+    {
+        /// Additional comments about why the user canceled the subscription, if the subscription was canceled explicitly by the user.
+        Comment: string option
+        /// The customer submitted reason for why they canceled, if the subscription was canceled explicitly by the user.
+        Feedback: CancellationDetailsFeedback option
+        /// Why this subscription was canceled.
+        Reason: CancellationDetailsReason option
+    }
+
+type SmorResourceManagedPayments =
+    {
+        /// Set to `true` to enable [Managed Payments](https://docs.stripe.com/payments/managed-payments), Stripe's merchant of record solution, for this session.
+        Enabled: bool
+    }
+
+type SubscriptionApplication'AnyOf =
+    | String of string
+    | Application of Application
+    | DeletedApplication of DeletedApplication
+
+[<Struct>]
+type ConnectAccountReferenceType =
+    | Account
+    | Self
+
+type ConnectAccountReference =
+    {
+        /// The connected account being referenced when `type` is `account`.
+        Account: StripeId<Markers.Account> option
+        /// Type of the account referenced.
+        Type: ConnectAccountReferenceType
+    }
+
+type SubscriptionAutomaticTax =
+    {
+        /// Whether Stripe automatically computes tax on this subscription.
+        Enabled: bool
+        /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
+        Liability: ConnectAccountReference option
+    }
+
+type SubscriptionBillingThresholds =
+    {
+        /// Monetary threshold that triggers the subscription to create an invoice
+        AmountGte: int option
+        /// Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged. This value may not be `true` if the subscription contains items with plans that have `aggregate_usage=last_ever`.
+        ResetBillingCycleAnchor: bool option
+    }
+
+[<Struct>]
+type SubscriptionCollectionMethod =
+    | ChargeAutomatically
+    | SendInvoice
+
+[<Struct>]
+type SubscriptionPendingInvoiceItemIntervalInterval =
+    | Day
+    | Month
+    | Week
+    | Year
+
+type SubscriptionPendingInvoiceItemInterval =
+    {
+        /// Specifies invoicing frequency. Either `day`, `week`, `month` or `year`.
+        Interval: SubscriptionPendingInvoiceItemIntervalInterval
+        /// The number of intervals between invoices. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
+        IntervalCount: int
+    }
+
+type SubscriptionStatus =
+    | Active
+    | Canceled
+    | Incomplete
+    | IncompleteExpired
+    | PastDue
+    | Paused
+    | Trialing
+    | Unpaid
+
+type SubscriptionTransferData =
+    {
+        /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
+        AmountPercent: decimal option
+        /// The account where funds from the payment will be transferred to upon payment success.
+        Destination: StripeId<Markers.Account>
+    }
+
+type SubscriptionsResourceBillingCycleAnchorConfig =
+    {
+        /// The day of the month of the billing_cycle_anchor.
+        DayOfMonth: int
+        /// The hour of the day of the billing_cycle_anchor.
+        Hour: int option
+        /// The minute of the hour of the billing_cycle_anchor.
+        Minute: int option
+        /// The month to start full cycle billing periods.
+        Month: int option
+        /// The second of the minute of the billing_cycle_anchor.
+        Second: int option
+    }
+
+[<Struct>]
+type SubscriptionsResourceBillingModeFlexibleProrationDiscounts =
+    | Included
+    | Itemized
+
+type SubscriptionsResourceBillingModeFlexible =
+    {
+        /// Controls how invoices and invoice items display proration amounts and discount amounts.
+        ProrationDiscounts: SubscriptionsResourceBillingModeFlexibleProrationDiscounts option
+    }
+
+[<Struct>]
+type SubscriptionsResourceBillingModeType =
+    | Classic
+    | Flexible
+
+/// The billing mode of the subscription.
+type SubscriptionsResourceBillingMode =
+    {
+        /// Configure behavior for flexible billing mode
+        Flexible: SubscriptionsResourceBillingModeFlexible option
+        /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
+        Type: SubscriptionsResourceBillingModeType
+        /// Details on when the current billing_mode was adopted.
+        UpdatedAt: DateTime option
+    }
+
+[<Struct>]
+type SubscriptionsResourcePauseCollectionBehavior =
+    | KeepAsDraft
+    | MarkUncollectible
+    | Void
+
+/// The Pause Collection settings determine how we will pause collection for this subscription and for how long the subscription
+/// should be paused.
+type SubscriptionsResourcePauseCollection =
+    {
+        /// The payment collection behavior for this subscription while paused.
+        Behavior: SubscriptionsResourcePauseCollectionBehavior
+        /// The time after which the subscription will resume collecting payments.
+        ResumesAt: DateTime option
+    }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType =
+    | Business
+    | Personal
+
+type InvoicePaymentMethodOptionsAcssDebitMandateOptions =
+    {
+        /// Transaction type of the mandate.
+        TransactionType: InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
+    }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsAcssDebitVerificationMethod =
+    | Automatic
+    | Instant
+    | Microdeposits
+
+type InvoicePaymentMethodOptionsAcssDebit =
+    {
+        MandateOptions: InvoicePaymentMethodOptionsAcssDebitMandateOptions option
+        /// Bank account verification method. The default value is `automatic`.
+        VerificationMethod: InvoicePaymentMethodOptionsAcssDebitVerificationMethod option
+    }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsBancontactPreferredLanguage =
+    | De
+    | En
+    | Fr
+    | Nl
+
+type InvoicePaymentMethodOptionsBancontact =
+    {
+        /// Preferred language of the Bancontact authorization page that the customer is redirected to.
+        PreferredLanguage: InvoicePaymentMethodOptionsBancontactPreferredLanguage
+    }
+
+type InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry =
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("FR")>] FR
+    | [<JsonPropertyName("IE")>] IE
+    | [<JsonPropertyName("NL")>] NL
+
+type InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer =
+    {
+        /// The desired country code of the bank account information. Permitted values include: `DE`, `FR`, `IE`, or `NL`.
+        Country: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry
+    }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsCustomerBalanceBankTransferType =
+    | EuBankTransfer
+    | GbBankTransfer
+    | JpBankTransfer
+    | MxBankTransfer
+    | UsBankTransfer
+
+type InvoicePaymentMethodOptionsCustomerBalanceBankTransfer =
+    {
+        EuBankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer option
+        /// The bank transfer type that can be used for funding. Permitted values include: `eu_bank_transfer`, `gb_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`.
+        Type: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option
+    }
+
+type InvoicePaymentMethodOptionsCustomerBalance =
+    { BankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer option }
+
+type InvoicePaymentMethodOptionsKonbini =
+    { InvoicePaymentMethodOptionsKonbini: string option }
+
+[<Struct>]
+type InvoiceMandateOptionsPaytoAmountType =
+    | Fixed
+    | Maximum
+
+type InvoiceMandateOptionsPaytoPurpose =
+    | DependantSupport
+    | Government
+    | Loan
+    | Mortgage
+    | Other
+    | Pension
+    | Personal
+    | Retail
+    | Salary
+    | Tax
+    | Utility
+
+type InvoiceMandateOptionsPayto =
+    {
+        /// The maximum amount that can be collected in a single invoice. If you don't specify a maximum, then there is no limit.
+        Amount: int option
+        /// Only `maximum` is supported.
+        AmountType: InvoiceMandateOptionsPaytoAmountType option
+        /// The purpose for which payments are made. Has a default value based on your merchant category code.
+        Purpose: InvoiceMandateOptionsPaytoPurpose option
+    }
+
+type InvoicePaymentMethodOptionsPayto =
+    { MandateOptions: InvoiceMandateOptionsPayto option }
+
+type InvoicePaymentMethodOptionsSepaDebit =
+    { InvoicePaymentMethodOptionsSepaDebit: string option }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsMandateOptionsUpiAmountType =
+    | Fixed
+    | Maximum
+
+type InvoicePaymentMethodOptionsMandateOptionsUpi =
+    {
+        /// Amount to be charged for future payments.
+        Amount: int option
+        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
+        AmountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option
+        /// A description of the mandate or subscription that is meant to be displayed to the customer.
+        Description: string option
+        /// End date of the mandate or subscription.
+        EndDate: DateTime option
+    }
+
+type InvoicePaymentMethodOptionsUpi =
+    { MandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi option }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersAccountSubcategories =
+    | Checking
+    | Savings
+
+type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters =
+    {
+        /// The account subcategories to use to filter for possible accounts to link. Valid subcategories are `checking` and `savings`.
+        AccountSubcategories:
+            InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersAccountSubcategories list option
+    }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions =
+    | Balances
+    | Ownership
+    | PaymentMethod
+    | Transactions
+
+[<Struct>]
+type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPrefetch =
+    | Balances
+    | Ownership
+    | Transactions
+
+type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions =
+    {
+        Filters: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters option
+        /// The list of permissions to request. The `payment_method` permission must be included.
+        Permissions: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions list option
+        /// Data features requested to be retrieved upon account creation.
+        Prefetch: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPrefetch list option
+    }
+
+[<Struct>]
+type InvoicePaymentMethodOptionsUsBankAccountVerificationMethod =
+    | Automatic
+    | Instant
+    | Microdeposits
+
+type InvoicePaymentMethodOptionsUsBankAccount =
+    {
+        FinancialConnections: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions option
+        /// Bank account verification method. The default value is `automatic`.
+        VerificationMethod: InvoicePaymentMethodOptionsUsBankAccountVerificationMethod option
+    }
+
+[<Struct>]
+type InvoiceMandateOptionsCardAmountType =
+    | Fixed
+    | Maximum
+
+type InvoiceMandateOptionsCard =
+    {
+        /// Amount to be charged for future payments, specified in the presentment currency.
+        Amount: int option
+        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
+        AmountType: InvoiceMandateOptionsCardAmountType option
+        /// A description of the mandate or subscription that is meant to be displayed to the customer.
+        Description: string option
+    }
+
+type SubscriptionPaymentMethodOptionsCardNetwork =
+    | Amex
+    | CartesBancaires
+    | Diners
+    | Discover
+    | EftposAu
+    | Girocard
+    | Interac
+    | Jcb
+    | Link
+    | Mastercard
+    | Unionpay
+    | Unknown
+    | Visa
+
+[<Struct>]
+type SubscriptionPaymentMethodOptionsCardRequestThreeDSecure =
+    | Any
+    | Automatic
+    | Challenge
+
+type SubscriptionPaymentMethodOptionsCard =
+    {
+        MandateOptions: InvoiceMandateOptionsCard option
+        /// Selected network to process this Subscription on. Depends on the available networks of the card attached to the Subscription. Can be only set confirm-time.
+        Network: SubscriptionPaymentMethodOptionsCardNetwork option
+        /// We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://docs.stripe.com/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Read our guide on [manually requesting 3D Secure](https://docs.stripe.com/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
+        RequestThreeDSecure: SubscriptionPaymentMethodOptionsCardRequestThreeDSecure option
+    }
+
+[<Struct>]
+type SubscriptionPaymentMethodOptionsMandateOptionsPixAmountIncludesIof =
+    | Always
+    | Never
+
+[<Struct>]
+type SubscriptionPaymentMethodOptionsMandateOptionsPixPaymentSchedule =
+    | Halfyearly
+    | Monthly
+    | Quarterly
+    | Weekly
+    | Yearly
+
+type SubscriptionPaymentMethodOptionsMandateOptionsPix =
+    {
+        /// Amount to be charged for future payments.
+        Amount: int option
+        /// Determines if the amount includes the IOF tax.
+        AmountIncludesIof: SubscriptionPaymentMethodOptionsMandateOptionsPixAmountIncludesIof option
+        /// Date when the mandate expires and no further payments will be charged, in `YYYY-MM-DD`.
+        EndDate: string option
+        /// Schedule at which the future payments will be charged.
+        PaymentSchedule: SubscriptionPaymentMethodOptionsMandateOptionsPixPaymentSchedule option
+    }
+
+type SubscriptionPaymentMethodOptionsPix =
+    {
+        /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+        ExpiresAfterSeconds: int option
+        MandateOptions: SubscriptionPaymentMethodOptionsMandateOptionsPix option
+    }
+
+type SubscriptionsResourcePaymentMethodOptions =
+    {
+        /// This sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to invoices created by the subscription.
+        AcssDebit: InvoicePaymentMethodOptionsAcssDebit option
+        /// This sub-hash contains details about the Bancontact payment method options to pass to invoices created by the subscription.
+        Bancontact: InvoicePaymentMethodOptionsBancontact option
+        /// This sub-hash contains details about the Card payment method options to pass to invoices created by the subscription.
+        Card: SubscriptionPaymentMethodOptionsCard option
+        /// This sub-hash contains details about the Bank transfer payment method options to pass to invoices created by the subscription.
+        CustomerBalance: InvoicePaymentMethodOptionsCustomerBalance option
+        /// This sub-hash contains details about the Konbini payment method options to pass to invoices created by the subscription.
+        Konbini: InvoicePaymentMethodOptionsKonbini option
+        /// This sub-hash contains details about the PayTo payment method options to pass to invoices created by the subscription.
+        Payto: InvoicePaymentMethodOptionsPayto option
+        /// This sub-hash contains details about the Pix payment method options to pass to invoices created by the subscription.
+        Pix: SubscriptionPaymentMethodOptionsPix option
+        /// This sub-hash contains details about the SEPA Direct Debit payment method options to pass to invoices created by the subscription.
+        SepaDebit: InvoicePaymentMethodOptionsSepaDebit option
+        /// This sub-hash contains details about the UPI payment method options to pass to invoices created by the subscription.
+        Upi: InvoicePaymentMethodOptionsUpi option
+        /// This sub-hash contains details about the ACH direct debit payment method options to pass to invoices created by the subscription.
+        UsBankAccount: InvoicePaymentMethodOptionsUsBankAccount option
+    }
+
+type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
+    | AchCreditTransfer
+    | AchDebit
+    | AcssDebit
+    | Affirm
+    | AmazonPay
+    | AuBecsDebit
+    | BacsDebit
+    | Bancontact
+    | Boleto
+    | Card
+    | Cashapp
+    | Crypto
+    | Custom
+    | CustomerBalance
+    | Eps
+    | Fpx
+    | Giropay
+    | Grabpay
+    | Ideal
+    | JpCreditTransfer
+    | KakaoPay
+    | Klarna
+    | Konbini
+    | KrCard
+    | Link
+    | Multibanco
+    | NaverPay
+    | NzBankAccount
+    | P24
+    | PayByBank
+    | Payco
+    | Paynow
+    | Paypal
+    | Payto
+    | Pix
+    | Promptpay
+    | RevolutPay
+    | SepaCreditTransfer
+    | SepaDebit
+    | Sofort
+    | Swish
+    | Upi
+    | UsBankAccount
+    | WechatPay
+
+[<Struct>]
+type SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod =
+    | Off
+    | OnSubscription
+
+type SubscriptionsResourcePaymentSettings =
+    {
+        /// Payment-method-specific configuration to provide to invoices created by the subscription.
+        PaymentMethodOptions: SubscriptionsResourcePaymentMethodOptions option
+        /// The list of payment method types to provide to every invoice created by the subscription. If not set, Stripe attempts to automatically determine the types to use by looking at the invoice’s default payment method, the subscription’s default payment method, the customer’s default payment method, and your [invoice template settings](https://dashboard.stripe.com/settings/billing/invoice).
+        PaymentMethodTypes: SubscriptionsResourcePaymentSettingsPaymentMethodTypes list option
+        /// Configure whether Stripe updates `subscription.default_payment_method` when payment succeeds. Defaults to `off`.
+        SaveDefaultPaymentMethod: SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod option
+    }
+
+/// Pending Updates store the changes pending from a previous update that will be applied
+/// to the Subscription upon successful payment.
+type SubscriptionsResourcePendingUpdate =
+    {
+        /// If the update is applied, determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices. The timestamp is in UTC format.
+        BillingCycleAnchor: DateTime option
+        /// The point after which the changes reflected by this update will be discarded and no longer applied.
+        ExpiresAt: DateTime
+        /// List of subscription items, each with an attached plan, that will be set if the update is applied.
+        SubscriptionItems: SubscriptionItem list option
+        /// Unix timestamp representing the end of the trial period the customer will get before being charged for the first time, if the update is applied.
+        TrialEnd: DateTime option
+        /// Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more.
+        TrialFromPlan: bool option
+    }
+
+type SubscriptionsResourceSubscriptionInvoiceSettingsAccountTaxIds'AnyOf =
+    | String of string
+    | TaxId of TaxId
+    | DeletedTaxId of DeletedTaxId
+
+type SubscriptionsResourceSubscriptionInvoiceSettings =
+    {
+        /// The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.
+        AccountTaxIds: SubscriptionsResourceSubscriptionInvoiceSettingsAccountTaxIds'AnyOf list option
+        Issuer: ConnectAccountReference
+    }
+
+type SubscriptionsResourceSubscriptionPresentmentDetails =
+    {
+        /// Currency used for customer payments.
+        PresentmentCurrency: IsoTypes.IsoCurrencyCode
+    }
+
+[<Struct>]
+type SubscriptionsResourceTrialSettingsEndBehaviorMissingPaymentMethod =
+    | Cancel
+    | CreateInvoice
+    | Pause
+
+/// Defines how a subscription behaves when a trial ends.
+type SubscriptionsResourceTrialSettingsEndBehavior =
+    {
+        /// Indicates how the subscription should change when the trial ends if the user did not provide a payment method.
+        MissingPaymentMethod: SubscriptionsResourceTrialSettingsEndBehaviorMissingPaymentMethod
+    }
+
+/// Configures how this subscription behaves during the trial period.
+type SubscriptionsResourceTrialSettingsTrialSettings =
+    { EndBehavior: SubscriptionsResourceTrialSettingsEndBehavior }
+
+[<Struct>]
+type CustomerTaxAutomaticTax =
+    | Failed
+    | NotCollecting
+    | Supported
+    | UnrecognizedLocation
+
+[<Struct>]
+type CustomerTaxLocationSource =
+    | BillingAddress
+    | IpAddress
+    | PaymentMethod
+    | ShippingDestination
+
+type CustomerTaxLocation =
+    {
+        /// The identified tax country of the customer.
+        Country: IsoTypes.IsoCountryCode
+        /// The data source used to infer the customer's location.
+        Source: CustomerTaxLocationSource
+        /// The identified tax state, county, province, or region of the customer.
+        State: string option
+    }
+
+[<Struct>]
+type CustomerTaxProvider =
+    | Anrok
+    | Avalara
+    | Sphere
+    | Stripe
+
+type CustomerTax =
+    {
+        /// Surfaces if automatic tax computation is possible given the current customer location information.
+        AutomaticTax: CustomerTaxAutomaticTax
+        /// A recent IP address of the customer used for tax reporting and tax location inference.
+        IpAddress: string option
+        /// The identified tax location of the customer.
+        Location: CustomerTaxLocation option
+        /// The tax calculation provider used for location resolution. Defaults to `stripe` when not using a [third-party provider](/tax/third-party-apps).
+        Provider: CustomerTaxProvider
+    }
+
+[<Struct>]
+type CustomerTaxExempt =
+    | Exempt
+    | [<JsonPropertyName("none")>] None'
+    | Reverse
+
+/// The customer's tax IDs.
+type CustomerTaxIds =
+    {
+        /// Details about each object.
+        Data: TaxId list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+type InvoiceSettingCustomField =
+    {
+        /// The name of the custom field.
+        Name: string
+        /// The value of the custom field.
+        Value: string
+    }
+
+type InvoiceSettingCustomerRenderingOptions =
+    {
+        /// How line-item prices and amounts will be displayed with respect to tax on invoice PDFs.
+        AmountTaxDisplay: string option
+        /// ID of the invoice rendering template to be used for this customer's invoices. If set, the template will be used on all invoices for this customer unless a template is set directly on the invoice.
+        Template: string option
+    }
+
+type InvoiceSettingCustomerSetting =
+    {
+        /// Default custom fields to be displayed on invoices for this customer.
+        CustomFields: InvoiceSettingCustomField list option
+        /// ID of a payment method that's attached to the customer, to be used as the customer's default payment method for subscriptions and invoices.
+        DefaultPaymentMethod: StripeId<Markers.PaymentMethod> option
+        /// Default footer to be displayed on invoices for this customer.
+        Footer: string option
+        /// Default options for invoice PDF rendering for this customer.
+        RenderingOptions: InvoiceSettingCustomerRenderingOptions option
+    }
+
+type BankAccountStatus =
+    | New
+    | Validated
+    | Verified
+    | VerificationFailed
+    | TokenizedAccountNumberDeactivated
+    | Errored
+
 type ExternalAccountRequirements =
     {
         /// Fields that need to be resolved to keep the external account enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
@@ -677,15 +2731,78 @@ type ExternalAccountRequirements =
         PendingVerification: string list option
     }
 
+/// For new integrations, we recommend using the [Accounts v2 API](/api/v2/core/accounts), in place of /v1/accounts and /v1/customers to represent a user.
+/// This is an object representing a Stripe account. You can retrieve it to see
+/// properties on the account like its current requirements or if the account is
+/// enabled to make live charges or receive payouts.
+/// For accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection)
+/// is `application`, which includes Custom accounts, the properties below are always
+/// returned.
+/// For accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection)
+/// is `stripe`, which includes Standard and Express accounts, some properties are only returned
+/// until you create an [Account Link](/api/account_links) or [Account Session](/api/account_sessions)
+/// to start Connect Onboarding. Learn about the [differences between accounts](/connect/accounts).
+type Account =
+    {
+        /// Business information about the account.
+        BusinessProfile: AccountBusinessProfile option
+        /// The business type.
+        BusinessType: AccountBusinessType option
+        Capabilities: AccountCapabilities option
+        /// Whether the account can process charges.
+        ChargesEnabled: bool option
+        Company: LegalEntityCompany option
+        Controller: AccountUnificationAccountController option
+        /// The account's country.
+        Country: IsoTypes.IsoCountryCode option
+        /// Time at which the account was connected. Measured in seconds since the Unix epoch.
+        Created: DateTime option
+        /// Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
+        DefaultCurrency: IsoTypes.IsoCurrencyCode option
+        /// Whether account details have been submitted. Accounts with Stripe Dashboard access, which includes Standard accounts, cannot receive payouts before this is true. Accounts where this is false should be directed to [an onboarding flow](/connect/onboarding) to finish submitting account details.
+        DetailsSubmitted: bool option
+        /// An email address associated with the account. It's not used for authentication and Stripe doesn't market to this field without explicit approval from the platform.
+        Email: string option
+        /// External accounts (bank accounts and debit cards) currently attached to this account. External accounts are only returned for requests where `controller[is_controller]` is true.
+        ExternalAccounts: AccountExternalAccounts option
+        FutureRequirements: AccountFutureRequirements option
+        /// The groups associated with the account.
+        Groups: AccountGroupMembership option
+        /// Unique identifier for the object.
+        Id: string
+        Individual: Person option
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// Whether the funds in this account can be paid out.
+        PayoutsEnabled: bool option
+        Requirements: AccountRequirements option
+        /// Options for customizing how the account functions within Stripe.
+        Settings: AccountSettings option
+        TosAcceptance: AccountTosAcceptance option
+        /// The Stripe account type. Can be `standard`, `express`, `custom`, or `none`.
+        Type: AccountType option
+    }
+
+/// External accounts (bank accounts and debit cards) currently attached to this account. External accounts are only returned for requests where `controller[is_controller]` is true.
+and AccountExternalAccounts =
+    {
+        /// The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards.
+        Data: ExternalAccount list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
 /// These bank accounts are payment methods on `Customer` objects.
 /// On the other hand [External Accounts](/api#external_accounts) are transfer
 /// destinations on `Account` objects for connected accounts.
 /// They can be bank accounts or debit cards as well, and are documented in the links above.
 /// Related guide: [Bank debits and transfers](/payments/bank-debits-transfers)
-type BankAccount =
+and BankAccount =
     {
         /// The account this bank account belongs to. Only applicable on Accounts (not customers or recipients) This property is only available when returned as an [External Account](/api/external_account_bank_accounts/object) where [controller.is_controller](/api/accounts/object#account_object-controller-is_controller) is `true`.
-        Account: string option
+        Account: StripeId<Markers.Account> option
         /// The name of the person or business that owns the bank account.
         AccountHolderName: string option
         /// The type of entity that holds the account. This can be either `individual` or `company`.
@@ -701,7 +2818,7 @@ type BankAccount =
         /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
         Currency: IsoTypes.IsoCurrencyCode
         /// The ID of the customer that the bank account is associated with.
-        Customer: string option
+        Customer: BankAccountCustomer'AnyOf option
         /// Whether this bank account is the default external account for its currency.
         DefaultForCurrency: bool option
         /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
@@ -724,88 +2841,18 @@ type BankAccount =
         Status: BankAccountStatus
     }
 
-[<Struct>]
-type CardAddressLine1Check =
-    | Pass
-    | Fail
-    | Unavailable
-    | Unchecked
-
-[<Struct>]
-type CardAddressZipCheck =
-    | Pass
-    | Fail
-    | Unavailable
-    | Unchecked
-
-[<Struct>]
-type CardAllowRedisplay =
-    | Always
-    | Limited
-    | Unspecified
-
-[<Struct>]
-type CardAvailablePayoutMethods =
-    | Instant
-    | Standard
-
-type CardBrand =
-    | [<JsonPropertyName("American Express")>] AmericanExpress
-    | [<JsonPropertyName("Cartes Bancaires")>] CartesBancaires
-    | [<JsonPropertyName("Diners Club")>] DinersClub
-    | [<JsonPropertyName("Discover")>] Discover
-    | [<JsonPropertyName("Eftpos Australia")>] EftposAustralia
-    | [<JsonPropertyName("Girocard")>] Girocard
-    | [<JsonPropertyName("JCB")>] JCB
-    | [<JsonPropertyName("MasterCard")>] MasterCard
-    | [<JsonPropertyName("UnionPay")>] UnionPay
-    | [<JsonPropertyName("Visa")>] Visa
-    | [<JsonPropertyName("Unknown")>] Unknown
-
-[<Struct>]
-type CardCvcCheck =
-    | Pass
-    | Fail
-    | Unavailable
-    | Unchecked
-
-[<Struct>]
-type CardFunding =
-    | Credit
-    | Debit
-    | Prepaid
-    | Unknown
-
-[<Struct>]
-type CardRegulatedStatus =
-    | Regulated
-    | Unregulated
-
-[<Struct>]
-type CardStatus =
-    | New
-    | Errored
-
-[<Struct>]
-type CardTokenizationMethod =
-    | AndroidPay
-    | ApplePay
-    | Masterpass
-    | VisaCheckout
-
-type TokenCardNetworks =
-    {
-        /// The preferred network for co-branded cards. Can be `cartes_bancaires`, `mastercard`, `visa` or `invalid_preference` if requested network is not valid for the card.
-        Preferred: string option
-    }
+and BankAccountCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 /// You can store multiple cards on a customer in order to charge the customer
 /// later. You can also store multiple debit cards on a recipient in order to
 /// transfer to those cards later.
 /// Related guide: [Card payments with Sources](https://docs.stripe.com/sources/cards)
-type Card =
+and Card =
     {
-        Account: string option
+        Account: StripeId<Markers.Account> option
         /// City/District/Suburb/Town/Village.
         AddressCity: string option
         /// Billing address country, if provided when creating card.
@@ -836,7 +2883,7 @@ type Card =
         /// Three-letter [ISO code for currency](https://www.iso.org/iso-4217-currency-codes.html) in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies). Only applicable on accounts (not customers or recipients). The card can be used as a transfer destination for funds in this currency. This property is only available when returned as an [External Account](/api/external_account_cards/object) where [controller.is_controller](/api/accounts/object#account_object-controller-is_controller) is `true`.
         Currency: IsoTypes.IsoCurrencyCode option
         /// The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead.
-        Customer: string option
+        Customer: CardCustomer'AnyOf option
         /// If a CVC was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. A result of unchecked indicates that CVC was provided but hasn't been checked yet. Checks are typically performed when attaching a card to a Customer object, or when creating a charge. For more details, see [Check if a card is valid without a charge](https://support.stripe.com/questions/check-if-a-card-is-valid-without-a-charge).
         CvcCheck: CardCvcCheck option
         /// Whether this card is the default external account for its currency. This property is only available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts.
@@ -876,6 +2923,214 @@ type Card =
         /// If the card number is tokenized, this is the method that was used. Can be `android_pay` (includes Google Pay), `apple_pay`, `masterpass`, `visa_checkout`, or null.
         TokenizationMethod: CardTokenizationMethod option
     }
+
+and CardCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
+/// This object represents a customer of your business. Use it to [create recurring charges](https://docs.stripe.com/invoicing/customer), [save payment](https://docs.stripe.com/payments/save-during-payment) and contact information,
+/// and track payments that belong to the same customer.
+and Customer =
+    {
+        /// The customer's address.
+        Address: Address option
+        /// The current balance, if any, that's stored on the customer in their default currency. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that's added to their next invoice. The balance only considers amounts that Stripe hasn't successfully applied to any invoice. It doesn't reflect unpaid invoices. This balance is only taken into account after invoices finalize. For multi-currency balances, see [invoice_credit_balance](https://docs.stripe.com/api/customers/object#customer_object-invoice_credit_balance).
+        Balance: int option
+        /// The customer's business name.
+        BusinessName: string option
+        /// The current funds being held by Stripe on behalf of the customer. You can apply these funds towards payment intents when the source is "cash_balance". The `settings[reconciliation_mode]` field describes if these funds apply to these payment intents manually or automatically.
+        CashBalance: CashBalance option
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) the customer can be charged in for recurring billing purposes.
+        Currency: IsoTypes.IsoCurrencyCode option
+        /// The ID of an Account representing a customer. You can use this ID with any v1 API that accepts a customer_account parameter.
+        CustomerAccount: string option
+        /// ID of the default payment source for the customer.
+        /// If you use payment methods created through the PaymentMethods API, see the [invoice_settings.default_payment_method](https://docs.stripe.com/api/customers/object#customer_object-invoice_settings-default_payment_method) field instead.
+        DefaultSource: StripeId<Markers.PaymentSource> option
+        /// Tracks the most recent state change on any invoice belonging to the customer. Paying an invoice or marking it uncollectible via the API will set this field to false. An automatic payment failure or passing the `invoice.due_date` will set this field to `true`.
+        /// If an invoice becomes uncollectible by [dunning](https://docs.stripe.com/billing/automatic-collection), `delinquent` doesn't reset to `false`.
+        /// If you care whether the customer has paid their most recent subscription invoice, use `subscription.status` instead. Paying or marking uncollectible any customer invoice regardless of whether it is the latest invoice for a subscription will always set this field to `false`.
+        Delinquent: bool option
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// Describes the current discount active on the customer, if there is one.
+        Discount: Discount option
+        /// The customer's email address.
+        Email: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// The customer's individual name.
+        IndividualName: string option
+        /// The current multi-currency balances, if any, that's stored on the customer. If positive in a currency, the customer has a credit to apply to their next invoice denominated in that currency. If negative, the customer has an amount owed that's added to their next invoice denominated in that currency. These balances don't apply to unpaid invoices. They solely track amounts that Stripe hasn't successfully applied to any invoice. Stripe only applies a balance in a specific currency to an invoice after that invoice (which is in the same currency) finalizes.
+        InvoiceCreditBalance: Map<string, string list> option
+        /// The prefix for the customer used to generate unique invoice numbers.
+        InvoicePrefix: string option
+        InvoiceSettings: InvoiceSettingCustomerSetting option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The customer's full name or business name.
+        Name: string option
+        /// The suffix of the customer's next invoice number (for example, 0001). When the account uses account level sequencing, this parameter is ignored in API requests and the field omitted in API responses.
+        NextInvoiceSequence: int option
+        /// The customer's phone number.
+        Phone: string option
+        /// The customer's preferred locales (languages), ordered by preference.
+        PreferredLocales: string list option
+        /// Mailing and shipping address for the customer. Appears on invoices emailed to this customer.
+        Shipping: Shipping option
+        /// The customer's payment sources, if any.
+        Sources: CustomerSources option
+        /// The customer's current subscriptions, if any.
+        Subscriptions: CustomerSubscriptions option
+        Tax: CustomerTax option
+        /// Describes the customer's tax exemption status, which is `none`, `exempt`, or `reverse`. When set to `reverse`, invoice and receipt PDFs include the following text: **"Reverse charge"**.
+        TaxExempt: CustomerTaxExempt option
+        /// The customer's tax IDs.
+        TaxIds: CustomerTaxIds option
+        /// ID of the test clock that this customer belongs to.
+        TestClock: StripeId<Markers.TestHelpersTestClock> option
+    }
+
+/// The customer's payment sources, if any.
+and CustomerSources =
+    {
+        /// Details about each object.
+        Data: PaymentSource list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+/// The customer's current subscriptions, if any.
+and CustomerSubscriptions =
+    {
+        /// Details about each object.
+        Data: Subscription list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+and ExternalAccount =
+    | BankAccount of BankAccount
+    | Card of Card
+
+and PaymentSource =
+    | Account of Account
+    | BankAccount of BankAccount
+    | Card of Card
+    | Source of Source
+
+/// Subscriptions allow you to charge a customer on a recurring basis.
+/// Related guide: [Creating subscriptions](https://docs.stripe.com/billing/subscriptions/creating)
+and Subscription =
+    {
+        /// ID of the Connect Application that created the subscription.
+        Application: SubscriptionApplication'AnyOf option
+        /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account.
+        ApplicationFeePercent: decimal option
+        AutomaticTax: SubscriptionAutomaticTax
+        /// The reference point that aligns future [billing cycle](https://docs.stripe.com/subscriptions/billing-cycle) dates. It sets the day of week for `week` intervals, the day of month for `month` and `year` intervals, and the month of year for `year` intervals. The timestamp is in UTC format.
+        BillingCycleAnchor: DateTime
+        /// The fixed values used to calculate the `billing_cycle_anchor`.
+        BillingCycleAnchorConfig: SubscriptionsResourceBillingCycleAnchorConfig option
+        BillingMode: SubscriptionsResourceBillingMode
+        /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
+        BillingThresholds: SubscriptionBillingThresholds option
+        /// A date in the future at which the subscription will automatically get canceled
+        CancelAt: DateTime option
+        /// Whether this subscription will (if `status=active`) or did (if `status=canceled`) cancel at the end of the current billing period.
+        CancelAtPeriodEnd: bool
+        /// If the subscription has been canceled, the date of that cancellation. If the subscription was canceled with `cancel_at_period_end`, `canceled_at` will reflect the time of the most recent update request, not the end of the subscription period when the subscription is automatically moved to a canceled state.
+        CanceledAt: DateTime option
+        /// Details about why this subscription was cancelled
+        CancellationDetails: CancellationDetails option
+        /// Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`.
+        CollectionMethod: SubscriptionCollectionMethod
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// ID of the customer who owns the subscription.
+        Customer: SubscriptionCustomer'AnyOf
+        /// ID of the account representing the customer who owns the subscription.
+        CustomerAccount: string option
+        /// Number of days a customer has to pay invoices generated by this subscription. This value will be `null` for subscriptions where `collection_method=charge_automatically`.
+        DaysUntilDue: int option
+        /// ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://docs.stripe.com/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://docs.stripe.com/api/customers/object#customer_object-default_source).
+        DefaultPaymentMethod: StripeId<Markers.PaymentMethod> option
+        /// ID of the default payment source for the subscription. It must belong to the customer associated with the subscription and be in a chargeable state. If `default_payment_method` is also set, `default_payment_method` will take precedence. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://docs.stripe.com/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://docs.stripe.com/api/customers/object#customer_object-default_source).
+        DefaultSource: StripeId<Markers.PaymentSource> option
+        /// The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription.
+        DefaultTaxRates: TaxRate list option
+        /// The subscription's description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs.
+        Description: string option
+        /// The discounts applied to the subscription. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.
+        Discounts: StripeId<Markers.Discount> list
+        /// If the subscription has ended, the date the subscription ended.
+        EndedAt: DateTime option
+        /// Unique identifier for the object.
+        Id: string
+        InvoiceSettings: SubscriptionsResourceSubscriptionInvoiceSettings
+        /// List of subscription items, each with an attached price.
+        Items: SubscriptionItems
+        /// The most recent invoice this subscription has generated over its lifecycle (for example, when it cycles or is updated).
+        LatestInvoice: StripeId<Markers.Invoice> option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Settings for Managed Payments for this Subscription and resulting [Invoices](/api/invoices/object) and [PaymentIntents](/api/payment_intents/object).
+        ManagedPayments: SmorResourceManagedPayments option
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// Specifies the approximate timestamp on which any pending invoice items will be billed according to the schedule provided at `pending_invoice_item_interval`.
+        NextPendingInvoiceItemInvoice: DateTime option
+        /// The account (if any) the charge was made on behalf of for charges associated with this subscription. See the [Connect documentation](https://docs.stripe.com/connect/subscriptions#on-behalf-of) for details.
+        OnBehalfOf: StripeId<Markers.Account> option
+        /// If specified, payment collection for this subscription will be paused. Note that the subscription status will be unchanged and will not be updated to `paused`. Learn more about [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment).
+        PauseCollection: SubscriptionsResourcePauseCollection option
+        /// Payment settings passed on to invoices created by the subscription.
+        PaymentSettings: SubscriptionsResourcePaymentSettings option
+        /// Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](/api/invoices/create) for the given subscription at the specified interval.
+        PendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option
+        /// You can use this [SetupIntent](https://docs.stripe.com/api/setup_intents) to collect user authentication when creating a subscription without immediate payment or updating a subscription's payment method, allowing you to optimize for off-session payments. Learn more in the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication#scenario-2).
+        PendingSetupIntent: StripeId<Markers.SetupIntent> option
+        /// If specified, [pending updates](https://docs.stripe.com/billing/subscriptions/pending-updates) that will be applied to the subscription once the `latest_invoice` has been paid.
+        PendingUpdate: SubscriptionsResourcePendingUpdate option
+        PresentmentDetails: SubscriptionsResourceSubscriptionPresentmentDetails option
+        /// The schedule attached to the subscription
+        Schedule: StripeId<Markers.SubscriptionSchedule> option
+        /// Date when the subscription was first created. The date might differ from the `created` date due to backdating.
+        StartDate: DateTime
+        /// Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, `unpaid`, or `paused`.
+        /// For `collection_method=charge_automatically` a subscription moves into `incomplete` if the initial payment attempt fails. A subscription in this status can only have metadata and default_source updated. Once the first invoice is paid, the subscription moves into an `active` status. If the first invoice is not paid within 23 hours, the subscription transitions to `incomplete_expired`. This is a terminal status, the open invoice will be voided and no further invoices will be generated.
+        /// A subscription that is currently in a trial period is `trialing` and moves to `active` when the trial period is over.
+        /// A subscription can only enter a `paused` status [when a trial ends without a payment method](https://docs.stripe.com/billing/subscriptions/trials#create-free-trials-without-payment). A `paused` subscription doesn't generate invoices and can be resumed after your customer adds their payment method. The `paused` status is different from [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment), which still generates invoices and leaves the subscription's status unchanged.
+        /// If subscription `collection_method=charge_automatically`, it becomes `past_due` when payment is required but cannot be paid (due to failed payment or awaiting additional user actions). Once Stripe has exhausted all payment retry attempts, the subscription will become `canceled` or `unpaid` (depending on your subscriptions settings).
+        /// If subscription `collection_method=send_invoice` it becomes `past_due` when its invoice is not paid by the due date, and `canceled` or `unpaid` if it is still not paid by an additional deadline after that. Note that when a subscription has a status of `unpaid`, no subsequent invoices will be attempted (invoices will be created, but then immediately automatically closed). After receiving updated payment information from a customer, you may choose to reopen and pay their closed invoices.
+        Status: SubscriptionStatus
+        /// ID of the test clock this subscription belongs to.
+        TestClock: StripeId<Markers.TestHelpersTestClock> option
+        /// The account (if any) the subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
+        TransferData: SubscriptionTransferData option
+        /// If the subscription has a trial, the end of that trial.
+        TrialEnd: DateTime option
+        /// Settings related to subscription trials.
+        TrialSettings: SubscriptionsResourceTrialSettingsTrialSettings option
+        /// If the subscription has a trial, the beginning of that trial.
+        TrialStart: DateTime option
+    }
+
+and SubscriptionCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 [<Struct>]
 type TokenType =
@@ -920,34 +3175,18 @@ type Token =
         Used: bool
     }
 
-[<Struct>]
-type ConnectAccountReferenceType =
-    | Account
-    | Self
-
-type ConnectAccountReference =
-    {
-        /// The connected account being referenced when `type` is `account`.
-        Account: string option
-        /// Type of the account referenced.
-        Type: ConnectAccountReferenceType
-    }
+type InvoiceSettingSubscriptionScheduleSettingAccountTaxIds'AnyOf =
+    | String of string
+    | TaxId of TaxId
+    | DeletedTaxId of DeletedTaxId
 
 type InvoiceSettingSubscriptionScheduleSetting =
     {
         /// The account tax IDs associated with the subscription schedule. Will be set on invoices generated by the subscription schedule.
-        AccountTaxIds: string list option
+        AccountTaxIds: InvoiceSettingSubscriptionScheduleSettingAccountTaxIds'AnyOf list option
         /// Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         DaysUntilDue: int option
         Issuer: ConnectAccountReference
-    }
-
-type SubscriptionBillingThresholds =
-    {
-        /// Monetary threshold that triggers the subscription to create an invoice
-        AmountGte: int option
-        /// Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged. This value may not be `true` if the subscription contains items with plans that have `aggregate_usage=last_ever`.
-        ResetBillingCycleAnchor: bool option
     }
 
 type SubscriptionSchedulesResourceDefaultSettingsAutomaticTax =
@@ -968,14 +3207,6 @@ type SubscriptionSchedulesResourceDefaultSettingsCollectionMethod =
     | ChargeAutomatically
     | SendInvoice
 
-type SubscriptionTransferData =
-    {
-        /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
-        AmountPercent: decimal option
-        /// The account where funds from the payment will be transferred to upon payment success.
-        Destination: string
-    }
-
 type SubscriptionSchedulesResourceDefaultSettings =
     {
         /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account during this phase of the schedule.
@@ -988,12 +3219,12 @@ type SubscriptionSchedulesResourceDefaultSettings =
         /// Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`.
         CollectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option
         /// ID of the default payment method for the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: string option
+        DefaultPaymentMethod: StripeId<Markers.PaymentMethod> option
         /// Subscription description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs.
         Description: string option
         InvoiceSettings: InvoiceSettingSubscriptionScheduleSetting
         /// The account (if any) the charge was made on behalf of for charges associated with the schedule's subscription. See the Connect documentation for details.
-        OnBehalfOf: string option
+        OnBehalfOf: StripeId<Markers.Account> option
         /// The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
         TransferData: SubscriptionTransferData option
     }
@@ -1484,6 +3715,11 @@ type PaymentIntentCaptureMethod =
 type PaymentIntentConfirmationMethod =
     | Automatic
     | Manual
+
+type PaymentIntentCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 type PaymentIntentExcludedPaymentMethodTypes =
     | AcssDebit
@@ -2924,6 +5160,35 @@ type PaymentIntentSetupFutureUsage =
     | OffSession
     | OnSession
 
+type DeletedBankAccount =
+    {
+        /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
+        Currency: IsoTypes.IsoCurrencyCode option
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedCard =
+    {
+        /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
+        Currency: IsoTypes.IsoCurrencyCode option
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedPaymentSource =
+    | DeletedBankAccount of DeletedBankAccount
+    | DeletedCard of DeletedCard
+
+type PaymentIntentSource'AnyOf =
+    | String of string
+    | PaymentSource of PaymentSource
+    | DeletedPaymentSource of DeletedPaymentSource
+
 type PaymentIntentStatus =
     | Canceled
     | Processing
@@ -2939,12 +5204,6 @@ type PaymentMethodConfigBizPaymentMethodConfigurationDetails =
         Id: string
         /// ID of the parent payment method configuration used.
         Parent: string option
-    }
-
-type SmorResourceManagedPayments =
-    {
-        /// Set to `true` to enable [Managed Payments](https://docs.stripe.com/payments/managed-payments), Stripe's merchant of record solution, for this session.
-        Enabled: bool
     }
 
 type BillingDetails =
@@ -3262,7 +5521,7 @@ type PaymentMethodCardGeneratedCard =
         /// Transaction-specific details of the payment method used in the payment.
         PaymentMethodDetails: CardGeneratedFromPaymentMethodDetails option
         /// The ID of the SetupAttempt that generated this PaymentMethod, if any.
-        SetupAttempt: string option
+        SetupAttempt: StripeId<Markers.SetupAttempt> option
     }
 
 [<Struct>]
@@ -3853,9 +6112,9 @@ type PaymentMethodSatispay =
 type SepaDebitGeneratedFrom =
     {
         /// The ID of the Charge that generated this PaymentMethod, if any.
-        Charge: string option
+        Charge: StripeId<Markers.Charge> option
         /// The ID of the SetupAttempt that generated this PaymentMethod, if any.
-        SetupAttempt: string option
+        SetupAttempt: StripeId<Markers.SetupAttempt> option
     }
 
 type PaymentMethodSepaDebit =
@@ -4064,7 +6323,7 @@ type PaymentMethod =
         Crypto: PaymentMethodCrypto option
         Custom: PaymentMethodCustom option
         /// The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.
-        Customer: string option
+        Customer: StripeId<Markers.Customer> option
         CustomerAccount: string option
         CustomerBalance: PaymentMethodCustomerBalance option
         Eps: PaymentMethodEps option
@@ -4116,1387 +6375,6 @@ type PaymentMethod =
         Zip: PaymentMethodZip option
     }
 
-type AccountAnnualRevenue =
-    {
-        /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
-        Amount: int option
-        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: IsoTypes.IsoCurrencyCode option
-        /// The close-out date of the preceding fiscal year in ISO 8601 format. E.g. 2023-12-31 for the 31st of December, 2023.
-        FiscalYearEnd: string option
-    }
-
-[<Struct>]
-type AccountBusinessProfileMinorityOwnedBusinessDesignation =
-    | LgbtqiOwnedBusiness
-    | MinorityOwnedBusiness
-    | NoneOfTheseApply
-    | PreferNotToAnswer
-    | WomenOwnedBusiness
-
-type AccountMonthlyEstimatedRevenue =
-    {
-        /// A non-negative integer representing how much to charge in the [smallest currency unit](/currencies#zero-decimal).
-        Amount: int
-        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: IsoTypes.IsoCurrencyCode
-    }
-
-type AccountBusinessProfile =
-    {
-        /// The applicant's gross annual revenue for its preceding fiscal year.
-        AnnualRevenue: AccountAnnualRevenue option
-        /// An estimated upper bound of employees, contractors, vendors, etc. currently working for the business.
-        EstimatedWorkerCount: int option
-        /// [The merchant category code for the account](/connect/setting-mcc). MCCs are used to classify businesses based on the goods or services they provide.
-        Mcc: string option
-        /// Whether the business is a minority-owned, women-owned, and/or LGBTQI+ -owned business.
-        MinorityOwnedBusinessDesignation: AccountBusinessProfileMinorityOwnedBusinessDesignation list option
-        MonthlyEstimatedRevenue: AccountMonthlyEstimatedRevenue option
-        /// The customer-facing business name.
-        Name: string option
-        /// Internal-only description of the product sold or service provided by the business. It's used by Stripe for risk and underwriting purposes.
-        ProductDescription: string option
-        /// A publicly available mailing address for sending support issues to.
-        SupportAddress: Address option
-        /// A publicly available email address for sending support issues to.
-        SupportEmail: string option
-        /// A publicly available phone number to call with support issues.
-        SupportPhone: string option
-        /// A publicly available website for handling support issues.
-        SupportUrl: string option
-        /// The business's publicly available website.
-        Url: string option
-    }
-
-[<Struct>]
-type AccountBusinessType =
-    | Company
-    | GovernmentEntity
-    | Individual
-    | NonProfit
-
-[<Struct>]
-type AccountCapabilitiesAcssDebitPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesAffirmPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesAfterpayClearpayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesAlmaPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesAmazonPayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesAppDistribution =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesAuBecsDebitPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesBacsDebitPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesBancontactPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesBankTransferPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesBilliePayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesBlikPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesBoletoPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesCardIssuing =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesCardPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesCartesBancairesPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesCashappPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesCryptoPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesEpsPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesFpxPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesGbBankTransferPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesGiropayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesGrabpayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesIdealPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesIndiaInternationalPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesJcbPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesJpBankTransferPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesKakaoPayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesKlarnaPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesKonbiniPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesKrCardPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesLegacyPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesLinkPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesMbWayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesMobilepayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesMultibancoPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesMxBankTransferPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesNaverPayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesNzBankAccountBecsDebitPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesOxxoPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesP24Payments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesPayByBankPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesPaycoPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesPaynowPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesPaytoPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesPixPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesPromptpayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesRevolutPayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesSamsungPayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesSatispayPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesSepaBankTransferPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesSepaDebitPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesSofortPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesSunbitPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesSwishPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesTaxReportingUs1099K =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesTaxReportingUs1099Misc =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesTransfers =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesTreasury =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesTwintPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesUpiPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesUsBankAccountAchPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesUsBankTransferPayments =
-    | Active
-    | Inactive
-    | Pending
-
-[<Struct>]
-type AccountCapabilitiesZipPayments =
-    | Active
-    | Inactive
-    | Pending
-
-type AccountCapabilities =
-    {
-        /// The status of the Canadian pre-authorized debits payments capability of the account, or whether the account can directly process Canadian pre-authorized debits charges.
-        AcssDebitPayments: AccountCapabilitiesAcssDebitPayments option
-        /// The status of the Affirm capability of the account, or whether the account can directly process Affirm charges.
-        AffirmPayments: AccountCapabilitiesAffirmPayments option
-        /// The status of the Afterpay Clearpay capability of the account, or whether the account can directly process Afterpay Clearpay charges.
-        AfterpayClearpayPayments: AccountCapabilitiesAfterpayClearpayPayments option
-        /// The status of the Alma capability of the account, or whether the account can directly process Alma payments.
-        AlmaPayments: AccountCapabilitiesAlmaPayments option
-        /// The status of the AmazonPay capability of the account, or whether the account can directly process AmazonPay payments.
-        AmazonPayPayments: AccountCapabilitiesAmazonPayPayments option
-        /// The status of the `app_distribution` capability of the account, or whether the platform can distribute apps to other accounts.
-        AppDistribution: AccountCapabilitiesAppDistribution option
-        /// The status of the BECS Direct Debit (AU) payments capability of the account, or whether the account can directly process BECS Direct Debit (AU) charges.
-        AuBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments option
-        /// The status of the Bacs Direct Debits payments capability of the account, or whether the account can directly process Bacs Direct Debits charges.
-        BacsDebitPayments: AccountCapabilitiesBacsDebitPayments option
-        /// The status of the Bancontact payments capability of the account, or whether the account can directly process Bancontact charges.
-        BancontactPayments: AccountCapabilitiesBancontactPayments option
-        /// The status of the customer_balance payments capability of the account, or whether the account can directly process customer_balance charges.
-        BankTransferPayments: AccountCapabilitiesBankTransferPayments option
-        /// The status of the Billie capability of the account, or whether the account can directly process Billie payments.
-        BilliePayments: AccountCapabilitiesBilliePayments option
-        /// The status of the blik payments capability of the account, or whether the account can directly process blik charges.
-        BlikPayments: AccountCapabilitiesBlikPayments option
-        /// The status of the boleto payments capability of the account, or whether the account can directly process boleto charges.
-        BoletoPayments: AccountCapabilitiesBoletoPayments option
-        /// The status of the card issuing capability of the account, or whether you can use Issuing to distribute funds on cards
-        CardIssuing: AccountCapabilitiesCardIssuing option
-        /// The status of the card payments capability of the account, or whether the account can directly process credit and debit card charges.
-        CardPayments: AccountCapabilitiesCardPayments option
-        /// The status of the Cartes Bancaires payments capability of the account, or whether the account can directly process Cartes Bancaires card charges in EUR currency.
-        CartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments option
-        /// The status of the Cash App Pay capability of the account, or whether the account can directly process Cash App Pay payments.
-        CashappPayments: AccountCapabilitiesCashappPayments option
-        /// The status of the Crypto capability of the account, or whether the account can directly process Crypto payments.
-        CryptoPayments: AccountCapabilitiesCryptoPayments option
-        /// The status of the EPS payments capability of the account, or whether the account can directly process EPS charges.
-        EpsPayments: AccountCapabilitiesEpsPayments option
-        /// The status of the FPX payments capability of the account, or whether the account can directly process FPX charges.
-        FpxPayments: AccountCapabilitiesFpxPayments option
-        /// The status of the GB customer_balance payments (GBP currency) capability of the account, or whether the account can directly process GB customer_balance charges.
-        GbBankTransferPayments: AccountCapabilitiesGbBankTransferPayments option
-        /// The status of the giropay payments capability of the account, or whether the account can directly process giropay charges.
-        GiropayPayments: AccountCapabilitiesGiropayPayments option
-        /// The status of the GrabPay payments capability of the account, or whether the account can directly process GrabPay charges.
-        GrabpayPayments: AccountCapabilitiesGrabpayPayments option
-        /// The status of the iDEAL payments capability of the account, or whether the account can directly process iDEAL charges.
-        IdealPayments: AccountCapabilitiesIdealPayments option
-        /// The status of the india_international_payments capability of the account, or whether the account can process international charges (non INR) in India.
-        IndiaInternationalPayments: AccountCapabilitiesIndiaInternationalPayments option
-        /// The status of the JCB payments capability of the account, or whether the account (Japan only) can directly process JCB credit card charges in JPY currency.
-        JcbPayments: AccountCapabilitiesJcbPayments option
-        /// The status of the Japanese customer_balance payments (JPY currency) capability of the account, or whether the account can directly process Japanese customer_balance charges.
-        JpBankTransferPayments: AccountCapabilitiesJpBankTransferPayments option
-        /// The status of the KakaoPay capability of the account, or whether the account can directly process KakaoPay payments.
-        KakaoPayPayments: AccountCapabilitiesKakaoPayPayments option
-        /// The status of the Klarna payments capability of the account, or whether the account can directly process Klarna charges.
-        KlarnaPayments: AccountCapabilitiesKlarnaPayments option
-        /// The status of the konbini payments capability of the account, or whether the account can directly process konbini charges.
-        KonbiniPayments: AccountCapabilitiesKonbiniPayments option
-        /// The status of the KrCard capability of the account, or whether the account can directly process KrCard payments.
-        KrCardPayments: AccountCapabilitiesKrCardPayments option
-        /// The status of the legacy payments capability of the account.
-        LegacyPayments: AccountCapabilitiesLegacyPayments option
-        /// The status of the link_payments capability of the account, or whether the account can directly process Link charges.
-        LinkPayments: AccountCapabilitiesLinkPayments option
-        /// The status of the MB WAY payments capability of the account, or whether the account can directly process MB WAY charges.
-        MbWayPayments: AccountCapabilitiesMbWayPayments option
-        /// The status of the MobilePay capability of the account, or whether the account can directly process MobilePay charges.
-        MobilepayPayments: AccountCapabilitiesMobilepayPayments option
-        /// The status of the Multibanco payments capability of the account, or whether the account can directly process Multibanco charges.
-        MultibancoPayments: AccountCapabilitiesMultibancoPayments option
-        /// The status of the Mexican customer_balance payments (MXN currency) capability of the account, or whether the account can directly process Mexican customer_balance charges.
-        MxBankTransferPayments: AccountCapabilitiesMxBankTransferPayments option
-        /// The status of the NaverPay capability of the account, or whether the account can directly process NaverPay payments.
-        NaverPayPayments: AccountCapabilitiesNaverPayPayments option
-        /// The status of the New Zealand BECS Direct Debit payments capability of the account, or whether the account can directly process New Zealand BECS Direct Debit charges.
-        NzBankAccountBecsDebitPayments: AccountCapabilitiesNzBankAccountBecsDebitPayments option
-        /// The status of the OXXO payments capability of the account, or whether the account can directly process OXXO charges.
-        OxxoPayments: AccountCapabilitiesOxxoPayments option
-        /// The status of the P24 payments capability of the account, or whether the account can directly process P24 charges.
-        [<JsonPropertyName("p24_payments")>]
-        P24Payments: AccountCapabilitiesP24Payments option
-        /// The status of the pay_by_bank payments capability of the account, or whether the account can directly process pay_by_bank charges.
-        PayByBankPayments: AccountCapabilitiesPayByBankPayments option
-        /// The status of the Payco capability of the account, or whether the account can directly process Payco payments.
-        PaycoPayments: AccountCapabilitiesPaycoPayments option
-        /// The status of the paynow payments capability of the account, or whether the account can directly process paynow charges.
-        PaynowPayments: AccountCapabilitiesPaynowPayments option
-        /// The status of the PayTo capability of the account, or whether the account can directly process PayTo charges.
-        PaytoPayments: AccountCapabilitiesPaytoPayments option
-        /// The status of the pix payments capability of the account, or whether the account can directly process pix charges.
-        PixPayments: AccountCapabilitiesPixPayments option
-        /// The status of the promptpay payments capability of the account, or whether the account can directly process promptpay charges.
-        PromptpayPayments: AccountCapabilitiesPromptpayPayments option
-        /// The status of the RevolutPay capability of the account, or whether the account can directly process RevolutPay payments.
-        RevolutPayPayments: AccountCapabilitiesRevolutPayPayments option
-        /// The status of the SamsungPay capability of the account, or whether the account can directly process SamsungPay payments.
-        SamsungPayPayments: AccountCapabilitiesSamsungPayPayments option
-        /// The status of the Satispay capability of the account, or whether the account can directly process Satispay payments.
-        SatispayPayments: AccountCapabilitiesSatispayPayments option
-        /// The status of the SEPA customer_balance payments (EUR currency) capability of the account, or whether the account can directly process SEPA customer_balance charges.
-        SepaBankTransferPayments: AccountCapabilitiesSepaBankTransferPayments option
-        /// The status of the SEPA Direct Debits payments capability of the account, or whether the account can directly process SEPA Direct Debits charges.
-        SepaDebitPayments: AccountCapabilitiesSepaDebitPayments option
-        /// The status of the Sofort payments capability of the account, or whether the account can directly process Sofort charges.
-        SofortPayments: AccountCapabilitiesSofortPayments option
-        /// The status of the Sunbit capability of the account, or whether the account can directly process Sunbit payments.
-        SunbitPayments: AccountCapabilitiesSunbitPayments option
-        /// The status of the Swish capability of the account, or whether the account can directly process Swish payments.
-        SwishPayments: AccountCapabilitiesSwishPayments option
-        /// The status of the tax reporting 1099-K (US) capability of the account.
-        [<JsonPropertyName("tax_reporting_us_1099_k")>]
-        TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
-        /// The status of the tax reporting 1099-MISC (US) capability of the account.
-        [<JsonPropertyName("tax_reporting_us_1099_misc")>]
-        TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
-        /// The status of the transfers capability of the account, or whether your platform can transfer funds to the account.
-        Transfers: AccountCapabilitiesTransfers option
-        /// The status of the banking capability, or whether the account can have bank accounts.
-        Treasury: AccountCapabilitiesTreasury option
-        /// The status of the TWINT capability of the account, or whether the account can directly process TWINT charges.
-        TwintPayments: AccountCapabilitiesTwintPayments option
-        /// The status of the upi payments capability of the account, or whether the account can directly process upi charges.
-        UpiPayments: AccountCapabilitiesUpiPayments option
-        /// The status of the US bank account ACH payments capability of the account, or whether the account can directly process US bank account charges.
-        UsBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments option
-        /// The status of the US customer_balance payments (USD currency) capability of the account, or whether the account can directly process US customer_balance charges.
-        UsBankTransferPayments: AccountCapabilitiesUsBankTransferPayments option
-        /// The status of the Zip capability of the account, or whether the account can directly process Zip charges.
-        ZipPayments: AccountCapabilitiesZipPayments option
-    }
-
-type ExternalAccount =
-    | BankAccount of BankAccount
-    | Card of Card
-
-/// External accounts (bank accounts and debit cards) currently attached to this account. External accounts are only returned for requests where `controller[is_controller]` is true.
-type AccountExternalAccounts =
-    {
-        /// The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards.
-        Data: ExternalAccount list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-type AccountFutureRequirementsDisabledReason =
-    | [<JsonPropertyName("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
-    | Listed
-    | Other
-    | PlatformPaused
-    | [<JsonPropertyName("rejected.fraud")>] RejectedFraud
-    | [<JsonPropertyName("rejected.incomplete_verification")>] RejectedIncompleteVerification
-    | [<JsonPropertyName("rejected.listed")>] RejectedListed
-    | [<JsonPropertyName("rejected.other")>] RejectedOther
-    | [<JsonPropertyName("rejected.platform_fraud")>] RejectedPlatformFraud
-    | [<JsonPropertyName("rejected.platform_other")>] RejectedPlatformOther
-    | [<JsonPropertyName("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
-    | [<JsonPropertyName("rejected.terms_of_service")>] RejectedTermsOfService
-    | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
-    | [<JsonPropertyName("requirements.pending_verification")>] RequirementsPendingVerification
-    | UnderReview
-
-type AccountRequirementsAlternative =
-    {
-        /// Fields that can be provided to resolve all fields in `original_fields_due`.
-        AlternativeFieldsDue: string list
-        /// Fields that are due and can be resolved by providing all fields in `alternative_fields_due`.
-        OriginalFieldsDue: string list
-    }
-
-type AccountFutureRequirements =
-    {
-        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
-        Alternatives: AccountRequirementsAlternative list option
-        /// Date on which `future_requirements` becomes the main `requirements` hash and `future_requirements` becomes empty. After the transition, `currently_due` requirements may immediately become `past_due`, but the account may also be given a grace period depending on its enablement state prior to transitioning.
-        CurrentDeadline: DateTime option
-        /// Fields that need to be resolved to keep the account enabled. If not resolved by `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash.
-        CurrentlyDue: string list option
-        /// This is typed as an enum for consistency with `requirements.disabled_reason`.
-        DisabledReason: AccountFutureRequirementsDisabledReason option
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
-        Errors: AccountRequirementsError list option
-        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well.
-        EventuallyDue: string list option
-        /// Fields that haven't been resolved by `requirements.current_deadline`. These fields need to be resolved to enable the capability on the account. `future_requirements.past_due` is a subset of `requirements.past_due`.
-        PastDue: string list option
-        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
-        PendingVerification: string list option
-    }
-
-type AccountGroupMembership =
-    {
-        /// The group the account is in to determine their payments pricing, and null if the account is on customized pricing. [See the Platform pricing tool documentation](https://docs.stripe.com/connect/platform-pricing-tools) for details.
-        PaymentsPricing: string option
-    }
-
-type AccountRequirementsDisabledReason =
-    | [<JsonPropertyName("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
-    | Listed
-    | Other
-    | PlatformPaused
-    | [<JsonPropertyName("rejected.fraud")>] RejectedFraud
-    | [<JsonPropertyName("rejected.incomplete_verification")>] RejectedIncompleteVerification
-    | [<JsonPropertyName("rejected.listed")>] RejectedListed
-    | [<JsonPropertyName("rejected.other")>] RejectedOther
-    | [<JsonPropertyName("rejected.platform_fraud")>] RejectedPlatformFraud
-    | [<JsonPropertyName("rejected.platform_other")>] RejectedPlatformOther
-    | [<JsonPropertyName("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
-    | [<JsonPropertyName("rejected.terms_of_service")>] RejectedTermsOfService
-    | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
-    | [<JsonPropertyName("requirements.pending_verification")>] RequirementsPendingVerification
-    | UnderReview
-
-type AccountRequirements =
-    {
-        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
-        Alternatives: AccountRequirementsAlternative list option
-        /// Date by which the fields in `currently_due` must be collected to keep the account enabled. These fields may disable the account sooner if the next threshold is reached before they are collected.
-        CurrentDeadline: DateTime option
-        /// Fields that need to be resolved to keep the account enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
-        CurrentlyDue: string list option
-        /// If the account is disabled, this enum describes why. [Learn more about handling verification issues](https://docs.stripe.com/connect/handling-api-verification).
-        DisabledReason: AccountRequirementsDisabledReason option
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
-        Errors: AccountRequirementsError list option
-        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set.
-        EventuallyDue: string list option
-        /// Fields that haven't been resolved by `current_deadline`. These fields need to be resolved to enable the account.
-        PastDue: string list option
-        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
-        PendingVerification: string list option
-    }
-
-type AccountBacsDebitPaymentsSettings =
-    {
-        /// The Bacs Direct Debit display name for this account. For payments made with Bacs Direct Debit, this name appears on the mandate as the statement descriptor. Mobile banking apps display it as the name of the business. To use custom branding, set the Bacs Direct Debit Display Name during or right after creation. Custom branding incurs an additional monthly fee for the platform. The fee appears 5 business days after requesting Bacs. If you don't set the display name before requesting Bacs capability, it's automatically set as "Stripe" and the account is onboarded to Stripe branding, which is free.
-        DisplayName: string option
-        /// The Bacs Direct Debit Service user number for this account. For payments made with Bacs Direct Debit, this number is a unique identifier of the account with our banking partners.
-        ServiceUserNumber: string option
-    }
-
-type AccountBrandingSettings =
-    {
-        /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px.
-        Icon: string option
-        /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A logo for the account that will be used in Checkout instead of the icon and without the account's name next to it if provided. Must be at least 128px x 128px.
-        Logo: string option
-        /// A CSS hex color value representing the primary branding color for this account
-        PrimaryColor: string option
-        /// A CSS hex color value representing the secondary branding color for this account
-        SecondaryColor: string option
-    }
-
-type CardIssuingAccountTermsOfService =
-    {
-        /// The Unix timestamp marking when the account representative accepted the service agreement.
-        Date: int option
-        /// The IP address from which the account representative accepted the service agreement.
-        Ip: string option
-        /// The user agent of the browser from which the account representative accepted the service agreement.
-        UserAgent: string option
-    }
-
-type AccountCardIssuingSettings =
-    { TosAcceptance: CardIssuingAccountTermsOfService option }
-
-type AccountDeclineChargeOn =
-    {
-        /// Whether Stripe automatically declines charges with an incorrect ZIP or postal code. This setting only applies when a ZIP or postal code is provided and they fail bank verification.
-        AvsFailure: bool
-        /// Whether Stripe automatically declines charges with an incorrect CVC. This setting only applies when a CVC is provided and it fails bank verification.
-        CvcFailure: bool
-    }
-
-type AccountCardPaymentsSettings =
-    {
-        DeclineOn: AccountDeclineChargeOn option
-        /// The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. `statement_descriptor_prefix` is useful for maximizing descriptor space for the dynamic portion.
-        StatementDescriptorPrefix: string option
-        /// The Kana variation of the default text that appears on credit card statements when a charge is made (Japan only). This field prefixes any dynamic `statement_descriptor_suffix_kana` specified on the charge. `statement_descriptor_prefix_kana` is useful for maximizing descriptor space for the dynamic portion.
-        StatementDescriptorPrefixKana: string option
-        /// The Kanji variation of the default text that appears on credit card statements when a charge is made (Japan only). This field prefixes any dynamic `statement_descriptor_suffix_kanji` specified on the charge. `statement_descriptor_prefix_kanji` is useful for maximizing descriptor space for the dynamic portion.
-        StatementDescriptorPrefixKanji: string option
-    }
-
-type AccountDashboardSettings =
-    {
-        /// The display name for this account. This is used on the Stripe Dashboard to differentiate between accounts.
-        DisplayName: string option
-        /// The timezone used in the Stripe Dashboard for this account. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones).
-        Timezone: string option
-    }
-
-[<Struct>]
-type AccountInvoicesSettingsHostedPaymentMethodSave =
-    | Always
-    | Never
-    | Offer
-
-type AccountInvoicesSettings =
-    {
-        /// The list of default Account Tax IDs to automatically include on invoices. Account Tax IDs get added when an invoice is finalized.
-        DefaultAccountTaxIds: string list option
-        /// Whether to save the payment method after a payment is completed for a one-time invoice or a subscription invoice when the customer already has a default payment method on the hosted invoice page.
-        HostedPaymentMethodSave: AccountInvoicesSettingsHostedPaymentMethodSave option
-    }
-
-type AccountPaymentsSettings =
-    {
-        /// The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge.
-        StatementDescriptor: string option
-        /// The Kana variation of `statement_descriptor` used for charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
-        StatementDescriptorKana: string option
-        /// The Kanji variation of `statement_descriptor` used for charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
-        StatementDescriptorKanji: string option
-        /// The Kana variation of `statement_descriptor_prefix` used for card charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
-        StatementDescriptorPrefixKana: string option
-        /// The Kanji variation of `statement_descriptor_prefix` used for card charges in Japan. Japanese statement descriptors have [special requirements](https://docs.stripe.com/get-started/account/statement-descriptors#set-japanese-statement-descriptors).
-        StatementDescriptorPrefixKanji: string option
-    }
-
-type AccountPayoutSettings =
-    {
-        /// A Boolean indicating if Stripe should try to reclaim negative balances from an attached bank account. See [Understanding Connect account balances](/connect/account-balances) for details. The default value is `false` when [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts, otherwise `true`.
-        DebitNegativeBalances: bool
-        Schedule: TransferSchedule
-        /// The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard.
-        StatementDescriptor: string option
-    }
-
-type AccountSepaDebitPaymentsSettings =
-    {
-        /// SEPA creditor identifier that identifies the company making the payment.
-        CreditorId: string option
-    }
-
-type AccountTermsOfService =
-    {
-        /// The Unix timestamp marking when the account representative accepted the service agreement.
-        Date: int option
-        /// The IP address from which the account representative accepted the service agreement.
-        Ip: string option
-        /// The user agent of the browser from which the account representative accepted the service agreement.
-        UserAgent: string option
-    }
-
-type AccountTreasurySettings =
-    { TosAcceptance: AccountTermsOfService option }
-
-type AccountSettings =
-    { BacsDebitPayments: AccountBacsDebitPaymentsSettings option
-      Branding: AccountBrandingSettings
-      CardIssuing: AccountCardIssuingSettings option
-      CardPayments: AccountCardPaymentsSettings
-      Dashboard: AccountDashboardSettings
-      Invoices: AccountInvoicesSettings option
-      Payments: AccountPaymentsSettings
-      Payouts: AccountPayoutSettings option
-      SepaDebitPayments: AccountSepaDebitPaymentsSettings option
-      Treasury: AccountTreasurySettings option }
-
-type AccountTosAcceptance =
-    {
-        /// The Unix timestamp marking when the account representative accepted their service agreement
-        Date: DateTime option
-        /// The IP address from which the account representative accepted their service agreement
-        Ip: string option
-        /// The user's service agreement type
-        ServiceAgreement: string option
-        /// The user agent of the browser from which the account representative accepted their service agreement
-        UserAgent: string option
-    }
-
-[<Struct>]
-type AccountType =
-    | Custom
-    | Express
-    | [<JsonPropertyName("none")>] None'
-    | Standard
-
-[<Struct>]
-type AccountUnificationAccountControllerFeesPayer =
-    | Account
-    | Application
-    | ApplicationCustom
-    | ApplicationExpress
-
-type AccountUnificationAccountControllerFees =
-    {
-        /// A value indicating the responsible payer of a bundle of Stripe fees for pricing-control eligible products on this account. Learn more about [fee behavior on connected accounts](https://docs.stripe.com/connect/direct-charges-fee-payer-behavior).
-        Payer: AccountUnificationAccountControllerFeesPayer
-    }
-
-[<Struct>]
-type AccountUnificationAccountControllerLossesPayments =
-    | Application
-    | Stripe
-
-type AccountUnificationAccountControllerLosses =
-    {
-        /// A value indicating who is liable when this account can't pay back negative balances from payments.
-        Payments: AccountUnificationAccountControllerLossesPayments
-    }
-
-[<Struct>]
-type AccountUnificationAccountControllerRequirementCollection =
-    | Application
-    | Stripe
-
-[<Struct>]
-type AccountUnificationAccountControllerStripeDashboardType =
-    | Express
-    | Full
-    | [<JsonPropertyName("none")>] None'
-
-type AccountUnificationAccountControllerStripeDashboard =
-    {
-        /// A value indicating the Stripe dashboard this account has access to independent of the Connect application.
-        Type: AccountUnificationAccountControllerStripeDashboardType
-    }
-
-[<Struct>]
-type AccountUnificationAccountControllerType =
-    | Account
-    | Application
-
-type AccountUnificationAccountController =
-    {
-        Fees: AccountUnificationAccountControllerFees option
-        /// `true` if the Connect application retrieving the resource controls the account and can therefore exercise [platform controls](https://docs.stripe.com/connect/platform-controls-for-standard-accounts). Otherwise, this field is null.
-        IsController: bool option
-        Losses: AccountUnificationAccountControllerLosses option
-        /// A value indicating responsibility for collecting requirements on this account. Only returned when the Connect application retrieving the resource controls the account.
-        RequirementCollection: AccountUnificationAccountControllerRequirementCollection option
-        StripeDashboard: AccountUnificationAccountControllerStripeDashboard option
-        /// The controller type. Can be `application`, if a Connect application controls the account, or `account`, if the account controls itself.
-        Type: AccountUnificationAccountControllerType
-    }
-
-[<Struct>]
-type LegalEntityCompanyOwnershipExemptionReason =
-    | QualifiedEntityExceedsOwnershipThreshold
-    | QualifiesAsFinancialInstitution
-
-type LegalEntityCompanyStructure =
-    | FreeZoneEstablishment
-    | FreeZoneLlc
-    | GovernmentInstrumentality
-    | GovernmentalUnit
-    | IncorporatedNonProfit
-    | IncorporatedPartnership
-    | LimitedLiabilityPartnership
-    | Llc
-    | MultiMemberLlc
-    | PrivateCompany
-    | PrivateCorporation
-    | PrivatePartnership
-    | PublicCompany
-    | PublicCorporation
-    | PublicPartnership
-    | RegisteredCharity
-    | SingleMemberLlc
-    | SoleEstablishment
-    | SoleProprietorship
-    | TaxExemptGovernmentInstrumentality
-    | UnincorporatedAssociation
-    | UnincorporatedNonProfit
-    | UnincorporatedPartnership
-
-type LegalEntityCompanyVerificationDocumentDetailsCode =
-    | DocumentCorrupt
-    | DocumentExpired
-    | DocumentFailedCopy
-    | DocumentFailedGreyscale
-    | DocumentFailedOther
-    | DocumentFailedTestMode
-    | DocumentFraudulent
-    | DocumentIncomplete
-    | DocumentInvalid
-    | DocumentManipulated
-    | DocumentNotReadable
-    | DocumentNotUploaded
-    | DocumentTypeNotSupported
-    | DocumentTooLarge
-
-type LegalEntityCompanyVerificationDocument =
-    {
-        /// The back of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `additional_verification`. Note that `additional_verification` files are [not downloadable](/file-upload#uploading-a-file).
-        Back: string option
-        /// A user-displayable string describing the verification state of this document.
-        Details: string option
-        /// One of `document_corrupt`, `document_expired`, `document_failed_copy`, `document_failed_greyscale`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_not_readable`, `document_not_uploaded`, `document_type_not_supported`, or `document_too_large`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option
-        /// The front of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `additional_verification`. Note that `additional_verification` files are [not downloadable](/file-upload#uploading-a-file).
-        Front: string option
-    }
-
-type LegalEntityCompanyVerification =
-    { Document: LegalEntityCompanyVerificationDocument }
-
-type LegalEntityDirectorshipDeclaration =
-    {
-        /// The Unix timestamp marking when the directorship declaration attestation was made.
-        Date: DateTime option
-        /// The IP address from which the directorship declaration attestation was made.
-        Ip: string option
-        /// The user-agent string from the browser where the directorship declaration attestation was made.
-        UserAgent: string option
-    }
-
-type LegalEntityJapanAddress =
-    {
-        /// City/Ward.
-        City: string option
-        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: IsoTypes.IsoCountryCode option
-        /// Block/Building number.
-        [<JsonPropertyName("line1")>]
-        Line1: string option
-        /// Building details.
-        [<JsonPropertyName("line2")>]
-        Line2: string option
-        /// ZIP or postal code.
-        PostalCode: string option
-        /// Prefecture.
-        State: string option
-        /// Town/cho-me.
-        Town: string option
-    }
-
-type LegalEntityRegistrationDate =
-    {
-        /// The day of registration, between 1 and 31.
-        Day: int option
-        /// The month of registration, between 1 and 12.
-        Month: int option
-        /// The four-digit year of registration.
-        Year: int option
-    }
-
-type LegalEntityRepresentativeDeclaration =
-    {
-        /// The Unix timestamp marking when the representative declaration attestation was made.
-        Date: DateTime option
-        /// The IP address from which the representative declaration attestation was made.
-        Ip: string option
-        /// The user-agent string from the browser where the representative declaration attestation was made.
-        UserAgent: string option
-    }
-
-type LegalEntityUboDeclaration =
-    {
-        /// The Unix timestamp marking when the beneficial owner attestation was made.
-        Date: DateTime option
-        /// The IP address from which the beneficial owner attestation was made.
-        Ip: string option
-        /// The user-agent string from the browser where the beneficial owner attestation was made.
-        UserAgent: string option
-    }
-
-type LegalEntityCompany =
-    {
-        Address: Address option
-        /// The Kana variation of the company's primary address (Japan only).
-        AddressKana: LegalEntityJapanAddress option
-        /// The Kanji variation of the company's primary address (Japan only).
-        AddressKanji: LegalEntityJapanAddress option
-        /// Whether the company's directors have been provided. This Boolean will be `true` if you've manually indicated that all directors are provided via [the `directors_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-directors_provided).
-        DirectorsProvided: bool option
-        /// This hash is used to attest that the director information provided to Stripe is both current and correct.
-        DirectorshipDeclaration: LegalEntityDirectorshipDeclaration option
-        /// Whether the company's executives have been provided. This Boolean will be `true` if you've manually indicated that all executives are provided via [the `executives_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-executives_provided), or if Stripe determined that sufficient executives were provided.
-        ExecutivesProvided: bool option
-        /// The export license ID number of the company, also referred as Import Export Code (India only).
-        ExportLicenseId: string option
-        /// The purpose code to use for export transactions (India only).
-        ExportPurposeCode: string option
-        /// The company's legal name. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        Name: string option
-        /// The Kana variation of the company's legal name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        NameKana: string option
-        /// The Kanji variation of the company's legal name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        NameKanji: string option
-        /// Whether the company's owners have been provided. This Boolean will be `true` if you've manually indicated that all owners are provided via [the `owners_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-owners_provided), or if Stripe determined that sufficient owners were provided. Stripe determines ownership requirements using both the number of owners provided and their total percent ownership (calculated by adding the `percent_ownership` of each owner together).
-        OwnersProvided: bool option
-        /// This hash is used to attest that the beneficial owner information provided to Stripe is both current and correct.
-        OwnershipDeclaration: LegalEntityUboDeclaration option
-        /// This value is used to determine if a business is exempt from providing ultimate beneficial owners. See [this support article](https://support.stripe.com/questions/exemption-from-providing-ownership-details) and [changelog](https://docs.stripe.com/changelog/acacia/2025-01-27/ownership-exemption-reason-accounts-api) for more details.
-        OwnershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason option
-        /// The company's phone number (used for verification).
-        Phone: string option
-        RegistrationDate: LegalEntityRegistrationDate option
-        /// This hash is used to attest that the representative is authorized to act as the representative of their legal entity.
-        RepresentativeDeclaration: LegalEntityRepresentativeDeclaration option
-        /// The category identifying the legal structure of the company or legal entity. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`. See [Business structure](https://docs.stripe.com/connect/identity-verification#business-structure) for more details.
-        Structure: LegalEntityCompanyStructure option
-        /// Whether the company's business ID number was provided.
-        TaxIdProvided: bool option
-        /// The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
-        TaxIdRegistrar: string option
-        /// Whether the company's business VAT number was provided.
-        VatIdProvided: bool option
-        /// Information on the verification state of the company.
-        Verification: LegalEntityCompanyVerification option
-    }
-
-type LegalEntityDob =
-    {
-        /// The day of birth, between 1 and 31.
-        Day: int option
-        /// The month of birth, between 1 and 12.
-        Month: int option
-        /// The four-digit year of birth.
-        Year: int option
-    }
-
-type LegalEntityPersonVerificationDetailsCode =
-    | DocumentAddressMismatch
-    | DocumentDobMismatch
-    | DocumentDuplicateType
-    | DocumentIdNumberMismatch
-    | DocumentNameMismatch
-    | DocumentNationalityMismatch
-    | FailedKeyedIdentity
-    | FailedOther
-
-type LegalEntityPersonVerificationDocumentDetailsCode =
-    | DocumentCorrupt
-    | DocumentCountryNotSupported
-    | DocumentExpired
-    | DocumentFailedCopy
-    | DocumentFailedOther
-    | DocumentFailedTestMode
-    | DocumentFraudulent
-    | DocumentFailedGreyscale
-    | DocumentIncomplete
-    | DocumentInvalid
-    | DocumentManipulated
-    | DocumentMissingBack
-    | DocumentMissingFront
-    | DocumentNotReadable
-    | DocumentNotUploaded
-    | DocumentPhotoMismatch
-    | DocumentTooLarge
-    | DocumentTypeNotSupported
-
-type LegalEntityPersonVerificationDocument =
-    {
-        /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
-        Back: string option
-        /// A user-displayable string describing the verification state of this document. For example, if a document is uploaded and the picture is too fuzzy, this may say "Identity document is too unclear to read".
-        Details: string option
-        /// One of `document_corrupt`, `document_country_not_supported`, `document_expired`, `document_failed_copy`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_failed_greyscale`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_missing_back`, `document_missing_front`, `document_not_readable`, `document_not_uploaded`, `document_photo_mismatch`, `document_too_large`, or `document_type_not_supported`. A machine-readable code specifying the verification state for this document.
-        DetailsCode: LegalEntityPersonVerificationDocumentDetailsCode option
-        /// The front of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
-        Front: string option
-    }
-
-[<Struct>]
-type LegalEntityPersonVerificationStatus =
-    | Unverified
-    | Pending
-    | Verified
-
-type LegalEntityPersonVerification =
-    {
-        /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
-        AdditionalDocument: LegalEntityPersonVerificationDocument option
-        /// A user-displayable string describing the verification state for the person. For example, this may say "Provided identity information could not be verified".
-        Details: string option
-        /// One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person.
-        DetailsCode: LegalEntityPersonVerificationDetailsCode option
-        Document: LegalEntityPersonVerificationDocument option
-        /// The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`. Please refer [guide](https://docs.stripe.com/connect/handling-api-verification) to handle verification updates.
-        Status: LegalEntityPersonVerificationStatus
-    }
-
-type PersonAdditionalTosAcceptance =
-    {
-        /// The Unix timestamp marking when the legal guardian accepted the service agreement.
-        Date: DateTime option
-        /// The IP address from which the legal guardian accepted the service agreement.
-        Ip: string option
-        /// The user agent of the browser from which the legal guardian accepted the service agreement.
-        UserAgent: string option
-    }
-
-type PersonAdditionalTosAcceptances =
-    {
-        /// Details on the legal guardian's acceptance of the main Stripe service agreement.
-        Account: PersonAdditionalTosAcceptance option
-    }
-
-type PersonFutureRequirements =
-    {
-        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
-        Alternatives: AccountRequirementsAlternative list option
-        /// Fields that need to be resolved to keep the person's account enabled. If not resolved by the account's `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash, and may immediately become `past_due`, but the account may also be given a grace period depending on the account's enablement state prior to transition.
-        CurrentlyDue: string list
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
-        Errors: AccountRequirementsError list
-        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `future_requirements[current_deadline]` becomes set.
-        EventuallyDue: string list
-        /// Fields that haven't been resolved by the account's `requirements.current_deadline`. These fields need to be resolved to enable the person's account. `future_requirements.past_due` is a subset of `requirements.past_due`.
-        PastDue: string list
-        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
-        PendingVerification: string list
-    }
-
-[<Struct>]
-type PersonPoliticalExposure =
-    | Existing
-    | [<JsonPropertyName("none")>] None'
-
-type PersonRelationship =
-    {
-        /// Whether the person is the authorizer of the account's representative.
-        Authorizer: bool option
-        /// Whether the person is a director of the account's legal entity. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
-        Director: bool option
-        /// Whether the person has significant responsibility to control, manage, or direct the organization.
-        Executive: bool option
-        /// Whether the person is the legal guardian of the account's representative.
-        LegalGuardian: bool option
-        /// Whether the person is an owner of the account’s legal entity.
-        Owner: bool option
-        /// The percent owned by the person of the account's legal entity.
-        PercentOwnership: decimal option
-        /// Whether the person is authorized as the primary representative of the account. This is the person nominated by the business to provide information about themselves, and general information about the account. There can only be one representative at any given time. At the time the account is created, this person should be set to the person responsible for opening the account.
-        Representative: bool option
-        /// The person's title (e.g., CEO, Support Engineer).
-        Title: string option
-    }
-
-type PersonRequirements =
-    {
-        /// Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
-        Alternatives: AccountRequirementsAlternative list option
-        /// Fields that need to be resolved to keep the person's account enabled. If not resolved by the account's `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
-        CurrentlyDue: string list
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
-        Errors: AccountRequirementsError list
-        /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `current_deadline` becomes set.
-        EventuallyDue: string list
-        /// Fields that haven't been resolved by `current_deadline`. These fields need to be resolved to enable the person's account.
-        PastDue: string list
-        /// Fields that are being reviewed, or might become required depending on the results of a review. If the review fails, these fields can move to `eventually_due`, `currently_due`, `past_due` or `alternatives`. Fields might appear in `eventually_due`, `currently_due`, `past_due` or `alternatives` and in `pending_verification` if one verification fails but another is still pending.
-        PendingVerification: string list
-    }
-
-type PersonEthnicityDetailsEthnicity =
-    | Cuban
-    | HispanicOrLatino
-    | Mexican
-    | NotHispanicOrLatino
-    | OtherHispanicOrLatino
-    | PreferNotToAnswer
-    | PuertoRican
-
-type PersonEthnicityDetails =
-    {
-        /// The persons ethnicity
-        Ethnicity: PersonEthnicityDetailsEthnicity list option
-        /// Please specify your origin, when other is selected.
-        EthnicityOther: string option
-    }
-
-type PersonRaceDetailsRace =
-    | AfricanAmerican
-    | AmericanIndianOrAlaskaNative
-    | Asian
-    | AsianIndian
-    | BlackOrAfricanAmerican
-    | Chinese
-    | Ethiopian
-    | Filipino
-    | GuamanianOrChamorro
-    | Haitian
-    | Jamaican
-    | Japanese
-    | Korean
-    | NativeHawaiian
-    | NativeHawaiianOrOtherPacificIslander
-    | Nigerian
-    | OtherAsian
-    | OtherBlackOrAfricanAmerican
-    | OtherPacificIslander
-    | PreferNotToAnswer
-    | Samoan
-    | Somali
-    | Vietnamese
-    | White
-
-type PersonRaceDetails =
-    {
-        /// The persons race.
-        Race: PersonRaceDetailsRace list option
-        /// Please specify your race, when other is selected.
-        RaceOther: string option
-    }
-
-type PersonUsCfpbData =
-    {
-        /// The persons ethnicity details
-        EthnicityDetails: PersonEthnicityDetails option
-        /// The persons race details
-        RaceDetails: PersonRaceDetails option
-        /// The persons self-identified gender
-        SelfIdentifiedGender: string option
-    }
-
-/// This is an object representing a person associated with a Stripe account.
-/// A platform can only access a subset of data in a person for an account where [account.controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`, which includes Standard and Express accounts, after creating an Account Link or Account Session to start Connect onboarding.
-/// See the [Standard onboarding](/connect/standard-accounts) or [Express onboarding](/connect/express-accounts) documentation for information about prefilling information and account onboarding steps. Learn more about [handling identity verification with the API](/connect/handling-api-verification#person-information).
-type Person =
-    {
-        /// The account the person is associated with.
-        Account: string option
-        AdditionalTosAcceptances: PersonAdditionalTosAcceptances option
-        Address: Address option
-        /// The Kana variation of the person's address (Japan only).
-        AddressKana: LegalEntityJapanAddress option
-        /// The Kanji variation of the person's address (Japan only).
-        AddressKanji: LegalEntityJapanAddress option
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        Dob: LegalEntityDob option
-        /// The person's email address. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        Email: string option
-        /// The person's first name. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        FirstName: string option
-        /// The Kana variation of the person's first name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        FirstNameKana: string option
-        /// The Kanji variation of the person's first name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        FirstNameKanji: string option
-        /// A list of alternate names or aliases that the person is known by. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        FullNameAliases: string list option
-        /// Information about the [upcoming new requirements for this person](https://docs.stripe.com/connect/custom-accounts/future-requirements), including what information needs to be collected, and by when.
-        FutureRequirements: PersonFutureRequirements option
-        /// The person's gender.
-        Gender: string option
-        /// Unique identifier for the object.
-        Id: string
-        /// Whether the person's `id_number` was provided. True if either the full ID number was provided or if only the required part of the ID number was provided (ex. last four of an individual's SSN for the US indicated by `ssn_last_4_provided`).
-        IdNumberProvided: bool option
-        /// Whether the person's `id_number_secondary` was provided.
-        IdNumberSecondaryProvided: bool option
-        /// The person's last name. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        LastName: string option
-        /// The Kana variation of the person's last name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        LastNameKana: string option
-        /// The Kanji variation of the person's last name (Japan only). Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
-        LastNameKanji: string option
-        /// The person's maiden name.
-        MaidenName: string option
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-        /// The country where the person is a national.
-        Nationality: string option
-        /// The person's phone number.
-        Phone: string option
-        /// Indicates if the person or any of their representatives, family members, or other closely related persons, declares that they hold or have held an important public job or function, in any jurisdiction.
-        PoliticalExposure: PersonPoliticalExposure option
-        RegisteredAddress: Address option
-        Relationship: PersonRelationship option
-        /// Information about the requirements for this person, including what information needs to be collected, and by when.
-        Requirements: PersonRequirements option
-        /// Whether the last four digits of the person's Social Security number have been provided (U.S. only).
-        SsnLast4Provided: bool option
-        /// Demographic data related to the person.
-        UsCfpbData: PersonUsCfpbData option
-        Verification: LegalEntityPersonVerification option
-    }
-
-/// For new integrations, we recommend using the [Accounts v2 API](/api/v2/core/accounts), in place of /v1/accounts and /v1/customers to represent a user.
-/// This is an object representing a Stripe account. You can retrieve it to see
-/// properties on the account like its current requirements or if the account is
-/// enabled to make live charges or receive payouts.
-/// For accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection)
-/// is `application`, which includes Custom accounts, the properties below are always
-/// returned.
-/// For accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection)
-/// is `stripe`, which includes Standard and Express accounts, some properties are only returned
-/// until you create an [Account Link](/api/account_links) or [Account Session](/api/account_sessions)
-/// to start Connect Onboarding. Learn about the [differences between accounts](/connect/accounts).
-type Account =
-    {
-        /// Business information about the account.
-        BusinessProfile: AccountBusinessProfile option
-        /// The business type.
-        BusinessType: AccountBusinessType option
-        Capabilities: AccountCapabilities option
-        /// Whether the account can process charges.
-        ChargesEnabled: bool option
-        Company: LegalEntityCompany option
-        Controller: AccountUnificationAccountController option
-        /// The account's country.
-        Country: IsoTypes.IsoCountryCode option
-        /// Time at which the account was connected. Measured in seconds since the Unix epoch.
-        Created: DateTime option
-        /// Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
-        DefaultCurrency: IsoTypes.IsoCurrencyCode option
-        /// Whether account details have been submitted. Accounts with Stripe Dashboard access, which includes Standard accounts, cannot receive payouts before this is true. Accounts where this is false should be directed to [an onboarding flow](/connect/onboarding) to finish submitting account details.
-        DetailsSubmitted: bool option
-        /// An email address associated with the account. It's not used for authentication and Stripe doesn't market to this field without explicit approval from the platform.
-        Email: string option
-        /// External accounts (bank accounts and debit cards) currently attached to this account. External accounts are only returned for requests where `controller[is_controller]` is true.
-        ExternalAccounts: AccountExternalAccounts option
-        FutureRequirements: AccountFutureRequirements option
-        /// The groups associated with the account.
-        Groups: AccountGroupMembership option
-        /// Unique identifier for the object.
-        Id: string
-        Individual: Person option
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-        /// Whether the funds in this account can be paid out.
-        PayoutsEnabled: bool option
-        Requirements: AccountRequirements option
-        /// Options for customizing how the account functions within Stripe.
-        Settings: AccountSettings option
-        TosAcceptance: AccountTosAcceptance option
-        /// The Stripe account type. Can be `standard`, `express`, `custom`, or `none`.
-        Type: AccountType option
-    }
-
-type PaymentSource =
-    | Account of Account
-    | BankAccount of BankAccount
-    | Card of Card
-    | Source of Source
-
 [<Struct>]
 type PaymentFlowsAutomaticPaymentMethodsSetupIntentAllowRedirects =
     | Always
@@ -5516,6 +6394,11 @@ type SetupIntentCancellationReason =
     | Abandoned
     | Duplicate
     | RequestedByCustomer
+
+type SetupIntentCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 type SetupIntentExcludedPaymentMethodTypes =
     | AcssDebit
@@ -5909,7 +6792,7 @@ and PaymentIntent =
         /// Amount that this PaymentIntent collects.
         AmountReceived: int
         /// ID of the Connect application that created the PaymentIntent.
-        Application: string option
+        Application: StripeId<Markers.Application> option
         /// The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total amount captured. For more information, see the PaymentIntents [use case for connected accounts](https://docs.stripe.com/payments/connected-accounts).
         ApplicationFeeAmount: int option
         /// Settings to configure compatible payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods)
@@ -5933,7 +6816,7 @@ and PaymentIntent =
         /// ID of the Customer this PaymentIntent belongs to, if one exists.
         /// Payment methods attached to other Customers cannot be used with this PaymentIntent.
         /// If [setup_future_usage](https://api.stripe.com#payment_intent_object-setup_future_usage) is set and this PaymentIntent's payment method is not `card_present`, then the payment method attaches to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete. If the payment method is `card_present` and isn't a digital wallet, then a [generated_card](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card is created and attached to the Customer instead.
-        Customer: string option
+        Customer: PaymentIntentCustomer'AnyOf option
         /// ID of the Account representing the customer that this PaymentIntent belongs to, if one exists.
         /// Payment methods attached to other Accounts cannot be used with this PaymentIntent.
         /// If [setup_future_usage](https://api.stripe.com#payment_intent_object-setup_future_usage) is set and this PaymentIntent's payment method is not `card_present`, then the payment method attaches to the Account after the PaymentIntent has been confirmed and any required actions from the user are complete. If the payment method is `card_present` and isn't a digital wallet, then a [generated_card](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card is created and attached to the Account instead.
@@ -5948,7 +6831,7 @@ and PaymentIntent =
         /// The payment error encountered in the previous PaymentIntent confirmation. It will be cleared if the PaymentIntent is later updated for any reason.
         LastPaymentError: ApiErrors option
         /// ID of the latest [Charge object](https://docs.stripe.com/api/charges) created by this PaymentIntent. This property is `null` until PaymentIntent confirmation is attempted.
-        LatestCharge: string option
+        LatestCharge: StripeId<Markers.Charge> option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Settings for Managed Payments.
@@ -5959,10 +6842,10 @@ and PaymentIntent =
         NextAction: PaymentIntentNextAction option
         /// You can specify the settlement merchant as the
         /// connected account using the `on_behalf_of` attribute on the charge. See the PaymentIntents [use case for connected accounts](/payments/connected-accounts) for details.
-        OnBehalfOf: string option
+        OnBehalfOf: StripeId<Markers.Account> option
         PaymentDetails: PaymentFlowsPaymentDetails option
         /// ID of the payment method used in this PaymentIntent.
-        PaymentMethod: string option
+        PaymentMethod: StripeId<Markers.PaymentMethod> option
         /// Information about the [payment method configuration](https://docs.stripe.com/api/payment_method_configurations) used for this PaymentIntent.
         PaymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option
         /// Payment-method-specific configuration for this PaymentIntent.
@@ -5975,7 +6858,7 @@ and PaymentIntent =
         /// Email address that the receipt for the resulting payment will be sent to. If `receipt_email` is specified for a payment in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
         ReceiptEmail: string option
         /// ID of the review associated with this PaymentIntent, if any.
-        Review: string option
+        Review: StripeId<Markers.Review> option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -5984,7 +6867,7 @@ and PaymentIntent =
         /// Shipping information for this PaymentIntent.
         Shipping: Shipping option
         /// This is a legacy field that will be removed in the future. It is the ID of the Source object that is associated with this PaymentIntent, if one was supplied.
-        Source: string option
+        Source: PaymentIntentSource'AnyOf option
         /// Text that appears on the customer's statement as the statement descriptor for a non-card charge. This value overrides the account's default statement descriptor. For information about requirements, including the 22-character limit, see [the Statement Descriptor docs](https://docs.stripe.com/get-started/account/statement-descriptors).
         /// Setting this value for a card charge returns an error. For card charges, set the [statement_descriptor_suffix](https://docs.stripe.com/get-started/account/statement-descriptors#dynamic) instead.
         StatementDescriptor: string option
@@ -6018,7 +6901,7 @@ and PaymentIntent =
 and SetupIntent =
     {
         /// ID of the Connect application that created the SetupIntent.
-        Application: string option
+        Application: StripeId<Markers.Application> option
         /// If present, the SetupIntent's payment method will be attached to the in-context Stripe Account.
         /// It can only be used for this Stripe Account’s own money movement flows like InboundTransfer and OutboundTransfers. It cannot be set to true when setting up a PaymentMethod for a Customer, and defaults to false when attaching a PaymentMethod to a Customer.
         AttachToSelf: bool option
@@ -6033,7 +6916,7 @@ and SetupIntent =
         Created: DateTime
         /// ID of the Customer this SetupIntent belongs to, if one exists.
         /// If present, the SetupIntent's payment method will be attached to the Customer on successful setup. Payment methods attached to other Customers cannot be used with this SetupIntent.
-        Customer: string option
+        Customer: SetupIntentCustomer'AnyOf option
         /// ID of the Account this SetupIntent belongs to, if one exists.
         /// If present, the SetupIntent's payment method will be attached to the Account on successful setup. Payment methods attached to other Accounts cannot be used with this SetupIntent.
         CustomerAccount: string option
@@ -6049,20 +6932,20 @@ and SetupIntent =
         /// The error encountered in the previous SetupIntent confirmation.
         LastSetupError: ApiErrors option
         /// The most recent SetupAttempt for this SetupIntent.
-        LatestAttempt: string option
+        LatestAttempt: StripeId<Markers.SetupAttempt> option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         ManagedPayments: SmorResourceManagedPayments option
         /// ID of the multi use Mandate generated by the SetupIntent.
-        Mandate: string option
+        Mandate: StripeId<Markers.Mandate> option
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         /// If present, this property tells you what actions you need to take in order for your customer to continue payment setup.
         NextAction: SetupIntentNextAction option
         /// The account (if any) for which the setup is intended.
-        OnBehalfOf: string option
+        OnBehalfOf: StripeId<Markers.Account> option
         /// ID of the payment method used with this SetupIntent. If the payment method is `card_present` and isn't a digital wallet, then the [generated_card](https://docs.stripe.com/api/setup_attempts/object#setup_attempt_object-payment_method_details-card_present-generated_card) associated with the `latest_attempt` is attached to the Customer instead.
-        PaymentMethod: string option
+        PaymentMethod: StripeId<Markers.PaymentMethod> option
         /// Information about the [payment method configuration](https://docs.stripe.com/api/payment_method_configurations) used for this Setup Intent.
         PaymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option
         /// Payment method-specific configuration for this SetupIntent.
@@ -6070,7 +6953,7 @@ and SetupIntent =
         /// The list of payment method types (e.g. card) that this SetupIntent is allowed to set up. A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
         PaymentMethodTypes: string list
         /// ID of the single_use Mandate generated by the SetupIntent.
-        SingleUseMandate: string option
+        SingleUseMandate: StripeId<Markers.Mandate> option
         /// [Status](https://docs.stripe.com/payments/intents#intent-statuses) of this SetupIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `canceled`, or `succeeded`.
         Status: SetupIntentStatus
         /// Indicates how the payment method is intended to be used in the future.
@@ -6407,9 +7290,9 @@ type Refund =
         /// Amount, in cents (or local equivalent).
         Amount: int
         /// Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// ID of the charge that's refunded.
-        Charge: string option
+        Charge: StripeId<Markers.Charge> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -6418,7 +7301,7 @@ type Refund =
         Description: string option
         DestinationDetails: RefundDestinationDetails option
         /// After the refund fails, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction.
-        FailureBalanceTransaction: string option
+        FailureBalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Provides the reason for the refund failure. Possible values are: `lost_or_stolen_card`, `expired_or_canceled_card`, `charge_for_pending_refund_disputed`, `insufficient_funds`, `declined`, `merchant_request`, or `unknown`.
         FailureReason: RefundFailureReason option
         /// Unique identifier for the object.
@@ -6429,7 +7312,7 @@ type Refund =
         Metadata: Map<string, string> option
         NextAction: RefundNextAction option
         /// ID of the PaymentIntent that's refunded.
-        PaymentIntent: string option
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
         /// Provides the reason for why the refund is pending. Possible values are: `processing`, `insufficient_funds`, or `charge_pending`.
         PendingReason: RefundPendingReason option
         PresentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails option
@@ -6438,11 +7321,11 @@ type Refund =
         /// This is the transaction number that appears on email receipts sent for this refund.
         ReceiptNumber: string option
         /// The transfer reversal that's associated with the refund. Only present if the charge came from another Stripe account.
-        SourceTransferReversal: string option
+        SourceTransferReversal: StripeId<Markers.TransferReversal> option
         /// Status of the refund. This can be `pending`, `requires_action`, `succeeded`, `failed`, or `canceled`. Learn more about [failed refunds](https://docs.stripe.com/refunds#failed-refunds).
         Status: RefundStatus option
         /// This refers to the transfer reversal object if the accompanying transfer reverses. This is only applicable if the charge was created using the destination parameter.
-        TransferReversal: string option
+        TransferReversal: StripeId<Markers.TransferReversal> option
     }
 
 /// Occurs whenever a refund is updated.
@@ -6508,7 +7391,7 @@ type PaymentLinksResourceTransferData =
         /// The amount in cents (or local equivalent) that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
         Amount: int option
         /// The connected account receiving the transfer.
-        Destination: string
+        Destination: StripeId<Markers.Account>
     }
 
 [<Struct>]
@@ -6560,7 +7443,7 @@ type PaymentLinksResourceShippingOption =
         /// A non-negative integer in cents representing how much to charge.
         ShippingAmount: int
         /// The ID of the Shipping Rate to use for this shipping option.
-        ShippingRate: string
+        ShippingRate: StripeId<Markers.ShippingRate>
     }
 
 type PaymentLinksResourceShippingAddressCollectionAllowedCountries =
@@ -6898,18 +7781,15 @@ type InvoiceSettingCheckoutRenderingOptions =
         Template: string option
     }
 
-type InvoiceSettingCustomField =
-    {
-        /// The name of the custom field.
-        Name: string
-        /// The value of the custom field.
-        Value: string
-    }
+type PaymentLinksResourceInvoiceSettingsAccountTaxIds'AnyOf =
+    | String of string
+    | TaxId of TaxId
+    | DeletedTaxId of DeletedTaxId
 
 type PaymentLinksResourceInvoiceSettings =
     {
         /// The account tax IDs associated with the invoice.
-        AccountTaxIds: string list option
+        AccountTaxIds: PaymentLinksResourceInvoiceSettingsAccountTaxIds'AnyOf list option
         /// A list of up to 4 custom fields to be displayed on the invoice.
         CustomFields: InvoiceSettingCustomField list option
         /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -7700,9 +8580,9 @@ type PaymentMethodDetailsPaymentRecordBancontact =
         /// Bank Identifier Code of the bank associated with the bank account.
         Bic: string option
         /// The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: string option
+        GeneratedSepaDebit: StripeId<Markers.PaymentMethod> option
         /// The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: string option
+        GeneratedSepaDebitMandate: StripeId<Markers.Mandate> option
         /// Last four characters of the IBAN.
         [<JsonPropertyName("iban_last4")>]
         IbanLast4: string option
@@ -7842,9 +8722,9 @@ type PaymentMethodDetailsPaymentRecordIdeal =
         /// The Bank Identifier Code of the customer's bank.
         Bic: PaymentMethodDetailsPaymentRecordIdealBic option
         /// The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: string option
+        GeneratedSepaDebit: StripeId<Markers.PaymentMethod> option
         /// The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: string option
+        GeneratedSepaDebitMandate: StripeId<Markers.Mandate> option
         /// Last four characters of the IBAN.
         [<JsonPropertyName("iban_last4")>]
         IbanLast4: string option
@@ -8009,9 +8889,9 @@ type PaymentMethodDetailsPaymentRecordSofort =
         /// Two-letter ISO code representing the country the bank account is located in.
         Country: IsoTypes.IsoCountryCode option
         /// The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: string option
+        GeneratedSepaDebit: StripeId<Markers.PaymentMethod> option
         /// The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: string option
+        GeneratedSepaDebitMandate: StripeId<Markers.Mandate> option
         /// Last four characters of the IBAN.
         [<JsonPropertyName("iban_last4")>]
         IbanLast4: string option
@@ -8067,7 +8947,7 @@ type PaymentMethodDetailsPaymentRecordUsBankAccount =
         [<JsonPropertyName("last4")>]
         Last4: string option
         /// ID of the mandate used to make this payment.
-        Mandate: string option
+        Mandate: StripeId<Markers.Mandate> option
         /// The ACH payment reference for this transaction.
         PaymentReference: string option
         /// The routing number for the bank account.
@@ -8824,19 +9704,19 @@ type IssuingTransaction =
         /// Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         AmountDetails: IssuingTransactionAmountDetails option
         /// The `Authorization` object that led to this transaction.
-        Authorization: string option
+        Authorization: StripeId<Markers.IssuingAuthorization> option
         /// ID of the [balance transaction](https://docs.stripe.com/api/balance_transactions) associated with this transaction.
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// The card used to make this transaction.
-        Card: string
+        Card: StripeId<Markers.IssuingCard>
         /// The cardholder to whom this transaction belongs.
-        Cardholder: string option
+        Cardholder: StripeId<Markers.IssuingCardholder> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// If you've disputed the transaction, the ID of the dispute.
-        Dispute: string option
+        Dispute: StripeId<Markers.IssuingDispute> option
         /// Unique identifier for the object.
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -8853,7 +9733,7 @@ type IssuingTransaction =
         /// Additional purchase information that is optionally provided by the merchant.
         PurchaseDetails: IssuingTransactionPurchaseDetails option
         /// [Token](https://docs.stripe.com/api/issuing/tokens/object) object used for this transaction. If a network token was not used for this transaction, this field will be null.
-        Token: string option
+        Token: StripeId<Markers.IssuingToken> option
         /// [Treasury](https://docs.stripe.com/api/treasury) details related to this transaction if it was created on a [FinancialAccount](/docs/api/treasury/financial_accounts
         Treasury: IssuingTransactionTreasury option
         /// The nature of the transaction.
@@ -8986,7 +9866,7 @@ type BalanceTransaction =
         /// Learn more about how [reporting categories](https://stripe.com/docs/reports/reporting-categories) can help you understand balance transactions from an accounting perspective.
         ReportingCategory: string
         /// This transaction relates to the Stripe object.
-        Source: string option
+        Source: StripeId<Markers.BalanceTransactionSource> option
         /// The transaction's net funds status in the Stripe balance, which are either `available` or `pending`.
         Status: BalanceTransactionStatus
         /// Transaction type: `adjustment`, `advance`, `advance_funding`, `anticipation_repayment`, `application_fee`, `application_fee_refund`, `charge`, `climate_order_purchase`, `climate_order_refund`, `connect_collection_transfer`, `contribution`, `inbound_transfer`, `inbound_transfer_reversal`, `issuing_authorization_hold`, `issuing_authorization_release`, `issuing_dispute`, `issuing_transaction`, `obligation_outbound`, `obligation_reversal_inbound`, `payment`, `payment_failure_refund`, `payment_network_reserve_hold`, `payment_network_reserve_release`, `payment_refund`, `payment_reversal`, `payment_unreconciled`, `payout`, `payout_cancel`, `payout_failure`, `payout_minimum_balance_hold`, `payout_minimum_balance_release`, `refund`, `refund_failure`, `reserve_transaction`, `reserved_funds`, `reserve_hold`, `reserve_release`, `stripe_fee`, `stripe_fx_fee`, `stripe_balance_payment_debit`, `stripe_balance_payment_debit_reversal`, `tax_fee`, `topup`, `topup_reversal`, `transfer`, `transfer_cancel`, `transfer_failure`, `transfer_refund`, or `fee_credit_funding`. Learn more about [balance transaction types and what they represent](https://stripe.com/docs/reports/balance-transaction-types). To classify transactions for accounting purposes, consider `reporting_category` instead.
@@ -9006,7 +9886,7 @@ type IssuingDisputeCanceledEvidenceReturnStatus =
 type IssuingDisputeCanceledEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// Date when order was canceled.
         CanceledAt: DateTime option
         /// Whether the cardholder was provided with a cancellation policy.
@@ -9030,13 +9910,13 @@ type IssuingDisputeCanceledEvidence =
 type IssuingDisputeDuplicateEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.
-        CardStatement: string option
+        CardStatement: StripeId<Markers.File> option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.
-        CashReceipt: string option
+        CashReceipt: StripeId<Markers.File> option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.
-        CheckImage: string option
+        CheckImage: StripeId<Markers.File> option
         /// Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         /// Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.
@@ -9056,7 +9936,7 @@ type IssuingDisputeEvidenceReason =
 type IssuingDisputeFraudulentEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
     }
@@ -9069,7 +9949,7 @@ type IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus =
 type IssuingDisputeMerchandiseNotAsDescribedEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         /// Date when the product was received.
@@ -9085,7 +9965,7 @@ type IssuingDisputeMerchandiseNotAsDescribedEvidence =
 type IssuingDisputeNoValidAuthorizationEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
     }
@@ -9098,7 +9978,7 @@ type IssuingDisputeNotReceivedEvidenceProductType =
 type IssuingDisputeNotReceivedEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// Date when the cardholder expected to receive the product.
         ExpectedAt: DateTime option
         /// Explanation of why the cardholder is disputing this transaction.
@@ -9117,7 +9997,7 @@ type IssuingDisputeOtherEvidenceProductType =
 type IssuingDisputeOtherEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         /// Description of the merchandise or service that was purchased.
@@ -9129,7 +10009,7 @@ type IssuingDisputeOtherEvidence =
 type IssuingDisputeServiceNotAsDescribedEvidence =
     {
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
-        AdditionalDocumentation: string option
+        AdditionalDocumentation: StripeId<Markers.File> option
         /// Date when order was canceled.
         CanceledAt: DateTime option
         /// Reason for canceling the order.
@@ -9216,7 +10096,7 @@ type IssuingDispute =
         /// Current status of the dispute.
         Status: IssuingDisputeStatus
         /// The transaction being disputed.
-        Transaction: string
+        Transaction: StripeId<Markers.IssuingTransaction>
         /// [Treasury](https://docs.stripe.com/api/treasury) details related to this dispute if it was created on a [FinancialAccount](/docs/api/treasury/financial_accounts
         Treasury: IssuingDisputeTreasury option
     }
@@ -9579,7 +10459,7 @@ type IssuingAuthorization =
         /// Whether the card was present at the point of sale for the authorization.
         CardPresence: IssuingAuthorizationCardPresence option
         /// The cardholder to whom this authorization belongs.
-        Cardholder: string option
+        Cardholder: StripeId<Markers.IssuingCardholder> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The currency of the cardholder. This currency can be different from the currency presented at authorization and the `merchant_currency` field on this authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -9610,7 +10490,7 @@ type IssuingAuthorization =
         /// The current status of the authorization in its lifecycle.
         Status: IssuingAuthorizationStatus
         /// [Token](https://docs.stripe.com/api/issuing/tokens/object) object used for this authorization. If a network token was not used for this authorization, this field will be null.
-        Token: string option
+        Token: StripeId<Markers.IssuingToken> option
         /// List of [transactions](https://docs.stripe.com/api/issuing/transactions) associated with this authorization.
         Transactions: IssuingTransaction list
         /// [Treasury](https://docs.stripe.com/api/treasury) details related to this authorization if it was created on a [FinancialAccount](https://docs.stripe.com/api/treasury/financial_accounts).
@@ -9628,10 +10508,15 @@ type IssuingAuthorizationUpdated = { Object: IssuingAuthorization }
 /// Occurs whenever an authorization is created.
 type IssuingAuthorizationCreated = { Object: IssuingAuthorization }
 
+type InvoiceSettingSubscriptionSchedulePhaseSettingAccountTaxIds'AnyOf =
+    | String of string
+    | TaxId of TaxId
+    | DeletedTaxId of DeletedTaxId
+
 type InvoiceSettingSubscriptionSchedulePhaseSetting =
     {
         /// The account tax IDs associated with this phase of the subscription schedule. Will be set on invoices generated by this phase of the subscription schedule.
-        AccountTaxIds: string list option
+        AccountTaxIds: InvoiceSettingSubscriptionSchedulePhaseSettingAccountTaxIds'AnyOf list option
         /// Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         DaysUntilDue: int option
         /// The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.
@@ -9645,71 +10530,13 @@ type InvoiceSettingQuoteSetting =
         Issuer: ConnectAccountReference
     }
 
-[<Struct>]
-type InvoicePaymentStatus =
-    | Open
-    | Paid
-    | Canceled
-
-[<Struct>]
-type InvoicesPaymentsInvoicePaymentAssociatedPaymentType =
-    | Charge
-    | PaymentIntent
-    | PaymentRecord
-
-type InvoicesPaymentsInvoicePaymentAssociatedPayment =
+type DeletedInvoice =
     {
-        /// ID of the successful charge for this payment when `type` is `charge`.Note: charge is only surfaced if the charge object is not associated with a payment intent. If the charge object does have a payment intent, the Invoice Payment surfaces the payment intent instead.
-        Charge: string option
-        /// ID of the PaymentIntent associated with this payment when `type` is `payment_intent`. Note: This property is only populated for invoices finalized on or after March 15th, 2019.
-        PaymentIntent: string option
-        /// ID of the PaymentRecord associated with this payment when `type` is `payment_record`.
-        PaymentRecord: string option
-        /// Type of payment object associated with this invoice payment.
-        Type: InvoicesPaymentsInvoicePaymentAssociatedPaymentType
-    }
-
-type InvoicesPaymentsInvoicePaymentStatusTransitions =
-    {
-        /// The time that the payment was canceled.
-        CanceledAt: DateTime option
-        /// The time that the payment succeeded.
-        PaidAt: DateTime option
-    }
-
-/// Invoice Payments represent payments made against invoices. Invoice Payments can
-/// be accessed in two ways:
-/// 1. By expanding the `payments` field on the [Invoice](https://api.stripe.com#invoice) resource.
-/// 2. By using the Invoice Payment retrieve and list endpoints.
-/// Invoice Payments include the mapping between payment objects, such as Payment Intent, and Invoices.
-/// This resource and its endpoints allows you to easily track if a payment is associated with a specific invoice and
-/// monitor the allocation details of the payments.
-type InvoicePayment =
-    {
-        /// Amount that was actually paid for this invoice, in cents (or local equivalent). This field is null until the payment is `paid`. This amount can be less than the `amount_requested` if the PaymentIntent’s `amount_received` is not sufficient to pay all of the invoices that it is attached to.
-        AmountPaid: int option
-        /// Amount intended to be paid toward this invoice, in cents (or local equivalent)
-        AmountRequested: int
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: IsoTypes.IsoCurrencyCode
+        /// Always true for a deleted object
+        Deleted: bool
         /// Unique identifier for the object.
         Id: string
-        /// The invoice that was paid.
-        Invoice: string
-        /// Stripe automatically creates a default InvoicePayment when the invoice is finalized, and keeps it synchronized with the invoice’s `amount_remaining`. The PaymentIntent associated with the default payment can’t be edited or canceled directly.
-        IsDefault: bool
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        Payment: InvoicesPaymentsInvoicePaymentAssociatedPayment
-        /// The status of the payment, one of `open`, `paid`, or `canceled`.
-        Status: InvoicePaymentStatus
-        StatusTransitions: InvoicesPaymentsInvoicePaymentStatusTransitions
     }
-
-/// Occurs when an InvoicePayment is successfully paid.
-type InvoicePaymentPaid = { Object: InvoicePayment }
 
 [<Struct>]
 type AutomaticTaxDisabledReason =
@@ -9753,7 +10580,7 @@ type BillingBillResourceInvoicingParentsInvoiceSubscriptionParent =
         ///  *Note: This attribute is populated only for invoices created on or after June 29, 2023.*
         Metadata: Map<string, string> option
         /// The subscription that generated this invoice
-        Subscription: string
+        Subscription: StripeId<Markers.Subscription>
         /// Only set for upcoming invoices that preview prorations. The time used to calculate prorations.
         SubscriptionProrationDate: DateTime option
     }
@@ -9771,7 +10598,7 @@ type BillingBillResourceInvoicingParentsInvoiceParent =
 type BillingBillResourceInvoicingTaxesTaxRateDetails =
     {
         /// ID of the tax rate
-        TaxRate: string
+        TaxRate: StripeId<Markers.TaxRate>
     }
 
 [<Struct>]
@@ -9811,6 +10638,16 @@ type BillingBillResourceInvoicingTaxesTax =
         TaxableAmount: int option
     }
 
+type InvoiceAccountTaxIds'AnyOf =
+    | String of string
+    | TaxId of TaxId
+    | DeletedTaxId of DeletedTaxId
+
+type InvoiceApplication'AnyOf =
+    | String of string
+    | Application of Application
+    | DeletedApplication of DeletedApplication
+
 type InvoiceBillingReason =
     | AutomaticPendingInvoiceItemInvoice
     | Manual
@@ -9827,11 +10664,21 @@ type InvoiceCollectionMethod =
     | ChargeAutomatically
     | SendInvoice
 
+type InvoiceCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
 [<Struct>]
 type InvoiceCustomerTaxExempt =
     | Exempt
     | [<JsonPropertyName("none")>] None'
     | Reverse
+
+type InvoiceDiscounts'AnyOf =
+    | String of string
+    | Discount of Discount
+    | DeletedDiscount of DeletedDiscount
 
 type BillingBillResourceInvoicingLinesCommonCreditedItems =
     {
@@ -9891,7 +10738,7 @@ type BillingBillResourceInvoicingLinesParentsInvoiceLineItemParent =
 type BillingBillResourceInvoicingPricingPricingPriceDetails =
     {
         /// The ID of the price this item is associated with.
-        Price: string
+        Price: StripeId<Markers.Price>
         /// The ID of the product this item is associated with.
         Product: string
     }
@@ -9911,6 +10758,11 @@ type InvoiceLineItemPeriod =
         Start: DateTime
     }
 
+type InvoicesResourcePretaxCreditAmountDiscount'AnyOf =
+    | String of string
+    | Discount of Discount
+    | DeletedDiscount of DeletedDiscount
+
 [<Struct>]
 type InvoicesResourcePretaxCreditAmountType =
     | CreditBalanceTransaction
@@ -9921,9 +10773,9 @@ type InvoicesResourcePretaxCreditAmount =
         /// The amount, in cents (or local equivalent), of the pretax credit amount.
         Amount: int
         /// The credit balance transaction that was applied to get this pretax credit amount.
-        CreditBalanceTransaction: string option
+        CreditBalanceTransaction: StripeId<Markers.BillingCreditBalanceTransaction> option
         /// The discount that was applied to get this pretax credit amount.
-        Discount: string option
+        Discount: InvoicesResourcePretaxCreditAmountDiscount'AnyOf option
         /// Type of the pretax credit amount referenced.
         Type: InvoicesResourcePretaxCreditAmountType
     }
@@ -9943,7 +10795,7 @@ type LineItem =
         /// If true, discounts will apply to this line item. Always false for prorations.
         Discountable: bool
         /// The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: string list
+        Discounts: StripeId<Markers.Discount> list
         /// Unique identifier for the object.
         Id: string
         /// The ID of the invoice that contains this line item.
@@ -9963,7 +10815,7 @@ type LineItem =
         Quantity: int option
         /// Non-negative decimal with at most 12 decimal places. The quantity of units for the line item.
         QuantityDecimal: string option
-        Subscription: string option
+        Subscription: StripeId<Markers.Subscription> option
         /// The subtotal of the line item, in cents (or local equivalent), before any discounts or taxes.
         Subtotal: int
         /// The tax information of the line item.
@@ -9975,17 +10827,6 @@ type InvoiceLines =
     {
         /// Details about each object.
         Data: LineItem list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-/// Payments for this invoice. Use [invoice payment](/api/invoice-payment) to get more details.
-type InvoicePayments =
-    {
-        /// Details about each object.
-        Data: InvoicePayment list
         /// True if this list has another page of items after this one that can be fetched.
         HasMore: bool
         /// The URL where this list can be accessed.
@@ -10016,43 +10857,6 @@ type InvoiceThresholdReason =
         ItemReasons: InvoiceItemThresholdReason list
     }
 
-[<Struct>]
-type InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType =
-    | Business
-    | Personal
-
-type InvoicePaymentMethodOptionsAcssDebitMandateOptions =
-    {
-        /// Transaction type of the mandate.
-        TransactionType: InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
-    }
-
-[<Struct>]
-type InvoicePaymentMethodOptionsAcssDebitVerificationMethod =
-    | Automatic
-    | Instant
-    | Microdeposits
-
-type InvoicePaymentMethodOptionsAcssDebit =
-    {
-        MandateOptions: InvoicePaymentMethodOptionsAcssDebitMandateOptions option
-        /// Bank account verification method. The default value is `automatic`.
-        VerificationMethod: InvoicePaymentMethodOptionsAcssDebitVerificationMethod option
-    }
-
-[<Struct>]
-type InvoicePaymentMethodOptionsBancontactPreferredLanguage =
-    | De
-    | En
-    | Fr
-    | Nl
-
-type InvoicePaymentMethodOptionsBancontact =
-    {
-        /// Preferred language of the Bancontact authorization page that the customer is redirected to.
-        PreferredLanguage: InvoicePaymentMethodOptionsBancontactPreferredLanguage
-    }
-
 type InvoiceInstallmentsCard =
     {
         /// Whether Installments are enabled for this Invoice.
@@ -10072,72 +10876,6 @@ type InvoicePaymentMethodOptionsCard =
         RequestThreeDSecure: InvoicePaymentMethodOptionsCardRequestThreeDSecure option
     }
 
-type InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry =
-    | [<JsonPropertyName("BE")>] BE
-    | [<JsonPropertyName("DE")>] DE
-    | [<JsonPropertyName("ES")>] ES
-    | [<JsonPropertyName("FR")>] FR
-    | [<JsonPropertyName("IE")>] IE
-    | [<JsonPropertyName("NL")>] NL
-
-type InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer =
-    {
-        /// The desired country code of the bank account information. Permitted values include: `DE`, `FR`, `IE`, or `NL`.
-        Country: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry
-    }
-
-[<Struct>]
-type InvoicePaymentMethodOptionsCustomerBalanceBankTransferType =
-    | EuBankTransfer
-    | GbBankTransfer
-    | JpBankTransfer
-    | MxBankTransfer
-    | UsBankTransfer
-
-type InvoicePaymentMethodOptionsCustomerBalanceBankTransfer =
-    {
-        EuBankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer option
-        /// The bank transfer type that can be used for funding. Permitted values include: `eu_bank_transfer`, `gb_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`.
-        Type: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option
-    }
-
-type InvoicePaymentMethodOptionsCustomerBalance =
-    { BankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer option }
-
-type InvoicePaymentMethodOptionsKonbini =
-    { InvoicePaymentMethodOptionsKonbini: string option }
-
-[<Struct>]
-type InvoiceMandateOptionsPaytoAmountType =
-    | Fixed
-    | Maximum
-
-type InvoiceMandateOptionsPaytoPurpose =
-    | DependantSupport
-    | Government
-    | Loan
-    | Mortgage
-    | Other
-    | Pension
-    | Personal
-    | Retail
-    | Salary
-    | Tax
-    | Utility
-
-type InvoiceMandateOptionsPayto =
-    {
-        /// The maximum amount that can be collected in a single invoice. If you don't specify a maximum, then there is no limit.
-        Amount: int option
-        /// Only `maximum` is supported.
-        AmountType: InvoiceMandateOptionsPaytoAmountType option
-        /// The purpose for which payments are made. Has a default value based on your merchant category code.
-        Purpose: InvoiceMandateOptionsPaytoPurpose option
-    }
-
-type InvoicePaymentMethodOptionsPayto =
-    { MandateOptions: InvoiceMandateOptionsPayto option }
-
 [<Struct>]
 type InvoicePaymentMethodOptionsPixAmountIncludesIof =
     | Always
@@ -10149,76 +10887,6 @@ type InvoicePaymentMethodOptionsPix =
         AmountIncludesIof: InvoicePaymentMethodOptionsPixAmountIncludesIof option
         /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
         ExpiresAfterSeconds: int option
-    }
-
-type InvoicePaymentMethodOptionsSepaDebit =
-    { InvoicePaymentMethodOptionsSepaDebit: string option }
-
-[<Struct>]
-type InvoicePaymentMethodOptionsMandateOptionsUpiAmountType =
-    | Fixed
-    | Maximum
-
-type InvoicePaymentMethodOptionsMandateOptionsUpi =
-    {
-        /// Amount to be charged for future payments.
-        Amount: int option
-        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
-        AmountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option
-        /// A description of the mandate or subscription that is meant to be displayed to the customer.
-        Description: string option
-        /// End date of the mandate or subscription.
-        EndDate: DateTime option
-    }
-
-type InvoicePaymentMethodOptionsUpi =
-    { MandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi option }
-
-[<Struct>]
-type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersAccountSubcategories =
-    | Checking
-    | Savings
-
-type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters =
-    {
-        /// The account subcategories to use to filter for possible accounts to link. Valid subcategories are `checking` and `savings`.
-        AccountSubcategories:
-            InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersAccountSubcategories list option
-    }
-
-[<Struct>]
-type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions =
-    | Balances
-    | Ownership
-    | PaymentMethod
-    | Transactions
-
-[<Struct>]
-type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPrefetch =
-    | Balances
-    | Ownership
-    | Transactions
-
-type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions =
-    {
-        Filters: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters option
-        /// The list of permissions to request. The `payment_method` permission must be included.
-        Permissions: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions list option
-        /// Data features requested to be retrieved upon account creation.
-        Prefetch: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPrefetch list option
-    }
-
-[<Struct>]
-type InvoicePaymentMethodOptionsUsBankAccountVerificationMethod =
-    | Automatic
-    | Instant
-    | Microdeposits
-
-type InvoicePaymentMethodOptionsUsBankAccount =
-    {
-        FinancialConnections: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions option
-        /// Bank account verification method. The default value is `automatic`.
-        VerificationMethod: InvoicePaymentMethodOptionsUsBankAccountVerificationMethod option
     }
 
 type InvoicesPaymentMethodOptions =
@@ -10314,7 +10982,7 @@ type InvoicesResourceFromInvoice =
         /// The relation between this invoice and the cloned invoice
         Action: string
         /// The invoice that was cloned.
-        Invoice: string
+        Invoice: StripeId<Markers.Invoice>
     }
 
 [<Struct>]
@@ -10505,7 +11173,7 @@ type InvoicesResourceShippingCost =
         /// Total shipping cost after taxes are applied.
         AmountTotal: int
         /// The ID of the ShippingRate for this invoice.
-        ShippingRate: string option
+        ShippingRate: StripeId<Markers.ShippingRate> option
         /// The taxes applied to the shipping rate.
         Taxes: LineItemsTaxAmount list option
     }
@@ -10520,6 +11188,38 @@ type InvoicesResourceStatusTransitions =
         PaidAt: DateTime option
         /// The time that the invoice was voided.
         VoidedAt: DateTime option
+    }
+
+[<Struct>]
+type InvoicePaymentStatus =
+    | Open
+    | Paid
+    | Canceled
+
+[<Struct>]
+type InvoicesPaymentsInvoicePaymentAssociatedPaymentType =
+    | Charge
+    | PaymentIntent
+    | PaymentRecord
+
+type InvoicesPaymentsInvoicePaymentAssociatedPayment =
+    {
+        /// ID of the successful charge for this payment when `type` is `charge`.Note: charge is only surfaced if the charge object is not associated with a payment intent. If the charge object does have a payment intent, the Invoice Payment surfaces the payment intent instead.
+        Charge: StripeId<Markers.Charge> option
+        /// ID of the PaymentIntent associated with this payment when `type` is `payment_intent`. Note: This property is only populated for invoices finalized on or after March 15th, 2019.
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
+        /// ID of the PaymentRecord associated with this payment when `type` is `payment_record`.
+        PaymentRecord: StripeId<Markers.PaymentRecord> option
+        /// Type of payment object associated with this invoice payment.
+        Type: InvoicesPaymentsInvoicePaymentAssociatedPaymentType
+    }
+
+type InvoicesPaymentsInvoicePaymentStatusTransitions =
+    {
+        /// The time that the payment was canceled.
+        CanceledAt: DateTime option
+        /// The time that the payment succeeded.
+        PaidAt: DateTime option
     }
 
 /// Invoices are statements of amounts owed by a customer, and are either
@@ -10555,7 +11255,7 @@ type Invoice =
         /// The public name of the business associated with this invoice, most often the business creating the invoice.
         AccountName: string option
         /// The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
-        AccountTaxIds: string list option
+        AccountTaxIds: InvoiceAccountTaxIds'AnyOf list option
         /// Final amount due at this time for this invoice. If the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`.
         AmountDue: int
         /// Amount that was overpaid on the invoice. The amount overpaid is credited to the customer's credit balance.
@@ -10567,7 +11267,7 @@ type Invoice =
         /// This is the sum of all the shipping amounts.
         AmountShipping: int
         /// ID of the Connect Application that created the invoice.
-        Application: string option
+        Application: InvoiceApplication'AnyOf option
         /// Number of payment attempts made for this invoice, from the perspective of the payment retry schedule. Any payment attempt counts as the first attempt, and subsequently only automatic retries increment the attempt count. In other words, manual payment attempts after the first attempt do not affect the retry schedule. If a failure is returned with a non-retryable return code, the invoice can no longer be retried unless a new payment method is obtained. Retries will continue to be scheduled, and attempt_count will continue to increment, but retries will only be executed if a new payment method is obtained.
         AttemptCount: int
         /// Whether an attempt has been made to pay the invoice. An invoice is not attempted until 1 hour after the `invoice.created` webhook, for example, so you might not want to display that invoice as unpaid to your users.
@@ -10597,7 +11297,7 @@ type Invoice =
         /// Custom fields displayed on the invoice.
         CustomFields: InvoiceSettingCustomField list option
         /// The ID of the customer to bill.
-        Customer: string option
+        Customer: InvoiceCustomer'AnyOf option
         /// The ID of the account representing the customer to bill.
         CustomerAccount: string option
         /// The customer's address. Until the invoice is finalized, this field will equal `customer.address`. Once the invoice is finalized, this field will no longer be updated.
@@ -10615,15 +11315,15 @@ type Invoice =
         /// The customer's tax IDs. Until the invoice is finalized, this field will contain the same tax IDs as `customer.tax_ids`. Once the invoice is finalized, this field will no longer be updated.
         CustomerTaxIds: InvoicesResourceInvoiceTaxId list option
         /// ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: string option
+        DefaultPaymentMethod: StripeId<Markers.PaymentMethod> option
         /// ID of the default payment source for the invoice. It must belong to the customer associated with the invoice and be in a chargeable state. If not set, defaults to the subscription's default source, if any, or to the customer's default source.
-        DefaultSource: string option
+        DefaultSource: StripeId<Markers.PaymentSource> option
         /// The tax rates applied to this invoice, if any.
         DefaultTaxRates: TaxRate list
         /// An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard.
         Description: string option
         /// The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: string list
+        Discounts: InvoiceDiscounts'AnyOf list
         /// The date on which payment for this invoice is due. This value will be `null` for invoices where `collection_method=charge_automatically`.
         DueDate: DateTime option
         /// The date when this invoice is in effect. Same as `finalized_at` unless overwritten. When defined, this value replaces the system-generated 'Date of issue' printed on the invoice PDF and receipt.
@@ -10644,7 +11344,7 @@ type Invoice =
         /// The error encountered during the previous attempt to finalize the invoice. This field is cleared when the invoice is successfully finalized.
         LastFinalizationError: ApiErrors option
         /// The ID of the most recent non-draft revision of this invoice
-        LatestRevision: string option
+        LatestRevision: StripeId<Markers.Invoice> option
         /// The individual line items that make up the invoice. `lines` is sorted as follows: (1) pending invoice items (including prorations) in reverse chronological order, (2) subscription items in reverse chronological order, and (3) invoice items added after invoice creation in chronological order.
         Lines: InvoiceLines
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -10656,7 +11356,7 @@ type Invoice =
         /// A unique, identifying string that appears on emails sent to the customer for this invoice. This starts with the customer's unique invoice_prefix if it is specified.
         Number: string option
         /// The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://docs.stripe.com/billing/invoices/connect) documentation for details.
-        OnBehalfOf: string option
+        OnBehalfOf: StripeId<Markers.Account> option
         /// The parent that generated this invoice
         Parent: BillingBillResourceInvoicingParentsInvoiceParent option
         PaymentSettings: InvoicesPaymentSettings
@@ -10685,13 +11385,13 @@ type Invoice =
         /// The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://docs.stripe.com/billing/invoices/workflow#workflow-overview)
         Status: InvoiceStatus option
         StatusTransitions: InvoicesResourceStatusTransitions
-        Subscription: string option
+        Subscription: StripeId<Markers.Subscription> option
         /// Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or exclusive tax is applied. Item discounts are already incorporated
         Subtotal: int
         /// The integer amount in cents (or local equivalent) representing the subtotal of the invoice before any invoice level discount or tax is applied. Item discounts are already incorporated
         SubtotalExcludingTax: int option
         /// ID of the test clock this invoice belongs to.
-        TestClock: string option
+        TestClock: StripeId<Markers.TestHelpersTestClock> option
         ThresholdReason: InvoiceThresholdReason option
         /// Total after discounts and taxes.
         Total: int
@@ -10706,6 +11406,56 @@ type Invoice =
         /// Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have [been exhausted](https://docs.stripe.com/billing/webhooks#understand). This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
         WebhooksDeliveredAt: DateTime option
     }
+
+/// Payments for this invoice. Use [invoice payment](/api/invoice-payment) to get more details.
+and InvoicePayments =
+    {
+        /// Details about each object.
+        Data: InvoicePayment list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+/// Invoice Payments represent payments made against invoices. Invoice Payments can
+/// be accessed in two ways:
+/// 1. By expanding the `payments` field on the [Invoice](https://api.stripe.com#invoice) resource.
+/// 2. By using the Invoice Payment retrieve and list endpoints.
+/// Invoice Payments include the mapping between payment objects, such as Payment Intent, and Invoices.
+/// This resource and its endpoints allows you to easily track if a payment is associated with a specific invoice and
+/// monitor the allocation details of the payments.
+and InvoicePayment =
+    {
+        /// Amount that was actually paid for this invoice, in cents (or local equivalent). This field is null until the payment is `paid`. This amount can be less than the `amount_requested` if the PaymentIntent’s `amount_received` is not sufficient to pay all of the invoices that it is attached to.
+        AmountPaid: int option
+        /// Amount intended to be paid toward this invoice, in cents (or local equivalent)
+        AmountRequested: int
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// Unique identifier for the object.
+        Id: string
+        /// The invoice that was paid.
+        Invoice: InvoicePaymentInvoice'AnyOf
+        /// Stripe automatically creates a default InvoicePayment when the invoice is finalized, and keeps it synchronized with the invoice’s `amount_remaining`. The PaymentIntent associated with the default payment can’t be edited or canceled directly.
+        IsDefault: bool
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        Payment: InvoicesPaymentsInvoicePaymentAssociatedPayment
+        /// The status of the payment, one of `open`, `paid`, or `canceled`.
+        Status: InvoicePaymentStatus
+        StatusTransitions: InvoicesPaymentsInvoicePaymentStatusTransitions
+    }
+
+and InvoicePaymentInvoice'AnyOf =
+    | String of string
+    | Invoice of Invoice
+    | DeletedInvoice of DeletedInvoice
+
+/// Occurs when an InvoicePayment is successfully paid.
+type InvoicePaymentPaid = { Object: InvoicePayment }
 
 /// Occurs X number of days before an invoice becomes due&mdash;where X is determined by Automations
 type InvoiceWillBeDue = { Object: Invoice }
@@ -10766,50 +11516,6 @@ type DeletedPerson =
         Id: string
     }
 
-type DeletedBankAccount =
-    {
-        /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: IsoTypes.IsoCurrencyCode option
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedCard =
-    {
-        /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: IsoTypes.IsoCurrencyCode option
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedPaymentSource =
-    | DeletedBankAccount of DeletedBankAccount
-    | DeletedCard of DeletedCard
-
-type DeletedInvoice =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedExternalAccount =
-    | DeletedBankAccount of DeletedBankAccount
-    | DeletedCard of DeletedCard
-
-type DeletedCustomer =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
 type DeletedAccount =
     {
         /// Always true for a deleted object
@@ -10821,15 +11527,15 @@ type DeletedAccount =
 type CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft =
     {
         /// The [Balance Transaction](https://docs.stripe.com/api/balance_transactions/object) that corresponds to funds taken out of your Stripe balance.
-        BalanceTransaction: string
+        BalanceTransaction: StripeId<Markers.BalanceTransaction>
         /// The [Cash Balance Transaction](https://docs.stripe.com/api/cash_balance_transactions/object) that brought the customer balance negative, triggering the clawback of funds.
-        LinkedTransaction: string
+        LinkedTransaction: StripeId<Markers.CustomerCashBalanceTransaction>
     }
 
 type CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction =
     {
         /// The [Payment Intent](https://docs.stripe.com/api/payment_intents/object) that funds were applied to.
-        PaymentIntent: string
+        PaymentIntent: StripeId<Markers.PaymentIntent>
     }
 
 type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer =
@@ -10910,19 +11616,19 @@ type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction =
 type CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction =
     {
         /// The [Refund](https://docs.stripe.com/api/refunds/object) that moved these funds into the customer's cash balance.
-        Refund: string
+        Refund: StripeId<Markers.Refund>
     }
 
 type CustomerBalanceResourceCashBalanceTransactionResourceTransferredToBalance =
     {
         /// The [Balance Transaction](https://docs.stripe.com/api/balance_transactions/object) that corresponds to funds transferred to your Stripe balance.
-        BalanceTransaction: string
+        BalanceTransaction: StripeId<Markers.BalanceTransaction>
     }
 
 type CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction =
     {
         /// The [Payment Intent](https://docs.stripe.com/api/payment_intents/object) that funds were unapplied from.
-        PaymentIntent: string
+        PaymentIntent: StripeId<Markers.PaymentIntent>
     }
 
 type CustomerCashBalanceTransactionType =
@@ -10949,7 +11655,7 @@ type CustomerCashBalanceTransaction =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// The customer whose available cash balance changed as a result of this transaction.
-        Customer: string
+        Customer: StripeId<Markers.Customer>
         /// The ID of an Account representing a customer whose available cash balance changed as a result of this transaction.
         CustomerAccount: string option
         /// The total available cash balance for the specified currency after this transaction was applied. Represented in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
@@ -10996,631 +11702,6 @@ type CustomerAcceptance =
         Online: OnlineAcceptance option
         /// The mandate includes the type of customer acceptance information, such as: `online` or `offline`.
         Type: CustomerAcceptanceType
-    }
-
-[<Struct>]
-type CustomerBalanceCustomerBalanceSettingsReconciliationMode =
-    | Automatic
-    | Manual
-
-type CustomerBalanceCustomerBalanceSettings =
-    {
-        /// The configuration for how funds that land in the customer cash balance are reconciled.
-        ReconciliationMode: CustomerBalanceCustomerBalanceSettingsReconciliationMode
-        /// A flag to indicate if reconciliation mode returned is the user's default or is specific to this customer cash balance
-        UsingMerchantDefault: bool
-    }
-
-/// A customer's `Cash balance` represents real funds. Customers can add funds to their cash balance by sending a bank transfer. These funds can be used for payment and can eventually be paid out to your bank account.
-type CashBalance =
-    {
-        /// A hash of all cash balances available to this customer. You cannot delete a customer with any cash balances, even if the balance is 0. Amounts are represented in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
-        Available: Map<string, string list> option
-        /// The ID of the customer whose cash balance this object represents.
-        Customer: string
-        /// The ID of an Account representing a customer whose cash balance this object represents.
-        CustomerAccount: string option
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        Settings: CustomerBalanceCustomerBalanceSettings
-    }
-
-/// The customer's payment sources, if any.
-type CustomerSources =
-    {
-        /// Details about each object.
-        Data: PaymentSource list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-type CancellationDetailsFeedback =
-    | CustomerService
-    | LowQuality
-    | MissingFeatures
-    | Other
-    | SwitchedService
-    | TooComplex
-    | TooExpensive
-    | Unused
-
-[<Struct>]
-type CancellationDetailsReason =
-    | CanceledByRetentionPolicy
-    | CancellationRequested
-    | PaymentDisputed
-    | PaymentFailed
-
-type CancellationDetails =
-    {
-        /// Additional comments about why the user canceled the subscription, if the subscription was canceled explicitly by the user.
-        Comment: string option
-        /// The customer submitted reason for why they canceled, if the subscription was canceled explicitly by the user.
-        Feedback: CancellationDetailsFeedback option
-        /// Why this subscription was canceled.
-        Reason: CancellationDetailsReason option
-    }
-
-type SubscriptionAutomaticTax =
-    {
-        /// Whether Stripe automatically computes tax on this subscription.
-        Enabled: bool
-        /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
-        Liability: ConnectAccountReference option
-    }
-
-[<Struct>]
-type SubscriptionCollectionMethod =
-    | ChargeAutomatically
-    | SendInvoice
-
-[<Struct>]
-type SubscriptionPendingInvoiceItemIntervalInterval =
-    | Day
-    | Month
-    | Week
-    | Year
-
-type SubscriptionPendingInvoiceItemInterval =
-    {
-        /// Specifies invoicing frequency. Either `day`, `week`, `month` or `year`.
-        Interval: SubscriptionPendingInvoiceItemIntervalInterval
-        /// The number of intervals between invoices. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks).
-        IntervalCount: int
-    }
-
-type SubscriptionStatus =
-    | Active
-    | Canceled
-    | Incomplete
-    | IncompleteExpired
-    | PastDue
-    | Paused
-    | Trialing
-    | Unpaid
-
-type SubscriptionsResourceBillingCycleAnchorConfig =
-    {
-        /// The day of the month of the billing_cycle_anchor.
-        DayOfMonth: int
-        /// The hour of the day of the billing_cycle_anchor.
-        Hour: int option
-        /// The minute of the hour of the billing_cycle_anchor.
-        Minute: int option
-        /// The month to start full cycle billing periods.
-        Month: int option
-        /// The second of the minute of the billing_cycle_anchor.
-        Second: int option
-    }
-
-[<Struct>]
-type SubscriptionsResourceBillingModeFlexibleProrationDiscounts =
-    | Included
-    | Itemized
-
-type SubscriptionsResourceBillingModeFlexible =
-    {
-        /// Controls how invoices and invoice items display proration amounts and discount amounts.
-        ProrationDiscounts: SubscriptionsResourceBillingModeFlexibleProrationDiscounts option
-    }
-
-[<Struct>]
-type SubscriptionsResourceBillingModeType =
-    | Classic
-    | Flexible
-
-/// The billing mode of the subscription.
-type SubscriptionsResourceBillingMode =
-    {
-        /// Configure behavior for flexible billing mode
-        Flexible: SubscriptionsResourceBillingModeFlexible option
-        /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
-        Type: SubscriptionsResourceBillingModeType
-        /// Details on when the current billing_mode was adopted.
-        UpdatedAt: DateTime option
-    }
-
-[<Struct>]
-type SubscriptionsResourcePauseCollectionBehavior =
-    | KeepAsDraft
-    | MarkUncollectible
-    | Void
-
-/// The Pause Collection settings determine how we will pause collection for this subscription and for how long the subscription
-/// should be paused.
-type SubscriptionsResourcePauseCollection =
-    {
-        /// The payment collection behavior for this subscription while paused.
-        Behavior: SubscriptionsResourcePauseCollectionBehavior
-        /// The time after which the subscription will resume collecting payments.
-        ResumesAt: DateTime option
-    }
-
-[<Struct>]
-type InvoiceMandateOptionsCardAmountType =
-    | Fixed
-    | Maximum
-
-type InvoiceMandateOptionsCard =
-    {
-        /// Amount to be charged for future payments, specified in the presentment currency.
-        Amount: int option
-        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
-        AmountType: InvoiceMandateOptionsCardAmountType option
-        /// A description of the mandate or subscription that is meant to be displayed to the customer.
-        Description: string option
-    }
-
-type SubscriptionPaymentMethodOptionsCardNetwork =
-    | Amex
-    | CartesBancaires
-    | Diners
-    | Discover
-    | EftposAu
-    | Girocard
-    | Interac
-    | Jcb
-    | Link
-    | Mastercard
-    | Unionpay
-    | Unknown
-    | Visa
-
-[<Struct>]
-type SubscriptionPaymentMethodOptionsCardRequestThreeDSecure =
-    | Any
-    | Automatic
-    | Challenge
-
-type SubscriptionPaymentMethodOptionsCard =
-    {
-        MandateOptions: InvoiceMandateOptionsCard option
-        /// Selected network to process this Subscription on. Depends on the available networks of the card attached to the Subscription. Can be only set confirm-time.
-        Network: SubscriptionPaymentMethodOptionsCardNetwork option
-        /// We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://docs.stripe.com/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Read our guide on [manually requesting 3D Secure](https://docs.stripe.com/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
-        RequestThreeDSecure: SubscriptionPaymentMethodOptionsCardRequestThreeDSecure option
-    }
-
-[<Struct>]
-type SubscriptionPaymentMethodOptionsMandateOptionsPixAmountIncludesIof =
-    | Always
-    | Never
-
-[<Struct>]
-type SubscriptionPaymentMethodOptionsMandateOptionsPixPaymentSchedule =
-    | Halfyearly
-    | Monthly
-    | Quarterly
-    | Weekly
-    | Yearly
-
-type SubscriptionPaymentMethodOptionsMandateOptionsPix =
-    {
-        /// Amount to be charged for future payments.
-        Amount: int option
-        /// Determines if the amount includes the IOF tax.
-        AmountIncludesIof: SubscriptionPaymentMethodOptionsMandateOptionsPixAmountIncludesIof option
-        /// Date when the mandate expires and no further payments will be charged, in `YYYY-MM-DD`.
-        EndDate: string option
-        /// Schedule at which the future payments will be charged.
-        PaymentSchedule: SubscriptionPaymentMethodOptionsMandateOptionsPixPaymentSchedule option
-    }
-
-type SubscriptionPaymentMethodOptionsPix =
-    {
-        /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
-        ExpiresAfterSeconds: int option
-        MandateOptions: SubscriptionPaymentMethodOptionsMandateOptionsPix option
-    }
-
-type SubscriptionsResourcePaymentMethodOptions =
-    {
-        /// This sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to invoices created by the subscription.
-        AcssDebit: InvoicePaymentMethodOptionsAcssDebit option
-        /// This sub-hash contains details about the Bancontact payment method options to pass to invoices created by the subscription.
-        Bancontact: InvoicePaymentMethodOptionsBancontact option
-        /// This sub-hash contains details about the Card payment method options to pass to invoices created by the subscription.
-        Card: SubscriptionPaymentMethodOptionsCard option
-        /// This sub-hash contains details about the Bank transfer payment method options to pass to invoices created by the subscription.
-        CustomerBalance: InvoicePaymentMethodOptionsCustomerBalance option
-        /// This sub-hash contains details about the Konbini payment method options to pass to invoices created by the subscription.
-        Konbini: InvoicePaymentMethodOptionsKonbini option
-        /// This sub-hash contains details about the PayTo payment method options to pass to invoices created by the subscription.
-        Payto: InvoicePaymentMethodOptionsPayto option
-        /// This sub-hash contains details about the Pix payment method options to pass to invoices created by the subscription.
-        Pix: SubscriptionPaymentMethodOptionsPix option
-        /// This sub-hash contains details about the SEPA Direct Debit payment method options to pass to invoices created by the subscription.
-        SepaDebit: InvoicePaymentMethodOptionsSepaDebit option
-        /// This sub-hash contains details about the UPI payment method options to pass to invoices created by the subscription.
-        Upi: InvoicePaymentMethodOptionsUpi option
-        /// This sub-hash contains details about the ACH direct debit payment method options to pass to invoices created by the subscription.
-        UsBankAccount: InvoicePaymentMethodOptionsUsBankAccount option
-    }
-
-type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
-    | AchCreditTransfer
-    | AchDebit
-    | AcssDebit
-    | Affirm
-    | AmazonPay
-    | AuBecsDebit
-    | BacsDebit
-    | Bancontact
-    | Boleto
-    | Card
-    | Cashapp
-    | Crypto
-    | Custom
-    | CustomerBalance
-    | Eps
-    | Fpx
-    | Giropay
-    | Grabpay
-    | Ideal
-    | JpCreditTransfer
-    | KakaoPay
-    | Klarna
-    | Konbini
-    | KrCard
-    | Link
-    | Multibanco
-    | NaverPay
-    | NzBankAccount
-    | P24
-    | PayByBank
-    | Payco
-    | Paynow
-    | Paypal
-    | Payto
-    | Pix
-    | Promptpay
-    | RevolutPay
-    | SepaCreditTransfer
-    | SepaDebit
-    | Sofort
-    | Swish
-    | Upi
-    | UsBankAccount
-    | WechatPay
-
-[<Struct>]
-type SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod =
-    | Off
-    | OnSubscription
-
-type SubscriptionsResourcePaymentSettings =
-    {
-        /// Payment-method-specific configuration to provide to invoices created by the subscription.
-        PaymentMethodOptions: SubscriptionsResourcePaymentMethodOptions option
-        /// The list of payment method types to provide to every invoice created by the subscription. If not set, Stripe attempts to automatically determine the types to use by looking at the invoice’s default payment method, the subscription’s default payment method, the customer’s default payment method, and your [invoice template settings](https://dashboard.stripe.com/settings/billing/invoice).
-        PaymentMethodTypes: SubscriptionsResourcePaymentSettingsPaymentMethodTypes list option
-        /// Configure whether Stripe updates `subscription.default_payment_method` when payment succeeds. Defaults to `off`.
-        SaveDefaultPaymentMethod: SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod option
-    }
-
-/// Pending Updates store the changes pending from a previous update that will be applied
-/// to the Subscription upon successful payment.
-type SubscriptionsResourcePendingUpdate =
-    {
-        /// If the update is applied, determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices. The timestamp is in UTC format.
-        BillingCycleAnchor: DateTime option
-        /// The point after which the changes reflected by this update will be discarded and no longer applied.
-        ExpiresAt: DateTime
-        /// List of subscription items, each with an attached plan, that will be set if the update is applied.
-        SubscriptionItems: SubscriptionItem list option
-        /// Unix timestamp representing the end of the trial period the customer will get before being charged for the first time, if the update is applied.
-        TrialEnd: DateTime option
-        /// Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more.
-        TrialFromPlan: bool option
-    }
-
-type SubscriptionsResourceSubscriptionInvoiceSettings =
-    {
-        /// The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.
-        AccountTaxIds: string list option
-        Issuer: ConnectAccountReference
-    }
-
-type SubscriptionsResourceSubscriptionPresentmentDetails =
-    {
-        /// Currency used for customer payments.
-        PresentmentCurrency: IsoTypes.IsoCurrencyCode
-    }
-
-[<Struct>]
-type SubscriptionsResourceTrialSettingsEndBehaviorMissingPaymentMethod =
-    | Cancel
-    | CreateInvoice
-    | Pause
-
-/// Defines how a subscription behaves when a trial ends.
-type SubscriptionsResourceTrialSettingsEndBehavior =
-    {
-        /// Indicates how the subscription should change when the trial ends if the user did not provide a payment method.
-        MissingPaymentMethod: SubscriptionsResourceTrialSettingsEndBehaviorMissingPaymentMethod
-    }
-
-/// Configures how this subscription behaves during the trial period.
-type SubscriptionsResourceTrialSettingsTrialSettings =
-    { EndBehavior: SubscriptionsResourceTrialSettingsEndBehavior }
-
-/// Subscriptions allow you to charge a customer on a recurring basis.
-/// Related guide: [Creating subscriptions](https://docs.stripe.com/billing/subscriptions/creating)
-type Subscription =
-    {
-        /// ID of the Connect Application that created the subscription.
-        Application: string option
-        /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account.
-        ApplicationFeePercent: decimal option
-        AutomaticTax: SubscriptionAutomaticTax
-        /// The reference point that aligns future [billing cycle](https://docs.stripe.com/subscriptions/billing-cycle) dates. It sets the day of week for `week` intervals, the day of month for `month` and `year` intervals, and the month of year for `year` intervals. The timestamp is in UTC format.
-        BillingCycleAnchor: DateTime
-        /// The fixed values used to calculate the `billing_cycle_anchor`.
-        BillingCycleAnchorConfig: SubscriptionsResourceBillingCycleAnchorConfig option
-        BillingMode: SubscriptionsResourceBillingMode
-        /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
-        BillingThresholds: SubscriptionBillingThresholds option
-        /// A date in the future at which the subscription will automatically get canceled
-        CancelAt: DateTime option
-        /// Whether this subscription will (if `status=active`) or did (if `status=canceled`) cancel at the end of the current billing period.
-        CancelAtPeriodEnd: bool
-        /// If the subscription has been canceled, the date of that cancellation. If the subscription was canceled with `cancel_at_period_end`, `canceled_at` will reflect the time of the most recent update request, not the end of the subscription period when the subscription is automatically moved to a canceled state.
-        CanceledAt: DateTime option
-        /// Details about why this subscription was cancelled
-        CancellationDetails: CancellationDetails option
-        /// Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`.
-        CollectionMethod: SubscriptionCollectionMethod
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: IsoTypes.IsoCurrencyCode
-        /// ID of the customer who owns the subscription.
-        Customer: string
-        /// ID of the account representing the customer who owns the subscription.
-        CustomerAccount: string option
-        /// Number of days a customer has to pay invoices generated by this subscription. This value will be `null` for subscriptions where `collection_method=charge_automatically`.
-        DaysUntilDue: int option
-        /// ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://docs.stripe.com/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://docs.stripe.com/api/customers/object#customer_object-default_source).
-        DefaultPaymentMethod: string option
-        /// ID of the default payment source for the subscription. It must belong to the customer associated with the subscription and be in a chargeable state. If `default_payment_method` is also set, `default_payment_method` will take precedence. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://docs.stripe.com/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://docs.stripe.com/api/customers/object#customer_object-default_source).
-        DefaultSource: string option
-        /// The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription.
-        DefaultTaxRates: TaxRate list option
-        /// The subscription's description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs.
-        Description: string option
-        /// The discounts applied to the subscription. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: string list
-        /// If the subscription has ended, the date the subscription ended.
-        EndedAt: DateTime option
-        /// Unique identifier for the object.
-        Id: string
-        InvoiceSettings: SubscriptionsResourceSubscriptionInvoiceSettings
-        /// List of subscription items, each with an attached price.
-        Items: SubscriptionItems
-        /// The most recent invoice this subscription has generated over its lifecycle (for example, when it cycles or is updated).
-        LatestInvoice: string option
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Settings for Managed Payments for this Subscription and resulting [Invoices](/api/invoices/object) and [PaymentIntents](/api/payment_intents/object).
-        ManagedPayments: SmorResourceManagedPayments option
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-        /// Specifies the approximate timestamp on which any pending invoice items will be billed according to the schedule provided at `pending_invoice_item_interval`.
-        NextPendingInvoiceItemInvoice: DateTime option
-        /// The account (if any) the charge was made on behalf of for charges associated with this subscription. See the [Connect documentation](https://docs.stripe.com/connect/subscriptions#on-behalf-of) for details.
-        OnBehalfOf: string option
-        /// If specified, payment collection for this subscription will be paused. Note that the subscription status will be unchanged and will not be updated to `paused`. Learn more about [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment).
-        PauseCollection: SubscriptionsResourcePauseCollection option
-        /// Payment settings passed on to invoices created by the subscription.
-        PaymentSettings: SubscriptionsResourcePaymentSettings option
-        /// Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](/api/invoices/create) for the given subscription at the specified interval.
-        PendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option
-        /// You can use this [SetupIntent](https://docs.stripe.com/api/setup_intents) to collect user authentication when creating a subscription without immediate payment or updating a subscription's payment method, allowing you to optimize for off-session payments. Learn more in the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication#scenario-2).
-        PendingSetupIntent: string option
-        /// If specified, [pending updates](https://docs.stripe.com/billing/subscriptions/pending-updates) that will be applied to the subscription once the `latest_invoice` has been paid.
-        PendingUpdate: SubscriptionsResourcePendingUpdate option
-        PresentmentDetails: SubscriptionsResourceSubscriptionPresentmentDetails option
-        /// The schedule attached to the subscription
-        Schedule: string option
-        /// Date when the subscription was first created. The date might differ from the `created` date due to backdating.
-        StartDate: DateTime
-        /// Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, `unpaid`, or `paused`.
-        /// For `collection_method=charge_automatically` a subscription moves into `incomplete` if the initial payment attempt fails. A subscription in this status can only have metadata and default_source updated. Once the first invoice is paid, the subscription moves into an `active` status. If the first invoice is not paid within 23 hours, the subscription transitions to `incomplete_expired`. This is a terminal status, the open invoice will be voided and no further invoices will be generated.
-        /// A subscription that is currently in a trial period is `trialing` and moves to `active` when the trial period is over.
-        /// A subscription can only enter a `paused` status [when a trial ends without a payment method](https://docs.stripe.com/billing/subscriptions/trials#create-free-trials-without-payment). A `paused` subscription doesn't generate invoices and can be resumed after your customer adds their payment method. The `paused` status is different from [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment), which still generates invoices and leaves the subscription's status unchanged.
-        /// If subscription `collection_method=charge_automatically`, it becomes `past_due` when payment is required but cannot be paid (due to failed payment or awaiting additional user actions). Once Stripe has exhausted all payment retry attempts, the subscription will become `canceled` or `unpaid` (depending on your subscriptions settings).
-        /// If subscription `collection_method=send_invoice` it becomes `past_due` when its invoice is not paid by the due date, and `canceled` or `unpaid` if it is still not paid by an additional deadline after that. Note that when a subscription has a status of `unpaid`, no subsequent invoices will be attempted (invoices will be created, but then immediately automatically closed). After receiving updated payment information from a customer, you may choose to reopen and pay their closed invoices.
-        Status: SubscriptionStatus
-        /// ID of the test clock this subscription belongs to.
-        TestClock: string option
-        /// The account (if any) the subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
-        TransferData: SubscriptionTransferData option
-        /// If the subscription has a trial, the end of that trial.
-        TrialEnd: DateTime option
-        /// Settings related to subscription trials.
-        TrialSettings: SubscriptionsResourceTrialSettingsTrialSettings option
-        /// If the subscription has a trial, the beginning of that trial.
-        TrialStart: DateTime option
-    }
-
-/// The customer's current subscriptions, if any.
-type CustomerSubscriptions =
-    {
-        /// Details about each object.
-        Data: Subscription list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-[<Struct>]
-type CustomerTaxAutomaticTax =
-    | Failed
-    | NotCollecting
-    | Supported
-    | UnrecognizedLocation
-
-[<Struct>]
-type CustomerTaxLocationSource =
-    | BillingAddress
-    | IpAddress
-    | PaymentMethod
-    | ShippingDestination
-
-type CustomerTaxLocation =
-    {
-        /// The identified tax country of the customer.
-        Country: IsoTypes.IsoCountryCode
-        /// The data source used to infer the customer's location.
-        Source: CustomerTaxLocationSource
-        /// The identified tax state, county, province, or region of the customer.
-        State: string option
-    }
-
-[<Struct>]
-type CustomerTaxProvider =
-    | Anrok
-    | Avalara
-    | Sphere
-    | Stripe
-
-type CustomerTax =
-    {
-        /// Surfaces if automatic tax computation is possible given the current customer location information.
-        AutomaticTax: CustomerTaxAutomaticTax
-        /// A recent IP address of the customer used for tax reporting and tax location inference.
-        IpAddress: string option
-        /// The identified tax location of the customer.
-        Location: CustomerTaxLocation option
-        /// The tax calculation provider used for location resolution. Defaults to `stripe` when not using a [third-party provider](/tax/third-party-apps).
-        Provider: CustomerTaxProvider
-    }
-
-[<Struct>]
-type CustomerTaxExempt =
-    | Exempt
-    | [<JsonPropertyName("none")>] None'
-    | Reverse
-
-/// The customer's tax IDs.
-type CustomerTaxIds =
-    {
-        /// Details about each object.
-        Data: TaxId list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-type InvoiceSettingCustomerRenderingOptions =
-    {
-        /// How line-item prices and amounts will be displayed with respect to tax on invoice PDFs.
-        AmountTaxDisplay: string option
-        /// ID of the invoice rendering template to be used for this customer's invoices. If set, the template will be used on all invoices for this customer unless a template is set directly on the invoice.
-        Template: string option
-    }
-
-type InvoiceSettingCustomerSetting =
-    {
-        /// Default custom fields to be displayed on invoices for this customer.
-        CustomFields: InvoiceSettingCustomField list option
-        /// ID of a payment method that's attached to the customer, to be used as the customer's default payment method for subscriptions and invoices.
-        DefaultPaymentMethod: string option
-        /// Default footer to be displayed on invoices for this customer.
-        Footer: string option
-        /// Default options for invoice PDF rendering for this customer.
-        RenderingOptions: InvoiceSettingCustomerRenderingOptions option
-    }
-
-/// This object represents a customer of your business. Use it to [create recurring charges](https://docs.stripe.com/invoicing/customer), [save payment](https://docs.stripe.com/payments/save-during-payment) and contact information,
-/// and track payments that belong to the same customer.
-type Customer =
-    {
-        /// The customer's address.
-        Address: Address option
-        /// The current balance, if any, that's stored on the customer in their default currency. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that's added to their next invoice. The balance only considers amounts that Stripe hasn't successfully applied to any invoice. It doesn't reflect unpaid invoices. This balance is only taken into account after invoices finalize. For multi-currency balances, see [invoice_credit_balance](https://docs.stripe.com/api/customers/object#customer_object-invoice_credit_balance).
-        Balance: int option
-        /// The customer's business name.
-        BusinessName: string option
-        /// The current funds being held by Stripe on behalf of the customer. You can apply these funds towards payment intents when the source is "cash_balance". The `settings[reconciliation_mode]` field describes if these funds apply to these payment intents manually or automatically.
-        CashBalance: CashBalance option
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) the customer can be charged in for recurring billing purposes.
-        Currency: IsoTypes.IsoCurrencyCode option
-        /// The ID of an Account representing a customer. You can use this ID with any v1 API that accepts a customer_account parameter.
-        CustomerAccount: string option
-        /// ID of the default payment source for the customer.
-        /// If you use payment methods created through the PaymentMethods API, see the [invoice_settings.default_payment_method](https://docs.stripe.com/api/customers/object#customer_object-invoice_settings-default_payment_method) field instead.
-        DefaultSource: string option
-        /// Tracks the most recent state change on any invoice belonging to the customer. Paying an invoice or marking it uncollectible via the API will set this field to false. An automatic payment failure or passing the `invoice.due_date` will set this field to `true`.
-        /// If an invoice becomes uncollectible by [dunning](https://docs.stripe.com/billing/automatic-collection), `delinquent` doesn't reset to `false`.
-        /// If you care whether the customer has paid their most recent subscription invoice, use `subscription.status` instead. Paying or marking uncollectible any customer invoice regardless of whether it is the latest invoice for a subscription will always set this field to `false`.
-        Delinquent: bool option
-        /// An arbitrary string attached to the object. Often useful for displaying to users.
-        Description: string option
-        /// Describes the current discount active on the customer, if there is one.
-        Discount: Discount option
-        /// The customer's email address.
-        Email: string option
-        /// Unique identifier for the object.
-        Id: string
-        /// The customer's individual name.
-        IndividualName: string option
-        /// The current multi-currency balances, if any, that's stored on the customer. If positive in a currency, the customer has a credit to apply to their next invoice denominated in that currency. If negative, the customer has an amount owed that's added to their next invoice denominated in that currency. These balances don't apply to unpaid invoices. They solely track amounts that Stripe hasn't successfully applied to any invoice. Stripe only applies a balance in a specific currency to an invoice after that invoice (which is in the same currency) finalizes.
-        InvoiceCreditBalance: Map<string, string list> option
-        /// The prefix for the customer used to generate unique invoice numbers.
-        InvoicePrefix: string option
-        InvoiceSettings: InvoiceSettingCustomerSetting option
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-        /// The customer's full name or business name.
-        Name: string option
-        /// The suffix of the customer's next invoice number (for example, 0001). When the account uses account level sequencing, this parameter is ignored in API requests and the field omitted in API responses.
-        NextInvoiceSequence: int option
-        /// The customer's phone number.
-        Phone: string option
-        /// The customer's preferred locales (languages), ordered by preference.
-        PreferredLocales: string list option
-        /// Mailing and shipping address for the customer. Appears on invoices emailed to this customer.
-        Shipping: Shipping option
-        /// The customer's payment sources, if any.
-        Sources: CustomerSources option
-        /// The customer's current subscriptions, if any.
-        Subscriptions: CustomerSubscriptions option
-        Tax: CustomerTax option
-        /// Describes the customer's tax exemption status, which is `none`, `exempt`, or `reverse`. When set to `reverse`, invoice and receipt PDFs include the following text: **"Reverse charge"**.
-        TaxExempt: CustomerTaxExempt option
-        /// The customer's tax IDs.
-        TaxIds: CustomerTaxIds option
-        /// ID of the test clock that this customer belongs to.
-        TestClock: string option
     }
 
 /// Occurs whenever any property of a customer changes.
@@ -11717,6 +11798,11 @@ type CreditNotesPaymentRecordRefund =
         RefundGroup: string
     }
 
+type CreditNotesPretaxCreditAmountDiscount'AnyOf =
+    | String of string
+    | Discount of Discount
+    | DeletedDiscount of DeletedDiscount
+
 [<Struct>]
 type CreditNotesPretaxCreditAmountType =
     | CreditBalanceTransaction
@@ -11727,9 +11813,9 @@ type CreditNotesPretaxCreditAmount =
         /// The amount, in cents (or local equivalent), of the pretax credit amount.
         Amount: int
         /// The credit balance transaction that was applied to get this pretax credit amount.
-        CreditBalanceTransaction: string option
+        CreditBalanceTransaction: StripeId<Markers.BillingCreditBalanceTransaction> option
         /// The discount that was applied to get this pretax credit amount.
-        Discount: string option
+        Discount: CreditNotesPretaxCreditAmountDiscount'AnyOf option
         /// Type of the pretax credit amount referenced.
         Type: CreditNotesPretaxCreditAmountType
     }
@@ -11778,7 +11864,7 @@ type PaymentPagesCheckoutSessionShippingOption =
         /// A non-negative integer in cents representing how much to charge.
         ShippingAmount: int
         /// The shipping rate.
-        ShippingRate: string
+        ShippingRate: StripeId<Markers.ShippingRate>
     }
 
 type PaymentPagesCheckoutSessionShippingCost =
@@ -11790,7 +11876,7 @@ type PaymentPagesCheckoutSessionShippingCost =
         /// Total shipping cost after discounts and taxes are applied.
         AmountTotal: int
         /// The ID of the ShippingRate for this order.
-        ShippingRate: string option
+        ShippingRate: StripeId<Markers.ShippingRate> option
         /// The taxes applied to the shipping rate.
         Taxes: LineItemsTaxAmount list option
     }
@@ -12128,10 +12214,15 @@ type PaymentPagesCheckoutSessionManagedPayments =
         Enabled: bool
     }
 
+type PaymentPagesCheckoutSessionInvoiceSettingsAccountTaxIds'AnyOf =
+    | String of string
+    | TaxId of TaxId
+    | DeletedTaxId of DeletedTaxId
+
 type PaymentPagesCheckoutSessionInvoiceSettings =
     {
         /// The account tax IDs associated with the invoice.
-        AccountTaxIds: string list option
+        AccountTaxIds: PaymentPagesCheckoutSessionInvoiceSettingsAccountTaxIds'AnyOf list option
         /// Custom fields displayed on the invoice.
         CustomFields: InvoiceSettingCustomField list option
         /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -12156,9 +12247,9 @@ type PaymentPagesCheckoutSessionInvoiceCreation =
 type PaymentPagesCheckoutSessionDiscount =
     {
         /// Coupon attached to the Checkout Session.
-        Coupon: string option
+        Coupon: StripeId<Markers.Coupon> option
         /// Promotion code attached to the Checkout Session.
-        PromotionCode: string option
+        PromotionCode: StripeId<Markers.PromotionCode> option
     }
 
 [<Struct>]
@@ -12622,6 +12713,11 @@ type Item =
         Taxes: LineItemsTaxAmount list option
     }
 
+type ChargeCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
 [<Struct>]
 type ChargeFraudDetailsUserReport =
     | Safe
@@ -12673,7 +12769,7 @@ type ChargeOutcome =
         /// Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are between 0 and 100. For non-card payments, card-based payments predating the public assignment of risk scores, or in the event of an error during evaluation, this field will not be present. This field is only available with Radar for Fraud Teams.
         RiskScore: int option
         /// The ID of the Radar rule that matched the payment, if applicable.
-        Rule: string option
+        Rule: StripeId<Markers.Rule> option
         /// A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer.
         SellerMessage: string option
         /// Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://docs.stripe.com/declines) and [Radar reviews](https://docs.stripe.com/radar/reviews) for details.
@@ -12702,7 +12798,7 @@ type ChargeTransferData =
         /// The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
         Amount: int option
         /// ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.
-        Destination: string
+        Destination: StripeId<Markers.Account>
     }
 
 type Level3LineItems =
@@ -12797,9 +12893,9 @@ type PaymentMethodDetailsBancontact =
         /// Bank Identifier Code of the bank associated with the bank account.
         Bic: string option
         /// The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: string option
+        GeneratedSepaDebit: StripeId<Markers.PaymentMethod> option
         /// The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: string option
+        GeneratedSepaDebitMandate: StripeId<Markers.Mandate> option
         /// Last four characters of the IBAN.
         [<JsonPropertyName("iban_last4")>]
         IbanLast4: string option
@@ -13272,9 +13368,9 @@ type PaymentMethodDetailsIdeal =
         /// The Bank Identifier Code of the customer's bank.
         Bic: PaymentMethodDetailsIdealBic option
         /// The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: string option
+        GeneratedSepaDebit: StripeId<Markers.PaymentMethod> option
         /// The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: string option
+        GeneratedSepaDebitMandate: StripeId<Markers.Mandate> option
         /// Last four characters of the IBAN.
         [<JsonPropertyName("iban_last4")>]
         IbanLast4: string option
@@ -13440,9 +13536,9 @@ type PaymentMethodDetailsSofort =
         /// Two-letter ISO code representing the country the bank account is located in.
         Country: IsoTypes.IsoCountryCode option
         /// The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebit: string option
+        GeneratedSepaDebit: StripeId<Markers.PaymentMethod> option
         /// The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
-        GeneratedSepaDebitMandate: string option
+        GeneratedSepaDebitMandate: StripeId<Markers.Mandate> option
         /// Last four characters of the IBAN.
         [<JsonPropertyName("iban_last4")>]
         IbanLast4: string option
@@ -13500,7 +13596,7 @@ type PaymentMethodDetailsUsBankAccount =
         [<JsonPropertyName("last4")>]
         Last4: string option
         /// ID of the mandate used to make this payment.
-        Mandate: string option
+        Mandate: StripeId<Markers.Mandate> option
         /// Reference number to locate ACH payments with customer's bank.
         PaymentReference: string option
         /// Routing number of the bank account.
@@ -13602,15 +13698,15 @@ type Charge =
         /// Amount in cents (or local equivalent) refunded (can be less than the amount attribute on the charge if a partial refund was issued).
         AmountRefunded: int
         /// ID of the Connect application that created the charge.
-        Application: string option
+        Application: StripeId<Markers.Application> option
         /// The application fee (if any) for the charge. [See the Connect documentation](https://docs.stripe.com/connect/direct-charges#collect-fees) for details.
-        ApplicationFee: string option
+        ApplicationFee: StripeId<Markers.ApplicationFee> option
         /// The amount of the application fee (if any) requested for the charge. [See the Connect documentation](https://docs.stripe.com/connect/direct-charges#collect-fees) for details.
         ApplicationFeeAmount: int option
         /// Authorization code on the charge.
         AuthorizationCode: string option
         /// ID of the balance transaction that describes the impact of this charge on your account balance (not including refunds or disputes).
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         BillingDetails: BillingDetails
         /// The full statement descriptor that is passed to card networks, and that is displayed on your customers' credit card and bank statements. Allows you to see what the statement descriptor looks like after the static and dynamic portions are combined. This value only exists for card payments.
         CalculatedStatementDescriptor: string option
@@ -13621,13 +13717,13 @@ type Charge =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// ID of the customer this charge is for if one exists.
-        Customer: string option
+        Customer: ChargeCustomer'AnyOf option
         /// An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         /// Whether the charge has been disputed.
         Disputed: bool
         /// ID of the balance transaction that describes the reversal of the balance on your account due to payment failure.
-        FailureBalanceTransaction: string option
+        FailureBalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Error code explaining reason for charge failure if available (see [the errors section](https://docs.stripe.com/error-codes) for a list of codes).
         FailureCode: string option
         /// Message to user further explaining reason for charge failure if available.
@@ -13643,13 +13739,13 @@ type Charge =
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
         /// The account (if any) the charge was made on behalf of without triggering an automatic transfer. See the [Connect documentation](https://docs.stripe.com/connect/separate-charges-and-transfers) for details.
-        OnBehalfOf: string option
+        OnBehalfOf: StripeId<Markers.Account> option
         /// Details about whether the payment was accepted, and why. See [understanding declines](https://docs.stripe.com/declines) for details.
         Outcome: ChargeOutcome option
         /// `true` if the charge succeeded, or was successfully authorized for later capture.
         Paid: bool
         /// ID of the PaymentIntent associated with this charge, if one exists.
-        PaymentIntent: string option
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
         /// ID of the payment method used in this charge.
         PaymentMethod: string option
         /// Details about the payment method at the time of the transaction.
@@ -13667,13 +13763,13 @@ type Charge =
         /// A list of refunds that have been applied to the charge.
         Refunds: ChargeRefunds option
         /// ID of the review associated with this charge if one exists.
-        Review: string option
+        Review: StripeId<Markers.Review> option
         /// Shipping information for the charge.
         Shipping: Shipping option
         /// This is a legacy field that will be removed in the future. It contains the Source, Card, or BankAccount object used for the charge. For details about the payment method used for this charge, refer to `payment_method` or `payment_method_details` instead.
         Source: PaymentSource option
         /// The transfer ID which created this charge. Only present if the charge came from another Stripe account. [See the Connect documentation](https://docs.stripe.com/connect/destination-charges) for details.
-        SourceTransfer: string option
+        SourceTransfer: StripeId<Markers.Transfer> option
         /// For a non-card charge, text that appears on the customer's statement as the statement descriptor. This value overrides the account's default statement descriptor. For information about requirements, including the 22-character limit, see [the Statement Descriptor docs](https://docs.stripe.com/get-started/account/statement-descriptors).
         /// For a card charge, this value is ignored unless you don't specify a `statement_descriptor_suffix`, in which case this value is used as the suffix.
         StatementDescriptor: string option
@@ -13682,7 +13778,7 @@ type Charge =
         /// The status of the payment is either `succeeded`, `pending`, or `failed`.
         Status: ChargeStatus
         /// ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter).
-        Transfer: string option
+        Transfer: StripeId<Markers.Transfer> option
         /// An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://docs.stripe.com/connect/destination-charges) for details.
         TransferData: ChargeTransferData option
         /// A string that identifies this transaction as part of a group. See the [Connect documentation](https://docs.stripe.com/connect/separate-charges-and-transfers#transfer-options) for details.
@@ -13803,13 +13899,13 @@ type DisputeEvidence =
         /// The billing address provided by the customer.
         BillingAddress: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your subscription cancellation policy, as shown to the customer.
-        CancellationPolicy: string option
+        CancellationPolicy: StripeId<Markers.File> option
         /// An explanation of how and when the customer was shown your refund policy prior to purchase.
         CancellationPolicyDisclosure: string option
         /// A justification for why the customer's subscription was not canceled.
         CancellationRebuttal: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any communication with the customer that you feel is relevant to your case. Examples include emails proving that the customer received the product or service, or demonstrating their use of or satisfaction with the product or service.
-        CustomerCommunication: string option
+        CustomerCommunication: StripeId<Markers.File> option
         /// The email address of the customer.
         CustomerEmailAddress: string option
         /// The name of the customer.
@@ -13817,9 +13913,9 @@ type DisputeEvidence =
         /// The IP address that the customer used when making the purchase.
         CustomerPurchaseIp: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A relevant document or contract showing the customer's signature.
-        CustomerSignature: string option
+        CustomerSignature: StripeId<Markers.File> option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation for the prior charge that can uniquely identify the charge, such as a receipt, shipping label, work order, etc. This document should be paired with a similar document from the disputed payment that proves the two payments are separate.
-        DuplicateChargeDocumentation: string option
+        DuplicateChargeDocumentation: StripeId<Markers.File> option
         /// An explanation of the difference between the disputed charge versus the prior charge that appears to be a duplicate.
         DuplicateChargeExplanation: string option
         /// The Stripe ID for the prior charge which appears to be a duplicate of the disputed charge.
@@ -13828,9 +13924,9 @@ type DisputeEvidence =
         /// A description of the product or service that was sold.
         ProductDescription: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any receipt or message sent to the customer notifying them of the charge.
-        Receipt: string option
+        Receipt: StripeId<Markers.File> option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your refund policy, as shown to the customer.
-        RefundPolicy: string option
+        RefundPolicy: StripeId<Markers.File> option
         /// Documentation demonstrating that the customer was shown your refund policy prior to purchase.
         RefundPolicyDisclosure: string option
         /// A justification for why the customer is not entitled to a refund.
@@ -13838,7 +13934,7 @@ type DisputeEvidence =
         /// The date on which the customer received or began receiving the purchased service, in a clear human-readable format.
         ServiceDate: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a service was provided to the customer. This could include a copy of a signed contract, work order, or other form of written agreement.
-        ServiceDocumentation: string option
+        ServiceDocumentation: StripeId<Markers.File> option
         /// The address to which a physical product was shipped. You should try to include as complete address information as possible.
         ShippingAddress: string option
         /// The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc. If multiple carriers were used for this purchase, please separate them with commas.
@@ -13846,11 +13942,11 @@ type DisputeEvidence =
         /// The date on which a physical product began its route to the shipping address, in a clear human-readable format.
         ShippingDate: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a product was shipped to the customer at the same address the customer provided to you. This could include a copy of the shipment receipt, shipping label, etc. It should show the customer's full shipping address, if possible.
-        ShippingDocumentation: string option
+        ShippingDocumentation: StripeId<Markers.File> option
         /// The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas.
         ShippingTrackingNumber: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any additional evidence or statements.
-        UncategorizedFile: string option
+        UncategorizedFile: StripeId<Markers.File> option
         /// Any additional evidence or statements.
         UncategorizedText: string option
     }
@@ -14018,7 +14114,7 @@ type Dispute =
         /// List of zero, one, or two balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute.
         BalanceTransactions: BalanceTransaction list
         /// ID of the charge that's disputed.
-        Charge: string
+        Charge: StripeId<Markers.Charge>
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -14038,7 +14134,7 @@ type Dispute =
         /// Network-dependent reason code for the dispute.
         NetworkReasonCode: string option
         /// ID of the PaymentIntent that's disputed.
-        PaymentIntent: string option
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
         PaymentMethodDetails: DisputePaymentMethodDetails option
         /// Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `noncompliant`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Learn more about [dispute reasons](https://docs.stripe.com/disputes/categories).
         Reason: DisputeReason
@@ -14236,6 +14332,11 @@ type BillingCreditGrantCategory =
     | Paid
     | Promotional
 
+type BillingCreditGrantCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
 type BillingCreditGrantsResourceMonetaryAmount =
     {
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -14276,7 +14377,7 @@ type BillingCreditGrant =
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// ID of the customer receiving the billing credits.
-        Customer: string
+        Customer: BillingCreditGrantCustomer'AnyOf
         /// ID of the account representing the customer receiving the billing credits
         CustomerAccount: string option
         /// The time when the billing credits become effective-when they're eligible for use.
@@ -14294,7 +14395,7 @@ type BillingCreditGrant =
         /// The priority for applying this credit grant. The highest priority is 0 and the lowest is 100.
         Priority: int option
         /// ID of the test clock this credit grant belongs to.
-        TestClock: string option
+        TestClock: StripeId<Markers.TestHelpersTestClock> option
         /// Time at which the object was last updated. Measured in seconds since the Unix epoch.
         Updated: DateTime
         /// The time when this credit grant was voided. If not present, the credit grant hasn't been voided.
@@ -14320,7 +14421,7 @@ type BillingCreditGrantsResourceBalanceCreditType =
 type BillingCreditGrantsResourceBalanceCreditsApplicationInvoiceVoided =
     {
         /// The invoice to which the reinstated billing credits were originally applied.
-        Invoice: string
+        Invoice: StripeId<Markers.Invoice>
         /// The invoice line item to which the reinstated billing credits were originally applied.
         InvoiceLineItem: string
     }
@@ -14337,7 +14438,7 @@ type BillingCreditGrantsResourceBalanceCredit =
 type BillingCreditGrantsResourceBalanceCreditsApplied =
     {
         /// The invoice to which the billing credits were applied.
-        Invoice: string
+        Invoice: StripeId<Markers.Invoice>
         /// The invoice line item to which the billing credits were applied.
         InvoiceLineItem: string
     }
@@ -14365,7 +14466,7 @@ type BillingCreditBalanceTransaction =
         /// Credit details for this credit balance transaction. Only present if type is `credit`.
         Credit: BillingCreditGrantsResourceBalanceCredit option
         /// The credit grant associated with this credit balance transaction.
-        CreditGrant: string
+        CreditGrant: StripeId<Markers.BillingCreditGrant>
         /// Debit details for this credit balance transaction. Only present if type is `debit`.
         Debit: BillingCreditGrantsResourceBalanceDebit option
         /// The effective time of this credit balance transaction.
@@ -14375,7 +14476,7 @@ type BillingCreditBalanceTransaction =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// ID of the test clock this credit balance transaction belongs to.
-        TestClock: string option
+        TestClock: StripeId<Markers.TestHelpersTestClock> option
         /// The type of credit balance transaction (credit or debit).
         Type: BillingCreditBalanceTransactionType option
     }
@@ -14383,6 +14484,11 @@ type BillingCreditBalanceTransaction =
 /// Occurs when a credit balance transaction is created
 type BillingCreditBalanceTransactionCreated =
     { Object: BillingCreditBalanceTransaction }
+
+type BillingCreditBalanceSummaryCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 type CreditBalance =
     { AvailableBalance: BillingCreditGrantsResourceAmount
@@ -14394,7 +14500,7 @@ type BillingCreditBalanceSummary =
         /// The billing credit balances. One entry per credit grant currency. If a customer only has credit grants in a single currency, then this will have a single balance entry.
         Balances: CreditBalance list
         /// The customer the balance is for.
-        Customer: string
+        Customer: BillingCreditBalanceSummaryCustomer'AnyOf
         /// The account the balance is for.
         CustomerAccount: string option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -14410,7 +14516,7 @@ type BillingAlertStatus =
 type ThresholdsResourceUsageAlertFilter =
     {
         /// Limit the scope of the alert to this customer ID
-        Customer: string option
+        Customer: StripeId<Markers.Customer> option
     }
 
 /// The usage threshold alert configuration enables setting up alerts for when a certain usage threshold on a specific meter is crossed.
@@ -14421,7 +14527,7 @@ type ThresholdsResourceUsageThresholdConfig =
         /// The value at which this alert will trigger.
         Gte: int
         /// The [Billing Meter](/api/billing/meter) ID whose usage is monitored.
-        Meter: string
+        Meter: StripeId<Markers.BillingMeter>
     }
 
 /// A billing alert is a resource that notifies you when a certain usage threshold on a meter is crossed. For example, you might create a billing alert to notify you when a certain user made 100 API requests.
@@ -14469,6 +14575,10 @@ type BalanceTransactionSource =
     | Topup of Topup
     | Transfer of Transfer
     | TransferReversal of TransferReversal
+
+type DeletedExternalAccount =
+    | DeletedBankAccount of DeletedBankAccount
+    | DeletedCard of DeletedCard
 
 type ConnectEmbeddedAccountFeaturesClaim =
     {
@@ -14791,6 +14901,38 @@ module Topup =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "topup"
 
+module CashBalance =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "cash_balance"
+
+module DeletedCustomer =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "customer"
+
+module Person =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "person"
+
+module SubscriptionAutomaticTax =
+    ///If Stripe disabled automatic tax, this enum describes why.
+    let disabledReason = "requires_location_inputs"
+
+module InvoicePaymentMethodOptionsCustomerBalance =
+    ///The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
+    let fundingType = "bank_transfer"
+
+module CustomerTaxIds =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+module Account =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "account"
+
+module AccountExternalAccounts =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
 module BankAccount =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "bank_account"
@@ -14798,6 +14940,22 @@ module BankAccount =
 module Card =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "card"
+
+module Customer =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "customer"
+
+module CustomerSources =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+module CustomerSubscriptions =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+module Subscription =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "subscription"
 
 module Token =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -15047,6 +15205,14 @@ module PaymentIntentProcessing =
     ///Type of the payment method for which payment is in `processing` state, one of `card`.
     let ``type`` = "card"
 
+module DeletedBankAccount =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "bank_account"
+
+module DeletedCard =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "card"
+
 module PaymentMethodDetailsCardPresentOffline =
     ///The method used to process this payment method offline. Only deferred is allowed.
     let ``type`` = "deferred"
@@ -15054,18 +15220,6 @@ module PaymentMethodDetailsCardPresentOffline =
 module PaymentMethod =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payment_method"
-
-module AccountExternalAccounts =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module Person =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "person"
-
-module Account =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "account"
 
 module PaymentIntent =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -15119,9 +15273,9 @@ module IssuingAuthorization =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.authorization"
 
-module InvoicePayment =
+module DeletedInvoice =
     ///String representing the object's type. Objects of the same type share the same value.
-    let object = "invoice_payment"
+    let object = "invoice"
 
 module BillingBillResourceInvoicingTaxesTax =
     ///The type of tax information.
@@ -15139,37 +15293,21 @@ module InvoiceLines =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
-module InvoicePayments =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module InvoicePaymentMethodOptionsCustomerBalance =
-    ///The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
-    let fundingType = "bank_transfer"
-
 module Invoice =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoice"
 
+module InvoicePayments =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+module InvoicePayment =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "invoice_payment"
+
 module DeletedPerson =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "person"
-
-module DeletedBankAccount =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "bank_account"
-
-module DeletedCard =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "card"
-
-module DeletedInvoice =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "invoice"
-
-module DeletedCustomer =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "customer"
 
 module DeletedAccount =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -15178,34 +15316,6 @@ module DeletedAccount =
 module CustomerCashBalanceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "customer_cash_balance_transaction"
-
-module CashBalance =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "cash_balance"
-
-module CustomerSources =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module SubscriptionAutomaticTax =
-    ///If Stripe disabled automatic tax, this enum describes why.
-    let disabledReason = "requires_location_inputs"
-
-module Subscription =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "subscription"
-
-module CustomerSubscriptions =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module CustomerTaxIds =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module Customer =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "customer"
 
 module PaymentPagesCheckoutSessionCustomFieldsLabel =
     ///The type of the label.

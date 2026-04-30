@@ -206,7 +206,7 @@ type IdentityVerificationSession =
         /// If present, this property tells you the last error encountered when processing the verification.
         LastError: GelatoSessionLastError option
         /// ID of the most recent VerificationReport. [Learn more about accessing detailed verification results.](https://docs.stripe.com/identity/verification-sessions#results)
-        LastVerificationReport: string option
+        LastVerificationReport: StripeId<Markers.IdentityVerificationReport> option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.

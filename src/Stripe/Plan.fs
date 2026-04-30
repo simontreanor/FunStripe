@@ -3,6 +3,7 @@ namespace Stripe.Plan
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.Product
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type PlanBillingScheme =
@@ -15,6 +16,11 @@ type PlanInterval =
     | Month
     | Week
     | Year
+
+type PlanProduct'AnyOf =
+    | String of string
+    | Product of Product
+    | DeletedProduct of DeletedProduct
 
 type PlanTier =
     {
@@ -87,7 +93,7 @@ type Plan =
         /// A brief description of the plan, hidden from customers.
         Nickname: string option
         /// The product whose pricing this plan determines.
-        Product: string option
+        Product: PlanProduct'AnyOf option
         /// Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
         Tiers: PlanTier list option
         /// Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.

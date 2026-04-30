@@ -451,7 +451,7 @@ type InsightsResourcesPaymentEvaluationPaymentMethodDetails =
         /// Billing information associated with the payment evaluation.
         BillingDetails: InsightsResourcesPaymentEvaluationBillingDetails option
         /// The payment method used in this payment evaluation.
-        PaymentMethod: string
+        PaymentMethod: StripeId<Markers.PaymentMethod>
     }
 
 /// Shipping details attached to this payment.
@@ -546,7 +546,7 @@ type RadarEarlyFraudWarning =
         /// An EFW is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an EFW, in order to avoid receiving a dispute later.
         Actionable: bool
         /// ID of the charge this early fraud warning is for, optionally expanded.
-        Charge: string
+        Charge: StripeId<Markers.Charge>
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
@@ -556,7 +556,7 @@ type RadarEarlyFraudWarning =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// ID of the Payment Intent this early fraud warning is for, optionally expanded.
-        PaymentIntent: string option
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
     }
 
 module RadarEarlyFraudWarning =

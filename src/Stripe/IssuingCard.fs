@@ -1151,11 +1151,11 @@ type IssuingCard =
         /// The full unredacted card number. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://docs.stripe.com/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://docs.stripe.com/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
         Number: string option
         /// The personalization design object belonging to this card.
-        PersonalizationDesign: string option
+        PersonalizationDesign: StripeId<Markers.IssuingPersonalizationDesign> option
         /// The latest card that replaces this card, if any.
-        ReplacedBy: string option
+        ReplacedBy: StripeId<Markers.IssuingCard> option
         /// The card this card replaces, if any.
-        ReplacementFor: string option
+        ReplacementFor: StripeId<Markers.IssuingCard> option
         /// The reason why the previous card needed to be replaced.
         ReplacementReason: IssuingCardReplacementReason option
         /// Text separate from cardholder name, printed on the card.

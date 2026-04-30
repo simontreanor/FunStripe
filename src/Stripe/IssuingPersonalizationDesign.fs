@@ -63,7 +63,7 @@ type IssuingPersonalizationDesignStatus =
 type IssuingPersonalizationDesign =
     {
         /// The file for the card logo to use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`.
-        CardLogo: string option
+        CardLogo: StripeId<Markers.File> option
         /// Hash containing carrier text, for use with physical bundles that support carrier text.
         CarrierText: IssuingPersonalizationDesignCarrierText option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -79,7 +79,7 @@ type IssuingPersonalizationDesign =
         /// Friendly display name.
         Name: string option
         /// The physical bundle object belonging to this personalization design.
-        PhysicalBundle: string
+        PhysicalBundle: StripeId<Markers.IssuingPhysicalBundle>
         Preferences: IssuingPersonalizationDesignPreferences
         RejectionReasons: IssuingPersonalizationDesignRejectionReasons
         /// Whether this personalization design can be used to create cards.

@@ -35,6 +35,7 @@
     the platform-specific code paths automatically.
   -->
   <ItemGroup>
+    <Compile Include="../StripeIds.fs" Link="StripeIds.fs" />
     <Compile Include="../Json/FableCore.fs" Link="Json/FableCore.fs" />
     <Compile Include="../Config.fs" Link="Config.fs" />
     <Compile Include="../Util.fs" Link="Util.fs" />

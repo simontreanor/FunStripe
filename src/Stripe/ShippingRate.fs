@@ -80,7 +80,7 @@ type ShippingRate =
         /// Specifies whether the rate is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`.
         TaxBehavior: ShippingRateTaxBehavior option
         /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID. The Shipping tax code is `txcd_92010001`.
-        TaxCode: string option
+        TaxCode: StripeId<Markers.TaxCode> option
     }
 
 module ShippingRate =

@@ -17,7 +17,7 @@ type CapabilityStatus =
 type Capability =
     {
         /// The account for which the capability enables functionality.
-        Account: string
+        Account: StripeId<Markers.Account>
         FutureRequirements: AccountCapabilityFutureRequirements option
         /// The identifier for the capability.
         Id: string

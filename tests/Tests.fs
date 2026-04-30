@@ -199,7 +199,7 @@ module Tests =
             match result with
             | Ok (exp, pm, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.That(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, Is.EqualTo act.Customer)
+                    Assert.That(testCustomer |> StripeId |> Some, Is.EqualTo act.Customer)
                     Assert.That(pm.Id, Is.EqualTo act.Id)
                     Assert.That([("OrderId", "6735")] |> Map.ofList |> Some, Is.EqualTo act.Metadata)
                 )
@@ -224,7 +224,7 @@ module Tests =
             match result with
             | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.That(testCustomer |> PaymentMethodCustomer'AnyOf.String |> Some, Is.EqualTo act.Customer)
+                    Assert.That(testCustomer |> StripeId |> Some, Is.EqualTo act.Customer)
                     Assert.That(exp.Id, Is.EqualTo act.Id)
                 )
             | Error e ->
@@ -265,7 +265,7 @@ module Tests =
                     Created = DateTime(2021, 1, 6, 10, 42, 3)
                     Currency = None
                     CustomerAccount = None
-                    DefaultSource = Some (CustomerDefaultSource'AnyOf.String "card_1I6ZSoGXSUku3vEhr04df95L")
+                    DefaultSource = Some (StripeId "card_1I6ZSoGXSUku3vEhr04df95L" : StripeId<Markers.PaymentSource>)
                     Delinquent = Some false
                     Description = Some "KEITH LILY"
                     Discount = None
@@ -617,7 +617,7 @@ module Tests =
                 }
             """
             let actual = Util.deserialise<Customer> response
-            Assert.That(Some (CustomerDefaultSource'AnyOf.PaymentSource (PaymentSource.Card expectedCard)), Is.EqualTo actual.DefaultSource)
+            Assert.That(Some (StripeId "card_1I6ZSoGXSUku3vEhr04df95L" : StripeId<Markers.PaymentSource>), Is.EqualTo actual.DefaultSource)
 
         [<Test>]
         member _.``test expand values are not transformed in form parameters``() =

@@ -12,7 +12,7 @@ type ConnectCollectionTransfer =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// ID of the account that funds are being collected for.
-        Destination: string
+        Destination: StripeId<Markers.Account>
         /// Unique identifier for the object.
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.

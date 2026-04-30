@@ -973,11 +973,11 @@ type TaxIDsOwnerType =
 type TaxIDsOwner =
     {
         /// The account being referenced when `type` is `account`.
-        Account: string option
+        Account: StripeId<Markers.Account> option
         /// The Connect Application being referenced when `type` is `application`.
-        Application: string option
+        Application: StripeId<Markers.Application> option
         /// The customer being referenced when `type` is `customer`.
-        Customer: string option
+        Customer: StripeId<Markers.Customer> option
         /// The Account representing the customer being referenced when `type` is `customer`.
         CustomerAccount: string option
         /// Type of owner referenced.

@@ -17,7 +17,7 @@ type FileLink =
         /// Time that the link expires.
         ExpiresAt: DateTime option
         /// The file object this link points to.
-        File: string
+        File: StripeId<Markers.File>
         /// Unique identifier for the object.
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.

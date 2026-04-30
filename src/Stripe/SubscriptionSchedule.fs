@@ -3,12 +3,20 @@ namespace Stripe.SubscriptionSchedule
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.Application
 open Stripe.Discount
 open Stripe.PaymentMethod
+open Stripe.Plan
+open Stripe.Price
 open Stripe.SubscriptionItem
 open Stripe.TaxRate
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type SubscriptionScheduleApplication'AnyOf =
+    | String of string
+    | Application of Application
+    | DeletedApplication of DeletedApplication
+
 type SubscriptionScheduleCurrentPhase =
     {
         /// The end of this phase of the subscription schedule.
@@ -16,6 +24,11 @@ type SubscriptionScheduleCurrentPhase =
         /// The start of this phase of the subscription schedule.
         StartDate: DateTime
     }
+
+type SubscriptionScheduleCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 [<Struct>]
 type SubscriptionScheduleEndBehavior =
@@ -39,16 +52,21 @@ module SchedulesPhaseAutomaticTax =
 type StackableDiscountWithDiscountSettingsAndDiscountEnd =
     {
         /// ID of the coupon to create a new discount for.
-        Coupon: string option
+        Coupon: StripeId<Markers.Coupon> option
         /// ID of an existing discount on the object (or one of its ancestors) to reuse.
-        Discount: string option
+        Discount: StripeId<Markers.Discount> option
         /// ID of the promotion code to create a new discount for.
-        PromotionCode: string option
+        PromotionCode: StripeId<Markers.PromotionCode> option
     }
 
 type SubscriptionScheduleAddInvoiceItemPeriod =
     { End: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd
       Start: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart }
+
+type SubscriptionScheduleAddInvoiceItemPrice'AnyOf =
+    | String of string
+    | Price of Price
+    | DeletedPrice of DeletedPrice
 
 /// An Add Invoice Item describes the prices and quantities that will be added as pending invoice items when entering a phase.
 type SubscriptionScheduleAddInvoiceItem =
@@ -59,7 +77,7 @@ type SubscriptionScheduleAddInvoiceItem =
         Metadata: Map<string, string> option
         Period: SubscriptionScheduleAddInvoiceItemPeriod
         /// ID of the price used to generate the invoice item.
-        Price: string
+        Price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf
         /// The quantity of the invoice item.
         Quantity: int option
         /// The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
@@ -69,12 +87,22 @@ type SubscriptionScheduleAddInvoiceItem =
 type StackableDiscountWithDiscountSettings =
     {
         /// ID of the coupon to create a new discount for.
-        Coupon: string option
+        Coupon: StripeId<Markers.Coupon> option
         /// ID of an existing discount on the object (or one of its ancestors) to reuse.
-        Discount: string option
+        Discount: StripeId<Markers.Discount> option
         /// ID of the promotion code to create a new discount for.
-        PromotionCode: string option
+        PromotionCode: StripeId<Markers.PromotionCode> option
     }
+
+type SubscriptionScheduleConfigurationItemPlan'AnyOf =
+    | String of string
+    | Plan of Plan
+    | DeletedPlan of DeletedPlan
+
+type SubscriptionScheduleConfigurationItemPrice'AnyOf =
+    | String of string
+    | Price of Price
+    | DeletedPrice of DeletedPrice
 
 /// A phase item describes the price and quantity of a phase.
 type SubscriptionScheduleConfigurationItem =
@@ -86,9 +114,9 @@ type SubscriptionScheduleConfigurationItem =
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an item. Metadata on this item will update the underlying subscription item's `metadata` when the phase is entered.
         Metadata: Map<string, string> option
         /// ID of the plan to which the customer should be subscribed.
-        Plan: string
+        Plan: SubscriptionScheduleConfigurationItemPlan'AnyOf
         /// ID of the price to which the customer should be subscribed.
-        Price: string
+        Price: SubscriptionScheduleConfigurationItemPrice'AnyOf
         /// Quantity of the plan to which the customer should be subscribed.
         Quantity: int option
         /// The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`.
@@ -128,7 +156,7 @@ type SubscriptionSchedulePhaseConfiguration =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings.
-        DefaultPaymentMethod: string option
+        DefaultPaymentMethod: StripeId<Markers.PaymentMethod> option
         /// The default tax rates to apply to the subscription during this phase of the subscription schedule.
         DefaultTaxRates: TaxRate list option
         /// Subscription description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs.
@@ -144,7 +172,7 @@ type SubscriptionSchedulePhaseConfiguration =
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to a phase. Metadata on a schedule's phase will update the underlying subscription's `metadata` when the phase is entered. Updating the underlying subscription's `metadata` directly will not affect the current phase's `metadata`.
         Metadata: Map<string, string> option
         /// The account (if any) the charge was made on behalf of for charges associated with the schedule's subscription. See the Connect documentation for details.
-        OnBehalfOf: string option
+        OnBehalfOf: StripeId<Markers.Account> option
         /// When transitioning phases, controls how prorations are handled (if any). Possible values are `create_prorations`, `none`, and `always_invoice`.
         ProrationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior
         /// The start of this phase of the subscription schedule.
@@ -168,7 +196,7 @@ type SubscriptionScheduleStatus =
 type SubscriptionSchedule =
     {
         /// ID of the Connect Application that created the schedule.
-        Application: string option
+        Application: SubscriptionScheduleApplication'AnyOf option
         BillingMode: SubscriptionsResourceBillingMode
         /// Time at which the subscription schedule was canceled. Measured in seconds since the Unix epoch.
         CanceledAt: DateTime option
@@ -179,7 +207,7 @@ type SubscriptionSchedule =
         /// Object representing the start and end dates for the current phase of the subscription schedule, if it is `active`.
         CurrentPhase: SubscriptionScheduleCurrentPhase option
         /// ID of the customer who owns the subscription schedule.
-        Customer: string
+        Customer: SubscriptionScheduleCustomer'AnyOf
         /// ID of the account who owns the subscription schedule.
         CustomerAccount: string option
         DefaultSettings: SubscriptionSchedulesResourceDefaultSettings
@@ -200,9 +228,9 @@ type SubscriptionSchedule =
         /// The present status of the subscription schedule. Possible values are `not_started`, `active`, `completed`, `released`, and `canceled`. You can read more about the different states in our [behavior guide](https://docs.stripe.com/billing/subscriptions/subscription-schedules).
         Status: SubscriptionScheduleStatus
         /// ID of the subscription managed by the subscription schedule.
-        Subscription: string option
+        Subscription: StripeId<Markers.Subscription> option
         /// ID of the test clock this subscription schedule belongs to.
-        TestClock: string option
+        TestClock: StripeId<Markers.TestHelpersTestClock> option
     }
 
 module SubscriptionSchedule =

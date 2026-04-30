@@ -3,9 +3,16 @@ namespace Stripe.PaymentLink
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.Application
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type PaymentLinkApplication'AnyOf =
+    | String of string
+    | Application of Application
+    | DeletedApplication of DeletedApplication
+
+[<Struct>]
 type PaymentLinkBillingAddressCollection =
     | Auto
     | Required
@@ -97,7 +104,7 @@ type PaymentLink =
         /// Whether user redeemable promotion codes are enabled.
         AllowPromotionCodes: bool
         /// The ID of the Connect application that created the Payment Link.
-        Application: string option
+        Application: PaymentLinkApplication'AnyOf option
         /// The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account.
         ApplicationFeeAmount: int option
         /// This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account.
@@ -130,7 +137,7 @@ type PaymentLink =
         Metadata: Map<string, string>
         NameCollection: PaymentLinksResourceNameCollection option
         /// The account on behalf of which to charge. See the [Connect documentation](https://support.stripe.com/questions/sending-invoices-on-behalf-of-connected-accounts) for details.
-        OnBehalfOf: string option
+        OnBehalfOf: StripeId<Markers.Account> option
         /// The optional items presented to the customer at checkout.
         OptionalItems: PaymentLinksResourceOptionalItem list option
         /// Indicates the parameters to be passed to PaymentIntent creation during checkout.

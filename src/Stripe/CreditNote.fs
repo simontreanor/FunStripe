@@ -7,8 +7,13 @@ open Stripe.CreditNoteLineItem
 open Stripe.Discount
 open Stripe.PaymentMethod
 
-/// Line items that make up the credit note
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type CreditNoteCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
+/// Line items that make up the credit note
 type CreditNoteLines =
     {
         /// Details about each object.
@@ -42,7 +47,7 @@ type CreditNoteRefund =
         /// The PaymentRecord refund details associated with this credit note refund.
         PaymentRecordRefund: CreditNotesPaymentRecordRefund option
         /// ID of the refund.
-        Refund: string
+        Refund: StripeId<Markers.Refund>
         /// Type of the refund, one of `refund` or `payment_record_refund`.
         Type: CreditNoteRefundType option
     }
@@ -71,11 +76,11 @@ type CreditNote =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// ID of the customer.
-        Customer: string
+        Customer: CreditNoteCustomer'AnyOf
         /// ID of the account representing the customer.
         CustomerAccount: string option
         /// Customer balance transaction related to this credit note.
-        CustomerBalanceTransaction: string option
+        CustomerBalanceTransaction: StripeId<Markers.CustomerBalanceTransaction> option
         /// The integer amount in cents (or local equivalent) representing the total amount of discount that was credited.
         DiscountAmount: int
         /// The aggregate amounts calculated per discount for all line items.
@@ -85,7 +90,7 @@ type CreditNote =
         /// Unique identifier for the object.
         Id: string
         /// ID of the invoice.
-        Invoice: string
+        Invoice: StripeId<Markers.Invoice>
         /// Line items that make up the credit note
         Lines: CreditNoteLines
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.

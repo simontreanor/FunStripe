@@ -39,7 +39,7 @@ type SubscriptionItem =
         /// The start time of this subscription item's current billing period.
         CurrentPeriodStart: DateTime
         /// The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: string list
+        Discounts: StripeId<Markers.Discount> list
         /// Unique identifier for the object.
         Id: string
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.

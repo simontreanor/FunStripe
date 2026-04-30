@@ -3,6 +3,7 @@ namespace Stripe.PromotionCode
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.PaymentMethod
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type PromotionCodeCurrencyOption =
@@ -11,10 +12,15 @@ type PromotionCodeCurrencyOption =
         MinimumAmount: int
     }
 
+type PromotionCodeCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
 type PromotionCodesResourcePromotion =
     {
         /// If promotion `type` is `coupon`, the coupon for this promotion.
-        Coupon: string option
+        Coupon: StripeId<Markers.Coupon> option
     }
 
 module PromotionCodesResourcePromotion =
@@ -46,7 +52,7 @@ type PromotionCode =
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The customer who can use this promotion code.
-        Customer: string option
+        Customer: PromotionCodeCustomer'AnyOf option
         /// The account representing the customer who can use this promotion code.
         CustomerAccount: string option
         /// Date at which the promotion code can no longer be redeemed.

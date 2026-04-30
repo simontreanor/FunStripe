@@ -57,9 +57,9 @@ type BankConnectionsResourceAccountholderType =
 type BankConnectionsResourceAccountholder =
     {
         /// The ID of the Stripe account that this account belongs to. Only available when `account_holder.type` is `account`.
-        Account: string option
+        Account: StripeId<Markers.Account> option
         /// The ID for an Account representing a customer that this account belongs to. Only available when `account_holder.type` is `customer`.
-        Customer: string option
+        Customer: StripeId<Markers.Customer> option
         CustomerAccount: string option
         /// Type of account holder that this account belongs to.
         Type: BankConnectionsResourceAccountholderType
@@ -248,7 +248,7 @@ type FinancialConnectionsAccount =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// The most recent information about the account's owners.
-        Ownership: string option
+        Ownership: StripeId<Markers.FinancialConnectionsAccountOwnership> option
         /// The state of the most recent attempt to refresh the account owners.
         OwnershipRefresh: BankConnectionsResourceOwnershipRefresh option
         /// The list of permissions granted by this account.

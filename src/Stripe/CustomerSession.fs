@@ -194,7 +194,7 @@ type CustomerSession =
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The Customer the Customer Session was created for.
-        Customer: string
+        Customer: StripeId<Markers.Customer>
         /// The Account that the Customer Session was created for.
         CustomerAccount: string option
         /// The timestamp at which this Customer Session will expire.

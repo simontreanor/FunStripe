@@ -24,6 +24,7 @@
     <Tailcalls>true</Tailcalls>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../StripeIds.fs" Link="StripeIds.fs" />
     <Compile Include="../Json/StripeConverter.fs" Link="Json/StripeConverter.fs" />
     <Compile Include="../Config.fs" Link="Config.fs" />
     <Compile Include="../AssemblyInfo.fs" Link="AssemblyInfo.fs" />

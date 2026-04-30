@@ -29,15 +29,15 @@ type CustomerBalanceTransaction =
         /// The amount of the transaction. A negative value is a credit for the customer's balance, and a positive value is a debit to the customer's `balance`.
         Amount: int
         /// The ID of the checkout session (if any) that created the transaction.
-        CheckoutSession: string option
+        CheckoutSession: StripeId<Markers.CheckoutSession> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The ID of the credit note (if any) related to the transaction.
-        CreditNote: string option
+        CreditNote: StripeId<Markers.CreditNote> option
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// The ID of the customer the transaction belongs to.
-        Customer: string
+        Customer: StripeId<Markers.Customer>
         /// The ID of an Account representing a customer that the transaction belongs to.
         CustomerAccount: string option
         /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -47,7 +47,7 @@ type CustomerBalanceTransaction =
         /// Unique identifier for the object.
         Id: string
         /// The ID of the invoice (if any) related to the transaction.
-        Invoice: string option
+        Invoice: StripeId<Markers.Invoice> option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.

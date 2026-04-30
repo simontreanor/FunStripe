@@ -30,6 +30,14 @@ let main argv =
     let normalizeLineEndings (s: string) =
         s.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
 
+    // Resolve the spec path the same way the model builders do (default = bundled spec).
+    let resolvedSpecPath =
+        specPath
+        |> Option.defaultValue (Path.GetFullPath(Path.Combine(__SOURCE_DIRECTORY__, "../../spec/stripe-openapi-2026-04-22.dahlia.json")))
+
+    printfn "Generating StripeIds.fs..."
+    StripeIdsBuilder.generate version' outputDir' resolvedSpecPath |> ignore
+
     printfn "Generating StripeModel.fs..."
     let model = ModelBuilder.parseModel specPath
     let modelContent = ModelBuilder.serializeModel version' model

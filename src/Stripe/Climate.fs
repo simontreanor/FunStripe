@@ -165,7 +165,7 @@ type ClimateOrder =
         /// Quantity of carbon removal that is included in this order.
         MetricTons: string
         /// Unique ID for the Climate `Product` this order is purchasing.
-        Product: string
+        Product: StripeId<Markers.ClimateProduct>
         /// Time at which the order's product was substituted for a different product. Measured in seconds since the Unix epoch.
         ProductSubstitutedAt: DateTime option
         /// The current status of this order.

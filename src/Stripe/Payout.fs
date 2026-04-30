@@ -3,8 +3,15 @@ namespace Stripe.Payout
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type PayoutDestination'AnyOf =
+    | String of string
+    | ExternalAccount of ExternalAccount
+    | DeletedExternalAccount of DeletedExternalAccount
+
+[<Struct>]
 type PayoutMethod =
     | Standard
     | Instant
@@ -60,7 +67,7 @@ type Payout =
         /// The amount (in cents (or local equivalent)) that transfers to your bank account or debit card.
         Amount: int
         /// The application fee (if any) for the payout. [See the Connect documentation](https://docs.stripe.com/connect/instant-payouts#monetization-and-fees) for details.
-        ApplicationFee: string option
+        ApplicationFee: StripeId<Markers.ApplicationFee> option
         /// The amount of the application fee (if any) requested for the payout. [See the Connect documentation](https://docs.stripe.com/connect/instant-payouts#monetization-and-fees) for details.
         ApplicationFeeAmount: int option
         /// Date that you can expect the payout to arrive in the bank. This factors in delays to account for weekends or bank holidays.
@@ -68,7 +75,7 @@ type Payout =
         /// Returns `true` if the payout is created by an [automated payout schedule](https://docs.stripe.com/payouts#payout-schedule) and `false` if it's [requested manually](https://stripe.com/docs/payouts#manual-payouts).
         Automatic: bool
         /// ID of the balance transaction that describes the impact of this payout on your account balance.
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -76,9 +83,9 @@ type Payout =
         /// An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         /// ID of the bank account or card the payout is sent to.
-        Destination: string option
+        Destination: PayoutDestination'AnyOf option
         /// If the payout fails or cancels, this is the ID of the balance transaction that reverses the initial balance transaction and returns the funds from the failed payout back in your balance.
-        FailureBalanceTransaction: string option
+        FailureBalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Error code that provides a reason for a payout failure, if available. View our [list of failure codes](https://docs.stripe.com/api#payout_failures).
         FailureCode: string option
         /// Message that provides the reason for a payout failure, if available.
@@ -92,13 +99,13 @@ type Payout =
         /// The method used to send this payout, which can be `standard` or `instant`. `instant` is supported for payouts to debit cards and bank accounts in certain countries. Learn more about [bank support for Instant Payouts](https://stripe.com/docs/payouts/instant-payouts-banks).
         Method: PayoutMethod
         /// If the payout reverses another, this is the ID of the original payout.
-        OriginalPayout: string option
+        OriginalPayout: StripeId<Markers.Payout> option
         /// ID of the v2 FinancialAccount the funds are sent to.
         PayoutMethod: string option
         /// If `completed`, you can use the [Balance Transactions API](https://docs.stripe.com/api/balance_transactions/list#balance_transaction_list-payout) to list all balance transactions that are paid out in this payout.
         ReconciliationStatus: PayoutReconciliationStatus
         /// If the payout reverses, this is the ID of the payout that reverses this payout.
-        ReversedBy: string option
+        ReversedBy: StripeId<Markers.Payout> option
         /// The source balance this payout came from, which can be one of the following: `card`, `fpx`, or `bank_account`.
         SourceType: PayoutSourceType
         /// Extra information about a payout that displays on the user's bank statement.

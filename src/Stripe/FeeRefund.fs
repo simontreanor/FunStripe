@@ -14,13 +14,13 @@ type FeeRefund =
         /// Amount, in cents (or local equivalent).
         Amount: int
         /// Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// ID of the application fee that was refunded.
-        Fee: string
+        Fee: StripeId<Markers.ApplicationFee>
         /// Unique identifier for the object.
         Id: string
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.

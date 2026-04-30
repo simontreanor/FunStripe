@@ -217,16 +217,27 @@ module ModelParsing =
         | None ->
             // Stripe "expandable" pattern: anyOf [string, $ref-to-resource, ...]
             // The wire format defaults to a string ID (the resource's id) and only returns a nested
-            // object when the caller passes ?expand[]=. Modelling these as a wrapper DU forces
-            // every Stripe.{Domain} module to depend on every other domain that has expandable
-            // references, producing one giant cyclic SCC. Emitting the field as `string` matches
-            // the default wire format, eliminates cross-domain cycles, and lets callers fetch
-            // the expanded resource via a separate, typed retrieve call.
-            let isExpandable =
-                choices |> List.contains "string"
-                && choices |> List.exists (fun c -> not (basicTypes.Contains c) && c <> "string")
-            if isExpandable then
-                { Description = description; Name = name; Nullable = nullable; Required = required; Type = "string"; EnumValues = None; SubValues = None; StaticValue = None }
-            else
+            // object when the caller passes ?expand[]=. We model these as a phantom-typed
+            // `StripeId<Markers.X>` wrapping a plain string, which:
+            //   - Preserves the type information that the field "points at" resource X
+            //   - Avoids cross-domain dependency cycles (Markers.X is a leaf type with no deps)
+            //   - Round-trips cleanly through the JSON converter (writes/reads as a string)
+            // Multi-target expandables (e.g. `source: anyOf [string, A, B, C]`) currently fall
+            // back to plain `string` because we don't know which marker to choose without
+            // inspecting the runtime ID prefix. They remain candidates for a future
+            // polymorphic-ID DU.
+            let nonStringRefs =
+                choices
+                |> List.filter (fun c -> c <> "string" && not (basicTypes.Contains c))
+            match choices |> List.contains "string", nonStringRefs with
+            | true, [ target ] ->
+                // Single-target expandable: phantom-typed ID
+                let pascalTarget = target |> pascalCasify
+                { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"StripeId<Markers.{pascalTarget}>"; EnumValues = None; SubValues = None; StaticValue = None }
+            | _ ->
+                // Multi-target expandable or true polymorphic anyOf: emit a discriminated
+                // union preserving every variant. (Multi-target expandables intentionally
+                // keep the original DU shape so callers retain pattern-matching access to
+                // every possible runtime variant.)
                 let choices' = choices |> List.map(fun c -> $"{c |> pascalCasify} of {c}")
                 { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"{prefix}{name |> pascalCasify}{suffix}"; EnumValues = Some choices'; SubValues = None; StaticValue = None }

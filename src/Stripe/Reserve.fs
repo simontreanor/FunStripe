@@ -24,9 +24,9 @@ type ReservesReserveReleasesResourcesSourceTransactionType =
 type ReservesReserveReleasesResourcesSourceTransaction =
     {
         /// The ID of the dispute.
-        Dispute: string option
+        Dispute: StripeId<Markers.Dispute> option
         /// The ID of the refund.
-        Refund: string option
+        Refund: StripeId<Markers.Refund> option
         /// The type of source transaction.
         Type: ReservesReserveReleasesResourcesSourceTransactionType
     }
@@ -53,9 +53,9 @@ type ReserveRelease =
         /// The release timestamp of the funds.
         ReleasedAt: DateTime
         /// The ReserveHold this ReserveRelease is associated with.
-        ReserveHold: string option
+        ReserveHold: StripeId<Markers.ReserveHold> option
         /// The ReservePlan ID this ReserveRelease is associated with. This field is only populated if a ReserveRelease is created by a ReservePlan disable operation, or from a scheduled ReservedHold expiry.
-        ReservePlan: string option
+        ReservePlan: StripeId<Markers.ReservePlan> option
         SourceTransaction: ReservesReserveReleasesResourcesSourceTransaction option
     }
 
@@ -190,9 +190,9 @@ type ReserveHold =
         Reason: ReserveHoldReason
         ReleaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule
         /// The ReservePlan which produced this ReserveHold (i.e., resplan_123)
-        ReservePlan: string option
+        ReservePlan: StripeId<Markers.ReservePlan> option
         /// The Charge which funded this ReserveHold (e.g., ch_123)
-        SourceCharge: string option
+        SourceCharge: StripeId<Markers.Charge> option
         /// Which source balance type this ReserveHold reserves funds from. One of `bank_account`, `card`, or `fpx`.
         SourceType: ReserveHoldSourceType
     }

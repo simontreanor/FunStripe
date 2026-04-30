@@ -42,7 +42,7 @@ type Product =
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The ID of the [Price](https://docs.stripe.com/api/prices) object that is the default price for this product.
-        DefaultPrice: string option
+        DefaultPrice: StripeId<Markers.Price> option
         /// The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
         Description: string option
         /// Unique identifier for the object.
@@ -64,7 +64,7 @@ type Product =
         /// Extra information about a product which will appear on your customer's credit card statement. In the case that multiple products are billed at once, the first statement descriptor will be used. Only used for subscription payments.
         StatementDescriptor: string option
         /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
-        TaxCode: string option
+        TaxCode: StripeId<Markers.TaxCode> option
         /// The type of the product. The product is either of type `good`, which is eligible for use with Orders and SKUs, or `service`, which is eligible for use with Subscriptions and Plans.
         Type: ProductType
         /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.

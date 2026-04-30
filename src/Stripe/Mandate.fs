@@ -275,7 +275,7 @@ type Mandate =
         /// The account (if any) that the mandate is intended for.
         OnBehalfOf: string option
         /// ID of the payment method associated with this mandate.
-        PaymentMethod: string
+        PaymentMethod: StripeId<Markers.PaymentMethod>
         PaymentMethodDetails: MandatePaymentMethodDetails
         SingleUse: MandateSingleUse option
         /// The mandate status indicates whether or not you can use it to initiate a payment.

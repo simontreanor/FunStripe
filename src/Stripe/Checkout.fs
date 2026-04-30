@@ -11,6 +11,11 @@ type CheckoutSessionBillingAddressCollection =
     | Auto
     | Required
 
+type CheckoutSessionCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
 [<Struct>]
 type CheckoutSessionCustomerCreation =
     | Always
@@ -1053,7 +1058,7 @@ type CheckoutSession =
         /// will create a new customer object based on information provided
         /// during the payment flow unless an existing customer was provided when
         /// the Session was created.
-        Customer: string option
+        Customer: CheckoutSessionCustomer'AnyOf option
         /// The ID of the account for this Session.
         CustomerAccount: string option
         /// Configure whether a Checkout Session creates a Customer when the Checkout Session completes.
@@ -1077,7 +1082,7 @@ type CheckoutSession =
         /// The integration identifier for this Checkout Session. Multiple Checkout Sessions can have the same integration identifier.
         IntegrationIdentifier: string option
         /// ID of the invoice created by the Checkout Session, if it exists.
-        Invoice: string option
+        Invoice: StripeId<Markers.Invoice> option
         /// Details on the state of invoice creation for the Checkout Session.
         InvoiceCreation: PaymentPagesCheckoutSessionInvoiceCreation option
         /// The line items purchased by the customer.
@@ -1098,9 +1103,9 @@ type CheckoutSession =
         /// Where the user is coming from. This informs the optimizations that are applied to the session.
         OriginContext: CheckoutSessionOriginContext option
         /// The ID of the PaymentIntent for Checkout Sessions in `payment` mode. You can't confirm or cancel the PaymentIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://docs.stripe.com/api/checkout/sessions/expire) instead.
-        PaymentIntent: string option
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
         /// The ID of the Payment Link that created this Session.
-        PaymentLink: string option
+        PaymentLink: StripeId<Markers.PaymentLink> option
         /// Configure whether a Checkout Session should collect a payment method. Defaults to `always`.
         PaymentMethodCollection: CheckoutSessionPaymentMethodCollection option
         /// Information about the payment method configuration used for this Checkout session if using dynamic payment methods.
@@ -1127,7 +1132,7 @@ type CheckoutSession =
         /// Controls saved payment method settings for the session. Only available in `payment` and `subscription` mode.
         SavedPaymentMethodOptions: PaymentPagesCheckoutSessionSavedPaymentMethodOptions option
         /// The ID of the SetupIntent for Checkout Sessions in `setup` mode. You can't confirm or cancel the SetupIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://docs.stripe.com/api/checkout/sessions/expire) instead.
-        SetupIntent: string option
+        SetupIntent: StripeId<Markers.SetupIntent> option
         /// When set, provides configuration for Checkout to collect a shipping address from a customer.
         ShippingAddressCollection: PaymentPagesCheckoutSessionShippingAddressCollection option
         /// The details of the customer cost of shipping, including the customer chosen ShippingRate.
@@ -1141,7 +1146,7 @@ type CheckoutSession =
         /// specified on Checkout Sessions in `payment` mode. If blank or `auto`, `pay` is used.
         SubmitType: CheckoutSessionSubmitType option
         /// The ID of the [Subscription](https://docs.stripe.com/api/subscriptions) for Checkout Sessions in `subscription` mode.
-        Subscription: string option
+        Subscription: StripeId<Markers.Subscription> option
         /// The URL the customer will be directed to after the payment or
         /// subscription creation is successful.
         SuccessUrl: string option

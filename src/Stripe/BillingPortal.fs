@@ -3,6 +3,7 @@ namespace Stripe.BillingPortal
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.Application
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type BillingPortalSessionLocale =
@@ -174,7 +175,7 @@ type PortalFlowsFlow =
 type BillingPortalSession =
     {
         /// The configuration used by this session, describing the features available.
-        Configuration: string
+        Configuration: StripeId<Markers.BillingPortalConfiguration>
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The ID of the customer for this session.
@@ -203,6 +204,11 @@ module BillingPortalSession =
 
 /// Occurs whenever a portal session is created.
 type BillingPortalSessionCreated = { Object: BillingPortalSession }
+
+type BillingPortalConfigurationApplication'AnyOf =
+    | String of string
+    | Application of Application
+    | DeletedApplication of DeletedApplication
 
 type PortalBusinessProfile =
     {
@@ -381,7 +387,7 @@ type BillingPortalConfiguration =
         /// Whether the configuration is active and can be used to create portal sessions.
         Active: bool
         /// ID of the Connect Application that created the configuration.
-        Application: string option
+        Application: BillingPortalConfigurationApplication'AnyOf option
         BusinessProfile: PortalBusinessProfile
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime

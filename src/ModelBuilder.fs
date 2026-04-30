@@ -249,8 +249,24 @@ module ModelBuilder =
         | Some c ->
             { Description = description; Name = name; Nullable = nullable; Required = required; Type = c; EnumValues = None; SubValues = None; StaticValue = None }
         | None ->
-            let choices' = choices |> List.map(fun c -> $"{c |> pascalCasify} of {c}")
-            { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"{prefix}{name |> pascalCasify}{suffix}"; EnumValues = Some choices'; SubValues = None; StaticValue = None }
+            // Stripe "expandable" pattern: anyOf [string, $ref-to-resource, ...]
+            // Single-target expandables become phantom-typed `StripeId<Markers.X>` so we
+            // preserve the relationship between an ID field and its target resource at
+            // compile time without inducing cross-domain dependency cycles. See the
+            // companion logic in `tools/FunStripe.Generator/ModelParsing.fs`.
+            let nonStringRefs =
+                choices
+                |> List.filter (fun c -> c <> "string" && not (basicTypes.Contains c))
+            match choices |> List.contains "string", nonStringRefs with
+            | true, [ target ] ->
+                // Single-target expandable: phantom-typed ID
+                let pascalTarget = target |> pascalCasify
+                { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"StripeId<Markers.{pascalTarget}>"; EnumValues = None; SubValues = None; StaticValue = None }
+            | _ ->
+                // Multi-target expandable or true polymorphic anyOf: emit a discriminated
+                // union preserving every variant. The original behaviour.
+                let choices' = choices |> List.map(fun c -> $"{c |> pascalCasify} of {c}")
+                { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"{prefix}{name |> pascalCasify}{suffix}"; EnumValues = Some choices'; SubValues = None; StaticValue = None }
 
     type ModelValueItem = {
         Description: string

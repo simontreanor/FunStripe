@@ -178,7 +178,7 @@ type TerminalReaderReaderResourceCollectPaymentMethodAction =
     {
         CollectConfig: TerminalReaderReaderResourceCollectConfig option
         /// Most recent PaymentIntent processed by the reader.
-        PaymentIntent: string
+        PaymentIntent: StripeId<Markers.PaymentIntent>
         PaymentMethod: PaymentMethod option
     }
 
@@ -194,7 +194,7 @@ type TerminalReaderReaderResourceConfirmPaymentIntentAction =
     {
         ConfirmConfig: TerminalReaderReaderResourceConfirmConfig option
         /// Most recent PaymentIntent processed by the reader.
-        PaymentIntent: string
+        PaymentIntent: StripeId<Markers.PaymentIntent>
     }
 
 /// Represents a per-transaction override of a reader configuration
@@ -213,7 +213,7 @@ type TerminalReaderReaderResourceProcessConfig =
 type TerminalReaderReaderResourceProcessPaymentIntentAction =
     {
         /// Most recent PaymentIntent processed by the reader.
-        PaymentIntent: string
+        PaymentIntent: StripeId<Markers.PaymentIntent>
         ProcessConfig: TerminalReaderReaderResourceProcessConfig option
     }
 
@@ -231,7 +231,7 @@ type TerminalReaderReaderResourceProcessSetupIntentAction =
         GeneratedCard: string option
         ProcessConfig: TerminalReaderReaderResourceProcessSetupConfig option
         /// Most recent SetupIntent processed by the reader.
-        SetupIntent: string
+        SetupIntent: StripeId<Markers.SetupIntent>
     }
 
 [<Struct>]
@@ -268,15 +268,15 @@ type TerminalReaderReaderResourceRefundPaymentAction =
         /// The amount being refunded.
         Amount: int option
         /// Charge that is being refunded.
-        Charge: string option
+        Charge: StripeId<Markers.Charge> option
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         /// Payment intent that is being refunded.
-        PaymentIntent: string option
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
         /// The reason for the refund.
         Reason: TerminalReaderReaderResourceRefundPaymentActionReason option
         /// Unique identifier for the refund object.
-        Refund: string option
+        Refund: StripeId<Markers.Refund> option
         /// Boolean indicating whether the application fee should be refunded when refunding this charge. If a full charge refund is given, the full application fee will be refunded. Otherwise, the application fee will be refunded in an amount proportional to the amount of the charge refunded. An application fee can be refunded only by the application that created the charge.
         RefundApplicationFee: bool option
         RefundPaymentConfig: TerminalReaderReaderResourceRefundPaymentConfig option
@@ -365,7 +365,7 @@ type TerminalReader =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// The location identifier of the reader.
-        Location: string option
+        Location: StripeId<Markers.TerminalLocation> option
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
         /// Serial number of the reader.
@@ -471,7 +471,7 @@ type TerminalConfigurationConfigurationResourceCellularConfig =
 type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig =
     {
         /// A File ID representing an image to display on the reader
-        Splashscreen: string option
+        Splashscreen: StripeId<Markers.File> option
     }
 
 type TerminalConfigurationConfigurationResourceOfflineConfig =

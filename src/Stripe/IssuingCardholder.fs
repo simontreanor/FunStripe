@@ -982,9 +982,9 @@ type IssuingCardholderIndividualDob =
 type IssuingCardholderIdDocument =
     {
         /// The back of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
-        Back: string option
+        Back: StripeId<Markers.File> option
         /// The front of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
-        Front: string option
+        Front: StripeId<Markers.File> option
     }
 
 type IssuingCardholderVerification =

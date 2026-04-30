@@ -3,6 +3,7 @@ namespace Stripe.Price
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.Product
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type CustomUnitAmount =
@@ -19,6 +20,11 @@ type CustomUnitAmount =
 type PriceBillingScheme =
     | PerUnit
     | Tiered
+
+type PriceProduct'AnyOf =
+    | String of string
+    | Product of Product
+    | DeletedProduct of DeletedProduct
 
 [<Struct>]
 type PriceTaxBehavior =
@@ -118,7 +124,7 @@ type Price =
         /// A brief description of the price, hidden from customers.
         Nickname: string option
         /// The ID of the product this price is associated with.
-        Product: string
+        Product: PriceProduct'AnyOf
         /// The recurring components of a price such as `interval` and `usage_type`.
         Recurring: Recurring option
         /// Only required if a [default tax behavior](https://docs.stripe.com/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.

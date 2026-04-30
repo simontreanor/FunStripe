@@ -96,7 +96,7 @@ type TreasuryCreditReversal =
         Status: TreasuryCreditReversalStatus
         StatusTransitions: TreasuryReceivedCreditsResourceStatusTransitions
         /// The Transaction associated with this object.
-        Transaction: string option
+        Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
 module TreasuryCreditReversal =
@@ -155,7 +155,7 @@ type TreasuryDebitReversal =
         Status: TreasuryDebitReversalStatus
         StatusTransitions: TreasuryReceivedDebitsResourceStatusTransitions
         /// The Transaction associated with this object.
-        Transaction: string option
+        Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
 module TreasuryDebitReversal =
@@ -186,7 +186,7 @@ type InboundTransfersPaymentMethodDetailsUsBankAccount =
         [<JsonPropertyName("last4")>]
         Last4: string option
         /// ID of the mandate used to make this payment.
-        Mandate: string option
+        Mandate: StripeId<Markers.Mandate> option
         /// Routing number of the bank account.
         RoutingNumber: string option
     }
@@ -295,7 +295,7 @@ type TreasuryInboundTransfer =
         Status: TreasuryInboundTransferStatus
         StatusTransitions: TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions
         /// The Transaction associated with this object.
-        Transaction: string option
+        Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
 module TreasuryInboundTransfer =
@@ -346,7 +346,7 @@ type OutboundPaymentsPaymentMethodDetailsUsBankAccount =
         [<JsonPropertyName("last4")>]
         Last4: string option
         /// ID of the mandate used to make this payment.
-        Mandate: string option
+        Mandate: StripeId<Markers.Mandate> option
         /// The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
         Network: OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork
         /// Routing number of the bank account.
@@ -436,7 +436,7 @@ type TreasuryOutboundPaymentsResourceReturnedStatus =
         /// Reason for the return.
         Code: TreasuryOutboundPaymentsResourceReturnedStatusCode
         /// The Transaction associated with this object.
-        Transaction: string
+        Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
 /// Use [OutboundPayments](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-payments) to send funds to another party's external bank account or [FinancialAccount](https://api.stripe.com#financial_accounts). To send money to an account belonging to the same user, use an [OutboundTransfer](https://api.stripe.com#outbound_transfers).
@@ -484,7 +484,7 @@ type TreasuryOutboundPayment =
         /// Details about network-specific tracking information if available.
         TrackingDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails option
         /// The Transaction associated with this object.
-        Transaction: string
+        Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
 module TreasuryOutboundPayment =
@@ -535,7 +535,7 @@ type OutboundTransfersPaymentMethodDetailsUsBankAccount =
         [<JsonPropertyName("last4")>]
         Last4: string option
         /// ID of the mandate used to make this payment.
-        Mandate: string option
+        Mandate: StripeId<Markers.Mandate> option
         /// The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
         Network: OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork
         /// Routing number of the bank account.
@@ -605,7 +605,7 @@ type TreasuryOutboundTransfersResourceReturnedDetails =
         /// Reason for the return.
         Code: TreasuryOutboundTransfersResourceReturnedDetailsCode
         /// The Transaction associated with this object.
-        Transaction: string
+        Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
 type TreasuryOutboundTransfersResourceStatusTransitions =
@@ -660,7 +660,7 @@ type TreasuryOutboundTransfer =
         /// Details about network-specific tracking information if available.
         TrackingDetails: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails option
         /// The Transaction associated with this object.
-        Transaction: string
+        Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
 module TreasuryOutboundTransfer =
@@ -811,7 +811,7 @@ type TreasuryReceivedCredit =
         /// Status of the ReceivedCredit. ReceivedCredits are created either `succeeded` (approved) or `failed` (declined). If a ReceivedCredit is declined, the failure reason can be found in the `failure_code` field.
         Status: TreasuryReceivedCreditStatus
         /// The Transaction associated with this object.
-        Transaction: string option
+        Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
 module TreasuryReceivedCredit =
@@ -900,7 +900,7 @@ type TreasuryReceivedDebit =
         /// Status of the ReceivedDebit. ReceivedDebits are created with a status of either `succeeded` (approved) or `failed` (declined). The failure reason can be found under the `failure_code`.
         Status: TreasuryReceivedDebitStatus
         /// The Transaction associated with this object.
-        Transaction: string option
+        Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
 module TreasuryReceivedDebit =
@@ -955,7 +955,7 @@ type TreasuryTransactionEntry =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// The Transaction associated with this object.
-        Transaction: string
+        Transaction: StripeId<Markers.TreasuryTransaction>
         /// The specific money movement that generated the TransactionEntry.
         Type: TreasuryTransactionEntryType
     }

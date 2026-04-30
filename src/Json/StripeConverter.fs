@@ -64,6 +64,49 @@ module StripeConverter =
             writer.WriteNumberValue(epoch)
 
     // ---------------------------------------------------------------------------
+    // StripeId<'phantom> converter: reads/writes as a plain string
+    // ---------------------------------------------------------------------------
+
+    /// Inner (generic) converter for StripeId<'phantom>. The wire form is just the
+    /// resource ID string; the phantom type parameter is purely a compile-time tag.
+    type private StripeIdConverterInner<'phantom>() =
+        inherit JsonConverter<FunStripe.StripeIds.StripeId<'phantom>>()
+
+        override _.Read(reader, _, _) =
+            let mk (s: string) : FunStripe.StripeIds.StripeId<'phantom> =
+                FunStripe.StripeIds.StripeId s
+            match reader.TokenType with
+            | JsonTokenType.String ->
+                mk (reader.GetString())
+            | JsonTokenType.StartObject ->
+                use doc = JsonDocument.ParseValue(&reader)
+                let mutable idProp = Unchecked.defaultof<JsonElement>
+                if doc.RootElement.TryGetProperty("id", &idProp) && idProp.ValueKind = JsonValueKind.String then
+                    mk (idProp.GetString())
+                else
+                    failwith "StripeIdConverter: expanded object has no string `id` field"
+            | t -> failwith $"StripeIdConverter: expected string or object, got {t}"
+
+        override _.Write(writer, value, _) =
+            let (FunStripe.StripeIds.StripeId s) = value
+            writer.WriteStringValue(s)
+
+    /// JsonConverterFactory that produces a StripeIdConverterInner<'phantom> for any
+    /// instantiation of `StripeId<_>`. Must be registered BEFORE StripeUnionConverterFactory
+    /// so this specialised converter wins over the generic union converter (StripeId is
+    /// itself a single-case DU).
+    type StripeIdConverterFactory() =
+        inherit JsonConverterFactory()
+
+        override _.CanConvert(t) =
+            t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<FunStripe.StripeIds.StripeId<_>>
+
+        override _.CreateConverter(t, _options) =
+            let phantom = t.GetGenericArguments().[0]
+            let converterType = typedefof<StripeIdConverterInner<_>>.MakeGenericType(phantom)
+            Activator.CreateInstance(converterType) :?> JsonConverter
+
+    // ---------------------------------------------------------------------------
     // Union converter: handles "object"-field discriminated unions
     // ---------------------------------------------------------------------------
 
@@ -199,7 +242,8 @@ module StripeConverter =
         override _.CanConvert(t) =
             FSharpType.IsUnion(t) &&
             not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<option<_>>) &&
-            not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<list<_>>)
+            not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<list<_>>) &&
+            not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<FunStripe.StripeIds.StripeId<_>>)
 
         override _.CreateConverter(t, _options) =
             let converterType = typedefof<StripeUnionConverterInner<_>>.MakeGenericType(t)
@@ -223,6 +267,7 @@ module StripeConverter =
         // Insert our converters BEFORE FSharp.SystemTextJson's converter so they win for DUs.
         opts.Converters.Insert(0, EpochDateTimeConverter())
         opts.Converters.Insert(0, StripeUnionConverterFactory())
+        opts.Converters.Insert(0, StripeIdConverterFactory())
         opts
 
     /// Lazily-created shared options instance.

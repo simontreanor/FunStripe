@@ -21,21 +21,21 @@ type TransferReversal =
         /// Amount, in cents (or local equivalent).
         Amount: int
         /// Balance transaction that describes the impact on your account balance.
-        BalanceTransaction: string option
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// Linked payment refund for the transfer reversal.
-        DestinationPaymentRefund: string option
+        DestinationPaymentRefund: StripeId<Markers.Refund> option
         /// Unique identifier for the object.
         Id: string
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         /// ID of the refund responsible for the transfer reversal.
-        SourceRefund: string option
+        SourceRefund: StripeId<Markers.Refund> option
         /// ID of the transfer that was reversed.
-        Transfer: string
+        Transfer: StripeId<Markers.Transfer>
     }
 
 module TransferReversal =

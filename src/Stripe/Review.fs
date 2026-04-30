@@ -41,7 +41,7 @@ type Review =
         /// The ZIP or postal code of the card used, if applicable.
         BillingZip: string option
         /// The charge associated with this review.
-        Charge: string option
+        Charge: StripeId<Markers.Charge> option
         /// The reason the review was closed, or null if it has not yet been closed. One of `approved`, `refunded`, `refunded_as_fraud`, `disputed`, `redacted`, `canceled`, `payment_never_settled`, or `acknowledged`.
         ClosedReason: ReviewClosedReason option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -59,7 +59,7 @@ type Review =
         /// The reason the review was opened. One of `rule` or `manual`.
         OpenedReason: ReviewOpenedReason
         /// The PaymentIntent ID associated with this review, if one exists.
-        PaymentIntent: string option
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
         /// The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, `disputed`, `redacted`, `canceled`, `payment_never_settled`, or `acknowledged`.
         Reason: ReviewReason
         /// Information related to the browsing session of the user who initiated the payment.

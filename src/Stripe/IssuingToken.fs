@@ -27,7 +27,7 @@ type IssuingTokenWalletProvider =
 type IssuingToken =
     {
         /// Card associated with this token.
-        Card: string
+        Card: StripeId<Markers.IssuingCard>
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The hashed ID derived from the device ID from the card network associated with the token.
