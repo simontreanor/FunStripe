@@ -27,17 +27,20 @@ let main argv =
     printfn "  Version: %s" version'
     printfn ""
 
+    let normalizeLineEndings (s: string) =
+        s.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
+
     printfn "Generating StripeModel.fs..."
     let model = ModelBuilder.parseModel specPath
     let modelContent = ModelBuilder.serializeModel version' model
-    File.WriteAllText(Path.Combine(outputDir', "StripeModel.fs"), modelContent)
+    File.WriteAllText(Path.Combine(outputDir', "StripeModel.fs"), modelContent |> normalizeLineEndings)
     printfn "  Written StripeModel.fs"
 
     printfn "Generating StripeRequest files..."
     let request = RequestBuilder.parseRequest specPath
     RequestBuilder.serializeModelByGroups version' outputDir' request
     let requestContent = RequestBuilder.serializeModel version' request
-    File.WriteAllText(Path.Combine(outputDir', "StripeRequest.fs"), requestContent)
+    File.WriteAllText(Path.Combine(outputDir', "StripeRequest.fs"), requestContent |> normalizeLineEndings)
     printfn "  Written StripeRequest.fs and per-group files"
 
     0
