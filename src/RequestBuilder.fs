@@ -11,7 +11,7 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
-///Select the entire text of this module and press `Alt + Enter` to generate the `StripeRequest.fs` file
+///Run `dotnet run --project tools/FunStripe.Generator` to generate the `StripeRequest.fs` and per-group files
 module RequestBuilder =
 
     type OptionType =
@@ -315,6 +315,9 @@ module RequestBuilder =
     | ModelModule of Module: string * ModelAst
 
     /// Maps each Stripe API module name to its resource group for modular file generation.
+    /// When upgrading to a new Stripe OpenAPI spec version, run the generator and check stderr for
+    /// "Warning: module '...' not found in moduleGroupMapping" lines. Add any new modules here,
+    /// assigning them to the appropriate group based on their name prefix (e.g. "Billing*" -> "Billing").
     let moduleGroupMapping =
         dict [
             // Core
@@ -331,9 +334,16 @@ module RequestBuilder =
             "PaymentIntentsApplyCustomerBalance", "Core"; "PaymentIntentsCancel", "Core"
             "PaymentIntentsCapture", "Core"; "PaymentIntentsConfirm", "Core"
             "PaymentIntentsIncrementAuthorization", "Core"; "PaymentIntentsVerifyMicrodeposits", "Core"
+            "PaymentIntentsAmountDetailsLineItems", "Core"
             "PaymentMethods", "Core"; "PaymentMethodsAttach", "Core"; "PaymentMethodsDetach", "Core"
+            "PaymentMethodConfigurations", "Core"; "PaymentMethodDomains", "Core"; "PaymentMethodDomainsValidate", "Core"
+            "PaymentAttemptRecords", "Core"
+            "PaymentRecords", "Core"; "PaymentRecordsReportPayment", "Core"; "PaymentRecordsReportRefund", "Core"
+            "PaymentRecordsReportPaymentAttempt", "Core"; "PaymentRecordsReportPaymentAttemptCanceled", "Core"
+            "PaymentRecordsReportPaymentAttemptFailed", "Core"; "PaymentRecordsReportPaymentAttemptGuaranteed", "Core"
+            "PaymentRecordsReportPaymentAttemptInformational", "Core"
             "Payouts", "Core"; "PayoutsCancel", "Core"; "PayoutsReverse", "Core"
-            "Products", "Core"; "ProductsSearch", "Core"
+            "Products", "Core"; "ProductsSearch", "Core"; "ProductsFeatures", "Core"
             "Refunds", "Core"; "RefundsCancel", "Core"
             "Reviews", "Core"; "ReviewsApprove", "Core"
             "SetupAttempts", "Core"; "SetupIntents", "Core"
@@ -341,20 +351,34 @@ module RequestBuilder =
             "Sources", "Core"; "SourcesSourceTransactions", "Core"; "SourcesVerify", "Core"
             "Tokens", "Core"; "Topups", "Core"; "TopupsCancel", "Core"
             "Transfers", "Core"; "TransfersReversals", "Core"; "WebhookEndpoints", "Core"
+            "BalanceSettings", "Core"; "ClimateOrders", "Core"; "ClimateOrdersCancel", "Core"
+            "ClimateProducts", "Core"; "ClimateSuppliers", "Core"
+            "ConfirmationTokens", "Core"; "CustomerSessions", "Core"
+            "EntitlementsActiveEntitlements", "Core"; "EntitlementsFeatures", "Core"
+            "ForwardingRequests", "Core"
             // Connect
-            "AccountLinks", "Connect"; "Accounts", "Connect"
+            "AccountLinks", "Connect"; "AccountSessions", "Connect"; "Accounts", "Connect"
             "AccountsCapabilities", "Connect"; "AccountsExternalAccounts", "Connect"
             "AccountsLoginLinks", "Connect"; "AccountsPersons", "Connect"; "AccountsReject", "Connect"
             "ApplePayDomains", "Connect"; "ApplicationFees", "Connect"; "ApplicationFeesRefunds", "Connect"
             "AppsSecrets", "Connect"; "AppsSecretsDelete", "Connect"; "AppsSecretsFind", "Connect"
             // Billing
+            "BillingAlerts", "Billing"; "BillingAlertsActivate", "Billing"; "BillingAlertsArchive", "Billing"; "BillingAlertsDeactivate", "Billing"
+            "BillingCreditBalanceSummary", "Billing"; "BillingCreditBalanceTransactions", "Billing"
+            "BillingCreditGrants", "Billing"; "BillingCreditGrantsExpire", "Billing"; "BillingCreditGrantsVoid", "Billing"
+            "BillingMeterEventAdjustments", "Billing"; "BillingMeterEvents", "Billing"
+            "BillingMeters", "Billing"; "BillingMetersDeactivate", "Billing"; "BillingMetersEventSummaries", "Billing"; "BillingMetersReactivate", "Billing"
             "BillingPortalConfigurations", "Billing"; "BillingPortalSessions", "Billing"
             "Coupons", "Billing"; "CreditNotes", "Billing"; "CreditNotesPreview", "Billing"
             "CreditNotesPreviewLines", "Billing"; "CreditNotesLines", "Billing"; "CreditNotesVoid", "Billing"
+            "InvoicePayments", "Billing"
+            "InvoiceRenderingTemplates", "Billing"; "InvoiceRenderingTemplatesArchive", "Billing"; "InvoiceRenderingTemplatesUnarchive", "Billing"
             "Invoiceitems", "Billing"; "Invoices", "Billing"; "InvoicesSearch", "Billing"
             "InvoicesUpcoming", "Billing"; "InvoicesUpcomingLines", "Billing"; "InvoicesFinalize", "Billing"
             "InvoicesLines", "Billing"; "InvoicesMarkUncollectible", "Billing"
             "InvoicesPay", "Billing"; "InvoicesSend", "Billing"; "InvoicesVoid", "Billing"
+            "InvoicesCreatePreview", "Billing"; "InvoicesAddLines", "Billing"; "InvoicesAttachPayment", "Billing"
+            "InvoicesRemoveLines", "Billing"; "InvoicesUpdateLines", "Billing"
             "Plans", "Billing"; "Prices", "Billing"; "PricesSearch", "Billing"
             "PromotionCodes", "Billing"; "Quotes", "Billing"; "QuotesAccept", "Billing"
             "QuotesCancel", "Billing"; "QuotesComputedUpfrontLineItems", "Billing"
@@ -363,8 +387,10 @@ module RequestBuilder =
             "SubscriptionSchedules", "Billing"; "SubscriptionSchedulesCancel", "Billing"
             "SubscriptionSchedulesRelease", "Billing"; "Subscriptions", "Billing"
             "SubscriptionsSearch", "Billing"; "SubscriptionsDiscount", "Billing"; "SubscriptionsResume", "Billing"
-            "TaxCalculations", "Billing"; "TaxCalculationsLineItems", "Billing"
-            "TaxCodes", "Billing"; "TaxRates", "Billing"; "TaxSettings", "Billing"
+            "SubscriptionsMigrate", "Billing"
+            "TaxAssociationsFind", "Billing"; "TaxCalculations", "Billing"; "TaxCalculationsLineItems", "Billing"
+            "TaxCodes", "Billing"; "TaxIds", "Billing"; "TaxRates", "Billing"; "TaxSettings", "Billing"
+            "TaxRegistrations", "Billing"
             "TaxTransactionsCreateFromCalculation", "Billing"; "TaxTransactionsCreateReversal", "Billing"
             "TaxTransactions", "Billing"; "TaxTransactionsLineItems", "Billing"
             // Checkout
@@ -374,7 +400,10 @@ module RequestBuilder =
             "FinancialConnectionsAccountsDisconnect", "FinancialConnections"
             "FinancialConnectionsAccountsOwners", "FinancialConnections"
             "FinancialConnectionsAccountsRefresh", "FinancialConnections"
+            "FinancialConnectionsAccountsSubscribe", "FinancialConnections"
+            "FinancialConnectionsAccountsUnsubscribe", "FinancialConnections"
             "FinancialConnectionsSessions", "FinancialConnections"
+            "FinancialConnectionsTransactions", "FinancialConnections"
             // Identity
             "IdentityVerificationReports", "Identity"; "IdentityVerificationSessions", "Identity"
             "IdentityVerificationSessionsCancel", "Identity"; "IdentityVerificationSessionsRedact", "Identity"
@@ -383,42 +412,63 @@ module RequestBuilder =
             "IssuingAuthorizationsDecline", "Issuing"; "IssuingCardholders", "Issuing"
             "IssuingCards", "Issuing"; "IssuingDisputes", "Issuing"
             "IssuingDisputesSubmit", "Issuing"; "IssuingTransactions", "Issuing"
+            "IssuingPersonalizationDesigns", "Issuing"; "IssuingPhysicalBundles", "Issuing"; "IssuingTokens", "Issuing"
             // PaymentLinks
             "PaymentLinks", "PaymentLinks"; "PaymentLinksLineItems", "PaymentLinks"
             // Radar
-            "RadarEarlyFraudWarnings", "Radar"; "RadarValueListItems", "Radar"; "RadarValueLists", "Radar"
+            "RadarEarlyFraudWarnings", "Radar"; "RadarPaymentEvaluations", "Radar"
+            "RadarValueListItems", "Radar"; "RadarValueLists", "Radar"
             // Reporting
             "ReportingReportRuns", "Reporting"; "ReportingReportTypes", "Reporting"
             // Sigma
             "SigmaScheduledQueryRuns", "Sigma"
             // Terminal
             "TerminalConfigurations", "Terminal"; "TerminalConnectionTokens", "Terminal"
-            "TerminalLocations", "Terminal"; "TerminalReaders", "Terminal"
-            "TerminalReadersCancelAction", "Terminal"; "TerminalReadersProcessPaymentIntent", "Terminal"
+            "TerminalLocations", "Terminal"; "TerminalOnboardingLinks", "Terminal"
+            "TerminalReaders", "Terminal"
+            "TerminalReadersCancelAction", "Terminal"; "TerminalReadersCollectInputs", "Terminal"
+            "TerminalReadersCollectPaymentMethod", "Terminal"; "TerminalReadersConfirmPaymentIntent", "Terminal"
+            "TerminalReadersProcessPaymentIntent", "Terminal"
             "TerminalReadersProcessSetupIntent", "Terminal"; "TerminalReadersRefundPayment", "Terminal"
             "TerminalReadersSetReaderDisplay", "Terminal"
             // TestHelpers
+            "TestHelpersConfirmationTokens", "TestHelpers"
             "TestHelpersCustomersFundCashBalance", "TestHelpers"
-            "TestHelpersIssuingCardsShippingDeliver", "TestHelpers"
-            "TestHelpersIssuingCardsShippingFail", "TestHelpers"
-            "TestHelpersIssuingCardsShippingReturn", "TestHelpers"
-            "TestHelpersIssuingCardsShippingShip", "TestHelpers"
+            "TestHelpersIssuingAuthorizations", "TestHelpers"
+            "TestHelpersIssuingAuthorizationsCapture", "TestHelpers"; "TestHelpersIssuingAuthorizationsExpire", "TestHelpers"
+            "TestHelpersIssuingAuthorizationsFinalizeAmount", "TestHelpers"
+            "TestHelpersIssuingAuthorizationsFraudChallengesRespond", "TestHelpers"
+            "TestHelpersIssuingAuthorizationsIncrement", "TestHelpers"; "TestHelpersIssuingAuthorizationsReverse", "TestHelpers"
+            "TestHelpersIssuingCardsShippingDeliver", "TestHelpers"; "TestHelpersIssuingCardsShippingFail", "TestHelpers"
+            "TestHelpersIssuingCardsShippingReturn", "TestHelpers"; "TestHelpersIssuingCardsShippingShip", "TestHelpers"
+            "TestHelpersIssuingCardsShippingSubmit", "TestHelpers"
+            "TestHelpersIssuingPersonalizationDesignsActivate", "TestHelpers"
+            "TestHelpersIssuingPersonalizationDesignsDeactivate", "TestHelpers"
+            "TestHelpersIssuingPersonalizationDesignsReject", "TestHelpers"
+            "TestHelpersIssuingTransactionsCreateForceCapture", "TestHelpers"
+            "TestHelpersIssuingTransactionsCreateUnlinkedRefund", "TestHelpers"
+            "TestHelpersIssuingTransactionsRefund", "TestHelpers"
             "TestHelpersRefundsExpire", "TestHelpers"
             "TestHelpersTerminalReadersPresentPaymentMethod", "TestHelpers"
+            "TestHelpersTerminalReadersSucceedInputCollection", "TestHelpers"
+            "TestHelpersTerminalReadersTimeoutInputCollection", "TestHelpers"
             "TestHelpersTestClocks", "TestHelpers"; "TestHelpersTestClocksAdvance", "TestHelpers"
             "TestHelpersTreasuryInboundTransfersFail", "TestHelpers"
             "TestHelpersTreasuryInboundTransfersReturn", "TestHelpers"
             "TestHelpersTreasuryInboundTransfersSucceed", "TestHelpers"
+            "TestHelpersTreasuryOutboundPayments", "TestHelpers"
             "TestHelpersTreasuryOutboundPaymentsFail", "TestHelpers"
             "TestHelpersTreasuryOutboundPaymentsPost", "TestHelpers"
             "TestHelpersTreasuryOutboundPaymentsReturn", "TestHelpers"
+            "TestHelpersTreasuryOutboundTransfers", "TestHelpers"
             "TestHelpersTreasuryOutboundTransfersFail", "TestHelpers"
             "TestHelpersTreasuryOutboundTransfersPost", "TestHelpers"
             "TestHelpersTreasuryOutboundTransfersReturn", "TestHelpers"
             "TestHelpersTreasuryReceivedCredits", "TestHelpers"; "TestHelpersTreasuryReceivedDebits", "TestHelpers"
             // Treasury
             "TreasuryCreditReversals", "Treasury"; "TreasuryDebitReversals", "Treasury"
-            "TreasuryFinancialAccounts", "Treasury"; "TreasuryFinancialAccountsFeatures", "Treasury"
+            "TreasuryFinancialAccounts", "Treasury"; "TreasuryFinancialAccountsClose", "Treasury"
+            "TreasuryFinancialAccountsFeatures", "Treasury"
             "TreasuryInboundTransfers", "Treasury"; "TreasuryInboundTransfersCancel", "Treasury"
             "TreasuryOutboundPayments", "Treasury"; "TreasuryOutboundPaymentsCancel", "Treasury"
             "TreasuryOutboundTransfers", "Treasury"; "TreasuryOutboundTransfersCancel", "Treasury"

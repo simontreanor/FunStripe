@@ -11,7 +11,7 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
-///Select the entire text of this module and press `Alt + Enter` to generate the `StripeModel.fs` file
+///Run `dotnet run --project tools/FunStripe.Generator` to generate the `StripeModel.fs` file
 module ModelBuilder =
 
     ///Record for OpenAPI schema object

@@ -182,10 +182,9 @@ let createPaymentMethod () =
 
 ### Code generation
 
-Code generation (`ModelBuilder.fs`, `RequestBuilder.fs`) uses `Fabulous.AST` which is
-.NET-only.  It is intentionally excluded from the Fable package.  Run code generation with
-`dotnet fsi` on the .NET side and commit the generated `StripeModel.fs` /
-`StripeRequest.fs` into your repository.
+Code generation (`ModelBuilder.fs`, `RequestBuilder.fs`) is .NET-only and intentionally
+excluded from the Fable package.  Run code generation with `dotnet run` (see below) and
+commit the generated `StripeModel.fs` / `StripeRequest.<Group>.fs` files into your repository.
 
 ## Partial API Loading
 
@@ -239,15 +238,24 @@ dotnet build -p:FunStripeExcludeIssuing=true -p:FunStripeExcludeTreasury=true
 
 ## Code Generation
 
-By cloning the source repository, as a developer you can use `ModelBuilder.fs` and `RequestBuilder.fs` to generate the code in `StripeModel.fs` and the per-resource-group `StripeRequest.<Group>.fs` files respectively.
+By cloning the source repository, as a developer you can regenerate `StripeModel.fs` and the per-resource-group `StripeRequest.<Group>.fs` files using the `FunStripe.Generator` console tool:
 
-Using Visual Studio Code, you simply select all the text in each document and hit `Alt + Enter` to send the code to F# Interactive. This will overwrite the contents of the target modules.
+```sh
+dotnet run --project tools/FunStripe.Generator -- \
+  --spec spec/stripe-openapi-2026-04-22.dahlia.json \
+  --output src \
+  --version 1.0.0
+```
 
-The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2026-04-22.dahlia.json` used as the default for code generation. The current default path is set in `ModelBuilder.fs` and `RequestBuilder.fs`. To regenerate against a different version, pass the desired spec file path as a parameter, or update the default path in those files. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
+All three arguments are optional and default to the values shown above.
 
-Running the `RequestBuilder.fs` interactive code generates all per-group files (`StripeRequest.Core.fs`, `StripeRequest.Billing.fs`, etc.) as well as the legacy monolithic `StripeRequest.fs` for reference. The per-group files are the ones included in the compiled project.
+The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2026-04-22.dahlia.json` used as the default. To regenerate against a different version, pass its path via `--spec`. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
 
-You could also customise how the source code is represented by editing the builder code files.
+The generator writes all per-group files (`StripeRequest.Core.fs`, `StripeRequest.Billing.fs`, etc.) as well as the legacy monolithic `StripeRequest.fs` for reference. The per-group files are the ones included in the compiled project.
+
+A **Regenerate source files** GitHub Actions workflow (`.github/workflows/regenerate.yml`) is also provided. Trigger it manually from the Actions tab; it will run the generator and open a pull request if any files changed.
+
+You could also customise how the source code is represented by editing `ModelBuilder.fs` and `RequestBuilder.fs`.
 
 ## Comparison with Stripe.net
 

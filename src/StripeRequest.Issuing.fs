@@ -9,21 +9,21 @@ open System
 module IssuingAuthorizations =
 
     type ListOptions = {
-        ///Only return authorizations that belong to the given card.
+        ///<summary>Only return authorizations that belong to the given card.</summary>
         [<Config.Query>]Card: string option
-        ///Only return authorizations that belong to the given cardholder.
+        ///<summary>Only return authorizations that belong to the given cardholder.</summary>
         [<Config.Query>]Cardholder: string option
-        ///Only return authorizations that were created during the given date interval.
+        ///<summary>Only return authorizations that were created during the given date interval.</summary>
         [<Config.Query>]Created: int option
-        ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
         [<Config.Query>]EndingBefore: string option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
-        ///A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
         [<Config.Query>]Limit: int option
-        ///A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
         [<Config.Query>]StartingAfter: string option
-        ///Only return authorizations with the given status. One of `pending`, `closed`, or `reversed`.
+        ///<summary>Only return authorizations with the given status. One of `pending`, `closed`, or `reversed`.</summary>
         [<Config.Query>]Status: string option
     }
     with
@@ -39,15 +39,15 @@ module IssuingAuthorizations =
                 Status = status
             }
 
-    ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
+    ///<summary><p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p></summary>
     let List settings (options: ListOptions) =
         let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
         $"/v1/issuing/authorizations"
-        |> RestApi.getAsync<IssuingAuthorization list> settings qs
+        |> RestApi.getAsync<StripeList<IssuingAuthorization>> settings qs
 
     type RetrieveOptions = {
         [<Config.Path>]Authorization: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
     }
     with
@@ -57,7 +57,7 @@ module IssuingAuthorizations =
                 Expand = expand
             }
 
-    ///<p>Retrieves an Issuing <code>Authorization</code> object.</p>
+    ///<summary><p>Retrieves an Issuing <code>Authorization</code> object.</p></summary>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/issuing/authorizations/{options.Authorization}"
@@ -65,9 +65,9 @@ module IssuingAuthorizations =
 
     type UpdateOptions = {
         [<Config.Path>]Authorization: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
     }
     with
@@ -78,7 +78,7 @@ module IssuingAuthorizations =
                 Metadata = metadata
             }
 
-    ///<p>Updates the specified Issuing <code>Authorization</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
+    ///<summary><p>Updates the specified Issuing <code>Authorization</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p></summary>
     let Update settings (options: UpdateOptions) =
         $"/v1/issuing/authorizations/{options.Authorization}"
         |> RestApi.postAsync<_, IssuingAuthorization> settings (Map.empty) options
@@ -87,11 +87,11 @@ module IssuingAuthorizationsApprove =
 
     type ApproveOptions = {
         [<Config.Path>]Authorization: string
-        ///If the authorization's `pending_request.is_amount_controllable` property is `true`, you may provide this value to control how much to hold for the authorization. Must be positive (use [`decline`](https://stripe.com/docs/api/issuing/authorizations/decline) to decline an authorization request).
+        ///<summary>If the authorization's `pending_request.is_amount_controllable` property is `true`, you may provide this value to control how much to hold for the authorization. Must be positive (use [`decline`](https://docs.stripe.com/api/issuing/authorizations/decline) to decline an authorization request).</summary>
         [<Config.Form>]Amount: int option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
     }
     with
@@ -103,8 +103,8 @@ module IssuingAuthorizationsApprove =
                 Metadata = metadata
             }
 
-    ///<p>Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow. 
-    ///You can also respond directly to the webhook request to approve an authorization (preferred). More details can be found <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.</p>
+    ///<summary><p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow. 
+    ///This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to approve an authorization</a>.</p></summary>
     let Approve settings (options: ApproveOptions) =
         $"/v1/issuing/authorizations/{options.Authorization}/approve"
         |> RestApi.postAsync<_, IssuingAuthorization> settings (Map.empty) options
@@ -113,9 +113,9 @@ module IssuingAuthorizationsDecline =
 
     type DeclineOptions = {
         [<Config.Path>]Authorization: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
     }
     with
@@ -126,8 +126,8 @@ module IssuingAuthorizationsDecline =
                 Metadata = metadata
             }
 
-    ///<p>Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
-    ///You can also respond directly to the webhook request to decline an authorization (preferred). More details can be found <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.</p>
+    ///<summary><p>[Deprecated] Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
+    ///This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to decline an authorization</a>.</p></summary>
     let Decline settings (options: DeclineOptions) =
         $"/v1/issuing/authorizations/{options.Authorization}/decline"
         |> RestApi.postAsync<_, IssuingAuthorization> settings (Map.empty) options
@@ -135,23 +135,23 @@ module IssuingAuthorizationsDecline =
 module IssuingCardholders =
 
     type ListOptions = {
-        ///Only return cardholders that were created during the given date interval.
+        ///<summary>Only return cardholders that were created during the given date interval.</summary>
         [<Config.Query>]Created: int option
-        ///Only return cardholders that have the given email address.
+        ///<summary>Only return cardholders that have the given email address.</summary>
         [<Config.Query>]Email: string option
-        ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
         [<Config.Query>]EndingBefore: string option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
-        ///A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
         [<Config.Query>]Limit: int option
-        ///Only return cardholders that have the given phone number.
+        ///<summary>Only return cardholders that have the given phone number.</summary>
         [<Config.Query>]PhoneNumber: string option
-        ///A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
         [<Config.Query>]StartingAfter: string option
-        ///Only return cardholders that have the given status. One of `active`, `inactive`, or `blocked`.
+        ///<summary>Only return cardholders that have the given status. One of `active`, `inactive`, or `blocked`.</summary>
         [<Config.Query>]Status: string option
-        ///Only return cardholders that have the given type. One of `individual` or `company`.
+        ///<summary>Only return cardholders that have the given type. One of `individual` or `company`.</summary>
         [<Config.Query>]Type: string option
     }
     with
@@ -168,28 +168,28 @@ module IssuingCardholders =
                 Type = type'
             }
 
-    ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
+    ///<summary><p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p></summary>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("email", options.Email |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("phone_number", options.PhoneNumber |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.Type |> box)] |> Map.ofList
         $"/v1/issuing/cardholders"
-        |> RestApi.getAsync<IssuingCardholder list> settings qs
+        |> RestApi.getAsync<StripeList<IssuingCardholder>> settings qs
 
     type Create'BillingAddress = {
-        ///City, district, suburb, town, or village.
+        ///<summary>City, district, suburb, town, or village.</summary>
         [<Config.Form>]City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        [<Config.Form>]Country: string option
-        ///Address line 1 (e.g., street, PO Box, or company name).
+        ///<summary>Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).</summary>
+        [<Config.Form>]Country: IsoTypes.IsoCountryCode option
+        ///<summary>Address line 1, such as the street, PO Box, or company name.</summary>
         [<Config.Form>]Line1: string option
-        ///Address line 2 (e.g., apartment, suite, unit, or building).
+        ///<summary>Address line 2, such as the apartment, suite, unit, or building.</summary>
         [<Config.Form>]Line2: string option
-        ///ZIP or postal code.
+        ///<summary>ZIP or postal code.</summary>
         [<Config.Form>]PostalCode: string option
-        ///State, county, province, or region.
+        ///<summary>State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).</summary>
         [<Config.Form>]State: string option
     }
     with
-        static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
             {
                 City = city
                 Country = country
@@ -200,7 +200,7 @@ module IssuingCardholders =
             }
 
     type Create'Billing = {
-        ///The cardholder’s billing address.
+        ///<summary>The cardholder’s billing address.</summary>
         [<Config.Form>]Address: Create'BillingAddress option
     }
     with
@@ -210,7 +210,7 @@ module IssuingCardholders =
             }
 
     type Create'Company = {
-        ///The entity's business ID number.
+        ///<summary>The entity's business ID number.</summary>
         [<Config.Form>]TaxId: string option
     }
     with
@@ -220,11 +220,11 @@ module IssuingCardholders =
             }
 
     type Create'IndividualCardIssuingUserTermsAcceptance = {
-        ///The Unix timestamp marking when the cardholder accepted the Authorized User Terms. Required for Celtic Spend Card users.
+        ///<summary>The Unix timestamp marking when the cardholder accepted the Authorized User Terms.</summary>
         [<Config.Form>]Date: DateTime option
-        ///The IP address from which the cardholder accepted the Authorized User Terms. Required for Celtic Spend Card users.
+        ///<summary>The IP address from which the cardholder accepted the Authorized User Terms.</summary>
         [<Config.Form>]Ip: string option
-        ///The user agent of the browser from which the cardholder accepted the Authorized User Terms.
+        ///<summary>The user agent of the browser from which the cardholder accepted the Authorized User Terms.</summary>
         [<Config.Form>]UserAgent: Choice<string,string> option
     }
     with
@@ -236,7 +236,7 @@ module IssuingCardholders =
             }
 
     type Create'IndividualCardIssuing = {
-        ///Information about cardholder acceptance of [Authorized User Terms](https://stripe.com/docs/issuing/cards).
+        ///<summary>Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.</summary>
         [<Config.Form>]UserTermsAcceptance: Create'IndividualCardIssuingUserTermsAcceptance option
     }
     with
@@ -246,11 +246,11 @@ module IssuingCardholders =
             }
 
     type Create'IndividualDob = {
-        ///The day of birth, between 1 and 31.
+        ///<summary>The day of birth, between 1 and 31.</summary>
         [<Config.Form>]Day: int option
-        ///The month of birth, between 1 and 12.
+        ///<summary>The month of birth, between 1 and 12.</summary>
         [<Config.Form>]Month: int option
-        ///The four-digit year of birth.
+        ///<summary>The four-digit year of birth.</summary>
         [<Config.Form>]Year: int option
     }
     with
@@ -262,9 +262,9 @@ module IssuingCardholders =
             }
 
     type Create'IndividualVerificationDocument = {
-        ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
+        ///<summary>The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.</summary>
         [<Config.Form>]Back: string option
-        ///The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
+        ///<summary>The front of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.</summary>
         [<Config.Form>]Front: string option
     }
     with
@@ -275,7 +275,7 @@ module IssuingCardholders =
             }
 
     type Create'IndividualVerification = {
-        ///An identifying document, either a passport or local ID card.
+        ///<summary>An identifying document, either a passport or local ID card.</summary>
         [<Config.Form>]Document: Create'IndividualVerificationDocument option
     }
     with
@@ -285,15 +285,15 @@ module IssuingCardholders =
             }
 
     type Create'Individual = {
-        ///Information related to the card_issuing program for this cardholder.
+        ///<summary>Information related to the card_issuing program for this cardholder.</summary>
         [<Config.Form>]CardIssuing: Create'IndividualCardIssuing option
-        ///The date of birth of this cardholder. Cardholders must be older than 13 years old.
+        ///<summary>The date of birth of this cardholder. Cardholders must be older than 13 years old.</summary>
         [<Config.Form>]Dob: Create'IndividualDob option
-        ///The first name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.
+        ///<summary>The first name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.</summary>
         [<Config.Form>]FirstName: string option
-        ///The last name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.
+        ///<summary>The last name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.</summary>
         [<Config.Form>]LastName: string option
-        ///Government-issued ID document for this cardholder.
+        ///<summary>Government-issued ID document for this cardholder.</summary>
         [<Config.Form>]Verification: Create'IndividualVerification option
     }
     with
@@ -313,6 +313,10 @@ module IssuingCardholders =
     | Fr
     | It
 
+    type Create'SpendingControlsAllowedCardPresences =
+    | NotPresent
+    | Present
+
     type Create'SpendingControlsAllowedCategories =
     | AcRefrigerationRepair
     | AccountingBookkeepingServices
@@ -609,6 +613,10 @@ module IssuingCardholders =
     | WomensAccessoryAndSpecialtyShops
     | WomensReadyToWearStores
     | WreckingAndSalvageYards
+
+    type Create'SpendingControlsBlockedCardPresences =
+    | NotPresent
+    | Present
 
     type Create'SpendingControlsBlockedCategories =
     | AcRefrigerationRepair
@@ -1213,11 +1221,11 @@ module IssuingCardholders =
     | Yearly
 
     type Create'SpendingControlsSpendingLimits = {
-        ///Maximum amount allowed to spend per interval.
+        ///<summary>Maximum amount allowed to spend per interval.</summary>
         [<Config.Form>]Amount: int option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.</summary>
         [<Config.Form>]Categories: Create'SpendingControlsSpendingLimitsCategories list option
-        ///Interval (or event) to which the amount applies.
+        ///<summary>Interval (or event) to which the amount applies.</summary>
         [<Config.Form>]Interval: Create'SpendingControlsSpendingLimitsInterval option
     }
     with
@@ -1229,20 +1237,32 @@ module IssuingCardholders =
             }
 
     type Create'SpendingControls = {
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
+        ///<summary>Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedCardPresences: Create'SpendingControlsAllowedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.</summary>
         [<Config.Form>]AllowedCategories: Create'SpendingControlsAllowedCategories list option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
+        ///<summary>Array of strings containing representing countries from which authorizations will be allowed. Authorizations from merchants in all other countries will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `blocked_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedMerchantCountries: string list option
+        ///<summary>Array of card presence statuses from which authorizations will be declined. Possible options are `present`, `not_present`. Cannot be set with `allowed_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedCardPresences: Create'SpendingControlsBlockedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.</summary>
         [<Config.Form>]BlockedCategories: Create'SpendingControlsBlockedCategories list option
-        ///Limit spending with amount-based rules that apply across this cardholder's cards.
+        ///<summary>Array of strings containing representing countries from which authorizations will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `allowed_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedMerchantCountries: string list option
+        ///<summary>Limit spending with amount-based rules that apply across this cardholder's cards.</summary>
         [<Config.Form>]SpendingLimits: Create'SpendingControlsSpendingLimits list option
-        ///Currency of amounts within `spending_limits`. Defaults to your merchant country's currency.
-        [<Config.Form>]SpendingLimitsCurrency: string option
+        ///<summary>Currency of amounts within `spending_limits`. Defaults to your merchant country's currency.</summary>
+        [<Config.Form>]SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
     }
     with
-        static member New(?allowedCategories: Create'SpendingControlsAllowedCategories list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?spendingLimits: Create'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: string) =
+        static member New(?allowedCardPresences: Create'SpendingControlsAllowedCardPresences list, ?allowedCategories: Create'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Create'SpendingControlsBlockedCardPresences list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Create'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: IsoTypes.IsoCurrencyCode) =
             {
+                AllowedCardPresences = allowedCardPresences
                 AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
                 BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
                 SpendingLimitsCurrency = spendingLimitsCurrency
             }
@@ -1256,30 +1276,30 @@ module IssuingCardholders =
     | Individual
 
     type CreateOptions = {
-        ///The cardholder's billing address.
+        ///<summary>The cardholder's billing address.</summary>
         [<Config.Form>]Billing: Create'Billing
-        ///Additional information about a `company` cardholder.
+        ///<summary>Additional information about a `company` cardholder.</summary>
         [<Config.Form>]Company: Create'Company option
-        ///The cardholder's email address.
+        ///<summary>The cardholder's email address.</summary>
         [<Config.Form>]Email: string option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Additional information about an `individual` cardholder.
+        ///<summary>Additional information about an `individual` cardholder.</summary>
         [<Config.Form>]Individual: Create'Individual option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
-        ///The cardholder's name. This will be printed on cards issued to them. The maximum length of this field is 24 characters. This field cannot contain any special characters or numbers.
+        ///<summary>The cardholder's name. This will be printed on cards issued to them. The maximum length of this field is 24 characters. This field cannot contain any special characters or numbers.</summary>
         [<Config.Form>]Name: string
-        ///The cardholder's phone number. This will be transformed to [E.164](https://en.wikipedia.org/wiki/E.164) if it is not provided in that format already. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://stripe.com/docs/issuing/3d-secure#when-is-3d-secure-applied) for more details.
+        ///<summary>The cardholder's phone number. This will be transformed to [E.164](https://en.wikipedia.org/wiki/E.164) if it is not provided in that format already. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://docs.stripe.com/issuing/3d-secure#when-is-3d-secure-applied) for more details.</summary>
         [<Config.Form>]PhoneNumber: string option
-        ///The cardholder’s preferred locales (languages), ordered by preference. Locales can be `de`, `en`, `es`, `fr`, or `it`.
-        /// This changes the language of the [3D Secure flow](https://stripe.com/docs/issuing/3d-secure) and one-time password messages sent to the cardholder.
+        ///<summary>The cardholder’s preferred locales (languages), ordered by preference. Locales can be `da`, `de`, `en`, `es`, `fr`, `it`, `pl`, or `sv`.
+        /// This changes the language of the [3D Secure flow](https://docs.stripe.com/issuing/3d-secure) and one-time password messages sent to the cardholder.</summary>
         [<Config.Form>]PreferredLocales: Create'PreferredLocales list option
-        ///Rules that control spending across this cardholder's cards. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details.
+        ///<summary>Rules that control spending across this cardholder's cards. Refer to our [documentation](https://docs.stripe.com/issuing/controls/spending-controls) for more details.</summary>
         [<Config.Form>]SpendingControls: Create'SpendingControls option
-        ///Specifies whether to permit authorizations on this cardholder's cards. Defaults to `active`.
+        ///<summary>Specifies whether to permit authorizations on this cardholder's cards. Defaults to `active`.</summary>
         [<Config.Form>]Status: Create'Status option
-        ///One of `individual` or `company`. See [Choose a cardholder type](https://stripe.com/docs/issuing/other/choose-cardholder) for more details.
+        ///<summary>One of `individual` or `company`. See [Choose a cardholder type](https://docs.stripe.com/issuing/other/choose-cardholder) for more details.</summary>
         [<Config.Form>]Type: Create'Type option
     }
     with
@@ -1299,14 +1319,14 @@ module IssuingCardholders =
                 Type = type'
             }
 
-    ///<p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p>
+    ///<summary><p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p></summary>
     let Create settings (options: CreateOptions) =
         $"/v1/issuing/cardholders"
         |> RestApi.postAsync<_, IssuingCardholder> settings (Map.empty) options
 
     type RetrieveOptions = {
         [<Config.Path>]Cardholder: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
     }
     with
@@ -1316,28 +1336,28 @@ module IssuingCardholders =
                 Expand = expand
             }
 
-    ///<p>Retrieves an Issuing <code>Cardholder</code> object.</p>
+    ///<summary><p>Retrieves an Issuing <code>Cardholder</code> object.</p></summary>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/issuing/cardholders/{options.Cardholder}"
         |> RestApi.getAsync<IssuingCardholder> settings qs
 
     type Update'BillingAddress = {
-        ///City, district, suburb, town, or village.
+        ///<summary>City, district, suburb, town, or village.</summary>
         [<Config.Form>]City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        [<Config.Form>]Country: string option
-        ///Address line 1 (e.g., street, PO Box, or company name).
+        ///<summary>Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).</summary>
+        [<Config.Form>]Country: IsoTypes.IsoCountryCode option
+        ///<summary>Address line 1, such as the street, PO Box, or company name.</summary>
         [<Config.Form>]Line1: string option
-        ///Address line 2 (e.g., apartment, suite, unit, or building).
+        ///<summary>Address line 2, such as the apartment, suite, unit, or building.</summary>
         [<Config.Form>]Line2: string option
-        ///ZIP or postal code.
+        ///<summary>ZIP or postal code.</summary>
         [<Config.Form>]PostalCode: string option
-        ///State, county, province, or region.
+        ///<summary>State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).</summary>
         [<Config.Form>]State: string option
     }
     with
-        static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
             {
                 City = city
                 Country = country
@@ -1348,7 +1368,7 @@ module IssuingCardholders =
             }
 
     type Update'Billing = {
-        ///The cardholder’s billing address.
+        ///<summary>The cardholder’s billing address.</summary>
         [<Config.Form>]Address: Update'BillingAddress option
     }
     with
@@ -1358,7 +1378,7 @@ module IssuingCardholders =
             }
 
     type Update'Company = {
-        ///The entity's business ID number.
+        ///<summary>The entity's business ID number.</summary>
         [<Config.Form>]TaxId: string option
     }
     with
@@ -1368,11 +1388,11 @@ module IssuingCardholders =
             }
 
     type Update'IndividualCardIssuingUserTermsAcceptance = {
-        ///The Unix timestamp marking when the cardholder accepted the Authorized User Terms. Required for Celtic Spend Card users.
+        ///<summary>The Unix timestamp marking when the cardholder accepted the Authorized User Terms.</summary>
         [<Config.Form>]Date: DateTime option
-        ///The IP address from which the cardholder accepted the Authorized User Terms. Required for Celtic Spend Card users.
+        ///<summary>The IP address from which the cardholder accepted the Authorized User Terms.</summary>
         [<Config.Form>]Ip: string option
-        ///The user agent of the browser from which the cardholder accepted the Authorized User Terms.
+        ///<summary>The user agent of the browser from which the cardholder accepted the Authorized User Terms.</summary>
         [<Config.Form>]UserAgent: Choice<string,string> option
     }
     with
@@ -1384,7 +1404,7 @@ module IssuingCardholders =
             }
 
     type Update'IndividualCardIssuing = {
-        ///Information about cardholder acceptance of [Authorized User Terms](https://stripe.com/docs/issuing/cards).
+        ///<summary>Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.</summary>
         [<Config.Form>]UserTermsAcceptance: Update'IndividualCardIssuingUserTermsAcceptance option
     }
     with
@@ -1394,11 +1414,11 @@ module IssuingCardholders =
             }
 
     type Update'IndividualDob = {
-        ///The day of birth, between 1 and 31.
+        ///<summary>The day of birth, between 1 and 31.</summary>
         [<Config.Form>]Day: int option
-        ///The month of birth, between 1 and 12.
+        ///<summary>The month of birth, between 1 and 12.</summary>
         [<Config.Form>]Month: int option
-        ///The four-digit year of birth.
+        ///<summary>The four-digit year of birth.</summary>
         [<Config.Form>]Year: int option
     }
     with
@@ -1410,9 +1430,9 @@ module IssuingCardholders =
             }
 
     type Update'IndividualVerificationDocument = {
-        ///The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
+        ///<summary>The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.</summary>
         [<Config.Form>]Back: string option
-        ///The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.
+        ///<summary>The front of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.</summary>
         [<Config.Form>]Front: string option
     }
     with
@@ -1423,7 +1443,7 @@ module IssuingCardholders =
             }
 
     type Update'IndividualVerification = {
-        ///An identifying document, either a passport or local ID card.
+        ///<summary>An identifying document, either a passport or local ID card.</summary>
         [<Config.Form>]Document: Update'IndividualVerificationDocument option
     }
     with
@@ -1433,15 +1453,15 @@ module IssuingCardholders =
             }
 
     type Update'Individual = {
-        ///Information related to the card_issuing program for this cardholder.
+        ///<summary>Information related to the card_issuing program for this cardholder.</summary>
         [<Config.Form>]CardIssuing: Update'IndividualCardIssuing option
-        ///The date of birth of this cardholder. Cardholders must be older than 13 years old.
+        ///<summary>The date of birth of this cardholder. Cardholders must be older than 13 years old.</summary>
         [<Config.Form>]Dob: Update'IndividualDob option
-        ///The first name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.
+        ///<summary>The first name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.</summary>
         [<Config.Form>]FirstName: string option
-        ///The last name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.
+        ///<summary>The last name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.</summary>
         [<Config.Form>]LastName: string option
-        ///Government-issued ID document for this cardholder.
+        ///<summary>Government-issued ID document for this cardholder.</summary>
         [<Config.Form>]Verification: Update'IndividualVerification option
     }
     with
@@ -1460,6 +1480,10 @@ module IssuingCardholders =
     | Es
     | Fr
     | It
+
+    type Update'SpendingControlsAllowedCardPresences =
+    | NotPresent
+    | Present
 
     type Update'SpendingControlsAllowedCategories =
     | AcRefrigerationRepair
@@ -1757,6 +1781,10 @@ module IssuingCardholders =
     | WomensAccessoryAndSpecialtyShops
     | WomensReadyToWearStores
     | WreckingAndSalvageYards
+
+    type Update'SpendingControlsBlockedCardPresences =
+    | NotPresent
+    | Present
 
     type Update'SpendingControlsBlockedCategories =
     | AcRefrigerationRepair
@@ -2361,11 +2389,11 @@ module IssuingCardholders =
     | Yearly
 
     type Update'SpendingControlsSpendingLimits = {
-        ///Maximum amount allowed to spend per interval.
+        ///<summary>Maximum amount allowed to spend per interval.</summary>
         [<Config.Form>]Amount: int option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.</summary>
         [<Config.Form>]Categories: Update'SpendingControlsSpendingLimitsCategories list option
-        ///Interval (or event) to which the amount applies.
+        ///<summary>Interval (or event) to which the amount applies.</summary>
         [<Config.Form>]Interval: Update'SpendingControlsSpendingLimitsInterval option
     }
     with
@@ -2377,20 +2405,32 @@ module IssuingCardholders =
             }
 
     type Update'SpendingControls = {
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
+        ///<summary>Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedCardPresences: Update'SpendingControlsAllowedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.</summary>
         [<Config.Form>]AllowedCategories: Update'SpendingControlsAllowedCategories list option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
+        ///<summary>Array of strings containing representing countries from which authorizations will be allowed. Authorizations from merchants in all other countries will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `blocked_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedMerchantCountries: string list option
+        ///<summary>Array of card presence statuses from which authorizations will be declined. Possible options are `present`, `not_present`. Cannot be set with `allowed_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedCardPresences: Update'SpendingControlsBlockedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.</summary>
         [<Config.Form>]BlockedCategories: Update'SpendingControlsBlockedCategories list option
-        ///Limit spending with amount-based rules that apply across this cardholder's cards.
+        ///<summary>Array of strings containing representing countries from which authorizations will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `allowed_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedMerchantCountries: string list option
+        ///<summary>Limit spending with amount-based rules that apply across this cardholder's cards.</summary>
         [<Config.Form>]SpendingLimits: Update'SpendingControlsSpendingLimits list option
-        ///Currency of amounts within `spending_limits`. Defaults to your merchant country's currency.
-        [<Config.Form>]SpendingLimitsCurrency: string option
+        ///<summary>Currency of amounts within `spending_limits`. Defaults to your merchant country's currency.</summary>
+        [<Config.Form>]SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
     }
     with
-        static member New(?allowedCategories: Update'SpendingControlsAllowedCategories list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?spendingLimits: Update'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: string) =
+        static member New(?allowedCardPresences: Update'SpendingControlsAllowedCardPresences list, ?allowedCategories: Update'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Update'SpendingControlsBlockedCardPresences list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Update'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: IsoTypes.IsoCurrencyCode) =
             {
+                AllowedCardPresences = allowedCardPresences
                 AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
                 BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
                 SpendingLimitsCurrency = spendingLimitsCurrency
             }
@@ -2401,26 +2441,26 @@ module IssuingCardholders =
 
     type UpdateOptions = {
         [<Config.Path>]Cardholder: string
-        ///The cardholder's billing address.
+        ///<summary>The cardholder's billing address.</summary>
         [<Config.Form>]Billing: Update'Billing option
-        ///Additional information about a `company` cardholder.
+        ///<summary>Additional information about a `company` cardholder.</summary>
         [<Config.Form>]Company: Update'Company option
-        ///The cardholder's email address.
+        ///<summary>The cardholder's email address.</summary>
         [<Config.Form>]Email: string option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Additional information about an `individual` cardholder.
+        ///<summary>Additional information about an `individual` cardholder.</summary>
         [<Config.Form>]Individual: Update'Individual option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
-        ///The cardholder's phone number. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://stripe.com/docs/issuing/3d-secure) for more details.
+        ///<summary>The cardholder's phone number. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://docs.stripe.com/issuing/3d-secure) for more details.</summary>
         [<Config.Form>]PhoneNumber: string option
-        ///The cardholder’s preferred locales (languages), ordered by preference. Locales can be `de`, `en`, `es`, `fr`, or `it`.
-        /// This changes the language of the [3D Secure flow](https://stripe.com/docs/issuing/3d-secure) and one-time password messages sent to the cardholder.
+        ///<summary>The cardholder’s preferred locales (languages), ordered by preference. Locales can be `da`, `de`, `en`, `es`, `fr`, `it`, `pl`, or `sv`.
+        /// This changes the language of the [3D Secure flow](https://docs.stripe.com/issuing/3d-secure) and one-time password messages sent to the cardholder.</summary>
         [<Config.Form>]PreferredLocales: Update'PreferredLocales list option
-        ///Rules that control spending across this cardholder's cards. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details.
+        ///<summary>Rules that control spending across this cardholder's cards. Refer to our [documentation](https://docs.stripe.com/issuing/controls/spending-controls) for more details.</summary>
         [<Config.Form>]SpendingControls: Update'SpendingControls option
-        ///Specifies whether to permit authorizations on this cardholder's cards.
+        ///<summary>Specifies whether to permit authorizations on this cardholder's cards.</summary>
         [<Config.Form>]Status: Update'Status option
     }
     with
@@ -2439,7 +2479,7 @@ module IssuingCardholders =
                 Status = status
             }
 
-    ///<p>Updates the specified Issuing <code>Cardholder</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
+    ///<summary><p>Updates the specified Issuing <code>Cardholder</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p></summary>
     let Update settings (options: UpdateOptions) =
         $"/v1/issuing/cardholders/{options.Cardholder}"
         |> RestApi.postAsync<_, IssuingCardholder> settings (Map.empty) options
@@ -2447,31 +2487,32 @@ module IssuingCardholders =
 module IssuingCards =
 
     type ListOptions = {
-        ///Only return cards belonging to the Cardholder with the provided ID.
+        ///<summary>Only return cards belonging to the Cardholder with the provided ID.</summary>
         [<Config.Query>]Cardholder: string option
-        ///Only return cards that were issued during the given date interval.
+        ///<summary>Only return cards that were issued during the given date interval.</summary>
         [<Config.Query>]Created: int option
-        ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
         [<Config.Query>]EndingBefore: string option
-        ///Only return cards that have the given expiration month.
+        ///<summary>Only return cards that have the given expiration month.</summary>
         [<Config.Query>]ExpMonth: int option
-        ///Only return cards that have the given expiration year.
+        ///<summary>Only return cards that have the given expiration year.</summary>
         [<Config.Query>]ExpYear: int option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
-        ///Only return cards that have the given last four digits.
+        ///<summary>Only return cards that have the given last four digits.</summary>
         [<Config.Query>]Last4: string option
-        ///A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
         [<Config.Query>]Limit: int option
-        ///A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+        [<Config.Query>]PersonalizationDesign: string option
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
         [<Config.Query>]StartingAfter: string option
-        ///Only return cards that have the given status. One of `active`, `inactive`, or `canceled`.
+        ///<summary>Only return cards that have the given status. One of `active`, `inactive`, or `canceled`.</summary>
         [<Config.Query>]Status: string option
-        ///Only return cards that have the given type. One of `virtual` or `physical`.
+        ///<summary>Only return cards that have the given type. One of `virtual` or `physical`.</summary>
         [<Config.Query>]Type: string option
     }
     with
-        static member New(?cardholder: string, ?created: int, ?endingBefore: string, ?expMonth: int, ?expYear: int, ?expand: string list, ?last4: string, ?limit: int, ?startingAfter: string, ?status: string, ?type': string) =
+        static member New(?cardholder: string, ?created: int, ?endingBefore: string, ?expMonth: int, ?expYear: int, ?expand: string list, ?last4: string, ?limit: int, ?personalizationDesign: string, ?startingAfter: string, ?status: string, ?type': string) =
             {
                 Cardholder = cardholder
                 Created = created
@@ -2481,33 +2522,64 @@ module IssuingCards =
                 Expand = expand
                 Last4 = last4
                 Limit = limit
+                PersonalizationDesign = personalizationDesign
                 StartingAfter = startingAfter
                 Status = status
                 Type = type'
             }
 
-    ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
+    ///<summary><p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p></summary>
     let List settings (options: ListOptions) =
-        let qs = [("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("exp_month", options.ExpMonth |> box); ("exp_year", options.ExpYear |> box); ("expand", options.Expand |> box); ("last4", options.Last4 |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.Type |> box)] |> Map.ofList
+        let qs = [("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("exp_month", options.ExpMonth |> box); ("exp_year", options.ExpYear |> box); ("expand", options.Expand |> box); ("last4", options.Last4 |> box); ("limit", options.Limit |> box); ("personalization_design", options.PersonalizationDesign |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.Type |> box)] |> Map.ofList
         $"/v1/issuing/cards"
-        |> RestApi.getAsync<IssuingCard list> settings qs
+        |> RestApi.getAsync<StripeList<IssuingCard>> settings qs
+
+    type Create'LifecycleControlsCancelAfter = {
+        ///<summary>The card is automatically cancelled when it makes this number of non-zero payment authorizations and transactions. The count includes penny authorizations, but doesn't include non-payment actions, such as authorization advice.</summary>
+        [<Config.Form>]PaymentCount: int option
+    }
+    with
+        static member New(?paymentCount: int) =
+            {
+                PaymentCount = paymentCount
+            }
+
+    type Create'LifecycleControls = {
+        ///<summary>Cancels the card after the specified conditions are met.</summary>
+        [<Config.Form>]CancelAfter: Create'LifecycleControlsCancelAfter option
+    }
+    with
+        static member New(?cancelAfter: Create'LifecycleControlsCancelAfter) =
+            {
+                CancelAfter = cancelAfter
+            }
+
+    type Create'Pin = {
+        ///<summary>The card's desired new PIN, encrypted under Stripe's public key.</summary>
+        [<Config.Form>]EncryptedNumber: string option
+    }
+    with
+        static member New(?encryptedNumber: string) =
+            {
+                EncryptedNumber = encryptedNumber
+            }
 
     type Create'ShippingAddress = {
-        ///City, district, suburb, town, or village.
+        ///<summary>City, district, suburb, town, or village.</summary>
         [<Config.Form>]City: string option
-        ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        [<Config.Form>]Country: string option
-        ///Address line 1 (e.g., street, PO Box, or company name).
+        ///<summary>Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).</summary>
+        [<Config.Form>]Country: IsoTypes.IsoCountryCode option
+        ///<summary>Address line 1, such as the street, PO Box, or company name.</summary>
         [<Config.Form>]Line1: string option
-        ///Address line 2 (e.g., apartment, suite, unit, or building).
+        ///<summary>Address line 2, such as the apartment, suite, unit, or building.</summary>
         [<Config.Form>]Line2: string option
-        ///ZIP or postal code.
+        ///<summary>ZIP or postal code.</summary>
         [<Config.Form>]PostalCode: string option
-        ///State, county, province, or region.
+        ///<summary>State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).</summary>
         [<Config.Form>]State: string option
     }
     with
-        static member New(?city: string, ?country: string, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
             {
                 City = city
                 Country = country
@@ -2517,8 +2589,23 @@ module IssuingCards =
                 State = state
             }
 
+    type Create'ShippingAddressValidationMode =
+    | Disabled
+    | NormalizationOnly
+    | ValidationAndNormalization
+
+    type Create'ShippingAddressValidation = {
+        ///<summary>The address validation capabilities to use.</summary>
+        [<Config.Form>]Mode: Create'ShippingAddressValidationMode option
+    }
+    with
+        static member New(?mode: Create'ShippingAddressValidationMode) =
+            {
+                Mode = mode
+            }
+
     type Create'ShippingCustoms = {
-        ///The Economic Operators Registration and Identification (EORI) number to use for Customs. Required for bulk shipments to Europe.
+        ///<summary>The Economic Operators Registration and Identification (EORI) number to use for Customs. Required for bulk shipments to Europe.</summary>
         [<Config.Form>]EoriNumber: string option
     }
     with
@@ -2537,25 +2624,28 @@ module IssuingCards =
     | Individual
 
     type Create'Shipping = {
-        ///The address that the card is shipped to.
+        ///<summary>The address that the card is shipped to.</summary>
         [<Config.Form>]Address: Create'ShippingAddress option
-        ///Customs information for the shipment.
+        ///<summary>Address validation settings.</summary>
+        [<Config.Form>]AddressValidation: Create'ShippingAddressValidation option
+        ///<summary>Customs information for the shipment.</summary>
         [<Config.Form>]Customs: Create'ShippingCustoms option
-        ///The name printed on the shipping label when shipping the card.
+        ///<summary>The name printed on the shipping label when shipping the card.</summary>
         [<Config.Form>]Name: string option
-        ///Phone number of the recipient of the shipment.
+        ///<summary>Phone number of the recipient of the shipment.</summary>
         [<Config.Form>]PhoneNumber: string option
-        ///Whether a signature is required for card delivery.
+        ///<summary>Whether a signature is required for card delivery.</summary>
         [<Config.Form>]RequireSignature: bool option
-        ///Shipment service.
+        ///<summary>Shipment service.</summary>
         [<Config.Form>]Service: Create'ShippingService option
-        ///Packaging options.
+        ///<summary>Packaging options.</summary>
         [<Config.Form>]Type: Create'ShippingType option
     }
     with
-        static member New(?address: Create'ShippingAddress, ?customs: Create'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Create'ShippingService, ?type': Create'ShippingType) =
+        static member New(?address: Create'ShippingAddress, ?addressValidation: Create'ShippingAddressValidation, ?customs: Create'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Create'ShippingService, ?type': Create'ShippingType) =
             {
                 Address = address
+                AddressValidation = addressValidation
                 Customs = customs
                 Name = name
                 PhoneNumber = phoneNumber
@@ -2563,6 +2653,10 @@ module IssuingCards =
                 Service = service
                 Type = type'
             }
+
+    type Create'SpendingControlsAllowedCardPresences =
+    | NotPresent
+    | Present
 
     type Create'SpendingControlsAllowedCategories =
     | AcRefrigerationRepair
@@ -2860,6 +2954,10 @@ module IssuingCards =
     | WomensAccessoryAndSpecialtyShops
     | WomensReadyToWearStores
     | WreckingAndSalvageYards
+
+    type Create'SpendingControlsBlockedCardPresences =
+    | NotPresent
+    | Present
 
     type Create'SpendingControlsBlockedCategories =
     | AcRefrigerationRepair
@@ -3464,11 +3562,11 @@ module IssuingCards =
     | Yearly
 
     type Create'SpendingControlsSpendingLimits = {
-        ///Maximum amount allowed to spend per interval.
+        ///<summary>Maximum amount allowed to spend per interval.</summary>
         [<Config.Form>]Amount: int option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.</summary>
         [<Config.Form>]Categories: Create'SpendingControlsSpendingLimitsCategories list option
-        ///Interval (or event) to which the amount applies.
+        ///<summary>Interval (or event) to which the amount applies.</summary>
         [<Config.Form>]Interval: Create'SpendingControlsSpendingLimitsInterval option
     }
     with
@@ -3480,18 +3578,30 @@ module IssuingCards =
             }
 
     type Create'SpendingControls = {
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
+        ///<summary>Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedCardPresences: Create'SpendingControlsAllowedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.</summary>
         [<Config.Form>]AllowedCategories: Create'SpendingControlsAllowedCategories list option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
+        ///<summary>Array of strings containing representing countries from which authorizations will be allowed. Authorizations from merchants in all other countries will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `blocked_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedMerchantCountries: string list option
+        ///<summary>Array of card presence statuses from which authorizations will be declined. Possible options are `present`, `not_present`. Cannot be set with `allowed_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedCardPresences: Create'SpendingControlsBlockedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.</summary>
         [<Config.Form>]BlockedCategories: Create'SpendingControlsBlockedCategories list option
-        ///Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).
+        ///<summary>Array of strings containing representing countries from which authorizations will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `allowed_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedMerchantCountries: string list option
+        ///<summary>Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).</summary>
         [<Config.Form>]SpendingLimits: Create'SpendingControlsSpendingLimits list option
     }
     with
-        static member New(?allowedCategories: Create'SpendingControlsAllowedCategories list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?spendingLimits: Create'SpendingControlsSpendingLimits list) =
+        static member New(?allowedCardPresences: Create'SpendingControlsAllowedCardPresences list, ?allowedCategories: Create'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Create'SpendingControlsBlockedCardPresences list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Create'SpendingControlsSpendingLimits list) =
             {
+                AllowedCardPresences = allowedCardPresences
                 AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
                 BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
             }
 
@@ -3510,52 +3620,71 @@ module IssuingCards =
     | Virtual
 
     type CreateOptions = {
-        ///The [Cardholder](https://stripe.com/docs/api#issuing_cardholder_object) object with which the card will be associated.
+        ///<summary>The [Cardholder](https://docs.stripe.com/api#issuing_cardholder_object) object with which the card will be associated.</summary>
         [<Config.Form>]Cardholder: string option
-        ///The currency for the card.
-        [<Config.Form>]Currency: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>The currency for the card.</summary>
+        [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode
+        ///<summary>The desired expiration month (1-12) for this card if [specifying a custom expiration date](/issuing/cards/virtual/issue-cards?testing-method=with-code#exp-dates).</summary>
+        [<Config.Form>]ExpMonth: int option
+        ///<summary>The desired 4-digit expiration year for this card if [specifying a custom expiration date](/issuing/cards/virtual/issue-cards?testing-method=with-code#exp-dates).</summary>
+        [<Config.Form>]ExpYear: int option
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
+        ///<summary>The new financial account ID the card will be associated with. This field allows a card to be reassigned to a different financial account.</summary>
         [<Config.Form>]FinancialAccount: string option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Rules that control the lifecycle of this card, such as automatic cancellation. Refer to our [documentation](/issuing/controls/lifecycle-controls) for more details.</summary>
+        [<Config.Form>]LifecycleControls: Create'LifecycleControls option
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
-        ///The card this is meant to be a replacement for (if any).
+        ///<summary>The personalization design object belonging to this card.</summary>
+        [<Config.Form>]PersonalizationDesign: string option
+        ///<summary>The desired PIN for this card.</summary>
+        [<Config.Form>]Pin: Create'Pin option
+        ///<summary>The card this is meant to be a replacement for (if any).</summary>
         [<Config.Form>]ReplacementFor: string option
-        ///If `replacement_for` is specified, this should indicate why that card is being replaced.
+        ///<summary>If `replacement_for` is specified, this should indicate why that card is being replaced.</summary>
         [<Config.Form>]ReplacementReason: Create'ReplacementReason option
-        ///The address where the card will be shipped.
+        ///<summary>The second line to print on the card. Max length: 24 characters.</summary>
+        [<Config.Form>]SecondLine: Choice<string,string> option
+        ///<summary>The address where the card will be shipped.</summary>
         [<Config.Form>]Shipping: Create'Shipping option
-        ///Rules that control spending for this card. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details.
+        ///<summary>Rules that control spending for this card. Refer to our [documentation](https://docs.stripe.com/issuing/controls/spending-controls) for more details.</summary>
         [<Config.Form>]SpendingControls: Create'SpendingControls option
-        ///Whether authorizations can be approved on this card. May be blocked from activating cards depending on past-due Cardholder requirements. Defaults to `inactive`.
+        ///<summary>Whether authorizations can be approved on this card. May be blocked from activating cards depending on past-due Cardholder requirements. Defaults to `inactive`.</summary>
         [<Config.Form>]Status: Create'Status option
-        ///The type of card to issue. Possible values are `physical` or `virtual`.
+        ///<summary>The type of card to issue. Possible values are `physical` or `virtual`.</summary>
         [<Config.Form>]Type: Create'Type
     }
     with
-        static member New(currency: string, type': Create'Type, ?cardholder: string, ?expand: string list, ?financialAccount: string, ?metadata: Map<string, string>, ?replacementFor: string, ?replacementReason: Create'ReplacementReason, ?shipping: Create'Shipping, ?spendingControls: Create'SpendingControls, ?status: Create'Status) =
+        static member New(type': Create'Type, currency: IsoTypes.IsoCurrencyCode, ?spendingControls: Create'SpendingControls, ?shipping: Create'Shipping, ?secondLine: Choice<string,string>, ?replacementReason: Create'ReplacementReason, ?replacementFor: string, ?pin: Create'Pin, ?personalizationDesign: string, ?metadata: Map<string, string>, ?lifecycleControls: Create'LifecycleControls, ?financialAccount: string, ?expand: string list, ?expYear: int, ?expMonth: int, ?status: Create'Status, ?cardholder: string) =
             {
                 Cardholder = cardholder
                 Currency = currency
+                ExpMonth = expMonth
+                ExpYear = expYear
                 Expand = expand
                 FinancialAccount = financialAccount
+                LifecycleControls = lifecycleControls
                 Metadata = metadata
+                PersonalizationDesign = personalizationDesign
+                Pin = pin
                 ReplacementFor = replacementFor
                 ReplacementReason = replacementReason
+                SecondLine = secondLine
                 Shipping = shipping
                 SpendingControls = spendingControls
                 Status = status
                 Type = type'
             }
 
-    ///<p>Creates an Issuing <code>Card</code> object.</p>
+    ///<summary><p>Creates an Issuing <code>Card</code> object.</p></summary>
     let Create settings (options: CreateOptions) =
         $"/v1/issuing/cards"
         |> RestApi.postAsync<_, IssuingCard> settings (Map.empty) options
 
     type RetrieveOptions = {
         [<Config.Path>]Card: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
     }
     with
@@ -3565,14 +3694,14 @@ module IssuingCards =
                 Expand = expand
             }
 
-    ///<p>Retrieves an Issuing <code>Card</code> object.</p>
+    ///<summary><p>Retrieves an Issuing <code>Card</code> object.</p></summary>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/issuing/cards/{options.Card}"
         |> RestApi.getAsync<IssuingCard> settings qs
 
     type Update'Pin = {
-        ///The card's desired new PIN, encrypted under Stripe's public key.
+        ///<summary>The card's desired new PIN, encrypted under Stripe's public key.</summary>
         [<Config.Form>]EncryptedNumber: string option
     }
     with
@@ -3580,6 +3709,100 @@ module IssuingCards =
             {
                 EncryptedNumber = encryptedNumber
             }
+
+    type Update'ShippingAddress = {
+        ///<summary>City, district, suburb, town, or village.</summary>
+        [<Config.Form>]City: string option
+        ///<summary>Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).</summary>
+        [<Config.Form>]Country: IsoTypes.IsoCountryCode option
+        ///<summary>Address line 1, such as the street, PO Box, or company name.</summary>
+        [<Config.Form>]Line1: string option
+        ///<summary>Address line 2, such as the apartment, suite, unit, or building.</summary>
+        [<Config.Form>]Line2: string option
+        ///<summary>ZIP or postal code.</summary>
+        [<Config.Form>]PostalCode: string option
+        ///<summary>State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).</summary>
+        [<Config.Form>]State: string option
+    }
+    with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Update'ShippingAddressValidationMode =
+    | Disabled
+    | NormalizationOnly
+    | ValidationAndNormalization
+
+    type Update'ShippingAddressValidation = {
+        ///<summary>The address validation capabilities to use.</summary>
+        [<Config.Form>]Mode: Update'ShippingAddressValidationMode option
+    }
+    with
+        static member New(?mode: Update'ShippingAddressValidationMode) =
+            {
+                Mode = mode
+            }
+
+    type Update'ShippingCustoms = {
+        ///<summary>The Economic Operators Registration and Identification (EORI) number to use for Customs. Required for bulk shipments to Europe.</summary>
+        [<Config.Form>]EoriNumber: string option
+    }
+    with
+        static member New(?eoriNumber: string) =
+            {
+                EoriNumber = eoriNumber
+            }
+
+    type Update'ShippingService =
+    | Express
+    | Priority
+    | Standard
+
+    type Update'ShippingType =
+    | Bulk
+    | Individual
+
+    type Update'Shipping = {
+        ///<summary>The address that the card is shipped to.</summary>
+        [<Config.Form>]Address: Update'ShippingAddress option
+        ///<summary>Address validation settings.</summary>
+        [<Config.Form>]AddressValidation: Update'ShippingAddressValidation option
+        ///<summary>Customs information for the shipment.</summary>
+        [<Config.Form>]Customs: Update'ShippingCustoms option
+        ///<summary>The name printed on the shipping label when shipping the card.</summary>
+        [<Config.Form>]Name: string option
+        ///<summary>Phone number of the recipient of the shipment.</summary>
+        [<Config.Form>]PhoneNumber: string option
+        ///<summary>Whether a signature is required for card delivery.</summary>
+        [<Config.Form>]RequireSignature: bool option
+        ///<summary>Shipment service.</summary>
+        [<Config.Form>]Service: Update'ShippingService option
+        ///<summary>Packaging options.</summary>
+        [<Config.Form>]Type: Update'ShippingType option
+    }
+    with
+        static member New(?address: Update'ShippingAddress, ?addressValidation: Update'ShippingAddressValidation, ?customs: Update'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Update'ShippingService, ?type': Update'ShippingType) =
+            {
+                Address = address
+                AddressValidation = addressValidation
+                Customs = customs
+                Name = name
+                PhoneNumber = phoneNumber
+                RequireSignature = requireSignature
+                Service = service
+                Type = type'
+            }
+
+    type Update'SpendingControlsAllowedCardPresences =
+    | NotPresent
+    | Present
 
     type Update'SpendingControlsAllowedCategories =
     | AcRefrigerationRepair
@@ -3877,6 +4100,10 @@ module IssuingCards =
     | WomensAccessoryAndSpecialtyShops
     | WomensReadyToWearStores
     | WreckingAndSalvageYards
+
+    type Update'SpendingControlsBlockedCardPresences =
+    | NotPresent
+    | Present
 
     type Update'SpendingControlsBlockedCategories =
     | AcRefrigerationRepair
@@ -4481,11 +4708,11 @@ module IssuingCards =
     | Yearly
 
     type Update'SpendingControlsSpendingLimits = {
-        ///Maximum amount allowed to spend per interval.
+        ///<summary>Maximum amount allowed to spend per interval.</summary>
         [<Config.Form>]Amount: int option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.</summary>
         [<Config.Form>]Categories: Update'SpendingControlsSpendingLimitsCategories list option
-        ///Interval (or event) to which the amount applies.
+        ///<summary>Interval (or event) to which the amount applies.</summary>
         [<Config.Form>]Interval: Update'SpendingControlsSpendingLimitsInterval option
     }
     with
@@ -4497,18 +4724,30 @@ module IssuingCards =
             }
 
     type Update'SpendingControls = {
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
+        ///<summary>Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedCardPresences: Update'SpendingControlsAllowedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.</summary>
         [<Config.Form>]AllowedCategories: Update'SpendingControlsAllowedCategories list option
-        ///Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
+        ///<summary>Array of strings containing representing countries from which authorizations will be allowed. Authorizations from merchants in all other countries will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `blocked_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]AllowedMerchantCountries: string list option
+        ///<summary>Array of card presence statuses from which authorizations will be declined. Possible options are `present`, `not_present`. Cannot be set with `allowed_card_presences`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedCardPresences: Update'SpendingControlsBlockedCardPresences list option
+        ///<summary>Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.</summary>
         [<Config.Form>]BlockedCategories: Update'SpendingControlsBlockedCategories list option
-        ///Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).
+        ///<summary>Array of strings containing representing countries from which authorizations will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `allowed_merchant_countries`. Provide an empty value to unset this control.</summary>
+        [<Config.Form>]BlockedMerchantCountries: string list option
+        ///<summary>Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).</summary>
         [<Config.Form>]SpendingLimits: Update'SpendingControlsSpendingLimits list option
     }
     with
-        static member New(?allowedCategories: Update'SpendingControlsAllowedCategories list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?spendingLimits: Update'SpendingControlsSpendingLimits list) =
+        static member New(?allowedCardPresences: Update'SpendingControlsAllowedCardPresences list, ?allowedCategories: Update'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Update'SpendingControlsBlockedCardPresences list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Update'SpendingControlsSpendingLimits list) =
             {
+                AllowedCardPresences = allowedCardPresences
                 AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
                 BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
             }
 
@@ -4523,32 +4762,37 @@ module IssuingCards =
 
     type UpdateOptions = {
         [<Config.Path>]Card: string
-        ///Reason why the `status` of this card is `canceled`.
+        ///<summary>Reason why the `status` of this card is `canceled`.</summary>
         [<Config.Form>]CancellationReason: Update'CancellationReason option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
-        ///The desired new PIN for this card.
+        [<Config.Form>]PersonalizationDesign: string option
+        ///<summary>The desired new PIN for this card.</summary>
         [<Config.Form>]Pin: Update'Pin option
-        ///Rules that control spending for this card. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details.
+        ///<summary>Updated shipping information for the card.</summary>
+        [<Config.Form>]Shipping: Update'Shipping option
+        ///<summary>Rules that control spending for this card. Refer to our [documentation](https://docs.stripe.com/issuing/controls/spending-controls) for more details.</summary>
         [<Config.Form>]SpendingControls: Update'SpendingControls option
-        ///Dictates whether authorizations can be approved on this card. May be blocked from activating cards depending on past-due Cardholder requirements. Defaults to `inactive`. If this card is being canceled because it was lost or stolen, this information should be provided as `cancellation_reason`.
+        ///<summary>Dictates whether authorizations can be approved on this card. May be blocked from activating cards depending on past-due Cardholder requirements. Defaults to `inactive`. If this card is being canceled because it was lost or stolen, this information should be provided as `cancellation_reason`.</summary>
         [<Config.Form>]Status: Update'Status option
     }
     with
-        static member New(card: string, ?cancellationReason: Update'CancellationReason, ?expand: string list, ?metadata: Map<string, string>, ?pin: Update'Pin, ?spendingControls: Update'SpendingControls, ?status: Update'Status) =
+        static member New(card: string, ?cancellationReason: Update'CancellationReason, ?expand: string list, ?metadata: Map<string, string>, ?personalizationDesign: string, ?pin: Update'Pin, ?shipping: Update'Shipping, ?spendingControls: Update'SpendingControls, ?status: Update'Status) =
             {
                 Card = card
                 CancellationReason = cancellationReason
                 Expand = expand
                 Metadata = metadata
+                PersonalizationDesign = personalizationDesign
                 Pin = pin
+                Shipping = shipping
                 SpendingControls = spendingControls
                 Status = status
             }
 
-    ///<p>Updates the specified Issuing <code>Card</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
+    ///<summary><p>Updates the specified Issuing <code>Card</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p></summary>
     let Update settings (options: UpdateOptions) =
         $"/v1/issuing/cards/{options.Card}"
         |> RestApi.postAsync<_, IssuingCard> settings (Map.empty) options
@@ -4556,19 +4800,19 @@ module IssuingCards =
 module IssuingDisputes =
 
     type ListOptions = {
-        ///Select Issuing disputes that were created during the given date interval.
+        ///<summary>Only return Issuing disputes that were created during the given date interval.</summary>
         [<Config.Query>]Created: int option
-        ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
         [<Config.Query>]EndingBefore: string option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
-        ///A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
         [<Config.Query>]Limit: int option
-        ///A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
         [<Config.Query>]StartingAfter: string option
-        ///Select Issuing disputes with the given status.
+        ///<summary>Select Issuing disputes with the given status.</summary>
         [<Config.Query>]Status: string option
-        ///Select the Issuing dispute for the given transaction.
+        ///<summary>Select the Issuing dispute for the given transaction.</summary>
         [<Config.Query>]Transaction: string option
     }
     with
@@ -4583,11 +4827,11 @@ module IssuingDisputes =
                 Transaction = transaction
             }
 
-    ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
+    ///<summary><p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p></summary>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("transaction", options.Transaction |> box)] |> Map.ofList
         $"/v1/issuing/disputes"
-        |> RestApi.getAsync<IssuingDispute list> settings qs
+        |> RestApi.getAsync<StripeList<IssuingDispute>> settings qs
 
     type Create'EvidenceCanceledCanceledProductType =
     | Merchandise
@@ -4598,25 +4842,25 @@ module IssuingDisputes =
     | Successful
 
     type Create'EvidenceCanceledCanceled = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Date when order was canceled.
+        ///<summary>Date when order was canceled.</summary>
         [<Config.Form>]CanceledAt: Choice<DateTime,string> option
-        ///Whether the cardholder was provided with a cancellation policy.
+        ///<summary>Whether the cardholder was provided with a cancellation policy.</summary>
         [<Config.Form>]CancellationPolicyProvided: Choice<bool,string> option
-        ///Reason for canceling the order.
+        ///<summary>Reason for canceling the order.</summary>
         [<Config.Form>]CancellationReason: Choice<string,string> option
-        ///Date when the cardholder expected to receive the product.
+        ///<summary>Date when the cardholder expected to receive the product.</summary>
         [<Config.Form>]ExpectedAt: Choice<DateTime,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Description of the merchandise or service that was purchased.
+        ///<summary>Description of the merchandise or service that was purchased.</summary>
         [<Config.Form>]ProductDescription: Choice<string,string> option
-        ///Whether the product was a merchandise or service.
+        ///<summary>Whether the product was a merchandise or service.</summary>
         [<Config.Form>]ProductType: Create'EvidenceCanceledCanceledProductType option
-        ///Result of cardholder's attempt to return the product.
+        ///<summary>Result of cardholder's attempt to return the product.</summary>
         [<Config.Form>]ReturnStatus: Create'EvidenceCanceledCanceledReturnStatus option
-        ///Date when the product was returned or attempted to be returned.
+        ///<summary>Date when the product was returned or attempted to be returned.</summary>
         [<Config.Form>]ReturnedAt: Choice<DateTime,string> option
     }
     with
@@ -4635,17 +4879,17 @@ module IssuingDisputes =
             }
 
     type Create'EvidenceDuplicateDuplicate = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.</summary>
         [<Config.Form>]CardStatement: Choice<string,string> option
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.</summary>
         [<Config.Form>]CashReceipt: Choice<string,string> option
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.</summary>
         [<Config.Form>]CheckImage: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.
+        ///<summary>Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.</summary>
         [<Config.Form>]OriginalTransaction: string option
     }
     with
@@ -4660,9 +4904,9 @@ module IssuingDisputes =
             }
 
     type Create'EvidenceFraudulentFraudulent = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
     }
     with
@@ -4677,17 +4921,17 @@ module IssuingDisputes =
     | Successful
 
     type Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Date when the product was received.
+        ///<summary>Date when the product was received.</summary>
         [<Config.Form>]ReceivedAt: Choice<DateTime,string> option
-        ///Description of the cardholder's attempt to return the product.
+        ///<summary>Description of the cardholder's attempt to return the product.</summary>
         [<Config.Form>]ReturnDescription: Choice<string,string> option
-        ///Result of cardholder's attempt to return the product.
+        ///<summary>Result of cardholder's attempt to return the product.</summary>
         [<Config.Form>]ReturnStatus: Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus option
-        ///Date when the product was returned or attempted to be returned.
+        ///<summary>Date when the product was returned or attempted to be returned.</summary>
         [<Config.Form>]ReturnedAt: Choice<DateTime,string> option
     }
     with
@@ -4701,20 +4945,33 @@ module IssuingDisputes =
                 ReturnedAt = returnedAt
             }
 
+    type Create'EvidenceNoValidAuthorizationNoValidAuthorization = {
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
+        [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
+        [<Config.Form>]Explanation: Choice<string,string> option
+    }
+    with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+            }
+
     type Create'EvidenceNotReceivedNotReceivedProductType =
     | Merchandise
     | Service
 
     type Create'EvidenceNotReceivedNotReceived = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Date when the cardholder expected to receive the product.
+        ///<summary>Date when the cardholder expected to receive the product.</summary>
         [<Config.Form>]ExpectedAt: Choice<DateTime,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Description of the merchandise or service that was purchased.
+        ///<summary>Description of the merchandise or service that was purchased.</summary>
         [<Config.Form>]ProductDescription: Choice<string,string> option
-        ///Whether the product was a merchandise or service.
+        ///<summary>Whether the product was a merchandise or service.</summary>
         [<Config.Form>]ProductType: Create'EvidenceNotReceivedNotReceivedProductType option
     }
     with
@@ -4732,13 +4989,13 @@ module IssuingDisputes =
     | Service
 
     type Create'EvidenceOtherOther = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Description of the merchandise or service that was purchased.
+        ///<summary>Description of the merchandise or service that was purchased.</summary>
         [<Config.Form>]ProductDescription: Choice<string,string> option
-        ///Whether the product was a merchandise or service.
+        ///<summary>Whether the product was a merchandise or service.</summary>
         [<Config.Form>]ProductType: Create'EvidenceOtherOtherProductType option
     }
     with
@@ -4751,15 +5008,15 @@ module IssuingDisputes =
             }
 
     type Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Date when order was canceled.
+        ///<summary>Date when order was canceled.</summary>
         [<Config.Form>]CanceledAt: Choice<DateTime,string> option
-        ///Reason for canceling the order.
+        ///<summary>Reason for canceling the order.</summary>
         [<Config.Form>]CancellationReason: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Date when the product was received.
+        ///<summary>Date when the product was received.</summary>
         [<Config.Form>]ReceivedAt: Choice<DateTime,string> option
     }
     with
@@ -4777,35 +5034,39 @@ module IssuingDisputes =
     | Duplicate
     | Fraudulent
     | MerchandiseNotAsDescribed
+    | NoValidAuthorization
     | NotReceived
     | Other
     | ServiceNotAsDescribed
 
     type Create'Evidence = {
-        ///Evidence provided when `reason` is 'canceled'.
+        ///<summary>Evidence provided when `reason` is 'canceled'.</summary>
         [<Config.Form>]Canceled: Choice<Create'EvidenceCanceledCanceled,string> option
-        ///Evidence provided when `reason` is 'duplicate'.
+        ///<summary>Evidence provided when `reason` is 'duplicate'.</summary>
         [<Config.Form>]Duplicate: Choice<Create'EvidenceDuplicateDuplicate,string> option
-        ///Evidence provided when `reason` is 'fraudulent'.
+        ///<summary>Evidence provided when `reason` is 'fraudulent'.</summary>
         [<Config.Form>]Fraudulent: Choice<Create'EvidenceFraudulentFraudulent,string> option
-        ///Evidence provided when `reason` is 'merchandise_not_as_described'.
+        ///<summary>Evidence provided when `reason` is 'merchandise_not_as_described'.</summary>
         [<Config.Form>]MerchandiseNotAsDescribed: Choice<Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string> option
-        ///Evidence provided when `reason` is 'not_received'.
+        ///<summary>Evidence provided when `reason` is 'no_valid_authorization'.</summary>
+        [<Config.Form>]NoValidAuthorization: Choice<Create'EvidenceNoValidAuthorizationNoValidAuthorization,string> option
+        ///<summary>Evidence provided when `reason` is 'not_received'.</summary>
         [<Config.Form>]NotReceived: Choice<Create'EvidenceNotReceivedNotReceived,string> option
-        ///Evidence provided when `reason` is 'other'.
+        ///<summary>Evidence provided when `reason` is 'other'.</summary>
         [<Config.Form>]Other: Choice<Create'EvidenceOtherOther,string> option
-        ///The reason for filing the dispute. The evidence should be submitted in the field of the same name.
+        ///<summary>The reason for filing the dispute. The evidence should be submitted in the field of the same name.</summary>
         [<Config.Form>]Reason: Create'EvidenceReason option
-        ///Evidence provided when `reason` is 'service_not_as_described'.
+        ///<summary>Evidence provided when `reason` is 'service_not_as_described'.</summary>
         [<Config.Form>]ServiceNotAsDescribed: Choice<Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string> option
     }
     with
-        static member New(?canceled: Choice<Create'EvidenceCanceledCanceled,string>, ?duplicate: Choice<Create'EvidenceDuplicateDuplicate,string>, ?fraudulent: Choice<Create'EvidenceFraudulentFraudulent,string>, ?merchandiseNotAsDescribed: Choice<Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string>, ?notReceived: Choice<Create'EvidenceNotReceivedNotReceived,string>, ?other: Choice<Create'EvidenceOtherOther,string>, ?reason: Create'EvidenceReason, ?serviceNotAsDescribed: Choice<Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string>) =
+        static member New(?canceled: Choice<Create'EvidenceCanceledCanceled,string>, ?duplicate: Choice<Create'EvidenceDuplicateDuplicate,string>, ?fraudulent: Choice<Create'EvidenceFraudulentFraudulent,string>, ?merchandiseNotAsDescribed: Choice<Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string>, ?noValidAuthorization: Choice<Create'EvidenceNoValidAuthorizationNoValidAuthorization,string>, ?notReceived: Choice<Create'EvidenceNotReceivedNotReceived,string>, ?other: Choice<Create'EvidenceOtherOther,string>, ?reason: Create'EvidenceReason, ?serviceNotAsDescribed: Choice<Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string>) =
             {
                 Canceled = canceled
                 Duplicate = duplicate
                 Fraudulent = fraudulent
                 MerchandiseNotAsDescribed = merchandiseNotAsDescribed
+                NoValidAuthorization = noValidAuthorization
                 NotReceived = notReceived
                 Other = other
                 Reason = reason
@@ -4813,7 +5074,7 @@ module IssuingDisputes =
             }
 
     type Create'Treasury = {
-        ///The ID of the ReceivedDebit to initiate an Issuings dispute for.
+        ///<summary>The ID of the ReceivedDebit to initiate an Issuings dispute for.</summary>
         [<Config.Form>]ReceivedDebit: string option
     }
     with
@@ -4823,17 +5084,17 @@ module IssuingDisputes =
             }
 
     type CreateOptions = {
-        ///The dispute amount in the card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). If not set, defaults to the full transaction amount.
+        ///<summary>The dispute amount in the card's currency and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal). If not set, defaults to the full transaction amount.</summary>
         [<Config.Form>]Amount: int option
-        ///Evidence provided for the dispute.
+        ///<summary>Evidence provided for the dispute.</summary>
         [<Config.Form>]Evidence: Create'Evidence option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
-        ///The ID of the issuing transaction to create a dispute for. For transaction on Treasury FinancialAccounts, use `treasury.received_debit`.
+        ///<summary>The ID of the issuing transaction to create a dispute for. For transaction on Treasury FinancialAccounts, use `treasury.received_debit`.</summary>
         [<Config.Form>]Transaction: string option
-        ///Params for disputes related to Treasury FinancialAccounts
+        ///<summary>Params for disputes related to Treasury FinancialAccounts</summary>
         [<Config.Form>]Treasury: Create'Treasury option
     }
     with
@@ -4847,14 +5108,14 @@ module IssuingDisputes =
                 Treasury = treasury
             }
 
-    ///<p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p>
+    ///<summary><p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p></summary>
     let Create settings (options: CreateOptions) =
         $"/v1/issuing/disputes"
         |> RestApi.postAsync<_, IssuingDispute> settings (Map.empty) options
 
     type RetrieveOptions = {
         [<Config.Path>]Dispute: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
     }
     with
@@ -4864,7 +5125,7 @@ module IssuingDisputes =
                 Expand = expand
             }
 
-    ///<p>Retrieves an Issuing <code>Dispute</code> object.</p>
+    ///<summary><p>Retrieves an Issuing <code>Dispute</code> object.</p></summary>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/issuing/disputes/{options.Dispute}"
@@ -4879,25 +5140,25 @@ module IssuingDisputes =
     | Successful
 
     type Update'EvidenceCanceledCanceled = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Date when order was canceled.
+        ///<summary>Date when order was canceled.</summary>
         [<Config.Form>]CanceledAt: Choice<DateTime,string> option
-        ///Whether the cardholder was provided with a cancellation policy.
+        ///<summary>Whether the cardholder was provided with a cancellation policy.</summary>
         [<Config.Form>]CancellationPolicyProvided: Choice<bool,string> option
-        ///Reason for canceling the order.
+        ///<summary>Reason for canceling the order.</summary>
         [<Config.Form>]CancellationReason: Choice<string,string> option
-        ///Date when the cardholder expected to receive the product.
+        ///<summary>Date when the cardholder expected to receive the product.</summary>
         [<Config.Form>]ExpectedAt: Choice<DateTime,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Description of the merchandise or service that was purchased.
+        ///<summary>Description of the merchandise or service that was purchased.</summary>
         [<Config.Form>]ProductDescription: Choice<string,string> option
-        ///Whether the product was a merchandise or service.
+        ///<summary>Whether the product was a merchandise or service.</summary>
         [<Config.Form>]ProductType: Update'EvidenceCanceledCanceledProductType option
-        ///Result of cardholder's attempt to return the product.
+        ///<summary>Result of cardholder's attempt to return the product.</summary>
         [<Config.Form>]ReturnStatus: Update'EvidenceCanceledCanceledReturnStatus option
-        ///Date when the product was returned or attempted to be returned.
+        ///<summary>Date when the product was returned or attempted to be returned.</summary>
         [<Config.Form>]ReturnedAt: Choice<DateTime,string> option
     }
     with
@@ -4916,17 +5177,17 @@ module IssuingDisputes =
             }
 
     type Update'EvidenceDuplicateDuplicate = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.</summary>
         [<Config.Form>]CardStatement: Choice<string,string> option
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.</summary>
         [<Config.Form>]CashReceipt: Choice<string,string> option
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.</summary>
         [<Config.Form>]CheckImage: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.
+        ///<summary>Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one.</summary>
         [<Config.Form>]OriginalTransaction: string option
     }
     with
@@ -4941,9 +5202,9 @@ module IssuingDisputes =
             }
 
     type Update'EvidenceFraudulentFraudulent = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
     }
     with
@@ -4958,17 +5219,17 @@ module IssuingDisputes =
     | Successful
 
     type Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Date when the product was received.
+        ///<summary>Date when the product was received.</summary>
         [<Config.Form>]ReceivedAt: Choice<DateTime,string> option
-        ///Description of the cardholder's attempt to return the product.
+        ///<summary>Description of the cardholder's attempt to return the product.</summary>
         [<Config.Form>]ReturnDescription: Choice<string,string> option
-        ///Result of cardholder's attempt to return the product.
+        ///<summary>Result of cardholder's attempt to return the product.</summary>
         [<Config.Form>]ReturnStatus: Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus option
-        ///Date when the product was returned or attempted to be returned.
+        ///<summary>Date when the product was returned or attempted to be returned.</summary>
         [<Config.Form>]ReturnedAt: Choice<DateTime,string> option
     }
     with
@@ -4982,20 +5243,33 @@ module IssuingDisputes =
                 ReturnedAt = returnedAt
             }
 
+    type Update'EvidenceNoValidAuthorizationNoValidAuthorization = {
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
+        [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
+        [<Config.Form>]Explanation: Choice<string,string> option
+    }
+    with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+            }
+
     type Update'EvidenceNotReceivedNotReceivedProductType =
     | Merchandise
     | Service
 
     type Update'EvidenceNotReceivedNotReceived = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Date when the cardholder expected to receive the product.
+        ///<summary>Date when the cardholder expected to receive the product.</summary>
         [<Config.Form>]ExpectedAt: Choice<DateTime,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Description of the merchandise or service that was purchased.
+        ///<summary>Description of the merchandise or service that was purchased.</summary>
         [<Config.Form>]ProductDescription: Choice<string,string> option
-        ///Whether the product was a merchandise or service.
+        ///<summary>Whether the product was a merchandise or service.</summary>
         [<Config.Form>]ProductType: Update'EvidenceNotReceivedNotReceivedProductType option
     }
     with
@@ -5013,13 +5287,13 @@ module IssuingDisputes =
     | Service
 
     type Update'EvidenceOtherOther = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Description of the merchandise or service that was purchased.
+        ///<summary>Description of the merchandise or service that was purchased.</summary>
         [<Config.Form>]ProductDescription: Choice<string,string> option
-        ///Whether the product was a merchandise or service.
+        ///<summary>Whether the product was a merchandise or service.</summary>
         [<Config.Form>]ProductType: Update'EvidenceOtherOtherProductType option
     }
     with
@@ -5032,15 +5306,15 @@ module IssuingDisputes =
             }
 
     type Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed = {
-        ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
+        ///<summary>(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.</summary>
         [<Config.Form>]AdditionalDocumentation: Choice<string,string> option
-        ///Date when order was canceled.
+        ///<summary>Date when order was canceled.</summary>
         [<Config.Form>]CanceledAt: Choice<DateTime,string> option
-        ///Reason for canceling the order.
+        ///<summary>Reason for canceling the order.</summary>
         [<Config.Form>]CancellationReason: Choice<string,string> option
-        ///Explanation of why the cardholder is disputing this transaction.
+        ///<summary>Explanation of why the cardholder is disputing this transaction.</summary>
         [<Config.Form>]Explanation: Choice<string,string> option
-        ///Date when the product was received.
+        ///<summary>Date when the product was received.</summary>
         [<Config.Form>]ReceivedAt: Choice<DateTime,string> option
     }
     with
@@ -5058,35 +5332,39 @@ module IssuingDisputes =
     | Duplicate
     | Fraudulent
     | MerchandiseNotAsDescribed
+    | NoValidAuthorization
     | NotReceived
     | Other
     | ServiceNotAsDescribed
 
     type Update'Evidence = {
-        ///Evidence provided when `reason` is 'canceled'.
+        ///<summary>Evidence provided when `reason` is 'canceled'.</summary>
         [<Config.Form>]Canceled: Choice<Update'EvidenceCanceledCanceled,string> option
-        ///Evidence provided when `reason` is 'duplicate'.
+        ///<summary>Evidence provided when `reason` is 'duplicate'.</summary>
         [<Config.Form>]Duplicate: Choice<Update'EvidenceDuplicateDuplicate,string> option
-        ///Evidence provided when `reason` is 'fraudulent'.
+        ///<summary>Evidence provided when `reason` is 'fraudulent'.</summary>
         [<Config.Form>]Fraudulent: Choice<Update'EvidenceFraudulentFraudulent,string> option
-        ///Evidence provided when `reason` is 'merchandise_not_as_described'.
+        ///<summary>Evidence provided when `reason` is 'merchandise_not_as_described'.</summary>
         [<Config.Form>]MerchandiseNotAsDescribed: Choice<Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string> option
-        ///Evidence provided when `reason` is 'not_received'.
+        ///<summary>Evidence provided when `reason` is 'no_valid_authorization'.</summary>
+        [<Config.Form>]NoValidAuthorization: Choice<Update'EvidenceNoValidAuthorizationNoValidAuthorization,string> option
+        ///<summary>Evidence provided when `reason` is 'not_received'.</summary>
         [<Config.Form>]NotReceived: Choice<Update'EvidenceNotReceivedNotReceived,string> option
-        ///Evidence provided when `reason` is 'other'.
+        ///<summary>Evidence provided when `reason` is 'other'.</summary>
         [<Config.Form>]Other: Choice<Update'EvidenceOtherOther,string> option
-        ///The reason for filing the dispute. The evidence should be submitted in the field of the same name.
+        ///<summary>The reason for filing the dispute. The evidence should be submitted in the field of the same name.</summary>
         [<Config.Form>]Reason: Update'EvidenceReason option
-        ///Evidence provided when `reason` is 'service_not_as_described'.
+        ///<summary>Evidence provided when `reason` is 'service_not_as_described'.</summary>
         [<Config.Form>]ServiceNotAsDescribed: Choice<Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string> option
     }
     with
-        static member New(?canceled: Choice<Update'EvidenceCanceledCanceled,string>, ?duplicate: Choice<Update'EvidenceDuplicateDuplicate,string>, ?fraudulent: Choice<Update'EvidenceFraudulentFraudulent,string>, ?merchandiseNotAsDescribed: Choice<Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string>, ?notReceived: Choice<Update'EvidenceNotReceivedNotReceived,string>, ?other: Choice<Update'EvidenceOtherOther,string>, ?reason: Update'EvidenceReason, ?serviceNotAsDescribed: Choice<Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string>) =
+        static member New(?canceled: Choice<Update'EvidenceCanceledCanceled,string>, ?duplicate: Choice<Update'EvidenceDuplicateDuplicate,string>, ?fraudulent: Choice<Update'EvidenceFraudulentFraudulent,string>, ?merchandiseNotAsDescribed: Choice<Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string>, ?noValidAuthorization: Choice<Update'EvidenceNoValidAuthorizationNoValidAuthorization,string>, ?notReceived: Choice<Update'EvidenceNotReceivedNotReceived,string>, ?other: Choice<Update'EvidenceOtherOther,string>, ?reason: Update'EvidenceReason, ?serviceNotAsDescribed: Choice<Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string>) =
             {
                 Canceled = canceled
                 Duplicate = duplicate
                 Fraudulent = fraudulent
                 MerchandiseNotAsDescribed = merchandiseNotAsDescribed
+                NoValidAuthorization = noValidAuthorization
                 NotReceived = notReceived
                 Other = other
                 Reason = reason
@@ -5095,13 +5373,13 @@ module IssuingDisputes =
 
     type UpdateOptions = {
         [<Config.Path>]Dispute: string
-        ///The dispute amount in the card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
+        ///<summary>The dispute amount in the card's currency and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).</summary>
         [<Config.Form>]Amount: int option
-        ///Evidence provided for the dispute.
+        ///<summary>Evidence provided for the dispute.</summary>
         [<Config.Form>]Evidence: Update'Evidence option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
     }
     with
@@ -5114,7 +5392,7 @@ module IssuingDisputes =
                 Metadata = metadata
             }
 
-    ///<p>Updates the specified Issuing <code>Dispute</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Properties on the <code>evidence</code> object can be unset by passing in an empty string.</p>
+    ///<summary><p>Updates the specified Issuing <code>Dispute</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged. Properties on the <code>evidence</code> object can be unset by passing in an empty string.</p></summary>
     let Update settings (options: UpdateOptions) =
         $"/v1/issuing/disputes/{options.Dispute}"
         |> RestApi.postAsync<_, IssuingDispute> settings (Map.empty) options
@@ -5123,9 +5401,9 @@ module IssuingDisputesSubmit =
 
     type SubmitOptions = {
         [<Config.Path>]Dispute: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
     }
     with
@@ -5136,29 +5414,351 @@ module IssuingDisputesSubmit =
                 Metadata = metadata
             }
 
-    ///<p>Submits an Issuing <code>Dispute</code> to the card network. Stripe validates that all evidence fields required for the dispute’s reason are present. For more details, see <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a>.</p>
+    ///<summary><p>Submits an Issuing <code>Dispute</code> to the card network. Stripe validates that all evidence fields required for the dispute’s reason are present. For more details, see <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a>.</p></summary>
     let Submit settings (options: SubmitOptions) =
         $"/v1/issuing/disputes/{options.Dispute}/submit"
         |> RestApi.postAsync<_, IssuingDispute> settings (Map.empty) options
 
+module IssuingPersonalizationDesigns =
+
+    type ListOptions = {
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
+        [<Config.Query>]EndingBefore: string option
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Query>]Expand: string list option
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
+        [<Config.Query>]Limit: int option
+        ///<summary>Only return personalization designs with the given lookup keys.</summary>
+        [<Config.Query>]LookupKeys: string list option
+        ///<summary>Only return personalization designs with the given preferences.</summary>
+        [<Config.Query>]Preferences: Map<string, string> option
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
+        [<Config.Query>]StartingAfter: string option
+        ///<summary>Only return personalization designs with the given status.</summary>
+        [<Config.Query>]Status: string option
+    }
+    with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKeys: string list, ?preferences: Map<string, string>, ?startingAfter: string, ?status: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                LookupKeys = lookupKeys
+                Preferences = preferences
+                StartingAfter = startingAfter
+                Status = status
+            }
+
+    ///<summary><p>Returns a list of personalization design objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p></summary>
+    let List settings (options: ListOptions) =
+        let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("lookup_keys", options.LookupKeys |> box); ("preferences", options.Preferences |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+        $"/v1/issuing/personalization_designs"
+        |> RestApi.getAsync<StripeList<IssuingPersonalizationDesign>> settings qs
+
+    type Create'CarrierText = {
+        ///<summary>The footer body text of the carrier letter.</summary>
+        [<Config.Form>]FooterBody: Choice<string,string> option
+        ///<summary>The footer title text of the carrier letter.</summary>
+        [<Config.Form>]FooterTitle: Choice<string,string> option
+        ///<summary>The header body text of the carrier letter.</summary>
+        [<Config.Form>]HeaderBody: Choice<string,string> option
+        ///<summary>The header title text of the carrier letter.</summary>
+        [<Config.Form>]HeaderTitle: Choice<string,string> option
+    }
+    with
+        static member New(?footerBody: Choice<string,string>, ?footerTitle: Choice<string,string>, ?headerBody: Choice<string,string>, ?headerTitle: Choice<string,string>) =
+            {
+                FooterBody = footerBody
+                FooterTitle = footerTitle
+                HeaderBody = headerBody
+                HeaderTitle = headerTitle
+            }
+
+    type Create'Preferences = {
+        ///<summary>Whether we use this personalization design to create cards when one isn't specified. A connected account uses the Connect platform's default design if no personalization design is set as the default design.</summary>
+        [<Config.Form>]IsDefault: bool option
+    }
+    with
+        static member New(?isDefault: bool) =
+            {
+                IsDefault = isDefault
+            }
+
+    type CreateOptions = {
+        ///<summary>The file for the card logo, for use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`.</summary>
+        [<Config.Form>]CardLogo: string option
+        ///<summary>Hash containing carrier text, for use with physical bundles that support carrier text.</summary>
+        [<Config.Form>]CarrierText: Create'CarrierText option
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Form>]Expand: string list option
+        ///<summary>A lookup key used to retrieve personalization designs dynamically from a static string. This may be up to 200 characters.</summary>
+        [<Config.Form>]LookupKey: string option
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
+        [<Config.Form>]Metadata: Map<string, string> option
+        ///<summary>Friendly display name.</summary>
+        [<Config.Form>]Name: string option
+        ///<summary>The physical bundle object belonging to this personalization design.</summary>
+        [<Config.Form>]PhysicalBundle: string
+        ///<summary>Information on whether this personalization design is used to create cards when one is not specified.</summary>
+        [<Config.Form>]Preferences: Create'Preferences option
+        ///<summary>If set to true, will atomically remove the lookup key from the existing personalization design, and assign it to this personalization design.</summary>
+        [<Config.Form>]TransferLookupKey: bool option
+    }
+    with
+        static member New(physicalBundle: string, ?cardLogo: string, ?carrierText: Create'CarrierText, ?expand: string list, ?lookupKey: string, ?metadata: Map<string, string>, ?name: string, ?preferences: Create'Preferences, ?transferLookupKey: bool) =
+            {
+                CardLogo = cardLogo
+                CarrierText = carrierText
+                Expand = expand
+                LookupKey = lookupKey
+                Metadata = metadata
+                Name = name
+                PhysicalBundle = physicalBundle
+                Preferences = preferences
+                TransferLookupKey = transferLookupKey
+            }
+
+    ///<summary><p>Creates a personalization design object.</p></summary>
+    let Create settings (options: CreateOptions) =
+        $"/v1/issuing/personalization_designs"
+        |> RestApi.postAsync<_, IssuingPersonalizationDesign> settings (Map.empty) options
+
+    type RetrieveOptions = {
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Query>]Expand: string list option
+        [<Config.Path>]PersonalizationDesign: string
+    }
+    with
+        static member New(personalizationDesign: string, ?expand: string list) =
+            {
+                Expand = expand
+                PersonalizationDesign = personalizationDesign
+            }
+
+    ///<summary><p>Retrieves a personalization design object.</p></summary>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/issuing/personalization_designs/{options.PersonalizationDesign}"
+        |> RestApi.getAsync<IssuingPersonalizationDesign> settings qs
+
+    type Update'CarrierTextCarrierText = {
+        ///<summary>The footer body text of the carrier letter.</summary>
+        [<Config.Form>]FooterBody: Choice<string,string> option
+        ///<summary>The footer title text of the carrier letter.</summary>
+        [<Config.Form>]FooterTitle: Choice<string,string> option
+        ///<summary>The header body text of the carrier letter.</summary>
+        [<Config.Form>]HeaderBody: Choice<string,string> option
+        ///<summary>The header title text of the carrier letter.</summary>
+        [<Config.Form>]HeaderTitle: Choice<string,string> option
+    }
+    with
+        static member New(?footerBody: Choice<string,string>, ?footerTitle: Choice<string,string>, ?headerBody: Choice<string,string>, ?headerTitle: Choice<string,string>) =
+            {
+                FooterBody = footerBody
+                FooterTitle = footerTitle
+                HeaderBody = headerBody
+                HeaderTitle = headerTitle
+            }
+
+    type Update'Preferences = {
+        ///<summary>Whether we use this personalization design to create cards when one isn't specified. A connected account uses the Connect platform's default design if no personalization design is set as the default design.</summary>
+        [<Config.Form>]IsDefault: bool option
+    }
+    with
+        static member New(?isDefault: bool) =
+            {
+                IsDefault = isDefault
+            }
+
+    type UpdateOptions = {
+        [<Config.Path>]PersonalizationDesign: string
+        ///<summary>The file for the card logo, for use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`.</summary>
+        [<Config.Form>]CardLogo: Choice<string,string> option
+        ///<summary>Hash containing carrier text, for use with physical bundles that support carrier text.</summary>
+        [<Config.Form>]CarrierText: Choice<Update'CarrierTextCarrierText,string> option
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Form>]Expand: string list option
+        ///<summary>A lookup key used to retrieve personalization designs dynamically from a static string. This may be up to 200 characters.</summary>
+        [<Config.Form>]LookupKey: Choice<string,string> option
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
+        [<Config.Form>]Metadata: Map<string, string> option
+        ///<summary>Friendly display name. Providing an empty string will set the field to null.</summary>
+        [<Config.Form>]Name: Choice<string,string> option
+        ///<summary>The physical bundle object belonging to this personalization design.</summary>
+        [<Config.Form>]PhysicalBundle: string option
+        ///<summary>Information on whether this personalization design is used to create cards when one is not specified.</summary>
+        [<Config.Form>]Preferences: Update'Preferences option
+        ///<summary>If set to true, will atomically remove the lookup key from the existing personalization design, and assign it to this personalization design.</summary>
+        [<Config.Form>]TransferLookupKey: bool option
+    }
+    with
+        static member New(personalizationDesign: string, ?cardLogo: Choice<string,string>, ?carrierText: Choice<Update'CarrierTextCarrierText,string>, ?expand: string list, ?lookupKey: Choice<string,string>, ?metadata: Map<string, string>, ?name: Choice<string,string>, ?physicalBundle: string, ?preferences: Update'Preferences, ?transferLookupKey: bool) =
+            {
+                PersonalizationDesign = personalizationDesign
+                CardLogo = cardLogo
+                CarrierText = carrierText
+                Expand = expand
+                LookupKey = lookupKey
+                Metadata = metadata
+                Name = name
+                PhysicalBundle = physicalBundle
+                Preferences = preferences
+                TransferLookupKey = transferLookupKey
+            }
+
+    ///<summary><p>Updates a card personalization object.</p></summary>
+    let Update settings (options: UpdateOptions) =
+        $"/v1/issuing/personalization_designs/{options.PersonalizationDesign}"
+        |> RestApi.postAsync<_, IssuingPersonalizationDesign> settings (Map.empty) options
+
+module IssuingPhysicalBundles =
+
+    type ListOptions = {
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
+        [<Config.Query>]EndingBefore: string option
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Query>]Expand: string list option
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
+        [<Config.Query>]Limit: int option
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
+        [<Config.Query>]StartingAfter: string option
+        ///<summary>Only return physical bundles with the given status.</summary>
+        [<Config.Query>]Status: string option
+        ///<summary>Only return physical bundles with the given type.</summary>
+        [<Config.Query>]Type: string option
+    }
+    with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?type': string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+                Type = type'
+            }
+
+    ///<summary><p>Returns a list of physical bundle objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p></summary>
+    let List settings (options: ListOptions) =
+        let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.Type |> box)] |> Map.ofList
+        $"/v1/issuing/physical_bundles"
+        |> RestApi.getAsync<StripeList<IssuingPhysicalBundle>> settings qs
+
+    type RetrieveOptions = {
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Query>]Expand: string list option
+        [<Config.Path>]PhysicalBundle: string
+    }
+    with
+        static member New(physicalBundle: string, ?expand: string list) =
+            {
+                Expand = expand
+                PhysicalBundle = physicalBundle
+            }
+
+    ///<summary><p>Retrieves a physical bundle object.</p></summary>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/issuing/physical_bundles/{options.PhysicalBundle}"
+        |> RestApi.getAsync<IssuingPhysicalBundle> settings qs
+
+module IssuingTokens =
+
+    type ListOptions = {
+        ///<summary>The Issuing card identifier to list tokens for.</summary>
+        [<Config.Query>]Card: string
+        ///<summary>Only return Issuing tokens that were created during the given date interval.</summary>
+        [<Config.Query>]Created: int option
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
+        [<Config.Query>]EndingBefore: string option
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Query>]Expand: string list option
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
+        [<Config.Query>]Limit: int option
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
+        [<Config.Query>]StartingAfter: string option
+        ///<summary>Select Issuing tokens with the given status.</summary>
+        [<Config.Query>]Status: string option
+    }
+    with
+        static member New(card: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                Card = card
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
+    ///<summary><p>Lists all Issuing <code>Token</code> objects for a given card.</p></summary>
+    let List settings (options: ListOptions) =
+        let qs = [("card", options.Card |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+        $"/v1/issuing/tokens"
+        |> RestApi.getAsync<StripeList<IssuingToken>> settings qs
+
+    type RetrieveOptions = {
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Query>]Expand: string list option
+        [<Config.Path>]Token: string
+    }
+    with
+        static member New(token: string, ?expand: string list) =
+            {
+                Expand = expand
+                Token = token
+            }
+
+    ///<summary><p>Retrieves an Issuing <code>Token</code> object.</p></summary>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/issuing/tokens/{options.Token}"
+        |> RestApi.getAsync<IssuingToken> settings qs
+
+    type Update'Status =
+    | Active
+    | Deleted
+    | Suspended
+
+    type UpdateOptions = {
+        [<Config.Path>]Token: string
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
+        [<Config.Form>]Expand: string list option
+        ///<summary>Specifies which status the token should be updated to.</summary>
+        [<Config.Form>]Status: Update'Status
+    }
+    with
+        static member New(token: string, status: Update'Status, ?expand: string list) =
+            {
+                Token = token
+                Expand = expand
+                Status = status
+            }
+
+    ///<summary><p>Attempts to update the specified Issuing <code>Token</code> object to the status specified.</p></summary>
+    let Update settings (options: UpdateOptions) =
+        $"/v1/issuing/tokens/{options.Token}"
+        |> RestApi.postAsync<_, IssuingToken> settings (Map.empty) options
+
 module IssuingTransactions =
 
     type ListOptions = {
-        ///Only return transactions that belong to the given card.
+        ///<summary>Only return transactions that belong to the given card.</summary>
         [<Config.Query>]Card: string option
-        ///Only return transactions that belong to the given cardholder.
+        ///<summary>Only return transactions that belong to the given cardholder.</summary>
         [<Config.Query>]Cardholder: string option
-        ///Only return transactions that were created during the given date interval.
+        ///<summary>Only return transactions that were created during the given date interval.</summary>
         [<Config.Query>]Created: int option
-        ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
         [<Config.Query>]EndingBefore: string option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
-        ///A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
         [<Config.Query>]Limit: int option
-        ///A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
         [<Config.Query>]StartingAfter: string option
-        ///Only return transactions that have the given type. One of `capture` or `refund`.
+        ///<summary>Only return transactions that have the given type. One of `capture` or `refund`.</summary>
         [<Config.Query>]Type: string option
     }
     with
@@ -5174,14 +5774,14 @@ module IssuingTransactions =
                 Type = type'
             }
 
-    ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
+    ///<summary><p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p></summary>
     let List settings (options: ListOptions) =
         let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box)] |> Map.ofList
         $"/v1/issuing/transactions"
-        |> RestApi.getAsync<IssuingTransaction list> settings qs
+        |> RestApi.getAsync<StripeList<IssuingTransaction>> settings qs
 
     type RetrieveOptions = {
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
         [<Config.Path>]Transaction: string
     }
@@ -5192,7 +5792,7 @@ module IssuingTransactions =
                 Transaction = transaction
             }
 
-    ///<p>Retrieves an Issuing <code>Transaction</code> object.</p>
+    ///<summary><p>Retrieves an Issuing <code>Transaction</code> object.</p></summary>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/issuing/transactions/{options.Transaction}"
@@ -5200,9 +5800,9 @@ module IssuingTransactions =
 
     type UpdateOptions = {
         [<Config.Path>]Transaction: string
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+        ///<summary>Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.</summary>
         [<Config.Form>]Metadata: Map<string, string> option
     }
     with
@@ -5213,7 +5813,7 @@ module IssuingTransactions =
                 Metadata = metadata
             }
 
-    ///<p>Updates the specified Issuing <code>Transaction</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
+    ///<summary><p>Updates the specified Issuing <code>Transaction</code> object by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p></summary>
     let Update settings (options: UpdateOptions) =
         $"/v1/issuing/transactions/{options.Transaction}"
         |> RestApi.postAsync<_, IssuingTransaction> settings (Map.empty) options

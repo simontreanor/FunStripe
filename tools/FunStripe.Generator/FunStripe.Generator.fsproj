@@ -3,35 +3,18 @@
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <GenerateProgramFile>false</GenerateProgramFile>
-    <UserSecretsId>170450ff-243d-4b38-9f56-c74254e1ca70</UserSecretsId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
     <Tailcalls>true</Tailcalls>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../../src/Json/InterfaceTypes.fs" Link="Json/InterfaceTypes.fs" />
-    <Compile Include="../../src/Json/JsonValueHelpers.fs" Link="Json/JsonValueHelpers.fs" />
-    <Compile Include="../../src/Json/Reflection.fs" Link="Json/Reflection.fs" />
-    <Compile Include="../../src/Json/Core.fs" Link="Json/Core.fs" />
-    <Compile Include="../../src/Json/Transforms.fs" Link="Json/Transforms.fs" />
-    <Compile Include="../../src/Config.fs" Link="Config.fs" />
-    <Compile Include="../../src/Util.fs" Link="Util.fs" />
-    <Compile Include="../../src/AsyncResult.fs" Link="AsyncResult.fs" />
-    <Compile Include="../../src/IsoTypes.fs" Link="IsoTypes.fs" />
     <Compile Include="../../src/ModelBuilder.fs" Link="ModelBuilder.fs" />
     <Compile Include="../../src/RequestBuilder.fs" Link="RequestBuilder.fs" />
-    <Compile Include="../../src/StripeModel.fs" Link="StripeModel.fs" />
-    <Compile Include="../../src/StripeError.fs" Link="StripeError.fs" />
-    <Compile Include="../../src/WebhookSigning.fs" Link="WebhookSigning.fs" />
-    <Compile Include="../../src/RestApi.fs" Link="RestApi.fs" />
-    <Compile Include="../../src/StripeRequest.fs" Link="StripeRequest.fs" />
-    <Compile Include="../../src/Program.fs" Link="Program.fs" />
+    <Compile Include="Generator.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" />
     <PackageReference Include="FSharp.Data.Json.Core" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
   </ItemGroup>
 </Project>

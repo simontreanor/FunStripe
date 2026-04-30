@@ -9,14 +9,15 @@ open System
 module ReportingReportRuns =
 
     type ListOptions = {
+        ///<summary>Only return Report Runs that were created during the given date interval.</summary>
         [<Config.Query>]Created: int option
-        ///A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+        ///<summary>A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.</summary>
         [<Config.Query>]EndingBefore: string option
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
-        ///A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+        ///<summary>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.</summary>
         [<Config.Query>]Limit: int option
-        ///A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+        ///<summary>A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.</summary>
         [<Config.Query>]StartingAfter: string option
     }
     with
@@ -29,11 +30,11 @@ module ReportingReportRuns =
                 StartingAfter = startingAfter
             }
 
-    ///<p>Returns a list of Report Runs, with the most recent appearing first.</p>
+    ///<summary><p>Returns a list of Report Runs, with the most recent appearing first.</p></summary>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
         $"/v1/reporting/report_runs"
-        |> RestApi.getAsync<ReportingReportRun list> settings qs
+        |> RestApi.getAsync<StripeList<ReportingReportRun>> settings qs
 
     type Create'ParametersReportingCategory =
     | Advance
@@ -41,6 +42,8 @@ module ReportingReportRuns =
     | AnticipationRepayment
     | Charge
     | ChargeFailure
+    | ClimateOrderPurchase
+    | ClimateOrderRefund
     | ConnectCollectionTransfer
     | ConnectReservedFunds
     | Contribution
@@ -70,6 +73,7 @@ module ReportingReportRuns =
     | TopupReversal
     | Transfer
     | TransferReversal
+    | UnreconciledCustomerFunds
 
     type Create'ParametersTimezone =
     | [<JsonUnionCase("Africa/Abidjan")>] AfricaAbidjan
@@ -171,6 +175,7 @@ module ReportingReportRuns =
     | [<JsonUnionCase("America/Coral_Harbour")>] AmericaCoralHarbour
     | [<JsonUnionCase("America/Cordoba")>] AmericaCordoba
     | [<JsonUnionCase("America/Costa_Rica")>] AmericaCostaRica
+    | [<JsonUnionCase("America/Coyhaique")>] AmericaCoyhaique
     | [<JsonUnionCase("America/Creston")>] AmericaCreston
     | [<JsonUnionCase("America/Cuiaba")>] AmericaCuiaba
     | [<JsonUnionCase("America/Curacao")>] AmericaCuracao
@@ -672,25 +677,25 @@ module ReportingReportRuns =
     | [<JsonUnionCase("Zulu")>] Zulu
 
     type Create'Parameters = {
-        ///The set of report columns to include in the report output. If omitted, the Report Type is run with its default column set.
+        ///<summary>The set of report columns to include in the report output. If omitted, the Report Type is run with its default column set.</summary>
         [<Config.Form>]Columns: string list option
-        ///Connected account ID to filter for in the report run.
+        ///<summary>Connected account ID to filter for in the report run.</summary>
         [<Config.Form>]ConnectedAccount: string option
-        ///Currency of objects to be included in the report run.
-        [<Config.Form>]Currency: string option
-        ///Ending timestamp of data to be included in the report run (exclusive).
+        ///<summary>Currency of objects to be included in the report run.</summary>
+        [<Config.Form>]Currency: IsoTypes.IsoCurrencyCode option
+        ///<summary>Ending timestamp of data to be included in the report run (exclusive).</summary>
         [<Config.Form>]IntervalEnd: DateTime option
-        ///Starting timestamp of data to be included in the report run.
+        ///<summary>Starting timestamp of data to be included in the report run.</summary>
         [<Config.Form>]IntervalStart: DateTime option
-        ///Payout ID by which to filter the report run.
+        ///<summary>Payout ID by which to filter the report run.</summary>
         [<Config.Form>]Payout: string option
-        ///Category of balance transactions to be included in the report run.
+        ///<summary>Category of balance transactions to be included in the report run.</summary>
         [<Config.Form>]ReportingCategory: Create'ParametersReportingCategory option
-        ///Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
+        ///<summary>Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.</summary>
         [<Config.Form>]Timezone: Create'ParametersTimezone option
     }
     with
-        static member New(?columns: string list, ?connectedAccount: string, ?currency: string, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: Create'ParametersReportingCategory, ?timezone: Create'ParametersTimezone) =
+        static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: Create'ParametersReportingCategory, ?timezone: Create'ParametersTimezone) =
             {
                 Columns = columns
                 ConnectedAccount = connectedAccount
@@ -703,11 +708,11 @@ module ReportingReportRuns =
             }
 
     type CreateOptions = {
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Form>]Expand: string list option
-        ///Parameters specifying how the report should be run. Different Report Types have different required and optional parameters, listed in the [API Access to Reports](https://stripe.com/docs/reporting/statements/api) documentation.
+        ///<summary>Parameters specifying how the report should be run. Different Report Types have different required and optional parameters, listed in the [API Access to Reports](https://docs.stripe.com/reporting/statements/api) documentation.</summary>
         [<Config.Form>]Parameters: Create'Parameters option
-        ///The ID of the [report type](https://stripe.com/docs/reporting/statements/api#report-types) to run, such as `"balance.summary.1"`.
+        ///<summary>The ID of the [report type](https://docs.stripe.com/reporting/statements/api#report-types) to run, such as `"balance.summary.1"`.</summary>
         [<Config.Form>]ReportType: string
     }
     with
@@ -718,13 +723,13 @@ module ReportingReportRuns =
                 ReportType = reportType
             }
 
-    ///<p>Creates a new object and begin running the report. (Certain report types require a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
+    ///<summary><p>Creates a new object and begin running the report. (Certain report types require a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p></summary>
     let Create settings (options: CreateOptions) =
         $"/v1/reporting/report_runs"
         |> RestApi.postAsync<_, ReportingReportRun> settings (Map.empty) options
 
     type RetrieveOptions = {
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
         [<Config.Path>]ReportRun: string
     }
@@ -735,7 +740,7 @@ module ReportingReportRuns =
                 ReportRun = reportRun
             }
 
-    ///<p>Retrieves the details of an existing Report Run.</p>
+    ///<summary><p>Retrieves the details of an existing Report Run.</p></summary>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/reporting/report_runs/{options.ReportRun}"
@@ -744,7 +749,7 @@ module ReportingReportRuns =
 module ReportingReportTypes =
 
     type ListOptions = {
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
     }
     with
@@ -753,14 +758,14 @@ module ReportingReportTypes =
                 Expand = expand
             }
 
-    ///<p>Returns a full list of Report Types.</p>
+    ///<summary><p>Returns a full list of Report Types.</p></summary>
     let List settings (options: ListOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/reporting/report_types"
-        |> RestApi.getAsync<ReportingReportType list> settings qs
+        |> RestApi.getAsync<StripeList<ReportingReportType>> settings qs
 
     type RetrieveOptions = {
-        ///Specifies which fields in the response should be expanded.
+        ///<summary>Specifies which fields in the response should be expanded.</summary>
         [<Config.Query>]Expand: string list option
         [<Config.Path>]ReportType: string
     }
@@ -771,7 +776,7 @@ module ReportingReportTypes =
                 ReportType = reportType
             }
 
-    ///<p>Retrieves the details of a Report Type. (Certain report types require a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
+    ///<summary><p>Retrieves the details of a Report Type. (Certain report types require a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p></summary>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/reporting/report_types/{options.ReportType}"
