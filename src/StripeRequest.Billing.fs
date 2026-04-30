@@ -1,7 +1,7 @@
 namespace FunStripe.StripeRequest
 
 open FunStripe
-open FunStripe.Json
+open System.Text.Json.Serialization
 open FunStripe.StripeModel
 open System
 
@@ -1571,20 +1571,20 @@ module BillingPortalSessions =
     | De
     | El
     | En
-    | [<JsonUnionCase("en-AU")>] EnAU
-    | [<JsonUnionCase("en-CA")>] EnCA
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-IE")>] EnIE
-    | [<JsonUnionCase("en-IN")>] EnIN
-    | [<JsonUnionCase("en-NZ")>] EnNZ
-    | [<JsonUnionCase("en-SG")>] EnSG
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IN")>] EnIN
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-SG")>] EnSG
     | Es
-    | [<JsonUnionCase("es-419")>] Es419
+    | [<JsonPropertyName("es-419")>] Es419
     | Et
     | Fi
     | Fil
     | Fr
-    | [<JsonUnionCase("fr-CA")>] FrCA
+    | [<JsonPropertyName("fr-CA")>] FrCA
     | Hr
     | Hu
     | Id
@@ -1599,7 +1599,7 @@ module BillingPortalSessions =
     | Nl
     | Pl
     | Pt
-    | [<JsonUnionCase("pt-BR")>] PtBR
+    | [<JsonPropertyName("pt-BR")>] PtBR
     | Ro
     | Ru
     | Sk
@@ -1609,8 +1609,8 @@ module BillingPortalSessions =
     | Tr
     | Vi
     | Zh
-    | [<JsonUnionCase("zh-HK")>] ZhHK
-    | [<JsonUnionCase("zh-TW")>] ZhTW
+    | [<JsonPropertyName("zh-HK")>] ZhHK
+    | [<JsonPropertyName("zh-TW")>] ZhTW
 
     type CreateOptions = {
         ///<summary>The ID of an existing [configuration](https://docs.stripe.com/api/customer_portal/configurations) to use for this session, describing its functionality and features. If not specified, the session uses the default configuration.</summary>

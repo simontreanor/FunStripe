@@ -1,7 +1,7 @@
 namespace FunStripe.StripeRequest
 
 open FunStripe
-open FunStripe.Json
+open System.Text.Json.Serialization
 open FunStripe.StripeModel
 open System
 
@@ -359,12 +359,12 @@ module TestHelpersConfirmationTokens =
             }
 
     type Create'PaymentMethodDataSofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Create'PaymentMethodDataSofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>

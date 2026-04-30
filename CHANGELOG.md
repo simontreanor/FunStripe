@@ -16,17 +16,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Publish workflows for `FunStripe.Core` and `FunStripe.Core.Fable`; version passed at pack time via `-p:Version=`
 - `Config.DefaultStripeApiVersion` constant and `Config.StripeApiVersionAttribute` assembly attribute for auditable API version tracking
 - `<StripeApiVersion>` and `<PackageTags>` NuGet metadata on `FunStripe.Core`
+- `src/Json/StripeConverter.fs`: custom `FSharp.SystemTextJson`-based converters replacing the forked `FSharp.Json` library (`EpochDateTimeConverter`, `StripeUnionConverterFactory`, `SnakeCaseNamingPolicy`)
+- `src/Json/FableCore.fs`: updated Fable-compatible JSON deserializer reading `[<JsonPropertyName>]` attributes instead of the old `[<JsonField>]`/`[<JsonUnionCase>]` attributes
+- `Fable.Package.SDK` reference to `FunStripe.Core.Fable.fsproj` so the package is discoverable on fable.io/packages and `.fs` sources are packed into the `fable/` folder
 
 ### Changed
-- All package dependencies updated to latest versions (FSharp.Core 10.1.203, FSharp.Data.Json.Core 8.1.11, NUnit 4.5.1, NUnit3TestAdapter 6.2.0, Microsoft.NET.Test.Sdk 18.5.1, Microsoft.Extensions.Configuration 10.0.7)
+- All package dependencies updated to latest versions (FSharp.Core 10.1.203, FSharp.Data.Json.Core 8.1.11, NUnit 4.5.1, NUnit3TestAdapter 6.2.0, Microsoft.NET.Test.Sdk 18.5.1)
 - `global.json` updated to .NET SDK 10.0.x
 - Tests updated to target net10.0
+- JSON serialization for the `.NET` path replaced: forked `FSharp.Json` (4 files, ~1700 lines) removed and replaced by `FSharp.SystemTextJson` + `StripeConverter.fs` (~230 lines)
+- All `[<JsonUnionCase>]` attributes replaced with `[<JsonPropertyName>]` (from `System.Text.Json.Serialization`) across `IsoTypes.fs`, `StripeModel.fs`, `StripeRequest.*.fs`
+- All `open FunStripe.Json` replaced with `open System.Text.Json.Serialization` across the same files
+- `FunStripe.Core.Fable.fsproj`: replaced monolithic `StripeRequest.fs` with the same split `StripeRequest.*.fs` files used by `FunStripe.Core.fsproj`; `PackageTags` updated to `fable-javascript;...`
+- `Config.StripeTestApiKey` now reads from the `STRIPE_TEST_API_KEY` environment variable (set via GitHub Actions secret or local shell); replaces `Microsoft.Extensions.Configuration.UserSecrets`
 
 ### Removed
 - `FunStripe` NuGet package
 - `FunStripeLite` NuGet package and project
 - `FunStripeLite.Fable` project
 - `publish-funstripe.yml`, `publish-funstripelite.yml`, `publish-funstripelite-fable.yml` workflows
+- `src/Json/InterfaceTypes.fs`, `src/Json/Reflection.fs`, `src/Json/Core.fs`, `src/Json/Transforms.fs`, `src/Json/JsonValueHelpers.fs` (forked FSharp.Json files)
+- `LITE` conditional compilation symbol; `Microsoft.Extensions.Configuration.*` removed as a dependency
 
 ## [0.11.3] - 2025-02-24
 

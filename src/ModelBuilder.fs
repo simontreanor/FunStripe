@@ -82,29 +82,29 @@ module ModelBuilder =
     let escapeNumeric s =
         Regex.Replace(s, @"^(\d)", "Numeric$1")
 
-    ///Add `JsonUnionCase` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
+    ///Add `JsonPropertyName` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
     let escapeForJson (s: string) =
         if s.Contains(" of ") then
             s
         elif Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") || s.Contains(".") || s.Contains("[") then
-            $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
+            $@"[<JsonPropertyName(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         elif s = "none" then
-            $@"[<JsonUnionCase(""{s}"")>] {s|> pascalCasify}'"
+            $@"[<JsonPropertyName(""{s}"")>] {s|> pascalCasify}'"
         else
             s |> clean |> pascalCasify
 
     ///Ensure JSON field names can round-trip successfully, as Stripe is inconsistent in the snake-casing of fields containing numbers
     let fixJsonNaming transformType infix (name: string) =
         let infix' = infix |> Option.defaultValue ""
-        let nameProperty = if Regex.IsMatch(name, @"(?<!_)\d") then Some $"Name=\"{name}\"" else None
-        let transformProperty = transformType |> Option.fold (fun _ v -> Some $"Transform=typeof<%s{v}>") None
-        let properties = [nameProperty; transformProperty] |> List.choose id
-        match properties with
-        | [] ->
+        // Only emit [<JsonPropertyName>] for fields where snake_case would mangle embedded digits.
+        // DateTime epoch fields no longer need a Transform attribute: the EpochDateTimeConverter
+        // is registered globally in StripeConverter.createOptions().
+        let needsExplicitName = Regex.IsMatch(name, @"(?<!_)\d")
+        match needsExplicitName with
+        | false ->
             $"{infix'}{name |> pascalCasify}"
-        | _ ->
-            let propertiesString = properties |> String.concat ", "
-            $"[<JsonField({propertiesString})>]{infix'}{name |> pascalCasify}"
+        | true ->
+            $"[<JsonPropertyName(\"{name}\")>]{infix'}{name |> pascalCasify}"
 
     ///Format multiline comments correctly by inserting tabs and comment specifiers at the beginning of each line
     let commentify (tabCount: int) (s: string) = 
@@ -533,7 +533,7 @@ module ModelBuilder =
             match model with
             | ModelHeader ->
                 //Write the namespace, references and module title
-                let header = $"namespace FunStripe\n\nopen FunStripe.Json\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n\n\t///A generic type representing a paginated list of Stripe objects, including pagination metadata.\n\ttype StripeList<'T> = {{\n\t\t///The list of objects in this page.\n\t\tData: 'T list\n\t\t///True if this list has another page of items after this one that can be fetched.\n\t\tHasMore: bool\n\t\t///The URL where this list can be accessed.\n\t\tUrl: string\n\t}}\n\twith\n\t\t///String representing the object's type. Always has the value `list`.\n\t\tmember _.Object = \"list\"\n\n\t\tstatic member New (data: 'T list, hasMore: bool, url: string) =\n\t\t\t{{\n\t\t\t\tStripeList.Data = data\n\t\t\t\tStripeList.HasMore = hasMore\n\t\t\t\tStripeList.Url = url\n\t\t\t}}\n"
+                let header = $"namespace FunStripe\n\nopen System.Text.Json.Serialization\nopen FunStripe.Util\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeModel =\n\n\t///A generic type representing a paginated list of Stripe objects, including pagination metadata.\n\ttype StripeList<'T> = {{\n\t\t///The list of objects in this page.\n\t\tData: 'T list\n\t\t///True if this list has another page of items after this one that can be fetched.\n\t\tHasMore: bool\n\t\t///The URL where this list can be accessed.\n\t\tUrl: string\n\t}}\n\twith\n\t\t///String representing the object's type. Always has the value `list`.\n\t\tmember _.Object = \"list\"\n\n\t\tstatic member New (data: 'T list, hasMore: bool, url: string) =\n\t\t\t{{\n\t\t\t\tStripeList.Data = data\n\t\t\t\tStripeList.HasMore = hasMore\n\t\t\t\tStripeList.Url = url\n\t\t\t}}\n"
                 sb |> write header
                 sb |> write (frontBuffer.ToString())
             | ModelEnum (keyword, name, valuesString, model) -> 

@@ -1,41 +1,39 @@
 namespace FunStripe.Json
 
 #if FABLE_COMPILER
-/// Fable-compatible JSON deserializer that reads the existing [<JsonField>] and
-/// [<JsonUnionCase>] attributes via Fable's reflection support, using Thoth.Json
-/// for JSON parsing primitives.
+/// Fable-compatible JSON deserializer.
+/// Reads [<JsonPropertyName>] attributes (from System.Text.Json.Serialization) for field and
+/// case name overrides, falling back to snake_case for everything else.
+/// Uses Thoth.Json for JSON parsing primitives.
 module internal FableCore =
     open System
     open System.Reflection
     open FSharp.Reflection
     open Thoth.Json
+    open System.Text.Json.Serialization
 
     // ---------------------------------------------------------------------------
-    // Attribute helpers
+    // Naming helpers
     // ---------------------------------------------------------------------------
 
-    let private getJsonFieldAttr (prop: PropertyInfo) : JsonField option =
-        let attrs = prop.GetCustomAttributes(typeof<JsonField>, false)
-        if attrs.Length > 0 then Some (attrs.[0] :?> JsonField) else None
+    let private snakeCase (name: string) =
+        let r = System.Text.RegularExpressions.Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])")
+        if name.Contains "_" then name
+        else r.Split name |> Array.map (fun s -> s.ToLower()) |> String.concat "_"
 
-    let private getJsonUnionCaseAttr (uci: UnionCaseInfo) : JsonUnionCase option =
-        let attrs = uci.GetCustomAttributes typeof<JsonUnionCase>
-        if attrs.Length > 0 then Some (attrs.[0] :?> JsonUnionCase) else None
+    let private getPropertyName (prop: PropertyInfo) =
+        let attrs = prop.GetCustomAttributes(typeof<JsonPropertyNameAttribute>, false)
+        if attrs.Length > 0 then
+            (attrs.[0] :?> JsonPropertyNameAttribute).Name
+        else
+            snakeCase prop.Name
 
-    let private getFieldName (config: JsonConfig) (prop: PropertyInfo) =
-        match getJsonFieldAttr prop with
-        | Some jf when not (String.IsNullOrEmpty jf.Name) -> jf.Name
-        | _ -> config.JsonFieldNaming prop.Name
-
-    let private getTransformAttr (prop: PropertyInfo) : Type option =
-        match getJsonFieldAttr prop with
-        | Some jf when jf.Transform <> null -> Some jf.Transform
-        | _ -> None
-
-    let private getUnionCaseName (config: JsonConfig) (uci: UnionCaseInfo) =
-        match getJsonUnionCaseAttr uci with
-        | Some juc when not (String.IsNullOrEmpty juc.Case) -> juc.Case
-        | _ -> config.JsonFieldNaming uci.Name
+    let private getUnionCaseName (uci: UnionCaseInfo) =
+        let attrs = uci.GetCustomAttributes typeof<JsonPropertyNameAttribute>
+        if attrs.Length > 0 then
+            (attrs.[0] :?> JsonPropertyNameAttribute).Name
+        else
+            snakeCase uci.Name
 
     // ---------------------------------------------------------------------------
     // Type helpers
@@ -51,29 +49,10 @@ module internal FableCore =
         t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<Map<_, _>>
 
     // ---------------------------------------------------------------------------
-    // Transform decoders for the three known ITypeTransform implementations
-    // ---------------------------------------------------------------------------
-
-    let private applyTransformDecoder (transformType: Type) : Decoder<obj> =
-        if transformType = typeof<Transforms.DateTimeEpoch> then
-            Decode.int64
-            |> Decode.map (fun epoch ->
-                DateTime(1970, 1, 1).Add(TimeSpan.FromSeconds(float epoch)) :> obj)
-        elif transformType = typeof<Transforms.DateTimeOffsetEpoch> then
-            Decode.int64
-            |> Decode.map (fun epoch ->
-                DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)
-                    .Add(TimeSpan.FromSeconds(float epoch)) :> obj)
-        elif transformType = typeof<Transforms.UriTransform> then
-            Decode.string |> Decode.map (fun s -> Uri(s) :> obj)
-        else
-            Decode.fail $"Unsupported transform type: {transformType.Name}"
-
-    // ---------------------------------------------------------------------------
     // Main recursive decoder builder
     // ---------------------------------------------------------------------------
 
-    let rec private makeDecoder (config: JsonConfig) (t: Type) : Decoder<obj> =
+    let rec private makeDecoder (t: Type) : Decoder<obj> =
         if t = typeof<string> then
             Decode.string |> Decode.map box
         elif t = typeof<bool> then
@@ -95,22 +74,22 @@ module internal FableCore =
         elif t = typeof<decimal> then
             Decode.decimal |> Decode.map box
         elif t = typeof<DateTime> then
-            // DateTime without a Transform attribute: try ISO-8601 string first, then epoch int
+            // All Stripe DateTime fields use Unix epoch integers
             Decode.oneOf [
-                Decode.string
-                |> Decode.map (fun s -> DateTime.Parse(s, System.Globalization.CultureInfo.InvariantCulture) :> obj)
                 Decode.int64
                 |> Decode.map (fun epoch ->
-                    DateTime(1970, 1, 1).Add(TimeSpan.FromSeconds(float epoch)) :> obj)
+                    DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Add(TimeSpan.FromSeconds(float epoch)) :> obj)
+                Decode.string
+                |> Decode.map (fun s -> DateTime.Parse(s, System.Globalization.CultureInfo.InvariantCulture) :> obj)
             ]
         elif t = typeof<DateTimeOffset> then
             Decode.oneOf [
-                Decode.string
-                |> Decode.map (fun s -> DateTimeOffset.Parse(s, System.Globalization.CultureInfo.InvariantCulture) :> obj)
                 Decode.int64
                 |> Decode.map (fun epoch ->
                     DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)
                         .Add(TimeSpan.FromSeconds(float epoch)) :> obj)
+                Decode.string
+                |> Decode.map (fun s -> DateTimeOffset.Parse(s, System.Globalization.CultureInfo.InvariantCulture) :> obj)
             ]
         elif t = typeof<Guid> then
             Decode.string |> Decode.map (fun s -> Guid.Parse s :> obj)
@@ -118,7 +97,7 @@ module internal FableCore =
             Decode.string |> Decode.map (fun s -> Uri s :> obj)
         elif isListType t then
             let itemType = t.GetGenericArguments().[0]
-            let itemDecoder = makeDecoder config itemType
+            let itemDecoder = makeDecoder itemType
             Decode.oneOf [
                 // Standard JSON array
                 Decode.list itemDecoder |> Decode.map box
@@ -128,45 +107,36 @@ module internal FableCore =
         elif isMapType t then
             // Map<string, 'V>
             let valueType = t.GetGenericArguments().[1]
-            let valueDecoder = makeDecoder config valueType
+            let valueDecoder = makeDecoder valueType
             Decode.dict valueDecoder |> Decode.map box
         elif FSharpType.IsRecord t then
-            makeRecordDecoder config t
+            makeRecordDecoder t
         elif FSharpType.IsUnion t then
-            makeUnionDecoder config t
+            makeUnionDecoder t
         else
             Decode.fail $"FableCore: unsupported type '{t.Name}'"
 
-    and private makeDecoderForProp (config: JsonConfig) (prop: PropertyInfo) : Decoder<obj> =
-        match getTransformAttr prop with
-        | Some transformType -> applyTransformDecoder transformType
-        | None -> makeDecoder config prop.PropertyType
-
-    and private makeRecordDecoder (config: JsonConfig) (t: Type) : Decoder<obj> =
+    and private makeRecordDecoder (t: Type) : Decoder<obj> =
         let props = FSharpType.GetRecordFields t
         Decode.object (fun get ->
             let values =
                 props
                 |> Array.map (fun prop ->
-                    let fieldName = getFieldName config prop
+                    let fieldName = getPropertyName prop
                     let fieldType = prop.PropertyType
                     if isOptionType fieldType then
                         // For option fields: absent or null → None; present → Some value
                         let innerType = fieldType.GetGenericArguments().[0]
-                        let innerDecoder =
-                            match getTransformAttr prop with
-                            | Some transformType -> applyTransformDecoder transformType
-                            | None -> makeDecoder config innerType
-                        // get.Optional.Field returns 'T option; here 'T = obj, so we get obj option
+                        let innerDecoder = makeDecoder innerType
                         get.Optional.Field fieldName innerDecoder |> box
                     else
-                        let decoder = makeDecoderForProp config prop
+                        let decoder = makeDecoder fieldType
                         get.Required.Field fieldName decoder |> box
                 )
             FSharpValue.MakeRecord(t, values)
         )
 
-    and private makeUnionDecoder (config: JsonConfig) (t: Type) : Decoder<obj> =
+    and private makeUnionDecoder (t: Type) : Decoder<obj> =
         let unionCases = FSharpType.GetUnionCases t
         // Simple string enums: all cases have zero fields
         let isSimpleEnum = unionCases |> Array.forall (fun c -> c.GetFields().Length = 0)
@@ -175,7 +145,7 @@ module internal FableCore =
             |> Decode.andThen (fun s ->
                 let matchedCase =
                     unionCases
-                    |> Array.tryFind (fun c -> getUnionCaseName config c = s)
+                    |> Array.tryFind (fun c -> getUnionCaseName c = s)
                 match matchedCase with
                 | Some uci ->
                     Decode.succeed (FSharpValue.MakeUnion(uci, [||]))
@@ -193,14 +163,14 @@ module internal FableCore =
                         // Zero-field case matched by string value
                         Decode.string
                         |> Decode.andThen (fun s ->
-                            if getUnionCaseName config uci = s then
+                            if getUnionCaseName uci = s then
                                 Decode.succeed (FSharpValue.MakeUnion(uci, [||]))
                             else
                                 Decode.fail $"Not case {uci.Name}")
                     | 1 ->
                         // Single-field case: decode the inner value
                         let fieldType = fields.[0].PropertyType
-                        let fieldDecoder = makeDecoder config fieldType
+                        let fieldDecoder = makeDecoder fieldType
                         fieldDecoder
                         |> Decode.map (fun v -> FSharpValue.MakeUnion(uci, [| v |]))
                     | _ ->
@@ -213,9 +183,8 @@ module internal FableCore =
     // ---------------------------------------------------------------------------
 
     /// Deserialize a JSON string to an F# value of the given runtime type.
-    /// Uses the supplied JsonConfig for field naming and attribute inspection.
-    let deserializeString (config: JsonConfig) (t: Type) (jsonString: string) : obj =
-        let decoder = makeDecoder config t
+    let deserializeString (t: Type) (jsonString: string) : obj =
+        let decoder = makeDecoder t
         match Decode.fromString decoder jsonString with
         | Ok result -> result
         | Error msg -> failwith $"FunStripe JSON deserialization error: {msg}"

@@ -1,7 +1,7 @@
 namespace FunStripe.StripeRequest
 
 open FunStripe
-open FunStripe.Json
+open System.Text.Json.Serialization
 open FunStripe.StripeModel
 open System
 

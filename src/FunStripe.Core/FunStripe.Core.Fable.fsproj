@@ -10,9 +10,10 @@
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library — Fable (Node.js server-side) edition (targets Stripe API $(StripeApiVersion))</PackageDescription>
     <StripeApiVersion>2026-04-22.dahlia</StripeApiVersion>
-    <PackageTags>stripe;fsharp;fable;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
+    <PackageTags>fable-javascript;stripe;fsharp;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
+    <FablePackageType>library</FablePackageType>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
-    <DefineConstants>$(DefineConstants);LITE;FABLE_COMPILER</DefineConstants>
+    <DefineConstants>$(DefineConstants);FABLE_COMPILER</DefineConstants>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup>
@@ -25,16 +26,15 @@
   </PropertyGroup>
   <!--
     Source files: same as FunStripe.Core.fsproj but:
-      - JsonValueHelpers.fs is omitted (FSharp.Data-only, not needed under FABLE_COMPILER)
+      - StripeConverter.fs is omitted (System.Text.Json serializer; not needed under FABLE_COMPILER)
+      - AssemblyInfo.fs is omitted (assembly-level attributes not needed for Fable)
+      - WebhookSigning.fs is omitted (System.Security.Cryptography not available in Fable)
       - FableCore.fs is added (Fable-compatible JSON deserializer using Thoth.Json)
+      - StripeRequest.fs (monolithic) replaced by the same split files as FunStripe.Core.fsproj
     FABLE_COMPILER conditional compilation symbols in the shared source files gate
     the platform-specific code paths automatically.
   -->
   <ItemGroup>
-    <Compile Include="../Json/InterfaceTypes.fs" Link="Json/InterfaceTypes.fs" />
-    <Compile Include="../Json/Reflection.fs" Link="Json/Reflection.fs" />
-    <Compile Include="../Json/Core.fs" Link="Json/Core.fs" />
-    <Compile Include="../Json/Transforms.fs" Link="Json/Transforms.fs" />
     <Compile Include="../Json/FableCore.fs" Link="Json/FableCore.fs" />
     <Compile Include="../Config.fs" Link="Config.fs" />
     <Compile Include="../Util.fs" Link="Util.fs" />
@@ -43,7 +43,22 @@
     <Compile Include="../StripeModel.fs" Link="StripeModel.fs" />
     <Compile Include="../StripeError.fs" Link="StripeError.fs" />
     <Compile Include="../RestApi.fs" Link="RestApi.fs" />
-    <Compile Include="../StripeRequest.fs" Link="StripeRequest.fs" />
+    <!-- Core Stripe API requests - always included -->
+    <Compile Include="../StripeRequest.Core.fs" Link="StripeRequest.Core.fs" />
+    <!-- Optional resource groups - set FunStripeExclude<Group>=true to exclude -->
+    <Compile Include="../StripeRequest.Connect.fs" Link="StripeRequest.Connect.fs" Condition="'$(FunStripeExcludeConnect)' != 'true'" />
+    <Compile Include="../StripeRequest.Billing.fs" Link="StripeRequest.Billing.fs" Condition="'$(FunStripeExcludeBilling)' != 'true'" />
+    <Compile Include="../StripeRequest.Checkout.fs" Link="StripeRequest.Checkout.fs" Condition="'$(FunStripeExcludeCheckout)' != 'true'" />
+    <Compile Include="../StripeRequest.FinancialConnections.fs" Link="StripeRequest.FinancialConnections.fs" Condition="'$(FunStripeExcludeFinancialConnections)' != 'true'" />
+    <Compile Include="../StripeRequest.Identity.fs" Link="StripeRequest.Identity.fs" Condition="'$(FunStripeExcludeIdentity)' != 'true'" />
+    <Compile Include="../StripeRequest.Issuing.fs" Link="StripeRequest.Issuing.fs" Condition="'$(FunStripeExcludeIssuing)' != 'true'" />
+    <Compile Include="../StripeRequest.PaymentLinks.fs" Link="StripeRequest.PaymentLinks.fs" Condition="'$(FunStripeExcludePaymentLinks)' != 'true'" />
+    <Compile Include="../StripeRequest.Radar.fs" Link="StripeRequest.Radar.fs" Condition="'$(FunStripeExcludeRadar)' != 'true'" />
+    <Compile Include="../StripeRequest.Reporting.fs" Link="StripeRequest.Reporting.fs" Condition="'$(FunStripeExcludeReporting)' != 'true'" />
+    <Compile Include="../StripeRequest.Sigma.fs" Link="StripeRequest.Sigma.fs" Condition="'$(FunStripeExcludeSigma)' != 'true'" />
+    <Compile Include="../StripeRequest.Terminal.fs" Link="StripeRequest.Terminal.fs" Condition="'$(FunStripeExcludeTerminal)' != 'true'" />
+    <Compile Include="../StripeRequest.TestHelpers.fs" Link="StripeRequest.TestHelpers.fs" Condition="'$(FunStripeExcludeTestHelpers)' != 'true'" />
+    <Compile Include="../StripeRequest.Treasury.fs" Link="StripeRequest.Treasury.fs" Condition="'$(FunStripeExcludeTreasury)' != 'true'" />
     <None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
@@ -51,5 +66,12 @@
     <PackageReference Include="Fable.SimpleHttp" />
     <!-- JSON parsing for Fable (replaces FSharp.Data.Json.Core) -->
     <PackageReference Include="Thoth.Json" />
+    <!-- System.Text.Json: required for [<JsonPropertyName>] attribute used across shared source files -->
+    <PackageReference Include="System.Text.Json" />
+    <!-- Fable.Package.SDK: packs F# source into fable/ folder and enables fable.io/packages discovery -->
+    <PackageReference Include="Fable.Package.SDK">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

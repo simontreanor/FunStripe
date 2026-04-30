@@ -128,10 +128,10 @@ module RequestBuilder =
     let escapeNumeric s =
         Regex.Replace(s, @"^(\d)", "Numeric$1")
 
-    ///Add `JsonUnionCase` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
+    ///Add `JsonPropertyName` attribute to discriminated-union members, in cases where standard snake-casing of discriminated union names would prevent successful round-tripping
     let escapeForJson (s: string) =
         if Regex.IsMatch(s, @"^\p{Lu}") || Regex.IsMatch(s, @"^\d") || s.Contains("-") || s.Contains(" ") then
-            $@"[<JsonUnionCase(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
+            $@"[<JsonPropertyName(""{s}"")>] {s |> clean |> pascalCasify |> escapeNumeric}"
         else
             s |> clean |> pascalCasify
 
@@ -733,7 +733,7 @@ module RequestBuilder =
         for node in flatten [] fullModel do
             match node with
             | ModelHeader ->
-                sb |> write $"namespace FunStripe\n\nopen FunStripe.Json\nopen StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeRequest =\n"
+                sb |> write $"namespace FunStripe\n\nopen System.Text.Json.Serialization\nopen StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\nmodule StripeRequest =\n"
             | ModelDu (name, valuesString, _) ->
                 sb |> write $"\t\ttype {name} =\n{valuesString}\n"
             | ModelType (name, propertiesString, parametersString, assignments, _) ->
@@ -819,9 +819,10 @@ module RequestBuilder =
             let content = groupBuilders.[group].ToString().Trim()
             if content <> "" then
                 let header =
-                    $"namespace FunStripe.StripeRequest\n\nopen FunStripe\nopen FunStripe.Json\nopen FunStripe.StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\n"
+                    $"namespace FunStripe.StripeRequest\n\nopen FunStripe\nopen System.Text.Json.Serialization\nopen FunStripe.StripeModel\nopen System\n\n[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]\n"
                 let fileName = IO.Path.Combine(outputDir, $"StripeRequest.{group}.fs")
-                IO.File.WriteAllText(fileName, header + content + "\n")
+                let fileContent = (header + content + "\n").Replace("\r\n", "\n").Replace("\n", Environment.NewLine)
+                IO.File.WriteAllText(fileName, fileContent)
 
 #if INTERACTIVE
     ;;
