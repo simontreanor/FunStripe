@@ -11,13 +11,3 @@ type SmorResourceManagedPayments =
         Enabled: bool
     }
 
-module SmorResourceManagedPayments =
-    let create
-        (
-            enabled: bool
-        ) : SmorResourceManagedPayments
-        =
-        {
-          Enabled = enabled
-        }
-

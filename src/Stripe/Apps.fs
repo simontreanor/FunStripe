@@ -34,24 +34,3 @@ module AppsSecret =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "apps.secret"
 
-    let create
-        (
-            created: DateTime,
-            expiresAt: DateTime option,
-            id: string,
-            livemode: bool,
-            name: string,
-            scope: SecretServiceResourceScope
-        ) : AppsSecret
-        =
-        {
-          Created = created
-          ExpiresAt = expiresAt
-          Id = id
-          Livemode = livemode
-          Name = name
-          Scope = scope
-          Deleted = None
-          Payload = None
-        }
-

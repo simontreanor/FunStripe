@@ -17,14 +17,3 @@ type SecretServiceResourceScope =
         User: string option
     }
 
-module SecretServiceResourceScope =
-    let create
-        (
-            ``type``: SecretServiceResourceScopeType
-        ) : SecretServiceResourceScope
-        =
-        {
-          Type = ``type``
-          User = None
-        }
-

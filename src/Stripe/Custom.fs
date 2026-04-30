@@ -15,20 +15,6 @@ type CustomUnitAmount =
         Preset: int option
     }
 
-module CustomUnitAmount =
-    let create
-        (
-            maximum: int option,
-            minimum: int option,
-            preset: int option
-        ) : CustomUnitAmount
-        =
-        {
-          Maximum = maximum
-          Minimum = minimum
-          Preset = preset
-        }
-
 type CustomLogo =
     {
         /// Content type of the Dashboard-only CustomPaymentMethodType logo.
@@ -36,16 +22,4 @@ type CustomLogo =
         /// URL of the Dashboard-only CustomPaymentMethodType logo.
         Url: string
     }
-
-module CustomLogo =
-    let create
-        (
-            contentType: string option,
-            url: string
-        ) : CustomLogo
-        =
-        {
-          ContentType = contentType
-          Url = url
-        }
 

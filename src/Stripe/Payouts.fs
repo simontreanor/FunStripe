@@ -18,15 +18,3 @@ type PayoutsTraceId =
         Value: string option
     }
 
-module PayoutsTraceId =
-    let create
-        (
-            status: PayoutsTraceIdStatus,
-            value: string option
-        ) : PayoutsTraceId
-        =
-        {
-          Status = status
-          Value = value
-        }
-

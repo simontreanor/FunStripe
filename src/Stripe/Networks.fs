@@ -13,15 +13,3 @@ type Networks =
         Preferred: string option
     }
 
-module Networks =
-    let create
-        (
-            available: string list,
-            preferred: string option
-        ) : Networks
-        =
-        {
-          Available = available
-          Preferred = preferred
-        }
-

@@ -13,15 +13,3 @@ type EmailSent =
         EmailSentTo: string
     }
 
-module EmailSent =
-    let create
-        (
-            emailSentAt: DateTime,
-            emailSentTo: string
-        ) : EmailSent
-        =
-        {
-          EmailSentAt = emailSentAt
-          EmailSentTo = emailSentTo
-        }
-

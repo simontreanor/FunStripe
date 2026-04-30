@@ -24,26 +24,6 @@ type PaymentsPrimitivesPaymentRecordsResourceAddress =
         State: string option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourceAddress =
-    let create
-        (
-            city: string option,
-            country: IsoTypes.IsoCountryCode option,
-            line1: string option,
-            line2: string option,
-            postalCode: string option,
-            state: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourceAddress
-        =
-        {
-          City = city
-          Country = country
-          Line1 = line1
-          Line2 = line2
-          PostalCode = postalCode
-          State = state
-        }
-
 /// The customer's shipping information associated with this payment.
 type PaymentsPrimitivesPaymentRecordsResourceShippingDetails =
     {
@@ -54,20 +34,6 @@ type PaymentsPrimitivesPaymentRecordsResourceShippingDetails =
         Phone: string option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourceShippingDetails =
-    let create
-        (
-            address: PaymentsPrimitivesPaymentRecordsResourceAddress,
-            name: string option,
-            phone: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourceShippingDetails
-        =
-        {
-          Address = address
-          Name = name
-          Phone = phone
-        }
-
 /// Custom processors represent payment processors not modeled directly in
 /// the Stripe API. This resource consists of details about the custom processor
 /// used for this payment attempt.
@@ -77,16 +43,6 @@ type PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetai
         PaymentReference: string option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails =
-    let create
-        (
-            paymentReference: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails
-        =
-        {
-          PaymentReference = paymentReference
-        }
-
 /// Processor information associated with this payment.
 type PaymentsPrimitivesPaymentRecordsResourceProcessorDetails =
     { Custom: PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails option }
@@ -94,15 +50,6 @@ type PaymentsPrimitivesPaymentRecordsResourceProcessorDetails =
 module PaymentsPrimitivesPaymentRecordsResourceProcessorDetails =
     ///The processor used for this payment attempt.
     let ``type`` = "custom"
-
-    let create
-        (
-            custom: PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails option
-        ) : PaymentsPrimitivesPaymentRecordsResourceProcessorDetails
-        =
-        {
-          Custom = custom
-        }
 
 /// Custom Payment Methods represent Payment Method types not modeled directly in
 /// the Stripe API. This resource consists of details about the custom payment method
@@ -114,18 +61,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails =
         /// The custom payment method type associated with this payment.
         Type: string option
     }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails =
-    let create
-        (
-            displayName: string,
-            ``type``: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails
-        =
-        {
-          DisplayName = displayName
-          Type = ``type``
-        }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand =
     | Amex
@@ -196,20 +131,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChe
         CvcCheck: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksCvcCheck option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks =
-    let create
-        (
-            addressLine1Check: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressLine1Check option,
-            addressPostalCodeCheck: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressPostalCodeCheck option,
-            cvcCheck: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksCvcCheck option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks
-        =
-        {
-          AddressLine1Check = addressLine1Check
-          AddressPostalCodeCheck = addressPostalCodeCheck
-          CvcCheck = cvcCheck
-        }
-
 [<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanType =
     | Bonus
@@ -228,48 +149,17 @@ module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceI
     ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card. One of `month`.
     let interval = "month"
 
-    let create
-        (
-            count: int option,
-            ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanType
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan
-        =
-        {
-          Count = count
-          Type = ``type``
-        }
-
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments =
     {
         /// Installment plan selected for the payment.
         Plan: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments =
-    let create
-        (
-            plan: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments
-        =
-        {
-          Plan = plan
-        }
-
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken =
     {
         /// Indicates if Stripe used a network token, either user provided or Stripe managed when processing the transaction.
         Used: bool
     }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken =
-    let create
-        (
-            used: bool
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken
-        =
-        {
-          Used = used
-        }
 
 [<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureAuthenticationFlow =
@@ -337,30 +227,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThr
         Version: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureVersion option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure =
-    let create
-        (
-            authenticationFlow: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureAuthenticationFlow option,
-            cryptogram: string option,
-            electronicCommerceIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureElectronicCommerceIndicator option,
-            exemptionIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureExemptionIndicator option,
-            exemptionIndicatorApplied: bool option,
-            result: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResult option,
-            resultReason: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResultReason option,
-            version: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureVersion option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure
-        =
-        {
-          AuthenticationFlow = authenticationFlow
-          Cryptogram = cryptogram
-          ElectronicCommerceIndicator = electronicCommerceIndicator
-          ExemptionIndicator = exemptionIndicator
-          ExemptionIndicatorApplied = exemptionIndicatorApplied
-          Result = result
-          ResultReason = resultReason
-          Version = version
-        }
-
 [<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePayType =
     | ApplePay
@@ -372,28 +238,8 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWal
         Type: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePayType
     }
 
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePay =
-    let create
-        (
-            ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePayType
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePay
-        =
-        {
-          Type = ``type``
-        }
-
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay =
     { PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay: string option }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay =
-    let create
-        (
-            paymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay: string option option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay
-        =
-        {
-          PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay = paymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay |> Option.flatten
-        }
 
 [<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType =
@@ -411,19 +257,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWal
         /// The type of the card wallet, one of `apple_pay` or `google_pay`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
         Type: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType
     }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet =
-    let create
-        (
-            ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet
-        =
-        {
-          Type = ``type``
-          ApplePay = None
-          DynamicLast4 = None
-          GooglePay = None
-        }
 
 [<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage =
@@ -484,56 +317,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails =
         Wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails =
-    let create
-        (
-            authorizationCode: string option,
-            brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option,
-            checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option,
-            country: IsoTypes.IsoCountryCode option,
-            description: string option,
-            expMonth: int option,
-            expYear: int option,
-            funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option,
-            iin: string option,
-            installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option,
-            issuer: string option,
-            last4: string option,
-            network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option,
-            networkAdviceCode: string option,
-            networkDeclineCode: string option,
-            networkTransactionId: string option,
-            storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option,
-            threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option,
-            wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails
-        =
-        {
-          AuthorizationCode = authorizationCode
-          Brand = brand
-          Checks = checks
-          Country = country
-          Description = description
-          ExpMonth = expMonth
-          ExpYear = expYear
-          Funding = funding
-          Iin = iin
-          Installments = installments
-          Issuer = issuer
-          Last4 = last4
-          Network = network
-          NetworkAdviceCode = networkAdviceCode
-          NetworkDeclineCode = networkDeclineCode
-          NetworkTransactionId = networkTransactionId
-          StoredCredentialUsage = storedCredentialUsage
-          ThreeDSecure = threeDSecure
-          Wallet = wallet
-          CaptureBefore = None
-          Fingerprint = None
-          Moto = None
-          NetworkToken = None
-        }
-
 /// Billing details used by the customer for this payment.
 type PaymentsPrimitivesPaymentRecordsResourceBillingDetails =
     {
@@ -545,22 +328,6 @@ type PaymentsPrimitivesPaymentRecordsResourceBillingDetails =
         /// The billing phone number associated with the method of payment.
         Phone: string option
     }
-
-module PaymentsPrimitivesPaymentRecordsResourceBillingDetails =
-    let create
-        (
-            address: PaymentsPrimitivesPaymentRecordsResourceAddress,
-            email: string option,
-            name: string option,
-            phone: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourceBillingDetails
-        =
-        {
-          Address = address
-          Email = email
-          Name = name
-          Phone = phone
-        }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard =
     {
@@ -577,24 +344,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResour
         Last4: string option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard =
-    let create
-        (
-            brand: string option,
-            country: IsoTypes.IsoCountryCode option,
-            expMonth: int option,
-            expYear: int option,
-            last4: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard
-        =
-        {
-          Brand = brand
-          Country = country
-          ExpMonth = expMonth
-          ExpYear = expYear
-          Last4 = last4
-        }
-
 [<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStoreChain =
     | Familymart
@@ -607,16 +356,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResource
         /// The name of the convenience store chain where the payment was completed.
         Chain: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStoreChain option
     }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStore =
-    let create
-        (
-            chain: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStoreChain option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStore
-        =
-        {
-          Chain = chain
-        }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand =
     | Amex
@@ -657,26 +396,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResour
         Last4: string option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard =
-    let create
-        (
-            brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand option,
-            country: IsoTypes.IsoCountryCode option,
-            expMonth: int option,
-            expYear: int option,
-            funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardFunding option,
-            last4: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard
-        =
-        {
-          Brand = brand
-          Country = country
-          ExpMonth = expMonth
-          ExpYear = expYear
-          Funding = funding
-          Last4 = last4
-        }
-
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding =
     { Card:
         PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard option }
@@ -685,30 +404,11 @@ module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsReso
     ///funding type of the underlying payment method.
     let ``type`` = "card"
 
-    let create
-        (
-            card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding
-        =
-        {
-          Card = card
-        }
-
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments =
     {
         /// The number of installments.
         Count: int option
     }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments =
-    let create
-        (
-            count: int option
-        ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments
-        =
-        {
-          Count = count
-        }
 
 /// Information about the customer for this payment.
 type PaymentsPrimitivesPaymentRecordsResourceCustomerDetails =
@@ -723,22 +423,6 @@ type PaymentsPrimitivesPaymentRecordsResourceCustomerDetails =
         Phone: string option
     }
 
-module PaymentsPrimitivesPaymentRecordsResourceCustomerDetails =
-    let create
-        (
-            customer: string option,
-            email: string option,
-            name: string option,
-            phone: string option
-        ) : PaymentsPrimitivesPaymentRecordsResourceCustomerDetails
-        =
-        {
-          Customer = customer
-          Email = email
-          Name = name
-          Phone = phone
-        }
-
 /// A representation of an amount of money, consisting of an amount and a currency.
 type PaymentsPrimitivesPaymentRecordsResourceAmount =
     {
@@ -747,16 +431,4 @@ type PaymentsPrimitivesPaymentRecordsResourceAmount =
         /// A positive integer representing the amount in the currency's [minor unit](https://docs.stripe.com/currencies#zero-decimal). For example, `100` can represent 1 USD or 100 JPY.
         Value: int
     }
-
-module PaymentsPrimitivesPaymentRecordsResourceAmount =
-    let create
-        (
-            currency: IsoTypes.IsoCurrencyCode,
-            value: int
-        ) : PaymentsPrimitivesPaymentRecordsResourceAmount
-        =
-        {
-          Currency = currency
-          Value = value
-        }
 

@@ -39,35 +39,6 @@ module Capability =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "capability"
 
-    let create
-        (
-            account: CapabilityAccount'AnyOf,
-            id: string,
-            requested: bool,
-            requestedAt: DateTime option,
-            status: CapabilityStatus
-        ) : Capability
-        =
-        {
-          Account = account
-          Id = id
-          Requested = requested
-          RequestedAt = requestedAt
-          Status = status
-          FutureRequirements = None
-          Requirements = None
-        }
-
 /// Occurs whenever a capability has new requirements or a new status.
 type CapabilityUpdated = { Object: Capability }
-
-module CapabilityUpdated =
-    let create
-        (
-            object: Capability
-        ) : CapabilityUpdated
-        =
-        {
-          Object = object
-        }
 

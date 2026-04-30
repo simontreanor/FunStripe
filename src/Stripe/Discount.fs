@@ -20,12 +20,3 @@ module DiscountSource =
     ///The source type of the discount.
     let ``type`` = "coupon"
 
-    let create
-        (
-            coupon: DiscountSourceCoupon'AnyOf option
-        ) : DiscountSource
-        =
-        {
-          Coupon = coupon
-        }
-

@@ -23,19 +23,3 @@ module EphemeralKey =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "ephemeral_key"
 
-    let create
-        (
-            created: DateTime,
-            expires: DateTime,
-            id: string,
-            livemode: bool
-        ) : EphemeralKey
-        =
-        {
-          Created = created
-          Expires = expires
-          Id = id
-          Livemode = livemode
-          Secret = None
-        }
-

@@ -38,41 +38,8 @@ module ReportingReportType =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reporting.report_type"
 
-    let create
-        (
-            dataAvailableEnd: DateTime,
-            dataAvailableStart: DateTime,
-            defaultColumns: string list option,
-            id: string,
-            livemode: bool,
-            name: string,
-            updated: DateTime,
-            version: int
-        ) : ReportingReportType
-        =
-        {
-          DataAvailableEnd = dataAvailableEnd
-          DataAvailableStart = dataAvailableStart
-          DefaultColumns = defaultColumns
-          Id = id
-          Livemode = livemode
-          Name = name
-          Updated = updated
-          Version = version
-        }
-
 /// Occurs whenever a `ReportType` is updated (typically to indicate that a new day's data has come available).
 type ReportingReportTypeUpdated = { Object: ReportingReportType }
-
-module ReportingReportTypeUpdated =
-    let create
-        (
-            object: ReportingReportType
-        ) : ReportingReportTypeUpdated
-        =
-        {
-          Object = object
-        }
 
 /// The Report Run object represents an instance of a report type generated with
 /// specific run parameters. Once the object is created, Stripe begins processing the report.
@@ -111,54 +78,9 @@ module ReportingReportRun =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reporting.report_run"
 
-    let create
-        (
-            created: DateTime,
-            error: string option,
-            id: string,
-            livemode: bool,
-            parameters: FinancialReportingFinanceReportRunRunParameters,
-            reportType: string,
-            result: File option,
-            status: string,
-            succeededAt: DateTime option
-        ) : ReportingReportRun
-        =
-        {
-          Created = created
-          Error = error
-          Id = id
-          Livemode = livemode
-          Parameters = parameters
-          ReportType = reportType
-          Result = result
-          Status = status
-          SucceededAt = succeededAt
-        }
-
 /// Occurs whenever a requested `ReportRun` completed successfully.
 type ReportingReportRunSucceeded = { Object: ReportingReportRun }
 
-module ReportingReportRunSucceeded =
-    let create
-        (
-            object: ReportingReportRun
-        ) : ReportingReportRunSucceeded
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever a requested `ReportRun` failed to complete.
 type ReportingReportRunFailed = { Object: ReportingReportRun }
-
-module ReportingReportRunFailed =
-    let create
-        (
-            object: ReportingReportRun
-        ) : ReportingReportRunFailed
-        =
-        {
-          Object = object
-        }
 

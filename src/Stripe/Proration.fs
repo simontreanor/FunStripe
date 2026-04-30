@@ -12,13 +12,3 @@ type ProrationDetails =
         DiscountAmounts: DiscountsResourceDiscountAmount list
     }
 
-module ProrationDetails =
-    let create
-        (
-            discountAmounts: DiscountsResourceDiscountAmount list
-        ) : ProrationDetails
-        =
-        {
-          DiscountAmounts = discountAmounts
-        }
-

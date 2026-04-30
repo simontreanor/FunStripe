@@ -16,16 +16,6 @@ type DisputePaymentMethodDetailsAmazonPay =
         DisputeType: DisputePaymentMethodDetailsAmazonPayDisputeType option
     }
 
-module DisputePaymentMethodDetailsAmazonPay =
-    let create
-        (
-            disputeType: DisputePaymentMethodDetailsAmazonPayDisputeType option
-        ) : DisputePaymentMethodDetailsAmazonPay
-        =
-        {
-          DisputeType = disputeType
-        }
-
 type DisputePaymentMethodDetailsCardBrand =
     | Amex
     | CartesBancaires
@@ -57,20 +47,6 @@ type DisputePaymentMethodDetailsCard =
         NetworkReasonCode: string option
     }
 
-module DisputePaymentMethodDetailsCard =
-    let create
-        (
-            brand: DisputePaymentMethodDetailsCardBrand,
-            caseType: DisputePaymentMethodDetailsCardCaseType,
-            networkReasonCode: string option
-        ) : DisputePaymentMethodDetailsCard
-        =
-        {
-          Brand = brand
-          CaseType = caseType
-          NetworkReasonCode = networkReasonCode
-        }
-
 type DisputePaymentMethodDetailsKlarna =
     {
         /// Chargeback loss reason mapped by Stripe from Klarna's chargeback loss reason
@@ -79,17 +55,6 @@ type DisputePaymentMethodDetailsKlarna =
         ReasonCode: string option
     }
 
-module DisputePaymentMethodDetailsKlarna =
-    let create
-        (
-            reasonCode: string option
-        ) : DisputePaymentMethodDetailsKlarna
-        =
-        {
-          ReasonCode = reasonCode
-          ChargebackLossReasonCode = None
-        }
-
 type DisputePaymentMethodDetailsPaypal =
     {
         /// The ID of the dispute in PayPal.
@@ -97,18 +62,6 @@ type DisputePaymentMethodDetailsPaypal =
         /// The reason for the dispute as defined by PayPal
         ReasonCode: string option
     }
-
-module DisputePaymentMethodDetailsPaypal =
-    let create
-        (
-            caseId: string option,
-            reasonCode: string option
-        ) : DisputePaymentMethodDetailsPaypal
-        =
-        {
-          CaseId = caseId
-          ReasonCode = reasonCode
-        }
 
 [<Struct>]
 type DisputePaymentMethodDetailsType =
@@ -126,20 +79,6 @@ type DisputePaymentMethodDetails =
         /// Payment method type.
         Type: DisputePaymentMethodDetailsType
     }
-
-module DisputePaymentMethodDetails =
-    let create
-        (
-            ``type``: DisputePaymentMethodDetailsType
-        ) : DisputePaymentMethodDetails
-        =
-        {
-          Type = ``type``
-          AmazonPay = None
-          Card = None
-          Klarna = None
-          Paypal = None
-        }
 
 [<Struct>]
 type DisputeEnhancedEligibilityVisaCompellingEvidence3RequiredActions =
@@ -163,18 +102,6 @@ type DisputeEnhancedEligibilityVisaCompellingEvidence3 =
         Status: DisputeEnhancedEligibilityVisaCompellingEvidence3Status
     }
 
-module DisputeEnhancedEligibilityVisaCompellingEvidence3 =
-    let create
-        (
-            requiredActions: DisputeEnhancedEligibilityVisaCompellingEvidence3RequiredActions list,
-            status: DisputeEnhancedEligibilityVisaCompellingEvidence3Status
-        ) : DisputeEnhancedEligibilityVisaCompellingEvidence3
-        =
-        {
-          RequiredActions = requiredActions
-          Status = status
-        }
-
 [<Struct>]
 type DisputeEnhancedEligibilityVisaComplianceStatus =
     | FeeAcknowledged
@@ -186,31 +113,9 @@ type DisputeEnhancedEligibilityVisaCompliance =
         Status: DisputeEnhancedEligibilityVisaComplianceStatus
     }
 
-module DisputeEnhancedEligibilityVisaCompliance =
-    let create
-        (
-            status: DisputeEnhancedEligibilityVisaComplianceStatus
-        ) : DisputeEnhancedEligibilityVisaCompliance
-        =
-        {
-          Status = status
-        }
-
 type DisputeEnhancedEligibility =
     { VisaCompellingEvidence3: DisputeEnhancedEligibilityVisaCompellingEvidence3 option
       VisaCompliance: DisputeEnhancedEligibilityVisaCompliance option }
-
-module DisputeEnhancedEligibility =
-    let create
-        (
-            visaCompellingEvidence3: DisputeEnhancedEligibilityVisaCompellingEvidence3 option,
-            visaCompliance: DisputeEnhancedEligibilityVisaCompliance option
-        ) : DisputeEnhancedEligibility
-        =
-        {
-          VisaCompellingEvidence3 = visaCompellingEvidence3
-          VisaCompliance = visaCompliance
-        }
 
 type DisputeEvidenceDetails =
     {
@@ -224,24 +129,6 @@ type DisputeEvidenceDetails =
         /// The number of times evidence has been submitted. Typically, you may only submit evidence once.
         SubmissionCount: int
     }
-
-module DisputeEvidenceDetails =
-    let create
-        (
-            dueBy: DateTime option,
-            enhancedEligibility: DisputeEnhancedEligibility,
-            hasEvidence: bool,
-            pastDue: bool,
-            submissionCount: int
-        ) : DisputeEvidenceDetails
-        =
-        {
-          DueBy = dueBy
-          EnhancedEligibility = enhancedEligibility
-          HasEvidence = hasEvidence
-          PastDue = pastDue
-          SubmissionCount = submissionCount
-        }
 
 type DisputeTransactionShippingAddress =
     {
@@ -260,26 +147,6 @@ type DisputeTransactionShippingAddress =
         /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
         State: string option
     }
-
-module DisputeTransactionShippingAddress =
-    let create
-        (
-            city: string option,
-            country: IsoTypes.IsoCountryCode option,
-            line1: string option,
-            line2: string option,
-            postalCode: string option,
-            state: string option
-        ) : DisputeTransactionShippingAddress
-        =
-        {
-          City = city
-          Country = country
-          Line1 = line1
-          Line2 = line2
-          PostalCode = postalCode
-          State = state
-        }
 
 [<Struct>]
 type DisputeVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices =
@@ -306,30 +173,6 @@ type DisputeVisaCompellingEvidence3DisputedTransaction =
         ShippingAddress: DisputeTransactionShippingAddress option
     }
 
-module DisputeVisaCompellingEvidence3DisputedTransaction =
-    let create
-        (
-            customerAccountId: string option,
-            customerDeviceFingerprint: string option,
-            customerDeviceId: string option,
-            customerEmailAddress: string option,
-            customerPurchaseIp: string option,
-            merchandiseOrServices: DisputeVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices option,
-            productDescription: string option,
-            shippingAddress: DisputeTransactionShippingAddress option
-        ) : DisputeVisaCompellingEvidence3DisputedTransaction
-        =
-        {
-          CustomerAccountId = customerAccountId
-          CustomerDeviceFingerprint = customerDeviceFingerprint
-          CustomerDeviceId = customerDeviceId
-          CustomerEmailAddress = customerEmailAddress
-          CustomerPurchaseIp = customerPurchaseIp
-          MerchandiseOrServices = merchandiseOrServices
-          ProductDescription = productDescription
-          ShippingAddress = shippingAddress
-        }
-
 type DisputeVisaCompellingEvidence3PriorUndisputedTransaction =
     {
         /// Stripe charge ID for the Visa Compelling Evidence 3.0 eligible prior charge.
@@ -350,30 +193,6 @@ type DisputeVisaCompellingEvidence3PriorUndisputedTransaction =
         ShippingAddress: DisputeTransactionShippingAddress option
     }
 
-module DisputeVisaCompellingEvidence3PriorUndisputedTransaction =
-    let create
-        (
-            charge: string,
-            customerAccountId: string option,
-            customerDeviceFingerprint: string option,
-            customerDeviceId: string option,
-            customerEmailAddress: string option,
-            customerPurchaseIp: string option,
-            productDescription: string option,
-            shippingAddress: DisputeTransactionShippingAddress option
-        ) : DisputeVisaCompellingEvidence3PriorUndisputedTransaction
-        =
-        {
-          Charge = charge
-          CustomerAccountId = customerAccountId
-          CustomerDeviceFingerprint = customerDeviceFingerprint
-          CustomerDeviceId = customerDeviceId
-          CustomerEmailAddress = customerEmailAddress
-          CustomerPurchaseIp = customerPurchaseIp
-          ProductDescription = productDescription
-          ShippingAddress = shippingAddress
-        }
-
 type DisputeEnhancedEvidenceVisaCompellingEvidence3 =
     {
         /// Disputed transaction details for Visa Compelling Evidence 3.0 evidence submission.
@@ -382,49 +201,15 @@ type DisputeEnhancedEvidenceVisaCompellingEvidence3 =
         PriorUndisputedTransactions: DisputeVisaCompellingEvidence3PriorUndisputedTransaction list
     }
 
-module DisputeEnhancedEvidenceVisaCompellingEvidence3 =
-    let create
-        (
-            disputedTransaction: DisputeVisaCompellingEvidence3DisputedTransaction option,
-            priorUndisputedTransactions: DisputeVisaCompellingEvidence3PriorUndisputedTransaction list
-        ) : DisputeEnhancedEvidenceVisaCompellingEvidence3
-        =
-        {
-          DisputedTransaction = disputedTransaction
-          PriorUndisputedTransactions = priorUndisputedTransactions
-        }
-
 type DisputeEnhancedEvidenceVisaCompliance =
     {
         /// A field acknowledging the fee incurred when countering a Visa compliance dispute. If this field is set to true, evidence can be submitted for the compliance dispute. Stripe collects a 500 USD (or local equivalent) amount to cover the network costs associated with resolving compliance disputes. Stripe refunds the 500 USD network fee if you win the dispute.
         FeeAcknowledged: bool
     }
 
-module DisputeEnhancedEvidenceVisaCompliance =
-    let create
-        (
-            feeAcknowledged: bool
-        ) : DisputeEnhancedEvidenceVisaCompliance
-        =
-        {
-          FeeAcknowledged = feeAcknowledged
-        }
-
 type DisputeEnhancedEvidence =
     { VisaCompellingEvidence3: DisputeEnhancedEvidenceVisaCompellingEvidence3 option
       VisaCompliance: DisputeEnhancedEvidenceVisaCompliance option }
-
-module DisputeEnhancedEvidence =
-    let create
-        (
-            visaCompellingEvidence3: DisputeEnhancedEvidenceVisaCompellingEvidence3 option,
-            visaCompliance: DisputeEnhancedEvidenceVisaCompliance option
-        ) : DisputeEnhancedEvidence
-        =
-        {
-          VisaCompellingEvidence3 = visaCompellingEvidence3
-          VisaCompliance = visaCompliance
-        }
 
 type DisputeEvidenceCancellationPolicy'AnyOf =
     | String of string
@@ -520,70 +305,6 @@ type DisputeEvidence =
         /// Any additional evidence or statements.
         UncategorizedText: string option
     }
-
-module DisputeEvidence =
-    let create
-        (
-            accessActivityLog: string option,
-            billingAddress: string option,
-            cancellationPolicy: DisputeEvidenceCancellationPolicy'AnyOf option,
-            cancellationPolicyDisclosure: string option,
-            cancellationRebuttal: string option,
-            customerCommunication: DisputeEvidenceCustomerCommunication'AnyOf option,
-            customerEmailAddress: string option,
-            customerName: string option,
-            customerPurchaseIp: string option,
-            customerSignature: DisputeEvidenceCustomerSignature'AnyOf option,
-            duplicateChargeDocumentation: DisputeEvidenceDuplicateChargeDocumentation'AnyOf option,
-            duplicateChargeExplanation: string option,
-            duplicateChargeId: string option,
-            enhancedEvidence: DisputeEnhancedEvidence,
-            productDescription: string option,
-            receipt: DisputeEvidenceReceipt'AnyOf option,
-            refundPolicy: DisputeEvidenceRefundPolicy'AnyOf option,
-            refundPolicyDisclosure: string option,
-            refundRefusalExplanation: string option,
-            serviceDate: string option,
-            serviceDocumentation: DisputeEvidenceServiceDocumentation'AnyOf option,
-            shippingAddress: string option,
-            shippingCarrier: string option,
-            shippingDate: string option,
-            shippingDocumentation: DisputeEvidenceShippingDocumentation'AnyOf option,
-            shippingTrackingNumber: string option,
-            uncategorizedFile: DisputeEvidenceUncategorizedFile'AnyOf option,
-            uncategorizedText: string option
-        ) : DisputeEvidence
-        =
-        {
-          AccessActivityLog = accessActivityLog
-          BillingAddress = billingAddress
-          CancellationPolicy = cancellationPolicy
-          CancellationPolicyDisclosure = cancellationPolicyDisclosure
-          CancellationRebuttal = cancellationRebuttal
-          CustomerCommunication = customerCommunication
-          CustomerEmailAddress = customerEmailAddress
-          CustomerName = customerName
-          CustomerPurchaseIp = customerPurchaseIp
-          CustomerSignature = customerSignature
-          DuplicateChargeDocumentation = duplicateChargeDocumentation
-          DuplicateChargeExplanation = duplicateChargeExplanation
-          DuplicateChargeId = duplicateChargeId
-          EnhancedEvidence = enhancedEvidence
-          ProductDescription = productDescription
-          Receipt = receipt
-          RefundPolicy = refundPolicy
-          RefundPolicyDisclosure = refundPolicyDisclosure
-          RefundRefusalExplanation = refundRefusalExplanation
-          ServiceDate = serviceDate
-          ServiceDocumentation = serviceDocumentation
-          ShippingAddress = shippingAddress
-          ShippingCarrier = shippingCarrier
-          ShippingDate = shippingDate
-          ShippingDocumentation = shippingDocumentation
-          ShippingTrackingNumber = shippingTrackingNumber
-          UncategorizedFile = uncategorizedFile
-          UncategorizedText = uncategorizedText
-        }
 
 [<Struct>]
 type DisputeEnhancedEligibilityTypes =

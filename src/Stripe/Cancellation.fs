@@ -32,17 +32,3 @@ type CancellationDetails =
         Reason: CancellationDetailsReason option
     }
 
-module CancellationDetails =
-    let create
-        (
-            comment: string option,
-            feedback: CancellationDetailsFeedback option,
-            reason: CancellationDetailsReason option
-        ) : CancellationDetails
-        =
-        {
-          Comment = comment
-          Feedback = feedback
-          Reason = reason
-        }
-

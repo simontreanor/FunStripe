@@ -38,24 +38,6 @@ type PlanTier =
         UpTo: int option
     }
 
-module PlanTier =
-    let create
-        (
-            flatAmount: int option,
-            flatAmountDecimal: string option,
-            unitAmount: int option,
-            unitAmountDecimal: string option,
-            upTo: int option
-        ) : PlanTier
-        =
-        {
-          FlatAmount = flatAmount
-          FlatAmountDecimal = flatAmountDecimal
-          UnitAmount = unitAmount
-          UnitAmountDecimal = unitAmountDecimal
-          UpTo = upTo
-        }
-
 [<Struct>]
 type PlanTiersMode =
     | Graduated
@@ -117,86 +99,12 @@ module Plan =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "plan"
 
-    let create
-        (
-            active: bool,
-            amount: int option,
-            amountDecimal: string option,
-            billingScheme: PlanBillingScheme,
-            created: DateTime,
-            currency: IsoTypes.IsoCurrencyCode,
-            id: string,
-            interval: PlanInterval,
-            intervalCount: int,
-            livemode: bool,
-            metadata: Map<string, string> option,
-            meter: string option,
-            nickname: string option,
-            product: PlanProduct'AnyOf option,
-            tiersMode: PlanTiersMode option,
-            transformUsage: TransformUsage option,
-            trialPeriodDays: int option,
-            usageType: PlanUsageType
-        ) : Plan
-        =
-        {
-          Active = active
-          Amount = amount
-          AmountDecimal = amountDecimal
-          BillingScheme = billingScheme
-          Created = created
-          Currency = currency
-          Id = id
-          Interval = interval
-          IntervalCount = intervalCount
-          Livemode = livemode
-          Metadata = metadata
-          Meter = meter
-          Nickname = nickname
-          Product = product
-          TiersMode = tiersMode
-          TransformUsage = transformUsage
-          TrialPeriodDays = trialPeriodDays
-          UsageType = usageType
-          Tiers = None
-        }
-
 /// Occurs whenever a plan is updated.
 type PlanUpdated = { Object: Plan }
-
-module PlanUpdated =
-    let create
-        (
-            object: Plan
-        ) : PlanUpdated
-        =
-        {
-          Object = object
-        }
 
 /// Occurs whenever a plan is deleted.
 type PlanDeleted = { Object: Plan }
 
-module PlanDeleted =
-    let create
-        (
-            object: Plan
-        ) : PlanDeleted
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever a plan is created.
 type PlanCreated = { Object: Plan }
-
-module PlanCreated =
-    let create
-        (
-            object: Plan
-        ) : PlanCreated
-        =
-        {
-          Object = object
-        }
 

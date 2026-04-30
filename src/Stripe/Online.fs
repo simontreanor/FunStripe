@@ -13,15 +13,3 @@ type OnlineAcceptance =
         UserAgent: string option
     }
 
-module OnlineAcceptance =
-    let create
-        (
-            ipAddress: string option,
-            userAgent: string option
-        ) : OnlineAcceptance
-        =
-        {
-          IpAddress = ipAddress
-          UserAgent = userAgent
-        }
-

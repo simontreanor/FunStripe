@@ -14,18 +14,6 @@ type ForwardedRequestHeader =
         Value: string
     }
 
-module ForwardedRequestHeader =
-    let create
-        (
-            name: string,
-            value: string
-        ) : ForwardedRequestHeader
-        =
-        {
-          Name = name
-          Value = value
-        }
-
 /// Details about the response from the destination endpoint.
 type ForwardedResponseDetails =
     {
@@ -36,20 +24,6 @@ type ForwardedResponseDetails =
         /// The HTTP status code that the destination endpoint returned.
         Status: int
     }
-
-module ForwardedResponseDetails =
-    let create
-        (
-            body: string,
-            headers: ForwardedRequestHeader list,
-            status: int
-        ) : ForwardedResponseDetails
-        =
-        {
-          Body = body
-          Headers = headers
-          Status = status
-        }
 
 /// Details about the request forwarded to the destination endpoint.
 type ForwardedRequestDetails =
@@ -64,17 +38,6 @@ module ForwardedRequestDetails =
     ///The HTTP method used to call the destination endpoint.
     let httpMethod = "POST"
 
-    let create
-        (
-            body: string,
-            headers: ForwardedRequestHeader list
-        ) : ForwardedRequestDetails
-        =
-        {
-          Body = body
-          Headers = headers
-        }
-
 /// Metadata about the forwarded request.
 type ForwardedRequestContext =
     {
@@ -83,16 +46,4 @@ type ForwardedRequestContext =
         /// The IP address of the destination.
         DestinationIpAddress: string
     }
-
-module ForwardedRequestContext =
-    let create
-        (
-            destinationDuration: int,
-            destinationIpAddress: string
-        ) : ForwardedRequestContext
-        =
-        {
-          DestinationDuration = destinationDuration
-          DestinationIpAddress = destinationIpAddress
-        }
 

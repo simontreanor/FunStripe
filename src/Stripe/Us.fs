@@ -17,15 +17,3 @@ type UsBankAccountNetworks =
         Supported: UsBankAccountNetworksSupported list
     }
 
-module UsBankAccountNetworks =
-    let create
-        (
-            preferred: string option,
-            supported: UsBankAccountNetworksSupported list
-        ) : UsBankAccountNetworks
-        =
-        {
-          Preferred = preferred
-          Supported = supported
-        }
-

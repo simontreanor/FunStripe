@@ -27,25 +27,6 @@ module EntitlementsFeature =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "entitlements.feature"
 
-    let create
-        (
-            active: bool,
-            id: string,
-            livemode: bool,
-            lookupKey: string,
-            metadata: Map<string, string>,
-            name: string
-        ) : EntitlementsFeature
-        =
-        {
-          Active = active
-          Id = id
-          Livemode = livemode
-          LookupKey = lookupKey
-          Metadata = metadata
-          Name = name
-        }
-
 type EntitlementsActiveEntitlementFeature'AnyOf =
     | String of string
     | EntitlementsFeature of EntitlementsFeature
@@ -67,21 +48,6 @@ module EntitlementsActiveEntitlement =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "entitlements.active_entitlement"
 
-    let create
-        (
-            feature: EntitlementsActiveEntitlementFeature'AnyOf,
-            id: string,
-            livemode: bool,
-            lookupKey: string
-        ) : EntitlementsActiveEntitlement
-        =
-        {
-          Feature = feature
-          Id = id
-          Livemode = livemode
-          LookupKey = lookupKey
-        }
-
 /// The list of entitlements this customer has.
 type EntitlementsActiveEntitlementSummaryEntitlements =
     {
@@ -95,19 +61,6 @@ type EntitlementsActiveEntitlementSummaryEntitlements =
 module EntitlementsActiveEntitlementSummaryEntitlements =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
-
-    let create
-        (
-            data: EntitlementsActiveEntitlement list,
-            hasMore: bool,
-            url: string
-        ) : EntitlementsActiveEntitlementSummaryEntitlements
-        =
-        {
-          Data = data
-          HasMore = hasMore
-          Url = url
-        }
 
 /// A summary of a customer's active entitlements.
 type EntitlementsActiveEntitlementSummary =
@@ -124,30 +77,7 @@ module EntitlementsActiveEntitlementSummary =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "entitlements.active_entitlement_summary"
 
-    let create
-        (
-            customer: string,
-            entitlements: EntitlementsActiveEntitlementSummaryEntitlements,
-            livemode: bool
-        ) : EntitlementsActiveEntitlementSummary
-        =
-        {
-          Customer = customer
-          Entitlements = entitlements
-          Livemode = livemode
-        }
-
 /// Occurs whenever a customer's entitlements change.
 type EntitlementsActiveEntitlementSummaryUpdated =
     { Object: EntitlementsActiveEntitlementSummary }
-
-module EntitlementsActiveEntitlementSummaryUpdated =
-    let create
-        (
-            object: EntitlementsActiveEntitlementSummary
-        ) : EntitlementsActiveEntitlementSummaryUpdated
-        =
-        {
-          Object = object
-        }
 

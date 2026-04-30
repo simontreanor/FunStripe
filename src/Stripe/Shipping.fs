@@ -20,18 +20,6 @@ type ShippingRateCurrencyOption =
         TaxBehavior: ShippingRateCurrencyOptionTaxBehavior
     }
 
-module ShippingRateCurrencyOption =
-    let create
-        (
-            amount: int,
-            taxBehavior: ShippingRateCurrencyOptionTaxBehavior
-        ) : ShippingRateCurrencyOption
-        =
-        {
-          Amount = amount
-          TaxBehavior = taxBehavior
-        }
-
 [<Struct>]
 type ShippingRateDeliveryEstimateBoundUnit =
     | BusinessDay
@@ -48,18 +36,6 @@ type ShippingRateDeliveryEstimateBound =
         Value: int
     }
 
-module ShippingRateDeliveryEstimateBound =
-    let create
-        (
-            unit: ShippingRateDeliveryEstimateBoundUnit,
-            value: int
-        ) : ShippingRateDeliveryEstimateBound
-        =
-        {
-          Unit = unit
-          Value = value
-        }
-
 type ShippingRateDeliveryEstimate =
     {
         /// The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -67,18 +43,6 @@ type ShippingRateDeliveryEstimate =
         /// The lower bound of the estimated range. If empty, represents no lower bound.
         Minimum: ShippingRateDeliveryEstimateBound option
     }
-
-module ShippingRateDeliveryEstimate =
-    let create
-        (
-            maximum: ShippingRateDeliveryEstimateBound option,
-            minimum: ShippingRateDeliveryEstimateBound option
-        ) : ShippingRateDeliveryEstimate
-        =
-        {
-          Maximum = maximum
-          Minimum = minimum
-        }
 
 type ShippingRateFixedAmount =
     {
@@ -89,19 +53,6 @@ type ShippingRateFixedAmount =
         /// Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
         CurrencyOptions: Map<string, string list> option
     }
-
-module ShippingRateFixedAmount =
-    let create
-        (
-            amount: int,
-            currency: IsoTypes.IsoCurrencyCode
-        ) : ShippingRateFixedAmount
-        =
-        {
-          Amount = amount
-          Currency = currency
-          CurrencyOptions = None
-        }
 
 [<Struct>]
 type ShippingRateTaxBehavior =
@@ -145,32 +96,6 @@ module ShippingRate =
     ///The type of calculation to use on the shipping rate.
     let ``type`` = "fixed_amount"
 
-    let create
-        (
-            active: bool,
-            created: DateTime,
-            deliveryEstimate: ShippingRateDeliveryEstimate option,
-            displayName: string option,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string>,
-            taxBehavior: ShippingRateTaxBehavior option,
-            taxCode: ShippingRateTaxCode'AnyOf option
-        ) : ShippingRate
-        =
-        {
-          Active = active
-          Created = created
-          DeliveryEstimate = deliveryEstimate
-          DisplayName = displayName
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          TaxBehavior = taxBehavior
-          TaxCode = taxCode
-          FixedAmount = None
-        }
-
 type Shipping =
     {
         Address: Address option
@@ -183,22 +108,4 @@ type Shipping =
         /// The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas.
         TrackingNumber: string option
     }
-
-module Shipping =
-    let create
-        (
-            address: Address option,
-            carrier: string option option,
-            name: string option,
-            phone: string option option,
-            trackingNumber: string option option
-        ) : Shipping
-        =
-        {
-          Address = address
-          Carrier = carrier |> Option.flatten
-          Name = name
-          Phone = phone |> Option.flatten
-          TrackingNumber = trackingNumber |> Option.flatten
-        }
 

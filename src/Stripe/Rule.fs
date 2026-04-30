@@ -15,17 +15,3 @@ type Rule =
         Predicate: string
     }
 
-module Rule =
-    let create
-        (
-            action: string,
-            id: string,
-            predicate: string
-        ) : Rule
-        =
-        {
-          Action = action
-          Id = id
-          Predicate = predicate
-        }
-

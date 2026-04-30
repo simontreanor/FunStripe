@@ -11,13 +11,3 @@ type AlmaInstallments =
         Count: int
     }
 
-module AlmaInstallments =
-    let create
-        (
-            count: int
-        ) : AlmaInstallments
-        =
-        {
-          Count = count
-        }
-

@@ -51,29 +51,6 @@ module TerminalLocation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.location"
 
-    let create
-        (
-            address: Address,
-            displayName: string,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string>
-        ) : TerminalLocation
-        =
-        {
-          Address = address
-          DisplayName = displayName
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          AddressKana = None
-          AddressKanji = None
-          ConfigurationOverrides = None
-          DisplayNameKana = None
-          DisplayNameKanji = None
-          Phone = None
-        }
-
 type TerminalReaderLocation'AnyOf =
     | String of string
     | TerminalLocation of TerminalLocation
@@ -91,38 +68,12 @@ type TerminalReaderReaderResourceCustomText =
         Title: string option
     }
 
-module TerminalReaderReaderResourceCustomText =
-    let create
-        (
-            description: string option,
-            skipButton: string option,
-            submitButton: string option,
-            title: string option
-        ) : TerminalReaderReaderResourceCustomText
-        =
-        {
-          Description = description
-          SkipButton = skipButton
-          SubmitButton = submitButton
-          Title = title
-        }
-
 /// Information about a email being collected using a reader
 type TerminalReaderReaderResourceEmail =
     {
         /// The collected email address
         Value: string option
     }
-
-module TerminalReaderReaderResourceEmail =
-    let create
-        (
-            value: string option
-        ) : TerminalReaderReaderResourceEmail
-        =
-        {
-          Value = value
-        }
 
 type TerminalReaderReaderResourceInputType =
     | Email
@@ -139,32 +90,12 @@ type TerminalReaderReaderResourceNumeric =
         Value: string option
     }
 
-module TerminalReaderReaderResourceNumeric =
-    let create
-        (
-            value: string option
-        ) : TerminalReaderReaderResourceNumeric
-        =
-        {
-          Value = value
-        }
-
 /// Information about a phone number being collected using a reader
 type TerminalReaderReaderResourcePhone =
     {
         /// The collected phone number
         Value: string option
     }
-
-module TerminalReaderReaderResourcePhone =
-    let create
-        (
-            value: string option
-        ) : TerminalReaderReaderResourcePhone
-        =
-        {
-          Value = value
-        }
 
 [<Struct>]
 type TerminalReaderReaderResourceChoiceStyle =
@@ -182,20 +113,6 @@ type TerminalReaderReaderResourceChoice =
         Text: string
     }
 
-module TerminalReaderReaderResourceChoice =
-    let create
-        (
-            id: string option,
-            style: TerminalReaderReaderResourceChoiceStyle option,
-            text: string
-        ) : TerminalReaderReaderResourceChoice
-        =
-        {
-          Id = id
-          Style = style
-          Text = text
-        }
-
 /// Information about a selection being collected using a reader
 type TerminalReaderReaderResourceSelection =
     {
@@ -207,20 +124,6 @@ type TerminalReaderReaderResourceSelection =
         Text: string option
     }
 
-module TerminalReaderReaderResourceSelection =
-    let create
-        (
-            choices: TerminalReaderReaderResourceChoice list,
-            id: string option,
-            text: string option
-        ) : TerminalReaderReaderResourceSelection
-        =
-        {
-          Choices = choices
-          Id = id
-          Text = text
-        }
-
 /// Information about a signature being collected using a reader
 type TerminalReaderReaderResourceSignature =
     {
@@ -228,32 +131,12 @@ type TerminalReaderReaderResourceSignature =
         Value: string option
     }
 
-module TerminalReaderReaderResourceSignature =
-    let create
-        (
-            value: string option
-        ) : TerminalReaderReaderResourceSignature
-        =
-        {
-          Value = value
-        }
-
 /// Information about text being collected using a reader
 type TerminalReaderReaderResourceText =
     {
         /// The collected text value
         Value: string option
     }
-
-module TerminalReaderReaderResourceText =
-    let create
-        (
-            value: string option
-        ) : TerminalReaderReaderResourceText
-        =
-        {
-          Value = value
-        }
 
 [<Struct>]
 type TerminalReaderReaderResourceToggleDefaultValue =
@@ -278,22 +161,6 @@ type TerminalReaderReaderResourceToggle =
         Value: TerminalReaderReaderResourceToggleValue option
     }
 
-module TerminalReaderReaderResourceToggle =
-    let create
-        (
-            defaultValue: TerminalReaderReaderResourceToggleDefaultValue option,
-            description: string option,
-            title: string option,
-            value: TerminalReaderReaderResourceToggleValue option
-        ) : TerminalReaderReaderResourceToggle
-        =
-        {
-          DefaultValue = defaultValue
-          Description = description
-          Title = title
-          Value = value
-        }
-
 /// Represents an input to be collected using the reader
 type TerminalReaderReaderResourceInput =
     {
@@ -315,29 +182,6 @@ type TerminalReaderReaderResourceInput =
         Type: TerminalReaderReaderResourceInputType
     }
 
-module TerminalReaderReaderResourceInput =
-    let create
-        (
-            customText: TerminalReaderReaderResourceCustomText option,
-            required: bool option,
-            toggles: TerminalReaderReaderResourceToggle list option,
-            ``type``: TerminalReaderReaderResourceInputType
-        ) : TerminalReaderReaderResourceInput
-        =
-        {
-          CustomText = customText
-          Required = required
-          Toggles = toggles
-          Type = ``type``
-          Email = None
-          Numeric = None
-          Phone = None
-          Selection = None
-          Signature = None
-          Skipped = None
-          Text = None
-        }
-
 /// Represents a reader action to collect customer inputs
 type TerminalReaderReaderResourceCollectInputsAction =
     {
@@ -347,34 +191,12 @@ type TerminalReaderReaderResourceCollectInputsAction =
         Metadata: Map<string, string> option
     }
 
-module TerminalReaderReaderResourceCollectInputsAction =
-    let create
-        (
-            inputs: TerminalReaderReaderResourceInput list,
-            metadata: Map<string, string> option
-        ) : TerminalReaderReaderResourceCollectInputsAction
-        =
-        {
-          Inputs = inputs
-          Metadata = metadata
-        }
-
 /// Represents a per-transaction tipping configuration
 type TerminalReaderReaderResourceTippingConfig =
     {
         /// Amount used to calculate tip suggestions on tipping selection screen for this transaction. Must be a positive integer in the smallest currency unit (e.g., 100 cents to represent $1.00 or 100 to represent ¥100, a zero-decimal currency).
         AmountEligible: int option
     }
-
-module TerminalReaderReaderResourceTippingConfig =
-    let create
-        (
-            amountEligible: int option
-        ) : TerminalReaderReaderResourceTippingConfig
-        =
-        {
-          AmountEligible = amountEligible
-        }
 
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceCollectConfig =
@@ -385,20 +207,6 @@ type TerminalReaderReaderResourceCollectConfig =
         SkipTipping: bool option
         Tipping: TerminalReaderReaderResourceTippingConfig option
     }
-
-module TerminalReaderReaderResourceCollectConfig =
-    let create
-        (
-            enableCustomerCancellation: bool option,
-            skipTipping: bool option,
-            tipping: TerminalReaderReaderResourceTippingConfig option
-        ) : TerminalReaderReaderResourceCollectConfig
-        =
-        {
-          EnableCustomerCancellation = enableCustomerCancellation
-          SkipTipping = skipTipping
-          Tipping = tipping
-        }
 
 type TerminalReaderReaderResourceCollectPaymentMethodActionPaymentIntent'AnyOf =
     | String of string
@@ -413,34 +221,12 @@ type TerminalReaderReaderResourceCollectPaymentMethodAction =
         PaymentMethod: PaymentMethod option
     }
 
-module TerminalReaderReaderResourceCollectPaymentMethodAction =
-    let create
-        (
-            paymentIntent: TerminalReaderReaderResourceCollectPaymentMethodActionPaymentIntent'AnyOf
-        ) : TerminalReaderReaderResourceCollectPaymentMethodAction
-        =
-        {
-          PaymentIntent = paymentIntent
-          CollectConfig = None
-          PaymentMethod = None
-        }
-
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceConfirmConfig =
     {
         /// If the customer doesn't abandon authenticating the payment, they're redirected to this URL after completion.
         ReturnUrl: string option
     }
-
-module TerminalReaderReaderResourceConfirmConfig =
-    let create
-        (
-            returnUrl: string option
-        ) : TerminalReaderReaderResourceConfirmConfig
-        =
-        {
-          ReturnUrl = returnUrl
-        }
 
 type TerminalReaderReaderResourceConfirmPaymentIntentActionPaymentIntent'AnyOf =
     | String of string
@@ -454,17 +240,6 @@ type TerminalReaderReaderResourceConfirmPaymentIntentAction =
         PaymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentActionPaymentIntent'AnyOf
     }
 
-module TerminalReaderReaderResourceConfirmPaymentIntentAction =
-    let create
-        (
-            paymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentActionPaymentIntent'AnyOf
-        ) : TerminalReaderReaderResourceConfirmPaymentIntentAction
-        =
-        {
-          PaymentIntent = paymentIntent
-          ConfirmConfig = None
-        }
-
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceProcessConfig =
     {
@@ -476,22 +251,6 @@ type TerminalReaderReaderResourceProcessConfig =
         SkipTipping: bool option
         Tipping: TerminalReaderReaderResourceTippingConfig option
     }
-
-module TerminalReaderReaderResourceProcessConfig =
-    let create
-        (
-            enableCustomerCancellation: bool option,
-            returnUrl: string option,
-            skipTipping: bool option,
-            tipping: TerminalReaderReaderResourceTippingConfig option
-        ) : TerminalReaderReaderResourceProcessConfig
-        =
-        {
-          EnableCustomerCancellation = enableCustomerCancellation
-          ReturnUrl = returnUrl
-          SkipTipping = skipTipping
-          Tipping = tipping
-        }
 
 type TerminalReaderReaderResourceProcessPaymentIntentActionPaymentIntent'AnyOf =
     | String of string
@@ -505,33 +264,12 @@ type TerminalReaderReaderResourceProcessPaymentIntentAction =
         ProcessConfig: TerminalReaderReaderResourceProcessConfig option
     }
 
-module TerminalReaderReaderResourceProcessPaymentIntentAction =
-    let create
-        (
-            paymentIntent: TerminalReaderReaderResourceProcessPaymentIntentActionPaymentIntent'AnyOf
-        ) : TerminalReaderReaderResourceProcessPaymentIntentAction
-        =
-        {
-          PaymentIntent = paymentIntent
-          ProcessConfig = None
-        }
-
 /// Represents a per-setup override of a reader configuration
 type TerminalReaderReaderResourceProcessSetupConfig =
     {
         /// Enable customer-initiated cancellation when processing this SetupIntent.
         EnableCustomerCancellation: bool option
     }
-
-module TerminalReaderReaderResourceProcessSetupConfig =
-    let create
-        (
-            enableCustomerCancellation: bool option
-        ) : TerminalReaderReaderResourceProcessSetupConfig
-        =
-        {
-          EnableCustomerCancellation = enableCustomerCancellation
-        }
 
 type TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf =
     | String of string
@@ -546,18 +284,6 @@ type TerminalReaderReaderResourceProcessSetupIntentAction =
         /// Most recent SetupIntent processed by the reader.
         SetupIntent: TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf
     }
-
-module TerminalReaderReaderResourceProcessSetupIntentAction =
-    let create
-        (
-            setupIntent: TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf
-        ) : TerminalReaderReaderResourceProcessSetupIntentAction
-        =
-        {
-          SetupIntent = setupIntent
-          GeneratedCard = None
-          ProcessConfig = None
-        }
 
 [<Struct>]
 type TerminalReaderReaderResourceReaderActionStatus =
@@ -599,16 +325,6 @@ type TerminalReaderReaderResourceRefundPaymentConfig =
         EnableCustomerCancellation: bool option
     }
 
-module TerminalReaderReaderResourceRefundPaymentConfig =
-    let create
-        (
-            enableCustomerCancellation: bool option
-        ) : TerminalReaderReaderResourceRefundPaymentConfig
-        =
-        {
-          EnableCustomerCancellation = enableCustomerCancellation
-        }
-
 /// Represents a reader action to refund a payment
 type TerminalReaderReaderResourceRefundPaymentAction =
     {
@@ -631,32 +347,6 @@ type TerminalReaderReaderResourceRefundPaymentAction =
         ReverseTransfer: bool option
     }
 
-module TerminalReaderReaderResourceRefundPaymentAction =
-    let create
-        (
-            amount: int option,
-            charge: TerminalReaderReaderResourceRefundPaymentActionCharge'AnyOf option,
-            metadata: Map<string, string> option,
-            paymentIntent: TerminalReaderReaderResourceRefundPaymentActionPaymentIntent'AnyOf option,
-            reason: TerminalReaderReaderResourceRefundPaymentActionReason option,
-            refund: TerminalReaderReaderResourceRefundPaymentActionRefund'AnyOf option,
-            refundApplicationFee: bool option,
-            refundPaymentConfig: TerminalReaderReaderResourceRefundPaymentConfig option,
-            reverseTransfer: bool option
-        ) : TerminalReaderReaderResourceRefundPaymentAction
-        =
-        {
-          Amount = amount
-          Charge = charge
-          Metadata = metadata
-          PaymentIntent = paymentIntent
-          Reason = reason
-          Refund = refund
-          RefundApplicationFee = refundApplicationFee
-          RefundPaymentConfig = refundPaymentConfig
-          ReverseTransfer = reverseTransfer
-        }
-
 /// Represents a line item to be displayed on the reader
 type TerminalReaderReaderResourceLineItem =
     {
@@ -667,20 +357,6 @@ type TerminalReaderReaderResourceLineItem =
         /// The quantity of the line item.
         Quantity: int
     }
-
-module TerminalReaderReaderResourceLineItem =
-    let create
-        (
-            amount: int,
-            description: string,
-            quantity: int
-        ) : TerminalReaderReaderResourceLineItem
-        =
-        {
-          Amount = amount
-          Description = description
-          Quantity = quantity
-        }
 
 /// Represents a cart to be displayed on the reader
 type TerminalReaderReaderResourceCart =
@@ -695,22 +371,6 @@ type TerminalReaderReaderResourceCart =
         Total: int
     }
 
-module TerminalReaderReaderResourceCart =
-    let create
-        (
-            currency: IsoTypes.IsoCurrencyCode,
-            lineItems: TerminalReaderReaderResourceLineItem list,
-            tax: int option,
-            total: int
-        ) : TerminalReaderReaderResourceCart
-        =
-        {
-          Currency = currency
-          LineItems = lineItems
-          Tax = tax
-          Total = total
-        }
-
 /// Represents a reader action to set the reader display
 type TerminalReaderReaderResourceSetReaderDisplayAction =
     {
@@ -721,15 +381,6 @@ type TerminalReaderReaderResourceSetReaderDisplayAction =
 module TerminalReaderReaderResourceSetReaderDisplayAction =
     ///Type of information to be displayed by the reader. Only `cart` is currently supported.
     let ``type`` = "cart"
-
-    let create
-        (
-            cart: TerminalReaderReaderResourceCart option
-        ) : TerminalReaderReaderResourceSetReaderDisplayAction
-        =
-        {
-          Cart = cart
-        }
 
 /// Represents an action performed by the reader
 type TerminalReaderReaderResourceReaderAction =
@@ -750,29 +401,6 @@ type TerminalReaderReaderResourceReaderAction =
         /// Type of action performed by the reader.
         Type: TerminalReaderReaderResourceReaderActionType
     }
-
-module TerminalReaderReaderResourceReaderAction =
-    let create
-        (
-            failureCode: string option,
-            failureMessage: string option,
-            status: TerminalReaderReaderResourceReaderActionStatus,
-            ``type``: TerminalReaderReaderResourceReaderActionType
-        ) : TerminalReaderReaderResourceReaderAction
-        =
-        {
-          FailureCode = failureCode
-          FailureMessage = failureMessage
-          Status = status
-          Type = ``type``
-          CollectInputs = None
-          CollectPaymentMethod = None
-          ConfirmPaymentIntent = None
-          ProcessPaymentIntent = None
-          ProcessSetupIntent = None
-          RefundPayment = None
-          SetReaderDisplay = None
-        }
 
 [<Struct>]
 type TerminalReaderStatus =
@@ -813,75 +441,14 @@ module TerminalReader =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.reader"
 
-    let create
-        (
-            action: TerminalReaderReaderResourceReaderAction option,
-            deviceSwVersion: string option,
-            deviceType: TerminalReaderDeviceType,
-            id: string,
-            ipAddress: string option,
-            label: string,
-            lastSeenAt: DateTime option,
-            livemode: bool,
-            location: TerminalReaderLocation'AnyOf option,
-            metadata: Map<string, string>,
-            serialNumber: string,
-            status: TerminalReaderStatus option
-        ) : TerminalReader
-        =
-        {
-          Action = action
-          DeviceSwVersion = deviceSwVersion
-          DeviceType = deviceType
-          Id = id
-          IpAddress = ipAddress
-          Label = label
-          LastSeenAt = lastSeenAt
-          Livemode = livemode
-          Location = location
-          Metadata = metadata
-          SerialNumber = serialNumber
-          Status = status
-        }
-
 /// Occurs whenever an action sent to a Terminal reader is updated.
 type TerminalReaderActionUpdated = { Object: TerminalReader }
-
-module TerminalReaderActionUpdated =
-    let create
-        (
-            object: TerminalReader
-        ) : TerminalReaderActionUpdated
-        =
-        {
-          Object = object
-        }
 
 /// Occurs whenever an action sent to a Terminal reader was successful.
 type TerminalReaderActionSucceeded = { Object: TerminalReader }
 
-module TerminalReaderActionSucceeded =
-    let create
-        (
-            object: TerminalReader
-        ) : TerminalReaderActionSucceeded
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever an action sent to a Terminal reader failed.
 type TerminalReaderActionFailed = { Object: TerminalReader }
-
-module TerminalReaderActionFailed =
-    let create
-        (
-            object: TerminalReader
-        ) : TerminalReaderActionFailed
-        =
-        {
-          Object = object
-        }
 
 /// Options associated with the Apple Terms and Conditions link type.
 type TerminalOnboardingLinkAppleTermsAndConditions =
@@ -892,34 +459,12 @@ type TerminalOnboardingLinkAppleTermsAndConditions =
         MerchantDisplayName: string
     }
 
-module TerminalOnboardingLinkAppleTermsAndConditions =
-    let create
-        (
-            allowRelinking: bool option,
-            merchantDisplayName: string
-        ) : TerminalOnboardingLinkAppleTermsAndConditions
-        =
-        {
-          AllowRelinking = allowRelinking
-          MerchantDisplayName = merchantDisplayName
-        }
-
 /// Link type options associated with the current onboarding link object.
 type TerminalOnboardingLinkLinkOptions =
     {
         /// The options associated with the Apple Terms and Conditions link type.
         AppleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option
     }
-
-module TerminalOnboardingLinkLinkOptions =
-    let create
-        (
-            appleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option
-        ) : TerminalOnboardingLinkLinkOptions
-        =
-        {
-          AppleTermsAndConditions = appleTermsAndConditions
-        }
 
 /// Returns redirect links used for onboarding onto Tap to Pay on iPhone.
 type TerminalOnboardingLink =
@@ -937,19 +482,6 @@ module TerminalOnboardingLink =
 
     let object = "terminal.onboarding_link"
 
-    let create
-        (
-            linkOptions: TerminalOnboardingLinkLinkOptions,
-            onBehalfOf: string option,
-            redirectUrl: string
-        ) : TerminalOnboardingLink
-        =
-        {
-          LinkOptions = linkOptions
-          OnBehalfOf = onBehalfOf
-          RedirectUrl = redirectUrl
-        }
-
 /// A Connection Token is used by the Stripe Terminal SDK to connect to a reader.
 /// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
 type TerminalConnectionToken =
@@ -964,31 +496,11 @@ module TerminalConnectionToken =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.connection_token"
 
-    let create
-        (
-            secret: string
-        ) : TerminalConnectionToken
-        =
-        {
-          Secret = secret
-          Location = None
-        }
-
 type TerminalConfigurationConfigurationResourceCellularConfig =
     {
         /// Whether a cellular-capable reader can connect to the internet over cellular.
         Enabled: bool
     }
-
-module TerminalConfigurationConfigurationResourceCellularConfig =
-    let create
-        (
-            enabled: bool
-        ) : TerminalConfigurationConfigurationResourceCellularConfig
-        =
-        {
-          Enabled = enabled
-        }
 
 type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSplashscreen'AnyOf =
     | String of string
@@ -1000,31 +512,11 @@ type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig =
         Splashscreen: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSplashscreen'AnyOf option
     }
 
-module TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig =
-    let create
-        (
-            splashscreen: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSplashscreen'AnyOf option
-        ) : TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig
-        =
-        {
-          Splashscreen = splashscreen
-        }
-
 type TerminalConfigurationConfigurationResourceOfflineConfig =
     {
         /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
         Enabled: bool option
     }
-
-module TerminalConfigurationConfigurationResourceOfflineConfig =
-    let create
-        (
-            enabled: bool option
-        ) : TerminalConfigurationConfigurationResourceOfflineConfig
-        =
-        {
-          Enabled = enabled
-        }
 
 type TerminalConfigurationConfigurationResourceRebootWindow =
     {
@@ -1033,18 +525,6 @@ type TerminalConfigurationConfigurationResourceRebootWindow =
         /// Integer between 0 to 23 that represents the start hour of the reboot time window.
         StartHour: int
     }
-
-module TerminalConfigurationConfigurationResourceRebootWindow =
-    let create
-        (
-            endHour: int,
-            startHour: int
-        ) : TerminalConfigurationConfigurationResourceRebootWindow
-        =
-        {
-          EndHour = endHour
-          StartHour = startHour
-        }
 
 type TerminalConfigurationConfigurationResourceCurrencySpecificConfig =
     {
@@ -1055,20 +535,6 @@ type TerminalConfigurationConfigurationResourceCurrencySpecificConfig =
         /// Below this amount, fixed amounts will be displayed; above it, percentages will be displayed
         SmartTipThreshold: int option
     }
-
-module TerminalConfigurationConfigurationResourceCurrencySpecificConfig =
-    let create
-        (
-            fixedAmounts: int list option option,
-            percentages: int list option option,
-            smartTipThreshold: int option
-        ) : TerminalConfigurationConfigurationResourceCurrencySpecificConfig
-        =
-        {
-          FixedAmounts = fixedAmounts |> Option.flatten
-          Percentages = percentages |> Option.flatten
-          SmartTipThreshold = smartTipThreshold
-        }
 
 type TerminalConfigurationConfigurationResourceTipping =
     { Aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
@@ -1093,56 +559,6 @@ type TerminalConfigurationConfigurationResourceTipping =
       Sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
       Usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option }
 
-module TerminalConfigurationConfigurationResourceTipping =
-    let create
-        (
-            aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            gip: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            huf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            jpy: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            mxn: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            pln: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            ron: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option,
-            usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-        ) : TerminalConfigurationConfigurationResourceTipping
-        =
-        {
-          Aed = aed
-          Aud = aud
-          Cad = cad
-          Chf = chf
-          Czk = czk
-          Dkk = dkk
-          Eur = eur
-          Gbp = gbp
-          Gip = gip
-          Hkd = hkd
-          Huf = huf
-          Jpy = jpy
-          Mxn = mxn
-          Myr = myr
-          Nok = nok
-          Nzd = nzd
-          Pln = pln
-          Ron = ron
-          Sek = sek
-          Sgd = sgd
-          Usd = usd
-        }
-
 type TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
     {
         /// A File ID representing a PEM file containing the server certificate
@@ -1154,21 +570,6 @@ type TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
         /// Username for connecting to the WiFi network
         Username: string
     }
-
-module TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
-    let create
-        (
-            password: string,
-            ssid: string,
-            username: string
-        ) : TerminalConfigurationConfigurationResourceEnterprisePeapWifi
-        =
-        {
-          Password = password
-          Ssid = ssid
-          Username = username
-          CaCertificateFile = None
-        }
 
 type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
     {
@@ -1184,22 +585,6 @@ type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
         Ssid: string
     }
 
-module TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
-    let create
-        (
-            clientCertificateFile: string,
-            privateKeyFile: string,
-            ssid: string
-        ) : TerminalConfigurationConfigurationResourceEnterpriseTlsWifi
-        =
-        {
-          ClientCertificateFile = clientCertificateFile
-          PrivateKeyFile = privateKeyFile
-          Ssid = ssid
-          CaCertificateFile = None
-          PrivateKeyFilePassword = None
-        }
-
 type TerminalConfigurationConfigurationResourcePersonalPskWifi =
     {
         /// Password for connecting to the WiFi network
@@ -1207,18 +592,6 @@ type TerminalConfigurationConfigurationResourcePersonalPskWifi =
         /// Name of the WiFi network
         Ssid: string
     }
-
-module TerminalConfigurationConfigurationResourcePersonalPskWifi =
-    let create
-        (
-            password: string,
-            ssid: string
-        ) : TerminalConfigurationConfigurationResourcePersonalPskWifi
-        =
-        {
-          Password = password
-          Ssid = ssid
-        }
 
 [<Struct>]
 type TerminalConfigurationConfigurationResourceWifiConfigType =
@@ -1234,19 +607,6 @@ type TerminalConfigurationConfigurationResourceWifiConfig =
         /// Security type of the WiFi network. The hash with the corresponding name contains the credentials for this security type.
         Type: TerminalConfigurationConfigurationResourceWifiConfigType
     }
-
-module TerminalConfigurationConfigurationResourceWifiConfig =
-    let create
-        (
-            ``type``: TerminalConfigurationConfigurationResourceWifiConfigType
-        ) : TerminalConfigurationConfigurationResourceWifiConfig
-        =
-        {
-          Type = ``type``
-          EnterpriseEapPeap = None
-          EnterpriseEapTls = None
-          PersonalPsk = None
-        }
 
 /// A Configurations object represents how features should be configured for terminal readers.
 /// For information about how to use it, see the [Terminal configurations documentation](https://docs.stripe.com/terminal/fleet/configurations-overview).
@@ -1279,29 +639,4 @@ type TerminalConfiguration =
 module TerminalConfiguration =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.configuration"
-
-    let create
-        (
-            id: string,
-            isAccountDefault: bool option,
-            livemode: bool,
-            name: string option
-        ) : TerminalConfiguration
-        =
-        {
-          Id = id
-          IsAccountDefault = isAccountDefault
-          Livemode = livemode
-          Name = name
-          BbposWisepad3 = None
-          BbposWiseposE = None
-          Cellular = None
-          Offline = None
-          RebootWindow = None
-          StripeS700 = None
-          StripeS710 = None
-          Tipping = None
-          VerifoneP400 = None
-          Wifi = None
-        }
 

@@ -20,21 +20,3 @@ type InternalCard =
         Last4: string option
     }
 
-module InternalCard =
-    let create
-        (
-            brand: string option,
-            country: IsoTypes.IsoCountryCode option,
-            expMonth: int option,
-            expYear: int option,
-            last4: string option
-        ) : InternalCard
-        =
-        {
-          Brand = brand
-          Country = country
-          ExpMonth = expMonth
-          ExpYear = expYear
-          Last4 = last4
-        }
-

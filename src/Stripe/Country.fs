@@ -13,33 +13,9 @@ type CountrySpecVerificationFieldDetails =
         Minimum: string list
     }
 
-module CountrySpecVerificationFieldDetails =
-    let create
-        (
-            additional: string list,
-            minimum: string list
-        ) : CountrySpecVerificationFieldDetails
-        =
-        {
-          Additional = additional
-          Minimum = minimum
-        }
-
 type CountrySpecVerificationFields =
     { Company: CountrySpecVerificationFieldDetails
       Individual: CountrySpecVerificationFieldDetails }
-
-module CountrySpecVerificationFields =
-    let create
-        (
-            company: CountrySpecVerificationFieldDetails,
-            individual: CountrySpecVerificationFieldDetails
-        ) : CountrySpecVerificationFields
-        =
-        {
-          Company = company
-          Individual = individual
-        }
 
 /// Stripe needs to collect certain pieces of information about each account
 /// created. These requirements can differ depending on the account's country. The
@@ -66,25 +42,4 @@ type CountrySpec =
 module CountrySpec =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "country_spec"
-
-    let create
-        (
-            defaultCurrency: IsoTypes.IsoCurrencyCode,
-            id: string,
-            supportedBankAccountCurrencies: Map<string, string list>,
-            supportedPaymentCurrencies: string list,
-            supportedPaymentMethods: string list,
-            supportedTransferCountries: string list,
-            verificationFields: CountrySpecVerificationFields
-        ) : CountrySpec
-        =
-        {
-          DefaultCurrency = defaultCurrency
-          Id = id
-          SupportedBankAccountCurrencies = supportedBankAccountCurrencies
-          SupportedPaymentCurrencies = supportedPaymentCurrencies
-          SupportedPaymentMethods = supportedPaymentMethods
-          SupportedTransferCountries = supportedTransferCountries
-          VerificationFields = verificationFields
-        }
 

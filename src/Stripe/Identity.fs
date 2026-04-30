@@ -49,32 +49,6 @@ module IdentityVerificationReport =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "identity.verification_report"
 
-    let create
-        (
-            clientReferenceId: string option,
-            created: DateTime,
-            id: string,
-            livemode: bool,
-            ``type``: IdentityVerificationReportType,
-            verificationSession: string option
-        ) : IdentityVerificationReport
-        =
-        {
-          ClientReferenceId = clientReferenceId
-          Created = created
-          Id = id
-          Livemode = livemode
-          Type = ``type``
-          VerificationSession = verificationSession
-          Document = None
-          Email = None
-          IdNumber = None
-          Options = None
-          Phone = None
-          Selfie = None
-          VerificationFlow = None
-        }
-
 type IdentityVerificationSessionLastVerificationReport'AnyOf =
     | String of string
     | IdentityVerificationReport of IdentityVerificationReport
@@ -146,122 +120,21 @@ module IdentityVerificationSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "identity.verification_session"
 
-    let create
-        (
-            clientReferenceId: string option,
-            clientSecret: string option,
-            created: DateTime,
-            id: string,
-            lastError: GelatoSessionLastError option,
-            lastVerificationReport: IdentityVerificationSessionLastVerificationReport'AnyOf option,
-            livemode: bool,
-            metadata: Map<string, string>,
-            options: GelatoVerificationSessionOptions option,
-            redaction: VerificationSessionRedaction option,
-            relatedCustomer: string option,
-            relatedCustomerAccount: string option,
-            status: IdentityVerificationSessionStatus,
-            ``type``: IdentityVerificationSessionType,
-            url: string option
-        ) : IdentityVerificationSession
-        =
-        {
-          ClientReferenceId = clientReferenceId
-          ClientSecret = clientSecret
-          Created = created
-          Id = id
-          LastError = lastError
-          LastVerificationReport = lastVerificationReport
-          Livemode = livemode
-          Metadata = metadata
-          Options = options
-          Redaction = redaction
-          RelatedCustomer = relatedCustomer
-          RelatedCustomerAccount = relatedCustomerAccount
-          Status = status
-          Type = ``type``
-          Url = url
-          ProvidedDetails = None
-          RelatedPerson = None
-          VerificationFlow = None
-          VerifiedOutputs = None
-        }
-
 /// Occurs whenever a VerificationSession transitions to verified
 type IdentityVerificationSessionVerified = { Object: IdentityVerificationSession }
-
-module IdentityVerificationSessionVerified =
-    let create
-        (
-            object: IdentityVerificationSession
-        ) : IdentityVerificationSessionVerified
-        =
-        {
-          Object = object
-        }
 
 /// Occurs whenever a VerificationSession transitions to require user input
 type IdentityVerificationSessionRequiresInput = { Object: IdentityVerificationSession }
 
-module IdentityVerificationSessionRequiresInput =
-    let create
-        (
-            object: IdentityVerificationSession
-        ) : IdentityVerificationSessionRequiresInput
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever a VerificationSession is redacted.
 type IdentityVerificationSessionRedacted = { Object: IdentityVerificationSession }
-
-module IdentityVerificationSessionRedacted =
-    let create
-        (
-            object: IdentityVerificationSession
-        ) : IdentityVerificationSessionRedacted
-        =
-        {
-          Object = object
-        }
 
 /// Occurs whenever a VerificationSession transitions to processing
 type IdentityVerificationSessionProcessing = { Object: IdentityVerificationSession }
 
-module IdentityVerificationSessionProcessing =
-    let create
-        (
-            object: IdentityVerificationSession
-        ) : IdentityVerificationSessionProcessing
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever a VerificationSession is created
 type IdentityVerificationSessionCreated = { Object: IdentityVerificationSession }
 
-module IdentityVerificationSessionCreated =
-    let create
-        (
-            object: IdentityVerificationSession
-        ) : IdentityVerificationSessionCreated
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever a VerificationSession is canceled
 type IdentityVerificationSessionCanceled = { Object: IdentityVerificationSession }
-
-module IdentityVerificationSessionCanceled =
-    let create
-        (
-            object: IdentityVerificationSession
-        ) : IdentityVerificationSessionCanceled
-        =
-        {
-          Object = object
-        }
 

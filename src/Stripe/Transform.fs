@@ -17,18 +17,6 @@ type TransformUsage =
         Round: TransformUsageRound
     }
 
-module TransformUsage =
-    let create
-        (
-            divideBy: int,
-            round: TransformUsageRound
-        ) : TransformUsage
-        =
-        {
-          DivideBy = divideBy
-          Round = round
-        }
-
 [<Struct>]
 type TransformQuantityRound =
     | Down
@@ -41,16 +29,4 @@ type TransformQuantity =
         /// After division, either round the result `up` or `down`.
         Round: TransformQuantityRound
     }
-
-module TransformQuantity =
-    let create
-        (
-            divideBy: int,
-            round: TransformQuantityRound
-        ) : TransformQuantity
-        =
-        {
-          DivideBy = divideBy
-          Round = round
-        }
 

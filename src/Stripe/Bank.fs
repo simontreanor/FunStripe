@@ -14,18 +14,6 @@ type BankConnectionsResourceTransactionResourceStatusTransitions =
         VoidAt: DateTime option
     }
 
-module BankConnectionsResourceTransactionResourceStatusTransitions =
-    let create
-        (
-            postedAt: DateTime option,
-            voidAt: DateTime option
-        ) : BankConnectionsResourceTransactionResourceStatusTransitions
-        =
-        {
-          PostedAt = postedAt
-          VoidAt = voidAt
-        }
-
 [<Struct>]
 type BankConnectionsResourceTransactionRefreshStatus =
     | Failed
@@ -44,22 +32,6 @@ type BankConnectionsResourceTransactionRefresh =
         Status: BankConnectionsResourceTransactionRefreshStatus
     }
 
-module BankConnectionsResourceTransactionRefresh =
-    let create
-        (
-            id: string,
-            lastAttemptedAt: DateTime,
-            nextRefreshAvailableAt: DateTime option,
-            status: BankConnectionsResourceTransactionRefreshStatus
-        ) : BankConnectionsResourceTransactionRefresh
-        =
-        {
-          Id = id
-          LastAttemptedAt = lastAttemptedAt
-          NextRefreshAvailableAt = nextRefreshAvailableAt
-          Status = status
-        }
-
 [<Struct>]
 type BankConnectionsResourceOwnershipRefreshStatus =
     | Failed
@@ -75,20 +47,6 @@ type BankConnectionsResourceOwnershipRefresh =
         /// The status of the last refresh attempt.
         Status: BankConnectionsResourceOwnershipRefreshStatus
     }
-
-module BankConnectionsResourceOwnershipRefresh =
-    let create
-        (
-            lastAttemptedAt: DateTime,
-            nextRefreshAvailableAt: DateTime option,
-            status: BankConnectionsResourceOwnershipRefreshStatus
-        ) : BankConnectionsResourceOwnershipRefresh
-        =
-        {
-          LastAttemptedAt = lastAttemptedAt
-          NextRefreshAvailableAt = nextRefreshAvailableAt
-          Status = status
-        }
 
 [<Struct>]
 type BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories =
@@ -106,18 +64,6 @@ type BankConnectionsResourceLinkAccountSessionFilters =
         Countries: string list option
     }
 
-module BankConnectionsResourceLinkAccountSessionFilters =
-    let create
-        (
-            accountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option,
-            countries: string list option
-        ) : BankConnectionsResourceLinkAccountSessionFilters
-        =
-        {
-          AccountSubcategories = accountSubcategories
-          Countries = countries
-        }
-
 [<Struct>]
 type BankConnectionsResourceBalanceRefreshStatus =
     | Failed
@@ -134,20 +80,6 @@ type BankConnectionsResourceBalanceRefresh =
         Status: BankConnectionsResourceBalanceRefreshStatus
     }
 
-module BankConnectionsResourceBalanceRefresh =
-    let create
-        (
-            lastAttemptedAt: DateTime,
-            nextRefreshAvailableAt: DateTime option,
-            status: BankConnectionsResourceBalanceRefreshStatus
-        ) : BankConnectionsResourceBalanceRefresh
-        =
-        {
-          LastAttemptedAt = lastAttemptedAt
-          NextRefreshAvailableAt = nextRefreshAvailableAt
-          Status = status
-        }
-
 type BankConnectionsResourceBalanceApiResourceCashBalance =
     {
         /// The funds available to the account holder. Typically this is the current balance after subtracting any outbound pending transactions and adding any inbound pending transactions.
@@ -156,16 +88,6 @@ type BankConnectionsResourceBalanceApiResourceCashBalance =
         Available: Map<string, string list> option
     }
 
-module BankConnectionsResourceBalanceApiResourceCashBalance =
-    let create
-        (
-            available: Map<string, string list> option
-        ) : BankConnectionsResourceBalanceApiResourceCashBalance
-        =
-        {
-          Available = available
-        }
-
 type BankConnectionsResourceBalanceApiResourceCreditBalance =
     {
         /// The credit that has been used by the account holder.
@@ -173,16 +95,6 @@ type BankConnectionsResourceBalanceApiResourceCreditBalance =
         /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
         Used: Map<string, string list> option
     }
-
-module BankConnectionsResourceBalanceApiResourceCreditBalance =
-    let create
-        (
-            used: Map<string, string list> option
-        ) : BankConnectionsResourceBalanceApiResourceCreditBalance
-        =
-        {
-          Used = used
-        }
 
 [<Struct>]
 type BankConnectionsResourceBalanceType =
@@ -202,22 +114,6 @@ type BankConnectionsResourceBalance =
         /// The `type` of the balance. An additional hash is included on the balance with a name matching this value.
         Type: BankConnectionsResourceBalanceType
     }
-
-module BankConnectionsResourceBalance =
-    let create
-        (
-            asOf: DateTime,
-            current: Map<string, string list>,
-            ``type``: BankConnectionsResourceBalanceType
-        ) : BankConnectionsResourceBalance
-        =
-        {
-          AsOf = asOf
-          Current = current
-          Type = ``type``
-          Cash = None
-          Credit = None
-        }
 
 type BankConnectionsResourceAccountholderAccount'AnyOf =
     | String of string
@@ -243,19 +139,6 @@ type BankConnectionsResourceAccountholder =
         Type: BankConnectionsResourceAccountholderType
     }
 
-module BankConnectionsResourceAccountholder =
-    let create
-        (
-            ``type``: BankConnectionsResourceAccountholderType
-        ) : BankConnectionsResourceAccountholder
-        =
-        {
-          Type = ``type``
-          Account = None
-          Customer = None
-          CustomerAccount = None
-        }
-
 [<Struct>]
 type BankConnectionsResourceAccountNumberDetailsIdentifierType =
     | AccountNumber
@@ -277,20 +160,4 @@ type BankConnectionsResourceAccountNumberDetails =
         /// The payment networks that the account number can be used for.
         SupportedNetworks: string list
     }
-
-module BankConnectionsResourceAccountNumberDetails =
-    let create
-        (
-            expectedExpiryDate: DateTime option,
-            identifierType: BankConnectionsResourceAccountNumberDetailsIdentifierType,
-            status: BankConnectionsResourceAccountNumberDetailsStatus,
-            supportedNetworks: string list
-        ) : BankConnectionsResourceAccountNumberDetails
-        =
-        {
-          ExpectedExpiryDate = expectedExpiryDate
-          IdentifierType = identifierType
-          Status = status
-          SupportedNetworks = supportedNetworks
-        }
 

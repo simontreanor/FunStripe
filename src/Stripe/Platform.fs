@@ -19,15 +19,3 @@ type PlatformEarningFeeSource =
         Type: PlatformEarningFeeSourceType
     }
 
-module PlatformEarningFeeSource =
-    let create
-        (
-            ``type``: PlatformEarningFeeSourceType
-        ) : PlatformEarningFeeSource
-        =
-        {
-          Type = ``type``
-          Charge = None
-          Payout = None
-        }
-

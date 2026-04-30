@@ -44,31 +44,3 @@ module WebhookEndpoint =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "webhook_endpoint"
 
-    let create
-        (
-            apiVersion: string option,
-            application: string option,
-            created: DateTime,
-            description: string option,
-            enabledEvents: string list,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string>,
-            status: WebhookEndpointStatus,
-            url: string
-        ) : WebhookEndpoint
-        =
-        {
-          ApiVersion = apiVersion
-          Application = application
-          Created = created
-          Description = description
-          EnabledEvents = enabledEvents
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          Status = status
-          Url = url
-          Secret = None
-        }
-

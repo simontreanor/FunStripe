@@ -13,18 +13,6 @@ type NotificationEventRequest =
         IdempotencyKey: string option
     }
 
-module NotificationEventRequest =
-    let create
-        (
-            id: string option,
-            idempotencyKey: string option
-        ) : NotificationEventRequest
-        =
-        {
-          Id = id
-          IdempotencyKey = idempotencyKey
-        }
-
 type NotificationEventData =
     {
         /// Object containing the API resource relevant to the event. For example, an `invoice.created` event will have a full [invoice object](https://api.stripe.com#invoice_object) as the value of the object key.
@@ -32,15 +20,4 @@ type NotificationEventData =
         /// Object containing the names of the updated attributes and their values prior to the event (only included in events of type `*.updated`). If an array attribute has any updated elements, this object contains the entire array. In Stripe API versions 2017-04-06 or earlier, an updated array attribute in this object includes only the updated array elements.
         PreviousAttributes: string option
     }
-
-module NotificationEventData =
-    let create
-        (
-            object: string
-        ) : NotificationEventData
-        =
-        {
-          Object = object
-          PreviousAttributes = None
-        }
 

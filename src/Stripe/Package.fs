@@ -17,19 +17,3 @@ type PackageDimensions =
         Width: decimal
     }
 
-module PackageDimensions =
-    let create
-        (
-            height: decimal,
-            length: decimal,
-            weight: decimal,
-            width: decimal
-        ) : PackageDimensions
-        =
-        {
-          Height = height
-          Length = length
-          Weight = weight
-          Width = width
-        }
-

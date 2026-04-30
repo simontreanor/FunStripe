@@ -30,30 +30,6 @@ type FinancialReportingFinanceReportRunRunParameters =
         Timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
     }
 
-module FinancialReportingFinanceReportRunRunParameters =
-    let create
-        (
-            columns: string list option,
-            connectedAccount: string option,
-            currency: IsoTypes.IsoCurrencyCode option,
-            intervalEnd: DateTime option,
-            intervalStart: DateTime option,
-            payout: string option,
-            reportingCategory: string option,
-            timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
-        ) : FinancialReportingFinanceReportRunRunParameters
-        =
-        {
-          Columns = columns
-          ConnectedAccount = connectedAccount
-          Currency = currency
-          IntervalEnd = intervalEnd
-          IntervalStart = intervalStart
-          Payout = payout
-          ReportingCategory = reportingCategory
-          Timezone = timezone
-        }
-
 [<Struct>]
 type FinancialConnectionsTransactionStatus =
     | Pending
@@ -90,35 +66,6 @@ module FinancialConnectionsTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.transaction"
 
-    let create
-        (
-            account: string,
-            amount: int,
-            currency: IsoTypes.IsoCurrencyCode,
-            description: string,
-            id: string,
-            livemode: bool,
-            status: FinancialConnectionsTransactionStatus,
-            statusTransitions: BankConnectionsResourceTransactionResourceStatusTransitions,
-            transactedAt: DateTime,
-            transactionRefresh: string,
-            updated: DateTime
-        ) : FinancialConnectionsTransaction
-        =
-        {
-          Account = account
-          Amount = amount
-          Currency = currency
-          Description = description
-          Id = id
-          Livemode = livemode
-          Status = status
-          StatusTransitions = statusTransitions
-          TransactedAt = transactedAt
-          TransactionRefresh = transactionRefresh
-          Updated = updated
-        }
-
 [<Struct>]
 type FinancialConnectionsAccountCategory =
     | Cash
@@ -149,27 +96,6 @@ module FinancialConnectionsAccountOwner =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.account_owner"
 
-    let create
-        (
-            email: string option,
-            id: string,
-            name: string,
-            ownership: string,
-            phone: string option,
-            rawAddress: string option,
-            refreshedAt: DateTime option
-        ) : FinancialConnectionsAccountOwner
-        =
-        {
-          Email = email
-          Id = id
-          Name = name
-          Ownership = ownership
-          Phone = phone
-          RawAddress = rawAddress
-          RefreshedAt = refreshedAt
-        }
-
 /// A paginated list of owners for this account.
 type FinancialConnectionsAccountOwnershipOwners =
     {
@@ -185,19 +111,6 @@ module FinancialConnectionsAccountOwnershipOwners =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
-    let create
-        (
-            data: FinancialConnectionsAccountOwner list,
-            hasMore: bool,
-            url: string
-        ) : FinancialConnectionsAccountOwnershipOwners
-        =
-        {
-          Data = data
-          HasMore = hasMore
-          Url = url
-        }
-
 /// Describes a snapshot of the owners of an account at a particular point in time.
 type FinancialConnectionsAccountOwnership =
     {
@@ -212,19 +125,6 @@ type FinancialConnectionsAccountOwnership =
 module FinancialConnectionsAccountOwnership =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.account_ownership"
-
-    let create
-        (
-            created: DateTime,
-            id: string,
-            owners: FinancialConnectionsAccountOwnershipOwners
-        ) : FinancialConnectionsAccountOwnership
-        =
-        {
-          Created = created
-          Id = id
-          Owners = owners
-        }
 
 type FinancialConnectionsAccountOwnership'AnyOf =
     | String of string
@@ -313,51 +213,6 @@ module FinancialConnectionsAccount =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.account"
 
-    let create
-        (
-            accountHolder: BankConnectionsResourceAccountholder option,
-            accountNumbers: BankConnectionsResourceAccountNumberDetails list option,
-            balance: BankConnectionsResourceBalance option,
-            balanceRefresh: BankConnectionsResourceBalanceRefresh option,
-            category: FinancialConnectionsAccountCategory,
-            created: DateTime,
-            displayName: string option,
-            id: string,
-            institutionName: string,
-            last4: string option,
-            livemode: bool,
-            ownership: FinancialConnectionsAccountOwnership'AnyOf option,
-            ownershipRefresh: BankConnectionsResourceOwnershipRefresh option,
-            permissions: FinancialConnectionsAccountPermissions list option,
-            status: FinancialConnectionsAccountStatus,
-            subcategory: FinancialConnectionsAccountSubcategory,
-            subscriptions: string list option,
-            supportedPaymentMethodTypes: FinancialConnectionsAccountSupportedPaymentMethodTypes list,
-            transactionRefresh: BankConnectionsResourceTransactionRefresh option
-        ) : FinancialConnectionsAccount
-        =
-        {
-          AccountHolder = accountHolder
-          AccountNumbers = accountNumbers
-          Balance = balance
-          BalanceRefresh = balanceRefresh
-          Category = category
-          Created = created
-          DisplayName = displayName
-          Id = id
-          InstitutionName = institutionName
-          Last4 = last4
-          Livemode = livemode
-          Ownership = ownership
-          OwnershipRefresh = ownershipRefresh
-          Permissions = permissions
-          Status = status
-          Subcategory = subcategory
-          Subscriptions = subscriptions
-          SupportedPaymentMethodTypes = supportedPaymentMethodTypes
-          TransactionRefresh = transactionRefresh
-        }
-
 /// The accounts that were collected as part of this Session.
 type FinancialConnectionsSessionAccounts =
     {
@@ -372,19 +227,6 @@ type FinancialConnectionsSessionAccounts =
 module FinancialConnectionsSessionAccounts =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
-
-    let create
-        (
-            data: FinancialConnectionsAccount list,
-            hasMore: bool,
-            url: string
-        ) : FinancialConnectionsSessionAccounts
-        =
-        {
-          Data = data
-          HasMore = hasMore
-          Url = url
-        }
 
 [<Struct>]
 type FinancialConnectionsSessionPermissions =
@@ -425,143 +267,30 @@ module FinancialConnectionsSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.session"
 
-    let create
-        (
-            accountHolder: BankConnectionsResourceAccountholder option,
-            accounts: FinancialConnectionsSessionAccounts,
-            clientSecret: string option,
-            id: string,
-            livemode: bool,
-            permissions: FinancialConnectionsSessionPermissions list,
-            prefetch: FinancialConnectionsSessionPrefetch list option
-        ) : FinancialConnectionsSession
-        =
-        {
-          AccountHolder = accountHolder
-          Accounts = accounts
-          ClientSecret = clientSecret
-          Id = id
-          Livemode = livemode
-          Permissions = permissions
-          Prefetch = prefetch
-          Filters = None
-          ReturnUrl = None
-        }
-
 /// Occurs when an Account’s tokenized account number is about to expire.
 type FinancialConnectionsAccountUpcomingAccountNumberExpiry = { Object: FinancialConnectionsAccount }
-
-module FinancialConnectionsAccountUpcomingAccountNumberExpiry =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountUpcomingAccountNumberExpiry
-        =
-        {
-          Object = object
-        }
 
 /// Occurs when an Account’s `transaction_refresh` status transitions from `pending` to either `succeeded` or `failed`.
 type FinancialConnectionsAccountRefreshedTransactions = { Object: FinancialConnectionsAccount }
 
-module FinancialConnectionsAccountRefreshedTransactions =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountRefreshedTransactions
-        =
-        {
-          Object = object
-        }
-
 /// Occurs when an Account’s `ownership_refresh` status transitions from `pending` to either `succeeded` or `failed`.
 type FinancialConnectionsAccountRefreshedOwnership = { Object: FinancialConnectionsAccount }
-
-module FinancialConnectionsAccountRefreshedOwnership =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountRefreshedOwnership
-        =
-        {
-          Object = object
-        }
 
 /// Occurs when an Account’s `balance_refresh` status transitions from `pending` to either `succeeded` or `failed`.
 type FinancialConnectionsAccountRefreshedBalance = { Object: FinancialConnectionsAccount }
 
-module FinancialConnectionsAccountRefreshedBalance =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountRefreshedBalance
-        =
-        {
-          Object = object
-        }
-
 /// Occurs when a Financial Connections account's status is updated from `inactive` to `active`.
 type FinancialConnectionsAccountReactivated = { Object: FinancialConnectionsAccount }
-
-module FinancialConnectionsAccountReactivated =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountReactivated
-        =
-        {
-          Object = object
-        }
 
 /// Occurs when a Financial Connections account is disconnected.
 type FinancialConnectionsAccountDisconnected = { Object: FinancialConnectionsAccount }
 
-module FinancialConnectionsAccountDisconnected =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountDisconnected
-        =
-        {
-          Object = object
-        }
-
 /// Occurs when a Financial Connections account's status is updated from `active` to `inactive`.
 type FinancialConnectionsAccountDeactivated = { Object: FinancialConnectionsAccount }
-
-module FinancialConnectionsAccountDeactivated =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountDeactivated
-        =
-        {
-          Object = object
-        }
 
 /// Occurs when a new Financial Connections account is created.
 type FinancialConnectionsAccountCreated = { Object: FinancialConnectionsAccount }
 
-module FinancialConnectionsAccountCreated =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountCreated
-        =
-        {
-          Object = object
-        }
-
 /// Occurs when a Financial Connections account's account numbers are updated.
 type FinancialConnectionsAccountAccountNumbersUpdated = { Object: FinancialConnectionsAccount }
-
-module FinancialConnectionsAccountAccountNumbersUpdated =
-    let create
-        (
-            object: FinancialConnectionsAccount
-        ) : FinancialConnectionsAccountAccountNumbersUpdated
-        =
-        {
-          Object = object
-        }
 

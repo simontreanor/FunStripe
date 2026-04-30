@@ -11,16 +11,6 @@ type ThreeDSecureUsage =
         Supported: bool
     }
 
-module ThreeDSecureUsage =
-    let create
-        (
-            supported: bool
-        ) : ThreeDSecureUsage
-        =
-        {
-          Supported = supported
-        }
-
 [<Struct>]
 type ThreeDSecureDetailsAuthenticationFlow =
     | Challenge
@@ -78,26 +68,6 @@ type ThreeDSecureDetails =
         /// The version of 3D Secure that was used.
         Version: ThreeDSecureDetailsVersion option
     }
-
-module ThreeDSecureDetails =
-    let create
-        (
-            authenticationFlow: ThreeDSecureDetailsAuthenticationFlow option,
-            electronicCommerceIndicator: ThreeDSecureDetailsElectronicCommerceIndicator option,
-            result: ThreeDSecureDetailsResult option,
-            resultReason: ThreeDSecureDetailsResultReason option,
-            transactionId: string option,
-            version: ThreeDSecureDetailsVersion option
-        ) : ThreeDSecureDetails
-        =
-        {
-          AuthenticationFlow = authenticationFlow
-          ElectronicCommerceIndicator = electronicCommerceIndicator
-          Result = result
-          ResultReason = resultReason
-          TransactionId = transactionId
-          Version = version
-        }
 
 [<Struct>]
 type ThreeDSecureDetailsChargeAuthenticationFlow =
@@ -166,27 +136,4 @@ type ThreeDSecureDetailsCharge =
         /// The version of 3D Secure that was used.
         Version: ThreeDSecureDetailsChargeVersion option
     }
-
-module ThreeDSecureDetailsCharge =
-    let create
-        (
-            authenticationFlow: ThreeDSecureDetailsChargeAuthenticationFlow option,
-            electronicCommerceIndicator: ThreeDSecureDetailsChargeElectronicCommerceIndicator option,
-            exemptionIndicator: ThreeDSecureDetailsChargeExemptionIndicator option,
-            result: ThreeDSecureDetailsChargeResult option,
-            resultReason: ThreeDSecureDetailsChargeResultReason option,
-            transactionId: string option,
-            version: ThreeDSecureDetailsChargeVersion option
-        ) : ThreeDSecureDetailsCharge
-        =
-        {
-          AuthenticationFlow = authenticationFlow
-          ElectronicCommerceIndicator = electronicCommerceIndicator
-          ExemptionIndicator = exemptionIndicator
-          Result = result
-          ResultReason = resultReason
-          TransactionId = transactionId
-          Version = version
-          ExemptionIndicatorApplied = None
-        }
 

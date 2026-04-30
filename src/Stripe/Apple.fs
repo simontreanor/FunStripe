@@ -20,18 +20,3 @@ module ApplePayDomain =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "apple_pay_domain"
 
-    let create
-        (
-            created: DateTime,
-            domainName: string,
-            id: string,
-            livemode: bool
-        ) : ApplePayDomain
-        =
-        {
-          Created = created
-          DomainName = domainName
-          Id = id
-          Livemode = livemode
-        }
-

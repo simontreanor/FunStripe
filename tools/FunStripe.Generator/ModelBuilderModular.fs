@@ -598,11 +598,11 @@ module ModelBuilderModular =
                         sb.AppendLine() |> ignore
                 isFirst <- false
 
-            // Now emit all companion modules
+            // Now emit all companion modules (static members only — no create for response models)
             for (td, _) in types do
                 match td with
-                | RecordType(name, _, _, members, newParams, _) when not members.IsEmpty || not newParams.IsEmpty ->
-                    let snippet = serializeCompanionModule name members newParams
+                | RecordType(name, _, _, members, _, _) when not members.IsEmpty ->
+                    let snippet = serializeCompanionModule name members []
                     sb.AppendLine(snippet.Trim()) |> ignore
                     sb.AppendLine() |> ignore
 
@@ -641,9 +641,9 @@ module ModelBuilderModular =
                     sb.AppendLine(typeSnippet.Trim()) |> ignore
                     sb.AppendLine() |> ignore
 
-                    // Companion module
-                    if not members.IsEmpty || not newParams.IsEmpty then
-                        let modSnippet = serializeCompanionModule name members newParams
+                    // Companion module (static members only — no create for response models)
+                    if not members.IsEmpty then
+                        let modSnippet = serializeCompanionModule name members []
                         sb.AppendLine(modSnippet.Trim()) |> ignore
                         sb.AppendLine() |> ignore
 

@@ -15,20 +15,6 @@ type ClimateRemovalsProductsPrice =
         AmountTotal: int
     }
 
-module ClimateRemovalsProductsPrice =
-    let create
-        (
-            amountFees: int,
-            amountSubtotal: int,
-            amountTotal: int
-        ) : ClimateRemovalsProductsPrice
-        =
-        {
-          AmountFees = amountFees
-          AmountSubtotal = amountSubtotal
-          AmountTotal = amountTotal
-        }
-
 type ClimateRemovalsLocation =
     {
         /// The city where the supplier is located.
@@ -42,24 +28,6 @@ type ClimateRemovalsLocation =
         /// The state/county/province/region where the supplier is located.
         Region: string option
     }
-
-module ClimateRemovalsLocation =
-    let create
-        (
-            city: string option,
-            country: IsoTypes.IsoCountryCode,
-            latitude: decimal option,
-            longitude: decimal option,
-            region: string option
-        ) : ClimateRemovalsLocation
-        =
-        {
-          City = city
-          Country = country
-          Latitude = latitude
-          Longitude = longitude
-          Region = region
-        }
 
 [<Struct>]
 type ClimateSupplierRemovalPathway =
@@ -89,25 +57,6 @@ module ClimateSupplier =
     ///String representing the object’s type. Objects of the same type share the same value.
     let object = "climate.supplier"
 
-    let create
-        (
-            id: string,
-            infoUrl: string,
-            livemode: bool,
-            locations: ClimateRemovalsLocation list,
-            name: string,
-            removalPathway: ClimateSupplierRemovalPathway
-        ) : ClimateSupplier
-        =
-        {
-          Id = id
-          InfoUrl = infoUrl
-          Livemode = livemode
-          Locations = locations
-          Name = name
-          RemovalPathway = removalPathway
-        }
-
 /// A Climate product represents a type of carbon removal unit available for reservation.
 /// You can retrieve it to see the current price and availability.
 type ClimateProduct =
@@ -136,54 +85,11 @@ module ClimateProduct =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "climate.product"
 
-    let create
-        (
-            created: DateTime,
-            currentPricesPerMetricTon: Map<string, string list>,
-            deliveryYear: int option,
-            id: string,
-            livemode: bool,
-            metricTonsAvailable: string,
-            name: string,
-            suppliers: ClimateSupplier list
-        ) : ClimateProduct
-        =
-        {
-          Created = created
-          CurrentPricesPerMetricTon = currentPricesPerMetricTon
-          DeliveryYear = deliveryYear
-          Id = id
-          Livemode = livemode
-          MetricTonsAvailable = metricTonsAvailable
-          Name = name
-          Suppliers = suppliers
-        }
-
 /// Occurs when a Climate product is updated.
 type ClimateProductPricingUpdated = { Object: ClimateProduct }
 
-module ClimateProductPricingUpdated =
-    let create
-        (
-            object: ClimateProduct
-        ) : ClimateProductPricingUpdated
-        =
-        {
-          Object = object
-        }
-
 /// Occurs when a Climate product is created.
 type ClimateProductCreated = { Object: ClimateProduct }
-
-module ClimateProductCreated =
-    let create
-        (
-            object: ClimateProduct
-        ) : ClimateProductCreated
-        =
-        {
-          Object = object
-        }
 
 [<Struct>]
 type ClimateOrderCancellationReason =
@@ -209,16 +115,6 @@ type ClimateRemovalsBeneficiary =
         PublicName: string
     }
 
-module ClimateRemovalsBeneficiary =
-    let create
-        (
-            publicName: string
-        ) : ClimateRemovalsBeneficiary
-        =
-        {
-          PublicName = publicName
-        }
-
 /// The delivery of a specified quantity of carbon for an order.
 type ClimateRemovalsOrderDeliveries =
     {
@@ -232,24 +128,6 @@ type ClimateRemovalsOrderDeliveries =
         RegistryUrl: string option
         Supplier: ClimateSupplier
     }
-
-module ClimateRemovalsOrderDeliveries =
-    let create
-        (
-            deliveredAt: DateTime,
-            location: ClimateRemovalsLocation option,
-            metricTons: string,
-            registryUrl: string option,
-            supplier: ClimateSupplier
-        ) : ClimateRemovalsOrderDeliveries
-        =
-        {
-          DeliveredAt = deliveredAt
-          Location = location
-          MetricTons = metricTons
-          RegistryUrl = registryUrl
-          Supplier = supplier
-        }
 
 /// Orders represent your intent to purchase a particular Climate product. When you create an order, the
 /// payment is deducted from your merchant balance.
@@ -302,116 +180,18 @@ module ClimateOrder =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "climate.order"
 
-    let create
-        (
-            amountFees: int,
-            amountSubtotal: int,
-            amountTotal: int,
-            canceledAt: DateTime option,
-            cancellationReason: ClimateOrderCancellationReason option,
-            certificate: string option,
-            confirmedAt: DateTime option,
-            created: DateTime,
-            currency: IsoTypes.IsoCurrencyCode,
-            delayedAt: DateTime option,
-            deliveredAt: DateTime option,
-            deliveryDetails: ClimateRemovalsOrderDeliveries list,
-            expectedDeliveryYear: int,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string>,
-            metricTons: string,
-            product: ClimateOrderProduct'AnyOf,
-            productSubstitutedAt: DateTime option,
-            status: ClimateOrderStatus
-        ) : ClimateOrder
-        =
-        {
-          AmountFees = amountFees
-          AmountSubtotal = amountSubtotal
-          AmountTotal = amountTotal
-          CanceledAt = canceledAt
-          CancellationReason = cancellationReason
-          Certificate = certificate
-          ConfirmedAt = confirmedAt
-          Created = created
-          Currency = currency
-          DelayedAt = delayedAt
-          DeliveredAt = deliveredAt
-          DeliveryDetails = deliveryDetails
-          ExpectedDeliveryYear = expectedDeliveryYear
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          MetricTons = metricTons
-          Product = product
-          ProductSubstitutedAt = productSubstitutedAt
-          Status = status
-          Beneficiary = None
-        }
-
 /// Occurs when a Climate order's product is substituted for another.
 type ClimateOrderProductSubstituted = { Object: ClimateOrder }
-
-module ClimateOrderProductSubstituted =
-    let create
-        (
-            object: ClimateOrder
-        ) : ClimateOrderProductSubstituted
-        =
-        {
-          Object = object
-        }
 
 /// Occurs when a Climate order is delivered.
 type ClimateOrderDelivered = { Object: ClimateOrder }
 
-module ClimateOrderDelivered =
-    let create
-        (
-            object: ClimateOrder
-        ) : ClimateOrderDelivered
-        =
-        {
-          Object = object
-        }
-
 /// Occurs when a Climate order is delayed.
 type ClimateOrderDelayed = { Object: ClimateOrder }
-
-module ClimateOrderDelayed =
-    let create
-        (
-            object: ClimateOrder
-        ) : ClimateOrderDelayed
-        =
-        {
-          Object = object
-        }
 
 /// Occurs when a Climate order is created.
 type ClimateOrderCreated = { Object: ClimateOrder }
 
-module ClimateOrderCreated =
-    let create
-        (
-            object: ClimateOrder
-        ) : ClimateOrderCreated
-        =
-        {
-          Object = object
-        }
-
 /// Occurs when a Climate order is canceled.
 type ClimateOrderCanceled = { Object: ClimateOrder }
-
-module ClimateOrderCanceled =
-    let create
-        (
-            object: ClimateOrder
-        ) : ClimateOrderCanceled
-        =
-        {
-          Object = object
-        }
 

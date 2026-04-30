@@ -37,14 +37,3 @@ module ExchangeRate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "exchange_rate"
 
-    let create
-        (
-            id: string,
-            rates: Map<string, string list>
-        ) : ExchangeRate
-        =
-        {
-          Id = id
-          Rates = rates
-        }
-

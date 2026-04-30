@@ -26,21 +26,3 @@ type Fee =
         Type: FeeType
     }
 
-module Fee =
-    let create
-        (
-            amount: int,
-            application: string option,
-            currency: IsoTypes.IsoCurrencyCode,
-            description: string option,
-            ``type``: FeeType
-        ) : Fee
-        =
-        {
-          Amount = amount
-          Application = application
-          Currency = currency
-          Description = description
-          Type = ``type``
-        }
-

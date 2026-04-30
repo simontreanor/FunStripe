@@ -304,28 +304,3 @@ module Event =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "event"
 
-    let create
-        (
-            apiVersion: string option,
-            created: DateTime,
-            data: NotificationEventData,
-            id: string,
-            livemode: bool,
-            pendingWebhooks: int,
-            request: NotificationEventRequest option,
-            ``type``: EventType
-        ) : Event
-        =
-        {
-          ApiVersion = apiVersion
-          Created = created
-          Data = data
-          Id = id
-          Livemode = livemode
-          PendingWebhooks = pendingWebhooks
-          Request = request
-          Type = ``type``
-          Account = None
-          Context = None
-        }
-

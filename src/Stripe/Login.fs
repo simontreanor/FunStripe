@@ -19,14 +19,3 @@ module LoginLink =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "login_link"
 
-    let create
-        (
-            created: DateTime,
-            url: string
-        ) : LoginLink
-        =
-        {
-          Created = created
-          Url = url
-        }
-

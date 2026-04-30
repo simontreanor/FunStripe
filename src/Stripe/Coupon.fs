@@ -11,31 +11,11 @@ type CouponCurrencyOption =
         AmountOff: int
     }
 
-module CouponCurrencyOption =
-    let create
-        (
-            amountOff: int
-        ) : CouponCurrencyOption
-        =
-        {
-          AmountOff = amountOff
-        }
-
 type CouponAppliesTo =
     {
         /// A list of product IDs this coupon applies to
         Products: string list
     }
-
-module CouponAppliesTo =
-    let create
-        (
-            products: string list
-        ) : CouponAppliesTo
-        =
-        {
-          Products = products
-        }
 
 [<Struct>]
 type CouponDuration =
@@ -85,79 +65,12 @@ module Coupon =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "coupon"
 
-    let create
-        (
-            amountOff: int option,
-            created: DateTime,
-            currency: IsoTypes.IsoCurrencyCode option,
-            duration: CouponDuration,
-            durationInMonths: int option,
-            id: string,
-            livemode: bool,
-            maxRedemptions: int option,
-            metadata: Map<string, string> option,
-            name: string option,
-            percentOff: decimal option,
-            redeemBy: DateTime option,
-            timesRedeemed: int,
-            valid: bool
-        ) : Coupon
-        =
-        {
-          AmountOff = amountOff
-          Created = created
-          Currency = currency
-          Duration = duration
-          DurationInMonths = durationInMonths
-          Id = id
-          Livemode = livemode
-          MaxRedemptions = maxRedemptions
-          Metadata = metadata
-          Name = name
-          PercentOff = percentOff
-          RedeemBy = redeemBy
-          TimesRedeemed = timesRedeemed
-          Valid = valid
-          AppliesTo = None
-          CurrencyOptions = None
-        }
-
 /// Occurs whenever a coupon is updated.
 type CouponUpdated = { Object: Coupon }
-
-module CouponUpdated =
-    let create
-        (
-            object: Coupon
-        ) : CouponUpdated
-        =
-        {
-          Object = object
-        }
 
 /// Occurs whenever a coupon is deleted.
 type CouponDeleted = { Object: Coupon }
 
-module CouponDeleted =
-    let create
-        (
-            object: Coupon
-        ) : CouponDeleted
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever a coupon is created.
 type CouponCreated = { Object: Coupon }
-
-module CouponCreated =
-    let create
-        (
-            object: Coupon
-        ) : CouponCreated
-        =
-        {
-          Object = object
-        }
 

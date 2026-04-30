@@ -23,23 +23,3 @@ type Address =
         State: string option
     }
 
-module Address =
-    let create
-        (
-            city: string option,
-            country: IsoTypes.IsoCountryCode option,
-            line1: string option,
-            line2: string option,
-            postalCode: string option,
-            state: string option
-        ) : Address
-        =
-        {
-          City = city
-          Country = country
-          Line1 = line1
-          Line2 = line2
-          PostalCode = postalCode
-          State = state
-        }
-

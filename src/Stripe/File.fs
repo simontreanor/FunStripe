@@ -103,83 +103,11 @@ module File =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "file"
 
-    let create
-        (
-            created: DateTime,
-            expiresAt: DateTime option,
-            filename: string option,
-            id: string,
-            purpose: FilePurpose,
-            size: int,
-            title: string option,
-            ``type``: string option,
-            url: string option
-        ) : File
-        =
-        {
-          Created = created
-          ExpiresAt = expiresAt
-          Filename = filename
-          Id = id
-          Purpose = purpose
-          Size = size
-          Title = title
-          Type = ``type``
-          Url = url
-          Links = None
-        }
-
 module FileLinks =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
-    let create
-        (
-            data: FileLink list,
-            hasMore: bool,
-            url: string
-        ) : FileLinks
-        =
-        {
-          Data = data
-          HasMore = hasMore
-          Url = url
-        }
-
 module FileLink =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "file_link"
-
-    let create
-        (
-            created: DateTime,
-            expired: bool,
-            expiresAt: DateTime option,
-            file: FileLinkFile'AnyOf,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string>,
-            url: string option
-        ) : FileLink
-        =
-        {
-          Created = created
-          Expired = expired
-          ExpiresAt = expiresAt
-          File = file
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          Url = url
-        }
-
-module FileCreated =
-    let create
-        (
-            object: File
-        ) : FileCreated
-        =
-        {
-          Object = object
-        }
 

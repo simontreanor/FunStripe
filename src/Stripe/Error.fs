@@ -9,13 +9,3 @@ open Stripe.Payment
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
 type Error = { Error: ApiErrors }
 
-module Error =
-    let create
-        (
-            error: ApiErrors
-        ) : Error
-        =
-        {
-          Error = error
-        }
-

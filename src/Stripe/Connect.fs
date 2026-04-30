@@ -13,18 +13,6 @@ type ConnectEmbeddedAccountFeaturesClaim =
         ExternalAccountCollection: bool
     }
 
-module ConnectEmbeddedAccountFeaturesClaim =
-    let create
-        (
-            disableStripeUserAuthentication: bool,
-            externalAccountCollection: bool
-        ) : ConnectEmbeddedAccountFeaturesClaim
-        =
-        {
-          DisableStripeUserAuthentication = disableStripeUserAuthentication
-          ExternalAccountCollection = externalAccountCollection
-        }
-
 type ConnectEmbeddedAccountConfigClaim =
     {
         /// Whether the embedded component is enabled.
@@ -32,30 +20,8 @@ type ConnectEmbeddedAccountConfigClaim =
         Features: ConnectEmbeddedAccountFeaturesClaim
     }
 
-module ConnectEmbeddedAccountConfigClaim =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedAccountFeaturesClaim
-        ) : ConnectEmbeddedAccountConfigClaim
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
-
 type ConnectEmbeddedBaseFeatures =
     { ConnectEmbeddedBaseFeatures: string option }
-
-module ConnectEmbeddedBaseFeatures =
-    let create
-        (
-            connectEmbeddedBaseFeatures: string option option
-        ) : ConnectEmbeddedBaseFeatures
-        =
-        {
-          ConnectEmbeddedBaseFeatures = connectEmbeddedBaseFeatures |> Option.flatten
-        }
 
 type ConnectEmbeddedBaseConfigClaim =
     {
@@ -63,18 +29,6 @@ type ConnectEmbeddedBaseConfigClaim =
         Enabled: bool
         Features: ConnectEmbeddedBaseFeatures
     }
-
-module ConnectEmbeddedBaseConfigClaim =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedBaseFeatures
-        ) : ConnectEmbeddedBaseConfigClaim
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedDisputesListFeatures =
     {
@@ -88,40 +42,12 @@ type ConnectEmbeddedDisputesListFeatures =
         RefundManagement: bool
     }
 
-module ConnectEmbeddedDisputesListFeatures =
-    let create
-        (
-            capturePayments: bool,
-            destinationOnBehalfOfChargeManagement: bool,
-            disputeManagement: bool,
-            refundManagement: bool
-        ) : ConnectEmbeddedDisputesListFeatures
-        =
-        {
-          CapturePayments = capturePayments
-          DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
-          DisputeManagement = disputeManagement
-          RefundManagement = refundManagement
-        }
-
 type ConnectEmbeddedDisputesListConfig =
     {
         /// Whether the embedded component is enabled.
         Enabled: bool
         Features: ConnectEmbeddedDisputesListFeatures
     }
-
-module ConnectEmbeddedDisputesListConfig =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedDisputesListFeatures
-        ) : ConnectEmbeddedDisputesListConfig
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedFinancialAccountFeatures =
     {
@@ -135,22 +61,6 @@ type ConnectEmbeddedFinancialAccountFeatures =
         TransferBalance: bool
     }
 
-module ConnectEmbeddedFinancialAccountFeatures =
-    let create
-        (
-            disableStripeUserAuthentication: bool,
-            externalAccountCollection: bool,
-            sendMoney: bool,
-            transferBalance: bool
-        ) : ConnectEmbeddedFinancialAccountFeatures
-        =
-        {
-          DisableStripeUserAuthentication = disableStripeUserAuthentication
-          ExternalAccountCollection = externalAccountCollection
-          SendMoney = sendMoney
-          TransferBalance = transferBalance
-        }
-
 type ConnectEmbeddedFinancialAccountConfigClaim =
     {
         /// Whether the embedded component is enabled.
@@ -158,33 +68,11 @@ type ConnectEmbeddedFinancialAccountConfigClaim =
         Features: ConnectEmbeddedFinancialAccountFeatures
     }
 
-module ConnectEmbeddedFinancialAccountConfigClaim =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedFinancialAccountFeatures
-        ) : ConnectEmbeddedFinancialAccountConfigClaim
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
-
 type ConnectEmbeddedFinancialAccountTransactionsFeatures =
     {
         /// Whether to allow card spend dispute management features.
         CardSpendDisputeManagement: bool
     }
-
-module ConnectEmbeddedFinancialAccountTransactionsFeatures =
-    let create
-        (
-            cardSpendDisputeManagement: bool
-        ) : ConnectEmbeddedFinancialAccountTransactionsFeatures
-        =
-        {
-          CardSpendDisputeManagement = cardSpendDisputeManagement
-        }
 
 type ConnectEmbeddedFinancialAccountTransactionsConfigClaim =
     {
@@ -192,18 +80,6 @@ type ConnectEmbeddedFinancialAccountTransactionsConfigClaim =
         Enabled: bool
         Features: ConnectEmbeddedFinancialAccountTransactionsFeatures
     }
-
-module ConnectEmbeddedFinancialAccountTransactionsConfigClaim =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedFinancialAccountTransactionsFeatures
-        ) : ConnectEmbeddedFinancialAccountTransactionsConfigClaim
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedInstantPayoutsPromotionFeatures =
     {
@@ -215,38 +91,12 @@ type ConnectEmbeddedInstantPayoutsPromotionFeatures =
         InstantPayouts: bool
     }
 
-module ConnectEmbeddedInstantPayoutsPromotionFeatures =
-    let create
-        (
-            disableStripeUserAuthentication: bool,
-            externalAccountCollection: bool,
-            instantPayouts: bool
-        ) : ConnectEmbeddedInstantPayoutsPromotionFeatures
-        =
-        {
-          DisableStripeUserAuthentication = disableStripeUserAuthentication
-          ExternalAccountCollection = externalAccountCollection
-          InstantPayouts = instantPayouts
-        }
-
 type ConnectEmbeddedInstantPayoutsPromotionConfig =
     {
         /// Whether the embedded component is enabled.
         Enabled: bool
         Features: ConnectEmbeddedInstantPayoutsPromotionFeatures
     }
-
-module ConnectEmbeddedInstantPayoutsPromotionConfig =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedInstantPayoutsPromotionFeatures
-        ) : ConnectEmbeddedInstantPayoutsPromotionConfig
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedIssuingCardFeatures =
     {
@@ -260,40 +110,12 @@ type ConnectEmbeddedIssuingCardFeatures =
         SpendControlManagement: bool
     }
 
-module ConnectEmbeddedIssuingCardFeatures =
-    let create
-        (
-            cardManagement: bool,
-            cardSpendDisputeManagement: bool,
-            cardholderManagement: bool,
-            spendControlManagement: bool
-        ) : ConnectEmbeddedIssuingCardFeatures
-        =
-        {
-          CardManagement = cardManagement
-          CardSpendDisputeManagement = cardSpendDisputeManagement
-          CardholderManagement = cardholderManagement
-          SpendControlManagement = spendControlManagement
-        }
-
 type ConnectEmbeddedIssuingCardConfigClaim =
     {
         /// Whether the embedded component is enabled.
         Enabled: bool
         Features: ConnectEmbeddedIssuingCardFeatures
     }
-
-module ConnectEmbeddedIssuingCardConfigClaim =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedIssuingCardFeatures
-        ) : ConnectEmbeddedIssuingCardConfigClaim
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedIssuingCardsListFeatures =
     {
@@ -309,42 +131,12 @@ type ConnectEmbeddedIssuingCardsListFeatures =
         SpendControlManagement: bool
     }
 
-module ConnectEmbeddedIssuingCardsListFeatures =
-    let create
-        (
-            cardManagement: bool,
-            cardSpendDisputeManagement: bool,
-            cardholderManagement: bool,
-            disableStripeUserAuthentication: bool,
-            spendControlManagement: bool
-        ) : ConnectEmbeddedIssuingCardsListFeatures
-        =
-        {
-          CardManagement = cardManagement
-          CardSpendDisputeManagement = cardSpendDisputeManagement
-          CardholderManagement = cardholderManagement
-          DisableStripeUserAuthentication = disableStripeUserAuthentication
-          SpendControlManagement = spendControlManagement
-        }
-
 type ConnectEmbeddedIssuingCardsListConfigClaim =
     {
         /// Whether the embedded component is enabled.
         Enabled: bool
         Features: ConnectEmbeddedIssuingCardsListFeatures
     }
-
-module ConnectEmbeddedIssuingCardsListConfigClaim =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedIssuingCardsListFeatures
-        ) : ConnectEmbeddedIssuingCardsListConfigClaim
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedPaymentDisputesFeatures =
     {
@@ -356,38 +148,12 @@ type ConnectEmbeddedPaymentDisputesFeatures =
         RefundManagement: bool
     }
 
-module ConnectEmbeddedPaymentDisputesFeatures =
-    let create
-        (
-            destinationOnBehalfOfChargeManagement: bool,
-            disputeManagement: bool,
-            refundManagement: bool
-        ) : ConnectEmbeddedPaymentDisputesFeatures
-        =
-        {
-          DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
-          DisputeManagement = disputeManagement
-          RefundManagement = refundManagement
-        }
-
 type ConnectEmbeddedPaymentDisputesConfig =
     {
         /// Whether the embedded component is enabled.
         Enabled: bool
         Features: ConnectEmbeddedPaymentDisputesFeatures
     }
-
-module ConnectEmbeddedPaymentDisputesConfig =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedPaymentDisputesFeatures
-        ) : ConnectEmbeddedPaymentDisputesConfig
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedPaymentsFeatures =
     {
@@ -401,40 +167,12 @@ type ConnectEmbeddedPaymentsFeatures =
         RefundManagement: bool
     }
 
-module ConnectEmbeddedPaymentsFeatures =
-    let create
-        (
-            capturePayments: bool,
-            destinationOnBehalfOfChargeManagement: bool,
-            disputeManagement: bool,
-            refundManagement: bool
-        ) : ConnectEmbeddedPaymentsFeatures
-        =
-        {
-          CapturePayments = capturePayments
-          DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
-          DisputeManagement = disputeManagement
-          RefundManagement = refundManagement
-        }
-
 type ConnectEmbeddedPaymentsConfigClaim =
     {
         /// Whether the embedded component is enabled.
         Enabled: bool
         Features: ConnectEmbeddedPaymentsFeatures
     }
-
-module ConnectEmbeddedPaymentsConfigClaim =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedPaymentsFeatures
-        ) : ConnectEmbeddedPaymentsConfigClaim
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedPayoutsFeatures =
     {
@@ -450,42 +188,12 @@ type ConnectEmbeddedPayoutsFeatures =
         StandardPayouts: bool
     }
 
-module ConnectEmbeddedPayoutsFeatures =
-    let create
-        (
-            disableStripeUserAuthentication: bool,
-            editPayoutSchedule: bool,
-            externalAccountCollection: bool,
-            instantPayouts: bool,
-            standardPayouts: bool
-        ) : ConnectEmbeddedPayoutsFeatures
-        =
-        {
-          DisableStripeUserAuthentication = disableStripeUserAuthentication
-          EditPayoutSchedule = editPayoutSchedule
-          ExternalAccountCollection = externalAccountCollection
-          InstantPayouts = instantPayouts
-          StandardPayouts = standardPayouts
-        }
-
 type ConnectEmbeddedPayoutsConfig =
     {
         /// Whether the embedded component is enabled.
         Enabled: bool
         Features: ConnectEmbeddedPayoutsFeatures
     }
-
-module ConnectEmbeddedPayoutsConfig =
-    let create
-        (
-            enabled: bool,
-            features: ConnectEmbeddedPayoutsFeatures
-        ) : ConnectEmbeddedPayoutsConfig
-        =
-        {
-          Enabled = enabled
-          Features = features
-        }
 
 type ConnectEmbeddedAccountSessionCreateComponents =
     { AccountManagement: ConnectEmbeddedAccountConfigClaim
@@ -509,54 +217,4 @@ type ConnectEmbeddedAccountSessionCreateComponents =
       PayoutsList: ConnectEmbeddedBaseConfigClaim
       TaxRegistrations: ConnectEmbeddedBaseConfigClaim
       TaxSettings: ConnectEmbeddedBaseConfigClaim }
-
-module ConnectEmbeddedAccountSessionCreateComponents =
-    let create
-        (
-            accountManagement: ConnectEmbeddedAccountConfigClaim,
-            accountOnboarding: ConnectEmbeddedAccountConfigClaim,
-            balanceReport: ConnectEmbeddedBaseConfigClaim,
-            balances: ConnectEmbeddedPayoutsConfig,
-            disputesList: ConnectEmbeddedDisputesListConfig,
-            documents: ConnectEmbeddedBaseConfigClaim,
-            financialAccount: ConnectEmbeddedFinancialAccountConfigClaim,
-            financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim,
-            instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig,
-            issuingCard: ConnectEmbeddedIssuingCardConfigClaim,
-            issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim,
-            notificationBanner: ConnectEmbeddedAccountConfigClaim,
-            paymentDetails: ConnectEmbeddedPaymentsConfigClaim,
-            paymentDisputes: ConnectEmbeddedPaymentDisputesConfig,
-            payments: ConnectEmbeddedPaymentsConfigClaim,
-            payoutDetails: ConnectEmbeddedBaseConfigClaim,
-            payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim,
-            payouts: ConnectEmbeddedPayoutsConfig,
-            payoutsList: ConnectEmbeddedBaseConfigClaim,
-            taxRegistrations: ConnectEmbeddedBaseConfigClaim,
-            taxSettings: ConnectEmbeddedBaseConfigClaim
-        ) : ConnectEmbeddedAccountSessionCreateComponents
-        =
-        {
-          AccountManagement = accountManagement
-          AccountOnboarding = accountOnboarding
-          BalanceReport = balanceReport
-          Balances = balances
-          DisputesList = disputesList
-          Documents = documents
-          FinancialAccount = financialAccount
-          FinancialAccountTransactions = financialAccountTransactions
-          InstantPayoutsPromotion = instantPayoutsPromotion
-          IssuingCard = issuingCard
-          IssuingCardsList = issuingCardsList
-          NotificationBanner = notificationBanner
-          PaymentDetails = paymentDetails
-          PaymentDisputes = paymentDisputes
-          Payments = payments
-          PayoutDetails = payoutDetails
-          PayoutReconciliationReport = payoutReconciliationReport
-          Payouts = payouts
-          PayoutsList = payoutsList
-          TaxRegistrations = taxRegistrations
-          TaxSettings = taxSettings
-        }
 

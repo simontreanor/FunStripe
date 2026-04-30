@@ -15,12 +15,3 @@ module ReceivedPaymentMethodDetailsFinancialAccount =
     ///The rails the ReceivedCredit was sent over. A FinancialAccount can only send funds over `stripe`.
     let network = "stripe"
 
-    let create
-        (
-            id: string
-        ) : ReceivedPaymentMethodDetailsFinancialAccount
-        =
-        {
-          Id = id
-        }
-

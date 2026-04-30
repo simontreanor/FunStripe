@@ -8,13 +8,3 @@ open System
 type DestinationDetailsUnimplemented =
     { DestinationDetailsUnimplemented: string option }
 
-module DestinationDetailsUnimplemented =
-    let create
-        (
-            destinationDetailsUnimplemented: string option option
-        ) : DestinationDetailsUnimplemented
-        =
-        {
-          DestinationDetailsUnimplemented = destinationDetailsUnimplemented |> Option.flatten
-        }
-

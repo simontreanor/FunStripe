@@ -30,21 +30,3 @@ type Recurring =
         UsageType: RecurringUsageType
     }
 
-module Recurring =
-    let create
-        (
-            interval: RecurringInterval,
-            intervalCount: int,
-            meter: string option,
-            trialPeriodDays: int option,
-            usageType: RecurringUsageType
-        ) : Recurring
-        =
-        {
-          Interval = interval
-          IntervalCount = intervalCount
-          Meter = meter
-          TrialPeriodDays = trialPeriodDays
-          UsageType = usageType
-        }
-

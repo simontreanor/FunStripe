@@ -23,15 +23,3 @@ type PaypalSellerProtection =
         Status: PaypalSellerProtectionStatus
     }
 
-module PaypalSellerProtection =
-    let create
-        (
-            disputeCategories: PaypalSellerProtectionDisputeCategories list option,
-            status: PaypalSellerProtectionStatus
-        ) : PaypalSellerProtection
-        =
-        {
-          DisputeCategories = disputeCategories
-          Status = status
-        }
-

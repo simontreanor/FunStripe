@@ -15,18 +15,6 @@ type TaxRateFlatAmount =
         Currency: IsoTypes.IsoCurrencyCode
     }
 
-module TaxRateFlatAmount =
-    let create
-        (
-            amount: int,
-            currency: IsoTypes.IsoCurrencyCode
-        ) : TaxRateFlatAmount
-        =
-        {
-          Amount = amount
-          Currency = currency
-        }
-
 type TaxRateJurisdictionLevel =
     | City
     | Country
@@ -102,72 +90,11 @@ module TaxRate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_rate"
 
-    let create
-        (
-            active: bool,
-            country: IsoTypes.IsoCountryCode option,
-            created: DateTime,
-            description: string option,
-            displayName: string,
-            effectivePercentage: decimal option,
-            flatAmount: TaxRateFlatAmount option,
-            id: string,
-            inclusive: bool,
-            jurisdiction: string option,
-            jurisdictionLevel: TaxRateJurisdictionLevel option,
-            livemode: bool,
-            metadata: Map<string, string> option,
-            percentage: decimal,
-            rateType: TaxRateRateType option,
-            state: string option,
-            taxType: TaxRateTaxType option
-        ) : TaxRate
-        =
-        {
-          Active = active
-          Country = country
-          Created = created
-          Description = description
-          DisplayName = displayName
-          EffectivePercentage = effectivePercentage
-          FlatAmount = flatAmount
-          Id = id
-          Inclusive = inclusive
-          Jurisdiction = jurisdiction
-          JurisdictionLevel = jurisdictionLevel
-          Livemode = livemode
-          Metadata = metadata
-          Percentage = percentage
-          RateType = rateType
-          State = state
-          TaxType = taxType
-        }
-
 /// Occurs whenever a tax rate is updated.
 type TaxRateUpdated = { Object: TaxRate }
 
-module TaxRateUpdated =
-    let create
-        (
-            object: TaxRate
-        ) : TaxRateUpdated
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever a new tax rate is created.
 type TaxRateCreated = { Object: TaxRate }
-
-module TaxRateCreated =
-    let create
-        (
-            object: TaxRate
-        ) : TaxRateCreated
-        =
-        {
-          Object = object
-        }
 
 [<Struct>]
 type TaxProductResourceCustomerDetailsAddressSource =
@@ -301,18 +228,6 @@ type TaxProductResourceCustomerDetailsResourceTaxId =
         Value: string
     }
 
-module TaxProductResourceCustomerDetailsResourceTaxId =
-    let create
-        (
-            ``type``: TaxProductResourceCustomerDetailsResourceTaxIdType,
-            value: string
-        ) : TaxProductResourceCustomerDetailsResourceTaxId
-        =
-        {
-          Type = ``type``
-          Value = value
-        }
-
 [<Struct>]
 type TaxProductResourceCustomerDetailsTaxabilityOverride =
     | CustomerExempt
@@ -337,26 +252,6 @@ type TaxProductResourcePostalAddress =
         State: string option
     }
 
-module TaxProductResourcePostalAddress =
-    let create
-        (
-            city: string option,
-            country: IsoTypes.IsoCountryCode,
-            line1: string option,
-            line2: string option,
-            postalCode: string option,
-            state: string option
-        ) : TaxProductResourcePostalAddress
-        =
-        {
-          City = city
-          Country = country
-          Line1 = line1
-          Line2 = line2
-          PostalCode = postalCode
-          State = state
-        }
-
 type TaxProductResourceCustomerDetails =
     {
         /// The customer's postal address (for example, home or business location).
@@ -371,52 +266,14 @@ type TaxProductResourceCustomerDetails =
         TaxabilityOverride: TaxProductResourceCustomerDetailsTaxabilityOverride
     }
 
-module TaxProductResourceCustomerDetails =
-    let create
-        (
-            address: TaxProductResourcePostalAddress option,
-            addressSource: TaxProductResourceCustomerDetailsAddressSource option,
-            ipAddress: string option,
-            taxIds: TaxProductResourceCustomerDetailsResourceTaxId list,
-            taxabilityOverride: TaxProductResourceCustomerDetailsTaxabilityOverride
-        ) : TaxProductResourceCustomerDetails
-        =
-        {
-          Address = address
-          AddressSource = addressSource
-          IpAddress = ipAddress
-          TaxIds = taxIds
-          TaxabilityOverride = taxabilityOverride
-        }
-
 type TaxProductResourceShipFromDetails =
     { Address: TaxProductResourcePostalAddress }
-
-module TaxProductResourceShipFromDetails =
-    let create
-        (
-            address: TaxProductResourcePostalAddress
-        ) : TaxProductResourceShipFromDetails
-        =
-        {
-          Address = address
-        }
 
 type TaxProductResourceTaxTransactionResourceReversal =
     {
         /// The `id` of the reversed `Transaction` object.
         OriginalTransaction: string option
     }
-
-module TaxProductResourceTaxTransactionResourceReversal =
-    let create
-        (
-            originalTransaction: string option
-        ) : TaxProductResourceTaxTransactionResourceReversal
-        =
-        {
-          OriginalTransaction = originalTransaction
-        }
 
 [<Struct>]
 type TaxProductResourceJurisdictionLevel =
@@ -437,22 +294,6 @@ type TaxProductResourceJurisdiction =
         /// [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2), without country prefix. For example, "NY" for New York, United States.
         State: string option
     }
-
-module TaxProductResourceJurisdiction =
-    let create
-        (
-            country: IsoTypes.IsoCountryCode,
-            displayName: string,
-            level: TaxProductResourceJurisdictionLevel,
-            state: string option
-        ) : TaxProductResourceJurisdiction
-        =
-        {
-          Country = country
-          DisplayName = displayName
-          Level = level
-          State = state
-        }
 
 [<Struct>]
 type TaxProductResourceLineItemTaxBreakdownSourcing =
@@ -502,20 +343,6 @@ type TaxProductResourceLineItemTaxRateDetails =
         TaxType: TaxProductResourceLineItemTaxRateDetailsTaxType
     }
 
-module TaxProductResourceLineItemTaxRateDetails =
-    let create
-        (
-            displayName: string,
-            percentageDecimal: string,
-            taxType: TaxProductResourceLineItemTaxRateDetailsTaxType
-        ) : TaxProductResourceLineItemTaxRateDetails
-        =
-        {
-          DisplayName = displayName
-          PercentageDecimal = percentageDecimal
-          TaxType = taxType
-        }
-
 type TaxProductResourceLineItemTaxBreakdown =
     {
         /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
@@ -530,26 +357,6 @@ type TaxProductResourceLineItemTaxBreakdown =
         /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
         TaxableAmount: int
     }
-
-module TaxProductResourceLineItemTaxBreakdown =
-    let create
-        (
-            amount: int,
-            jurisdiction: TaxProductResourceJurisdiction,
-            sourcing: TaxProductResourceLineItemTaxBreakdownSourcing,
-            taxRateDetails: TaxProductResourceLineItemTaxRateDetails option,
-            taxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason,
-            taxableAmount: int
-        ) : TaxProductResourceLineItemTaxBreakdown
-        =
-        {
-          Amount = amount
-          Jurisdiction = jurisdiction
-          Sourcing = sourcing
-          TaxRateDetails = taxRateDetails
-          TaxabilityReason = taxabilityReason
-          TaxableAmount = taxableAmount
-        }
 
 [<Struct>]
 type TaxProductResourceTaxTransactionShippingCostTaxBehavior =
@@ -572,39 +379,11 @@ type TaxProductResourceTaxTransactionShippingCost =
         TaxCode: string
     }
 
-module TaxProductResourceTaxTransactionShippingCost =
-    let create
-        (
-            amount: int,
-            amountTax: int,
-            taxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior,
-            taxCode: string
-        ) : TaxProductResourceTaxTransactionShippingCost
-        =
-        {
-          Amount = amount
-          AmountTax = amountTax
-          TaxBehavior = taxBehavior
-          TaxCode = taxCode
-          ShippingRate = None
-          TaxBreakdown = None
-        }
-
 type TaxProductResourceTaxTransactionLineItemResourceReversal =
     {
         /// The `id` of the line item to reverse in the original transaction.
         OriginalLineItem: string
     }
-
-module TaxProductResourceTaxTransactionLineItemResourceReversal =
-    let create
-        (
-            originalLineItem: string
-        ) : TaxProductResourceTaxTransactionLineItemResourceReversal
-        =
-        {
-          OriginalLineItem = originalLineItem
-        }
 
 [<Struct>]
 type TaxTransactionLineItemTaxBehavior =
@@ -648,37 +427,6 @@ module TaxTransactionLineItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.transaction_line_item"
 
-    let create
-        (
-            amount: int,
-            amountTax: int,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string> option,
-            product: string option,
-            quantity: int,
-            reference: string,
-            reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option,
-            taxBehavior: TaxTransactionLineItemTaxBehavior,
-            taxCode: string,
-            ``type``: TaxTransactionLineItemType
-        ) : TaxTransactionLineItem
-        =
-        {
-          Amount = amount
-          AmountTax = amountTax
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          Product = product
-          Quantity = quantity
-          Reference = reference
-          Reversal = reversal
-          TaxBehavior = taxBehavior
-          TaxCode = taxCode
-          Type = ``type``
-        }
-
 /// The tax collected or refunded, by line item.
 type TaxTransactionLineItems =
     {
@@ -693,19 +441,6 @@ type TaxTransactionLineItems =
 module TaxTransactionLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
-
-    let create
-        (
-            data: TaxTransactionLineItem list,
-            hasMore: bool,
-            url: string
-        ) : TaxTransactionLineItems
-        =
-        {
-          Data = data
-          HasMore = hasMore
-          Url = url
-        }
 
 [<Struct>]
 type TaxTransactionType =
@@ -751,42 +486,6 @@ module TaxTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.transaction"
 
-    let create
-        (
-            created: DateTime,
-            currency: IsoTypes.IsoCurrencyCode,
-            customer: string option,
-            customerDetails: TaxProductResourceCustomerDetails,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string> option,
-            postedAt: DateTime,
-            reference: string,
-            reversal: TaxProductResourceTaxTransactionResourceReversal option,
-            shipFromDetails: TaxProductResourceShipFromDetails option,
-            shippingCost: TaxProductResourceTaxTransactionShippingCost option,
-            taxDate: DateTime,
-            ``type``: TaxTransactionType
-        ) : TaxTransaction
-        =
-        {
-          Created = created
-          Currency = currency
-          Customer = customer
-          CustomerDetails = customerDetails
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          PostedAt = postedAt
-          Reference = reference
-          Reversal = reversal
-          ShipFromDetails = shipFromDetails
-          ShippingCost = shippingCost
-          TaxDate = taxDate
-          Type = ``type``
-          LineItems = None
-        }
-
 [<Struct>]
 type TaxProductResourceTaxSettingsDefaultsProvider =
     | Anrok
@@ -810,44 +509,10 @@ type TaxProductResourceTaxSettingsDefaults =
         TaxCode: string option
     }
 
-module TaxProductResourceTaxSettingsDefaults =
-    let create
-        (
-            provider: TaxProductResourceTaxSettingsDefaultsProvider,
-            taxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option,
-            taxCode: string option
-        ) : TaxProductResourceTaxSettingsDefaults
-        =
-        {
-          Provider = provider
-          TaxBehavior = taxBehavior
-          TaxCode = taxCode
-        }
-
 type TaxProductResourceTaxSettingsHeadOffice = { Address: Address }
-
-module TaxProductResourceTaxSettingsHeadOffice =
-    let create
-        (
-            address: Address
-        ) : TaxProductResourceTaxSettingsHeadOffice
-        =
-        {
-          Address = address
-        }
 
 type TaxProductResourceTaxSettingsStatusDetailsResourceActive =
     { TaxProductResourceTaxSettingsStatusDetailsResourceActive: string option }
-
-module TaxProductResourceTaxSettingsStatusDetailsResourceActive =
-    let create
-        (
-            taxProductResourceTaxSettingsStatusDetailsResourceActive: string option option
-        ) : TaxProductResourceTaxSettingsStatusDetailsResourceActive
-        =
-        {
-          TaxProductResourceTaxSettingsStatusDetailsResourceActive = taxProductResourceTaxSettingsStatusDetailsResourceActive |> Option.flatten
-        }
 
 type TaxProductResourceTaxSettingsStatusDetailsResourcePending =
     {
@@ -855,31 +520,9 @@ type TaxProductResourceTaxSettingsStatusDetailsResourcePending =
         MissingFields: string list option
     }
 
-module TaxProductResourceTaxSettingsStatusDetailsResourcePending =
-    let create
-        (
-            missingFields: string list option
-        ) : TaxProductResourceTaxSettingsStatusDetailsResourcePending
-        =
-        {
-          MissingFields = missingFields
-        }
-
 type TaxProductResourceTaxSettingsStatusDetails =
     { Active: TaxProductResourceTaxSettingsStatusDetailsResourceActive option
       Pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending option }
-
-module TaxProductResourceTaxSettingsStatusDetails =
-    let create
-        (
-            active: TaxProductResourceTaxSettingsStatusDetailsResourceActive option,
-            pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending option
-        ) : TaxProductResourceTaxSettingsStatusDetails
-        =
-        {
-          Active = active
-          Pending = pending
-        }
 
 [<Struct>]
 type TaxSettingsStatus =
@@ -904,51 +547,14 @@ module TaxSettings =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.settings"
 
-    let create
-        (
-            defaults: TaxProductResourceTaxSettingsDefaults,
-            headOffice: TaxProductResourceTaxSettingsHeadOffice option,
-            livemode: bool,
-            status: TaxSettingsStatus,
-            statusDetails: TaxProductResourceTaxSettingsStatusDetails
-        ) : TaxSettings
-        =
-        {
-          Defaults = defaults
-          HeadOffice = headOffice
-          Livemode = livemode
-          Status = status
-          StatusDetails = statusDetails
-        }
-
 /// Occurs whenever tax settings is updated.
 type TaxSettingsUpdated = { Object: TaxSettings }
-
-module TaxSettingsUpdated =
-    let create
-        (
-            object: TaxSettings
-        ) : TaxSettingsUpdated
-        =
-        {
-          Object = object
-        }
 
 type TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard =
     {
         /// Two-letter CA province code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
         Province: string
     }
-
-module TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard =
-    let create
-        (
-            province: string
-        ) : TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard
-        =
-        {
-          Province = province
-        }
 
 [<Struct>]
 type TaxProductRegistrationsResourceCountryOptionsCanadaType =
@@ -962,17 +568,6 @@ type TaxProductRegistrationsResourceCountryOptionsCanada =
         /// Type of registration in Canada.
         Type: TaxProductRegistrationsResourceCountryOptionsCanadaType
     }
-
-module TaxProductRegistrationsResourceCountryOptionsCanada =
-    let create
-        (
-            ``type``: TaxProductRegistrationsResourceCountryOptionsCanadaType
-        ) : TaxProductRegistrationsResourceCountryOptionsCanada
-        =
-        {
-          Type = ``type``
-          ProvinceStandard = None
-        }
 
 type TaxProductRegistrationsResourceCountryOptionsDefault () = 
     ///Type of registration in `country`.
@@ -994,31 +589,12 @@ type TaxProductRegistrationsResourceCountryOptionsDefaultStandard =
         PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsDefaultStandardPlaceOfSupplyScheme
     }
 
-module TaxProductRegistrationsResourceCountryOptionsDefaultStandard =
-    let create
-        (
-            placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsDefaultStandardPlaceOfSupplyScheme
-        ) : TaxProductRegistrationsResourceCountryOptionsDefaultStandard
-        =
-        {
-          PlaceOfSupplyScheme = placeOfSupplyScheme
-        }
-
 type TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods =
     { Standard: TaxProductRegistrationsResourceCountryOptionsDefaultStandard option }
 
 module TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods =
     ///Type of registration in `country`.
     let ``type`` = "standard"
-
-    let create
-        (
-            standard: TaxProductRegistrationsResourceCountryOptionsDefaultStandard option
-        ) : TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods
-        =
-        {
-          Standard = standard
-        }
 
 [<Struct>]
 type TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme =
@@ -1031,16 +607,6 @@ type TaxProductRegistrationsResourceCountryOptionsEuStandard =
         /// Place of supply scheme used in an EU standard registration.
         PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme
     }
-
-module TaxProductRegistrationsResourceCountryOptionsEuStandard =
-    let create
-        (
-            placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme
-        ) : TaxProductRegistrationsResourceCountryOptionsEuStandard
-        =
-        {
-          PlaceOfSupplyScheme = placeOfSupplyScheme
-        }
 
 [<Struct>]
 type TaxProductRegistrationsResourceCountryOptionsEuropeType =
@@ -1055,17 +621,6 @@ type TaxProductRegistrationsResourceCountryOptionsEurope =
         /// Type of registration in an EU country.
         Type: TaxProductRegistrationsResourceCountryOptionsEuropeType
     }
-
-module TaxProductRegistrationsResourceCountryOptionsEurope =
-    let create
-        (
-            ``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType
-        ) : TaxProductRegistrationsResourceCountryOptionsEurope
-        =
-        {
-          Type = ``type``
-          Standard = None
-        }
 
 type TaxProductRegistrationsResourceCountryOptionsSimplified () = 
     ///Type of registration in `country`.
@@ -1099,31 +654,11 @@ type TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax =
         Jurisdiction: string
     }
 
-module TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax =
-    let create
-        (
-            jurisdiction: string
-        ) : TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax
-        =
-        {
-          Jurisdiction = jurisdiction
-        }
-
 type TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax =
     {
         /// A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction.
         Jurisdiction: string
     }
-
-module TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax =
-    let create
-        (
-            jurisdiction: string
-        ) : TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax
-        =
-        {
-          Jurisdiction = jurisdiction
-        }
 
 [<Struct>]
 type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType =
@@ -1139,32 +674,11 @@ type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection =
         Type: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType
     }
 
-module TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection =
-    let create
-        (
-            ``type``: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType
-        ) : TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection
-        =
-        {
-          Type = ``type``
-          Jurisdiction = None
-        }
-
 type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax =
     {
         /// Elections for the state sales tax registration.
         Elections: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection list option
     }
-
-module TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax =
-    let create
-        (
-            elections: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection list option
-        ) : TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax
-        =
-        {
-          Elections = elections
-        }
 
 type TaxProductRegistrationsResourceCountryOptionsUnitedStates =
     {
@@ -1176,21 +690,6 @@ type TaxProductRegistrationsResourceCountryOptionsUnitedStates =
         /// Type of registration in the US.
         Type: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType
     }
-
-module TaxProductRegistrationsResourceCountryOptionsUnitedStates =
-    let create
-        (
-            state: string,
-            ``type``: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType
-        ) : TaxProductRegistrationsResourceCountryOptionsUnitedStates
-        =
-        {
-          State = state
-          Type = ``type``
-          LocalAmusementTax = None
-          LocalLeaseTax = None
-          StateSalesTax = None
-        }
 
 type TaxProductRegistrationsResourceCountryOptions =
     { Ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
@@ -1295,216 +794,6 @@ type TaxProductRegistrationsResourceCountryOptions =
       Zm: TaxProductRegistrationsResourceCountryOptionsSimplified option
       Zw: TaxProductRegistrationsResourceCountryOptionsDefault option }
 
-module TaxProductRegistrationsResourceCountryOptions =
-    let create
-        (
-            ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            al: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            am: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ao: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            at: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            au: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            aw: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            az: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ba: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            bb: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            bd: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            be: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            bf: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            bg: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            bh: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            bj: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            bs: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            by: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ca: TaxProductRegistrationsResourceCountryOptionsCanada option,
-            cd: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            ch: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            cl: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            cm: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            co: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            cr: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            cv: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            cy: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            cz: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            de: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            dk: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            ec: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ee: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            eg: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            es: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            et: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            fi: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            fr: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            gb: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            ge: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            gn: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            gr: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            hr: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            hu: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            id: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ie: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            ``in``: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            is: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            it: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            jp: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            ke: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            kg: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            kh: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            kr: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            kz: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            la: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            lk: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            lt: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            lu: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            lv: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            ma: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            md: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            me: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            mk: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            mr: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            mt: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            mx: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            my: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ng: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            nl: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            no: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            np: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            nz: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            om: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            pe: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ph: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            pl: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            pt: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            ro: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            rs: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            ru: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            sa: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            se: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            sg: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option,
-            si: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            sk: TaxProductRegistrationsResourceCountryOptionsEurope option,
-            sn: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            sr: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            th: TaxProductRegistrationsResourceCountryOptionsThailand option,
-            tj: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            tr: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            tw: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            tz: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ua: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            ug: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            us: TaxProductRegistrationsResourceCountryOptionsUnitedStates option,
-            uy: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            uz: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            vn: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            za: TaxProductRegistrationsResourceCountryOptionsDefault option,
-            zm: TaxProductRegistrationsResourceCountryOptionsSimplified option,
-            zw: TaxProductRegistrationsResourceCountryOptionsDefault option
-        ) : TaxProductRegistrationsResourceCountryOptions
-        =
-        {
-          Ae = ae
-          Al = al
-          Am = am
-          Ao = ao
-          At = at
-          Au = au
-          Aw = aw
-          Az = az
-          Ba = ba
-          Bb = bb
-          Bd = bd
-          Be = be
-          Bf = bf
-          Bg = bg
-          Bh = bh
-          Bj = bj
-          Bs = bs
-          By = by
-          Ca = ca
-          Cd = cd
-          Ch = ch
-          Cl = cl
-          Cm = cm
-          Co = co
-          Cr = cr
-          Cv = cv
-          Cy = cy
-          Cz = cz
-          De = de
-          Dk = dk
-          Ec = ec
-          Ee = ee
-          Eg = eg
-          Es = es
-          Et = et
-          Fi = fi
-          Fr = fr
-          Gb = gb
-          Ge = ge
-          Gn = gn
-          Gr = gr
-          Hr = hr
-          Hu = hu
-          Id = id
-          Ie = ie
-          In = ``in``
-          Is = is
-          It = it
-          Jp = jp
-          Ke = ke
-          Kg = kg
-          Kh = kh
-          Kr = kr
-          Kz = kz
-          La = la
-          Lk = lk
-          Lt = lt
-          Lu = lu
-          Lv = lv
-          Ma = ma
-          Md = md
-          Me = me
-          Mk = mk
-          Mr = mr
-          Mt = mt
-          Mx = mx
-          My = my
-          Ng = ng
-          Nl = nl
-          No = no
-          Np = np
-          Nz = nz
-          Om = om
-          Pe = pe
-          Ph = ph
-          Pl = pl
-          Pt = pt
-          Ro = ro
-          Rs = rs
-          Ru = ru
-          Sa = sa
-          Se = se
-          Sg = sg
-          Si = si
-          Sk = sk
-          Sn = sn
-          Sr = sr
-          Th = th
-          Tj = tj
-          Tr = tr
-          Tw = tw
-          Tz = tz
-          Ua = ua
-          Ug = ug
-          Us = us
-          Uy = uy
-          Uz = uz
-          Vn = vn
-          Za = za
-          Zm = zm
-          Zw = zw
-        }
-
 [<Struct>]
 type TaxRegistrationStatus =
     | Active
@@ -1536,29 +825,6 @@ type TaxRegistration =
 module TaxRegistration =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.registration"
-
-    let create
-        (
-            activeFrom: DateTime,
-            country: IsoTypes.IsoCountryCode,
-            countryOptions: TaxProductRegistrationsResourceCountryOptions,
-            created: DateTime,
-            expiresAt: DateTime option,
-            id: string,
-            livemode: bool,
-            status: TaxRegistrationStatus
-        ) : TaxRegistration
-        =
-        {
-          ActiveFrom = activeFrom
-          Country = country
-          CountryOptions = countryOptions
-          Created = created
-          ExpiresAt = expiresAt
-          Id = id
-          Livemode = livemode
-          Status = status
-        }
 
 [<Struct>]
 type TaxCalculationLineItemTaxBehavior =
@@ -1595,34 +861,6 @@ module TaxCalculationLineItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.calculation_line_item"
 
-    let create
-        (
-            amount: int,
-            amountTax: int,
-            id: string,
-            livemode: bool,
-            metadata: Map<string, string> option,
-            product: string option,
-            quantity: int,
-            reference: string,
-            taxBehavior: TaxCalculationLineItemTaxBehavior,
-            taxCode: string
-        ) : TaxCalculationLineItem
-        =
-        {
-          Amount = amount
-          AmountTax = amountTax
-          Id = id
-          Livemode = livemode
-          Metadata = metadata
-          Product = product
-          Quantity = quantity
-          Reference = reference
-          TaxBehavior = taxBehavior
-          TaxCode = taxCode
-          TaxBreakdown = None
-        }
-
 /// The list of items the customer is purchasing.
 type TaxCalculationLineItems =
     {
@@ -1637,19 +875,6 @@ type TaxCalculationLineItems =
 module TaxCalculationLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
-
-    let create
-        (
-            data: TaxCalculationLineItem list,
-            hasMore: bool,
-            url: string
-        ) : TaxCalculationLineItems
-        =
-        {
-          Data = data
-          HasMore = hasMore
-          Url = url
-        }
 
 type TaxProductResourceTaxBreakdownTaxabilityReason =
     | CustomerExempt
@@ -1705,26 +930,6 @@ type TaxProductResourceTaxRateDetails =
         TaxType: TaxProductResourceTaxRateDetailsTaxType option
     }
 
-module TaxProductResourceTaxRateDetails =
-    let create
-        (
-            country: IsoTypes.IsoCountryCode option,
-            flatAmount: TaxRateFlatAmount option,
-            percentageDecimal: string,
-            rateType: TaxProductResourceTaxRateDetailsRateType option,
-            state: string option,
-            taxType: TaxProductResourceTaxRateDetailsTaxType option
-        ) : TaxProductResourceTaxRateDetails
-        =
-        {
-          Country = country
-          FlatAmount = flatAmount
-          PercentageDecimal = percentageDecimal
-          RateType = rateType
-          State = state
-          TaxType = taxType
-        }
-
 type TaxProductResourceTaxBreakdown =
     {
         /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
@@ -1737,24 +942,6 @@ type TaxProductResourceTaxBreakdown =
         /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
         TaxableAmount: int
     }
-
-module TaxProductResourceTaxBreakdown =
-    let create
-        (
-            amount: int,
-            inclusive: bool,
-            taxRateDetails: TaxProductResourceTaxRateDetails,
-            taxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason,
-            taxableAmount: int
-        ) : TaxProductResourceTaxBreakdown
-        =
-        {
-          Amount = amount
-          Inclusive = inclusive
-          TaxRateDetails = taxRateDetails
-          TaxabilityReason = taxabilityReason
-          TaxableAmount = taxableAmount
-        }
 
 [<Struct>]
 type TaxProductResourceTaxCalculationShippingCostTaxBehavior =
@@ -1776,24 +963,6 @@ type TaxProductResourceTaxCalculationShippingCost =
         /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for shipping.
         TaxCode: string
     }
-
-module TaxProductResourceTaxCalculationShippingCost =
-    let create
-        (
-            amount: int,
-            amountTax: int,
-            taxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior,
-            taxCode: string
-        ) : TaxProductResourceTaxCalculationShippingCost
-        =
-        {
-          Amount = amount
-          AmountTax = amountTax
-          TaxBehavior = taxBehavior
-          TaxCode = taxCode
-          ShippingRate = None
-          TaxBreakdown = None
-        }
 
 /// A Tax Calculation allows you to calculate the tax to collect from your customer.
 /// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom)
@@ -1832,55 +1001,11 @@ module TaxCalculation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.calculation"
 
-    let create
-        (
-            amountTotal: int,
-            currency: IsoTypes.IsoCurrencyCode,
-            customer: string option,
-            customerDetails: TaxProductResourceCustomerDetails,
-            expiresAt: DateTime option,
-            id: string option,
-            livemode: bool,
-            shipFromDetails: TaxProductResourceShipFromDetails option,
-            shippingCost: TaxProductResourceTaxCalculationShippingCost option,
-            taxAmountExclusive: int,
-            taxAmountInclusive: int,
-            taxBreakdown: TaxProductResourceTaxBreakdown list,
-            taxDate: DateTime
-        ) : TaxCalculation
-        =
-        {
-          AmountTotal = amountTotal
-          Currency = currency
-          Customer = customer
-          CustomerDetails = customerDetails
-          ExpiresAt = expiresAt
-          Id = id
-          Livemode = livemode
-          ShipFromDetails = shipFromDetails
-          ShippingCost = shippingCost
-          TaxAmountExclusive = taxAmountExclusive
-          TaxAmountInclusive = taxAmountInclusive
-          TaxBreakdown = taxBreakdown
-          TaxDate = taxDate
-          LineItems = None
-        }
-
 type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
     {
         /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)
         Transaction: string
     }
-
-module TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
-    let create
-        (
-            transaction: string
-        ) : TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted
-        =
-        {
-          Transaction = transaction
-        }
 
 [<Struct>]
 type TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason =
@@ -1896,16 +1021,6 @@ type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored =
         Reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason
     }
 
-module TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored =
-    let create
-        (
-            reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason
-        ) : TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored
-        =
-        {
-          Reason = reason
-        }
-
 [<Struct>]
 type TaxProductResourceTaxAssociationTransactionAttemptsStatus =
     | Errored
@@ -1920,20 +1035,6 @@ type TaxProductResourceTaxAssociationTransactionAttempts =
         /// The status of the transaction attempt. This can be `errored` or `committed`.
         Status: TaxProductResourceTaxAssociationTransactionAttemptsStatus
     }
-
-module TaxProductResourceTaxAssociationTransactionAttempts =
-    let create
-        (
-            source: string,
-            status: TaxProductResourceTaxAssociationTransactionAttemptsStatus
-        ) : TaxProductResourceTaxAssociationTransactionAttempts
-        =
-        {
-          Source = source
-          Status = status
-          Committed = None
-          Errored = None
-        }
 
 /// A Tax Association exposes the Tax Transactions that Stripe attempted to create on your behalf based on the PaymentIntent input
 type TaxAssociation =
@@ -1952,21 +1053,6 @@ module TaxAssociation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.association"
 
-    let create
-        (
-            calculation: string,
-            id: string,
-            paymentIntent: string,
-            taxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option
-        ) : TaxAssociation
-        =
-        {
-          Calculation = calculation
-          Id = id
-          PaymentIntent = paymentIntent
-          TaxTransactionAttempts = taxTransactionAttempts
-        }
-
 [<Struct>]
 type TaxIdVerificationStatus =
     | Pending
@@ -1984,20 +1070,6 @@ type TaxIdVerification =
         VerifiedName: string option
     }
 
-module TaxIdVerification =
-    let create
-        (
-            status: TaxIdVerificationStatus,
-            verifiedAddress: string option,
-            verifiedName: string option
-        ) : TaxIdVerification
-        =
-        {
-          Status = status
-          VerifiedAddress = verifiedAddress
-          VerifiedName = verifiedName
-        }
-
 /// [Tax codes](https://stripe.com/docs/tax/tax-categories) classify goods and services for tax purposes.
 type TaxCode =
     {
@@ -2012,19 +1084,6 @@ type TaxCode =
 module TaxCode =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_code"
-
-    let create
-        (
-            description: string,
-            id: string,
-            name: string
-        ) : TaxCode
-        =
-        {
-          Description = description
-          Id = id
-          Name = name
-        }
 
 type TaxDeductedAtSource =
     {
@@ -2041,19 +1100,4 @@ type TaxDeductedAtSource =
 module TaxDeductedAtSource =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_deducted_at_source"
-
-    let create
-        (
-            id: string,
-            periodEnd: DateTime,
-            periodStart: DateTime,
-            taxDeductionAccountNumber: string
-        ) : TaxDeductedAtSource
-        =
-        {
-          Id = id
-          PeriodEnd = periodEnd
-          PeriodStart = periodStart
-          TaxDeductionAccountNumber = taxDeductionAccountNumber
-        }
 

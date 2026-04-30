@@ -23,28 +23,6 @@ type FundingInstructionsBankTransferAbaRecord =
         RoutingNumber: string
     }
 
-module FundingInstructionsBankTransferAbaRecord =
-    let create
-        (
-            accountHolderAddress: Address,
-            accountHolderName: string,
-            accountNumber: string,
-            accountType: string,
-            bankAddress: Address,
-            bankName: string,
-            routingNumber: string
-        ) : FundingInstructionsBankTransferAbaRecord
-        =
-        {
-          AccountHolderAddress = accountHolderAddress
-          AccountHolderName = accountHolderName
-          AccountNumber = accountNumber
-          AccountType = accountType
-          BankAddress = bankAddress
-          BankName = bankName
-          RoutingNumber = routingNumber
-        }
-
 type FundingInstructionsBankTransferFinancialAddressSupportedNetworks =
     | Ach
     | Bacs
@@ -78,26 +56,6 @@ type FundingInstructionsBankTransferIbanRecord =
         Iban: string
     }
 
-module FundingInstructionsBankTransferIbanRecord =
-    let create
-        (
-            accountHolderAddress: Address,
-            accountHolderName: string,
-            bankAddress: Address,
-            bic: string,
-            country: IsoTypes.IsoCountryCode,
-            iban: string
-        ) : FundingInstructionsBankTransferIbanRecord
-        =
-        {
-          AccountHolderAddress = accountHolderAddress
-          AccountHolderName = accountHolderName
-          BankAddress = bankAddress
-          Bic = bic
-          Country = country
-          Iban = iban
-        }
-
 /// Sort Code Records contain U.K. bank account details per the sort code format.
 type FundingInstructionsBankTransferSortCodeRecord =
     {
@@ -110,24 +68,6 @@ type FundingInstructionsBankTransferSortCodeRecord =
         /// The six-digit sort code
         SortCode: string
     }
-
-module FundingInstructionsBankTransferSortCodeRecord =
-    let create
-        (
-            accountHolderAddress: Address,
-            accountHolderName: string,
-            accountNumber: string,
-            bankAddress: Address,
-            sortCode: string
-        ) : FundingInstructionsBankTransferSortCodeRecord
-        =
-        {
-          AccountHolderAddress = accountHolderAddress
-          AccountHolderName = accountHolderName
-          AccountNumber = accountNumber
-          BankAddress = bankAddress
-          SortCode = sortCode
-        }
 
 /// SPEI Records contain Mexico bank account details per the SPEI format.
 type FundingInstructionsBankTransferSpeiRecord =
@@ -143,26 +83,6 @@ type FundingInstructionsBankTransferSpeiRecord =
         /// The CLABE number
         Clabe: string
     }
-
-module FundingInstructionsBankTransferSpeiRecord =
-    let create
-        (
-            accountHolderAddress: Address,
-            accountHolderName: string,
-            bankAddress: Address,
-            bankCode: string,
-            bankName: string,
-            clabe: string
-        ) : FundingInstructionsBankTransferSpeiRecord
-        =
-        {
-          AccountHolderAddress = accountHolderAddress
-          AccountHolderName = accountHolderName
-          BankAddress = bankAddress
-          BankCode = bankCode
-          BankName = bankName
-          Clabe = clabe
-        }
 
 /// SWIFT Records contain U.S. bank account details per the SWIFT format.
 type FundingInstructionsBankTransferSwiftRecord =
@@ -180,28 +100,6 @@ type FundingInstructionsBankTransferSwiftRecord =
         /// The SWIFT code
         SwiftCode: string
     }
-
-module FundingInstructionsBankTransferSwiftRecord =
-    let create
-        (
-            accountHolderAddress: Address,
-            accountHolderName: string,
-            accountNumber: string,
-            accountType: string,
-            bankAddress: Address,
-            bankName: string,
-            swiftCode: string
-        ) : FundingInstructionsBankTransferSwiftRecord
-        =
-        {
-          AccountHolderAddress = accountHolderAddress
-          AccountHolderName = accountHolderName
-          AccountNumber = accountNumber
-          AccountType = accountType
-          BankAddress = bankAddress
-          BankName = bankName
-          SwiftCode = swiftCode
-        }
 
 [<Struct>]
 type FundingInstructionsBankTransferZenginRecordAccountType =
@@ -229,32 +127,6 @@ type FundingInstructionsBankTransferZenginRecord =
         BranchName: string option
     }
 
-module FundingInstructionsBankTransferZenginRecord =
-    let create
-        (
-            accountHolderAddress: Address,
-            accountHolderName: string option,
-            accountNumber: string option,
-            accountType: FundingInstructionsBankTransferZenginRecordAccountType option,
-            bankAddress: Address,
-            bankCode: string option,
-            bankName: string option,
-            branchCode: string option,
-            branchName: string option
-        ) : FundingInstructionsBankTransferZenginRecord
-        =
-        {
-          AccountHolderAddress = accountHolderAddress
-          AccountHolderName = accountHolderName
-          AccountNumber = accountNumber
-          AccountType = accountType
-          BankAddress = bankAddress
-          BankCode = bankCode
-          BankName = bankName
-          BranchCode = branchCode
-          BranchName = branchName
-        }
-
 /// FinancialAddresses contain identifying information that resolves to a FinancialAccount.
 type FundingInstructionsBankTransferFinancialAddress =
     {
@@ -270,23 +142,6 @@ type FundingInstructionsBankTransferFinancialAddress =
         Zengin: FundingInstructionsBankTransferZenginRecord option
     }
 
-module FundingInstructionsBankTransferFinancialAddress =
-    let create
-        (
-            ``type``: FundingInstructionsBankTransferFinancialAddressType
-        ) : FundingInstructionsBankTransferFinancialAddress
-        =
-        {
-          Type = ``type``
-          Aba = None
-          Iban = None
-          SortCode = None
-          Spei = None
-          SupportedNetworks = None
-          Swift = None
-          Zengin = None
-        }
-
 [<Struct>]
 type FundingInstructionsBankTransferType =
     | EuBankTransfer
@@ -301,20 +156,6 @@ type FundingInstructionsBankTransfer =
         /// The bank_transfer type
         Type: FundingInstructionsBankTransferType
     }
-
-module FundingInstructionsBankTransfer =
-    let create
-        (
-            country: IsoTypes.IsoCountryCode,
-            financialAddresses: FundingInstructionsBankTransferFinancialAddress list,
-            ``type``: FundingInstructionsBankTransferType
-        ) : FundingInstructionsBankTransfer
-        =
-        {
-          Country = country
-          FinancialAddresses = financialAddresses
-          Type = ``type``
-        }
 
 /// Each customer has a [`balance`](https://docs.stripe.com/api/customers/object#customer_object-balance) that is
 /// automatically applied to future invoices and payments using the `customer_balance` payment method.
@@ -336,17 +177,4 @@ module FundingInstructions =
 
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "funding_instructions"
-
-    let create
-        (
-            bankTransfer: FundingInstructionsBankTransfer,
-            currency: IsoTypes.IsoCurrencyCode,
-            livemode: bool
-        ) : FundingInstructions
-        =
-        {
-          BankTransfer = bankTransfer
-          Currency = currency
-          Livemode = livemode
-        }
 

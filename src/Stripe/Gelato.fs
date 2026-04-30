@@ -17,20 +17,6 @@ type GelatoDataVerifiedOutputsDate =
         Year: int option
     }
 
-module GelatoDataVerifiedOutputsDate =
-    let create
-        (
-            day: int option,
-            month: int option,
-            year: int option
-        ) : GelatoDataVerifiedOutputsDate
-        =
-        {
-          Day = day
-          Month = month
-          Year = year
-        }
-
 [<Struct>]
 type GelatoVerifiedOutputsIdNumberType =
     | BrCpf
@@ -70,31 +56,6 @@ type GelatoVerifiedOutputs =
         UnparsedSex: string option
     }
 
-module GelatoVerifiedOutputs =
-    let create
-        (
-            address: Address option,
-            email: string option,
-            firstName: string option,
-            idNumberType: GelatoVerifiedOutputsIdNumberType option,
-            lastName: string option,
-            phone: string option
-        ) : GelatoVerifiedOutputs
-        =
-        {
-          Address = address
-          Email = email
-          FirstName = firstName
-          IdNumberType = idNumberType
-          LastName = lastName
-          Phone = phone
-          Dob = None
-          IdNumber = None
-          Sex = None
-          UnparsedPlaceOfBirth = None
-          UnparsedSex = None
-        }
-
 [<Struct>]
 type GelatoSessionDocumentOptionsAllowedTypes =
     | DrivingLicense
@@ -113,50 +74,14 @@ type GelatoSessionDocumentOptions =
         RequireMatchingSelfie: bool option
     }
 
-module GelatoSessionDocumentOptions =
-    let create
-        (
-            allowedTypes: GelatoSessionDocumentOptionsAllowedTypes list option,
-            requireIdNumber: bool option,
-            requireLiveCapture: bool option,
-            requireMatchingSelfie: bool option
-        ) : GelatoSessionDocumentOptions
-        =
-        {
-          AllowedTypes = allowedTypes
-          RequireIdNumber = requireIdNumber
-          RequireLiveCapture = requireLiveCapture
-          RequireMatchingSelfie = requireMatchingSelfie
-        }
-
 type GelatoSessionEmailOptions =
     {
         /// Request one time password verification of `provided_details.email`.
         RequireVerification: bool option
     }
 
-module GelatoSessionEmailOptions =
-    let create
-        (
-            requireVerification: bool option
-        ) : GelatoSessionEmailOptions
-        =
-        {
-          RequireVerification = requireVerification
-        }
-
 type GelatoSessionIdNumberOptions =
     { GelatoSessionIdNumberOptions: string option }
-
-module GelatoSessionIdNumberOptions =
-    let create
-        (
-            gelatoSessionIdNumberOptions: string option option
-        ) : GelatoSessionIdNumberOptions
-        =
-        {
-          GelatoSessionIdNumberOptions = gelatoSessionIdNumberOptions |> Option.flatten
-        }
 
 [<Struct>]
 type GelatoSessionMatchingOptionsDob =
@@ -176,33 +101,11 @@ type GelatoSessionMatchingOptions =
         Name: GelatoSessionMatchingOptionsName option
     }
 
-module GelatoSessionMatchingOptions =
-    let create
-        (
-            dob: GelatoSessionMatchingOptionsDob option,
-            name: GelatoSessionMatchingOptionsName option
-        ) : GelatoSessionMatchingOptions
-        =
-        {
-          Dob = dob
-          Name = name
-        }
-
 type GelatoSessionPhoneOptions =
     {
         /// Request one time password verification of `provided_details.phone`.
         RequireVerification: bool option
     }
-
-module GelatoSessionPhoneOptions =
-    let create
-        (
-            requireVerification: bool option
-        ) : GelatoSessionPhoneOptions
-        =
-        {
-          RequireVerification = requireVerification
-        }
 
 type GelatoVerificationSessionOptions =
     { Document: GelatoSessionDocumentOptions option
@@ -210,24 +113,6 @@ type GelatoVerificationSessionOptions =
       IdNumber: GelatoSessionIdNumberOptions option
       Matching: GelatoSessionMatchingOptions option
       Phone: GelatoSessionPhoneOptions option }
-
-module GelatoVerificationSessionOptions =
-    let create
-        (
-            document: GelatoSessionDocumentOptions option,
-            email: GelatoSessionEmailOptions option,
-            idNumber: GelatoSessionIdNumberOptions option,
-            matching: GelatoSessionMatchingOptions option,
-            phone: GelatoSessionPhoneOptions option
-        ) : GelatoVerificationSessionOptions
-        =
-        {
-          Document = document
-          Email = email
-          IdNumber = idNumber
-          Matching = matching
-          Phone = phone
-        }
 
 [<Struct>]
 type GelatoReportDocumentOptionsAllowedTypes =
@@ -247,50 +132,12 @@ type GelatoReportDocumentOptions =
         RequireMatchingSelfie: bool option
     }
 
-module GelatoReportDocumentOptions =
-    let create
-        (
-            allowedTypes: GelatoReportDocumentOptionsAllowedTypes list option,
-            requireIdNumber: bool option,
-            requireLiveCapture: bool option,
-            requireMatchingSelfie: bool option
-        ) : GelatoReportDocumentOptions
-        =
-        {
-          AllowedTypes = allowedTypes
-          RequireIdNumber = requireIdNumber
-          RequireLiveCapture = requireLiveCapture
-          RequireMatchingSelfie = requireMatchingSelfie
-        }
-
 type GelatoReportIdNumberOptions =
     { GelatoReportIdNumberOptions: string option }
-
-module GelatoReportIdNumberOptions =
-    let create
-        (
-            gelatoReportIdNumberOptions: string option option
-        ) : GelatoReportIdNumberOptions
-        =
-        {
-          GelatoReportIdNumberOptions = gelatoReportIdNumberOptions |> Option.flatten
-        }
 
 type GelatoVerificationReportOptions =
     { Document: GelatoReportDocumentOptions option
       IdNumber: GelatoReportIdNumberOptions option }
-
-module GelatoVerificationReportOptions =
-    let create
-        (
-            document: GelatoReportDocumentOptions option,
-            idNumber: GelatoReportIdNumberOptions option
-        ) : GelatoVerificationReportOptions
-        =
-        {
-          Document = document
-          IdNumber = idNumber
-        }
 
 type GelatoSessionLastErrorCode =
     | Abandoned
@@ -322,18 +169,6 @@ type GelatoSessionLastError =
         Reason: string option
     }
 
-module GelatoSessionLastError =
-    let create
-        (
-            code: GelatoSessionLastErrorCode option,
-            reason: string option
-        ) : GelatoSessionLastError
-        =
-        {
-          Code = code
-          Reason = reason
-        }
-
 [<Struct>]
 type GelatoSelfieReportErrorCode =
     | SelfieDocumentMissingPhoto
@@ -348,18 +183,6 @@ type GelatoSelfieReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
-
-module GelatoSelfieReportError =
-    let create
-        (
-            code: GelatoSelfieReportErrorCode option,
-            reason: string option
-        ) : GelatoSelfieReportError
-        =
-        {
-          Code = code
-          Reason = reason
-        }
 
 [<Struct>]
 type GelatoSelfieReportStatus =
@@ -379,22 +202,6 @@ type GelatoSelfieReport =
         Status: GelatoSelfieReportStatus
     }
 
-module GelatoSelfieReport =
-    let create
-        (
-            document: string option,
-            error: GelatoSelfieReportError option,
-            selfie: string option,
-            status: GelatoSelfieReportStatus
-        ) : GelatoSelfieReport
-        =
-        {
-          Document = document
-          Error = error
-          Selfie = selfie
-          Status = status
-        }
-
 type GelatoRelatedPerson =
     {
         /// Token referencing the associated Account of the related Person resource.
@@ -403,18 +210,6 @@ type GelatoRelatedPerson =
         Person: string
     }
 
-module GelatoRelatedPerson =
-    let create
-        (
-            account: string,
-            person: string
-        ) : GelatoRelatedPerson
-        =
-        {
-          Account = account
-          Person = person
-        }
-
 type GelatoProvidedDetails =
     {
         /// Email of user being verified
@@ -422,18 +217,6 @@ type GelatoProvidedDetails =
         /// Phone number of user being verified
         Phone: string option
     }
-
-module GelatoProvidedDetails =
-    let create
-        (
-            email: string option,
-            phone: string option
-        ) : GelatoProvidedDetails
-        =
-        {
-          Email = email
-          Phone = phone
-        }
 
 [<Struct>]
 type GelatoPhoneReportErrorCode =
@@ -447,18 +230,6 @@ type GelatoPhoneReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
-
-module GelatoPhoneReportError =
-    let create
-        (
-            code: GelatoPhoneReportErrorCode option,
-            reason: string option
-        ) : GelatoPhoneReportError
-        =
-        {
-          Code = code
-          Reason = reason
-        }
 
 [<Struct>]
 type GelatoPhoneReportStatus =
@@ -476,20 +247,6 @@ type GelatoPhoneReport =
         Status: GelatoPhoneReportStatus
     }
 
-module GelatoPhoneReport =
-    let create
-        (
-            error: GelatoPhoneReportError option,
-            phone: string option,
-            status: GelatoPhoneReportStatus
-        ) : GelatoPhoneReport
-        =
-        {
-          Error = error
-          Phone = phone
-          Status = status
-        }
-
 /// Point in Time
 type GelatoDataIdNumberReportDate =
     {
@@ -500,20 +257,6 @@ type GelatoDataIdNumberReportDate =
         /// The four-digit year.
         Year: int option
     }
-
-module GelatoDataIdNumberReportDate =
-    let create
-        (
-            day: int option,
-            month: int option,
-            year: int option
-        ) : GelatoDataIdNumberReportDate
-        =
-        {
-          Day = day
-          Month = month
-          Year = year
-        }
 
 [<Struct>]
 type GelatoIdNumberReportErrorCode =
@@ -528,18 +271,6 @@ type GelatoIdNumberReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
-
-module GelatoIdNumberReportError =
-    let create
-        (
-            code: GelatoIdNumberReportErrorCode option,
-            reason: string option
-        ) : GelatoIdNumberReportError
-        =
-        {
-          Code = code
-          Reason = reason
-        }
 
 [<Struct>]
 type GelatoIdNumberReportIdNumberType =
@@ -571,26 +302,6 @@ type GelatoIdNumberReport =
         Status: GelatoIdNumberReportStatus
     }
 
-module GelatoIdNumberReport =
-    let create
-        (
-            error: GelatoIdNumberReportError option,
-            firstName: string option,
-            idNumberType: GelatoIdNumberReportIdNumberType option,
-            lastName: string option,
-            status: GelatoIdNumberReportStatus
-        ) : GelatoIdNumberReport
-        =
-        {
-          Error = error
-          FirstName = firstName
-          IdNumberType = idNumberType
-          LastName = lastName
-          Status = status
-          Dob = None
-          IdNumber = None
-        }
-
 [<Struct>]
 type GelatoEmailReportErrorCode =
     | EmailUnverifiedOther
@@ -603,18 +314,6 @@ type GelatoEmailReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
-
-module GelatoEmailReportError =
-    let create
-        (
-            code: GelatoEmailReportErrorCode option,
-            reason: string option
-        ) : GelatoEmailReportError
-        =
-        {
-          Code = code
-          Reason = reason
-        }
 
 [<Struct>]
 type GelatoEmailReportStatus =
@@ -632,20 +331,6 @@ type GelatoEmailReport =
         Status: GelatoEmailReportStatus
     }
 
-module GelatoEmailReport =
-    let create
-        (
-            email: string option,
-            error: GelatoEmailReportError option,
-            status: GelatoEmailReportStatus
-        ) : GelatoEmailReport
-        =
-        {
-          Email = email
-          Error = error
-          Status = status
-        }
-
 /// Point in Time
 type GelatoDataDocumentReportDateOfBirth =
     {
@@ -656,20 +341,6 @@ type GelatoDataDocumentReportDateOfBirth =
         /// The four-digit year.
         Year: int option
     }
-
-module GelatoDataDocumentReportDateOfBirth =
-    let create
-        (
-            day: int option,
-            month: int option,
-            year: int option
-        ) : GelatoDataDocumentReportDateOfBirth
-        =
-        {
-          Day = day
-          Month = month
-          Year = year
-        }
 
 /// Point in Time
 type GelatoDataDocumentReportExpirationDate =
@@ -682,20 +353,6 @@ type GelatoDataDocumentReportExpirationDate =
         Year: int option
     }
 
-module GelatoDataDocumentReportExpirationDate =
-    let create
-        (
-            day: int option,
-            month: int option,
-            year: int option
-        ) : GelatoDataDocumentReportExpirationDate
-        =
-        {
-          Day = day
-          Month = month
-          Year = year
-        }
-
 /// Point in Time
 type GelatoDataDocumentReportIssuedDate =
     {
@@ -706,20 +363,6 @@ type GelatoDataDocumentReportIssuedDate =
         /// The four-digit year.
         Year: int option
     }
-
-module GelatoDataDocumentReportIssuedDate =
-    let create
-        (
-            day: int option,
-            month: int option,
-            year: int option
-        ) : GelatoDataDocumentReportIssuedDate
-        =
-        {
-          Day = day
-          Month = month
-          Year = year
-        }
 
 [<Struct>]
 type GelatoDocumentReportErrorCode =
@@ -734,18 +377,6 @@ type GelatoDocumentReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
-
-module GelatoDocumentReportError =
-    let create
-        (
-            code: GelatoDocumentReportErrorCode option,
-            reason: string option
-        ) : GelatoDocumentReportError
-        =
-        {
-          Code = code
-          Reason = reason
-        }
 
 [<Struct>]
 type GelatoDocumentReportSex =
@@ -799,36 +430,4 @@ type GelatoDocumentReport =
         /// Sex as it appears in the document.
         UnparsedSex: string option
     }
-
-module GelatoDocumentReport =
-    let create
-        (
-            address: Address option,
-            error: GelatoDocumentReportError option,
-            files: string list option,
-            firstName: string option,
-            issuedDate: GelatoDataDocumentReportIssuedDate option,
-            issuingCountry: IsoTypes.IsoCountryCode option,
-            lastName: string option,
-            status: GelatoDocumentReportStatus,
-            ``type``: GelatoDocumentReportType option
-        ) : GelatoDocumentReport
-        =
-        {
-          Address = address
-          Error = error
-          Files = files
-          FirstName = firstName
-          IssuedDate = issuedDate
-          IssuingCountry = issuingCountry
-          LastName = lastName
-          Status = status
-          Type = ``type``
-          Dob = None
-          ExpirationDate = None
-          Number = None
-          Sex = None
-          UnparsedPlaceOfBirth = None
-          UnparsedSex = None
-        }
 

@@ -29,18 +29,6 @@ type BalanceSettingsResourcePayoutSchedule =
         WeeklyPayoutDays: BalanceSettingsResourcePayoutScheduleWeeklyPayoutDays list option
     }
 
-module BalanceSettingsResourcePayoutSchedule =
-    let create
-        (
-            interval: BalanceSettingsResourcePayoutScheduleInterval option
-        ) : BalanceSettingsResourcePayoutSchedule
-        =
-        {
-          Interval = interval
-          MonthlyPayoutDays = None
-          WeeklyPayoutDays = None
-        }
-
 [<Struct>]
 type BalanceSettingsResourcePayoutsStatus =
     | Disabled
@@ -58,22 +46,6 @@ type BalanceSettingsResourcePayouts =
         Status: BalanceSettingsResourcePayoutsStatus
     }
 
-module BalanceSettingsResourcePayouts =
-    let create
-        (
-            minimumBalanceByCurrency: Map<string, string list> option,
-            schedule: BalanceSettingsResourcePayoutSchedule option,
-            statementDescriptor: string option,
-            status: BalanceSettingsResourcePayoutsStatus
-        ) : BalanceSettingsResourcePayouts
-        =
-        {
-          MinimumBalanceByCurrency = minimumBalanceByCurrency
-          Schedule = schedule
-          StatementDescriptor = statementDescriptor
-          Status = status
-        }
-
 type BalanceSettingsResourceSettlementTiming =
     {
         /// The number of days charge funds are held before becoming available.
@@ -81,17 +53,6 @@ type BalanceSettingsResourceSettlementTiming =
         /// The number of days charge funds are held before becoming available. If present, overrides the default, or minimum available, for the account.
         DelayDaysOverride: int option
     }
-
-module BalanceSettingsResourceSettlementTiming =
-    let create
-        (
-            delayDays: int
-        ) : BalanceSettingsResourceSettlementTiming
-        =
-        {
-          DelayDays = delayDays
-          DelayDaysOverride = None
-        }
 
 type BalanceSettingsResourcePayments =
     {
@@ -102,20 +63,6 @@ type BalanceSettingsResourcePayments =
         SettlementTiming: BalanceSettingsResourceSettlementTiming
     }
 
-module BalanceSettingsResourcePayments =
-    let create
-        (
-            debitNegativeBalances: bool option,
-            payouts: BalanceSettingsResourcePayouts option,
-            settlementTiming: BalanceSettingsResourceSettlementTiming
-        ) : BalanceSettingsResourcePayments
-        =
-        {
-          DebitNegativeBalances = debitNegativeBalances
-          Payouts = payouts
-          SettlementTiming = settlementTiming
-        }
-
 /// Options for customizing account balances and payout settings for a Stripe platform’s connected accounts.
 type BalanceSettings =
     { Payments: BalanceSettingsResourcePayments }
@@ -124,27 +71,8 @@ module BalanceSettings =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "balance_settings"
 
-    let create
-        (
-            payments: BalanceSettingsResourcePayments
-        ) : BalanceSettings
-        =
-        {
-          Payments = payments
-        }
-
 /// Occurs whenever a balance settings status or property has changed.
 type BalanceSettingsUpdated = { Object: BalanceSettings }
-
-module BalanceSettingsUpdated =
-    let create
-        (
-            object: BalanceSettings
-        ) : BalanceSettingsUpdated
-        =
-        {
-          Object = object
-        }
 
 type BalanceAmountBySourceType =
     {
@@ -156,20 +84,6 @@ type BalanceAmountBySourceType =
         Fpx: int option
     }
 
-module BalanceAmountBySourceType =
-    let create
-        (
-            bankAccount: int option,
-            card: int option,
-            fpx: int option
-        ) : BalanceAmountBySourceType
-        =
-        {
-          BankAccount = bankAccount
-          Card = card
-          Fpx = fpx
-        }
-
 type BalanceAmount =
     {
         /// Balance amount.
@@ -179,19 +93,6 @@ type BalanceAmount =
         SourceTypes: BalanceAmountBySourceType option
     }
 
-module BalanceAmount =
-    let create
-        (
-            amount: int,
-            currency: IsoTypes.IsoCurrencyCode
-        ) : BalanceAmount
-        =
-        {
-          Amount = amount
-          Currency = currency
-          SourceTypes = None
-        }
-
 type BalanceNetAvailable =
     {
         /// Net balance amount, subtracting fees from platform-set pricing.
@@ -200,19 +101,6 @@ type BalanceNetAvailable =
         Destination: string
         SourceTypes: BalanceAmountBySourceType option
     }
-
-module BalanceNetAvailable =
-    let create
-        (
-            amount: int,
-            destination: string
-        ) : BalanceNetAvailable
-        =
-        {
-          Amount = amount
-          Destination = destination
-          SourceTypes = None
-        }
 
 type BalanceAmountNet =
     {
@@ -225,35 +113,11 @@ type BalanceAmountNet =
         SourceTypes: BalanceAmountBySourceType option
     }
 
-module BalanceAmountNet =
-    let create
-        (
-            amount: int,
-            currency: IsoTypes.IsoCurrencyCode
-        ) : BalanceAmountNet
-        =
-        {
-          Amount = amount
-          Currency = currency
-          NetAvailable = None
-          SourceTypes = None
-        }
-
 type BalanceDetail =
     {
         /// Funds that are available for use.
         Available: BalanceAmount list
     }
-
-module BalanceDetail =
-    let create
-        (
-            available: BalanceAmount list
-        ) : BalanceDetail
-        =
-        {
-          Available = available
-        }
 
 type BalanceDetailUngated =
     {
@@ -262,18 +126,6 @@ type BalanceDetailUngated =
         /// Funds that are pending
         Pending: BalanceAmount list
     }
-
-module BalanceDetailUngated =
-    let create
-        (
-            available: BalanceAmount list,
-            pending: BalanceAmount list
-        ) : BalanceDetailUngated
-        =
-        {
-          Available = available
-          Pending = pending
-        }
 
 /// This is an object representing your Stripe balance. You can retrieve it to see
 /// the balance currently on your Stripe account.
@@ -299,33 +151,6 @@ module Balance =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "balance"
 
-    let create
-        (
-            available: BalanceAmount list,
-            livemode: bool,
-            pending: BalanceAmount list
-        ) : Balance
-        =
-        {
-          Available = available
-          Livemode = livemode
-          Pending = pending
-          ConnectReserved = None
-          InstantAvailable = None
-          Issuing = None
-          RefundAndDisputePrefunding = None
-        }
-
 /// Occurs whenever your Stripe balance has been updated (e.g., when a charge is available to be paid out). By default, Stripe automatically transfers funds in your balance to your bank account on a daily basis. This event is not fired for negative transactions.
 type BalanceAvailable = { Object: Balance }
-
-module BalanceAvailable =
-    let create
-        (
-            object: Balance
-        ) : BalanceAvailable
-        =
-        {
-          Object = object
-        }
 

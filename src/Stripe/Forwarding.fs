@@ -53,29 +53,3 @@ module ForwardingRequest =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "forwarding.request"
 
-    let create
-        (
-            created: DateTime,
-            id: string,
-            livemode: bool,
-            paymentMethod: string,
-            replacements: ForwardingRequestReplacements list,
-            requestContext: ForwardedRequestContext option,
-            requestDetails: ForwardedRequestDetails option,
-            responseDetails: ForwardedResponseDetails option,
-            url: string option
-        ) : ForwardingRequest
-        =
-        {
-          Created = created
-          Id = id
-          Livemode = livemode
-          PaymentMethod = paymentMethod
-          Replacements = replacements
-          RequestContext = requestContext
-          RequestDetails = requestDetails
-          ResponseDetails = responseDetails
-          Url = url
-          Metadata = None
-        }
-

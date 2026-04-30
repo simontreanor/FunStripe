@@ -20,18 +20,6 @@ type ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnli
         UserAgent: string option
     }
 
-module ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline =
-    let create
-        (
-            ipAddress: string option,
-            userAgent: string option
-        ) : ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline
-        =
-        {
-          IpAddress = ipAddress
-          UserAgent = userAgent
-        }
-
 /// This hash contains details about the customer acceptance of the Mandate.
 type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance =
     {
@@ -41,45 +29,13 @@ type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance =
         Type: string
     }
 
-module ConfirmationTokensResourceMandateDataResourceCustomerAcceptance =
-    let create
-        (
-            online: ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline option,
-            ``type``: string
-        ) : ConfirmationTokensResourceMandateDataResourceCustomerAcceptance
-        =
-        {
-          Online = online
-          Type = ``type``
-        }
-
 /// Data used for generating a Mandate.
 type ConfirmationTokensResourceMandateData =
     { CustomerAcceptance: ConfirmationTokensResourceMandateDataResourceCustomerAcceptance }
 
-module ConfirmationTokensResourceMandateData =
-    let create
-        (
-            customerAcceptance: ConfirmationTokensResourceMandateDataResourceCustomerAcceptance
-        ) : ConfirmationTokensResourceMandateData
-        =
-        {
-          CustomerAcceptance = customerAcceptance
-        }
-
 /// Installment configuration for payments.
 type ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment =
     { Plan: PaymentMethodDetailsCardInstallmentsPlan option }
-
-module ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment =
-    let create
-        (
-            plan: PaymentMethodDetailsCardInstallmentsPlan option
-        ) : ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment
-        =
-        {
-          Plan = plan
-        }
 
 /// This hash contains the card payment method options.
 type ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
@@ -89,33 +45,12 @@ type ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
         Installments: ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment option
     }
 
-module ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
-    let create
-        (
-            cvcToken: string option
-        ) : ConfirmationTokensResourcePaymentMethodOptionsResourceCard
-        =
-        {
-          CvcToken = cvcToken
-          Installments = None
-        }
-
 /// Payment-method-specific configuration
 type ConfirmationTokensResourcePaymentMethodOptions =
     {
         /// This hash contains the card payment method options.
         Card: ConfirmationTokensResourcePaymentMethodOptionsResourceCard option
     }
-
-module ConfirmationTokensResourcePaymentMethodOptions =
-    let create
-        (
-            card: ConfirmationTokensResourcePaymentMethodOptionsResourceCard option
-        ) : ConfirmationTokensResourcePaymentMethodOptions
-        =
-        {
-          Card = card
-        }
 
 [<Struct>]
 type ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay =
@@ -252,77 +187,6 @@ type ConfirmationTokensResourcePaymentMethodPreview =
         Zip: PaymentMethodZip option
     }
 
-module ConfirmationTokensResourcePaymentMethodPreview =
-    let create
-        (
-            billingDetails: BillingDetails,
-            customer: ConfirmationTokensResourcePaymentMethodPreviewCustomer'AnyOf option,
-            customerAccount: string option,
-            ``type``: ConfirmationTokensResourcePaymentMethodPreviewType
-        ) : ConfirmationTokensResourcePaymentMethodPreview
-        =
-        {
-          BillingDetails = billingDetails
-          Customer = customer
-          CustomerAccount = customerAccount
-          Type = ``type``
-          AcssDebit = None
-          Affirm = None
-          AfterpayClearpay = None
-          Alipay = None
-          AllowRedisplay = None
-          Alma = None
-          AmazonPay = None
-          AuBecsDebit = None
-          BacsDebit = None
-          Bancontact = None
-          Billie = None
-          Blik = None
-          Boleto = None
-          Card = None
-          CardPresent = None
-          Cashapp = None
-          Crypto = None
-          CustomerBalance = None
-          Eps = None
-          Fpx = None
-          Giropay = None
-          Grabpay = None
-          Ideal = None
-          InteracPresent = None
-          KakaoPay = None
-          Klarna = None
-          Konbini = None
-          KrCard = None
-          Link = None
-          MbWay = None
-          Mobilepay = None
-          Multibanco = None
-          NaverPay = None
-          NzBankAccount = None
-          Oxxo = None
-          P24 = None
-          PayByBank = None
-          Payco = None
-          Paynow = None
-          Paypal = None
-          Payto = None
-          Pix = None
-          Promptpay = None
-          RevolutPay = None
-          SamsungPay = None
-          Satispay = None
-          SepaDebit = None
-          Sofort = None
-          Sunbit = None
-          Swish = None
-          Twint = None
-          Upi = None
-          UsBankAccount = None
-          WechatPay = None
-          Zip = None
-        }
-
 type ConfirmationTokensResourceShipping =
     {
         Address: Address
@@ -331,20 +195,6 @@ type ConfirmationTokensResourceShipping =
         /// Recipient phone (including extension).
         Phone: string option
     }
-
-module ConfirmationTokensResourceShipping =
-    let create
-        (
-            address: Address,
-            name: string,
-            phone: string option
-        ) : ConfirmationTokensResourceShipping
-        =
-        {
-          Address = address
-          Name = name
-          Phone = phone
-        }
 
 /// ConfirmationTokens help transport client side data collected by Stripe JS over
 /// to your server for confirming a PaymentIntent or SetupIntent. If the confirmation
@@ -386,36 +236,4 @@ type ConfirmationToken =
 module ConfirmationToken =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "confirmation_token"
-
-    let create
-        (
-            created: DateTime,
-            expiresAt: DateTime option,
-            id: string,
-            livemode: bool,
-            paymentIntent: string option,
-            paymentMethodOptions: ConfirmationTokensResourcePaymentMethodOptions option,
-            paymentMethodPreview: ConfirmationTokensResourcePaymentMethodPreview option,
-            returnUrl: string option,
-            setupFutureUsage: ConfirmationTokenSetupFutureUsage option,
-            setupIntent: string option,
-            shipping: ConfirmationTokensResourceShipping option,
-            useStripeSdk: bool
-        ) : ConfirmationToken
-        =
-        {
-          Created = created
-          ExpiresAt = expiresAt
-          Id = id
-          Livemode = livemode
-          PaymentIntent = paymentIntent
-          PaymentMethodOptions = paymentMethodOptions
-          PaymentMethodPreview = paymentMethodPreview
-          ReturnUrl = returnUrl
-          SetupFutureUsage = setupFutureUsage
-          SetupIntent = setupIntent
-          Shipping = shipping
-          UseStripeSdk = useStripeSdk
-          MandateData = None
-        }
 

@@ -57,22 +57,6 @@ type LegalEntityPersonVerificationDocument =
         Front: LegalEntityPersonVerificationDocumentFront'AnyOf option
     }
 
-module LegalEntityPersonVerificationDocument =
-    let create
-        (
-            back: LegalEntityPersonVerificationDocumentBack'AnyOf option,
-            details: string option,
-            detailsCode: LegalEntityPersonVerificationDocumentDetailsCode option,
-            front: LegalEntityPersonVerificationDocumentFront'AnyOf option
-        ) : LegalEntityPersonVerificationDocument
-        =
-        {
-          Back = back
-          Details = details
-          DetailsCode = detailsCode
-          Front = front
-        }
-
 [<Struct>]
 type LegalEntityPersonVerificationStatus =
     | Unverified
@@ -92,20 +76,6 @@ type LegalEntityPersonVerification =
         Status: LegalEntityPersonVerificationStatus
     }
 
-module LegalEntityPersonVerification =
-    let create
-        (
-            status: LegalEntityPersonVerificationStatus
-        ) : LegalEntityPersonVerification
-        =
-        {
-          Status = status
-          AdditionalDocument = None
-          Details = None
-          DetailsCode = None
-          Document = None
-        }
-
 type LegalEntityDob =
     {
         /// The day of birth, between 1 and 31.
@@ -115,20 +85,6 @@ type LegalEntityDob =
         /// The four-digit year of birth.
         Year: int option
     }
-
-module LegalEntityDob =
-    let create
-        (
-            day: int option,
-            month: int option,
-            year: int option
-        ) : LegalEntityDob
-        =
-        {
-          Day = day
-          Month = month
-          Year = year
-        }
 
 [<Struct>]
 type LegalEntityCompanyOwnershipExemptionReason =
@@ -196,34 +152,8 @@ type LegalEntityCompanyVerificationDocument =
         Front: LegalEntityCompanyVerificationDocumentFront'AnyOf option
     }
 
-module LegalEntityCompanyVerificationDocument =
-    let create
-        (
-            back: LegalEntityCompanyVerificationDocumentBack'AnyOf option,
-            details: string option,
-            detailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option,
-            front: LegalEntityCompanyVerificationDocumentFront'AnyOf option
-        ) : LegalEntityCompanyVerificationDocument
-        =
-        {
-          Back = back
-          Details = details
-          DetailsCode = detailsCode
-          Front = front
-        }
-
 type LegalEntityCompanyVerification =
     { Document: LegalEntityCompanyVerificationDocument }
-
-module LegalEntityCompanyVerification =
-    let create
-        (
-            document: LegalEntityCompanyVerificationDocument
-        ) : LegalEntityCompanyVerification
-        =
-        {
-          Document = document
-        }
 
 type LegalEntityDirectorshipDeclaration =
     {
@@ -234,20 +164,6 @@ type LegalEntityDirectorshipDeclaration =
         /// The user-agent string from the browser where the directorship declaration attestation was made.
         UserAgent: string option
     }
-
-module LegalEntityDirectorshipDeclaration =
-    let create
-        (
-            date: DateTime option,
-            ip: string option,
-            userAgent: string option
-        ) : LegalEntityDirectorshipDeclaration
-        =
-        {
-          Date = date
-          Ip = ip
-          UserAgent = userAgent
-        }
 
 type LegalEntityJapanAddress =
     {
@@ -269,28 +185,6 @@ type LegalEntityJapanAddress =
         Town: string option
     }
 
-module LegalEntityJapanAddress =
-    let create
-        (
-            city: string option,
-            country: IsoTypes.IsoCountryCode option,
-            line1: string option,
-            line2: string option,
-            postalCode: string option,
-            state: string option,
-            town: string option
-        ) : LegalEntityJapanAddress
-        =
-        {
-          City = city
-          Country = country
-          Line1 = line1
-          Line2 = line2
-          PostalCode = postalCode
-          State = state
-          Town = town
-        }
-
 type LegalEntityRegistrationDate =
     {
         /// The day of registration, between 1 and 31.
@@ -300,20 +194,6 @@ type LegalEntityRegistrationDate =
         /// The four-digit year of registration.
         Year: int option
     }
-
-module LegalEntityRegistrationDate =
-    let create
-        (
-            day: int option,
-            month: int option,
-            year: int option
-        ) : LegalEntityRegistrationDate
-        =
-        {
-          Day = day
-          Month = month
-          Year = year
-        }
 
 type LegalEntityRepresentativeDeclaration =
     {
@@ -325,20 +205,6 @@ type LegalEntityRepresentativeDeclaration =
         UserAgent: string option
     }
 
-module LegalEntityRepresentativeDeclaration =
-    let create
-        (
-            date: DateTime option,
-            ip: string option,
-            userAgent: string option
-        ) : LegalEntityRepresentativeDeclaration
-        =
-        {
-          Date = date
-          Ip = ip
-          UserAgent = userAgent
-        }
-
 type LegalEntityUboDeclaration =
     {
         /// The Unix timestamp marking when the beneficial owner attestation was made.
@@ -348,20 +214,6 @@ type LegalEntityUboDeclaration =
         /// The user-agent string from the browser where the beneficial owner attestation was made.
         UserAgent: string option
     }
-
-module LegalEntityUboDeclaration =
-    let create
-        (
-            date: DateTime option,
-            ip: string option,
-            userAgent: string option
-        ) : LegalEntityUboDeclaration
-        =
-        {
-          Date = date
-          Ip = ip
-          UserAgent = userAgent
-        }
 
 type LegalEntityCompany =
     {
@@ -408,56 +260,4 @@ type LegalEntityCompany =
         /// Information on the verification state of the company.
         Verification: LegalEntityCompanyVerification option
     }
-
-module LegalEntityCompany =
-    let create
-        (
-            address: Address option,
-            addressKana: LegalEntityJapanAddress option option,
-            addressKanji: LegalEntityJapanAddress option option,
-            directorsProvided: bool option,
-            directorshipDeclaration: LegalEntityDirectorshipDeclaration option option,
-            executivesProvided: bool option,
-            exportLicenseId: string option,
-            exportPurposeCode: string option,
-            name: string option option,
-            nameKana: string option option,
-            nameKanji: string option option,
-            ownersProvided: bool option,
-            ownershipDeclaration: LegalEntityUboDeclaration option option,
-            ownershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason option,
-            phone: string option option,
-            registrationDate: LegalEntityRegistrationDate option,
-            representativeDeclaration: LegalEntityRepresentativeDeclaration option option,
-            structure: LegalEntityCompanyStructure option,
-            taxIdProvided: bool option,
-            taxIdRegistrar: string option,
-            vatIdProvided: bool option,
-            verification: LegalEntityCompanyVerification option option
-        ) : LegalEntityCompany
-        =
-        {
-          Address = address
-          AddressKana = addressKana |> Option.flatten
-          AddressKanji = addressKanji |> Option.flatten
-          DirectorsProvided = directorsProvided
-          DirectorshipDeclaration = directorshipDeclaration |> Option.flatten
-          ExecutivesProvided = executivesProvided
-          ExportLicenseId = exportLicenseId
-          ExportPurposeCode = exportPurposeCode
-          Name = name |> Option.flatten
-          NameKana = nameKana |> Option.flatten
-          NameKanji = nameKanji |> Option.flatten
-          OwnersProvided = ownersProvided
-          OwnershipDeclaration = ownershipDeclaration |> Option.flatten
-          OwnershipExemptionReason = ownershipExemptionReason
-          Phone = phone |> Option.flatten
-          RegistrationDate = registrationDate
-          RepresentativeDeclaration = representativeDeclaration |> Option.flatten
-          Structure = structure
-          TaxIdProvided = taxIdProvided
-          TaxIdRegistrar = taxIdRegistrar
-          VatIdProvided = vatIdProvided
-          Verification = verification |> Option.flatten
-        }
 

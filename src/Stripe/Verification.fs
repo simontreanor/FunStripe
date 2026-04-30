@@ -15,13 +15,3 @@ type VerificationSessionRedaction =
         Status: VerificationSessionRedactionStatus
     }
 
-module VerificationSessionRedaction =
-    let create
-        (
-            status: VerificationSessionRedactionStatus
-        ) : VerificationSessionRedaction
-        =
-        {
-          Status = status
-        }
-

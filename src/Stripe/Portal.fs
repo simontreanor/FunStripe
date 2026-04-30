@@ -11,31 +11,11 @@ type PortalFlowsAfterCompletionHostedConfirmation =
         CustomMessage: string option
     }
 
-module PortalFlowsAfterCompletionHostedConfirmation =
-    let create
-        (
-            customMessage: string option
-        ) : PortalFlowsAfterCompletionHostedConfirmation
-        =
-        {
-          CustomMessage = customMessage
-        }
-
 type PortalFlowsAfterCompletionRedirect =
     {
         /// The URL the customer will be redirected to after the flow is completed.
         ReturnUrl: string
     }
-
-module PortalFlowsAfterCompletionRedirect =
-    let create
-        (
-            returnUrl: string
-        ) : PortalFlowsAfterCompletionRedirect
-        =
-        {
-          ReturnUrl = returnUrl
-        }
 
 [<Struct>]
 type PortalFlowsFlowAfterCompletionType =
@@ -53,35 +33,11 @@ type PortalFlowsFlowAfterCompletion =
         Type: PortalFlowsFlowAfterCompletionType
     }
 
-module PortalFlowsFlowAfterCompletion =
-    let create
-        (
-            hostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option,
-            redirect: PortalFlowsAfterCompletionRedirect option,
-            ``type``: PortalFlowsFlowAfterCompletionType
-        ) : PortalFlowsFlowAfterCompletion
-        =
-        {
-          HostedConfirmation = hostedConfirmation
-          Redirect = redirect
-          Type = ``type``
-        }
-
 type PortalFlowsCouponOffer =
     {
         /// The ID of the coupon to be offered.
         Coupon: string
     }
-
-module PortalFlowsCouponOffer =
-    let create
-        (
-            coupon: string
-        ) : PortalFlowsCouponOffer
-        =
-        {
-          Coupon = coupon
-        }
 
 type PortalFlowsRetention =
     {
@@ -93,15 +49,6 @@ module PortalFlowsRetention =
     ///Type of retention strategy that will be used.
     let ``type`` = "coupon_offer"
 
-    let create
-        (
-            couponOffer: PortalFlowsCouponOffer option
-        ) : PortalFlowsRetention
-        =
-        {
-          CouponOffer = couponOffer
-        }
-
 type PortalFlowsFlowSubscriptionCancel =
     {
         /// Specify a retention strategy to be used in the cancellation flow.
@@ -110,33 +57,11 @@ type PortalFlowsFlowSubscriptionCancel =
         Subscription: string
     }
 
-module PortalFlowsFlowSubscriptionCancel =
-    let create
-        (
-            retention: PortalFlowsRetention option,
-            subscription: string
-        ) : PortalFlowsFlowSubscriptionCancel
-        =
-        {
-          Retention = retention
-          Subscription = subscription
-        }
-
 type PortalFlowsFlowSubscriptionUpdate =
     {
         /// The ID of the subscription to be updated.
         Subscription: string
     }
-
-module PortalFlowsFlowSubscriptionUpdate =
-    let create
-        (
-            subscription: string
-        ) : PortalFlowsFlowSubscriptionUpdate
-        =
-        {
-          Subscription = subscription
-        }
 
 type PortalFlowsSubscriptionUpdateConfirmDiscount =
     {
@@ -145,18 +70,6 @@ type PortalFlowsSubscriptionUpdateConfirmDiscount =
         /// The ID of a promotion code to apply to this subscription update.
         PromotionCode: string option
     }
-
-module PortalFlowsSubscriptionUpdateConfirmDiscount =
-    let create
-        (
-            coupon: string option,
-            promotionCode: string option
-        ) : PortalFlowsSubscriptionUpdateConfirmDiscount
-        =
-        {
-          Coupon = coupon
-          PromotionCode = promotionCode
-        }
 
 type PortalFlowsSubscriptionUpdateConfirmItem =
     {
@@ -168,19 +81,6 @@ type PortalFlowsSubscriptionUpdateConfirmItem =
         Quantity: int option
     }
 
-module PortalFlowsSubscriptionUpdateConfirmItem =
-    let create
-        (
-            id: string option,
-            price: string option
-        ) : PortalFlowsSubscriptionUpdateConfirmItem
-        =
-        {
-          Id = id
-          Price = price
-          Quantity = None
-        }
-
 type PortalFlowsFlowSubscriptionUpdateConfirm =
     {
         /// The coupon or promotion code to apply to this subscription update.
@@ -190,20 +90,6 @@ type PortalFlowsFlowSubscriptionUpdateConfirm =
         /// The ID of the subscription to be updated.
         Subscription: string
     }
-
-module PortalFlowsFlowSubscriptionUpdateConfirm =
-    let create
-        (
-            discounts: PortalFlowsSubscriptionUpdateConfirmDiscount list option,
-            items: PortalFlowsSubscriptionUpdateConfirmItem list,
-            subscription: string
-        ) : PortalFlowsFlowSubscriptionUpdateConfirm
-        =
-        {
-          Discounts = discounts
-          Items = items
-          Subscription = subscription
-        }
 
 [<Struct>]
 type PortalFlowsFlowType =
@@ -225,24 +111,6 @@ type PortalFlowsFlow =
         Type: PortalFlowsFlowType
     }
 
-module PortalFlowsFlow =
-    let create
-        (
-            afterCompletion: PortalFlowsFlowAfterCompletion,
-            subscriptionCancel: PortalFlowsFlowSubscriptionCancel option,
-            subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option,
-            subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option,
-            ``type``: PortalFlowsFlowType
-        ) : PortalFlowsFlow
-        =
-        {
-          AfterCompletion = afterCompletion
-          SubscriptionCancel = subscriptionCancel
-          SubscriptionUpdate = subscriptionUpdate
-          SubscriptionUpdateConfirm = subscriptionUpdateConfirm
-          Type = ``type``
-        }
-
 type PortalLoginPage =
     {
         /// If `true`, a shareable `url` will be generated that will take your customers to a hosted login page for the customer portal.
@@ -251,18 +119,6 @@ type PortalLoginPage =
         /// A shareable URL to the hosted portal login page. Your customers will be able to log in with their [email](https://docs.stripe.com/api/customers/object#customer_object-email) and receive a link to their customer portal.
         Url: string option
     }
-
-module PortalLoginPage =
-    let create
-        (
-            enabled: bool,
-            url: string option
-        ) : PortalLoginPage
-        =
-        {
-          Enabled = enabled
-          Url = url
-        }
 
 type PortalCustomerUpdateAllowedUpdates =
     | Address
@@ -280,33 +136,11 @@ type PortalCustomerUpdate =
         Enabled: bool
     }
 
-module PortalCustomerUpdate =
-    let create
-        (
-            allowedUpdates: PortalCustomerUpdateAllowedUpdates list,
-            enabled: bool
-        ) : PortalCustomerUpdate
-        =
-        {
-          AllowedUpdates = allowedUpdates
-          Enabled = enabled
-        }
-
 type PortalInvoiceList =
     {
         /// Whether the feature is enabled.
         Enabled: bool
     }
-
-module PortalInvoiceList =
-    let create
-        (
-            enabled: bool
-        ) : PortalInvoiceList
-        =
-        {
-          Enabled = enabled
-        }
 
 type PortalPaymentMethodUpdate =
     {
@@ -315,18 +149,6 @@ type PortalPaymentMethodUpdate =
         /// The [Payment Method Configuration](/api/payment_method_configurations) to use for this portal session. When specified, customers will be able to update their payment method to one of the options specified by the payment method configuration. If not set, the default payment method configuration is used.
         PaymentMethodConfiguration: string option
     }
-
-module PortalPaymentMethodUpdate =
-    let create
-        (
-            enabled: bool,
-            paymentMethodConfiguration: string option
-        ) : PortalPaymentMethodUpdate
-        =
-        {
-          Enabled = enabled
-          PaymentMethodConfiguration = paymentMethodConfiguration
-        }
 
 [<Struct>]
 type PortalSubscriptionCancelMode =
@@ -357,18 +179,6 @@ type PortalSubscriptionCancellationReason =
         Options: PortalSubscriptionCancellationReasonOptions list
     }
 
-module PortalSubscriptionCancellationReason =
-    let create
-        (
-            enabled: bool,
-            options: PortalSubscriptionCancellationReasonOptions list
-        ) : PortalSubscriptionCancellationReason
-        =
-        {
-          Enabled = enabled
-          Options = options
-        }
-
 type PortalSubscriptionCancel =
     {
         CancellationReason: PortalSubscriptionCancellationReason
@@ -379,22 +189,6 @@ type PortalSubscriptionCancel =
         /// Whether to create prorations when canceling subscriptions. Possible values are `none` and `create_prorations`.
         ProrationBehavior: PortalSubscriptionCancelProrationBehavior
     }
-
-module PortalSubscriptionCancel =
-    let create
-        (
-            cancellationReason: PortalSubscriptionCancellationReason,
-            enabled: bool,
-            mode: PortalSubscriptionCancelMode,
-            prorationBehavior: PortalSubscriptionCancelProrationBehavior
-        ) : PortalSubscriptionCancel
-        =
-        {
-          CancellationReason = cancellationReason
-          Enabled = enabled
-          Mode = mode
-          ProrationBehavior = prorationBehavior
-        }
 
 [<Struct>]
 type PortalResourceScheduleUpdateAtPeriodEndConditionType =
@@ -407,31 +201,11 @@ type PortalResourceScheduleUpdateAtPeriodEndCondition =
         Type: PortalResourceScheduleUpdateAtPeriodEndConditionType
     }
 
-module PortalResourceScheduleUpdateAtPeriodEndCondition =
-    let create
-        (
-            ``type``: PortalResourceScheduleUpdateAtPeriodEndConditionType
-        ) : PortalResourceScheduleUpdateAtPeriodEndCondition
-        =
-        {
-          Type = ``type``
-        }
-
 type PortalResourceScheduleUpdateAtPeriodEnd =
     {
         /// List of conditions. When any condition is true, an update will be scheduled at the end of the current period.
         Conditions: PortalResourceScheduleUpdateAtPeriodEndCondition list
     }
-
-module PortalResourceScheduleUpdateAtPeriodEnd =
-    let create
-        (
-            conditions: PortalResourceScheduleUpdateAtPeriodEndCondition list
-        ) : PortalResourceScheduleUpdateAtPeriodEnd
-        =
-        {
-          Conditions = conditions
-        }
 
 [<Struct>]
 type PortalSubscriptionUpdateBillingCycleAnchor =
@@ -454,20 +228,6 @@ type PortalSubscriptionUpdateProductAdjustableQuantity =
         Minimum: int
     }
 
-module PortalSubscriptionUpdateProductAdjustableQuantity =
-    let create
-        (
-            enabled: bool,
-            maximum: int option,
-            minimum: int
-        ) : PortalSubscriptionUpdateProductAdjustableQuantity
-        =
-        {
-          Enabled = enabled
-          Maximum = maximum
-          Minimum = minimum
-        }
-
 type PortalSubscriptionUpdateProduct =
     {
         AdjustableQuantity: PortalSubscriptionUpdateProductAdjustableQuantity
@@ -476,20 +236,6 @@ type PortalSubscriptionUpdateProduct =
         /// The product ID.
         Product: string
     }
-
-module PortalSubscriptionUpdateProduct =
-    let create
-        (
-            adjustableQuantity: PortalSubscriptionUpdateProductAdjustableQuantity,
-            prices: string list,
-            product: string
-        ) : PortalSubscriptionUpdateProduct
-        =
-        {
-          AdjustableQuantity = adjustableQuantity
-          Prices = prices
-          Product = product
-        }
 
 [<Struct>]
 type PortalSubscriptionUpdateProrationBehavior =
@@ -519,51 +265,12 @@ type PortalSubscriptionUpdate =
         TrialUpdateBehavior: PortalSubscriptionUpdateTrialUpdateBehavior
     }
 
-module PortalSubscriptionUpdate =
-    let create
-        (
-            billingCycleAnchor: PortalSubscriptionUpdateBillingCycleAnchor option,
-            defaultAllowedUpdates: PortalSubscriptionUpdateDefaultAllowedUpdates list,
-            enabled: bool,
-            prorationBehavior: PortalSubscriptionUpdateProrationBehavior,
-            scheduleAtPeriodEnd: PortalResourceScheduleUpdateAtPeriodEnd,
-            trialUpdateBehavior: PortalSubscriptionUpdateTrialUpdateBehavior
-        ) : PortalSubscriptionUpdate
-        =
-        {
-          BillingCycleAnchor = billingCycleAnchor
-          DefaultAllowedUpdates = defaultAllowedUpdates
-          Enabled = enabled
-          ProrationBehavior = prorationBehavior
-          ScheduleAtPeriodEnd = scheduleAtPeriodEnd
-          TrialUpdateBehavior = trialUpdateBehavior
-          Products = None
-        }
-
 type PortalFeatures =
     { CustomerUpdate: PortalCustomerUpdate
       InvoiceHistory: PortalInvoiceList
       PaymentMethodUpdate: PortalPaymentMethodUpdate
       SubscriptionCancel: PortalSubscriptionCancel
       SubscriptionUpdate: PortalSubscriptionUpdate }
-
-module PortalFeatures =
-    let create
-        (
-            customerUpdate: PortalCustomerUpdate,
-            invoiceHistory: PortalInvoiceList,
-            paymentMethodUpdate: PortalPaymentMethodUpdate,
-            subscriptionCancel: PortalSubscriptionCancel,
-            subscriptionUpdate: PortalSubscriptionUpdate
-        ) : PortalFeatures
-        =
-        {
-          CustomerUpdate = customerUpdate
-          InvoiceHistory = invoiceHistory
-          PaymentMethodUpdate = paymentMethodUpdate
-          SubscriptionCancel = subscriptionCancel
-          SubscriptionUpdate = subscriptionUpdate
-        }
 
 type PortalBusinessProfile =
     {
@@ -574,18 +281,4 @@ type PortalBusinessProfile =
         /// A link to the business’s publicly available terms of service.
         TermsOfServiceUrl: string option
     }
-
-module PortalBusinessProfile =
-    let create
-        (
-            headline: string option,
-            privacyPolicyUrl: string option,
-            termsOfServiceUrl: string option
-        ) : PortalBusinessProfile
-        =
-        {
-          Headline = headline
-          PrivacyPolicyUrl = privacyPolicyUrl
-          TermsOfServiceUrl = termsOfServiceUrl
-        }
 

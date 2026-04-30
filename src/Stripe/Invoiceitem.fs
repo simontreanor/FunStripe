@@ -82,78 +82,9 @@ module Invoiceitem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoiceitem"
 
-    let create
-        (
-            amount: int,
-            currency: IsoTypes.IsoCurrencyCode,
-            customer: InvoiceitemCustomer'AnyOf,
-            customerAccount: string option,
-            date: DateTime,
-            description: string option,
-            discountable: bool,
-            discounts: InvoiceitemDiscounts'AnyOf list option,
-            id: string,
-            invoice: InvoiceitemInvoice'AnyOf option,
-            livemode: bool,
-            metadata: Map<string, string> option,
-            parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option,
-            period: InvoiceLineItemPeriod,
-            pricing: BillingBillResourceInvoicingPricingPricing option,
-            proration: bool,
-            quantity: int,
-            quantityDecimal: string,
-            taxRates: TaxRate list option,
-            testClock: InvoiceitemTestClock'AnyOf option
-        ) : Invoiceitem
-        =
-        {
-          Amount = amount
-          Currency = currency
-          Customer = customer
-          CustomerAccount = customerAccount
-          Date = date
-          Description = description
-          Discountable = discountable
-          Discounts = discounts
-          Id = id
-          Invoice = invoice
-          Livemode = livemode
-          Metadata = metadata
-          Parent = parent
-          Period = period
-          Pricing = pricing
-          Proration = proration
-          Quantity = quantity
-          QuantityDecimal = quantityDecimal
-          TaxRates = taxRates
-          TestClock = testClock
-          NetAmount = None
-          ProrationDetails = None
-        }
-
 /// Occurs whenever an invoice item is deleted.
 type InvoiceitemDeleted = { Object: Invoiceitem }
 
-module InvoiceitemDeleted =
-    let create
-        (
-            object: Invoiceitem
-        ) : InvoiceitemDeleted
-        =
-        {
-          Object = object
-        }
-
 /// Occurs whenever an invoice item is created.
 type InvoiceitemCreated = { Object: Invoiceitem }
-
-module InvoiceitemCreated =
-    let create
-        (
-            object: Invoiceitem
-        ) : InvoiceitemCreated
-        =
-        {
-          Object = object
-        }
 

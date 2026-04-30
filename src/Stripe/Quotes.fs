@@ -20,20 +20,6 @@ type QuotesResourceTransferData =
         Destination: QuotesResourceTransferDataDestination'AnyOf
     }
 
-module QuotesResourceTransferData =
-    let create
-        (
-            amount: int option,
-            amountPercent: decimal option,
-            destination: QuotesResourceTransferDataDestination'AnyOf
-        ) : QuotesResourceTransferData
-        =
-        {
-          Amount = amount
-          AmountPercent = amountPercent
-          Destination = destination
-        }
-
 [<Struct>]
 type QuotesResourceSubscriptionDataBillingModeType =
     | Classic
@@ -46,17 +32,6 @@ type QuotesResourceSubscriptionDataBillingMode =
         /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
         Type: QuotesResourceSubscriptionDataBillingModeType
     }
-
-module QuotesResourceSubscriptionDataBillingMode =
-    let create
-        (
-            ``type``: QuotesResourceSubscriptionDataBillingModeType
-        ) : QuotesResourceSubscriptionDataBillingMode
-        =
-        {
-          Type = ``type``
-          Flexible = None
-        }
 
 type QuotesResourceSubscriptionDataSubscriptionData =
     {
@@ -71,24 +46,6 @@ type QuotesResourceSubscriptionDataSubscriptionData =
         TrialPeriodDays: int option
     }
 
-module QuotesResourceSubscriptionDataSubscriptionData =
-    let create
-        (
-            billingMode: QuotesResourceSubscriptionDataBillingMode,
-            description: string option,
-            effectiveDate: DateTime option,
-            metadata: Map<string, string> option,
-            trialPeriodDays: int option
-        ) : QuotesResourceSubscriptionDataSubscriptionData
-        =
-        {
-          BillingMode = billingMode
-          Description = description
-          EffectiveDate = effectiveDate
-          Metadata = metadata
-          TrialPeriodDays = trialPeriodDays
-        }
-
 type QuotesResourceStatusTransitions =
     {
         /// The time that the quote was accepted. Measured in seconds since Unix epoch.
@@ -98,20 +55,6 @@ type QuotesResourceStatusTransitions =
         /// The time that the quote was finalized. Measured in seconds since Unix epoch.
         FinalizedAt: DateTime option
     }
-
-module QuotesResourceStatusTransitions =
-    let create
-        (
-            acceptedAt: DateTime option,
-            canceledAt: DateTime option,
-            finalizedAt: DateTime option
-        ) : QuotesResourceStatusTransitions
-        =
-        {
-          AcceptedAt = acceptedAt
-          CanceledAt = canceledAt
-          FinalizedAt = finalizedAt
-        }
 
 [<Struct>]
 type QuotesResourceRecurringInterval =
@@ -128,18 +71,6 @@ type QuotesResourceTotalDetailsResourceBreakdown =
         Taxes: LineItemsTaxAmount list
     }
 
-module QuotesResourceTotalDetailsResourceBreakdown =
-    let create
-        (
-            discounts: LineItemsDiscountAmount list,
-            taxes: LineItemsTaxAmount list
-        ) : QuotesResourceTotalDetailsResourceBreakdown
-        =
-        {
-          Discounts = discounts
-          Taxes = taxes
-        }
-
 type QuotesResourceTotalDetails =
     {
         /// This is the sum of all the discounts.
@@ -150,21 +81,6 @@ type QuotesResourceTotalDetails =
         AmountTax: int
         Breakdown: QuotesResourceTotalDetailsResourceBreakdown option
     }
-
-module QuotesResourceTotalDetails =
-    let create
-        (
-            amountDiscount: int,
-            amountShipping: int option,
-            amountTax: int
-        ) : QuotesResourceTotalDetails
-        =
-        {
-          AmountDiscount = amountDiscount
-          AmountShipping = amountShipping
-          AmountTax = amountTax
-          Breakdown = None
-        }
 
 type QuotesResourceRecurring =
     {
@@ -178,24 +94,6 @@ type QuotesResourceRecurring =
         IntervalCount: int
         TotalDetails: QuotesResourceTotalDetails
     }
-
-module QuotesResourceRecurring =
-    let create
-        (
-            amountSubtotal: int,
-            amountTotal: int,
-            interval: QuotesResourceRecurringInterval,
-            intervalCount: int,
-            totalDetails: QuotesResourceTotalDetails
-        ) : QuotesResourceRecurring
-        =
-        {
-          AmountSubtotal = amountSubtotal
-          AmountTotal = amountTotal
-          Interval = interval
-          IntervalCount = intervalCount
-          TotalDetails = totalDetails
-        }
 
 /// The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice.
 type QuotesResourceUpfrontLineItems =
@@ -212,19 +110,6 @@ module QuotesResourceUpfrontLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
-    let create
-        (
-            data: Item list,
-            hasMore: bool,
-            url: string
-        ) : QuotesResourceUpfrontLineItems
-        =
-        {
-          Data = data
-          HasMore = hasMore
-          Url = url
-        }
-
 type QuotesResourceUpfront =
     {
         /// Total before any discounts or taxes are applied.
@@ -236,39 +121,12 @@ type QuotesResourceUpfront =
         TotalDetails: QuotesResourceTotalDetails
     }
 
-module QuotesResourceUpfront =
-    let create
-        (
-            amountSubtotal: int,
-            amountTotal: int,
-            totalDetails: QuotesResourceTotalDetails
-        ) : QuotesResourceUpfront
-        =
-        {
-          AmountSubtotal = amountSubtotal
-          AmountTotal = amountTotal
-          TotalDetails = totalDetails
-          LineItems = None
-        }
-
 type QuotesResourceComputed =
     {
         /// The definitive totals and line items the customer will be charged on a recurring basis. Takes into account the line items with recurring prices and discounts with `duration=forever` coupons only. Defaults to `null` if no inputted line items with recurring prices.
         Recurring: QuotesResourceRecurring option
         Upfront: QuotesResourceUpfront
     }
-
-module QuotesResourceComputed =
-    let create
-        (
-            recurring: QuotesResourceRecurring option,
-            upfront: QuotesResourceUpfront
-        ) : QuotesResourceComputed
-        =
-        {
-          Recurring = recurring
-          Upfront = upfront
-        }
 
 [<Struct>]
 type QuotesResourceAutomaticTaxStatus =
@@ -287,20 +145,4 @@ type QuotesResourceAutomaticTax =
         /// The status of the most recent automated tax calculation for this quote.
         Status: QuotesResourceAutomaticTaxStatus option
     }
-
-module QuotesResourceAutomaticTax =
-    let create
-        (
-            enabled: bool,
-            liability: ConnectAccountReference option,
-            provider: string option,
-            status: QuotesResourceAutomaticTaxStatus option
-        ) : QuotesResourceAutomaticTax
-        =
-        {
-          Enabled = enabled
-          Liability = liability
-          Provider = provider
-          Status = status
-        }
 
