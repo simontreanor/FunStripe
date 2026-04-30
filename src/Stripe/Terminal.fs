@@ -3,7 +3,7 @@ namespace Stripe.Terminal
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.File
+open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
@@ -19,39 +19,6 @@ type TerminalReaderDeviceType =
     | StripeS700
     | StripeS710
     | VerifoneP400
-
-/// A Location represents a grouping of readers.
-/// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
-type TerminalLocation =
-    {
-        Address: Address
-        AddressKana: LegalEntityJapanAddress option
-        AddressKanji: LegalEntityJapanAddress option
-        /// The ID of a configuration that will be used to customize all readers in this location.
-        ConfigurationOverrides: string option
-        /// The display name of the location.
-        DisplayName: string
-        /// The Kana variation of the display name of the location.
-        DisplayNameKana: string option
-        /// The Kanji variation of the display name of the location.
-        DisplayNameKanji: string option
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-        /// The phone number of the location.
-        Phone: string option
-    }
-
-module TerminalLocation =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "terminal.location"
-
-type TerminalReaderLocation'AnyOf =
-    | String of string
-    | TerminalLocation of TerminalLocation
 
 /// Represents custom text to be displayed when collecting the input using a reader
 type TerminalReaderReaderResourceCustomText =
@@ -206,16 +173,12 @@ type TerminalReaderReaderResourceCollectConfig =
         Tipping: TerminalReaderReaderResourceTippingConfig option
     }
 
-type TerminalReaderReaderResourceCollectPaymentMethodActionPaymentIntent'AnyOf =
-    | String of string
-    | PaymentIntent of PaymentIntent
-
 /// Represents a reader action to collect a payment method
 type TerminalReaderReaderResourceCollectPaymentMethodAction =
     {
         CollectConfig: TerminalReaderReaderResourceCollectConfig option
         /// Most recent PaymentIntent processed by the reader.
-        PaymentIntent: TerminalReaderReaderResourceCollectPaymentMethodActionPaymentIntent'AnyOf
+        PaymentIntent: string
         PaymentMethod: PaymentMethod option
     }
 
@@ -226,16 +189,12 @@ type TerminalReaderReaderResourceConfirmConfig =
         ReturnUrl: string option
     }
 
-type TerminalReaderReaderResourceConfirmPaymentIntentActionPaymentIntent'AnyOf =
-    | String of string
-    | PaymentIntent of PaymentIntent
-
 /// Represents a reader action to confirm a payment
 type TerminalReaderReaderResourceConfirmPaymentIntentAction =
     {
         ConfirmConfig: TerminalReaderReaderResourceConfirmConfig option
         /// Most recent PaymentIntent processed by the reader.
-        PaymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentActionPaymentIntent'AnyOf
+        PaymentIntent: string
     }
 
 /// Represents a per-transaction override of a reader configuration
@@ -250,15 +209,11 @@ type TerminalReaderReaderResourceProcessConfig =
         Tipping: TerminalReaderReaderResourceTippingConfig option
     }
 
-type TerminalReaderReaderResourceProcessPaymentIntentActionPaymentIntent'AnyOf =
-    | String of string
-    | PaymentIntent of PaymentIntent
-
 /// Represents a reader action to process a payment intent
 type TerminalReaderReaderResourceProcessPaymentIntentAction =
     {
         /// Most recent PaymentIntent processed by the reader.
-        PaymentIntent: TerminalReaderReaderResourceProcessPaymentIntentActionPaymentIntent'AnyOf
+        PaymentIntent: string
         ProcessConfig: TerminalReaderReaderResourceProcessConfig option
     }
 
@@ -269,10 +224,6 @@ type TerminalReaderReaderResourceProcessSetupConfig =
         EnableCustomerCancellation: bool option
     }
 
-type TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf =
-    | String of string
-    | SetupIntent of SetupIntent
-
 /// Represents a reader action to process a setup intent
 type TerminalReaderReaderResourceProcessSetupIntentAction =
     {
@@ -280,7 +231,7 @@ type TerminalReaderReaderResourceProcessSetupIntentAction =
         GeneratedCard: string option
         ProcessConfig: TerminalReaderReaderResourceProcessSetupConfig option
         /// Most recent SetupIntent processed by the reader.
-        SetupIntent: TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf
+        SetupIntent: string
     }
 
 [<Struct>]
@@ -298,23 +249,11 @@ type TerminalReaderReaderResourceReaderActionType =
     | RefundPayment
     | SetReaderDisplay
 
-type TerminalReaderReaderResourceRefundPaymentActionCharge'AnyOf =
-    | String of string
-    | Charge of Charge
-
-type TerminalReaderReaderResourceRefundPaymentActionPaymentIntent'AnyOf =
-    | String of string
-    | PaymentIntent of PaymentIntent
-
 [<Struct>]
 type TerminalReaderReaderResourceRefundPaymentActionReason =
     | Duplicate
     | Fraudulent
     | RequestedByCustomer
-
-type TerminalReaderReaderResourceRefundPaymentActionRefund'AnyOf =
-    | String of string
-    | Refund of Refund
 
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceRefundPaymentConfig =
@@ -329,15 +268,15 @@ type TerminalReaderReaderResourceRefundPaymentAction =
         /// The amount being refunded.
         Amount: int option
         /// Charge that is being refunded.
-        Charge: TerminalReaderReaderResourceRefundPaymentActionCharge'AnyOf option
+        Charge: string option
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         /// Payment intent that is being refunded.
-        PaymentIntent: TerminalReaderReaderResourceRefundPaymentActionPaymentIntent'AnyOf option
+        PaymentIntent: string option
         /// The reason for the refund.
         Reason: TerminalReaderReaderResourceRefundPaymentActionReason option
         /// Unique identifier for the refund object.
-        Refund: TerminalReaderReaderResourceRefundPaymentActionRefund'AnyOf option
+        Refund: string option
         /// Boolean indicating whether the application fee should be refunded when refunding this charge. If a full charge refund is given, the full application fee will be refunded. Otherwise, the application fee will be refunded in an amount proportional to the amount of the charge refunded. An application fee can be refunded only by the application that created the charge.
         RefundApplicationFee: bool option
         RefundPaymentConfig: TerminalReaderReaderResourceRefundPaymentConfig option
@@ -426,7 +365,7 @@ type TerminalReader =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// The location identifier of the reader.
-        Location: TerminalReaderLocation'AnyOf option
+        Location: string option
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
         /// Serial number of the reader.
@@ -480,6 +419,35 @@ module TerminalOnboardingLink =
 
     let object = "terminal.onboarding_link"
 
+/// A Location represents a grouping of readers.
+/// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
+type TerminalLocation =
+    {
+        Address: Address
+        AddressKana: LegalEntityJapanAddress option
+        AddressKanji: LegalEntityJapanAddress option
+        /// The ID of a configuration that will be used to customize all readers in this location.
+        ConfigurationOverrides: string option
+        /// The display name of the location.
+        DisplayName: string
+        /// The Kana variation of the display name of the location.
+        DisplayNameKana: string option
+        /// The Kanji variation of the display name of the location.
+        DisplayNameKanji: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The phone number of the location.
+        Phone: string option
+    }
+
+module TerminalLocation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.location"
+
 /// A Connection Token is used by the Stripe Terminal SDK to connect to a reader.
 /// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
 type TerminalConnectionToken =
@@ -500,14 +468,10 @@ type TerminalConfigurationConfigurationResourceCellularConfig =
         Enabled: bool
     }
 
-type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSplashscreen'AnyOf =
-    | String of string
-    | File of File
-
 type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig =
     {
         /// A File ID representing an image to display on the reader
-        Splashscreen: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSplashscreen'AnyOf option
+        Splashscreen: string option
     }
 
 type TerminalConfigurationConfigurationResourceOfflineConfig =
@@ -635,6 +599,59 @@ type TerminalConfiguration =
     }
 
 module TerminalConfiguration =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.configuration"
+
+type DeletedTerminalReaderDeviceType =
+    | BbposChipper2x
+    | BbposWisepad3
+    | BbposWiseposE
+    | MobilePhoneReader
+    | SimulatedStripeS700
+    | SimulatedStripeS710
+    | SimulatedWiseposE
+    | StripeM2
+    | StripeS700
+    | StripeS710
+    | VerifoneP400
+
+type DeletedTerminalReader =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Device type of the reader.
+        DeviceType: DeletedTerminalReaderDeviceType
+        /// Unique identifier for the object.
+        Id: string
+        /// Serial number of the reader.
+        SerialNumber: string
+    }
+
+module DeletedTerminalReader =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.reader"
+
+type DeletedTerminalLocation =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+module DeletedTerminalLocation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.location"
+
+type DeletedTerminalConfiguration =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+module DeletedTerminalConfiguration =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.configuration"
 

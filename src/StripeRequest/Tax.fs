@@ -2,9 +2,9 @@ namespace StripeRequest.Tax
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.PaymentMethod
 open Stripe.Tax
 open Stripe.TaxCode
+open Stripe.TaxId
 open Stripe.TaxRate
 open System
 

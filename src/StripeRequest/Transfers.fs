@@ -2,7 +2,8 @@ namespace StripeRequest.Transfers
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.PaymentMethod
+open Stripe.Transfer
+open Stripe.TransferReversal
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

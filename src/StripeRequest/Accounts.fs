@@ -3,7 +3,6 @@ namespace StripeRequest.Accounts
 open FunStripe
 open System.Text.Json.Serialization
 open Stripe.Capability
-open Stripe.Deleted
 open Stripe.LoginLink
 open Stripe.PaymentMethod
 open System

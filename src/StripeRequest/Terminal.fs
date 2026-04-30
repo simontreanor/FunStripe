@@ -2,7 +2,6 @@ namespace StripeRequest.Terminal
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Deleted
 open Stripe.Terminal
 open System
 

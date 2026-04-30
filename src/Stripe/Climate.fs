@@ -97,10 +97,6 @@ type ClimateOrderCancellationReason =
     | ProductUnavailable
     | Requested
 
-type ClimateOrderProduct'AnyOf =
-    | String of string
-    | ClimateProduct of ClimateProduct
-
 [<Struct>]
 type ClimateOrderStatus =
     | AwaitingFunds
@@ -169,7 +165,7 @@ type ClimateOrder =
         /// Quantity of carbon removal that is included in this order.
         MetricTons: string
         /// Unique ID for the Climate `Product` this order is purchasing.
-        Product: ClimateOrderProduct'AnyOf
+        Product: string
         /// Time at which the order's product was substituted for a different product. Measured in seconds since the Unix epoch.
         ProductSubstitutedAt: DateTime option
         /// The current status of this order.

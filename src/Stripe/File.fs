@@ -3,6 +3,7 @@ namespace Stripe.File
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.FileLink
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type FilePurpose =
@@ -58,56 +59,10 @@ type File =
         Url: string option
     }
 
-/// A list of [file links](https://api.stripe.com#file_links) that point at this file.
-and FileLinks =
-    {
-        /// Details about each object.
-        Data: FileLink list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-/// To share the contents of a `File` object with non-Stripe users, you can
-/// create a `FileLink`. `FileLink`s contain a URL that you can use to
-/// retrieve the contents of the file without authentication.
-and FileLink =
-    {
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Returns if the link is already expired.
-        Expired: bool
-        /// Time that the link expires.
-        ExpiresAt: DateTime option
-        /// The file object this link points to.
-        File: FileLinkFile'AnyOf
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-        /// The publicly accessible URL to download the file.
-        Url: string option
-    }
-
-and FileLinkFile'AnyOf =
-    | String of string
-    | File of File
-
-/// Occurs whenever a new Stripe-generated file is available for your account.
-type FileCreated = { Object: File }
-
 module File =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "file"
 
-module FileLinks =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module FileLink =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "file_link"
+/// Occurs whenever a new Stripe-generated file is available for your account.
+type FileCreated = { Object: File }
 

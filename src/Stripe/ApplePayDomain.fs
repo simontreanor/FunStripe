@@ -5,6 +5,18 @@ open FunStripe
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type DeletedApplePayDomain =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+module DeletedApplePayDomain =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "apple_pay_domain"
+
 type ApplePayDomain =
     {
         /// Time at which the object was created. Measured in seconds since the Unix epoch.

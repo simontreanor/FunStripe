@@ -1,4 +1,4 @@
-namespace StripeRequest.Quote
+namespace StripeRequest.Quotes
 
 open FunStripe
 open System.Text.Json.Serialization

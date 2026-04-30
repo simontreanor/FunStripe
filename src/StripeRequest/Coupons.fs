@@ -3,7 +3,6 @@ namespace StripeRequest.Coupons
 open FunStripe
 open System.Text.Json.Serialization
 open Stripe.Coupon
-open Stripe.Deleted
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

@@ -3,14 +3,9 @@ namespace Stripe.CustomerSession
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.PaymentMethod
-
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
-type CustomerSessionCustomer'AnyOf =
-    | String of string
-    | Customer of Customer
 
 /// This hash contains whether the buy button is enabled.
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type CustomerSessionResourceComponentsResourceBuyButton =
     {
         /// Whether the buy button is enabled.
@@ -199,7 +194,7 @@ type CustomerSession =
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// The Customer the Customer Session was created for.
-        Customer: CustomerSessionCustomer'AnyOf
+        Customer: string
         /// The Account that the Customer Session was created for.
         CustomerAccount: string option
         /// The timestamp at which this Customer Session will expire.

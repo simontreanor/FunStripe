@@ -215,5 +215,18 @@ module ModelParsing =
         | Some c ->
             { Description = description; Name = name; Nullable = nullable; Required = required; Type = c; EnumValues = None; SubValues = None; StaticValue = None }
         | None ->
-            let choices' = choices |> List.map(fun c -> $"{c |> pascalCasify} of {c}")
-            { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"{prefix}{name |> pascalCasify}{suffix}"; EnumValues = Some choices'; SubValues = None; StaticValue = None }
+            // Stripe "expandable" pattern: anyOf [string, $ref-to-resource, ...]
+            // The wire format defaults to a string ID (the resource's id) and only returns a nested
+            // object when the caller passes ?expand[]=. Modelling these as a wrapper DU forces
+            // every Stripe.{Domain} module to depend on every other domain that has expandable
+            // references, producing one giant cyclic SCC. Emitting the field as `string` matches
+            // the default wire format, eliminates cross-domain cycles, and lets callers fetch
+            // the expanded resource via a separate, typed retrieve call.
+            let isExpandable =
+                choices |> List.contains "string"
+                && choices |> List.exists (fun c -> not (basicTypes.Contains c) && c <> "string")
+            if isExpandable then
+                { Description = description; Name = name; Nullable = nullable; Required = required; Type = "string"; EnumValues = None; SubValues = None; StaticValue = None }
+            else
+                let choices' = choices |> List.map(fun c -> $"{c |> pascalCasify} of {c}")
+                { Description = description; Name = name; Nullable = nullable; Required = required; Type = $"{prefix}{name |> pascalCasify}{suffix}"; EnumValues = Some choices'; SubValues = None; StaticValue = None }

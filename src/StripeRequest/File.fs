@@ -2,7 +2,7 @@ namespace StripeRequest.File
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.File
+open Stripe.FileLink
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

@@ -21,3 +21,15 @@ module ProductFeature =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "product_feature"
 
+type DeletedProductFeature =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+module DeletedProductFeature =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "product_feature"
+

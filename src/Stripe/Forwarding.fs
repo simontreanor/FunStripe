@@ -3,7 +3,6 @@ namespace Stripe.Forwarding
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Forwarded
 
 /// Metadata about the forwarded request.
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
@@ -13,6 +12,15 @@ type ForwardedRequestContext =
         DestinationDuration: int
         /// The IP address of the destination.
         DestinationIpAddress: string
+    }
+
+/// Header data.
+type ForwardedRequestHeader =
+    {
+        /// The header name.
+        Name: string
+        /// The header value.
+        Value: string
     }
 
 /// Details about the request forwarded to the destination endpoint.

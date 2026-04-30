@@ -2,7 +2,6 @@ namespace StripeRequest.Invoiceitems
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Deleted
 open Stripe.Invoiceitem
 open System
 

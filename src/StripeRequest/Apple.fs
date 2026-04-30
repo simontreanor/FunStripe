@@ -3,7 +3,6 @@ namespace StripeRequest.Apple
 open FunStripe
 open System.Text.Json.Serialization
 open Stripe.ApplePayDomain
-open Stripe.Deleted
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

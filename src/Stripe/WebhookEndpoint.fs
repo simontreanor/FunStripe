@@ -44,3 +44,15 @@ module WebhookEndpoint =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "webhook_endpoint"
 
+type DeletedWebhookEndpoint =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+module DeletedWebhookEndpoint =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "webhook_endpoint"
+

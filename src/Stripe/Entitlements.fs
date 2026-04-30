@@ -27,15 +27,11 @@ module EntitlementsFeature =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "entitlements.feature"
 
-type EntitlementsActiveEntitlementFeature'AnyOf =
-    | String of string
-    | EntitlementsFeature of EntitlementsFeature
-
 /// An active entitlement describes access to a feature for a customer.
 type EntitlementsActiveEntitlement =
     {
         /// The [Feature](https://docs.stripe.com/api/entitlements/feature) that the customer is entitled to.
-        Feature: EntitlementsActiveEntitlementFeature'AnyOf
+        Feature: string
         /// Unique identifier for the object.
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.

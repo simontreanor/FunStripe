@@ -2,7 +2,7 @@ namespace StripeRequest.Reviews
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.PaymentMethod
+open Stripe.Review
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

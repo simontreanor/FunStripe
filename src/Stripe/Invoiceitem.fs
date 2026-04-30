@@ -3,27 +3,11 @@ namespace Stripe.Invoiceitem
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.Discount
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
-type InvoiceitemCustomer'AnyOf =
-    | String of string
-    | Customer of Customer
-    | DeletedCustomer of DeletedCustomer
-
-type InvoiceitemDiscounts'AnyOf =
-    | String of string
-    | Discount of Discount
-
-type InvoiceitemInvoice'AnyOf =
-    | String of string
-    | Invoice of Invoice
-
-type InvoiceitemTestClock'AnyOf =
-    | String of string
-    | TestHelpersTestClock of TestHelpersTestClock
-
 type ProrationDetails =
     {
         /// Discount amounts applied when the proration was created.
@@ -43,7 +27,7 @@ type Invoiceitem =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// The ID of the customer to bill for this invoice item.
-        Customer: InvoiceitemCustomer'AnyOf
+        Customer: string
         /// The ID of the account to bill for this invoice item.
         CustomerAccount: string option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -53,11 +37,11 @@ type Invoiceitem =
         /// If true, discounts will apply to this invoice item. Always false for prorations.
         Discountable: bool
         /// The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-        Discounts: InvoiceitemDiscounts'AnyOf list option
+        Discounts: string list option
         /// Unique identifier for the object.
         Id: string
         /// The ID of the invoice this invoice item belongs to.
-        Invoice: InvoiceitemInvoice'AnyOf option
+        Invoice: string option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -79,7 +63,7 @@ type Invoiceitem =
         /// The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item.
         TaxRates: TaxRate list option
         /// ID of the test clock this invoice item belongs to.
-        TestClock: InvoiceitemTestClock'AnyOf option
+        TestClock: string option
     }
 
 module Invoiceitem =
@@ -91,4 +75,16 @@ type InvoiceitemDeleted = { Object: Invoiceitem }
 
 /// Occurs whenever an invoice item is created.
 type InvoiceitemCreated = { Object: Invoiceitem }
+
+type DeletedInvoiceitem =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+module DeletedInvoiceitem =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "invoiceitem"
 

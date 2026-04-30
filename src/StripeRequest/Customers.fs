@@ -2,7 +2,11 @@ namespace StripeRequest.Customers
 
 open FunStripe
 open System.Text.Json.Serialization
+open Stripe.CustomerBalanceTransaction
+open Stripe.Discount
+open Stripe.FundingInstructions
 open Stripe.PaymentMethod
+open Stripe.TaxId
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

@@ -2,8 +2,7 @@ namespace StripeRequest.Plans
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.PaymentMethod
-open Stripe.Price
+open Stripe.Plan
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

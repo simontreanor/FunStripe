@@ -3,7 +3,10 @@ namespace StripeRequest.Issuing
 open FunStripe
 open System.Text.Json.Serialization
 open Stripe.Issuing
+open Stripe.IssuingCard
+open Stripe.IssuingCardholder
 open Stripe.IssuingPersonalizationDesign
+open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 

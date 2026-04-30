@@ -2,7 +2,6 @@ namespace StripeRequest.Webhook
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Deleted
 open Stripe.WebhookEndpoint
 open System
 

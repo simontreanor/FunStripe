@@ -3,7 +3,6 @@ namespace Stripe.ShippingRate
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.TaxCode
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type ShippingRateCurrencyOptionTaxBehavior =
@@ -59,10 +58,6 @@ type ShippingRateTaxBehavior =
     | Inclusive
     | Unspecified
 
-type ShippingRateTaxCode'AnyOf =
-    | String of string
-    | TaxCode of TaxCode
-
 /// Shipping rates describe the price of shipping presented to your customers and
 /// applied to a purchase. For more information, see [Charge for shipping](https://docs.stripe.com/payments/during-payment/charge-shipping).
 type ShippingRate =
@@ -85,7 +80,7 @@ type ShippingRate =
         /// Specifies whether the rate is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`.
         TaxBehavior: ShippingRateTaxBehavior option
         /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID. The Shipping tax code is `txcd_92010001`.
-        TaxCode: ShippingRateTaxCode'AnyOf option
+        TaxCode: string option
     }
 
 module ShippingRate =

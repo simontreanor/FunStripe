@@ -2,7 +2,8 @@ namespace StripeRequest.Credit
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.PaymentMethod
+open Stripe.CreditNote
+open Stripe.CreditNoteLineItem
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]

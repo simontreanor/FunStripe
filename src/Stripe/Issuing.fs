@@ -5,65 +5,6 @@ open FunStripe
 open System
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
-type IssuingPhysicalBundleFeaturesCardLogo =
-    | Optional
-    | Required
-    | Unsupported
-
-[<Struct>]
-type IssuingPhysicalBundleFeaturesCarrierText =
-    | Optional
-    | Required
-    | Unsupported
-
-[<Struct>]
-type IssuingPhysicalBundleFeaturesSecondLine =
-    | Optional
-    | Required
-    | Unsupported
-
-type IssuingPhysicalBundleFeatures =
-    {
-        /// The policy for how to use card logo images in a card design with this physical bundle.
-        CardLogo: IssuingPhysicalBundleFeaturesCardLogo
-        /// The policy for how to use carrier letter text in a card design with this physical bundle.
-        CarrierText: IssuingPhysicalBundleFeaturesCarrierText
-        /// The policy for how to use a second line on a card with this physical bundle.
-        SecondLine: IssuingPhysicalBundleFeaturesSecondLine
-    }
-
-[<Struct>]
-type IssuingPhysicalBundleStatus =
-    | Active
-    | Inactive
-    | Review
-
-[<Struct>]
-type IssuingPhysicalBundleType =
-    | Custom
-    | Standard
-
-/// A Physical Bundle represents the bundle of physical items - card stock, carrier letter, and envelope - that is shipped to a cardholder when you create a physical card.
-type IssuingPhysicalBundle =
-    {
-        Features: IssuingPhysicalBundleFeatures
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Friendly display name.
-        Name: string
-        /// Whether this physical bundle can be used to create cards.
-        Status: IssuingPhysicalBundleStatus
-        /// Whether this physical bundle is a standard Stripe offering or custom-made for you.
-        Type: IssuingPhysicalBundleType
-    }
-
-module IssuingPhysicalBundle =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "issuing.physical_bundle"
-
-[<Struct>]
 type IssuingNetworkTokenDeviceType =
     | Other
     | Phone
@@ -198,4 +139,63 @@ type IssuingNetworkTokenNetworkData =
         Visa: IssuingNetworkTokenVisa option
         WalletProvider: IssuingNetworkTokenWalletProvider option
     }
+
+[<Struct>]
+type IssuingPhysicalBundleFeaturesCardLogo =
+    | Optional
+    | Required
+    | Unsupported
+
+[<Struct>]
+type IssuingPhysicalBundleFeaturesCarrierText =
+    | Optional
+    | Required
+    | Unsupported
+
+[<Struct>]
+type IssuingPhysicalBundleFeaturesSecondLine =
+    | Optional
+    | Required
+    | Unsupported
+
+type IssuingPhysicalBundleFeatures =
+    {
+        /// The policy for how to use card logo images in a card design with this physical bundle.
+        CardLogo: IssuingPhysicalBundleFeaturesCardLogo
+        /// The policy for how to use carrier letter text in a card design with this physical bundle.
+        CarrierText: IssuingPhysicalBundleFeaturesCarrierText
+        /// The policy for how to use a second line on a card with this physical bundle.
+        SecondLine: IssuingPhysicalBundleFeaturesSecondLine
+    }
+
+[<Struct>]
+type IssuingPhysicalBundleStatus =
+    | Active
+    | Inactive
+    | Review
+
+[<Struct>]
+type IssuingPhysicalBundleType =
+    | Custom
+    | Standard
+
+/// A Physical Bundle represents the bundle of physical items - card stock, carrier letter, and envelope - that is shipped to a cardholder when you create a physical card.
+type IssuingPhysicalBundle =
+    {
+        Features: IssuingPhysicalBundleFeatures
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Friendly display name.
+        Name: string
+        /// Whether this physical bundle can be used to create cards.
+        Status: IssuingPhysicalBundleStatus
+        /// Whether this physical bundle is a standard Stripe offering or custom-made for you.
+        Type: IssuingPhysicalBundleType
+    }
+
+module IssuingPhysicalBundle =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "issuing.physical_bundle"
 

@@ -3,7 +3,6 @@ namespace Stripe.Reserve
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.PaymentMethod
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type ReserveReleaseCreatedBy =
@@ -18,14 +17,54 @@ type ReserveReleaseReason =
     | PlanDisabled
 
 [<Struct>]
-type ReserveHoldCreatedBy =
-    | Application
-    | Stripe
+type ReservesReserveReleasesResourcesSourceTransactionType =
+    | Dispute
+    | Refund
 
-[<Struct>]
-type ReserveHoldReason =
-    | Charge
-    | Standalone
+type ReservesReserveReleasesResourcesSourceTransaction =
+    {
+        /// The ID of the dispute.
+        Dispute: string option
+        /// The ID of the refund.
+        Refund: string option
+        /// The type of source transaction.
+        Type: ReservesReserveReleasesResourcesSourceTransactionType
+    }
+
+/// ReserveReleases represent the release of funds from a ReserveHold.
+type ReserveRelease =
+    {
+        /// Amount released. A positive integer representing how much is released in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
+        Amount: int
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Indicates which party created this ReserveRelease.
+        CreatedBy: ReserveReleaseCreatedBy
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The reason for the ReserveRelease, indicating why the funds were released.
+        Reason: ReserveReleaseReason
+        /// The release timestamp of the funds.
+        ReleasedAt: DateTime
+        /// The ReserveHold this ReserveRelease is associated with.
+        ReserveHold: string option
+        /// The ReservePlan ID this ReserveRelease is associated with. This field is only populated if a ReserveRelease is created by a ReservePlan disable operation, or from a scheduled ReservedHold expiry.
+        ReservePlan: string option
+        SourceTransaction: ReservesReserveReleasesResourcesSourceTransaction option
+    }
+
+module ReserveRelease =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "reserve.release"
+
+/// Occurs when a reserve release is created.
+type ReserveReleaseCreated = { Object: ReserveRelease }
 
 [<Struct>]
 type ReservePlanCreatedBy =
@@ -90,13 +129,27 @@ module ReservePlan =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reserve.plan"
 
-type ReserveHoldReservePlan'AnyOf =
-    | String of string
-    | ReservePlan of ReservePlan
+/// Occurs when a reserve plan is updated.
+type ReservePlanUpdated = { Object: ReservePlan }
 
-type ReserveHoldSourceCharge'AnyOf =
-    | String of string
-    | Charge of Charge
+/// Occurs when a reserve plan expires.
+type ReservePlanExpired = { Object: ReservePlan }
+
+/// Occurs when a reserve plan is disabled.
+type ReservePlanDisabled = { Object: ReservePlan }
+
+/// Occurs when a reserve plan is created.
+type ReservePlanCreated = { Object: ReservePlan }
+
+[<Struct>]
+type ReserveHoldCreatedBy =
+    | Application
+    | Stripe
+
+[<Struct>]
+type ReserveHoldReason =
+    | Charge
+    | Standalone
 
 [<Struct>]
 type ReserveHoldSourceType =
@@ -137,9 +190,9 @@ type ReserveHold =
         Reason: ReserveHoldReason
         ReleaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule
         /// The ReservePlan which produced this ReserveHold (i.e., resplan_123)
-        ReservePlan: ReserveHoldReservePlan'AnyOf option
+        ReservePlan: string option
         /// The Charge which funded this ReserveHold (e.g., ch_123)
-        SourceCharge: ReserveHoldSourceCharge'AnyOf option
+        SourceCharge: string option
         /// Which source balance type this ReserveHold reserves funds from. One of `bank_account`, `card`, or `fpx`.
         SourceType: ReserveHoldSourceType
     }
@@ -147,84 +200,6 @@ type ReserveHold =
 module ReserveHold =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reserve.hold"
-
-type ReserveReleaseReserveHold'AnyOf =
-    | String of string
-    | ReserveHold of ReserveHold
-
-type ReserveReleaseReservePlan'AnyOf =
-    | String of string
-    | ReservePlan of ReservePlan
-
-type ReservesReserveReleasesResourcesSourceTransactionDispute'AnyOf =
-    | String of string
-    | Dispute of Dispute
-
-type ReservesReserveReleasesResourcesSourceTransactionRefund'AnyOf =
-    | String of string
-    | Refund of Refund
-
-[<Struct>]
-type ReservesReserveReleasesResourcesSourceTransactionType =
-    | Dispute
-    | Refund
-
-type ReservesReserveReleasesResourcesSourceTransaction =
-    {
-        /// The ID of the dispute.
-        Dispute: ReservesReserveReleasesResourcesSourceTransactionDispute'AnyOf option
-        /// The ID of the refund.
-        Refund: ReservesReserveReleasesResourcesSourceTransactionRefund'AnyOf option
-        /// The type of source transaction.
-        Type: ReservesReserveReleasesResourcesSourceTransactionType
-    }
-
-/// ReserveReleases represent the release of funds from a ReserveHold.
-type ReserveRelease =
-    {
-        /// Amount released. A positive integer representing how much is released in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
-        Amount: int
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Indicates which party created this ReserveRelease.
-        CreatedBy: ReserveReleaseCreatedBy
-        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-        Currency: IsoTypes.IsoCurrencyCode
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-        /// The reason for the ReserveRelease, indicating why the funds were released.
-        Reason: ReserveReleaseReason
-        /// The release timestamp of the funds.
-        ReleasedAt: DateTime
-        /// The ReserveHold this ReserveRelease is associated with.
-        ReserveHold: ReserveReleaseReserveHold'AnyOf option
-        /// The ReservePlan ID this ReserveRelease is associated with. This field is only populated if a ReserveRelease is created by a ReservePlan disable operation, or from a scheduled ReservedHold expiry.
-        ReservePlan: ReserveReleaseReservePlan'AnyOf option
-        SourceTransaction: ReservesReserveReleasesResourcesSourceTransaction option
-    }
-
-module ReserveRelease =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "reserve.release"
-
-/// Occurs when a reserve release is created.
-type ReserveReleaseCreated = { Object: ReserveRelease }
-
-/// Occurs when a reserve plan is updated.
-type ReservePlanUpdated = { Object: ReservePlan }
-
-/// Occurs when a reserve plan expires.
-type ReservePlanExpired = { Object: ReservePlan }
-
-/// Occurs when a reserve plan is disabled.
-type ReservePlanDisabled = { Object: ReservePlan }
-
-/// Occurs when a reserve plan is created.
-type ReservePlanCreated = { Object: ReservePlan }
 
 /// Occurs when a reserve hold is updated.
 type ReserveHoldUpdated = { Object: ReserveHold }

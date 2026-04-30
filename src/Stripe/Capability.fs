@@ -5,12 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
-type CapabilityAccount'AnyOf =
-    | String of string
-    | Account of Account
-
-[<Struct>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type CapabilityStatus =
     | Active
     | Inactive
@@ -22,7 +17,7 @@ type CapabilityStatus =
 type Capability =
     {
         /// The account for which the capability enables functionality.
-        Account: CapabilityAccount'AnyOf
+        Account: string
         FutureRequirements: AccountCapabilityFutureRequirements option
         /// The identifier for the capability.
         Id: string

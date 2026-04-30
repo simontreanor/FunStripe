@@ -3,7 +3,7 @@ namespace Stripe.Tax
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.PaymentMethod
+open Stripe.FundingInstructions
 open Stripe.TaxRate
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
@@ -962,4 +962,25 @@ type TaxAssociation =
 module TaxAssociation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.association"
+
+[<Struct>]
+type TaxIDsOwnerType =
+    | Account
+    | Application
+    | Customer
+    | Self
+
+type TaxIDsOwner =
+    {
+        /// The account being referenced when `type` is `account`.
+        Account: string option
+        /// The Connect Application being referenced when `type` is `application`.
+        Application: string option
+        /// The customer being referenced when `type` is `customer`.
+        Customer: string option
+        /// The Account representing the customer being referenced when `type` is `customer`.
+        CustomerAccount: string option
+        /// Type of owner referenced.
+        Type: TaxIDsOwnerType
+    }
 

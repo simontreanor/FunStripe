@@ -19,23 +19,88 @@ module ModelBuilderModular =
 
     // --- module assignment (canonical-domain prefix-match + schema-level SCC + majority-vote) ---
 
+    /// Manual alias map: maps non-canonical "orphan" prefixes to the canonical Stripe domain
+    /// they semantically belong to. Used after canonical-prefix matching to consolidate
+    /// schemas whose names use Stripe-internal sub-prefixes that don't appear in the
+    /// canonical domain list (top-level resources + dot-prefix domains).
+    /// Keys are sorted longest-first by the lookup function below.
+    let private canonicalAliases : Map<string, string> =
+        Map.ofList [
+            // Plural <-> singular (orphan plurals -> canonical singular)
+            "invoices",      "invoice"
+            "subscriptions", "subscription"
+            "quotes",        "quote"
+            "payments",      "payment_method"     // payments_primitives_*, payment_records_*
+            "payment",       "payment_method"     // payment_flows_*, payment_method_config_*
+            // Treasury sub-resources
+            "inbound",       "treasury"
+            "outbound",      "treasury"
+            // Other known sub-prefixes
+            "thresholds",    "subscription"
+            "level3",        "charge"
+            "klarna",        "payment_method"
+            "bank",          "financial_connections"
+            "portal",        "billing_portal"
+            "confirmation",  "confirmation_token"
+            "insights",      "radar"
+            "rule",          "radar"
+            "forwarded",     "forwarding"
+            "gelato",        "identity"
+            "legal",         "account"
+            "connect",       "account"
+            "credit",        "billing"
+            "currency",      "price"
+            "scheduled",     "sigma"
+            "promotion",     "promotion_code"
+            // Polymorphic external-account / line-item discriminators
+            "external",      "account"
+            "linked",        "account"
+            "line_item",     "invoice"
+            // Payment-method brand sub-prefixes
+            "amazon",        "payment_method"
+            "revolut",       "payment_method"
+            // Misc
+            "error",         "misc"
+        ]
+
     /// Normalize a schema name by replacing '.' with '_' and lowercasing.
     let private normalizeSchemaKey (schemaName: string) =
         schemaName.ToLowerInvariant().Replace('.', '_')
 
+    /// Strip a leading "deleted_" so deleted_X variants share the same module as X.
+    let private stripDeleted (s: string) =
+        if s.StartsWith "deleted_" then s.Substring("deleted_".Length) else s
+
+    /// Try to map a non-canonical token to a canonical domain via:
+    ///  1. Direct alias lookup (e.g. "subscriptions" -> "subscription")
+    ///  2. Auto-pluralisation (if "fooS" was the token and "foo" is canonical)
+    let private resolveAlias (canonicalSet: Set<string>) (token: string) : string option =
+        match Map.tryFind token canonicalAliases with
+        | Some t when canonicalSet.Contains t -> Some t
+        | _ ->
+            // Auto-strip a trailing 's' and see whether the singular is canonical
+            if token.EndsWith "s" && token.Length > 1 then
+                let singular = token.Substring(0, token.Length - 1)
+                if canonicalSet.Contains singular then Some singular else None
+            else None
+
     /// Normalize a schema name to its semantic module name by longest-prefix match
     /// against a list of canonical Stripe domains (sorted longest-first).
-    /// Falls back to the first underscore-separated token if no canonical match is found.
-    /// E.g. with canonical ["financial_connections"; "customer"], "financial_connections.account" -> "financial_connections",
-    /// "customer_balance_transaction" -> "customer_balance_transaction" (if it is itself canonical) or "customer".
+    /// If no canonical match is found, falls back to the first underscore-separated token,
+    /// then attempts an alias lookup, and finally returns the orphan token as-is.
     let normalizedModuleForName (canonicalDomains: string list) (schemaName: string) =
-        let normalized = normalizeSchemaKey schemaName
-        canonicalDomains
-        |> List.tryFind (fun d -> normalized = d || normalized.StartsWith(d + "_"))
-        |> Option.defaultWith (fun () ->
-            normalized.Split([|'_'|], StringSplitOptions.RemoveEmptyEntries)
-            |> Array.tryHead
-            |> Option.defaultValue "misc")
+        let canonicalSet = canonicalDomains |> Set.ofList
+        let normalized = schemaName |> normalizeSchemaKey |> stripDeleted
+        match canonicalDomains |> List.tryFind (fun d -> normalized = d || normalized.StartsWith(d + "_")) with
+        | Some d -> d
+        | None ->
+            let firstToken =
+                normalized.Split([|'_'|], StringSplitOptions.RemoveEmptyEntries)
+                |> Array.tryHead
+                |> Option.defaultValue "misc"
+            // Try alias resolution; otherwise leave as orphan
+            resolveAlias canonicalSet firstToken
+            |> Option.defaultValue firstToken
 
     /// For a type SCC, compute the module name by majority-vote of canonical-domain matches.
     let normalizedModuleForGroup (canonicalDomains: string list) (members: string list) =
@@ -47,20 +112,54 @@ module ModelBuilderModular =
         |> fst
 
     /// Recursively collect all schema $ref references from a JSON value.
+    /// Skips refs inside an `anyOf` block that also contains a `string` type member —
+    /// those are Stripe "expandable" fields, which the model generator emits as `string`,
+    /// so they MUST NOT contribute to the inter-module dependency graph either.
     let rec collectSchemaRefs (element: JsonValue) : Set<string> =
         match element with
         | JsonValue.Record properties ->
-            let refSet =
+            // Detect expandable anyOf: anyOf[] contains both a string-typed member and at least one $ref member.
+            let isExpandableAnyOf =
                 properties
-                |> Array.tryFind (fun (k, _) -> k = "$ref")
+                |> Array.tryFind (fun (k, _) -> k = "anyOf")
                 |> Option.bind (fun (_, v) ->
                     match v with
-                    | JsonValue.String s when s.StartsWith("#/components/schemas/") ->
-                        Some (s.Substring("#/components/schemas/".Length))
+                    | JsonValue.Array items ->
+                        let hasString =
+                            items |> Array.exists (fun it ->
+                                match it with
+                                | JsonValue.Record p ->
+                                    p |> Array.exists (fun (k, v) ->
+                                        k = "type" &&
+                                        match v with JsonValue.String "string" -> true | _ -> false)
+                                | _ -> false)
+                        let hasRef =
+                            items |> Array.exists (fun it ->
+                                match it with
+                                | JsonValue.Record p -> p |> Array.exists (fun (k, _) -> k = "$ref")
+                                | _ -> false)
+                        if hasString && hasRef then Some () else None
                     | _ -> None)
-                |> Option.toList |> Set.ofList
-            let childSets = properties |> Array.map (fun (_, v) -> collectSchemaRefs v)
-            childSets |> Array.fold Set.union refSet
+                |> Option.isSome
+
+            if isExpandableAnyOf then
+                // The whole anyOf collapses to `string` in the F# output, so its $refs
+                // are irrelevant for module-dependency analysis.
+                // We still need to walk non-anyOf siblings (e.g. `description`, etc.),
+                // but those can't contain $refs at this level — anyOf is the entire schema fragment.
+                Set.empty
+            else
+                let refSet =
+                    properties
+                    |> Array.tryFind (fun (k, _) -> k = "$ref")
+                    |> Option.bind (fun (_, v) ->
+                        match v with
+                        | JsonValue.String s when s.StartsWith("#/components/schemas/") ->
+                            Some (s.Substring("#/components/schemas/".Length))
+                        | _ -> None)
+                    |> Option.toList |> Set.ofList
+                let childSets = properties |> Array.map (fun (_, v) -> collectSchemaRefs v)
+                childSets |> Array.fold Set.union refSet
         | JsonValue.Array elements ->
             elements |> Array.map collectSchemaRefs |> Array.fold Set.union Set.empty
         | _ -> Set.empty

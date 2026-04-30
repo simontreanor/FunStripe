@@ -2,8 +2,7 @@ namespace StripeRequest.Products
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Deleted
-open Stripe.Price
+open Stripe.Product
 open Stripe.ProductFeature
 open System
 

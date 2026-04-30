@@ -3,7 +3,7 @@ namespace Stripe.ConfirmationToken
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Confirmation
+open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
@@ -11,9 +11,39 @@ type ConfirmationTokenSetupFutureUsage =
     | OffSession
     | OnSession
 
+/// This hash contains details about the online acceptance.
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline =
+    {
+        /// The IP address from which the Mandate was accepted by the customer.
+        IpAddress: string option
+        /// The user agent of the browser from which the Mandate was accepted by the customer.
+        UserAgent: string option
+    }
+
+/// This hash contains details about the customer acceptance of the Mandate.
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance =
+    {
+        /// If this is a Mandate accepted online, this hash contains details about the online acceptance.
+        Online: ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline option
+        /// The type of customer acceptance information included with the Mandate.
+        Type: string
+    }
+
 /// Data used for generating a Mandate.
 type ConfirmationTokensResourceMandateData =
     { CustomerAcceptance: ConfirmationTokensResourceMandateDataResourceCustomerAcceptance }
+
+/// Installment configuration for payments.
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment =
+    { Plan: PaymentMethodDetailsCardInstallmentsPlan option }
+
+/// This hash contains the card payment method options.
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
+    {
+        /// The `cvc_update` Token collected from the Payment Element.
+        CvcToken: string option
+        Installments: ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment option
+    }
 
 /// Payment-method-specific configuration
 type ConfirmationTokensResourcePaymentMethodOptions =
@@ -27,10 +57,6 @@ type ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay =
     | Always
     | Limited
     | Unspecified
-
-type ConfirmationTokensResourcePaymentMethodPreviewCustomer'AnyOf =
-    | String of string
-    | Customer of Customer
 
 type ConfirmationTokensResourcePaymentMethodPreviewType =
     | AcssDebit
@@ -112,7 +138,7 @@ type ConfirmationTokensResourcePaymentMethodPreview =
         Cashapp: PaymentMethodCashapp option
         Crypto: PaymentMethodCrypto option
         /// The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.
-        Customer: ConfirmationTokensResourcePaymentMethodPreviewCustomer'AnyOf option
+        Customer: string option
         CustomerAccount: string option
         CustomerBalance: PaymentMethodCustomerBalance option
         Eps: PaymentMethodEps option

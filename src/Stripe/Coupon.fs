@@ -5,6 +5,18 @@ open FunStripe
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+type DeletedCoupon =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+module DeletedCoupon =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "coupon"
+
 type CouponCurrencyOption =
     {
         /// Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.

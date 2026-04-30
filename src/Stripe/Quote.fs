@@ -3,38 +3,12 @@ namespace Stripe.Quote
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Application
 open Stripe.PaymentMethod
-open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
-type QuoteApplication'AnyOf =
-    | String of string
-    | Application of Application
-    | DeletedApplication of DeletedApplication
-
-[<Struct>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type QuoteCollectionMethod =
     | ChargeAutomatically
     | SendInvoice
-
-type QuoteCustomer'AnyOf =
-    | String of string
-    | Customer of Customer
-    | DeletedCustomer of DeletedCustomer
-
-type QuoteDefaultTaxRates'AnyOf =
-    | String of string
-    | TaxRate of TaxRate
-
-type QuoteDiscounts'AnyOf =
-    | String of string
-    | Discount of Discount
-
-type QuoteInvoice'AnyOf =
-    | String of string
-    | Invoice of Invoice
-    | DeletedInvoice of DeletedInvoice
 
 /// A list of items the customer is being quoted for.
 type QuoteLineItems =
@@ -47,9 +21,9 @@ type QuoteLineItems =
         Url: string
     }
 
-type QuoteOnBehalfOf'AnyOf =
-    | String of string
-    | Account of Account
+module QuoteLineItems =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
 
 [<Struct>]
 type QuoteStatus =
@@ -57,18 +31,6 @@ type QuoteStatus =
     | Canceled
     | Draft
     | Open
-
-type QuoteSubscription'AnyOf =
-    | String of string
-    | Subscription of Subscription
-
-type QuoteSubscriptionSchedule'AnyOf =
-    | String of string
-    | SubscriptionSchedule of SubscriptionSchedule
-
-type QuoteTestClock'AnyOf =
-    | String of string
-    | TestHelpersTestClock of TestHelpersTestClock
 
 [<Struct>]
 type QuotesResourceAutomaticTaxStatus =
@@ -138,6 +100,10 @@ type QuotesResourceUpfrontLineItems =
         Url: string
     }
 
+module QuotesResourceUpfrontLineItems =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
 type QuotesResourceUpfront =
     {
         /// Total before any discounts or taxes are applied.
@@ -154,6 +120,14 @@ type QuotesResourceComputed =
         /// The definitive totals and line items the customer will be charged on a recurring basis. Takes into account the line items with recurring prices and discounts with `duration=forever` coupons only. Defaults to `null` if no inputted line items with recurring prices.
         Recurring: QuotesResourceRecurring option
         Upfront: QuotesResourceUpfront
+    }
+
+type QuotesResourceFromQuote =
+    {
+        /// Whether this quote is a revision of a different quote.
+        IsRevision: bool
+        /// The quote that was cloned.
+        Quote: string
     }
 
 type QuotesResourceStatusTransitions =
@@ -192,10 +166,6 @@ type QuotesResourceSubscriptionDataSubscriptionData =
         TrialPeriodDays: int option
     }
 
-type QuotesResourceTransferDataDestination'AnyOf =
-    | String of string
-    | Account of Account
-
 type QuotesResourceTransferData =
     {
         /// The amount in cents (or local equivalent) that will be transferred to the destination account when the invoice is paid. By default, the entire amount is transferred to the destination.
@@ -203,7 +173,7 @@ type QuotesResourceTransferData =
         /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount will be transferred to the destination.
         AmountPercent: decimal option
         /// The account where funds from the payment will be transferred to upon payment success.
-        Destination: QuotesResourceTransferDataDestination'AnyOf
+        Destination: string
     }
 
 /// A Quote is a way to model prices that you'd like to provide to a customer.
@@ -215,7 +185,7 @@ type Quote =
         /// Total after discounts and taxes are applied.
         AmountTotal: int
         /// ID of the Connect Application that created the quote.
-        Application: QuoteApplication'AnyOf option
+        Application: string option
         /// The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. Only applicable if there are no line items with recurring prices on the quote.
         ApplicationFeeAmount: int option
         /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account. Only applicable if there are line items with recurring prices on the quote.
@@ -229,15 +199,15 @@ type Quote =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode option
         /// The customer who received this quote. A customer is required to finalize the quote. Once specified, you can't change it.
-        Customer: QuoteCustomer'AnyOf option
+        Customer: string option
         /// The account representing the customer who received this quote. A customer or account is required to finalize the quote. Once specified, you can't change it.
         CustomerAccount: string option
         /// The tax rates applied to this quote.
-        DefaultTaxRates: QuoteDefaultTaxRates'AnyOf list option
+        DefaultTaxRates: string list option
         /// A description that will be displayed on the quote PDF.
         Description: string option
         /// The discounts applied to this quote.
-        Discounts: QuoteDiscounts'AnyOf list
+        Discounts: string list
         /// The date on which the quote will be canceled if in `open` or `draft` status. Measured in seconds since the Unix epoch.
         ExpiresAt: DateTime
         /// A footer that will be displayed on the quote PDF.
@@ -249,7 +219,7 @@ type Quote =
         /// Unique identifier for the object.
         Id: string
         /// The invoice that was created from this quote.
-        Invoice: QuoteInvoice'AnyOf option
+        Invoice: string option
         InvoiceSettings: InvoiceSettingQuoteSetting
         /// A list of items the customer is being quoted for.
         LineItems: QuoteLineItems option
@@ -260,33 +230,25 @@ type Quote =
         /// A unique number that identifies this particular quote. This number is assigned once the quote is [finalized](https://docs.stripe.com/quotes/overview#finalize).
         Number: string option
         /// The account on behalf of which to charge. See the [Connect documentation](https://support.stripe.com/questions/sending-invoices-on-behalf-of-connected-accounts) for details.
-        OnBehalfOf: QuoteOnBehalfOf'AnyOf option
+        OnBehalfOf: string option
         /// The status of the quote.
         Status: QuoteStatus
         StatusTransitions: QuotesResourceStatusTransitions
         /// The subscription that was created or updated from this quote.
-        Subscription: QuoteSubscription'AnyOf option
+        Subscription: string option
         SubscriptionData: QuotesResourceSubscriptionDataSubscriptionData
         /// The subscription schedule that was created or updated from this quote.
-        SubscriptionSchedule: QuoteSubscriptionSchedule'AnyOf option
+        SubscriptionSchedule: string option
         /// ID of the test clock this quote belongs to.
-        TestClock: QuoteTestClock'AnyOf option
+        TestClock: string option
         TotalDetails: QuotesResourceTotalDetails
         /// The account (if any) the payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the invoices.
         TransferData: QuotesResourceTransferData option
     }
 
-and QuotesResourceFromQuote =
-    {
-        /// Whether this quote is a revision of a different quote.
-        IsRevision: bool
-        /// The quote that was cloned.
-        Quote: QuotesResourceFromQuoteQuote'AnyOf
-    }
-
-and QuotesResourceFromQuoteQuote'AnyOf =
-    | String of string
-    | Quote of Quote
+module Quote =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "quote"
 
 /// Occurs whenever a quote is finalized.
 type QuoteFinalized = { Object: Quote }
@@ -299,16 +261,4 @@ type QuoteCanceled = { Object: Quote }
 
 /// Occurs whenever a quote is accepted.
 type QuoteAccepted = { Object: Quote }
-
-module QuoteLineItems =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module QuotesResourceUpfrontLineItems =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-module Quote =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "quote"
 

@@ -3,37 +3,14 @@ namespace Stripe.AccountSession
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Connect
-
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
-type ConnectEmbeddedAccountSessionCreateComponents =
-    { AccountManagement: ConnectEmbeddedAccountConfigClaim
-      AccountOnboarding: ConnectEmbeddedAccountConfigClaim
-      BalanceReport: ConnectEmbeddedBaseConfigClaim
-      Balances: ConnectEmbeddedPayoutsConfig
-      DisputesList: ConnectEmbeddedDisputesListConfig
-      Documents: ConnectEmbeddedBaseConfigClaim
-      FinancialAccount: ConnectEmbeddedFinancialAccountConfigClaim
-      FinancialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim
-      InstantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig
-      IssuingCard: ConnectEmbeddedIssuingCardConfigClaim
-      IssuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim
-      NotificationBanner: ConnectEmbeddedAccountConfigClaim
-      PaymentDetails: ConnectEmbeddedPaymentsConfigClaim
-      PaymentDisputes: ConnectEmbeddedPaymentDisputesConfig
-      Payments: ConnectEmbeddedPaymentsConfigClaim
-      PayoutDetails: ConnectEmbeddedBaseConfigClaim
-      PayoutReconciliationReport: ConnectEmbeddedBaseConfigClaim
-      Payouts: ConnectEmbeddedPayoutsConfig
-      PayoutsList: ConnectEmbeddedBaseConfigClaim
-      TaxRegistrations: ConnectEmbeddedBaseConfigClaim
-      TaxSettings: ConnectEmbeddedBaseConfigClaim }
+open Stripe.PaymentMethod
 
 /// An AccountSession allows a Connect platform to grant access to a connected account in Connect embedded components.
 /// We recommend that you create an AccountSession each time you need to display an embedded component
 /// to your user. Do not save AccountSessions to your database as they expire relatively
 /// quickly, and cannot be used more than once.
 /// Related guide: [Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components)
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type AccountSession =
     {
         /// The ID of the account the AccountSession was created for

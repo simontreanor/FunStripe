@@ -3,14 +3,8 @@ namespace Stripe.IssuingPersonalizationDesign
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.File
-open Stripe.Issuing
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
-type IssuingPersonalizationDesignCardLogo'AnyOf =
-    | String of string
-    | File of File
-
 type IssuingPersonalizationDesignCarrierText =
     {
         /// The footer body text of the carrier letter.
@@ -22,10 +16,6 @@ type IssuingPersonalizationDesignCarrierText =
         /// The header title text of the carrier letter.
         HeaderTitle: string option
     }
-
-type IssuingPersonalizationDesignPhysicalBundle'AnyOf =
-    | String of string
-    | IssuingPhysicalBundle of IssuingPhysicalBundle
 
 type IssuingPersonalizationDesignPreferences =
     {
@@ -73,7 +63,7 @@ type IssuingPersonalizationDesignStatus =
 type IssuingPersonalizationDesign =
     {
         /// The file for the card logo to use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`.
-        CardLogo: IssuingPersonalizationDesignCardLogo'AnyOf option
+        CardLogo: string option
         /// Hash containing carrier text, for use with physical bundles that support carrier text.
         CarrierText: IssuingPersonalizationDesignCarrierText option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -89,7 +79,7 @@ type IssuingPersonalizationDesign =
         /// Friendly display name.
         Name: string option
         /// The physical bundle object belonging to this personalization design.
-        PhysicalBundle: IssuingPersonalizationDesignPhysicalBundle'AnyOf
+        PhysicalBundle: string
         Preferences: IssuingPersonalizationDesignPreferences
         RejectionReasons: IssuingPersonalizationDesignRejectionReasons
         /// Whether this personalization design can be used to create cards.

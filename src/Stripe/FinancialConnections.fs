@@ -3,8 +3,6 @@ namespace Stripe.FinancialConnections
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Bank
-open Stripe.PaymentMethod
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type BankConnectionsResourceTransactionResourceStatusTransitions =
@@ -51,14 +49,6 @@ module FinancialConnectionsTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.transaction"
 
-type BankConnectionsResourceAccountholderAccount'AnyOf =
-    | String of string
-    | Account of Account
-
-type BankConnectionsResourceAccountholderCustomer'AnyOf =
-    | String of string
-    | Customer of Customer
-
 [<Struct>]
 type BankConnectionsResourceAccountholderType =
     | Account
@@ -67,9 +57,9 @@ type BankConnectionsResourceAccountholderType =
 type BankConnectionsResourceAccountholder =
     {
         /// The ID of the Stripe account that this account belongs to. Only available when `account_holder.type` is `account`.
-        Account: BankConnectionsResourceAccountholderAccount'AnyOf option
+        Account: string option
         /// The ID for an Account representing a customer that this account belongs to. Only available when `account_holder.type` is `customer`.
-        Customer: BankConnectionsResourceAccountholderCustomer'AnyOf option
+        Customer: string option
         CustomerAccount: string option
         /// Type of account holder that this account belongs to.
         Type: BankConnectionsResourceAccountholderType
@@ -111,6 +101,22 @@ type BankConnectionsResourceAccountNumberDetails =
         Status: BankConnectionsResourceAccountNumberDetailsStatus
         /// The payment networks that the account number can be used for.
         SupportedNetworks: string list
+    }
+
+type BankConnectionsResourceBalanceApiResourceCashBalance =
+    {
+        /// The funds available to the account holder. Typically this is the current balance after subtracting any outbound pending transactions and adding any inbound pending transactions.
+        /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+        /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
+        Available: Map<string, string list> option
+    }
+
+type BankConnectionsResourceBalanceApiResourceCreditBalance =
+    {
+        /// The credit that has been used by the account holder.
+        /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+        /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
+        Used: Map<string, string list> option
     }
 
 [<Struct>]
@@ -189,63 +195,6 @@ type FinancialConnectionsAccountCategory =
     | Investment
     | Other
 
-/// Describes an owner of an account.
-type FinancialConnectionsAccountOwner =
-    {
-        /// The email address of the owner.
-        Email: string option
-        /// Unique identifier for the object.
-        Id: string
-        /// The full name of the owner.
-        Name: string
-        /// The ownership object that this owner belongs to.
-        Ownership: string
-        /// The raw phone number of the owner.
-        Phone: string option
-        /// The raw physical address of the owner.
-        RawAddress: string option
-        /// The timestamp of the refresh that updated this owner.
-        RefreshedAt: DateTime option
-    }
-
-module FinancialConnectionsAccountOwner =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "financial_connections.account_owner"
-
-/// A paginated list of owners for this account.
-type FinancialConnectionsAccountOwnershipOwners =
-    {
-        /// Details about each object.
-        Data: FinancialConnectionsAccountOwner list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-module FinancialConnectionsAccountOwnershipOwners =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-/// Describes a snapshot of the owners of an account at a particular point in time.
-type FinancialConnectionsAccountOwnership =
-    {
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Unique identifier for the object.
-        Id: string
-        /// A paginated list of owners for this account.
-        Owners: FinancialConnectionsAccountOwnershipOwners
-    }
-
-module FinancialConnectionsAccountOwnership =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "financial_connections.account_ownership"
-
-type FinancialConnectionsAccountOwnership'AnyOf =
-    | String of string
-    | FinancialConnectionsAccountOwnership of FinancialConnectionsAccountOwnership
-
 [<Struct>]
 type FinancialConnectionsAccountPermissions =
     | Balances
@@ -299,7 +248,7 @@ type FinancialConnectionsAccount =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// The most recent information about the account's owners.
-        Ownership: FinancialConnectionsAccountOwnership'AnyOf option
+        Ownership: string option
         /// The state of the most recent attempt to refresh the account owners.
         OwnershipRefresh: BankConnectionsResourceOwnershipRefresh option
         /// The list of permissions granted by this account.
@@ -382,6 +331,59 @@ type FinancialConnectionsSession =
 module FinancialConnectionsSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.session"
+
+/// Describes an owner of an account.
+type FinancialConnectionsAccountOwner =
+    {
+        /// The email address of the owner.
+        Email: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// The full name of the owner.
+        Name: string
+        /// The ownership object that this owner belongs to.
+        Ownership: string
+        /// The raw phone number of the owner.
+        Phone: string option
+        /// The raw physical address of the owner.
+        RawAddress: string option
+        /// The timestamp of the refresh that updated this owner.
+        RefreshedAt: DateTime option
+    }
+
+module FinancialConnectionsAccountOwner =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.account_owner"
+
+/// A paginated list of owners for this account.
+type FinancialConnectionsAccountOwnershipOwners =
+    {
+        /// Details about each object.
+        Data: FinancialConnectionsAccountOwner list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+module FinancialConnectionsAccountOwnershipOwners =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+/// Describes a snapshot of the owners of an account at a particular point in time.
+type FinancialConnectionsAccountOwnership =
+    {
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Unique identifier for the object.
+        Id: string
+        /// A paginated list of owners for this account.
+        Owners: FinancialConnectionsAccountOwnershipOwners
+    }
+
+module FinancialConnectionsAccountOwnership =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.account_ownership"
 
 /// Occurs when an Account’s tokenized account number is about to expire.
 type FinancialConnectionsAccountUpcomingAccountNumberExpiry = { Object: FinancialConnectionsAccount }
