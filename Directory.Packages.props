@@ -19,6 +19,7 @@
     <!-- Fable JSON parsing -->
     <PackageVersion Include="Thoth.Json" Version="10.5.0" />
     <!-- Dev-tool only (FunStripe code generator) -->
+    <PackageVersion Include="Fabulous.AST" Version="2.0.0-pre06" />
     <!-- Test dependencies -->
     <PackageVersion Include="NUnit" Version="4.5.1" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.2.0" />

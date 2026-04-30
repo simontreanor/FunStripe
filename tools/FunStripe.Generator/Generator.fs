@@ -43,4 +43,14 @@ let main argv =
     File.WriteAllText(Path.Combine(outputDir', "StripeRequest.fs"), requestContent |> normalizeLineEndings)
     printfn "  Written StripeRequest.fs and per-group files"
 
+    printfn "Generating modular Stripe model files (Stripe/*.fs)..."
+    let stripeModelDir = Path.Combine(outputDir', "Stripe")
+    let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir specPath
+    printfn "  Written %d model module files" modelFiles.Length
+
+    printfn "Generating modular StripeRequest files (StripeRequest/*.fs)..."
+    let stripeRequestDir = Path.Combine(outputDir', "StripeRequest")
+    let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir specPath
+    printfn "  Written %d request module files" requestFiles.Length
+
     0

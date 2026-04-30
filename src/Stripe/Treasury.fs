@@ -1,0 +1,2899 @@
+namespace Stripe.Treasury
+
+open System.Text.Json.Serialization
+open FunStripe
+open System
+open Stripe.Address
+open Stripe.Payment
+open Stripe.Received
+
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.0")>]
+type TreasuryReceivedDebitFailureCode =
+    | AccountClosed
+    | AccountFrozen
+    | InsufficientFunds
+    | InternationalTransaction
+    | Other
+
+[<Struct>]
+type TreasuryReceivedDebitNetwork =
+    | Ach
+    | Card
+    | Stripe
+
+[<Struct>]
+type TreasuryReceivedDebitStatus =
+    | Failed
+    | Succeeded
+
+type TreasuryTransactionEntryFlowType =
+    | CreditReversal
+    | DebitReversal
+    | InboundTransfer
+    | IssuingAuthorization
+    | Other
+    | OutboundPayment
+    | OutboundTransfer
+    | ReceivedCredit
+    | ReceivedDebit
+
+type TreasuryTransactionEntryType =
+    | CreditReversal
+    | CreditReversalPosting
+    | DebitReversal
+    | InboundTransfer
+    | InboundTransferReturn
+    | IssuingAuthorizationHold
+    | IssuingAuthorizationRelease
+    | Other
+    | OutboundPayment
+    | OutboundPaymentCancellation
+    | OutboundPaymentFailure
+    | OutboundPaymentPosting
+    | OutboundPaymentReturn
+    | OutboundTransfer
+    | OutboundTransferCancellation
+    | OutboundTransferFailure
+    | OutboundTransferPosting
+    | OutboundTransferReturn
+    | ReceivedCredit
+    | ReceivedDebit
+
+/// Change to a FinancialAccount's balance
+type TreasuryTransactionsResourceBalanceImpact =
+    {
+        /// The change made to funds the user can spend right now.
+        Cash: int
+        /// The change made to funds that are not spendable yet, but will become available at a later time.
+        InboundPending: int
+        /// The change made to funds in the account, but not spendable because they are being held for pending outbound flows.
+        OutboundPending: int
+    }
+
+[<Struct>]
+type TreasuryCreditReversalNetwork =
+    | Ach
+    | Stripe
+
+[<Struct>]
+type TreasuryCreditReversalStatus =
+    | Canceled
+    | Posted
+    | Processing
+
+type TreasuryReceivedCreditsResourceStatusTransitions =
+    {
+        /// Timestamp describing when the CreditReversal changed status to `posted`
+        PostedAt: DateTime option
+    }
+
+[<Struct>]
+type TreasuryDebitReversalNetwork =
+    | Ach
+    | Card
+
+[<Struct>]
+type TreasuryDebitReversalStatus =
+    | Failed
+    | Processing
+    | Succeeded
+
+type TreasuryReceivedDebitsResourceDebitReversalLinkedFlows =
+    {
+        /// Set if there is an Issuing dispute associated with the DebitReversal.
+        IssuingDispute: string option
+    }
+
+type TreasuryReceivedDebitsResourceStatusTransitions =
+    {
+        /// Timestamp describing when the DebitReversal changed status to `completed`.
+        CompletedAt: DateTime option
+    }
+
+[<Struct>]
+type InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
+    | Company
+    | Individual
+
+[<Struct>]
+type InboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
+    | Checking
+    | Savings
+
+type InboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf =
+    | String of string
+    | Mandate of Mandate
+
+type InboundTransfersPaymentMethodDetailsUsBankAccount =
+    {
+        /// Account holder type: individual or company.
+        AccountHolderType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option
+        /// Account type: checkings or savings. Defaults to checking if omitted.
+        AccountType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountType option
+        /// Name of the bank associated with the bank account.
+        BankName: string option
+        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
+        Fingerprint: string option
+        /// Last four digits of the bank account number.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// ID of the mandate used to make this payment.
+        Mandate: InboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+        /// Routing number of the bank account.
+        RoutingNumber: string option
+    }
+
+type TreasurySharedResourceBillingDetails =
+    {
+        Address: Address
+        /// Email address.
+        Email: string option
+        /// Full name.
+        Name: string option
+    }
+
+type InboundTransfers =
+    { BillingDetails: TreasurySharedResourceBillingDetails
+      UsBankAccount: InboundTransfersPaymentMethodDetailsUsBankAccount option }
+
+[<Struct>]
+type TreasuryInboundTransferStatus =
+    | Canceled
+    | Failed
+    | Processing
+    | Succeeded
+
+type TreasuryInboundTransfersResourceFailureDetailsCode =
+    | AccountClosed
+    | AccountFrozen
+    | BankAccountRestricted
+    | BankOwnershipChanged
+    | DebitNotAuthorized
+    | IncorrectAccountHolderAddress
+    | IncorrectAccountHolderName
+    | IncorrectAccountHolderTaxId
+    | InsufficientFunds
+    | InvalidAccountNumber
+    | InvalidCurrency
+    | NoAccount
+    | Other
+
+type TreasuryInboundTransfersResourceFailureDetails =
+    {
+        /// Reason for the failure.
+        Code: TreasuryInboundTransfersResourceFailureDetailsCode
+    }
+
+type TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows =
+    {
+        /// If funds for this flow were returned after the flow went to the `succeeded` state, this field contains a reference to the ReceivedDebit return.
+        ReceivedDebit: string option
+    }
+
+type TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions =
+    {
+        /// Timestamp describing when an InboundTransfer changed status to `canceled`.
+        CanceledAt: DateTime option
+        /// Timestamp describing when an InboundTransfer changed status to `failed`.
+        FailedAt: DateTime option
+        /// Timestamp describing when an InboundTransfer changed status to `succeeded`.
+        SucceededAt: DateTime option
+    }
+
+type OutboundPaymentsPaymentMethodDetailsFinancialAccount =
+    {
+        /// Token of the FinancialAccount.
+        Id: string
+    }
+
+[<Struct>]
+type OutboundPaymentsPaymentMethodDetailsType =
+    | FinancialAccount
+    | UsBankAccount
+
+[<Struct>]
+type OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType =
+    | Company
+    | Individual
+
+[<Struct>]
+type OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType =
+    | Checking
+    | Savings
+
+type OutboundPaymentsPaymentMethodDetailsUsBankAccountMandate'AnyOf =
+    | String of string
+    | Mandate of Mandate
+
+[<Struct>]
+type OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork =
+    | Ach
+    | UsDomesticWire
+
+type OutboundPaymentsPaymentMethodDetailsUsBankAccount =
+    {
+        /// Account holder type: individual or company.
+        AccountHolderType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType option
+        /// Account type: checkings or savings. Defaults to checking if omitted.
+        AccountType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType option
+        /// Name of the bank associated with the bank account.
+        BankName: string option
+        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
+        Fingerprint: string option
+        /// Last four digits of the bank account number.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// ID of the mandate used to make this payment.
+        Mandate: OutboundPaymentsPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+        /// The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
+        Network: OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork
+        /// Routing number of the bank account.
+        RoutingNumber: string option
+    }
+
+type OutboundPaymentsPaymentMethodDetails =
+    {
+        BillingDetails: TreasurySharedResourceBillingDetails
+        FinancialAccount: OutboundPaymentsPaymentMethodDetailsFinancialAccount option
+        /// The type of the payment method used in the OutboundPayment.
+        Type: OutboundPaymentsPaymentMethodDetailsType
+        UsBankAccount: OutboundPaymentsPaymentMethodDetailsUsBankAccount option
+    }
+
+[<Struct>]
+type TreasuryOutboundPaymentStatus =
+    | Canceled
+    | Failed
+    | Posted
+    | Processing
+    | Returned
+
+type TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails =
+    {
+        /// IP address of the user initiating the OutboundPayment. Set if `present` is set to `true`. IP address collection is required for risk and compliance reasons. This will be used to help determine if the OutboundPayment is authorized or should be blocked.
+        IpAddress: string option
+        /// `true` if the OutboundPayment creation request is being made on behalf of an end user by a platform. Otherwise, `false`.
+        Present: bool
+    }
+
+type TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions =
+    {
+        /// Timestamp describing when an OutboundPayment changed status to `canceled`.
+        CanceledAt: DateTime option
+        /// Timestamp describing when an OutboundPayment changed status to `failed`.
+        FailedAt: DateTime option
+        /// Timestamp describing when an OutboundPayment changed status to `posted`.
+        PostedAt: DateTime option
+        /// Timestamp describing when an OutboundPayment changed status to `returned`.
+        ReturnedAt: DateTime option
+    }
+
+type TreasuryOutboundPaymentsResourceAchTrackingDetails =
+    {
+        /// ACH trace ID of the OutboundPayment for payments sent over the `ach` network.
+        TraceId: string
+    }
+
+[<Struct>]
+type TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType =
+    | Ach
+    | UsDomesticWire
+
+type TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails =
+    {
+        /// CHIPS System Sequence Number (SSN) of the OutboundPayment for payments sent over the `us_domestic_wire` network.
+        Chips: string option
+        /// IMAD of the OutboundPayment for payments sent over the `us_domestic_wire` network.
+        Imad: string option
+        /// OMAD of the OutboundPayment for payments sent over the `us_domestic_wire` network.
+        Omad: string option
+    }
+
+type TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails =
+    {
+        Ach: TreasuryOutboundPaymentsResourceAchTrackingDetails option
+        /// The US bank account network used to send funds.
+        Type: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType
+        UsDomesticWire: TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails option
+    }
+
+type TreasuryOutboundPaymentsResourceReturnedStatusCode =
+    | AccountClosed
+    | AccountFrozen
+    | BankAccountRestricted
+    | BankOwnershipChanged
+    | Declined
+    | IncorrectAccountHolderName
+    | InvalidAccountNumber
+    | InvalidCurrency
+    | NoAccount
+    | Other
+
+type OutboundTransfersPaymentMethodDetailsFinancialAccount =
+    {
+        /// Token of the FinancialAccount.
+        Id: string
+    }
+
+[<Struct>]
+type OutboundTransfersPaymentMethodDetailsType =
+    | FinancialAccount
+    | UsBankAccount
+
+[<Struct>]
+type OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
+    | Company
+    | Individual
+
+[<Struct>]
+type OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType =
+    | Checking
+    | Savings
+
+type OutboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf =
+    | String of string
+    | Mandate of Mandate
+
+[<Struct>]
+type OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork =
+    | Ach
+    | UsDomesticWire
+
+type OutboundTransfersPaymentMethodDetailsUsBankAccount =
+    {
+        /// Account holder type: individual or company.
+        AccountHolderType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option
+        /// Account type: checkings or savings. Defaults to checking if omitted.
+        AccountType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType option
+        /// Name of the bank associated with the bank account.
+        BankName: string option
+        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
+        Fingerprint: string option
+        /// Last four digits of the bank account number.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// ID of the mandate used to make this payment.
+        Mandate: OutboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+        /// The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
+        Network: OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork
+        /// Routing number of the bank account.
+        RoutingNumber: string option
+    }
+
+type OutboundTransfersPaymentMethodDetails =
+    {
+        BillingDetails: TreasurySharedResourceBillingDetails
+        FinancialAccount: OutboundTransfersPaymentMethodDetailsFinancialAccount option
+        /// The type of the payment method used in the OutboundTransfer.
+        Type: OutboundTransfersPaymentMethodDetailsType
+        UsBankAccount: OutboundTransfersPaymentMethodDetailsUsBankAccount option
+    }
+
+[<Struct>]
+type TreasuryOutboundTransferStatus =
+    | Canceled
+    | Failed
+    | Posted
+    | Processing
+    | Returned
+
+type TreasuryOutboundTransfersResourceAchTrackingDetails =
+    {
+        /// ACH trace ID of the OutboundTransfer for transfers sent over the `ach` network.
+        TraceId: string
+    }
+
+[<Struct>]
+type TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType =
+    | Ach
+    | UsDomesticWire
+
+type TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails =
+    {
+        /// CHIPS System Sequence Number (SSN) of the OutboundTransfer for transfers sent over the `us_domestic_wire` network.
+        Chips: string option
+        /// IMAD of the OutboundTransfer for transfers sent over the `us_domestic_wire` network.
+        Imad: string option
+        /// OMAD of the OutboundTransfer for transfers sent over the `us_domestic_wire` network.
+        Omad: string option
+    }
+
+type TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails =
+    {
+        Ach: TreasuryOutboundTransfersResourceAchTrackingDetails option
+        /// The US bank account network used to send funds.
+        Type: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType
+        UsDomesticWire: TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails option
+    }
+
+type TreasuryOutboundTransfersResourceReturnedDetailsCode =
+    | AccountClosed
+    | AccountFrozen
+    | BankAccountRestricted
+    | BankOwnershipChanged
+    | Declined
+    | IncorrectAccountHolderName
+    | InvalidAccountNumber
+    | InvalidCurrency
+    | NoAccount
+    | Other
+
+type TreasuryOutboundTransfersResourceStatusTransitions =
+    {
+        /// Timestamp describing when an OutboundTransfer changed status to `canceled`
+        CanceledAt: DateTime option
+        /// Timestamp describing when an OutboundTransfer changed status to `failed`
+        FailedAt: DateTime option
+        /// Timestamp describing when an OutboundTransfer changed status to `posted`
+        PostedAt: DateTime option
+        /// Timestamp describing when an OutboundTransfer changed status to `returned`
+        ReturnedAt: DateTime option
+    }
+
+[<Struct>]
+type TreasuryReceivedCreditFailureCode =
+    | AccountClosed
+    | AccountFrozen
+    | InternationalTransaction
+    | Other
+
+[<Struct>]
+type TreasuryReceivedCreditNetwork =
+    | Ach
+    | Card
+    | Stripe
+    | UsDomesticWire
+
+[<Struct>]
+type TreasuryReceivedCreditStatus =
+    | Failed
+    | Succeeded
+
+[<Struct>]
+type TreasuryReceivedCreditsResourceSourceFlowsDetailsType =
+    | CreditReversal
+    | Other
+    | OutboundPayment
+    | OutboundTransfer
+    | Payout
+
+[<Struct>]
+type TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason =
+    | AlreadyReversed
+    | DeadlinePassed
+    | NetworkRestricted
+    | Other
+    | SourceFlowRestricted
+
+type TreasuryReceivedCreditsResourceReversalDetails =
+    {
+        /// Time before which a ReceivedCredit can be reversed.
+        Deadline: DateTime option
+        /// Set if a ReceivedCredit cannot be reversed.
+        RestrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option
+    }
+
+[<Struct>]
+type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType =
+    | Balance
+    | FinancialAccount
+    | IssuingCard
+    | Stripe
+    | UsBankAccount
+
+type TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount =
+    {
+        /// Bank name.
+        BankName: string option
+        /// The last four digits of the bank account number.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// The routing number for the bank account.
+        RoutingNumber: string option
+    }
+
+type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =
+    {
+        BillingDetails: TreasurySharedResourceBillingDetails
+        FinancialAccount: ReceivedPaymentMethodDetailsFinancialAccount option
+        /// Set when `type` is `issuing_card`. This is an [Issuing Card](https://api.stripe.com#issuing_cards) ID.
+        IssuingCard: string option
+        /// Polymorphic type matching the originating money movement's source. This can be an external account, a Stripe balance, or a FinancialAccount.
+        Type: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType
+        UsBankAccount: TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount option
+    }
+
+type TreasuryTransactionsResourceFlowDetailsType =
+    | CreditReversal
+    | DebitReversal
+    | InboundTransfer
+    | IssuingAuthorization
+    | Other
+    | OutboundPayment
+    | OutboundTransfer
+    | ReceivedCredit
+    | ReceivedDebit
+
+type TreasuryTransactionFlowType =
+    | CreditReversal
+    | DebitReversal
+    | InboundTransfer
+    | IssuingAuthorization
+    | Other
+    | OutboundPayment
+    | OutboundTransfer
+    | ReceivedCredit
+    | ReceivedDebit
+
+[<Struct>]
+type TreasuryTransactionStatus =
+    | Open
+    | Posted
+    | Void
+
+type TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions =
+    {
+        /// Timestamp describing when the Transaction changed status to `posted`.
+        PostedAt: DateTime option
+        /// Timestamp describing when the Transaction changed status to `void`.
+        VoidAt: DateTime option
+    }
+
+type TreasuryReceivedDebitsResourceLinkedFlows =
+    {
+        /// The DebitReversal created as a result of this ReceivedDebit being reversed.
+        DebitReversal: string option
+        /// Set if the ReceivedDebit is associated with an InboundTransfer's return of funds.
+        InboundTransfer: string option
+        /// Set if the ReceivedDebit was created due to an [Issuing Authorization](https://api.stripe.com#issuing_authorizations) object.
+        IssuingAuthorization: string option
+        /// Set if the ReceivedDebit is also viewable as an [Issuing Dispute](https://api.stripe.com#issuing_disputes) object.
+        IssuingTransaction: string option
+        /// Set if the ReceivedDebit was created due to a [Payout](https://api.stripe.com#payouts) object.
+        Payout: string option
+        /// Set if the ReceivedDebit was created due to a [Topup](https://api.stripe.com#topups) object.
+        Topup: string option
+    }
+
+[<Struct>]
+type TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason =
+    | AlreadyReversed
+    | DeadlinePassed
+    | NetworkRestricted
+    | Other
+    | SourceFlowRestricted
+
+type TreasuryReceivedDebitsResourceReversalDetails =
+    {
+        /// Time before which a ReceivedDebit can be reversed.
+        Deadline: DateTime option
+        /// Set if a ReceivedDebit can't be reversed.
+        RestrictedReason: TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason option
+    }
+
+/// You can reverse some [ReceivedCredits](https://api.stripe.com#received_credits) depending on their network and source flow. Reversing a ReceivedCredit leads to the creation of a new object known as a CreditReversal.
+type TreasuryCreditReversal =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// The FinancialAccount to reverse funds from.
+        FinancialAccount: string
+        /// A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
+        HostedRegulatoryReceiptUrl: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The rails used to reverse the funds.
+        Network: TreasuryCreditReversalNetwork
+        /// The ReceivedCredit being reversed.
+        ReceivedCredit: string
+        /// Status of the CreditReversal
+        Status: TreasuryCreditReversalStatus
+        StatusTransitions: TreasuryReceivedCreditsResourceStatusTransitions
+        /// The Transaction associated with this object.
+        Transaction: TreasuryCreditReversalTransaction'AnyOf option
+    }
+
+and TreasuryCreditReversalTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+/// You can reverse some [ReceivedDebits](https://api.stripe.com#received_debits) depending on their network and source flow. Reversing a ReceivedDebit leads to the creation of a new object known as a DebitReversal.
+and TreasuryDebitReversal =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// The FinancialAccount to reverse funds from.
+        FinancialAccount: string option
+        /// A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
+        HostedRegulatoryReceiptUrl: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// Other flows linked to a DebitReversal.
+        LinkedFlows: TreasuryReceivedDebitsResourceDebitReversalLinkedFlows option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The rails used to reverse the funds.
+        Network: TreasuryDebitReversalNetwork
+        /// The ReceivedDebit being reversed.
+        ReceivedDebit: string
+        /// Status of the DebitReversal
+        Status: TreasuryDebitReversalStatus
+        StatusTransitions: TreasuryReceivedDebitsResourceStatusTransitions
+        /// The Transaction associated with this object.
+        Transaction: TreasuryDebitReversalTransaction'AnyOf option
+    }
+
+and TreasuryDebitReversalTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+/// Use [InboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/into/inbound-transfers) to add funds to your [FinancialAccount](https://api.stripe.com#financial_accounts) via a PaymentMethod that is owned by you. The funds will be transferred via an ACH debit.
+/// Related guide: [Moving money with Treasury using InboundTransfer objects](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/into/inbound-transfers)
+and TreasuryInboundTransfer =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        /// Returns `true` if the InboundTransfer is able to be canceled.
+        Cancelable: bool
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// Details about this InboundTransfer's failure. Only set when status is `failed`.
+        FailureDetails: TreasuryInboundTransfersResourceFailureDetails option
+        /// The FinancialAccount that received the funds.
+        FinancialAccount: string
+        /// A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
+        HostedRegulatoryReceiptUrl: string option
+        /// Unique identifier for the object.
+        Id: string
+        LinkedFlows: TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The origin payment method to be debited for an InboundTransfer.
+        OriginPaymentMethod: string option
+        /// Details about the PaymentMethod for an InboundTransfer.
+        OriginPaymentMethodDetails: InboundTransfers option
+        /// Returns `true` if the funds for an InboundTransfer were returned after the InboundTransfer went to the `succeeded` state.
+        Returned: bool option
+        /// Statement descriptor shown when funds are debited from the source. Not all payment networks support `statement_descriptor`.
+        StatementDescriptor: string
+        /// Status of the InboundTransfer: `processing`, `succeeded`, `failed`, and `canceled`. An InboundTransfer is `processing` if it is created and pending. The status changes to `succeeded` once the funds have been "confirmed" and a `transaction` is created and posted. The status changes to `failed` if the transfer fails.
+        Status: TreasuryInboundTransferStatus
+        StatusTransitions: TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions
+        /// The Transaction associated with this object.
+        Transaction: TreasuryInboundTransferTransaction'AnyOf option
+    }
+
+and TreasuryInboundTransferTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+/// Use [OutboundPayments](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-payments) to send funds to another party's external bank account or [FinancialAccount](https://api.stripe.com#financial_accounts). To send money to an account belonging to the same user, use an [OutboundTransfer](https://api.stripe.com#outbound_transfers).
+/// Simulate OutboundPayment state changes with the `/v1/test_helpers/treasury/outbound_payments` endpoints. These methods can only be called on test mode objects.
+/// Related guide: [Moving money with Treasury using OutboundPayment objects](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-payments)
+and TreasuryOutboundPayment =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        /// Returns `true` if the object can be canceled, and `false` otherwise.
+        Cancelable: bool
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// ID of the [customer](https://docs.stripe.com/api/customers) to whom an OutboundPayment is sent.
+        Customer: string option
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// The PaymentMethod via which an OutboundPayment is sent. This field can be empty if the OutboundPayment was created using `destination_payment_method_data`.
+        DestinationPaymentMethod: string option
+        /// Details about the PaymentMethod for an OutboundPayment.
+        DestinationPaymentMethodDetails: OutboundPaymentsPaymentMethodDetails option
+        /// Details about the end user.
+        EndUserDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails option
+        /// The date when funds are expected to arrive in the destination account.
+        ExpectedArrivalDate: DateTime
+        /// The FinancialAccount that funds were pulled from.
+        FinancialAccount: string
+        /// A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
+        HostedRegulatoryReceiptUrl: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// Details about a returned OutboundPayment. Only set when the status is `returned`.
+        ReturnedDetails: TreasuryOutboundPaymentsResourceReturnedStatus option
+        /// The description that appears on the receiving end for an OutboundPayment (for example, bank statement for external bank transfer).
+        StatementDescriptor: string
+        /// Current status of the OutboundPayment: `processing`, `failed`, `posted`, `returned`, `canceled`. An OutboundPayment is `processing` if it has been created and is pending. The status changes to `posted` once the OutboundPayment has been "confirmed" and funds have left the account, or to `failed` or `canceled`. If an OutboundPayment fails to arrive at its destination, its status will change to `returned`.
+        Status: TreasuryOutboundPaymentStatus
+        StatusTransitions: TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions
+        /// Details about network-specific tracking information if available.
+        TrackingDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails option
+        /// The Transaction associated with this object.
+        Transaction: TreasuryOutboundPaymentTransaction'AnyOf
+    }
+
+and TreasuryOutboundPaymentTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+/// Use [OutboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-transfers) to transfer funds from a [FinancialAccount](https://api.stripe.com#financial_accounts) to a PaymentMethod belonging to the same entity. To send funds to a different party, use [OutboundPayments](https://api.stripe.com#outbound_payments) instead. You can send funds over ACH rails or through a domestic wire transfer to a user's own external bank account.
+/// Simulate OutboundTransfer state changes with the `/v1/test_helpers/treasury/outbound_transfers` endpoints. These methods can only be called on test mode objects.
+/// Related guide: [Moving money with Treasury using OutboundTransfer objects](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-transfers)
+and TreasuryOutboundTransfer =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        /// Returns `true` if the object can be canceled, and `false` otherwise.
+        Cancelable: bool
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// The PaymentMethod used as the payment instrument for an OutboundTransfer.
+        DestinationPaymentMethod: string option
+        DestinationPaymentMethodDetails: OutboundTransfersPaymentMethodDetails
+        /// The date when funds are expected to arrive in the destination account.
+        ExpectedArrivalDate: DateTime
+        /// The FinancialAccount that funds were pulled from.
+        FinancialAccount: string
+        /// A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
+        HostedRegulatoryReceiptUrl: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// Details about a returned OutboundTransfer. Only set when the status is `returned`.
+        ReturnedDetails: TreasuryOutboundTransfersResourceReturnedDetails option
+        /// Information about the OutboundTransfer to be sent to the recipient account.
+        StatementDescriptor: string
+        /// Current status of the OutboundTransfer: `processing`, `failed`, `canceled`, `posted`, `returned`. An OutboundTransfer is `processing` if it has been created and is pending. The status changes to `posted` once the OutboundTransfer has been "confirmed" and funds have left the account, or to `failed` or `canceled`. If an OutboundTransfer fails to arrive at its destination, its status will change to `returned`.
+        Status: TreasuryOutboundTransferStatus
+        StatusTransitions: TreasuryOutboundTransfersResourceStatusTransitions
+        /// Details about network-specific tracking information if available.
+        TrackingDetails: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails option
+        /// The Transaction associated with this object.
+        Transaction: TreasuryOutboundTransferTransaction'AnyOf
+    }
+
+and TreasuryOutboundTransferTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+/// ReceivedCredits represent funds sent to a [FinancialAccount](https://api.stripe.com#financial_accounts) (for example, via ACH or wire). These money movements are not initiated from the FinancialAccount.
+and TreasuryReceivedCredit =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string
+        /// Reason for the failure. A ReceivedCredit might fail because the receiving FinancialAccount is closed or frozen.
+        FailureCode: TreasuryReceivedCreditFailureCode option
+        /// The FinancialAccount that received the funds.
+        FinancialAccount: string option
+        /// A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
+        HostedRegulatoryReceiptUrl: string option
+        /// Unique identifier for the object.
+        Id: string
+        InitiatingPaymentMethodDetails:
+            TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails
+        LinkedFlows: TreasuryReceivedCreditsResourceLinkedFlows
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The rails used to send the funds.
+        Network: TreasuryReceivedCreditNetwork
+        /// Details describing when a ReceivedCredit may be reversed.
+        ReversalDetails: TreasuryReceivedCreditsResourceReversalDetails option
+        /// Status of the ReceivedCredit. ReceivedCredits are created either `succeeded` (approved) or `failed` (declined). If a ReceivedCredit is declined, the failure reason can be found in the `failure_code` field.
+        Status: TreasuryReceivedCreditStatus
+        /// The Transaction associated with this object.
+        Transaction: TreasuryReceivedCreditTransaction'AnyOf option
+    }
+
+and TreasuryReceivedCreditTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+/// ReceivedDebits represent funds pulled from a [FinancialAccount](https://api.stripe.com#financial_accounts). These are not initiated from the FinancialAccount.
+and TreasuryReceivedDebit =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string
+        /// Reason for the failure. A ReceivedDebit might fail because the FinancialAccount doesn't have sufficient funds, is closed, or is frozen.
+        FailureCode: TreasuryReceivedDebitFailureCode option
+        /// The FinancialAccount that funds were pulled from.
+        FinancialAccount: string option
+        /// A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
+        HostedRegulatoryReceiptUrl: string option
+        /// Unique identifier for the object.
+        Id: string
+        InitiatingPaymentMethodDetails:
+            TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails option
+        LinkedFlows: TreasuryReceivedDebitsResourceLinkedFlows
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The network used for the ReceivedDebit.
+        Network: TreasuryReceivedDebitNetwork
+        /// Details describing when a ReceivedDebit might be reversed.
+        ReversalDetails: TreasuryReceivedDebitsResourceReversalDetails option
+        /// Status of the ReceivedDebit. ReceivedDebits are created with a status of either `succeeded` (approved) or `failed` (declined). The failure reason can be found under the `failure_code`.
+        Status: TreasuryReceivedDebitStatus
+        /// The Transaction associated with this object.
+        Transaction: TreasuryReceivedDebitTransaction'AnyOf option
+    }
+
+and TreasuryReceivedDebitTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+/// Transactions represent changes to a [FinancialAccount's](https://api.stripe.com#financial_accounts) balance.
+and TreasuryTransaction =
+    {
+        /// Amount (in cents) transferred.
+        Amount: int
+        BalanceImpact: TreasuryTransactionsResourceBalanceImpact
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string
+        /// A list of TransactionEntries that are part of this Transaction. This cannot be expanded in any list endpoints.
+        Entries: TreasuryTransactionEntries option
+        /// The FinancialAccount associated with this object.
+        FinancialAccount: string
+        /// ID of the flow that created the Transaction.
+        Flow: string option
+        /// Details of the flow that created the Transaction.
+        FlowDetails: TreasuryTransactionsResourceFlowDetails option
+        /// Type of the flow that created the Transaction.
+        FlowType: TreasuryTransactionFlowType
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Status of the Transaction.
+        Status: TreasuryTransactionStatus
+        StatusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions
+    }
+
+/// A list of TransactionEntries that are part of this Transaction. This cannot be expanded in any list endpoints.
+and TreasuryTransactionEntries =
+    {
+        /// Details about each object.
+        Data: TreasuryTransactionEntry list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+/// TransactionEntries represent individual units of money movements within a single [Transaction](https://api.stripe.com#transactions).
+and TreasuryTransactionEntry =
+    {
+        BalanceImpact: TreasuryTransactionsResourceBalanceImpact
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// When the TransactionEntry will impact the FinancialAccount's balance.
+        EffectiveAt: DateTime
+        /// The FinancialAccount associated with this object.
+        FinancialAccount: string
+        /// Token of the flow associated with the TransactionEntry.
+        Flow: string option
+        /// Details of the flow associated with the TransactionEntry.
+        FlowDetails: TreasuryTransactionsResourceFlowDetails option
+        /// Type of the flow associated with the TransactionEntry.
+        FlowType: TreasuryTransactionEntryFlowType
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The Transaction associated with this object.
+        Transaction: TreasuryTransactionEntryTransaction'AnyOf
+        /// The specific money movement that generated the TransactionEntry.
+        Type: TreasuryTransactionEntryType
+    }
+
+and TreasuryTransactionEntryTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+and TreasuryOutboundPaymentsResourceReturnedStatus =
+    {
+        /// Reason for the return.
+        Code: TreasuryOutboundPaymentsResourceReturnedStatusCode
+        /// The Transaction associated with this object.
+        Transaction: TreasuryOutboundPaymentsResourceReturnedStatusTransaction'AnyOf
+    }
+
+and TreasuryOutboundPaymentsResourceReturnedStatusTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+and TreasuryOutboundTransfersResourceReturnedDetails =
+    {
+        /// Reason for the return.
+        Code: TreasuryOutboundTransfersResourceReturnedDetailsCode
+        /// The Transaction associated with this object.
+        Transaction: TreasuryOutboundTransfersResourceReturnedDetailsTransaction'AnyOf
+    }
+
+and TreasuryOutboundTransfersResourceReturnedDetailsTransaction'AnyOf =
+    | String of string
+    | TreasuryTransaction of TreasuryTransaction
+
+and TreasuryReceivedCreditsResourceLinkedFlows =
+    {
+        /// The CreditReversal created as a result of this ReceivedCredit being reversed.
+        CreditReversal: string option
+        /// Set if the ReceivedCredit was created due to an [Issuing Authorization](https://api.stripe.com#issuing_authorizations) object.
+        IssuingAuthorization: string option
+        /// Set if the ReceivedCredit is also viewable as an [Issuing transaction](https://api.stripe.com#issuing_transactions) object.
+        IssuingTransaction: string option
+        /// ID of the source flow. Set if `network` is `stripe` and the source flow is visible to the user. Examples of source flows include OutboundPayments, payouts, or CreditReversals.
+        SourceFlow: string option
+        /// The expandable object of the source flow.
+        SourceFlowDetails: TreasuryReceivedCreditsResourceSourceFlowsDetails option
+        /// The type of flow that originated the ReceivedCredit (for example, `outbound_payment`).
+        SourceFlowType: string option
+    }
+
+and TreasuryReceivedCreditsResourceSourceFlowsDetails =
+    {
+        CreditReversal: TreasuryCreditReversal option
+        OutboundPayment: TreasuryOutboundPayment option
+        OutboundTransfer: TreasuryOutboundTransfer option
+        Payout: Payout option
+        /// The type of the source flow that originated the ReceivedCredit.
+        Type: TreasuryReceivedCreditsResourceSourceFlowsDetailsType
+    }
+
+and TreasuryTransactionsResourceFlowDetails =
+    {
+        CreditReversal: TreasuryCreditReversal option
+        DebitReversal: TreasuryDebitReversal option
+        InboundTransfer: TreasuryInboundTransfer option
+        IssuingAuthorization: IssuingAuthorization option
+        OutboundPayment: TreasuryOutboundPayment option
+        OutboundTransfer: TreasuryOutboundTransfer option
+        ReceivedCredit: TreasuryReceivedCredit option
+        ReceivedDebit: TreasuryReceivedDebit option
+        /// Type of the flow that created the Transaction. Set to the same value as `flow_type`.
+        Type: TreasuryTransactionsResourceFlowDetailsType
+    }
+
+/// Occurs whenever a received_debit is created as a result of funds being pulled by another account.
+type TreasuryReceivedDebitCreated = { Object: TreasuryReceivedDebit }
+
+/// Occurs whenever a received_credit transitions to succeeded state. Only applicable for check deposits.
+type TreasuryReceivedCreditSucceeded = { Object: TreasuryReceivedCredit }
+
+/// Occurs whenever a received_credit transitions to failed state. Only applicable for check deposits.
+type TreasuryReceivedCreditFailed = { Object: TreasuryReceivedCredit }
+
+/// Occurs whenever a received_credit is created as a result of funds being pushed by another account.
+type TreasuryReceivedCreditCreated = { Object: TreasuryReceivedCredit }
+
+/// Occurs whenever tracking_details on an OutboundTransfer is updated.
+type TreasuryOutboundTransferTrackingDetailsUpdated = { Object: TreasuryOutboundTransfer }
+
+/// Occurs whenever an OutboundTransfer is returned.
+type TreasuryOutboundTransferReturned = { Object: TreasuryOutboundTransfer }
+
+/// Occurs whenever an OutboundTransfer is posted.
+type TreasuryOutboundTransferPosted = { Object: TreasuryOutboundTransfer }
+
+/// Occurs whenever an OutboundTransfer has failed.
+type TreasuryOutboundTransferFailed = { Object: TreasuryOutboundTransfer }
+
+/// Occurs whenever the arrival date on an OutboundTransfer updates.
+type TreasuryOutboundTransferExpectedArrivalDateUpdated = { Object: TreasuryOutboundTransfer }
+
+/// Occurs whenever an OutboundTransfer is created.
+type TreasuryOutboundTransferCreated = { Object: TreasuryOutboundTransfer }
+
+/// Occurs whenever an OutboundTransfer is canceled.
+type TreasuryOutboundTransferCanceled = { Object: TreasuryOutboundTransfer }
+
+/// Occurs whenever tracking_details on an OutboundPayment is updated.
+type TreasuryOutboundPaymentTrackingDetailsUpdated = { Object: TreasuryOutboundPayment }
+
+/// Occurs whenever an OutboundPayment was returned.
+type TreasuryOutboundPaymentReturned = { Object: TreasuryOutboundPayment }
+
+/// Occurs whenever an OutboundPayment posts.
+type TreasuryOutboundPaymentPosted = { Object: TreasuryOutboundPayment }
+
+/// Occurs whenever an OutboundPayment fails.
+type TreasuryOutboundPaymentFailed = { Object: TreasuryOutboundPayment }
+
+/// Occurs whenever the arrival date on an OutboundPayment updates.
+type TreasuryOutboundPaymentExpectedArrivalDateUpdated = { Object: TreasuryOutboundPayment }
+
+/// Occurs whenever a new OutboundPayment is successfully created.
+type TreasuryOutboundPaymentCreated = { Object: TreasuryOutboundPayment }
+
+/// Occurs whenever an OutboundPayment is canceled.
+type TreasuryOutboundPaymentCanceled = { Object: TreasuryOutboundPayment }
+
+/// Occurs whenever an InboundTransfer has succeeded.
+type TreasuryInboundTransferSucceeded = { Object: TreasuryInboundTransfer }
+
+/// Occurs whenever an InboundTransfer has failed.
+type TreasuryInboundTransferFailed = { Object: TreasuryInboundTransfer }
+
+/// Occurs whenever an InboundTransfer is created.
+type TreasuryInboundTransferCreated = { Object: TreasuryInboundTransfer }
+
+/// Occurs whenever an InboundTransfer is canceled.
+type TreasuryInboundTransferCanceled = { Object: TreasuryInboundTransfer }
+
+type TreasuryFinancialAccountActiveFeatures =
+    | CardIssuing
+    | DepositInsurance
+    | [<JsonPropertyName("financial_addresses.aba")>] FinancialAddressesAba
+    | [<JsonPropertyName("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
+    | [<JsonPropertyName("inbound_transfers.ach")>] InboundTransfersAch
+    | IntraStripeFlows
+    | [<JsonPropertyName("outbound_payments.ach")>] OutboundPaymentsAch
+    | [<JsonPropertyName("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+    | [<JsonPropertyName("outbound_transfers.ach")>] OutboundTransfersAch
+    | [<JsonPropertyName("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+    | RemoteDepositCapture
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceAbaToggleSettingsStatus =
+    | Active
+    | Pending
+    | Restricted
+
+type TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode =
+    | Activating
+    | CapabilityNotRequested
+    | FinancialAccountClosed
+    | RejectedOther
+    | RejectedUnsupportedBusiness
+    | RequirementsPastDue
+    | RequirementsPendingVerification
+    | RestrictedByPlatform
+    | RestrictedOther
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution =
+    | ContactStripe
+    | ProvideInformation
+    | RemoveRestriction
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction =
+    | InboundFlows
+    | OutboundFlows
+
+/// Additional details on the FinancialAccount Features information.
+type TreasuryFinancialAccountsResourceTogglesSettingStatusDetails =
+    {
+        /// Represents the reason why the status is `pending` or `restricted`.
+        Code: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode
+        /// Represents what the user should do, if anything, to activate the Feature.
+        Resolution: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution option
+        /// The `platform_restrictions` that are restricting this Feature.
+        Restriction: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction option
+    }
+
+/// Toggle settings for enabling/disabling the ABA address feature
+type TreasuryFinancialAccountsResourceAbaToggleSettings =
+    {
+        /// Whether the FinancialAccount should have the Feature.
+        Requested: bool
+        /// Whether the Feature is operational.
+        Status: TreasuryFinancialAccountsResourceAbaToggleSettingsStatus
+        /// Additional details; includes at least one entry when the status is not `active`.
+        StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+    }
+
+/// Settings related to Financial Addresses features on a Financial Account
+type TreasuryFinancialAccountsResourceFinancialAddressesFeatures =
+    { Aba: TreasuryFinancialAccountsResourceAbaToggleSettings option }
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceInboundAchToggleSettingsStatus =
+    | Active
+    | Pending
+    | Restricted
+
+/// Toggle settings for enabling/disabling an inbound ACH specific feature
+type TreasuryFinancialAccountsResourceInboundAchToggleSettings =
+    {
+        /// Whether the FinancialAccount should have the Feature.
+        Requested: bool
+        /// Whether the Feature is operational.
+        Status: TreasuryFinancialAccountsResourceInboundAchToggleSettingsStatus
+        /// Additional details; includes at least one entry when the status is not `active`.
+        StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+    }
+
+/// InboundTransfers contains inbound transfers features for a FinancialAccount.
+type TreasuryFinancialAccountsResourceInboundTransfers =
+    { Ach: TreasuryFinancialAccountsResourceInboundAchToggleSettings option }
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceOutboundAchToggleSettingsStatus =
+    | Active
+    | Pending
+    | Restricted
+
+/// Toggle settings for enabling/disabling an outbound ACH specific feature
+type TreasuryFinancialAccountsResourceOutboundAchToggleSettings =
+    {
+        /// Whether the FinancialAccount should have the Feature.
+        Requested: bool
+        /// Whether the Feature is operational.
+        Status: TreasuryFinancialAccountsResourceOutboundAchToggleSettingsStatus
+        /// Additional details; includes at least one entry when the status is not `active`.
+        StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+    }
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceToggleSettingsStatus =
+    | Active
+    | Pending
+    | Restricted
+
+/// Toggle settings for enabling/disabling a feature
+type TreasuryFinancialAccountsResourceToggleSettings =
+    {
+        /// Whether the FinancialAccount should have the Feature.
+        Requested: bool
+        /// Whether the Feature is operational.
+        Status: TreasuryFinancialAccountsResourceToggleSettingsStatus
+        /// Additional details; includes at least one entry when the status is not `active`.
+        StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+    }
+
+/// Settings related to Outbound Payments features on a Financial Account
+type TreasuryFinancialAccountsResourceOutboundPayments =
+    { Ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings option
+      UsDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option }
+
+/// OutboundTransfers contains outbound transfers features for a FinancialAccount.
+type TreasuryFinancialAccountsResourceOutboundTransfers =
+    { Ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings option
+      UsDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option }
+
+/// Encodes whether a FinancialAccount has access to a particular Feature, with a `status` enum and associated `status_details`.
+/// Stripe or the platform can control Features via the requested field.
+type TreasuryFinancialAccountFeatures =
+    { CardIssuing: TreasuryFinancialAccountsResourceToggleSettings option
+      DepositInsurance: TreasuryFinancialAccountsResourceToggleSettings option
+      FinancialAddresses: TreasuryFinancialAccountsResourceFinancialAddressesFeatures option
+      InboundTransfers: TreasuryFinancialAccountsResourceInboundTransfers option
+      IntraStripeFlows: TreasuryFinancialAccountsResourceToggleSettings option
+      OutboundPayments: TreasuryFinancialAccountsResourceOutboundPayments option
+      OutboundTransfers: TreasuryFinancialAccountsResourceOutboundTransfers option }
+
+type TreasuryFinancialAccountPendingFeatures =
+    | CardIssuing
+    | DepositInsurance
+    | [<JsonPropertyName("financial_addresses.aba")>] FinancialAddressesAba
+    | [<JsonPropertyName("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
+    | [<JsonPropertyName("inbound_transfers.ach")>] InboundTransfersAch
+    | IntraStripeFlows
+    | [<JsonPropertyName("outbound_payments.ach")>] OutboundPaymentsAch
+    | [<JsonPropertyName("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+    | [<JsonPropertyName("outbound_transfers.ach")>] OutboundTransfersAch
+    | [<JsonPropertyName("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+    | RemoteDepositCapture
+
+type TreasuryFinancialAccountRestrictedFeatures =
+    | CardIssuing
+    | DepositInsurance
+    | [<JsonPropertyName("financial_addresses.aba")>] FinancialAddressesAba
+    | [<JsonPropertyName("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
+    | [<JsonPropertyName("inbound_transfers.ach")>] InboundTransfersAch
+    | IntraStripeFlows
+    | [<JsonPropertyName("outbound_payments.ach")>] OutboundPaymentsAch
+    | [<JsonPropertyName("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+    | [<JsonPropertyName("outbound_transfers.ach")>] OutboundTransfersAch
+    | [<JsonPropertyName("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+    | RemoteDepositCapture
+
+[<Struct>]
+type TreasuryFinancialAccountStatus =
+    | Closed
+    | Open
+
+/// Balance information for the FinancialAccount
+type TreasuryFinancialAccountsResourceBalance =
+    {
+        /// Funds the user can spend right now.
+        Cash: Map<string, string list>
+        /// Funds not spendable yet, but will become available at a later time.
+        InboundPending: Map<string, string list>
+        /// Funds in the account, but not spendable because they are being held for pending outbound flows.
+        OutboundPending: Map<string, string list>
+    }
+
+/// ABA Records contain U.S. bank account details per the ABA format.
+type TreasuryFinancialAccountsResourceAbaRecord =
+    {
+        /// The name of the person or business that owns the bank account.
+        AccountHolderName: string
+        /// The account number.
+        AccountNumber: string option
+        /// The last four characters of the account number.
+        [<JsonPropertyName("account_number_last4")>]
+        AccountNumberLast4: string
+        /// Name of the bank.
+        BankName: string
+        /// Routing number for the account.
+        RoutingNumber: string
+    }
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks =
+    | Ach
+    | UsDomesticWire
+
+/// FinancialAddresses contain identifying information that resolves to a FinancialAccount.
+type TreasuryFinancialAccountsResourceFinancialAddress =
+    {
+        Aba: TreasuryFinancialAccountsResourceAbaRecord option
+        /// The list of networks that the address supports
+        SupportedNetworks: TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks list option
+    }
+
+[<Struct>]
+type TreasuryFinancialAccountsResourcePlatformRestrictionsInboundFlows =
+    | Restricted
+    | Unrestricted
+
+[<Struct>]
+type TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows =
+    | Restricted
+    | Unrestricted
+
+/// Restrictions that a Connect Platform has placed on this FinancialAccount.
+type TreasuryFinancialAccountsResourcePlatformRestrictions =
+    {
+        /// Restricts all inbound money movement.
+        InboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsInboundFlows option
+        /// Restricts all outbound money movement.
+        OutboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows option
+    }
+
+[<Struct>]
+type TreasuryFinancialAccountsResourceClosedStatusDetailsReasons =
+    | AccountRejected
+    | ClosedByPlatform
+    | Other
+
+type TreasuryFinancialAccountsResourceClosedStatusDetails =
+    {
+        /// The array that contains reasons for a FinancialAccount closure.
+        Reasons: TreasuryFinancialAccountsResourceClosedStatusDetailsReasons list
+    }
+
+type TreasuryFinancialAccountsResourceStatusDetails =
+    {
+        /// Details related to the closure of this FinancialAccount
+        Closed: TreasuryFinancialAccountsResourceClosedStatusDetails option
+    }
+
+/// Stripe Treasury provides users with a container for money called a FinancialAccount that is separate from their Payments balance.
+/// FinancialAccounts serve as the source and destination of Treasury’s money movement APIs.
+type TreasuryFinancialAccount =
+    {
+        /// The array of paths to active Features in the Features hash.
+        ActiveFeatures: TreasuryFinancialAccountActiveFeatures list option
+        Balance: TreasuryFinancialAccountsResourceBalance
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        Features: TreasuryFinancialAccountFeatures option
+        /// The set of credentials that resolve to a FinancialAccount.
+        FinancialAddresses: TreasuryFinancialAccountsResourceFinancialAddress list
+        /// Unique identifier for the object.
+        Id: string
+        IsDefault: bool option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The nickname for the FinancialAccount.
+        Nickname: string option
+        /// The array of paths to pending Features in the Features hash.
+        PendingFeatures: TreasuryFinancialAccountPendingFeatures list option
+        /// The set of functionalities that the platform can restrict on the FinancialAccount.
+        PlatformRestrictions: TreasuryFinancialAccountsResourcePlatformRestrictions option
+        /// The array of paths to restricted Features in the Features hash.
+        RestrictedFeatures: TreasuryFinancialAccountRestrictedFeatures list option
+        /// Status of this FinancialAccount.
+        Status: TreasuryFinancialAccountStatus
+        StatusDetails: TreasuryFinancialAccountsResourceStatusDetails
+        /// The currencies the FinancialAccount can hold a balance in. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+        SupportedCurrencies: string list
+    }
+
+/// Occurs whenever the statuses of any features within an existing FinancialAccount are updated.
+type TreasuryFinancialAccountFeaturesStatusUpdated = { Object: TreasuryFinancialAccount }
+
+/// Occurs whenever a new FinancialAccount is created.
+type TreasuryFinancialAccountCreated = { Object: TreasuryFinancialAccount }
+
+/// Occurs whenever the status of the FinancialAccount becomes closed.
+type TreasuryFinancialAccountClosed = { Object: TreasuryFinancialAccount }
+
+/// Occurs whenever an initial credit is granted on a DebitReversal.
+type TreasuryDebitReversalInitialCreditGranted = { Object: TreasuryDebitReversal }
+
+/// Occurs whenever a DebitReversal is created.
+type TreasuryDebitReversalCreated = { Object: TreasuryDebitReversal }
+
+/// Occurs whenever a DebitReversal is completed.
+type TreasuryDebitReversalCompleted = { Object: TreasuryDebitReversal }
+
+/// Occurs whenever an CreditReversal post is posted.
+type TreasuryCreditReversalPosted = { Object: TreasuryCreditReversal }
+
+/// Occurs whenever an CreditReversal is submitted and created.
+type TreasuryCreditReversalCreated = { Object: TreasuryCreditReversal }
+
+module TreasuryTransactionsResourceBalanceImpact =
+    let create
+        (
+            cash: int,
+            inboundPending: int,
+            outboundPending: int
+        ) : TreasuryTransactionsResourceBalanceImpact
+        =
+        {
+          Cash = cash
+          InboundPending = inboundPending
+          OutboundPending = outboundPending
+        }
+
+module TreasuryReceivedCreditsResourceStatusTransitions =
+    let create
+        (
+            postedAt: DateTime option
+        ) : TreasuryReceivedCreditsResourceStatusTransitions
+        =
+        {
+          PostedAt = postedAt
+        }
+
+module TreasuryReceivedDebitsResourceDebitReversalLinkedFlows =
+    let create
+        (
+            issuingDispute: string option
+        ) : TreasuryReceivedDebitsResourceDebitReversalLinkedFlows
+        =
+        {
+          IssuingDispute = issuingDispute
+        }
+
+module TreasuryReceivedDebitsResourceStatusTransitions =
+    let create
+        (
+            completedAt: DateTime option
+        ) : TreasuryReceivedDebitsResourceStatusTransitions
+        =
+        {
+          CompletedAt = completedAt
+        }
+
+module InboundTransfersPaymentMethodDetailsUsBankAccount =
+    ///The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
+    let network = "ach"
+
+    let create
+        (
+            accountHolderType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option,
+            accountType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountType option,
+            bankName: string option,
+            fingerprint: string option,
+            last4: string option,
+            routingNumber: string option,
+            mandate: InboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+        ) : InboundTransfersPaymentMethodDetailsUsBankAccount
+        =
+        {
+          AccountHolderType = accountHolderType
+          AccountType = accountType
+          BankName = bankName
+          Fingerprint = fingerprint
+          Last4 = last4
+          RoutingNumber = routingNumber
+          Mandate = mandate
+        }
+
+module TreasurySharedResourceBillingDetails =
+    let create
+        (
+            address: Address,
+            email: string option,
+            name: string option
+        ) : TreasurySharedResourceBillingDetails
+        =
+        {
+          Address = address
+          Email = email
+          Name = name
+        }
+
+module InboundTransfers =
+    ///The type of the payment method used in the InboundTransfer.
+    let ``type`` = "us_bank_account"
+
+    let create
+        (
+            billingDetails: TreasurySharedResourceBillingDetails,
+            usBankAccount: InboundTransfersPaymentMethodDetailsUsBankAccount option
+        ) : InboundTransfers
+        =
+        {
+          BillingDetails = billingDetails
+          UsBankAccount = usBankAccount
+        }
+
+module TreasuryInboundTransfersResourceFailureDetails =
+    let create
+        (
+            code: TreasuryInboundTransfersResourceFailureDetailsCode
+        ) : TreasuryInboundTransfersResourceFailureDetails
+        =
+        {
+          Code = code
+        }
+
+module TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows =
+    let create
+        (
+            receivedDebit: string option
+        ) : TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows
+        =
+        {
+          ReceivedDebit = receivedDebit
+        }
+
+module TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions =
+    let create
+        (
+            failedAt: DateTime option,
+            succeededAt: DateTime option,
+            canceledAt: DateTime option option
+        ) : TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions
+        =
+        {
+          FailedAt = failedAt
+          SucceededAt = succeededAt
+          CanceledAt = canceledAt |> Option.flatten
+        }
+
+module OutboundPaymentsPaymentMethodDetailsFinancialAccount =
+    ///The rails used to send funds.
+    let network = "stripe"
+
+    let create
+        (
+            id: string
+        ) : OutboundPaymentsPaymentMethodDetailsFinancialAccount
+        =
+        {
+          Id = id
+        }
+
+module OutboundPaymentsPaymentMethodDetailsUsBankAccount =
+    let create
+        (
+            accountHolderType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType option,
+            accountType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType option,
+            bankName: string option,
+            fingerprint: string option,
+            last4: string option,
+            network: OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork,
+            routingNumber: string option,
+            mandate: OutboundPaymentsPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+        ) : OutboundPaymentsPaymentMethodDetailsUsBankAccount
+        =
+        {
+          AccountHolderType = accountHolderType
+          AccountType = accountType
+          BankName = bankName
+          Fingerprint = fingerprint
+          Last4 = last4
+          Network = network
+          RoutingNumber = routingNumber
+          Mandate = mandate
+        }
+
+module OutboundPaymentsPaymentMethodDetails =
+    let create
+        (
+            billingDetails: TreasurySharedResourceBillingDetails,
+            ``type``: OutboundPaymentsPaymentMethodDetailsType,
+            financialAccount: OutboundPaymentsPaymentMethodDetailsFinancialAccount option,
+            usBankAccount: OutboundPaymentsPaymentMethodDetailsUsBankAccount option
+        ) : OutboundPaymentsPaymentMethodDetails
+        =
+        {
+          BillingDetails = billingDetails
+          Type = ``type``
+          FinancialAccount = financialAccount
+          UsBankAccount = usBankAccount
+        }
+
+module TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails =
+    let create
+        (
+            ipAddress: string option,
+            present: bool
+        ) : TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails
+        =
+        {
+          IpAddress = ipAddress
+          Present = present
+        }
+
+module TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions =
+    let create
+        (
+            canceledAt: DateTime option,
+            failedAt: DateTime option,
+            postedAt: DateTime option,
+            returnedAt: DateTime option
+        ) : TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions
+        =
+        {
+          CanceledAt = canceledAt
+          FailedAt = failedAt
+          PostedAt = postedAt
+          ReturnedAt = returnedAt
+        }
+
+module TreasuryOutboundPaymentsResourceAchTrackingDetails =
+    let create
+        (
+            traceId: string
+        ) : TreasuryOutboundPaymentsResourceAchTrackingDetails
+        =
+        {
+          TraceId = traceId
+        }
+
+module TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails =
+    let create
+        (
+            chips: string option,
+            imad: string option,
+            omad: string option
+        ) : TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails
+        =
+        {
+          Chips = chips
+          Imad = imad
+          Omad = omad
+        }
+
+module TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails =
+    let create
+        (
+            ``type``: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType,
+            ach: TreasuryOutboundPaymentsResourceAchTrackingDetails option,
+            usDomesticWire: TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails option
+        ) : TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails
+        =
+        {
+          Type = ``type``
+          Ach = ach
+          UsDomesticWire = usDomesticWire
+        }
+
+module OutboundTransfersPaymentMethodDetailsFinancialAccount =
+    ///The rails used to send funds.
+    let network = "stripe"
+
+    let create
+        (
+            id: string
+        ) : OutboundTransfersPaymentMethodDetailsFinancialAccount
+        =
+        {
+          Id = id
+        }
+
+module OutboundTransfersPaymentMethodDetailsUsBankAccount =
+    let create
+        (
+            accountHolderType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option,
+            accountType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType option,
+            bankName: string option,
+            fingerprint: string option,
+            last4: string option,
+            network: OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork,
+            routingNumber: string option,
+            mandate: OutboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+        ) : OutboundTransfersPaymentMethodDetailsUsBankAccount
+        =
+        {
+          AccountHolderType = accountHolderType
+          AccountType = accountType
+          BankName = bankName
+          Fingerprint = fingerprint
+          Last4 = last4
+          Network = network
+          RoutingNumber = routingNumber
+          Mandate = mandate
+        }
+
+module OutboundTransfersPaymentMethodDetails =
+    let create
+        (
+            billingDetails: TreasurySharedResourceBillingDetails,
+            ``type``: OutboundTransfersPaymentMethodDetailsType,
+            financialAccount: OutboundTransfersPaymentMethodDetailsFinancialAccount option,
+            usBankAccount: OutboundTransfersPaymentMethodDetailsUsBankAccount option
+        ) : OutboundTransfersPaymentMethodDetails
+        =
+        {
+          BillingDetails = billingDetails
+          Type = ``type``
+          FinancialAccount = financialAccount
+          UsBankAccount = usBankAccount
+        }
+
+module TreasuryOutboundTransfersResourceAchTrackingDetails =
+    let create
+        (
+            traceId: string
+        ) : TreasuryOutboundTransfersResourceAchTrackingDetails
+        =
+        {
+          TraceId = traceId
+        }
+
+module TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails =
+    let create
+        (
+            chips: string option,
+            imad: string option,
+            omad: string option
+        ) : TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails
+        =
+        {
+          Chips = chips
+          Imad = imad
+          Omad = omad
+        }
+
+module TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails =
+    let create
+        (
+            ``type``: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType,
+            ach: TreasuryOutboundTransfersResourceAchTrackingDetails option,
+            usDomesticWire: TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails option
+        ) : TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails
+        =
+        {
+          Type = ``type``
+          Ach = ach
+          UsDomesticWire = usDomesticWire
+        }
+
+module TreasuryOutboundTransfersResourceStatusTransitions =
+    let create
+        (
+            canceledAt: DateTime option,
+            failedAt: DateTime option,
+            postedAt: DateTime option,
+            returnedAt: DateTime option
+        ) : TreasuryOutboundTransfersResourceStatusTransitions
+        =
+        {
+          CanceledAt = canceledAt
+          FailedAt = failedAt
+          PostedAt = postedAt
+          ReturnedAt = returnedAt
+        }
+
+module TreasuryReceivedCreditsResourceReversalDetails =
+    let create
+        (
+            deadline: DateTime option,
+            restrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option
+        ) : TreasuryReceivedCreditsResourceReversalDetails
+        =
+        {
+          Deadline = deadline
+          RestrictedReason = restrictedReason
+        }
+
+module TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount =
+    let create
+        (
+            bankName: string option,
+            last4: string option,
+            routingNumber: string option
+        ) : TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount
+        =
+        {
+          BankName = bankName
+          Last4 = last4
+          RoutingNumber = routingNumber
+        }
+
+module TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =
+    ///Set when `type` is `balance`.
+    let balance = "payments"
+
+    let create
+        (
+            billingDetails: TreasurySharedResourceBillingDetails,
+            ``type``: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType,
+            financialAccount: ReceivedPaymentMethodDetailsFinancialAccount option,
+            issuingCard: string option,
+            usBankAccount: TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount option
+        ) : TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails
+        =
+        {
+          BillingDetails = billingDetails
+          Type = ``type``
+          FinancialAccount = financialAccount
+          IssuingCard = issuingCard
+          UsBankAccount = usBankAccount
+        }
+
+module TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions =
+    let create
+        (
+            postedAt: DateTime option,
+            voidAt: DateTime option
+        ) : TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions
+        =
+        {
+          PostedAt = postedAt
+          VoidAt = voidAt
+        }
+
+module TreasuryReceivedDebitsResourceLinkedFlows =
+    let create
+        (
+            debitReversal: string option,
+            inboundTransfer: string option,
+            issuingAuthorization: string option,
+            issuingTransaction: string option,
+            payout: string option,
+            topup: string option
+        ) : TreasuryReceivedDebitsResourceLinkedFlows
+        =
+        {
+          DebitReversal = debitReversal
+          InboundTransfer = inboundTransfer
+          IssuingAuthorization = issuingAuthorization
+          IssuingTransaction = issuingTransaction
+          Payout = payout
+          Topup = topup
+        }
+
+module TreasuryReceivedDebitsResourceReversalDetails =
+    let create
+        (
+            deadline: DateTime option,
+            restrictedReason: TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason option
+        ) : TreasuryReceivedDebitsResourceReversalDetails
+        =
+        {
+          Deadline = deadline
+          RestrictedReason = restrictedReason
+        }
+
+module TreasuryCreditReversal =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.credit_reversal"
+
+    let create
+        (
+            amount: int,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            financialAccount: string,
+            hostedRegulatoryReceiptUrl: string option,
+            id: string,
+            livemode: bool,
+            metadata: Map<string, string>,
+            network: TreasuryCreditReversalNetwork,
+            receivedCredit: string,
+            status: TreasuryCreditReversalStatus,
+            statusTransitions: TreasuryReceivedCreditsResourceStatusTransitions,
+            transaction: TreasuryCreditReversalTransaction'AnyOf option
+        ) : TreasuryCreditReversal
+        =
+        {
+          Amount = amount
+          Created = created
+          Currency = currency
+          FinancialAccount = financialAccount
+          HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+          Id = id
+          Livemode = livemode
+          Metadata = metadata
+          Network = network
+          ReceivedCredit = receivedCredit
+          Status = status
+          StatusTransitions = statusTransitions
+          Transaction = transaction
+        }
+
+module TreasuryDebitReversal =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.debit_reversal"
+
+    let create
+        (
+            amount: int,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            financialAccount: string option,
+            hostedRegulatoryReceiptUrl: string option,
+            id: string,
+            linkedFlows: TreasuryReceivedDebitsResourceDebitReversalLinkedFlows option,
+            livemode: bool,
+            metadata: Map<string, string>,
+            network: TreasuryDebitReversalNetwork,
+            receivedDebit: string,
+            status: TreasuryDebitReversalStatus,
+            statusTransitions: TreasuryReceivedDebitsResourceStatusTransitions,
+            transaction: TreasuryDebitReversalTransaction'AnyOf option
+        ) : TreasuryDebitReversal
+        =
+        {
+          Amount = amount
+          Created = created
+          Currency = currency
+          FinancialAccount = financialAccount
+          HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+          Id = id
+          LinkedFlows = linkedFlows
+          Livemode = livemode
+          Metadata = metadata
+          Network = network
+          ReceivedDebit = receivedDebit
+          Status = status
+          StatusTransitions = statusTransitions
+          Transaction = transaction
+        }
+
+module TreasuryInboundTransfer =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.inbound_transfer"
+
+    let create
+        (
+            amount: int,
+            cancelable: bool,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            description: string option,
+            failureDetails: TreasuryInboundTransfersResourceFailureDetails option,
+            financialAccount: string,
+            hostedRegulatoryReceiptUrl: string option,
+            id: string,
+            linkedFlows: TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows,
+            livemode: bool,
+            metadata: Map<string, string>,
+            originPaymentMethod: string option,
+            originPaymentMethodDetails: InboundTransfers option,
+            returned: bool option,
+            statementDescriptor: string,
+            status: TreasuryInboundTransferStatus,
+            statusTransitions: TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions,
+            transaction: TreasuryInboundTransferTransaction'AnyOf option
+        ) : TreasuryInboundTransfer
+        =
+        {
+          Amount = amount
+          Cancelable = cancelable
+          Created = created
+          Currency = currency
+          Description = description
+          FailureDetails = failureDetails
+          FinancialAccount = financialAccount
+          HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+          Id = id
+          LinkedFlows = linkedFlows
+          Livemode = livemode
+          Metadata = metadata
+          OriginPaymentMethod = originPaymentMethod
+          OriginPaymentMethodDetails = originPaymentMethodDetails
+          Returned = returned
+          StatementDescriptor = statementDescriptor
+          Status = status
+          StatusTransitions = statusTransitions
+          Transaction = transaction
+        }
+
+module TreasuryOutboundPayment =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.outbound_payment"
+
+    let create
+        (
+            amount: int,
+            cancelable: bool,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            customer: string option,
+            description: string option,
+            destinationPaymentMethod: string option,
+            destinationPaymentMethodDetails: OutboundPaymentsPaymentMethodDetails option,
+            endUserDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails option,
+            expectedArrivalDate: DateTime,
+            financialAccount: string,
+            hostedRegulatoryReceiptUrl: string option,
+            id: string,
+            livemode: bool,
+            metadata: Map<string, string>,
+            returnedDetails: TreasuryOutboundPaymentsResourceReturnedStatus option,
+            statementDescriptor: string,
+            status: TreasuryOutboundPaymentStatus,
+            statusTransitions: TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions,
+            trackingDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails option,
+            transaction: TreasuryOutboundPaymentTransaction'AnyOf
+        ) : TreasuryOutboundPayment
+        =
+        {
+          Amount = amount
+          Cancelable = cancelable
+          Created = created
+          Currency = currency
+          Customer = customer
+          Description = description
+          DestinationPaymentMethod = destinationPaymentMethod
+          DestinationPaymentMethodDetails = destinationPaymentMethodDetails
+          EndUserDetails = endUserDetails
+          ExpectedArrivalDate = expectedArrivalDate
+          FinancialAccount = financialAccount
+          HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+          Id = id
+          Livemode = livemode
+          Metadata = metadata
+          ReturnedDetails = returnedDetails
+          StatementDescriptor = statementDescriptor
+          Status = status
+          StatusTransitions = statusTransitions
+          TrackingDetails = trackingDetails
+          Transaction = transaction
+        }
+
+module TreasuryOutboundTransfer =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.outbound_transfer"
+
+    let create
+        (
+            amount: int,
+            cancelable: bool,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            description: string option,
+            destinationPaymentMethod: string option,
+            destinationPaymentMethodDetails: OutboundTransfersPaymentMethodDetails,
+            expectedArrivalDate: DateTime,
+            financialAccount: string,
+            hostedRegulatoryReceiptUrl: string option,
+            id: string,
+            livemode: bool,
+            metadata: Map<string, string>,
+            returnedDetails: TreasuryOutboundTransfersResourceReturnedDetails option,
+            statementDescriptor: string,
+            status: TreasuryOutboundTransferStatus,
+            statusTransitions: TreasuryOutboundTransfersResourceStatusTransitions,
+            trackingDetails: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails option,
+            transaction: TreasuryOutboundTransferTransaction'AnyOf
+        ) : TreasuryOutboundTransfer
+        =
+        {
+          Amount = amount
+          Cancelable = cancelable
+          Created = created
+          Currency = currency
+          Description = description
+          DestinationPaymentMethod = destinationPaymentMethod
+          DestinationPaymentMethodDetails = destinationPaymentMethodDetails
+          ExpectedArrivalDate = expectedArrivalDate
+          FinancialAccount = financialAccount
+          HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+          Id = id
+          Livemode = livemode
+          Metadata = metadata
+          ReturnedDetails = returnedDetails
+          StatementDescriptor = statementDescriptor
+          Status = status
+          StatusTransitions = statusTransitions
+          TrackingDetails = trackingDetails
+          Transaction = transaction
+        }
+
+module TreasuryReceivedCredit =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.received_credit"
+
+    let create
+        (
+            amount: int,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            description: string,
+            failureCode: TreasuryReceivedCreditFailureCode option,
+            financialAccount: string option,
+            hostedRegulatoryReceiptUrl: string option,
+            id: string,
+            initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails,
+            linkedFlows: TreasuryReceivedCreditsResourceLinkedFlows,
+            livemode: bool,
+            network: TreasuryReceivedCreditNetwork,
+            reversalDetails: TreasuryReceivedCreditsResourceReversalDetails option,
+            status: TreasuryReceivedCreditStatus,
+            transaction: TreasuryReceivedCreditTransaction'AnyOf option
+        ) : TreasuryReceivedCredit
+        =
+        {
+          Amount = amount
+          Created = created
+          Currency = currency
+          Description = description
+          FailureCode = failureCode
+          FinancialAccount = financialAccount
+          HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+          Id = id
+          InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+          LinkedFlows = linkedFlows
+          Livemode = livemode
+          Network = network
+          ReversalDetails = reversalDetails
+          Status = status
+          Transaction = transaction
+        }
+
+module TreasuryReceivedDebit =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.received_debit"
+
+    let create
+        (
+            amount: int,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            description: string,
+            failureCode: TreasuryReceivedDebitFailureCode option,
+            financialAccount: string option,
+            hostedRegulatoryReceiptUrl: string option,
+            id: string,
+            linkedFlows: TreasuryReceivedDebitsResourceLinkedFlows,
+            livemode: bool,
+            network: TreasuryReceivedDebitNetwork,
+            reversalDetails: TreasuryReceivedDebitsResourceReversalDetails option,
+            status: TreasuryReceivedDebitStatus,
+            transaction: TreasuryReceivedDebitTransaction'AnyOf option,
+            initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails option
+        ) : TreasuryReceivedDebit
+        =
+        {
+          Amount = amount
+          Created = created
+          Currency = currency
+          Description = description
+          FailureCode = failureCode
+          FinancialAccount = financialAccount
+          HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+          Id = id
+          LinkedFlows = linkedFlows
+          Livemode = livemode
+          Network = network
+          ReversalDetails = reversalDetails
+          Status = status
+          Transaction = transaction
+          InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+        }
+
+module TreasuryTransaction =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.transaction"
+
+    let create
+        (
+            amount: int,
+            balanceImpact: TreasuryTransactionsResourceBalanceImpact,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            description: string,
+            financialAccount: string,
+            flow: string option,
+            flowType: TreasuryTransactionFlowType,
+            id: string,
+            livemode: bool,
+            status: TreasuryTransactionStatus,
+            statusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions,
+            entries: TreasuryTransactionEntries option option,
+            flowDetails: TreasuryTransactionsResourceFlowDetails option option
+        ) : TreasuryTransaction
+        =
+        {
+          Amount = amount
+          BalanceImpact = balanceImpact
+          Created = created
+          Currency = currency
+          Description = description
+          FinancialAccount = financialAccount
+          Flow = flow
+          FlowType = flowType
+          Id = id
+          Livemode = livemode
+          Status = status
+          StatusTransitions = statusTransitions
+          Entries = entries |> Option.flatten
+          FlowDetails = flowDetails |> Option.flatten
+        }
+
+module TreasuryTransactionEntries =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+    let create
+        (
+            data: TreasuryTransactionEntry list,
+            hasMore: bool,
+            url: string
+        ) : TreasuryTransactionEntries
+        =
+        {
+          Data = data
+          HasMore = hasMore
+          Url = url
+        }
+
+module TreasuryTransactionEntry =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.transaction_entry"
+
+    let create
+        (
+            balanceImpact: TreasuryTransactionsResourceBalanceImpact,
+            created: DateTime,
+            currency: IsoTypes.IsoCurrencyCode,
+            effectiveAt: DateTime,
+            financialAccount: string,
+            flow: string option,
+            flowType: TreasuryTransactionEntryFlowType,
+            id: string,
+            livemode: bool,
+            transaction: TreasuryTransactionEntryTransaction'AnyOf,
+            ``type``: TreasuryTransactionEntryType,
+            flowDetails: TreasuryTransactionsResourceFlowDetails option option
+        ) : TreasuryTransactionEntry
+        =
+        {
+          BalanceImpact = balanceImpact
+          Created = created
+          Currency = currency
+          EffectiveAt = effectiveAt
+          FinancialAccount = financialAccount
+          Flow = flow
+          FlowType = flowType
+          Id = id
+          Livemode = livemode
+          Transaction = transaction
+          Type = ``type``
+          FlowDetails = flowDetails |> Option.flatten
+        }
+
+module TreasuryOutboundPaymentsResourceReturnedStatus =
+    let create
+        (
+            code: TreasuryOutboundPaymentsResourceReturnedStatusCode,
+            transaction: TreasuryOutboundPaymentsResourceReturnedStatusTransaction'AnyOf
+        ) : TreasuryOutboundPaymentsResourceReturnedStatus
+        =
+        {
+          Code = code
+          Transaction = transaction
+        }
+
+module TreasuryOutboundTransfersResourceReturnedDetails =
+    let create
+        (
+            code: TreasuryOutboundTransfersResourceReturnedDetailsCode,
+            transaction: TreasuryOutboundTransfersResourceReturnedDetailsTransaction'AnyOf
+        ) : TreasuryOutboundTransfersResourceReturnedDetails
+        =
+        {
+          Code = code
+          Transaction = transaction
+        }
+
+module TreasuryReceivedCreditsResourceLinkedFlows =
+    let create
+        (
+            creditReversal: string option,
+            issuingAuthorization: string option,
+            issuingTransaction: string option,
+            sourceFlow: string option,
+            sourceFlowType: string option,
+            sourceFlowDetails: TreasuryReceivedCreditsResourceSourceFlowsDetails option option
+        ) : TreasuryReceivedCreditsResourceLinkedFlows
+        =
+        {
+          CreditReversal = creditReversal
+          IssuingAuthorization = issuingAuthorization
+          IssuingTransaction = issuingTransaction
+          SourceFlow = sourceFlow
+          SourceFlowType = sourceFlowType
+          SourceFlowDetails = sourceFlowDetails |> Option.flatten
+        }
+
+module TreasuryReceivedCreditsResourceSourceFlowsDetails =
+    let create
+        (
+            ``type``: TreasuryReceivedCreditsResourceSourceFlowsDetailsType,
+            creditReversal: TreasuryCreditReversal option,
+            outboundPayment: TreasuryOutboundPayment option,
+            outboundTransfer: TreasuryOutboundTransfer option,
+            payout: Payout option
+        ) : TreasuryReceivedCreditsResourceSourceFlowsDetails
+        =
+        {
+          Type = ``type``
+          CreditReversal = creditReversal
+          OutboundPayment = outboundPayment
+          OutboundTransfer = outboundTransfer
+          Payout = payout
+        }
+
+module TreasuryTransactionsResourceFlowDetails =
+    let create
+        (
+            ``type``: TreasuryTransactionsResourceFlowDetailsType,
+            creditReversal: TreasuryCreditReversal option,
+            debitReversal: TreasuryDebitReversal option,
+            inboundTransfer: TreasuryInboundTransfer option,
+            issuingAuthorization: IssuingAuthorization option,
+            outboundPayment: TreasuryOutboundPayment option,
+            outboundTransfer: TreasuryOutboundTransfer option,
+            receivedCredit: TreasuryReceivedCredit option,
+            receivedDebit: TreasuryReceivedDebit option
+        ) : TreasuryTransactionsResourceFlowDetails
+        =
+        {
+          Type = ``type``
+          CreditReversal = creditReversal
+          DebitReversal = debitReversal
+          InboundTransfer = inboundTransfer
+          IssuingAuthorization = issuingAuthorization
+          OutboundPayment = outboundPayment
+          OutboundTransfer = outboundTransfer
+          ReceivedCredit = receivedCredit
+          ReceivedDebit = receivedDebit
+        }
+
+module TreasuryReceivedDebitCreated =
+    let create
+        (
+            object: TreasuryReceivedDebit
+        ) : TreasuryReceivedDebitCreated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryReceivedCreditSucceeded =
+    let create
+        (
+            object: TreasuryReceivedCredit
+        ) : TreasuryReceivedCreditSucceeded
+        =
+        {
+          Object = object
+        }
+
+module TreasuryReceivedCreditFailed =
+    let create
+        (
+            object: TreasuryReceivedCredit
+        ) : TreasuryReceivedCreditFailed
+        =
+        {
+          Object = object
+        }
+
+module TreasuryReceivedCreditCreated =
+    let create
+        (
+            object: TreasuryReceivedCredit
+        ) : TreasuryReceivedCreditCreated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundTransferTrackingDetailsUpdated =
+    let create
+        (
+            object: TreasuryOutboundTransfer
+        ) : TreasuryOutboundTransferTrackingDetailsUpdated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundTransferReturned =
+    let create
+        (
+            object: TreasuryOutboundTransfer
+        ) : TreasuryOutboundTransferReturned
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundTransferPosted =
+    let create
+        (
+            object: TreasuryOutboundTransfer
+        ) : TreasuryOutboundTransferPosted
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundTransferFailed =
+    let create
+        (
+            object: TreasuryOutboundTransfer
+        ) : TreasuryOutboundTransferFailed
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundTransferExpectedArrivalDateUpdated =
+    let create
+        (
+            object: TreasuryOutboundTransfer
+        ) : TreasuryOutboundTransferExpectedArrivalDateUpdated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundTransferCreated =
+    let create
+        (
+            object: TreasuryOutboundTransfer
+        ) : TreasuryOutboundTransferCreated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundTransferCanceled =
+    let create
+        (
+            object: TreasuryOutboundTransfer
+        ) : TreasuryOutboundTransferCanceled
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundPaymentTrackingDetailsUpdated =
+    let create
+        (
+            object: TreasuryOutboundPayment
+        ) : TreasuryOutboundPaymentTrackingDetailsUpdated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundPaymentReturned =
+    let create
+        (
+            object: TreasuryOutboundPayment
+        ) : TreasuryOutboundPaymentReturned
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundPaymentPosted =
+    let create
+        (
+            object: TreasuryOutboundPayment
+        ) : TreasuryOutboundPaymentPosted
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundPaymentFailed =
+    let create
+        (
+            object: TreasuryOutboundPayment
+        ) : TreasuryOutboundPaymentFailed
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundPaymentExpectedArrivalDateUpdated =
+    let create
+        (
+            object: TreasuryOutboundPayment
+        ) : TreasuryOutboundPaymentExpectedArrivalDateUpdated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundPaymentCreated =
+    let create
+        (
+            object: TreasuryOutboundPayment
+        ) : TreasuryOutboundPaymentCreated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryOutboundPaymentCanceled =
+    let create
+        (
+            object: TreasuryOutboundPayment
+        ) : TreasuryOutboundPaymentCanceled
+        =
+        {
+          Object = object
+        }
+
+module TreasuryInboundTransferSucceeded =
+    let create
+        (
+            object: TreasuryInboundTransfer
+        ) : TreasuryInboundTransferSucceeded
+        =
+        {
+          Object = object
+        }
+
+module TreasuryInboundTransferFailed =
+    let create
+        (
+            object: TreasuryInboundTransfer
+        ) : TreasuryInboundTransferFailed
+        =
+        {
+          Object = object
+        }
+
+module TreasuryInboundTransferCreated =
+    let create
+        (
+            object: TreasuryInboundTransfer
+        ) : TreasuryInboundTransferCreated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryInboundTransferCanceled =
+    let create
+        (
+            object: TreasuryInboundTransfer
+        ) : TreasuryInboundTransferCanceled
+        =
+        {
+          Object = object
+        }
+
+module TreasuryFinancialAccountsResourceTogglesSettingStatusDetails =
+    let create
+        (
+            code: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode,
+            resolution: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution option,
+            restriction: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction option
+        ) : TreasuryFinancialAccountsResourceTogglesSettingStatusDetails
+        =
+        {
+          Code = code
+          Resolution = resolution
+          Restriction = restriction
+        }
+
+module TreasuryFinancialAccountsResourceAbaToggleSettings =
+    let create
+        (
+            requested: bool,
+            status: TreasuryFinancialAccountsResourceAbaToggleSettingsStatus,
+            statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+        ) : TreasuryFinancialAccountsResourceAbaToggleSettings
+        =
+        {
+          Requested = requested
+          Status = status
+          StatusDetails = statusDetails
+        }
+
+module TreasuryFinancialAccountsResourceFinancialAddressesFeatures =
+    let create
+        (
+            aba: TreasuryFinancialAccountsResourceAbaToggleSettings option
+        ) : TreasuryFinancialAccountsResourceFinancialAddressesFeatures
+        =
+        {
+          Aba = aba
+        }
+
+module TreasuryFinancialAccountsResourceInboundAchToggleSettings =
+    let create
+        (
+            requested: bool,
+            status: TreasuryFinancialAccountsResourceInboundAchToggleSettingsStatus,
+            statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+        ) : TreasuryFinancialAccountsResourceInboundAchToggleSettings
+        =
+        {
+          Requested = requested
+          Status = status
+          StatusDetails = statusDetails
+        }
+
+module TreasuryFinancialAccountsResourceInboundTransfers =
+    let create
+        (
+            ach: TreasuryFinancialAccountsResourceInboundAchToggleSettings option
+        ) : TreasuryFinancialAccountsResourceInboundTransfers
+        =
+        {
+          Ach = ach
+        }
+
+module TreasuryFinancialAccountsResourceOutboundAchToggleSettings =
+    let create
+        (
+            requested: bool,
+            status: TreasuryFinancialAccountsResourceOutboundAchToggleSettingsStatus,
+            statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+        ) : TreasuryFinancialAccountsResourceOutboundAchToggleSettings
+        =
+        {
+          Requested = requested
+          Status = status
+          StatusDetails = statusDetails
+        }
+
+module TreasuryFinancialAccountsResourceToggleSettings =
+    let create
+        (
+            requested: bool,
+            status: TreasuryFinancialAccountsResourceToggleSettingsStatus,
+            statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
+        ) : TreasuryFinancialAccountsResourceToggleSettings
+        =
+        {
+          Requested = requested
+          Status = status
+          StatusDetails = statusDetails
+        }
+
+module TreasuryFinancialAccountsResourceOutboundPayments =
+    let create
+        (
+            ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings option,
+            usDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option
+        ) : TreasuryFinancialAccountsResourceOutboundPayments
+        =
+        {
+          Ach = ach
+          UsDomesticWire = usDomesticWire
+        }
+
+module TreasuryFinancialAccountsResourceOutboundTransfers =
+    let create
+        (
+            ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings option,
+            usDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option
+        ) : TreasuryFinancialAccountsResourceOutboundTransfers
+        =
+        {
+          Ach = ach
+          UsDomesticWire = usDomesticWire
+        }
+
+module TreasuryFinancialAccountFeatures =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.financial_account_features"
+
+    let create
+        (
+            cardIssuing: TreasuryFinancialAccountsResourceToggleSettings option,
+            depositInsurance: TreasuryFinancialAccountsResourceToggleSettings option,
+            financialAddresses: TreasuryFinancialAccountsResourceFinancialAddressesFeatures option,
+            inboundTransfers: TreasuryFinancialAccountsResourceInboundTransfers option,
+            intraStripeFlows: TreasuryFinancialAccountsResourceToggleSettings option,
+            outboundPayments: TreasuryFinancialAccountsResourceOutboundPayments option,
+            outboundTransfers: TreasuryFinancialAccountsResourceOutboundTransfers option
+        ) : TreasuryFinancialAccountFeatures
+        =
+        {
+          CardIssuing = cardIssuing
+          DepositInsurance = depositInsurance
+          FinancialAddresses = financialAddresses
+          InboundTransfers = inboundTransfers
+          IntraStripeFlows = intraStripeFlows
+          OutboundPayments = outboundPayments
+          OutboundTransfers = outboundTransfers
+        }
+
+module TreasuryFinancialAccountsResourceBalance =
+    let create
+        (
+            cash: Map<string, string list>,
+            inboundPending: Map<string, string list>,
+            outboundPending: Map<string, string list>
+        ) : TreasuryFinancialAccountsResourceBalance
+        =
+        {
+          Cash = cash
+          InboundPending = inboundPending
+          OutboundPending = outboundPending
+        }
+
+module TreasuryFinancialAccountsResourceAbaRecord =
+    let create
+        (
+            accountHolderName: string,
+            accountNumberLast4: string,
+            bankName: string,
+            routingNumber: string,
+            accountNumber: string option option
+        ) : TreasuryFinancialAccountsResourceAbaRecord
+        =
+        {
+          AccountHolderName = accountHolderName
+          AccountNumberLast4 = accountNumberLast4
+          BankName = bankName
+          RoutingNumber = routingNumber
+          AccountNumber = accountNumber |> Option.flatten
+        }
+
+module TreasuryFinancialAccountsResourceFinancialAddress =
+    ///The type of financial address
+    let ``type`` = "aba"
+
+    let create
+        (
+            aba: TreasuryFinancialAccountsResourceAbaRecord option,
+            supportedNetworks: TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks list option
+        ) : TreasuryFinancialAccountsResourceFinancialAddress
+        =
+        {
+          Aba = aba
+          SupportedNetworks = supportedNetworks
+        }
+
+module TreasuryFinancialAccountsResourcePlatformRestrictions =
+    let create
+        (
+            inboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsInboundFlows option,
+            outboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows option
+        ) : TreasuryFinancialAccountsResourcePlatformRestrictions
+        =
+        {
+          InboundFlows = inboundFlows
+          OutboundFlows = outboundFlows
+        }
+
+module TreasuryFinancialAccountsResourceClosedStatusDetails =
+    let create
+        (
+            reasons: TreasuryFinancialAccountsResourceClosedStatusDetailsReasons list
+        ) : TreasuryFinancialAccountsResourceClosedStatusDetails
+        =
+        {
+          Reasons = reasons
+        }
+
+module TreasuryFinancialAccountsResourceStatusDetails =
+    let create
+        (
+            closed: TreasuryFinancialAccountsResourceClosedStatusDetails option
+        ) : TreasuryFinancialAccountsResourceStatusDetails
+        =
+        {
+          Closed = closed
+        }
+
+module TreasuryFinancialAccount =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "treasury.financial_account"
+
+    let create
+        (
+            balance: TreasuryFinancialAccountsResourceBalance,
+            country: IsoTypes.IsoCountryCode,
+            created: DateTime,
+            financialAddresses: TreasuryFinancialAccountsResourceFinancialAddress list,
+            id: string,
+            livemode: bool,
+            metadata: Map<string, string> option,
+            status: TreasuryFinancialAccountStatus,
+            statusDetails: TreasuryFinancialAccountsResourceStatusDetails,
+            supportedCurrencies: string list,
+            activeFeatures: TreasuryFinancialAccountActiveFeatures list option,
+            features: TreasuryFinancialAccountFeatures option,
+            isDefault: bool option,
+            nickname: string option option,
+            pendingFeatures: TreasuryFinancialAccountPendingFeatures list option,
+            platformRestrictions: TreasuryFinancialAccountsResourcePlatformRestrictions option option,
+            restrictedFeatures: TreasuryFinancialAccountRestrictedFeatures list option
+        ) : TreasuryFinancialAccount
+        =
+        {
+          Balance = balance
+          Country = country
+          Created = created
+          FinancialAddresses = financialAddresses
+          Id = id
+          Livemode = livemode
+          Metadata = metadata
+          Status = status
+          StatusDetails = statusDetails
+          SupportedCurrencies = supportedCurrencies
+          ActiveFeatures = activeFeatures
+          Features = features
+          IsDefault = isDefault
+          Nickname = nickname |> Option.flatten
+          PendingFeatures = pendingFeatures
+          PlatformRestrictions = platformRestrictions |> Option.flatten
+          RestrictedFeatures = restrictedFeatures
+        }
+
+module TreasuryFinancialAccountFeaturesStatusUpdated =
+    let create
+        (
+            object: TreasuryFinancialAccount
+        ) : TreasuryFinancialAccountFeaturesStatusUpdated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryFinancialAccountCreated =
+    let create
+        (
+            object: TreasuryFinancialAccount
+        ) : TreasuryFinancialAccountCreated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryFinancialAccountClosed =
+    let create
+        (
+            object: TreasuryFinancialAccount
+        ) : TreasuryFinancialAccountClosed
+        =
+        {
+          Object = object
+        }
+
+module TreasuryDebitReversalInitialCreditGranted =
+    let create
+        (
+            object: TreasuryDebitReversal
+        ) : TreasuryDebitReversalInitialCreditGranted
+        =
+        {
+          Object = object
+        }
+
+module TreasuryDebitReversalCreated =
+    let create
+        (
+            object: TreasuryDebitReversal
+        ) : TreasuryDebitReversalCreated
+        =
+        {
+          Object = object
+        }
+
+module TreasuryDebitReversalCompleted =
+    let create
+        (
+            object: TreasuryDebitReversal
+        ) : TreasuryDebitReversalCompleted
+        =
+        {
+          Object = object
+        }
+
+module TreasuryCreditReversalPosted =
+    let create
+        (
+            object: TreasuryCreditReversal
+        ) : TreasuryCreditReversalPosted
+        =
+        {
+          Object = object
+        }
+
+module TreasuryCreditReversalCreated =
+    let create
+        (
+            object: TreasuryCreditReversal
+        ) : TreasuryCreditReversalCreated
+        =
+        {
+          Object = object
+        }
+

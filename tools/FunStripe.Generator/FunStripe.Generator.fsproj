@@ -11,10 +11,16 @@
   <ItemGroup>
     <Compile Include="../../src/ModelBuilder.fs" Link="ModelBuilder.fs" />
     <Compile Include="../../src/RequestBuilder.fs" Link="RequestBuilder.fs" />
+    <Compile Include="ModelParsing.fs" />
+    <Compile Include="ModelBuilderAST.fs" />
+    <Compile Include="ModelBuilderModular.fs" />
+    <Compile Include="RequestParsing.fs" />
+    <Compile Include="RequestBuilderAST.fs" />
     <Compile Include="Generator.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" />
     <PackageReference Include="FSharp.Data.Json.Core" />
+    <PackageReference Include="Fabulous.AST" />
   </ItemGroup>
 </Project>
