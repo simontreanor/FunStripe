@@ -273,25 +273,18 @@ type FundingInstructionsBankTransferFinancialAddress =
 module FundingInstructionsBankTransferFinancialAddress =
     let create
         (
-            ``type``: FundingInstructionsBankTransferFinancialAddressType,
-            aba: FundingInstructionsBankTransferAbaRecord option,
-            iban: FundingInstructionsBankTransferIbanRecord option,
-            sortCode: FundingInstructionsBankTransferSortCodeRecord option,
-            spei: FundingInstructionsBankTransferSpeiRecord option,
-            supportedNetworks: FundingInstructionsBankTransferFinancialAddressSupportedNetworks list option,
-            swift: FundingInstructionsBankTransferSwiftRecord option,
-            zengin: FundingInstructionsBankTransferZenginRecord option
+            ``type``: FundingInstructionsBankTransferFinancialAddressType
         ) : FundingInstructionsBankTransferFinancialAddress
         =
         {
           Type = ``type``
-          Aba = aba
-          Iban = iban
-          SortCode = sortCode
-          Spei = spei
-          SupportedNetworks = supportedNetworks
-          Swift = swift
-          Zengin = zengin
+          Aba = None
+          Iban = None
+          SortCode = None
+          Spei = None
+          SupportedNetworks = None
+          Swift = None
+          Zengin = None
         }
 
 [<Struct>]

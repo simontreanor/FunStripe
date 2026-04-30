@@ -176,8 +176,7 @@ module ThreeDSecureDetailsCharge =
             result: ThreeDSecureDetailsChargeResult option,
             resultReason: ThreeDSecureDetailsChargeResultReason option,
             transactionId: string option,
-            version: ThreeDSecureDetailsChargeVersion option,
-            exemptionIndicatorApplied: bool option
+            version: ThreeDSecureDetailsChargeVersion option
         ) : ThreeDSecureDetailsCharge
         =
         {
@@ -188,6 +187,6 @@ module ThreeDSecureDetailsCharge =
           ResultReason = resultReason
           TransactionId = transactionId
           Version = version
-          ExemptionIndicatorApplied = exemptionIndicatorApplied
+          ExemptionIndicatorApplied = None
         }
 

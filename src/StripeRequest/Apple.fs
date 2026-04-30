@@ -57,13 +57,12 @@ module ApplePayDomains =
     module CreateOptions =
         let create
             (
-                domainName: string,
-                expand: string list option
+                domainName: string
             ) : CreateOptions
             =
             {
               DomainName = domainName
-              Expand = expand
+              Expand = None
             }
 
     type DeleteOptions =
@@ -92,13 +91,12 @@ module ApplePayDomains =
     module RetrieveOptions =
         let create
             (
-                domain: string,
-                expand: string list option
+                domain: string
             ) : RetrieveOptions
             =
             {
               Domain = domain
-              Expand = expand
+              Expand = None
             }
 
     ///<p>List apple pay domains.</p>

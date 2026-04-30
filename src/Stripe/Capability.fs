@@ -45,9 +45,7 @@ module Capability =
             id: string,
             requested: bool,
             requestedAt: DateTime option,
-            status: CapabilityStatus,
-            futureRequirements: AccountCapabilityFutureRequirements option,
-            requirements: AccountCapabilityRequirements option
+            status: CapabilityStatus
         ) : Capability
         =
         {
@@ -56,8 +54,8 @@ module Capability =
           Requested = requested
           RequestedAt = requestedAt
           Status = status
-          FutureRequirements = futureRequirements
-          Requirements = requirements
+          FutureRequirements = None
+          Requirements = None
         }
 
 /// Occurs whenever a capability has new requirements or a new status.

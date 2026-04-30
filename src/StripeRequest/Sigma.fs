@@ -52,13 +52,12 @@ module SigmaScheduledQueryRuns =
     module RetrieveOptions =
         let create
             (
-                scheduledQueryRun: string,
-                expand: string list option
+                scheduledQueryRun: string
             ) : RetrieveOptions
             =
             {
               ScheduledQueryRun = scheduledQueryRun
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of scheduled query runs.</p>

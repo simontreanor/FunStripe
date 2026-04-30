@@ -591,13 +591,12 @@ module Quotes =
     module RetrieveOptions =
         let create
             (
-                quote: string,
-                expand: string list option
+                quote: string
             ) : RetrieveOptions
             =
             {
               Quote = quote
-              Expand = expand
+              Expand = None
             }
 
     type Update'AutomaticTaxLiabilityType =
@@ -998,49 +997,30 @@ module Quotes =
     module UpdateOptions =
         let create
             (
-                quote: string,
-                applicationFeeAmount: Choice<int,string> option,
-                applicationFeePercent: Choice<decimal,string> option,
-                automaticTax: Update'AutomaticTax option,
-                collectionMethod: Update'CollectionMethod option,
-                customer: string option,
-                customerAccount: string option,
-                defaultTaxRates: Choice<string list,string> option,
-                description: Choice<string,string> option,
-                discounts: Choice<Update'Discounts list,string> option,
-                expand: string list option,
-                expiresAt: DateTime option,
-                footer: Choice<string,string> option,
-                header: Choice<string,string> option,
-                invoiceSettings: Update'InvoiceSettings option,
-                lineItems: Update'LineItems list option,
-                metadata: Map<string, string> option,
-                onBehalfOf: Choice<string,string> option,
-                subscriptionData: Update'SubscriptionData option,
-                transferData: Choice<Update'TransferDataTransferDataSpecs,string> option
+                quote: string
             ) : UpdateOptions
             =
             {
               Quote = quote
-              ApplicationFeeAmount = applicationFeeAmount
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              CollectionMethod = collectionMethod
-              Customer = customer
-              CustomerAccount = customerAccount
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              Expand = expand
-              ExpiresAt = expiresAt
-              Footer = footer
-              Header = header
-              InvoiceSettings = invoiceSettings
-              LineItems = lineItems
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              SubscriptionData = subscriptionData
-              TransferData = transferData
+              ApplicationFeeAmount = None
+              ApplicationFeePercent = None
+              AutomaticTax = None
+              CollectionMethod = None
+              Customer = None
+              CustomerAccount = None
+              DefaultTaxRates = None
+              Description = None
+              Discounts = None
+              Expand = None
+              ExpiresAt = None
+              Footer = None
+              Header = None
+              InvoiceSettings = None
+              LineItems = None
+              Metadata = None
+              OnBehalfOf = None
+              SubscriptionData = None
+              TransferData = None
             }
 
     ///<p>Returns a list of your quotes.</p>
@@ -1079,13 +1059,12 @@ module QuotesAccept =
     module AcceptOptions =
         let create
             (
-                quote: string,
-                expand: string list option
+                quote: string
             ) : AcceptOptions
             =
             {
               Quote = quote
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Accepts the specified quote.</p>
@@ -1107,13 +1086,12 @@ module QuotesCancel =
     module CancelOptions =
         let create
             (
-                quote: string,
-                expand: string list option
+                quote: string
             ) : CancelOptions
             =
             {
               Quote = quote
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Cancels the quote.</p>
@@ -1144,19 +1122,15 @@ module QuotesComputedUpfrontLineItems =
     module ListComputedUpfrontLineItemsOptions =
         let create
             (
-                quote: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                quote: string
             ) : ListComputedUpfrontLineItemsOptions
             =
             {
               Quote = quote
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>When retrieving a quote, there is an includable <a href="https://stripe.com/docs/api/quotes/object#quote_object-computed-upfront-line_items"><strong>computed.upfront.line_items</strong></a> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of upfront line items.</p>
@@ -1182,15 +1156,13 @@ module QuotesFinalize =
     module FinalizeQuoteOptions =
         let create
             (
-                quote: string,
-                expand: string list option,
-                expiresAt: DateTime option
+                quote: string
             ) : FinalizeQuoteOptions
             =
             {
               Quote = quote
-              Expand = expand
-              ExpiresAt = expiresAt
+              Expand = None
+              ExpiresAt = None
             }
 
     ///<p>Finalizes the quote.</p>
@@ -1221,19 +1193,15 @@ module QuotesLineItems =
     module ListLineItemsOptions =
         let create
             (
-                quote: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                quote: string
             ) : ListLineItemsOptions
             =
             {
               Quote = quote
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>When retrieving a quote, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
@@ -1256,13 +1224,12 @@ module QuotesPdf =
     module PdfOptions =
         let create
             (
-                quote: string,
-                expand: string list option
+                quote: string
             ) : PdfOptions
             =
             {
               Quote = quote
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Download the PDF for a finalized quote. Explanation for special handling can be found <a href="https://docs.stripe.com/quotes/overview#quote_pdf">here</a></p>

@@ -30,19 +30,15 @@ module AppsSecrets =
     module ListOptions =
         let create
             (
-                scope: Map<string, string>,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                scope: Map<string, string>
             ) : ListOptions
             =
             {
               Scope = scope
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type Create'ScopeType =
@@ -95,17 +91,15 @@ module AppsSecrets =
             (
                 name: string,
                 payload: string,
-                scope: Create'Scope,
-                expand: string list option,
-                expiresAt: DateTime option
+                scope: Create'Scope
             ) : CreateOptions
             =
             {
               Name = name
               Payload = payload
               Scope = scope
-              Expand = expand
-              ExpiresAt = expiresAt
+              Expand = None
+              ExpiresAt = None
             }
 
     ///<p>List all secrets stored on the given scope.</p>
@@ -164,14 +158,13 @@ module AppsSecretsDelete =
         let create
             (
                 name: string,
-                scope: DeleteWhere'Scope,
-                expand: string list option
+                scope: DeleteWhere'Scope
             ) : DeleteWhereOptions
             =
             {
               Name = name
               Scope = scope
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Deletes a secret from the secret store by name and scope.</p>
@@ -198,14 +191,13 @@ module AppsSecretsFind =
         let create
             (
                 name: string,
-                scope: Map<string, string>,
-                expand: string list option
+                scope: Map<string, string>
             ) : FindOptions
             =
             {
               Name = name
               Scope = scope
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Finds a secret in the secret store by name and scope.</p>

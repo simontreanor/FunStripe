@@ -1097,13 +1097,12 @@ module TerminalConfigurations =
     module RetrieveOptions =
         let create
             (
-                configuration: string,
-                expand: string list option
+                configuration: string
             ) : RetrieveOptions
             =
             {
               Configuration = configuration
-              Expand = expand
+              Expand = None
             }
 
     type Update'BbposWisepad3BbposWisePad3 =
@@ -2104,35 +2103,23 @@ module TerminalConfigurations =
     module UpdateOptions =
         let create
             (
-                configuration: string,
-                bbposWisepad3: Choice<Update'BbposWisepad3BbposWisePad3,string> option,
-                bbposWiseposE: Choice<Update'BbposWiseposEBbposWisePose,string> option,
-                cellular: Choice<Update'CellularCellular,string> option,
-                expand: string list option,
-                name: string option,
-                offline: Choice<Update'OfflineOffline,string> option,
-                rebootWindow: Choice<Update'RebootWindowRebootWindow,string> option,
-                stripeS700: Choice<Update'StripeS700StripeS700,string> option,
-                stripeS710: Choice<Update'StripeS710StripeS710,string> option,
-                tipping: Choice<Update'TippingTipping,string> option,
-                verifoneP400: Choice<Update'VerifoneP400VerifoneP400,string> option,
-                wifi: Choice<Update'WifiWifi,string> option
+                configuration: string
             ) : UpdateOptions
             =
             {
               Configuration = configuration
-              BbposWisepad3 = bbposWisepad3
-              BbposWiseposE = bbposWiseposE
-              Cellular = cellular
-              Expand = expand
-              Name = name
-              Offline = offline
-              RebootWindow = rebootWindow
-              StripeS700 = stripeS700
-              StripeS710 = stripeS710
-              Tipping = tipping
-              VerifoneP400 = verifoneP400
-              Wifi = wifi
+              BbposWisepad3 = None
+              BbposWiseposE = None
+              Cellular = None
+              Expand = None
+              Name = None
+              Offline = None
+              RebootWindow = None
+              StripeS700 = None
+              StripeS710 = None
+              Tipping = None
+              VerifoneP400 = None
+              Wifi = None
             }
 
     ///<p>Returns a list of <code>Configuration</code> objects.</p>
@@ -2449,13 +2436,12 @@ module TerminalLocations =
     module RetrieveOptions =
         let create
             (
-                location: string,
-                expand: string list option
+                location: string
             ) : RetrieveOptions
             =
             {
               Location = location
-              Expand = expand
+              Expand = None
             }
 
     type Update'Address =
@@ -2633,31 +2619,21 @@ module TerminalLocations =
     module UpdateOptions =
         let create
             (
-                location: string,
-                address: Update'Address option,
-                addressKana: Update'AddressKana option,
-                addressKanji: Update'AddressKanji option,
-                configurationOverrides: Choice<string,string> option,
-                displayName: Choice<string,string> option,
-                displayNameKana: Choice<string,string> option,
-                displayNameKanji: Choice<string,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                phone: Choice<string,string> option
+                location: string
             ) : UpdateOptions
             =
             {
               Location = location
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              ConfigurationOverrides = configurationOverrides
-              DisplayName = displayName
-              DisplayNameKana = displayNameKana
-              DisplayNameKanji = displayNameKanji
-              Expand = expand
-              Metadata = metadata
-              Phone = phone
+              Address = None
+              AddressKana = None
+              AddressKanji = None
+              ConfigurationOverrides = None
+              DisplayName = None
+              DisplayNameKana = None
+              DisplayNameKanji = None
+              Expand = None
+              Metadata = None
+              Phone = None
             }
 
     ///<p>Returns a list of <code>Location</code> objects.</p>
@@ -2751,16 +2727,14 @@ module TerminalOnboardingLinks =
         let create
             (
                 linkOptions: Create'LinkOptions,
-                linkType: Create'LinkType,
-                expand: string list option,
-                onBehalfOf: string option
+                linkType: Create'LinkType
             ) : CreateOptions
             =
             {
               LinkOptions = linkOptions
               LinkType = linkType
-              Expand = expand
-              OnBehalfOf = onBehalfOf
+              Expand = None
+              OnBehalfOf = None
             }
 
     ///<p>Creates a new <code>OnboardingLink</code> object that contains a redirect_url used for onboarding onto Tap to Pay on iPhone.</p>
@@ -2844,19 +2818,15 @@ module TerminalReaders =
     module CreateOptions =
         let create
             (
-                registrationCode: string,
-                expand: string list option,
-                label: string option,
-                location: string option,
-                metadata: Map<string, string> option
+                registrationCode: string
             ) : CreateOptions
             =
             {
               RegistrationCode = registrationCode
-              Expand = expand
-              Label = label
-              Location = location
-              Metadata = metadata
+              Expand = None
+              Label = None
+              Location = None
+              Metadata = None
             }
 
     type DeleteOptions =
@@ -2885,13 +2855,12 @@ module TerminalReaders =
     module RetrieveOptions =
         let create
             (
-                reader: string,
-                expand: string list option
+                reader: string
             ) : RetrieveOptions
             =
             {
               Reader = reader
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -2912,17 +2881,14 @@ module TerminalReaders =
     module UpdateOptions =
         let create
             (
-                reader: string,
-                expand: string list option,
-                label: Choice<string,string> option,
-                metadata: Map<string, string> option
+                reader: string
             ) : UpdateOptions
             =
             {
               Reader = reader
-              Expand = expand
-              Label = label
-              Metadata = metadata
+              Expand = None
+              Label = None
+              Metadata = None
             }
 
     ///<p>Returns a list of <code>Reader</code> objects.</p>
@@ -2966,13 +2932,12 @@ module TerminalReadersCancelAction =
     module CancelActionOptions =
         let create
             (
-                reader: string,
-                expand: string list option
+                reader: string
             ) : CancelActionOptions
             =
             {
               Reader = reader
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Cancels the current reader action. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven#programmatic-cancellation">Programmatic Cancellation</a> for more details.</p>
@@ -3157,16 +3122,14 @@ module TerminalReadersCollectInputs =
         let create
             (
                 inputs: CollectInputs'Inputs list,
-                reader: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                reader: string
             ) : CollectInputsOptions
             =
             {
               Inputs = inputs
               Reader = reader
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Initiates an <a href="/docs/terminal/features/collect-inputs">input collection flow</a> on a Reader to display input forms and collect information from your customers.</p>
@@ -3249,16 +3212,14 @@ module TerminalReadersCollectPaymentMethod =
         let create
             (
                 paymentIntent: string,
-                reader: string,
-                collectConfig: CollectPaymentMethod'CollectConfig option,
-                expand: string list option
+                reader: string
             ) : CollectPaymentMethodOptions
             =
             {
               PaymentIntent = paymentIntent
               Reader = reader
-              CollectConfig = collectConfig
-              Expand = expand
+              CollectConfig = None
+              Expand = None
             }
 
     ///<p>Initiates a payment flow on a Reader and updates the PaymentIntent with card details before manual confirmation. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven&process=inspect#collect-a-paymentmethod">Collecting a Payment method</a> for more details.</p>
@@ -3304,16 +3265,14 @@ module TerminalReadersConfirmPaymentIntent =
         let create
             (
                 paymentIntent: string,
-                reader: string,
-                confirmConfig: ConfirmPaymentIntent'ConfirmConfig option,
-                expand: string list option
+                reader: string
             ) : ConfirmPaymentIntentOptions
             =
             {
               PaymentIntent = paymentIntent
               Reader = reader
-              ConfirmConfig = confirmConfig
-              Expand = expand
+              ConfirmConfig = None
+              Expand = None
             }
 
     ///<p>Finalizes a payment on a Reader. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven&process=inspect#confirm-the-paymentintent">Confirming a Payment</a> for more details.</p>
@@ -3401,16 +3360,14 @@ module TerminalReadersProcessPaymentIntent =
         let create
             (
                 paymentIntent: string,
-                reader: string,
-                expand: string list option,
-                processConfig: ProcessPaymentIntent'ProcessConfig option
+                reader: string
             ) : ProcessPaymentIntentOptions
             =
             {
               PaymentIntent = paymentIntent
               Reader = reader
-              Expand = expand
-              ProcessConfig = processConfig
+              Expand = None
+              ProcessConfig = None
             }
 
     ///<p>Initiates a payment flow on a Reader. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven&process=immediately#process-payment">process the payment</a> for more details.</p>
@@ -3465,17 +3422,15 @@ module TerminalReadersProcessSetupIntent =
             (
                 allowRedisplay: ProcessSetupIntent'AllowRedisplay,
                 reader: string,
-                setupIntent: string,
-                expand: string list option,
-                processConfig: ProcessSetupIntent'ProcessConfig option
+                setupIntent: string
             ) : ProcessSetupIntentOptions
             =
             {
               AllowRedisplay = allowRedisplay
               Reader = reader
               SetupIntent = setupIntent
-              Expand = expand
-              ProcessConfig = processConfig
+              Expand = None
+              ProcessConfig = None
             }
 
     ///<p>Initiates a SetupIntent flow on a Reader. See <a href="/docs/terminal/features/saving-payment-details/save-directly">Save directly without charging</a> for more details.</p>
@@ -3535,27 +3490,19 @@ module TerminalReadersRefundPayment =
     module RefundPaymentOptions =
         let create
             (
-                reader: string,
-                amount: int option,
-                charge: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                paymentIntent: string option,
-                refundApplicationFee: bool option,
-                refundPaymentConfig: RefundPayment'RefundPaymentConfig option,
-                reverseTransfer: bool option
+                reader: string
             ) : RefundPaymentOptions
             =
             {
               Reader = reader
-              Amount = amount
-              Charge = charge
-              Expand = expand
-              Metadata = metadata
-              PaymentIntent = paymentIntent
-              RefundApplicationFee = refundApplicationFee
-              RefundPaymentConfig = refundPaymentConfig
-              ReverseTransfer = reverseTransfer
+              Amount = None
+              Charge = None
+              Expand = None
+              Metadata = None
+              PaymentIntent = None
+              RefundApplicationFee = None
+              RefundPaymentConfig = None
+              ReverseTransfer = None
             }
 
     ///<p>Initiates an in-person refund on a Reader. See <a href="/docs/terminal/payments/regional?integration-country=CA#refund-an-interac-payment">Refund an Interac Payment</a> for more details.</p>
@@ -3645,16 +3592,14 @@ module TerminalReadersSetReaderDisplay =
         let create
             (
                 reader: string,
-                ``type``: SetReaderDisplay'Type,
-                cart: SetReaderDisplay'Cart option,
-                expand: string list option
+                ``type``: SetReaderDisplay'Type
             ) : SetReaderDisplayOptions
             =
             {
               Reader = reader
               Type = ``type``
-              Cart = cart
-              Expand = expand
+              Cart = None
+              Expand = None
             }
 
     ///<p>Sets the reader display to show <a href="/docs/terminal/features/display">cart details</a>.</p>

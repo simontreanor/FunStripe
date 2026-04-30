@@ -55,8 +55,7 @@ module WebhookEndpoint =
             livemode: bool,
             metadata: Map<string, string>,
             status: WebhookEndpointStatus,
-            url: string,
-            secret: string option
+            url: string
         ) : WebhookEndpoint
         =
         {
@@ -70,6 +69,6 @@ module WebhookEndpoint =
           Metadata = metadata
           Status = status
           Url = url
-          Secret = secret
+          Secret = None
         }
 

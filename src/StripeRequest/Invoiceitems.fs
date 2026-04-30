@@ -317,13 +317,12 @@ module Invoiceitems =
     module RetrieveOptions =
         let create
             (
-                invoiceitem: string,
-                expand: string list option
+                invoiceitem: string
             ) : RetrieveOptions
             =
             {
               Invoiceitem = invoiceitem
-              Expand = expand
+              Expand = None
             }
 
     type Update'Discounts =
@@ -493,41 +492,26 @@ module Invoiceitems =
     module UpdateOptions =
         let create
             (
-                invoiceitem: string,
-                amount: int option,
-                description: string option,
-                discountable: bool option,
-                discounts: Choice<Update'Discounts list,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                period: Update'Period option,
-                priceData: Update'PriceData option,
-                pricing: Update'Pricing option,
-                quantity: int option,
-                quantityDecimal: string option,
-                taxBehavior: Update'TaxBehavior option,
-                taxCode: Choice<string,string> option,
-                taxRates: Choice<string list,string> option,
-                unitAmountDecimal: string option
+                invoiceitem: string
             ) : UpdateOptions
             =
             {
               Invoiceitem = invoiceitem
-              Amount = amount
-              Description = description
-              Discountable = discountable
-              Discounts = discounts
-              Expand = expand
-              Metadata = metadata
-              Period = period
-              PriceData = priceData
-              Pricing = pricing
-              Quantity = quantity
-              QuantityDecimal = quantityDecimal
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              TaxRates = taxRates
-              UnitAmountDecimal = unitAmountDecimal
+              Amount = None
+              Description = None
+              Discountable = None
+              Discounts = None
+              Expand = None
+              Metadata = None
+              Period = None
+              PriceData = None
+              Pricing = None
+              Quantity = None
+              QuantityDecimal = None
+              TaxBehavior = None
+              TaxCode = None
+              TaxRates = None
+              UnitAmountDecimal = None
             }
 
     ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>

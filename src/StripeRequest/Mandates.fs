@@ -20,13 +20,12 @@ module Mandates =
     module RetrieveOptions =
         let create
             (
-                mandate: string,
-                expand: string list option
+                mandate: string
             ) : RetrieveOptions
             =
             {
               Mandate = mandate
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieves a Mandate object.</p>

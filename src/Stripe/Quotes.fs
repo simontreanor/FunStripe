@@ -50,13 +50,12 @@ type QuotesResourceSubscriptionDataBillingMode =
 module QuotesResourceSubscriptionDataBillingMode =
     let create
         (
-            ``type``: QuotesResourceSubscriptionDataBillingModeType,
-            flexible: SubscriptionsResourceBillingModeFlexible option
+            ``type``: QuotesResourceSubscriptionDataBillingModeType
         ) : QuotesResourceSubscriptionDataBillingMode
         =
         {
           Type = ``type``
-          Flexible = flexible
+          Flexible = None
         }
 
 type QuotesResourceSubscriptionDataSubscriptionData =
@@ -157,15 +156,14 @@ module QuotesResourceTotalDetails =
         (
             amountDiscount: int,
             amountShipping: int option,
-            amountTax: int,
-            breakdown: QuotesResourceTotalDetailsResourceBreakdown option
+            amountTax: int
         ) : QuotesResourceTotalDetails
         =
         {
           AmountDiscount = amountDiscount
           AmountShipping = amountShipping
           AmountTax = amountTax
-          Breakdown = breakdown
+          Breakdown = None
         }
 
 type QuotesResourceRecurring =
@@ -243,15 +241,14 @@ module QuotesResourceUpfront =
         (
             amountSubtotal: int,
             amountTotal: int,
-            totalDetails: QuotesResourceTotalDetails,
-            lineItems: QuotesResourceUpfrontLineItems option
+            totalDetails: QuotesResourceTotalDetails
         ) : QuotesResourceUpfront
         =
         {
           AmountSubtotal = amountSubtotal
           AmountTotal = amountTotal
           TotalDetails = totalDetails
-          LineItems = lineItems
+          LineItems = None
         }
 
 type QuotesResourceComputed =

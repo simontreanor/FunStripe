@@ -94,14 +94,13 @@ module ShippingRateFixedAmount =
     let create
         (
             amount: int,
-            currency: IsoTypes.IsoCurrencyCode,
-            currencyOptions: Map<string, string list> option
+            currency: IsoTypes.IsoCurrencyCode
         ) : ShippingRateFixedAmount
         =
         {
           Amount = amount
           Currency = currency
-          CurrencyOptions = currencyOptions
+          CurrencyOptions = None
         }
 
 [<Struct>]
@@ -156,8 +155,7 @@ module ShippingRate =
             livemode: bool,
             metadata: Map<string, string>,
             taxBehavior: ShippingRateTaxBehavior option,
-            taxCode: ShippingRateTaxCode'AnyOf option,
-            fixedAmount: ShippingRateFixedAmount option
+            taxCode: ShippingRateTaxCode'AnyOf option
         ) : ShippingRate
         =
         {
@@ -170,7 +168,7 @@ module ShippingRate =
           Metadata = metadata
           TaxBehavior = taxBehavior
           TaxCode = taxCode
-          FixedAmount = fixedAmount
+          FixedAmount = None
         }
 
 type Shipping =

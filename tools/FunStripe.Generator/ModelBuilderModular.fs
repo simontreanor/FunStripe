@@ -433,10 +433,14 @@ module ModelBuilderModular =
             sb.AppendLine() |> ignore
 
         if not newParams.IsEmpty then
+            // Only required params appear in the function signature; optional fields default to None
+            let requiredParams = newParams |> List.filter (fun p -> not p.IsOptional)
+            let createParams = if requiredParams.IsEmpty then newParams else requiredParams
+
             let paramStrings =
-                newParams |> List.mapi (fun i p ->
+                createParams |> List.mapi (fun i p ->
                     let typeStr = if p.IsOptional then $"{p.ParamType} option" else p.ParamType
-                    let comma = if i < newParams.Length - 1 then "," else ""
+                    let comma = if i < createParams.Length - 1 then "," else ""
                     $"        {p.ParamName}: {typeStr}{comma}")
 
             sb.AppendLine("    let create") |> ignore
@@ -449,7 +453,12 @@ module ModelBuilderModular =
             let fieldStrings =
                 newParams |> List.map (fun p ->
                     let flattenSuffix = if p.NeedsFlatten then " |> Option.flatten" else ""
-                    $"          {p.PascalFieldName} = {p.ParamName}{flattenSuffix}")
+                    let value =
+                        if p.IsOptional && not (createParams |> List.exists (fun cp -> cp.ParamName = p.ParamName)) then
+                            "None"
+                        else
+                            $"{p.ParamName}{flattenSuffix}"
+                    $"          {p.PascalFieldName} = {value}")
 
             sb.AppendLine("        {") |> ignore
             for line in fieldStrings do

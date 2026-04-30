@@ -220,12 +220,7 @@ module SourceTransaction =
             livemode: bool,
             source: string,
             status: SourceTransactionStatus,
-            ``type``: SourceTransactionType,
-            achCreditTransfer: SourceTransactionAchCreditTransferData option,
-            chfCreditTransfer: SourceTransactionChfCreditTransferData option,
-            gbpCreditTransfer: SourceTransactionGbpCreditTransferData option,
-            paperCheck: SourceTransactionPaperCheckData option,
-            sepaCreditTransfer: SourceTransactionSepaCreditTransferData option
+            ``type``: SourceTransactionType
         ) : SourceTransaction
         =
         {
@@ -237,11 +232,11 @@ module SourceTransaction =
           Source = source
           Status = status
           Type = ``type``
-          AchCreditTransfer = achCreditTransfer
-          ChfCreditTransfer = chfCreditTransfer
-          GbpCreditTransfer = gbpCreditTransfer
-          PaperCheck = paperCheck
-          SepaCreditTransfer = sepaCreditTransfer
+          AchCreditTransfer = None
+          ChfCreditTransfer = None
+          GbpCreditTransfer = None
+          PaperCheck = None
+          SepaCreditTransfer = None
         }
 
 /// Occurs whenever a source transaction is updated.
@@ -325,8 +320,7 @@ module SourceOrderItem =
             currency: IsoTypes.IsoCurrencyCode option,
             description: string option,
             parent: string option,
-            ``type``: SourceOrderItemType option,
-            quantity: int option
+            ``type``: SourceOrderItemType option
         ) : SourceOrderItem
         =
         {
@@ -335,7 +329,7 @@ module SourceOrderItem =
           Description = description
           Parent = parent
           Type = ``type``
-          Quantity = quantity
+          Quantity = None
         }
 
 type SourceOrder =
@@ -356,17 +350,15 @@ module SourceOrder =
         (
             amount: int,
             currency: IsoTypes.IsoCurrencyCode,
-            items: SourceOrderItem list option,
-            email: string option,
-            shipping: Shipping option
+            items: SourceOrderItem list option
         ) : SourceOrder
         =
         {
           Amount = amount
           Currency = currency
           Items = items
-          Email = email
-          Shipping = shipping
+          Email = None
+          Shipping = None
         }
 
 type SourceOwner =
@@ -1337,31 +1329,7 @@ module Source =
             statementDescriptor: string option,
             status: SourceStatus,
             ``type``: SourceType,
-            usage: SourceUsage option,
-            achCreditTransfer: SourceTypeAchCreditTransfer option,
-            achDebit: SourceTypeAchDebit option,
-            acssDebit: SourceTypeAcssDebit option,
-            alipay: SourceTypeAlipay option,
-            auBecsDebit: SourceTypeAuBecsDebit option,
-            bancontact: SourceTypeBancontact option,
-            card: SourceTypeCard option,
-            cardPresent: SourceTypeCardPresent option,
-            codeVerification: SourceCodeVerificationFlow option,
-            customer: string option,
-            eps: SourceTypeEps option,
-            giropay: SourceTypeGiropay option,
-            ideal: SourceTypeIdeal option,
-            klarna: SourceTypeKlarna option,
-            multibanco: SourceTypeMultibanco option,
-            p24: SourceTypeP24 option,
-            receiver: SourceReceiverFlow option,
-            redirect: SourceRedirectFlow option,
-            sepaCreditTransfer: SourceTypeSepaCreditTransfer option,
-            sepaDebit: SourceTypeSepaDebit option,
-            sofort: SourceTypeSofort option,
-            sourceOrder: SourceOrder option,
-            threeDSecure: SourceTypeThreeDSecure option,
-            wechat: SourceTypeWechat option
+            usage: SourceUsage option
         ) : Source
         =
         {
@@ -1379,30 +1347,30 @@ module Source =
           Status = status
           Type = ``type``
           Usage = usage
-          AchCreditTransfer = achCreditTransfer
-          AchDebit = achDebit
-          AcssDebit = acssDebit
-          Alipay = alipay
-          AuBecsDebit = auBecsDebit
-          Bancontact = bancontact
-          Card = card
-          CardPresent = cardPresent
-          CodeVerification = codeVerification
-          Customer = customer
-          Eps = eps
-          Giropay = giropay
-          Ideal = ideal
-          Klarna = klarna
-          Multibanco = multibanco
-          P24 = p24
-          Receiver = receiver
-          Redirect = redirect
-          SepaCreditTransfer = sepaCreditTransfer
-          SepaDebit = sepaDebit
-          Sofort = sofort
-          SourceOrder = sourceOrder
-          ThreeDSecure = threeDSecure
-          Wechat = wechat
+          AchCreditTransfer = None
+          AchDebit = None
+          AcssDebit = None
+          Alipay = None
+          AuBecsDebit = None
+          Bancontact = None
+          Card = None
+          CardPresent = None
+          CodeVerification = None
+          Customer = None
+          Eps = None
+          Giropay = None
+          Ideal = None
+          Klarna = None
+          Multibanco = None
+          P24 = None
+          Receiver = None
+          Redirect = None
+          SepaCreditTransfer = None
+          SepaDebit = None
+          Sofort = None
+          SourceOrder = None
+          ThreeDSecure = None
+          Wechat = None
         }
 
 /// Occurs whenever the refund attributes are required on a receiver source to process a refund or a mispayment.
@@ -1524,10 +1492,7 @@ module SourceMandateNotification =
             reason: SourceMandateNotificationReason,
             source: Source,
             status: SourceMandateNotificationStatus,
-            ``type``: string,
-            acssDebit: SourceMandateNotificationAcssDebitData option,
-            bacsDebit: SourceMandateNotificationBacsDebitData option,
-            sepaDebit: SourceMandateNotificationSepaDebitData option
+            ``type``: string
         ) : SourceMandateNotification
         =
         {
@@ -1539,9 +1504,9 @@ module SourceMandateNotification =
           Source = source
           Status = status
           Type = ``type``
-          AcssDebit = acssDebit
-          BacsDebit = bacsDebit
-          SepaDebit = sepaDebit
+          AcssDebit = None
+          BacsDebit = None
+          SepaDebit = None
         }
 
 /// Occurs whenever a source fails.

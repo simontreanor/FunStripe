@@ -1452,8 +1452,7 @@ module InboundTransfersPaymentMethodDetailsUsBankAccount =
             bankName: string option,
             fingerprint: string option,
             last4: string option,
-            routingNumber: string option,
-            mandate: InboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+            routingNumber: string option
         ) : InboundTransfersPaymentMethodDetailsUsBankAccount
         =
         {
@@ -1463,7 +1462,7 @@ module InboundTransfersPaymentMethodDetailsUsBankAccount =
           Fingerprint = fingerprint
           Last4 = last4
           RoutingNumber = routingNumber
-          Mandate = mandate
+          Mandate = None
         }
 
 module TreasurySharedResourceBillingDetails =
@@ -1486,13 +1485,12 @@ module InboundTransfers =
 
     let create
         (
-            billingDetails: TreasurySharedResourceBillingDetails,
-            usBankAccount: InboundTransfersPaymentMethodDetailsUsBankAccount option
+            billingDetails: TreasurySharedResourceBillingDetails
         ) : InboundTransfers
         =
         {
           BillingDetails = billingDetails
-          UsBankAccount = usBankAccount
+          UsBankAccount = None
         }
 
 module TreasuryInboundTransfersResourceFailureDetails =
@@ -1519,14 +1517,13 @@ module TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions 
     let create
         (
             failedAt: DateTime option,
-            succeededAt: DateTime option,
-            canceledAt: DateTime option option
+            succeededAt: DateTime option
         ) : TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions
         =
         {
           FailedAt = failedAt
           SucceededAt = succeededAt
-          CanceledAt = canceledAt |> Option.flatten
+          CanceledAt = None
         }
 
 module OutboundPaymentsPaymentMethodDetailsFinancialAccount =
@@ -1551,8 +1548,7 @@ module OutboundPaymentsPaymentMethodDetailsUsBankAccount =
             fingerprint: string option,
             last4: string option,
             network: OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork,
-            routingNumber: string option,
-            mandate: OutboundPaymentsPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+            routingNumber: string option
         ) : OutboundPaymentsPaymentMethodDetailsUsBankAccount
         =
         {
@@ -1563,23 +1559,21 @@ module OutboundPaymentsPaymentMethodDetailsUsBankAccount =
           Last4 = last4
           Network = network
           RoutingNumber = routingNumber
-          Mandate = mandate
+          Mandate = None
         }
 
 module OutboundPaymentsPaymentMethodDetails =
     let create
         (
             billingDetails: TreasurySharedResourceBillingDetails,
-            ``type``: OutboundPaymentsPaymentMethodDetailsType,
-            financialAccount: OutboundPaymentsPaymentMethodDetailsFinancialAccount option,
-            usBankAccount: OutboundPaymentsPaymentMethodDetailsUsBankAccount option
+            ``type``: OutboundPaymentsPaymentMethodDetailsType
         ) : OutboundPaymentsPaymentMethodDetails
         =
         {
           BillingDetails = billingDetails
           Type = ``type``
-          FinancialAccount = financialAccount
-          UsBankAccount = usBankAccount
+          FinancialAccount = None
+          UsBankAccount = None
         }
 
 module TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails =
@@ -1637,15 +1631,13 @@ module TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails =
 module TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails =
     let create
         (
-            ``type``: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType,
-            ach: TreasuryOutboundPaymentsResourceAchTrackingDetails option,
-            usDomesticWire: TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails option
+            ``type``: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType
         ) : TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails
         =
         {
           Type = ``type``
-          Ach = ach
-          UsDomesticWire = usDomesticWire
+          Ach = None
+          UsDomesticWire = None
         }
 
 module OutboundTransfersPaymentMethodDetailsFinancialAccount =
@@ -1670,8 +1662,7 @@ module OutboundTransfersPaymentMethodDetailsUsBankAccount =
             fingerprint: string option,
             last4: string option,
             network: OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork,
-            routingNumber: string option,
-            mandate: OutboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
+            routingNumber: string option
         ) : OutboundTransfersPaymentMethodDetailsUsBankAccount
         =
         {
@@ -1682,23 +1673,21 @@ module OutboundTransfersPaymentMethodDetailsUsBankAccount =
           Last4 = last4
           Network = network
           RoutingNumber = routingNumber
-          Mandate = mandate
+          Mandate = None
         }
 
 module OutboundTransfersPaymentMethodDetails =
     let create
         (
             billingDetails: TreasurySharedResourceBillingDetails,
-            ``type``: OutboundTransfersPaymentMethodDetailsType,
-            financialAccount: OutboundTransfersPaymentMethodDetailsFinancialAccount option,
-            usBankAccount: OutboundTransfersPaymentMethodDetailsUsBankAccount option
+            ``type``: OutboundTransfersPaymentMethodDetailsType
         ) : OutboundTransfersPaymentMethodDetails
         =
         {
           BillingDetails = billingDetails
           Type = ``type``
-          FinancialAccount = financialAccount
-          UsBankAccount = usBankAccount
+          FinancialAccount = None
+          UsBankAccount = None
         }
 
 module TreasuryOutboundTransfersResourceAchTrackingDetails =
@@ -1728,15 +1717,13 @@ module TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails =
 module TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails =
     let create
         (
-            ``type``: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType,
-            ach: TreasuryOutboundTransfersResourceAchTrackingDetails option,
-            usDomesticWire: TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails option
+            ``type``: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType
         ) : TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails
         =
         {
           Type = ``type``
-          Ach = ach
-          UsDomesticWire = usDomesticWire
+          Ach = None
+          UsDomesticWire = None
         }
 
 module TreasuryOutboundTransfersResourceStatusTransitions =
@@ -1788,18 +1775,15 @@ module TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMeth
     let create
         (
             billingDetails: TreasurySharedResourceBillingDetails,
-            ``type``: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType,
-            financialAccount: ReceivedPaymentMethodDetailsFinancialAccount option,
-            issuingCard: string option,
-            usBankAccount: TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount option
+            ``type``: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType
         ) : TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails
         =
         {
           BillingDetails = billingDetails
           Type = ``type``
-          FinancialAccount = financialAccount
-          IssuingCard = issuingCard
-          UsBankAccount = usBankAccount
+          FinancialAccount = None
+          IssuingCard = None
+          UsBankAccount = None
         }
 
 module TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions =
@@ -2133,8 +2117,7 @@ module TreasuryReceivedDebit =
             network: TreasuryReceivedDebitNetwork,
             reversalDetails: TreasuryReceivedDebitsResourceReversalDetails option,
             status: TreasuryReceivedDebitStatus,
-            transaction: TreasuryReceivedDebitTransaction'AnyOf option,
-            initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails option
+            transaction: TreasuryReceivedDebitTransaction'AnyOf option
         ) : TreasuryReceivedDebit
         =
         {
@@ -2152,7 +2135,7 @@ module TreasuryReceivedDebit =
           ReversalDetails = reversalDetails
           Status = status
           Transaction = transaction
-          InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+          InitiatingPaymentMethodDetails = None
         }
 
 module TreasuryTransaction =
@@ -2172,9 +2155,7 @@ module TreasuryTransaction =
             id: string,
             livemode: bool,
             status: TreasuryTransactionStatus,
-            statusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions,
-            entries: TreasuryTransactionEntries option option,
-            flowDetails: TreasuryTransactionsResourceFlowDetails option option
+            statusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions
         ) : TreasuryTransaction
         =
         {
@@ -2190,8 +2171,8 @@ module TreasuryTransaction =
           Livemode = livemode
           Status = status
           StatusTransitions = statusTransitions
-          Entries = entries |> Option.flatten
-          FlowDetails = flowDetails |> Option.flatten
+          Entries = None
+          FlowDetails = None
         }
 
 module TreasuryTransactionEntries =
@@ -2227,8 +2208,7 @@ module TreasuryTransactionEntry =
             id: string,
             livemode: bool,
             transaction: TreasuryTransactionEntryTransaction'AnyOf,
-            ``type``: TreasuryTransactionEntryType,
-            flowDetails: TreasuryTransactionsResourceFlowDetails option option
+            ``type``: TreasuryTransactionEntryType
         ) : TreasuryTransactionEntry
         =
         {
@@ -2243,7 +2223,7 @@ module TreasuryTransactionEntry =
           Livemode = livemode
           Transaction = transaction
           Type = ``type``
-          FlowDetails = flowDetails |> Option.flatten
+          FlowDetails = None
         }
 
 module TreasuryOutboundPaymentsResourceReturnedStatus =
@@ -2277,8 +2257,7 @@ module TreasuryReceivedCreditsResourceLinkedFlows =
             issuingAuthorization: string option,
             issuingTransaction: string option,
             sourceFlow: string option,
-            sourceFlowType: string option,
-            sourceFlowDetails: TreasuryReceivedCreditsResourceSourceFlowsDetails option option
+            sourceFlowType: string option
         ) : TreasuryReceivedCreditsResourceLinkedFlows
         =
         {
@@ -2287,51 +2266,39 @@ module TreasuryReceivedCreditsResourceLinkedFlows =
           IssuingTransaction = issuingTransaction
           SourceFlow = sourceFlow
           SourceFlowType = sourceFlowType
-          SourceFlowDetails = sourceFlowDetails |> Option.flatten
+          SourceFlowDetails = None
         }
 
 module TreasuryReceivedCreditsResourceSourceFlowsDetails =
     let create
         (
-            ``type``: TreasuryReceivedCreditsResourceSourceFlowsDetailsType,
-            creditReversal: TreasuryCreditReversal option,
-            outboundPayment: TreasuryOutboundPayment option,
-            outboundTransfer: TreasuryOutboundTransfer option,
-            payout: Payout option
+            ``type``: TreasuryReceivedCreditsResourceSourceFlowsDetailsType
         ) : TreasuryReceivedCreditsResourceSourceFlowsDetails
         =
         {
           Type = ``type``
-          CreditReversal = creditReversal
-          OutboundPayment = outboundPayment
-          OutboundTransfer = outboundTransfer
-          Payout = payout
+          CreditReversal = None
+          OutboundPayment = None
+          OutboundTransfer = None
+          Payout = None
         }
 
 module TreasuryTransactionsResourceFlowDetails =
     let create
         (
-            ``type``: TreasuryTransactionsResourceFlowDetailsType,
-            creditReversal: TreasuryCreditReversal option,
-            debitReversal: TreasuryDebitReversal option,
-            inboundTransfer: TreasuryInboundTransfer option,
-            issuingAuthorization: IssuingAuthorization option,
-            outboundPayment: TreasuryOutboundPayment option,
-            outboundTransfer: TreasuryOutboundTransfer option,
-            receivedCredit: TreasuryReceivedCredit option,
-            receivedDebit: TreasuryReceivedDebit option
+            ``type``: TreasuryTransactionsResourceFlowDetailsType
         ) : TreasuryTransactionsResourceFlowDetails
         =
         {
           Type = ``type``
-          CreditReversal = creditReversal
-          DebitReversal = debitReversal
-          InboundTransfer = inboundTransfer
-          IssuingAuthorization = issuingAuthorization
-          OutboundPayment = outboundPayment
-          OutboundTransfer = outboundTransfer
-          ReceivedCredit = receivedCredit
-          ReceivedDebit = receivedDebit
+          CreditReversal = None
+          DebitReversal = None
+          InboundTransfer = None
+          IssuingAuthorization = None
+          OutboundPayment = None
+          OutboundTransfer = None
+          ReceivedCredit = None
+          ReceivedDebit = None
         }
 
 module TreasuryReceivedDebitCreated =
@@ -2558,14 +2525,13 @@ module TreasuryFinancialAccountsResourceTogglesSettingStatusDetails =
     let create
         (
             code: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode,
-            resolution: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution option,
-            restriction: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction option
+            resolution: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution option
         ) : TreasuryFinancialAccountsResourceTogglesSettingStatusDetails
         =
         {
           Code = code
           Resolution = resolution
-          Restriction = restriction
+          Restriction = None
         }
 
 module TreasuryFinancialAccountsResourceAbaToggleSettings =
@@ -2713,8 +2679,7 @@ module TreasuryFinancialAccountsResourceAbaRecord =
             accountHolderName: string,
             accountNumberLast4: string,
             bankName: string,
-            routingNumber: string,
-            accountNumber: string option option
+            routingNumber: string
         ) : TreasuryFinancialAccountsResourceAbaRecord
         =
         {
@@ -2722,7 +2687,7 @@ module TreasuryFinancialAccountsResourceAbaRecord =
           AccountNumberLast4 = accountNumberLast4
           BankName = bankName
           RoutingNumber = routingNumber
-          AccountNumber = accountNumber |> Option.flatten
+          AccountNumber = None
         }
 
 module TreasuryFinancialAccountsResourceFinancialAddress =
@@ -2787,14 +2752,7 @@ module TreasuryFinancialAccount =
             metadata: Map<string, string> option,
             status: TreasuryFinancialAccountStatus,
             statusDetails: TreasuryFinancialAccountsResourceStatusDetails,
-            supportedCurrencies: string list,
-            activeFeatures: TreasuryFinancialAccountActiveFeatures list option,
-            features: TreasuryFinancialAccountFeatures option,
-            isDefault: bool option,
-            nickname: string option option,
-            pendingFeatures: TreasuryFinancialAccountPendingFeatures list option,
-            platformRestrictions: TreasuryFinancialAccountsResourcePlatformRestrictions option option,
-            restrictedFeatures: TreasuryFinancialAccountRestrictedFeatures list option
+            supportedCurrencies: string list
         ) : TreasuryFinancialAccount
         =
         {
@@ -2808,13 +2766,13 @@ module TreasuryFinancialAccount =
           Status = status
           StatusDetails = statusDetails
           SupportedCurrencies = supportedCurrencies
-          ActiveFeatures = activeFeatures
-          Features = features
-          IsDefault = isDefault
-          Nickname = nickname |> Option.flatten
-          PendingFeatures = pendingFeatures
-          PlatformRestrictions = platformRestrictions |> Option.flatten
-          RestrictedFeatures = restrictedFeatures
+          ActiveFeatures = None
+          Features = None
+          IsDefault = None
+          Nickname = None
+          PendingFeatures = None
+          PlatformRestrictions = None
+          RestrictedFeatures = None
         }
 
 module TreasuryFinancialAccountFeaturesStatusUpdated =

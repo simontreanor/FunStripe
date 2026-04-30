@@ -63,8 +63,7 @@ module ForwardingRequest =
             requestContext: ForwardedRequestContext option,
             requestDetails: ForwardedRequestDetails option,
             responseDetails: ForwardedResponseDetails option,
-            url: string option,
-            metadata: Map<string, string> option option
+            url: string option
         ) : ForwardingRequest
         =
         {
@@ -77,6 +76,6 @@ module ForwardingRequest =
           RequestDetails = requestDetails
           ResponseDetails = responseDetails
           Url = url
-          Metadata = metadata |> Option.flatten
+          Metadata = None
         }
 

@@ -72,13 +72,12 @@ module IdentityVerificationReports =
     module RetrieveOptions =
         let create
             (
-                report: string,
-                expand: string list option
+                report: string
             ) : RetrieveOptions
             =
             {
               Report = report
-              Expand = expand
+              Expand = None
             }
 
     ///<p>List all verification reports.</p>
@@ -333,13 +332,12 @@ module IdentityVerificationSessions =
     module RetrieveOptions =
         let create
             (
-                session: string,
-                expand: string list option
+                session: string
             ) : RetrieveOptions
             =
             {
               Session = session
-              Expand = expand
+              Expand = None
             }
 
     type Update'OptionsDocumentDocumentOptionsAllowedTypes =
@@ -446,21 +444,16 @@ module IdentityVerificationSessions =
     module UpdateOptions =
         let create
             (
-                session: string,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                options: Update'Options option,
-                providedDetails: Update'ProvidedDetails option,
-                ``type``: Update'Type option
+                session: string
             ) : UpdateOptions
             =
             {
               Session = session
-              Expand = expand
-              Metadata = metadata
-              Options = options
-              ProvidedDetails = providedDetails
-              Type = ``type``
+              Expand = None
+              Metadata = None
+              Options = None
+              ProvidedDetails = None
+              Type = None
             }
 
     ///<p>Returns a list of VerificationSessions</p>
@@ -506,13 +499,12 @@ module IdentityVerificationSessionsCancel =
     module CancelOptions =
         let create
             (
-                session: string,
-                expand: string list option
+                session: string
             ) : CancelOptions
             =
             {
               Session = session
-              Expand = expand
+              Expand = None
             }
 
     ///<p>A VerificationSession object can be canceled when it is in <code>requires_input</code> <a href="/docs/identity/how-sessions-work">status</a>.</p>
@@ -535,13 +527,12 @@ module IdentityVerificationSessionsRedact =
     module RedactOptions =
         let create
             (
-                session: string,
-                expand: string list option
+                session: string
             ) : RedactOptions
             =
             {
               Session = session
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Redact a VerificationSession to remove all collected information from Stripe. This will redact

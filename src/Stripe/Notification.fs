@@ -36,12 +36,11 @@ type NotificationEventData =
 module NotificationEventData =
     let create
         (
-            object: string,
-            previousAttributes: string option
+            object: string
         ) : NotificationEventData
         =
         {
           Object = object
-          PreviousAttributes = previousAttributes
+          PreviousAttributes = None
         }
 

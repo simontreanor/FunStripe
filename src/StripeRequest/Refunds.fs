@@ -145,13 +145,12 @@ module Refunds =
     module RetrieveOptions =
         let create
             (
-                refund: string,
-                expand: string list option
+                refund: string
             ) : RetrieveOptions
             =
             {
               Refund = refund
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -169,15 +168,13 @@ module Refunds =
     module UpdateOptions =
         let create
             (
-                refund: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                refund: string
             ) : UpdateOptions
             =
             {
               Refund = refund
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of all refunds you created. We return the refunds in sorted order, with the most recent refunds appearing first. The 10 most recent refunds are always available by default on the Charge object.</p>
@@ -224,13 +221,12 @@ module RefundsCancel =
     module CancelOptions =
         let create
             (
-                refund: string,
-                expand: string list option
+                refund: string
             ) : CancelOptions
             =
             {
               Refund = refund
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Cancels a refund with a status of <code>requires_action</code>.</p>

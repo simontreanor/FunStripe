@@ -87,24 +87,18 @@ module Topups =
         let create
             (
                 amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                source: string option,
-                statementDescriptor: string option,
-                transferGroup: string option
+                currency: IsoTypes.IsoCurrencyCode
             ) : CreateOptions
             =
             {
               Amount = amount
               Currency = currency
-              Description = description
-              Expand = expand
-              Metadata = metadata
-              Source = source
-              StatementDescriptor = statementDescriptor
-              TransferGroup = transferGroup
+              Description = None
+              Expand = None
+              Metadata = None
+              Source = None
+              StatementDescriptor = None
+              TransferGroup = None
             }
 
     type RetrieveOptions =
@@ -119,13 +113,12 @@ module Topups =
     module RetrieveOptions =
         let create
             (
-                topup: string,
-                expand: string list option
+                topup: string
             ) : RetrieveOptions
             =
             {
               Topup = topup
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -146,17 +139,14 @@ module Topups =
     module UpdateOptions =
         let create
             (
-                topup: string,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                topup: string
             ) : UpdateOptions
             =
             {
               Topup = topup
-              Description = description
-              Expand = expand
-              Metadata = metadata
+              Description = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of top-ups.</p>
@@ -195,13 +185,12 @@ module TopupsCancel =
     module CancelOptions =
         let create
             (
-                topup: string,
-                expand: string list option
+                topup: string
             ) : CancelOptions
             =
             {
               Topup = topup
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Cancels a top-up. Only pending top-ups can be canceled.</p>

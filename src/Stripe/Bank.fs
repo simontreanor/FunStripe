@@ -208,17 +208,15 @@ module BankConnectionsResourceBalance =
         (
             asOf: DateTime,
             current: Map<string, string list>,
-            ``type``: BankConnectionsResourceBalanceType,
-            cash: BankConnectionsResourceBalanceApiResourceCashBalance option,
-            credit: BankConnectionsResourceBalanceApiResourceCreditBalance option
+            ``type``: BankConnectionsResourceBalanceType
         ) : BankConnectionsResourceBalance
         =
         {
           AsOf = asOf
           Current = current
           Type = ``type``
-          Cash = cash
-          Credit = credit
+          Cash = None
+          Credit = None
         }
 
 type BankConnectionsResourceAccountholderAccount'AnyOf =
@@ -248,17 +246,14 @@ type BankConnectionsResourceAccountholder =
 module BankConnectionsResourceAccountholder =
     let create
         (
-            ``type``: BankConnectionsResourceAccountholderType,
-            account: BankConnectionsResourceAccountholderAccount'AnyOf option,
-            customer: BankConnectionsResourceAccountholderCustomer'AnyOf option,
-            customerAccount: string option
+            ``type``: BankConnectionsResourceAccountholderType
         ) : BankConnectionsResourceAccountholder
         =
         {
           Type = ``type``
-          Account = account
-          Customer = customer
-          CustomerAccount = customerAccount
+          Account = None
+          Customer = None
+          CustomerAccount = None
         }
 
 [<Struct>]

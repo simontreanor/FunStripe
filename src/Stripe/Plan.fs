@@ -136,8 +136,7 @@ module Plan =
             tiersMode: PlanTiersMode option,
             transformUsage: TransformUsage option,
             trialPeriodDays: int option,
-            usageType: PlanUsageType,
-            tiers: PlanTier list option
+            usageType: PlanUsageType
         ) : Plan
         =
         {
@@ -159,7 +158,7 @@ module Plan =
           TransformUsage = transformUsage
           TrialPeriodDays = trialPeriodDays
           UsageType = usageType
-          Tiers = tiers
+          Tiers = None
         }
 
 /// Occurs whenever a plan is updated.

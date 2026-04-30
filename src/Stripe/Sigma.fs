@@ -63,8 +63,7 @@ module ScheduledQueryRun =
             resultAvailableUntil: DateTime,
             sql: string,
             status: string,
-            title: string,
-            error: SigmaScheduledQueryRunError option
+            title: string
         ) : ScheduledQueryRun
         =
         {
@@ -77,7 +76,7 @@ module ScheduledQueryRun =
           Sql = sql
           Status = status
           Title = title
-          Error = error
+          Error = None
         }
 
 /// Occurs whenever a Sigma scheduled query run finishes.

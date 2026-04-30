@@ -531,15 +531,13 @@ module Sources =
     module RetrieveOptions =
         let create
             (
-                source: string,
-                clientSecret: string option,
-                expand: string list option
+                source: string
             ) : RetrieveOptions
             =
             {
               Source = source
-              ClientSecret = clientSecret
-              Expand = expand
+              ClientSecret = None
+              Expand = None
             }
 
     type Update'MandateAcceptanceOffline =
@@ -938,23 +936,17 @@ module Sources =
     module UpdateOptions =
         let create
             (
-                source: string,
-                amount: int option,
-                expand: string list option,
-                mandate: Update'Mandate option,
-                metadata: Map<string, string> option,
-                owner: Update'Owner option,
-                sourceOrder: Update'SourceOrder option
+                source: string
             ) : UpdateOptions
             =
             {
               Source = source
-              Amount = amount
-              Expand = expand
-              Mandate = mandate
-              Metadata = metadata
-              Owner = owner
-              SourceOrder = sourceOrder
+              Amount = None
+              Expand = None
+              Mandate = None
+              Metadata = None
+              Owner = None
+              SourceOrder = None
             }
 
     ///<p>Creates a new source object.</p>
@@ -997,19 +989,15 @@ module SourcesSourceTransactions =
     module SourceTransactionsOptions =
         let create
             (
-                source: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                source: string
             ) : SourceTransactionsOptions
             =
             {
               Source = source
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>List source transactions for a given source.</p>
@@ -1036,14 +1024,13 @@ module SourcesVerify =
         let create
             (
                 source: string,
-                values: string list,
-                expand: string list option
+                values: string list
             ) : VerifyOptions
             =
             {
               Source = source
               Values = values
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Verify a given source.</p>

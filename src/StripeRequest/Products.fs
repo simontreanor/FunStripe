@@ -298,41 +298,26 @@ module Products =
     module CreateOptions =
         let create
             (
-                name: string,
-                active: bool option,
-                defaultPriceData: Create'DefaultPriceData option,
-                description: string option,
-                expand: string list option,
-                id: string option,
-                images: string list option,
-                marketingFeatures: Create'MarketingFeatures list option,
-                metadata: Map<string, string> option,
-                packageDimensions: Create'PackageDimensions option,
-                shippable: bool option,
-                statementDescriptor: string option,
-                taxCode: string option,
-                ``type``: Create'Type option,
-                unitLabel: string option,
-                url: string option
+                name: string
             ) : CreateOptions
             =
             {
               Name = name
-              Active = active
-              DefaultPriceData = defaultPriceData
-              Description = description
-              Expand = expand
-              Id = id
-              Images = images
-              MarketingFeatures = marketingFeatures
-              Metadata = metadata
-              PackageDimensions = packageDimensions
-              Shippable = shippable
-              StatementDescriptor = statementDescriptor
-              TaxCode = taxCode
-              Type = ``type``
-              UnitLabel = unitLabel
-              Url = url
+              Active = None
+              DefaultPriceData = None
+              Description = None
+              Expand = None
+              Id = None
+              Images = None
+              MarketingFeatures = None
+              Metadata = None
+              PackageDimensions = None
+              Shippable = None
+              StatementDescriptor = None
+              TaxCode = None
+              Type = None
+              UnitLabel = None
+              Url = None
             }
 
     type DeleteOptions =
@@ -361,13 +346,12 @@ module Products =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type Update'MarketingFeatures =
@@ -472,39 +456,25 @@ module Products =
     module UpdateOptions =
         let create
             (
-                id: string,
-                active: bool option,
-                defaultPrice: string option,
-                description: Choice<string,string> option,
-                expand: string list option,
-                images: Choice<string list,string> option,
-                marketingFeatures: Choice<Update'MarketingFeatures list,string> option,
-                metadata: Map<string, string> option,
-                name: string option,
-                packageDimensions: Choice<Update'PackageDimensionsPackageDimensionsSpecs,string> option,
-                shippable: bool option,
-                statementDescriptor: string option,
-                taxCode: Choice<string,string> option,
-                unitLabel: Choice<string,string> option,
-                url: Choice<string,string> option
+                id: string
             ) : UpdateOptions
             =
             {
               Id = id
-              Active = active
-              DefaultPrice = defaultPrice
-              Description = description
-              Expand = expand
-              Images = images
-              MarketingFeatures = marketingFeatures
-              Metadata = metadata
-              Name = name
-              PackageDimensions = packageDimensions
-              Shippable = shippable
-              StatementDescriptor = statementDescriptor
-              TaxCode = taxCode
-              UnitLabel = unitLabel
-              Url = url
+              Active = None
+              DefaultPrice = None
+              Description = None
+              Expand = None
+              Images = None
+              MarketingFeatures = None
+              Metadata = None
+              Name = None
+              PackageDimensions = None
+              Shippable = None
+              StatementDescriptor = None
+              TaxCode = None
+              UnitLabel = None
+              Url = None
             }
 
     ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
@@ -555,17 +525,14 @@ module ProductsSearch =
     module SearchOptions =
         let create
             (
-                query: string,
-                expand: string list option,
-                limit: int option,
-                page: string option
+                query: string
             ) : SearchOptions
             =
             {
               Query = query
-              Expand = expand
-              Limit = limit
-              Page = page
+              Expand = None
+              Limit = None
+              Page = None
             }
 
     ///<p>Search for products you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -600,19 +567,15 @@ module ProductsFeatures =
     module ListOptions =
         let create
             (
-                product: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                product: string
             ) : ListOptions
             =
             {
               Product = product
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type CreateOptions =
@@ -631,14 +594,13 @@ module ProductsFeatures =
         let create
             (
                 entitlementFeature: string,
-                product: string,
-                expand: string list option
+                product: string
             ) : CreateOptions
             =
             {
               EntitlementFeature = entitlementFeature
               Product = product
-              Expand = expand
+              Expand = None
             }
 
     type DeleteOptions =
@@ -676,14 +638,13 @@ module ProductsFeatures =
         let create
             (
                 id: string,
-                product: string,
-                expand: string list option
+                product: string
             ) : RetrieveOptions
             =
             {
               Id = id
               Product = product
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieve a list of features for a product</p>

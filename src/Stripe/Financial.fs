@@ -433,9 +433,7 @@ module FinancialConnectionsSession =
             id: string,
             livemode: bool,
             permissions: FinancialConnectionsSessionPermissions list,
-            prefetch: FinancialConnectionsSessionPrefetch list option,
-            filters: BankConnectionsResourceLinkAccountSessionFilters option,
-            returnUrl: string option
+            prefetch: FinancialConnectionsSessionPrefetch list option
         ) : FinancialConnectionsSession
         =
         {
@@ -446,8 +444,8 @@ module FinancialConnectionsSession =
           Livemode = livemode
           Permissions = permissions
           Prefetch = prefetch
-          Filters = filters
-          ReturnUrl = returnUrl
+          Filters = None
+          ReturnUrl = None
         }
 
 /// Occurs when an Account’s tokenized account number is about to expire.

@@ -114,16 +114,14 @@ module Files =
         let create
             (
                 file: string,
-                purpose: Create'Purpose,
-                expand: string list option,
-                fileLinkData: Create'FileLinkData option
+                purpose: Create'Purpose
             ) : CreateOptions
             =
             {
               File = file
               Purpose = purpose
-              Expand = expand
-              FileLinkData = fileLinkData
+              Expand = None
+              FileLinkData = None
             }
 
     type RetrieveOptions =
@@ -138,13 +136,12 @@ module Files =
     module RetrieveOptions =
         let create
             (
-                file: string,
-                expand: string list option
+                file: string
             ) : RetrieveOptions
             =
             {
               File = file
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of the files that your account has access to. Stripe sorts and returns the files by their creation dates, placing the most recently created files at the top.</p>

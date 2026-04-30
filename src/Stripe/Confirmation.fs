@@ -92,13 +92,12 @@ type ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
 module ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
     let create
         (
-            cvcToken: string option,
-            installments: ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment option
+            cvcToken: string option
         ) : ConfirmationTokensResourcePaymentMethodOptionsResourceCard
         =
         {
           CvcToken = cvcToken
-          Installments = installments
+          Installments = None
         }
 
 /// Payment-method-specific configuration
@@ -259,62 +258,7 @@ module ConfirmationTokensResourcePaymentMethodPreview =
             billingDetails: BillingDetails,
             customer: ConfirmationTokensResourcePaymentMethodPreviewCustomer'AnyOf option,
             customerAccount: string option,
-            ``type``: ConfirmationTokensResourcePaymentMethodPreviewType,
-            acssDebit: PaymentMethodAcssDebit option,
-            affirm: PaymentMethodAffirm option,
-            afterpayClearpay: PaymentMethodAfterpayClearpay option,
-            alipay: PaymentFlowsPrivatePaymentMethodsAlipay option,
-            allowRedisplay: ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay option,
-            alma: PaymentMethodAlma option,
-            amazonPay: PaymentMethodAmazonPay option,
-            auBecsDebit: PaymentMethodAuBecsDebit option,
-            bacsDebit: PaymentMethodBacsDebit option,
-            bancontact: PaymentMethodBancontact option,
-            billie: PaymentMethodBillie option,
-            blik: PaymentMethodBlik option,
-            boleto: PaymentMethodBoleto option,
-            card: PaymentMethodCard option,
-            cardPresent: PaymentMethodCardPresent option,
-            cashapp: PaymentMethodCashapp option,
-            crypto: PaymentMethodCrypto option,
-            customerBalance: PaymentMethodCustomerBalance option,
-            eps: PaymentMethodEps option,
-            fpx: PaymentMethodFpx option,
-            giropay: PaymentMethodGiropay option,
-            grabpay: PaymentMethodGrabpay option,
-            ideal: PaymentMethodIdeal option,
-            interacPresent: PaymentMethodInteracPresent option,
-            kakaoPay: PaymentMethodKakaoPay option,
-            klarna: PaymentMethodKlarna option,
-            konbini: PaymentMethodKonbini option,
-            krCard: PaymentMethodKrCard option,
-            link: PaymentMethodLink option,
-            mbWay: PaymentMethodMbWay option,
-            mobilepay: PaymentMethodMobilepay option,
-            multibanco: PaymentMethodMultibanco option,
-            naverPay: PaymentMethodNaverPay option,
-            nzBankAccount: PaymentMethodNzBankAccount option,
-            oxxo: PaymentMethodOxxo option,
-            p24: PaymentMethodP24 option,
-            payByBank: PaymentMethodPayByBank option,
-            payco: PaymentMethodPayco option,
-            paynow: PaymentMethodPaynow option,
-            paypal: PaymentMethodPaypal option,
-            payto: PaymentMethodPayto option,
-            pix: PaymentMethodPix option,
-            promptpay: PaymentMethodPromptpay option,
-            revolutPay: PaymentMethodRevolutPay option,
-            samsungPay: PaymentMethodSamsungPay option,
-            satispay: PaymentMethodSatispay option,
-            sepaDebit: PaymentMethodSepaDebit option,
-            sofort: PaymentMethodSofort option,
-            sunbit: PaymentMethodSunbit option,
-            swish: PaymentMethodSwish option,
-            twint: PaymentMethodTwint option,
-            upi: PaymentMethodUpi option,
-            usBankAccount: PaymentMethodUsBankAccount option,
-            wechatPay: PaymentMethodWechatPay option,
-            zip: PaymentMethodZip option
+            ``type``: ConfirmationTokensResourcePaymentMethodPreviewType
         ) : ConfirmationTokensResourcePaymentMethodPreview
         =
         {
@@ -322,61 +266,61 @@ module ConfirmationTokensResourcePaymentMethodPreview =
           Customer = customer
           CustomerAccount = customerAccount
           Type = ``type``
-          AcssDebit = acssDebit
-          Affirm = affirm
-          AfterpayClearpay = afterpayClearpay
-          Alipay = alipay
-          AllowRedisplay = allowRedisplay
-          Alma = alma
-          AmazonPay = amazonPay
-          AuBecsDebit = auBecsDebit
-          BacsDebit = bacsDebit
-          Bancontact = bancontact
-          Billie = billie
-          Blik = blik
-          Boleto = boleto
-          Card = card
-          CardPresent = cardPresent
-          Cashapp = cashapp
-          Crypto = crypto
-          CustomerBalance = customerBalance
-          Eps = eps
-          Fpx = fpx
-          Giropay = giropay
-          Grabpay = grabpay
-          Ideal = ideal
-          InteracPresent = interacPresent
-          KakaoPay = kakaoPay
-          Klarna = klarna
-          Konbini = konbini
-          KrCard = krCard
-          Link = link
-          MbWay = mbWay
-          Mobilepay = mobilepay
-          Multibanco = multibanco
-          NaverPay = naverPay
-          NzBankAccount = nzBankAccount
-          Oxxo = oxxo
-          P24 = p24
-          PayByBank = payByBank
-          Payco = payco
-          Paynow = paynow
-          Paypal = paypal
-          Payto = payto
-          Pix = pix
-          Promptpay = promptpay
-          RevolutPay = revolutPay
-          SamsungPay = samsungPay
-          Satispay = satispay
-          SepaDebit = sepaDebit
-          Sofort = sofort
-          Sunbit = sunbit
-          Swish = swish
-          Twint = twint
-          Upi = upi
-          UsBankAccount = usBankAccount
-          WechatPay = wechatPay
-          Zip = zip
+          AcssDebit = None
+          Affirm = None
+          AfterpayClearpay = None
+          Alipay = None
+          AllowRedisplay = None
+          Alma = None
+          AmazonPay = None
+          AuBecsDebit = None
+          BacsDebit = None
+          Bancontact = None
+          Billie = None
+          Blik = None
+          Boleto = None
+          Card = None
+          CardPresent = None
+          Cashapp = None
+          Crypto = None
+          CustomerBalance = None
+          Eps = None
+          Fpx = None
+          Giropay = None
+          Grabpay = None
+          Ideal = None
+          InteracPresent = None
+          KakaoPay = None
+          Klarna = None
+          Konbini = None
+          KrCard = None
+          Link = None
+          MbWay = None
+          Mobilepay = None
+          Multibanco = None
+          NaverPay = None
+          NzBankAccount = None
+          Oxxo = None
+          P24 = None
+          PayByBank = None
+          Payco = None
+          Paynow = None
+          Paypal = None
+          Payto = None
+          Pix = None
+          Promptpay = None
+          RevolutPay = None
+          SamsungPay = None
+          Satispay = None
+          SepaDebit = None
+          Sofort = None
+          Sunbit = None
+          Swish = None
+          Twint = None
+          Upi = None
+          UsBankAccount = None
+          WechatPay = None
+          Zip = None
         }
 
 type ConfirmationTokensResourceShipping =
@@ -456,8 +400,7 @@ module ConfirmationToken =
             setupFutureUsage: ConfirmationTokenSetupFutureUsage option,
             setupIntent: string option,
             shipping: ConfirmationTokensResourceShipping option,
-            useStripeSdk: bool,
-            mandateData: ConfirmationTokensResourceMandateData option option
+            useStripeSdk: bool
         ) : ConfirmationToken
         =
         {
@@ -473,6 +416,6 @@ module ConfirmationToken =
           SetupIntent = setupIntent
           Shipping = shipping
           UseStripeSdk = useStripeSdk
-          MandateData = mandateData |> Option.flatten
+          MandateData = None
         }
 

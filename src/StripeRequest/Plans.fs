@@ -248,44 +248,28 @@ module Plans =
         let create
             (
                 currency: IsoTypes.IsoCurrencyCode,
-                interval: Create'Interval,
-                active: bool option,
-                amount: int option,
-                amountDecimal: string option,
-                billingScheme: Create'BillingScheme option,
-                expand: string list option,
-                id: string option,
-                intervalCount: int option,
-                metadata: Map<string, string> option,
-                meter: string option,
-                nickname: string option,
-                product: Choice<Create'ProductInlineProductParams,string> option,
-                tiers: Create'Tiers list option,
-                tiersMode: Create'TiersMode option,
-                transformUsage: Create'TransformUsage option,
-                trialPeriodDays: int option,
-                usageType: Create'UsageType option
+                interval: Create'Interval
             ) : CreateOptions
             =
             {
               Currency = currency
               Interval = interval
-              Active = active
-              Amount = amount
-              AmountDecimal = amountDecimal
-              BillingScheme = billingScheme
-              Expand = expand
-              Id = id
-              IntervalCount = intervalCount
-              Metadata = metadata
-              Meter = meter
-              Nickname = nickname
-              Product = product
-              Tiers = tiers
-              TiersMode = tiersMode
-              TransformUsage = transformUsage
-              TrialPeriodDays = trialPeriodDays
-              UsageType = usageType
+              Active = None
+              Amount = None
+              AmountDecimal = None
+              BillingScheme = None
+              Expand = None
+              Id = None
+              IntervalCount = None
+              Metadata = None
+              Meter = None
+              Nickname = None
+              Product = None
+              Tiers = None
+              TiersMode = None
+              TransformUsage = None
+              TrialPeriodDays = None
+              UsageType = None
             }
 
     type DeleteOptions =
@@ -314,13 +298,12 @@ module Plans =
     module RetrieveOptions =
         let create
             (
-                plan: string,
-                expand: string list option
+                plan: string
             ) : RetrieveOptions
             =
             {
               Plan = plan
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -350,23 +333,17 @@ module Plans =
     module UpdateOptions =
         let create
             (
-                plan: string,
-                active: bool option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                nickname: string option,
-                product: string option,
-                trialPeriodDays: int option
+                plan: string
             ) : UpdateOptions
             =
             {
               Plan = plan
-              Active = active
-              Expand = expand
-              Metadata = metadata
-              Nickname = nickname
-              Product = product
-              TrialPeriodDays = trialPeriodDays
+              Active = None
+              Expand = None
+              Metadata = None
+              Nickname = None
+              Product = None
+              TrialPeriodDays = None
             }
 
     ///<p>Returns a list of your plans.</p>

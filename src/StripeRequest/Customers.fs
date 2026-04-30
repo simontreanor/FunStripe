@@ -609,13 +609,12 @@ module Customers =
     module RetrieveOptions =
         let create
             (
-                customer: string,
-                expand: string list option
+                customer: string
             ) : RetrieveOptions
             =
             {
               Customer = customer
-              Expand = expand
+              Expand = None
             }
 
     type Update'AddressOptionalFieldsCustomerAddress =
@@ -953,53 +952,32 @@ module Customers =
     module UpdateOptions =
         let create
             (
-                customer: string,
-                address: Choice<Update'AddressOptionalFieldsCustomerAddress,string> option,
-                balance: int option,
-                businessName: Choice<string,string> option,
-                cashBalance: Update'CashBalance option,
-                defaultSource: string option,
-                description: string option,
-                email: string option,
-                expand: string list option,
-                individualName: Choice<string,string> option,
-                invoicePrefix: string option,
-                invoiceSettings: Update'InvoiceSettings option,
-                metadata: Map<string, string> option,
-                name: string option,
-                nextInvoiceSequence: int option,
-                phone: string option,
-                preferredLocales: string list option,
-                shipping: Choice<Update'ShippingCustomerShipping,string> option,
-                source: string option,
-                tax: Update'Tax option,
-                taxExempt: Update'TaxExempt option,
-                validate: bool option
+                customer: string
             ) : UpdateOptions
             =
             {
               Customer = customer
-              Address = address
-              Balance = balance
-              BusinessName = businessName
-              CashBalance = cashBalance
-              DefaultSource = defaultSource
-              Description = description
-              Email = email
-              Expand = expand
-              IndividualName = individualName
-              InvoicePrefix = invoicePrefix
-              InvoiceSettings = invoiceSettings
-              Metadata = metadata
-              Name = name
-              NextInvoiceSequence = nextInvoiceSequence
-              Phone = phone
-              PreferredLocales = preferredLocales
-              Shipping = shipping
-              Source = source
-              Tax = tax
-              TaxExempt = taxExempt
-              Validate = validate
+              Address = None
+              Balance = None
+              BusinessName = None
+              CashBalance = None
+              DefaultSource = None
+              Description = None
+              Email = None
+              Expand = None
+              IndividualName = None
+              InvoicePrefix = None
+              InvoiceSettings = None
+              Metadata = None
+              Name = None
+              NextInvoiceSequence = None
+              Phone = None
+              PreferredLocales = None
+              Shipping = None
+              Source = None
+              Tax = None
+              TaxExempt = None
+              Validate = None
             }
 
     ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
@@ -1051,17 +1029,14 @@ module CustomersSearch =
     module SearchOptions =
         let create
             (
-                query: string,
-                expand: string list option,
-                limit: int option,
-                page: string option
+                query: string
             ) : SearchOptions
             =
             {
               Query = query
-              Expand = expand
-              Limit = limit
-              Page = page
+              Expand = None
+              Limit = None
+              Page = None
             }
 
     ///<p>Search for customers you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -1102,23 +1077,17 @@ module CustomersBalanceTransactions =
     module BalanceTransactionsOptions =
         let create
             (
-                customer: string,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                invoice: string option,
-                limit: int option,
-                startingAfter: string option
+                customer: string
             ) : BalanceTransactionsOptions
             =
             {
               Customer = customer
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Invoice = invoice
-              Limit = limit
-              StartingAfter = startingAfter
+              Created = None
+              EndingBefore = None
+              Expand = None
+              Invoice = None
+              Limit = None
+              StartingAfter = None
             }
 
     type CreateOptions =
@@ -1147,19 +1116,16 @@ module CustomersBalanceTransactions =
             (
                 amount: int,
                 currency: IsoTypes.IsoCurrencyCode,
-                customer: string,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                customer: string
             ) : CreateOptions
             =
             {
               Amount = amount
               Currency = currency
               Customer = customer
-              Description = description
-              Expand = expand
-              Metadata = metadata
+              Description = None
+              Expand = None
+              Metadata = None
             }
 
     type RetrieveOptions =
@@ -1177,14 +1143,13 @@ module CustomersBalanceTransactions =
         let create
             (
                 customer: string,
-                transaction: string,
-                expand: string list option
+                transaction: string
             ) : RetrieveOptions
             =
             {
               Customer = customer
               Transaction = transaction
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -1208,18 +1173,15 @@ module CustomersBalanceTransactions =
         let create
             (
                 customer: string,
-                transaction: string,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                transaction: string
             ) : UpdateOptions
             =
             {
               Customer = customer
               Transaction = transaction
-              Description = description
-              Expand = expand
-              Metadata = metadata
+              Description = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of transactions that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
@@ -1258,13 +1220,12 @@ module CustomersCashBalance =
     module RetrieveOptions =
         let create
             (
-                customer: string,
-                expand: string list option
+                customer: string
             ) : RetrieveOptions
             =
             {
               Customer = customer
-              Expand = expand
+              Expand = None
             }
 
     type Update'SettingsReconciliationMode =
@@ -1304,15 +1265,13 @@ module CustomersCashBalance =
     module UpdateOptions =
         let create
             (
-                customer: string,
-                expand: string list option,
-                settings: Update'Settings option
+                customer: string
             ) : UpdateOptions
             =
             {
               Customer = customer
-              Expand = expand
-              Settings = settings
+              Expand = None
+              Settings = None
             }
 
     ///<p>Retrieves a customer’s cash balance.</p>
@@ -1349,19 +1308,15 @@ module CustomersCashBalanceTransactions =
     module ListOptions =
         let create
             (
-                customer: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                customer: string
             ) : ListOptions
             =
             {
               Customer = customer
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type RetrieveOptions =
@@ -1379,14 +1334,13 @@ module CustomersCashBalanceTransactions =
         let create
             (
                 customer: string,
-                transaction: string,
-                expand: string list option
+                transaction: string
             ) : RetrieveOptions
             =
             {
               Customer = customer
               Transaction = transaction
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of transactions that modified the customer’s <a href="/docs/payments/customer-balance">cash balance</a>.</p>
@@ -1508,8 +1462,7 @@ module CustomersFundingInstructions =
                 bankTransfer: CreateFundingInstructions'BankTransfer,
                 currency: IsoTypes.IsoCurrencyCode,
                 customer: string,
-                fundingType: CreateFundingInstructions'FundingType,
-                expand: string list option
+                fundingType: CreateFundingInstructions'FundingType
             ) : CreateFundingInstructionsOptions
             =
             {
@@ -1517,7 +1470,7 @@ module CustomersFundingInstructions =
               Currency = currency
               Customer = customer
               FundingType = fundingType
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieve funding instructions for a customer cash balance. If funding instructions do not yet exist for the customer, new
@@ -1556,23 +1509,17 @@ module CustomersPaymentMethods =
     module ListPaymentMethodsOptions =
         let create
             (
-                customer: string,
-                allowRedisplay: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                ``type``: string option
+                customer: string
             ) : ListPaymentMethodsOptions
             =
             {
               Customer = customer
-              AllowRedisplay = allowRedisplay
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Type = ``type``
+              AllowRedisplay = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              Type = None
             }
 
     type RetrievePaymentMethodOptions =
@@ -1590,14 +1537,13 @@ module CustomersPaymentMethods =
         let create
             (
                 customer: string,
-                paymentMethod: string,
-                expand: string list option
+                paymentMethod: string
             ) : RetrievePaymentMethodOptions
             =
             {
               Customer = customer
               PaymentMethod = paymentMethod
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of PaymentMethods for a given Customer</p>
@@ -1638,21 +1584,16 @@ module CustomersSources =
     module ListOptions =
         let create
             (
-                customer: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                object: string option,
-                startingAfter: string option
+                customer: string
             ) : ListOptions
             =
             {
               Customer = customer
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Object = object
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              Object = None
+              StartingAfter = None
             }
 
     type CreateOptions =
@@ -1676,18 +1617,15 @@ module CustomersSources =
         let create
             (
                 customer: string,
-                source: string,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                validate: bool option
+                source: string
             ) : CreateOptions
             =
             {
               Customer = customer
               Source = source
-              Expand = expand
-              Metadata = metadata
-              Validate = validate
+              Expand = None
+              Metadata = None
+              Validate = None
             }
 
     type DeleteOptions =
@@ -1705,14 +1643,13 @@ module CustomersSources =
         let create
             (
                 customer: string,
-                id: string,
-                expand: string list option
+                id: string
             ) : DeleteOptions
             =
             {
               Customer = customer
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type RetrieveOptions =
@@ -1730,14 +1667,13 @@ module CustomersSources =
         let create
             (
                 customer: string,
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Customer = customer
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type Update'AccountHolderType =
@@ -1871,40 +1807,26 @@ module CustomersSources =
         let create
             (
                 customer: string,
-                id: string,
-                accountHolderName: string option,
-                accountHolderType: Update'AccountHolderType option,
-                addressCity: string option,
-                addressCountry: IsoTypes.IsoCountryCode option,
-                addressLine1: string option,
-                addressLine2: string option,
-                addressState: string option,
-                addressZip: string option,
-                expMonth: string option,
-                expYear: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                name: string option,
-                owner: Update'Owner option
+                id: string
             ) : UpdateOptions
             =
             {
               Customer = customer
               Id = id
-              AccountHolderName = accountHolderName
-              AccountHolderType = accountHolderType
-              AddressCity = addressCity
-              AddressCountry = addressCountry
-              AddressLine1 = addressLine1
-              AddressLine2 = addressLine2
-              AddressState = addressState
-              AddressZip = addressZip
-              ExpMonth = expMonth
-              ExpYear = expYear
-              Expand = expand
-              Metadata = metadata
-              Name = name
-              Owner = owner
+              AccountHolderName = None
+              AccountHolderType = None
+              AddressCity = None
+              AddressCountry = None
+              AddressLine1 = None
+              AddressLine2 = None
+              AddressState = None
+              AddressZip = None
+              ExpMonth = None
+              ExpYear = None
+              Expand = None
+              Metadata = None
+              Name = None
+              Owner = None
             }
 
     ///<p>List sources for a specified customer.</p>
@@ -1957,16 +1879,14 @@ module CustomersSourcesVerify =
         let create
             (
                 customer: string,
-                id: string,
-                amounts: int list option,
-                expand: string list option
+                id: string
             ) : VerifyOptions
             =
             {
               Customer = customer
               Id = id
-              Amounts = amounts
-              Expand = expand
+              Amounts = None
+              Expand = None
             }
 
     ///<p>Verify a specified bank account for a given customer.</p>
@@ -1997,19 +1917,15 @@ module CustomersTaxIds =
     module ListOptions =
         let create
             (
-                customer: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                customer: string
             ) : ListOptions
             =
             {
               Customer = customer
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type Create'Type =
@@ -2150,15 +2066,14 @@ module CustomersTaxIds =
             (
                 customer: string,
                 ``type``: Create'Type,
-                value: string,
-                expand: string list option
+                value: string
             ) : CreateOptions
             =
             {
               Customer = customer
               Type = ``type``
               Value = value
-              Expand = expand
+              Expand = None
             }
 
     type DeleteOptions =
@@ -2194,14 +2109,13 @@ module CustomersTaxIds =
         let create
             (
                 customer: string,
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Customer = customer
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of tax IDs for a customer.</p>

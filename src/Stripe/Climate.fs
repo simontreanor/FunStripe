@@ -323,8 +323,7 @@ module ClimateOrder =
             metricTons: string,
             product: ClimateOrderProduct'AnyOf,
             productSubstitutedAt: DateTime option,
-            status: ClimateOrderStatus,
-            beneficiary: ClimateRemovalsBeneficiary option
+            status: ClimateOrderStatus
         ) : ClimateOrder
         =
         {
@@ -348,7 +347,7 @@ module ClimateOrder =
           Product = product
           ProductSubstitutedAt = productSubstitutedAt
           Status = status
-          Beneficiary = beneficiary
+          Beneficiary = None
         }
 
 /// Occurs when a Climate order's product is substituted for another.

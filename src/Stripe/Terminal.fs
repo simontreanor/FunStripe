@@ -57,13 +57,7 @@ module TerminalLocation =
             displayName: string,
             id: string,
             livemode: bool,
-            metadata: Map<string, string>,
-            addressKana: LegalEntityJapanAddress option,
-            addressKanji: LegalEntityJapanAddress option,
-            configurationOverrides: string option,
-            displayNameKana: string option,
-            displayNameKanji: string option,
-            phone: string option
+            metadata: Map<string, string>
         ) : TerminalLocation
         =
         {
@@ -72,12 +66,12 @@ module TerminalLocation =
           Id = id
           Livemode = livemode
           Metadata = metadata
-          AddressKana = addressKana
-          AddressKanji = addressKanji
-          ConfigurationOverrides = configurationOverrides
-          DisplayNameKana = displayNameKana
-          DisplayNameKanji = displayNameKanji
-          Phone = phone
+          AddressKana = None
+          AddressKanji = None
+          ConfigurationOverrides = None
+          DisplayNameKana = None
+          DisplayNameKanji = None
+          Phone = None
         }
 
 type TerminalReaderLocation'AnyOf =
@@ -327,14 +321,7 @@ module TerminalReaderReaderResourceInput =
             customText: TerminalReaderReaderResourceCustomText option,
             required: bool option,
             toggles: TerminalReaderReaderResourceToggle list option,
-            ``type``: TerminalReaderReaderResourceInputType,
-            email: TerminalReaderReaderResourceEmail option,
-            numeric: TerminalReaderReaderResourceNumeric option,
-            phone: TerminalReaderReaderResourcePhone option,
-            selection: TerminalReaderReaderResourceSelection option,
-            signature: TerminalReaderReaderResourceSignature option,
-            skipped: bool option,
-            text: TerminalReaderReaderResourceText option
+            ``type``: TerminalReaderReaderResourceInputType
         ) : TerminalReaderReaderResourceInput
         =
         {
@@ -342,13 +329,13 @@ module TerminalReaderReaderResourceInput =
           Required = required
           Toggles = toggles
           Type = ``type``
-          Email = email
-          Numeric = numeric
-          Phone = phone
-          Selection = selection
-          Signature = signature
-          Skipped = skipped
-          Text = text
+          Email = None
+          Numeric = None
+          Phone = None
+          Selection = None
+          Signature = None
+          Skipped = None
+          Text = None
         }
 
 /// Represents a reader action to collect customer inputs
@@ -429,15 +416,13 @@ type TerminalReaderReaderResourceCollectPaymentMethodAction =
 module TerminalReaderReaderResourceCollectPaymentMethodAction =
     let create
         (
-            paymentIntent: TerminalReaderReaderResourceCollectPaymentMethodActionPaymentIntent'AnyOf,
-            collectConfig: TerminalReaderReaderResourceCollectConfig option,
-            paymentMethod: PaymentMethod option
+            paymentIntent: TerminalReaderReaderResourceCollectPaymentMethodActionPaymentIntent'AnyOf
         ) : TerminalReaderReaderResourceCollectPaymentMethodAction
         =
         {
           PaymentIntent = paymentIntent
-          CollectConfig = collectConfig
-          PaymentMethod = paymentMethod
+          CollectConfig = None
+          PaymentMethod = None
         }
 
 /// Represents a per-transaction override of a reader configuration
@@ -472,13 +457,12 @@ type TerminalReaderReaderResourceConfirmPaymentIntentAction =
 module TerminalReaderReaderResourceConfirmPaymentIntentAction =
     let create
         (
-            paymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentActionPaymentIntent'AnyOf,
-            confirmConfig: TerminalReaderReaderResourceConfirmConfig option
+            paymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentActionPaymentIntent'AnyOf
         ) : TerminalReaderReaderResourceConfirmPaymentIntentAction
         =
         {
           PaymentIntent = paymentIntent
-          ConfirmConfig = confirmConfig
+          ConfirmConfig = None
         }
 
 /// Represents a per-transaction override of a reader configuration
@@ -524,13 +508,12 @@ type TerminalReaderReaderResourceProcessPaymentIntentAction =
 module TerminalReaderReaderResourceProcessPaymentIntentAction =
     let create
         (
-            paymentIntent: TerminalReaderReaderResourceProcessPaymentIntentActionPaymentIntent'AnyOf,
-            processConfig: TerminalReaderReaderResourceProcessConfig option
+            paymentIntent: TerminalReaderReaderResourceProcessPaymentIntentActionPaymentIntent'AnyOf
         ) : TerminalReaderReaderResourceProcessPaymentIntentAction
         =
         {
           PaymentIntent = paymentIntent
-          ProcessConfig = processConfig
+          ProcessConfig = None
         }
 
 /// Represents a per-setup override of a reader configuration
@@ -567,15 +550,13 @@ type TerminalReaderReaderResourceProcessSetupIntentAction =
 module TerminalReaderReaderResourceProcessSetupIntentAction =
     let create
         (
-            setupIntent: TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf,
-            generatedCard: string option,
-            processConfig: TerminalReaderReaderResourceProcessSetupConfig option
+            setupIntent: TerminalReaderReaderResourceProcessSetupIntentActionSetupIntent'AnyOf
         ) : TerminalReaderReaderResourceProcessSetupIntentAction
         =
         {
           SetupIntent = setupIntent
-          GeneratedCard = generatedCard
-          ProcessConfig = processConfig
+          GeneratedCard = None
+          ProcessConfig = None
         }
 
 [<Struct>]
@@ -776,14 +757,7 @@ module TerminalReaderReaderResourceReaderAction =
             failureCode: string option,
             failureMessage: string option,
             status: TerminalReaderReaderResourceReaderActionStatus,
-            ``type``: TerminalReaderReaderResourceReaderActionType,
-            collectInputs: TerminalReaderReaderResourceCollectInputsAction option,
-            collectPaymentMethod: TerminalReaderReaderResourceCollectPaymentMethodAction option,
-            confirmPaymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentAction option,
-            processPaymentIntent: TerminalReaderReaderResourceProcessPaymentIntentAction option,
-            processSetupIntent: TerminalReaderReaderResourceProcessSetupIntentAction option,
-            refundPayment: TerminalReaderReaderResourceRefundPaymentAction option,
-            setReaderDisplay: TerminalReaderReaderResourceSetReaderDisplayAction option
+            ``type``: TerminalReaderReaderResourceReaderActionType
         ) : TerminalReaderReaderResourceReaderAction
         =
         {
@@ -791,13 +765,13 @@ module TerminalReaderReaderResourceReaderAction =
           FailureMessage = failureMessage
           Status = status
           Type = ``type``
-          CollectInputs = collectInputs
-          CollectPaymentMethod = collectPaymentMethod
-          ConfirmPaymentIntent = confirmPaymentIntent
-          ProcessPaymentIntent = processPaymentIntent
-          ProcessSetupIntent = processSetupIntent
-          RefundPayment = refundPayment
-          SetReaderDisplay = setReaderDisplay
+          CollectInputs = None
+          CollectPaymentMethod = None
+          ConfirmPaymentIntent = None
+          ProcessPaymentIntent = None
+          ProcessSetupIntent = None
+          RefundPayment = None
+          SetReaderDisplay = None
         }
 
 [<Struct>]
@@ -992,13 +966,12 @@ module TerminalConnectionToken =
 
     let create
         (
-            secret: string,
-            location: string option
+            secret: string
         ) : TerminalConnectionToken
         =
         {
           Secret = secret
-          Location = location
+          Location = None
         }
 
 type TerminalConfigurationConfigurationResourceCellularConfig =
@@ -1187,15 +1160,14 @@ module TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
         (
             password: string,
             ssid: string,
-            username: string,
-            caCertificateFile: string option
+            username: string
         ) : TerminalConfigurationConfigurationResourceEnterprisePeapWifi
         =
         {
           Password = password
           Ssid = ssid
           Username = username
-          CaCertificateFile = caCertificateFile
+          CaCertificateFile = None
         }
 
 type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
@@ -1217,17 +1189,15 @@ module TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
         (
             clientCertificateFile: string,
             privateKeyFile: string,
-            ssid: string,
-            caCertificateFile: string option,
-            privateKeyFilePassword: string option
+            ssid: string
         ) : TerminalConfigurationConfigurationResourceEnterpriseTlsWifi
         =
         {
           ClientCertificateFile = clientCertificateFile
           PrivateKeyFile = privateKeyFile
           Ssid = ssid
-          CaCertificateFile = caCertificateFile
-          PrivateKeyFilePassword = privateKeyFilePassword
+          CaCertificateFile = None
+          PrivateKeyFilePassword = None
         }
 
 type TerminalConfigurationConfigurationResourcePersonalPskWifi =
@@ -1268,17 +1238,14 @@ type TerminalConfigurationConfigurationResourceWifiConfig =
 module TerminalConfigurationConfigurationResourceWifiConfig =
     let create
         (
-            ``type``: TerminalConfigurationConfigurationResourceWifiConfigType,
-            enterpriseEapPeap: TerminalConfigurationConfigurationResourceEnterprisePeapWifi option,
-            enterpriseEapTls: TerminalConfigurationConfigurationResourceEnterpriseTlsWifi option,
-            personalPsk: TerminalConfigurationConfigurationResourcePersonalPskWifi option
+            ``type``: TerminalConfigurationConfigurationResourceWifiConfigType
         ) : TerminalConfigurationConfigurationResourceWifiConfig
         =
         {
           Type = ``type``
-          EnterpriseEapPeap = enterpriseEapPeap
-          EnterpriseEapTls = enterpriseEapTls
-          PersonalPsk = personalPsk
+          EnterpriseEapPeap = None
+          EnterpriseEapTls = None
+          PersonalPsk = None
         }
 
 /// A Configurations object represents how features should be configured for terminal readers.
@@ -1318,17 +1285,7 @@ module TerminalConfiguration =
             id: string,
             isAccountDefault: bool option,
             livemode: bool,
-            name: string option,
-            bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option,
-            bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option,
-            cellular: TerminalConfigurationConfigurationResourceCellularConfig option,
-            offline: TerminalConfigurationConfigurationResourceOfflineConfig option,
-            rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow option,
-            stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option,
-            stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option,
-            tipping: TerminalConfigurationConfigurationResourceTipping option,
-            verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option,
-            wifi: TerminalConfigurationConfigurationResourceWifiConfig option
+            name: string option
         ) : TerminalConfiguration
         =
         {
@@ -1336,15 +1293,15 @@ module TerminalConfiguration =
           IsAccountDefault = isAccountDefault
           Livemode = livemode
           Name = name
-          BbposWisepad3 = bbposWisepad3
-          BbposWiseposE = bbposWiseposE
-          Cellular = cellular
-          Offline = offline
-          RebootWindow = rebootWindow
-          StripeS700 = stripeS700
-          StripeS710 = stripeS710
-          Tipping = tipping
-          VerifoneP400 = verifoneP400
-          Wifi = wifi
+          BbposWisepad3 = None
+          BbposWiseposE = None
+          Cellular = None
+          Offline = None
+          RebootWindow = None
+          StripeS700 = None
+          StripeS710 = None
+          Tipping = None
+          VerifoneP400 = None
+          Wifi = None
         }
 

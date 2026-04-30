@@ -20,12 +20,11 @@ type SecretServiceResourceScope =
 module SecretServiceResourceScope =
     let create
         (
-            ``type``: SecretServiceResourceScopeType,
-            user: string option
+            ``type``: SecretServiceResourceScopeType
         ) : SecretServiceResourceScope
         =
         {
           Type = ``type``
-          User = user
+          User = None
         }
 

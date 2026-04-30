@@ -415,17 +415,14 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWal
 module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet =
     let create
         (
-            ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType,
-            applePay: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePay option,
-            dynamicLast4: string option,
-            googlePay: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay option
+            ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType
         ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet
         =
         {
           Type = ``type``
-          ApplePay = applePay
-          DynamicLast4 = dynamicLast4
-          GooglePay = googlePay
+          ApplePay = None
+          DynamicLast4 = None
+          GooglePay = None
         }
 
 [<Struct>]
@@ -508,11 +505,7 @@ module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails =
             networkTransactionId: string option,
             storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option,
             threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option,
-            wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option,
-            captureBefore: DateTime option,
-            fingerprint: string option option,
-            moto: bool option option,
-            networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option option
+            wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option
         ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails
         =
         {
@@ -535,10 +528,10 @@ module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails =
           StoredCredentialUsage = storedCredentialUsage
           ThreeDSecure = threeDSecure
           Wallet = wallet
-          CaptureBefore = captureBefore
-          Fingerprint = fingerprint |> Option.flatten
-          Moto = moto |> Option.flatten
-          NetworkToken = networkToken |> Option.flatten
+          CaptureBefore = None
+          Fingerprint = None
+          Moto = None
+          NetworkToken = None
         }
 
 /// Billing details used by the customer for this payment.

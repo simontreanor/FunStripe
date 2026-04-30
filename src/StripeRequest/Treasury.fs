@@ -36,23 +36,17 @@ module TreasuryCreditReversals =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                receivedCredit: string option,
-                startingAfter: string option,
-                status: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              ReceivedCredit = receivedCredit
-              StartingAfter = startingAfter
-              Status = status
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              ReceivedCredit = None
+              StartingAfter = None
+              Status = None
             }
 
     type CreateOptions =
@@ -71,15 +65,13 @@ module TreasuryCreditReversals =
     module CreateOptions =
         let create
             (
-                receivedCredit: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                receivedCredit: string
             ) : CreateOptions
             =
             {
               ReceivedCredit = receivedCredit
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     type RetrieveOptions =
@@ -94,13 +86,12 @@ module TreasuryCreditReversals =
     module RetrieveOptions =
         let create
             (
-                creditReversal: string,
-                expand: string list option
+                creditReversal: string
             ) : RetrieveOptions
             =
             {
               CreditReversal = creditReversal
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of CreditReversals.</p>
@@ -153,25 +144,18 @@ module TreasuryDebitReversals =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                receivedDebit: string option,
-                resolution: string option,
-                startingAfter: string option,
-                status: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              ReceivedDebit = receivedDebit
-              Resolution = resolution
-              StartingAfter = startingAfter
-              Status = status
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              ReceivedDebit = None
+              Resolution = None
+              StartingAfter = None
+              Status = None
             }
 
     type CreateOptions =
@@ -190,15 +174,13 @@ module TreasuryDebitReversals =
     module CreateOptions =
         let create
             (
-                receivedDebit: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                receivedDebit: string
             ) : CreateOptions
             =
             {
               ReceivedDebit = receivedDebit
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     type RetrieveOptions =
@@ -213,13 +195,12 @@ module TreasuryDebitReversals =
     module RetrieveOptions =
         let create
             (
-                debitReversal: string,
-                expand: string list option
+                debitReversal: string
             ) : RetrieveOptions
             =
             {
               DebitReversal = debitReversal
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of DebitReversals.</p>
@@ -616,21 +597,16 @@ module TreasuryFinancialAccounts =
     module CreateOptions =
         let create
             (
-                supportedCurrencies: string list,
-                expand: string list option,
-                features: Create'Features option,
-                metadata: Map<string, string> option,
-                nickname: Choice<string,string> option,
-                platformRestrictions: Create'PlatformRestrictions option
+                supportedCurrencies: string list
             ) : CreateOptions
             =
             {
               SupportedCurrencies = supportedCurrencies
-              Expand = expand
-              Features = features
-              Metadata = metadata
-              Nickname = nickname
-              PlatformRestrictions = platformRestrictions
+              Expand = None
+              Features = None
+              Metadata = None
+              Nickname = None
+              PlatformRestrictions = None
             }
 
     type RetrieveOptions =
@@ -645,13 +621,12 @@ module TreasuryFinancialAccounts =
     module RetrieveOptions =
         let create
             (
-                financialAccount: string,
-                expand: string list option
+                financialAccount: string
             ) : RetrieveOptions
             =
             {
               FinancialAccount = financialAccount
-              Expand = expand
+              Expand = None
             }
 
     type Update'FeaturesCardIssuing =
@@ -1020,23 +995,17 @@ module TreasuryFinancialAccounts =
     module UpdateOptions =
         let create
             (
-                financialAccount: string,
-                expand: string list option,
-                features: Update'Features option,
-                forwardingSettings: Update'ForwardingSettings option,
-                metadata: Map<string, string> option,
-                nickname: Choice<string,string> option,
-                platformRestrictions: Update'PlatformRestrictions option
+                financialAccount: string
             ) : UpdateOptions
             =
             {
               FinancialAccount = financialAccount
-              Expand = expand
-              Features = features
-              ForwardingSettings = forwardingSettings
-              Metadata = metadata
-              Nickname = nickname
-              PlatformRestrictions = platformRestrictions
+              Expand = None
+              Features = None
+              ForwardingSettings = None
+              Metadata = None
+              Nickname = None
+              PlatformRestrictions = None
             }
 
     ///<p>Returns a list of FinancialAccounts.</p>
@@ -1109,15 +1078,13 @@ module TreasuryFinancialAccountsClose =
     module CloseOptions =
         let create
             (
-                financialAccount: string,
-                expand: string list option,
-                forwardingSettings: Close'ForwardingSettings option
+                financialAccount: string
             ) : CloseOptions
             =
             {
               FinancialAccount = financialAccount
-              Expand = expand
-              ForwardingSettings = forwardingSettings
+              Expand = None
+              ForwardingSettings = None
             }
 
     ///<p>Closes a FinancialAccount. A FinancialAccount can only be closed if it has a zero balance, has no pending InboundTransfers, and has canceled all attached Issuing cards.</p>
@@ -1139,13 +1106,12 @@ module TreasuryFinancialAccountsFeatures =
     module RetrieveFeaturesOptions =
         let create
             (
-                financialAccount: string,
-                expand: string list option
+                financialAccount: string
             ) : RetrieveFeaturesOptions
             =
             {
               FinancialAccount = financialAccount
-              Expand = expand
+              Expand = None
             }
 
     type UpdateFeatures'CardIssuing =
@@ -1412,27 +1378,19 @@ module TreasuryFinancialAccountsFeatures =
     module UpdateFeaturesOptions =
         let create
             (
-                financialAccount: string,
-                cardIssuing: UpdateFeatures'CardIssuing option,
-                depositInsurance: UpdateFeatures'DepositInsurance option,
-                expand: string list option,
-                financialAddresses: UpdateFeatures'FinancialAddresses option,
-                inboundTransfers: UpdateFeatures'InboundTransfers option,
-                intraStripeFlows: UpdateFeatures'IntraStripeFlows option,
-                outboundPayments: UpdateFeatures'OutboundPayments option,
-                outboundTransfers: UpdateFeatures'OutboundTransfers option
+                financialAccount: string
             ) : UpdateFeaturesOptions
             =
             {
               FinancialAccount = financialAccount
-              CardIssuing = cardIssuing
-              DepositInsurance = depositInsurance
-              Expand = expand
-              FinancialAddresses = financialAddresses
-              InboundTransfers = inboundTransfers
-              IntraStripeFlows = intraStripeFlows
-              OutboundPayments = outboundPayments
-              OutboundTransfers = outboundTransfers
+              CardIssuing = None
+              DepositInsurance = None
+              Expand = None
+              FinancialAddresses = None
+              InboundTransfers = None
+              IntraStripeFlows = None
+              OutboundPayments = None
+              OutboundTransfers = None
             }
 
     ///<p>Retrieves Features information associated with the FinancialAccount.</p>
@@ -1473,21 +1431,16 @@ module TreasuryInboundTransfers =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              Status = None
             }
 
     type CreateOptions =
@@ -1524,11 +1477,7 @@ module TreasuryInboundTransfers =
                 amount: int,
                 currency: IsoTypes.IsoCurrencyCode,
                 financialAccount: string,
-                originPaymentMethod: string,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                statementDescriptor: string option
+                originPaymentMethod: string
             ) : CreateOptions
             =
             {
@@ -1536,10 +1485,10 @@ module TreasuryInboundTransfers =
               Currency = currency
               FinancialAccount = financialAccount
               OriginPaymentMethod = originPaymentMethod
-              Description = description
-              Expand = expand
-              Metadata = metadata
-              StatementDescriptor = statementDescriptor
+              Description = None
+              Expand = None
+              Metadata = None
+              StatementDescriptor = None
             }
 
     type RetrieveOptions =
@@ -1554,13 +1503,12 @@ module TreasuryInboundTransfers =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of InboundTransfers sent from the specified FinancialAccount.</p>
@@ -1594,13 +1542,12 @@ module TreasuryInboundTransfersCancel =
     module CancelOptions =
         let create
             (
-                inboundTransfer: string,
-                expand: string list option
+                inboundTransfer: string
             ) : CancelOptions
             =
             {
               InboundTransfer = inboundTransfer
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Cancels an InboundTransfer.</p>
@@ -1641,25 +1588,18 @@ module TreasuryOutboundPayments =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                created: int option,
-                customer: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              Created = created
-              Customer = customer
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
+              Created = None
+              Customer = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              Status = None
             }
 
     type Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
@@ -1927,31 +1867,22 @@ module TreasuryOutboundPayments =
             (
                 amount: int,
                 currency: IsoTypes.IsoCurrencyCode,
-                financialAccount: string,
-                customer: string option,
-                description: string option,
-                destinationPaymentMethod: string option,
-                destinationPaymentMethodData: Create'DestinationPaymentMethodData option,
-                destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions option,
-                endUserDetails: Create'EndUserDetails option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                statementDescriptor: string option
+                financialAccount: string
             ) : CreateOptions
             =
             {
               Amount = amount
               Currency = currency
               FinancialAccount = financialAccount
-              Customer = customer
-              Description = description
-              DestinationPaymentMethod = destinationPaymentMethod
-              DestinationPaymentMethodData = destinationPaymentMethodData
-              DestinationPaymentMethodOptions = destinationPaymentMethodOptions
-              EndUserDetails = endUserDetails
-              Expand = expand
-              Metadata = metadata
-              StatementDescriptor = statementDescriptor
+              Customer = None
+              Description = None
+              DestinationPaymentMethod = None
+              DestinationPaymentMethodData = None
+              DestinationPaymentMethodOptions = None
+              EndUserDetails = None
+              Expand = None
+              Metadata = None
+              StatementDescriptor = None
             }
 
     type RetrieveOptions =
@@ -1966,13 +1897,12 @@ module TreasuryOutboundPayments =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of OutboundPayments sent from the specified FinancialAccount.</p>
@@ -2006,13 +1936,12 @@ module TreasuryOutboundPaymentsCancel =
     module CancelOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : CancelOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Cancel an OutboundPayment.</p>
@@ -2047,21 +1976,16 @@ module TreasuryOutboundTransfers =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              Status = None
             }
 
     type Create'DestinationPaymentMethodDataType = | FinancialAccount
@@ -2165,27 +2089,20 @@ module TreasuryOutboundTransfers =
             (
                 amount: int,
                 currency: IsoTypes.IsoCurrencyCode,
-                financialAccount: string,
-                description: string option,
-                destinationPaymentMethod: string option,
-                destinationPaymentMethodData: Create'DestinationPaymentMethodData option,
-                destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                statementDescriptor: string option
+                financialAccount: string
             ) : CreateOptions
             =
             {
               Amount = amount
               Currency = currency
               FinancialAccount = financialAccount
-              Description = description
-              DestinationPaymentMethod = destinationPaymentMethod
-              DestinationPaymentMethodData = destinationPaymentMethodData
-              DestinationPaymentMethodOptions = destinationPaymentMethodOptions
-              Expand = expand
-              Metadata = metadata
-              StatementDescriptor = statementDescriptor
+              Description = None
+              DestinationPaymentMethod = None
+              DestinationPaymentMethodData = None
+              DestinationPaymentMethodOptions = None
+              Expand = None
+              Metadata = None
+              StatementDescriptor = None
             }
 
     type RetrieveOptions =
@@ -2200,13 +2117,12 @@ module TreasuryOutboundTransfers =
     module RetrieveOptions =
         let create
             (
-                outboundTransfer: string,
-                expand: string list option
+                outboundTransfer: string
             ) : RetrieveOptions
             =
             {
               OutboundTransfer = outboundTransfer
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of OutboundTransfers sent from the specified FinancialAccount.</p>
@@ -2240,13 +2156,12 @@ module TreasuryOutboundTransfersCancel =
     module CancelOptions =
         let create
             (
-                outboundTransfer: string,
-                expand: string list option
+                outboundTransfer: string
             ) : CancelOptions
             =
             {
               OutboundTransfer = outboundTransfer
-              Expand = expand
+              Expand = None
             }
 
     ///<p>An OutboundTransfer can be canceled if the funds have not yet been paid out.</p>
@@ -2284,23 +2199,17 @@ module TreasuryReceivedCredits =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                linkedFlows: Map<string, string> option,
-                startingAfter: string option,
-                status: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              LinkedFlows = linkedFlows
-              StartingAfter = startingAfter
-              Status = status
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              LinkedFlows = None
+              StartingAfter = None
+              Status = None
             }
 
     type RetrieveOptions =
@@ -2315,13 +2224,12 @@ module TreasuryReceivedCredits =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of ReceivedCredits.</p>
@@ -2363,21 +2271,16 @@ module TreasuryReceivedDebits =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              Status = None
             }
 
     type RetrieveOptions =
@@ -2392,13 +2295,12 @@ module TreasuryReceivedDebits =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of ReceivedDebits.</p>
@@ -2448,27 +2350,19 @@ module TreasuryTransactionEntries =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                created: int option,
-                effectiveAt: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                orderBy: string option,
-                startingAfter: string option,
-                transaction: string option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              Created = created
-              EffectiveAt = effectiveAt
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              OrderBy = orderBy
-              StartingAfter = startingAfter
-              Transaction = transaction
+              Created = None
+              EffectiveAt = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              OrderBy = None
+              StartingAfter = None
+              Transaction = None
             }
 
     type RetrieveOptions =
@@ -2483,13 +2377,12 @@ module TreasuryTransactionEntries =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieves a list of TransactionEntry objects.</p>
@@ -2540,27 +2433,19 @@ module TreasuryTransactions =
     module ListOptions =
         let create
             (
-                financialAccount: string,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                orderBy: string option,
-                startingAfter: string option,
-                status: string option,
-                statusTransitions: Map<string, string> option
+                financialAccount: string
             ) : ListOptions
             =
             {
               FinancialAccount = financialAccount
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              OrderBy = orderBy
-              StartingAfter = startingAfter
-              Status = status
-              StatusTransitions = statusTransitions
+              Created = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              OrderBy = None
+              StartingAfter = None
+              Status = None
+              StatusTransitions = None
             }
 
     type RetrieveOptions =
@@ -2575,13 +2460,12 @@ module TreasuryTransactions =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieves a list of Transaction objects.</p>

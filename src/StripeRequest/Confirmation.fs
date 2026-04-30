@@ -20,13 +20,12 @@ module ConfirmationTokens =
     module RetrieveOptions =
         let create
             (
-                confirmationToken: string,
-                expand: string list option
+                confirmationToken: string
             ) : RetrieveOptions
             =
             {
               ConfirmationToken = confirmationToken
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieves an existing ConfirmationToken object</p>

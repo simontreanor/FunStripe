@@ -52,13 +52,12 @@ module CountrySpecs =
     module RetrieveOptions =
         let create
             (
-                country: IsoTypes.IsoCountryCode,
-                expand: string list option
+                country: IsoTypes.IsoCountryCode
             ) : RetrieveOptions
             =
             {
               Country = country
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Lists all Country Spec objects available in the API.</p>

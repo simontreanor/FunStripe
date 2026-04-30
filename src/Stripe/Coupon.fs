@@ -100,9 +100,7 @@ module Coupon =
             percentOff: decimal option,
             redeemBy: DateTime option,
             timesRedeemed: int,
-            valid: bool,
-            appliesTo: CouponAppliesTo option,
-            currencyOptions: Map<string, string list> option
+            valid: bool
         ) : Coupon
         =
         {
@@ -120,8 +118,8 @@ module Coupon =
           RedeemBy = redeemBy
           TimesRedeemed = timesRedeemed
           Valid = valid
-          AppliesTo = appliesTo
-          CurrencyOptions = currencyOptions
+          AppliesTo = None
+          CurrencyOptions = None
         }
 
 /// Occurs whenever a coupon is updated.

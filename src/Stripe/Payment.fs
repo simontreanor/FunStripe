@@ -20954,11 +20954,7 @@ module AccountBusinessProfile =
             supportEmail: string option,
             supportPhone: string option,
             supportUrl: string option,
-            url: string option,
-            annualRevenue: AccountAnnualRevenue option option,
-            estimatedWorkerCount: int option option,
-            monthlyEstimatedRevenue: AccountMonthlyEstimatedRevenue option,
-            productDescription: string option option
+            url: string option
         ) : AccountBusinessProfile
         =
         {
@@ -20970,10 +20966,10 @@ module AccountBusinessProfile =
           SupportPhone = supportPhone
           SupportUrl = supportUrl
           Url = url
-          AnnualRevenue = annualRevenue |> Option.flatten
-          EstimatedWorkerCount = estimatedWorkerCount |> Option.flatten
-          MonthlyEstimatedRevenue = monthlyEstimatedRevenue
-          ProductDescription = productDescription |> Option.flatten
+          AnnualRevenue = None
+          EstimatedWorkerCount = None
+          MonthlyEstimatedRevenue = None
+          ProductDescription = None
         }
 
 module AccountCapabilities =
@@ -21383,8 +21379,7 @@ module PaymentMethodDetailsCardPresentReceipt =
             cardholderVerificationMethod: PaymentMethodDetailsCardPresentReceiptCardholderVerificationMethod option,
             dedicatedFileName: string option,
             terminalVerificationResults: string option,
-            transactionStatusInformation: string option,
-            accountType: PaymentMethodDetailsCardPresentReceiptAccountType option
+            transactionStatusInformation: string option
         ) : PaymentMethodDetailsCardPresentReceipt
         =
         {
@@ -21396,7 +21391,7 @@ module PaymentMethodDetailsCardPresentReceipt =
           DedicatedFileName = dedicatedFileName
           TerminalVerificationResults = terminalVerificationResults
           TransactionStatusInformation = transactionStatusInformation
-          AccountType = accountType
+          AccountType = None
         }
 
 module PaymentMethodDetailsCardPresent =
@@ -21421,14 +21416,7 @@ module PaymentMethodDetailsCardPresent =
             overcaptureSupported: bool,
             preferredLocales: string list option,
             readMethod: PaymentMethodDetailsCardPresentReadMethod option,
-            receipt: PaymentMethodDetailsCardPresentReceipt option,
-            captureBefore: DateTime option,
-            description: string option option,
-            iin: string option option,
-            issuer: string option option,
-            location: string option,
-            reader: string option,
-            wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet option
+            receipt: PaymentMethodDetailsCardPresentReceipt option
         ) : PaymentMethodDetailsCardPresent
         =
         {
@@ -21452,25 +21440,24 @@ module PaymentMethodDetailsCardPresent =
           PreferredLocales = preferredLocales
           ReadMethod = readMethod
           Receipt = receipt
-          CaptureBefore = captureBefore
-          Description = description |> Option.flatten
-          Iin = iin |> Option.flatten
-          Issuer = issuer |> Option.flatten
-          Location = location
-          Reader = reader
-          Wallet = wallet
+          CaptureBefore = None
+          Description = None
+          Iin = None
+          Issuer = None
+          Location = None
+          Reader = None
+          Wallet = None
         }
 
 module CardGeneratedFromPaymentMethodDetails =
     let create
         (
-            ``type``: string,
-            cardPresent: PaymentMethodDetailsCardPresent option
+            ``type``: string
         ) : CardGeneratedFromPaymentMethodDetails
         =
         {
           Type = ``type``
-          CardPresent = cardPresent
+          CardPresent = None
         }
 
 module PaymentFlowsAmountDetailsClientResourceTip =
@@ -21664,13 +21651,12 @@ module PaymentFlowsAmountDetails =
 module PaymentFlowsAutomaticPaymentMethodsPaymentIntent =
     let create
         (
-            enabled: bool,
-            allowRedirects: PaymentFlowsAutomaticPaymentMethodsPaymentIntentAllowRedirects option
+            enabled: bool
         ) : PaymentFlowsAutomaticPaymentMethodsPaymentIntent
         =
         {
           Enabled = enabled
-          AllowRedirects = allowRedirects
+          AllowRedirects = None
         }
 
 module PaymentFlowsPaymentDetails =
@@ -21748,10 +21734,7 @@ module ChargeOutcome =
             networkStatus: ChargeOutcomeNetworkStatus option,
             reason: string option,
             sellerMessage: string option,
-            ``type``: ChargeOutcomeType,
-            riskLevel: string option,
-            riskScore: int option,
-            rule: ChargeOutcomeRule'AnyOf option
+            ``type``: ChargeOutcomeType
         ) : ChargeOutcome
         =
         {
@@ -21762,9 +21745,9 @@ module ChargeOutcome =
           Reason = reason
           SellerMessage = sellerMessage
           Type = ``type``
-          RiskLevel = riskLevel
-          RiskScore = riskScore
-          Rule = rule
+          RiskLevel = None
+          RiskScore = None
+          Rule = None
         }
 
 module RefundDestinationDetailsBlik =
@@ -21796,17 +21779,14 @@ module RefundDestinationDetailsBrBankTransfer =
 module RefundDestinationDetailsCard =
     let create
         (
-            ``type``: RefundDestinationDetailsCardType,
-            reference: string option,
-            referenceStatus: RefundDestinationDetailsCardReferenceStatus option,
-            referenceType: string option
+            ``type``: RefundDestinationDetailsCardType
         ) : RefundDestinationDetailsCard
         =
         {
           Type = ``type``
-          Reference = reference
-          ReferenceStatus = referenceStatus
-          ReferenceType = referenceType
+          Reference = None
+          ReferenceStatus = None
+          ReferenceType = None
         }
 
 module RefundDestinationDetailsCrypto =
@@ -21954,81 +21934,46 @@ module RefundDestinationDetailsUsBankTransfer =
 module RefundDestinationDetails =
     let create
         (
-            ``type``: string,
-            affirm: DestinationDetailsUnimplemented option,
-            afterpayClearpay: DestinationDetailsUnimplemented option,
-            alipay: DestinationDetailsUnimplemented option,
-            alma: DestinationDetailsUnimplemented option,
-            amazonPay: DestinationDetailsUnimplemented option,
-            auBankTransfer: DestinationDetailsUnimplemented option,
-            blik: RefundDestinationDetailsBlik option,
-            brBankTransfer: RefundDestinationDetailsBrBankTransfer option,
-            card: RefundDestinationDetailsCard option,
-            cashapp: DestinationDetailsUnimplemented option,
-            crypto: RefundDestinationDetailsCrypto option,
-            customerCashBalance: DestinationDetailsUnimplemented option,
-            eps: DestinationDetailsUnimplemented option,
-            euBankTransfer: RefundDestinationDetailsEuBankTransfer option,
-            gbBankTransfer: RefundDestinationDetailsGbBankTransfer option,
-            giropay: DestinationDetailsUnimplemented option,
-            grabpay: DestinationDetailsUnimplemented option,
-            jpBankTransfer: RefundDestinationDetailsJpBankTransfer option,
-            klarna: DestinationDetailsUnimplemented option,
-            mbWay: RefundDestinationDetailsMbWay option,
-            multibanco: RefundDestinationDetailsMultibanco option,
-            mxBankTransfer: RefundDestinationDetailsMxBankTransfer option,
-            nzBankTransfer: DestinationDetailsUnimplemented option,
-            p24: RefundDestinationDetailsP24 option,
-            paynow: DestinationDetailsUnimplemented option,
-            paypal: RefundDestinationDetailsPaypal option,
-            pix: DestinationDetailsUnimplemented option,
-            revolut: DestinationDetailsUnimplemented option,
-            sofort: DestinationDetailsUnimplemented option,
-            swish: RefundDestinationDetailsSwish option,
-            thBankTransfer: RefundDestinationDetailsThBankTransfer option,
-            twint: DestinationDetailsUnimplemented option,
-            usBankTransfer: RefundDestinationDetailsUsBankTransfer option,
-            wechatPay: DestinationDetailsUnimplemented option,
-            zip: DestinationDetailsUnimplemented option
+            ``type``: string
         ) : RefundDestinationDetails
         =
         {
           Type = ``type``
-          Affirm = affirm
-          AfterpayClearpay = afterpayClearpay
-          Alipay = alipay
-          Alma = alma
-          AmazonPay = amazonPay
-          AuBankTransfer = auBankTransfer
-          Blik = blik
-          BrBankTransfer = brBankTransfer
-          Card = card
-          Cashapp = cashapp
-          Crypto = crypto
-          CustomerCashBalance = customerCashBalance
-          Eps = eps
-          EuBankTransfer = euBankTransfer
-          GbBankTransfer = gbBankTransfer
-          Giropay = giropay
-          Grabpay = grabpay
-          JpBankTransfer = jpBankTransfer
-          Klarna = klarna
-          MbWay = mbWay
-          Multibanco = multibanco
-          MxBankTransfer = mxBankTransfer
-          NzBankTransfer = nzBankTransfer
-          P24 = p24
-          Paynow = paynow
-          Paypal = paypal
-          Pix = pix
-          Revolut = revolut
-          Sofort = sofort
-          Swish = swish
-          ThBankTransfer = thBankTransfer
-          Twint = twint
-          UsBankTransfer = usBankTransfer
-          WechatPay = wechatPay
-          Zip = zip
+          Affirm = None
+          AfterpayClearpay = None
+          Alipay = None
+          Alma = None
+          AmazonPay = None
+          AuBankTransfer = None
+          Blik = None
+          BrBankTransfer = None
+          Card = None
+          Cashapp = None
+          Crypto = None
+          CustomerCashBalance = None
+          Eps = None
+          EuBankTransfer = None
+          GbBankTransfer = None
+          Giropay = None
+          Grabpay = None
+          JpBankTransfer = None
+          Klarna = None
+          MbWay = None
+          Multibanco = None
+          MxBankTransfer = None
+          NzBankTransfer = None
+          P24 = None
+          Paynow = None
+          Paypal = None
+          Pix = None
+          Revolut = None
+          Sofort = None
+          Swish = None
+          ThBankTransfer = None
+          Twint = None
+          UsBankTransfer = None
+          WechatPay = None
+          Zip = None
         }
 
 module RefundNextActionDisplayDetails =
@@ -22046,13 +21991,12 @@ module RefundNextActionDisplayDetails =
 module RefundNextAction =
     let create
         (
-            ``type``: string,
-            displayDetails: RefundNextActionDisplayDetails option
+            ``type``: string
         ) : RefundNextAction
         =
         {
           Type = ``type``
-          DisplayDetails = displayDetails
+          DisplayDetails = None
         }
 
 module RadarReviewResourceLocation =
@@ -22093,14 +22037,13 @@ module PaymentFlowsPrivatePaymentMethodsAlipayDetails =
     let create
         (
             fingerprint: string option,
-            transactionId: string option,
-            buyerId: string option
+            transactionId: string option
         ) : PaymentFlowsPrivatePaymentMethodsAlipayDetails
         =
         {
           Fingerprint = fingerprint
           TransactionId = transactionId
-          BuyerId = buyerId
+          BuyerId = None
         }
 
 module PaymentMethodDetailsAchCreditTransfer =
@@ -22146,9 +22089,7 @@ module PaymentMethodDetailsAcssDebit =
             fingerprint: string option,
             institutionNumber: string option,
             last4: string option,
-            transitNumber: string option,
-            expectedDebitDate: string option,
-            mandate: string option
+            transitNumber: string option
         ) : PaymentMethodDetailsAcssDebit
         =
         {
@@ -22157,22 +22098,20 @@ module PaymentMethodDetailsAcssDebit =
           InstitutionNumber = institutionNumber
           Last4 = last4
           TransitNumber = transitNumber
-          ExpectedDebitDate = expectedDebitDate
-          Mandate = mandate
+          ExpectedDebitDate = None
+          Mandate = None
         }
 
 module PaymentMethodDetailsAffirm =
     let create
         (
-            transactionId: string option,
-            location: string option,
-            reader: string option
+            transactionId: string option
         ) : PaymentMethodDetailsAffirm
         =
         {
           TransactionId = transactionId
-          Location = location
-          Reader = reader
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsAfterpayClearpay =
@@ -22190,13 +22129,12 @@ module PaymentMethodDetailsAfterpayClearpay =
 module PaymentMethodDetailsAlma =
     let create
         (
-            transactionId: string option,
-            installments: AlmaInstallments option
+            transactionId: string option
         ) : PaymentMethodDetailsAlma
         =
         {
           TransactionId = transactionId
-          Installments = installments
+          Installments = None
         }
 
 module PaymentMethodDetailsPassthroughCard =
@@ -22235,13 +22173,12 @@ module AmazonPayUnderlyingPaymentMethodFundingDetails =
 module PaymentMethodDetailsAmazonPay =
     let create
         (
-            transactionId: string option,
-            funding: AmazonPayUnderlyingPaymentMethodFundingDetails option
+            transactionId: string option
         ) : PaymentMethodDetailsAmazonPay
         =
         {
           TransactionId = transactionId
-          Funding = funding
+          Funding = None
         }
 
 module PaymentMethodDetailsAuBecsDebit =
@@ -22249,17 +22186,15 @@ module PaymentMethodDetailsAuBecsDebit =
         (
             bsbNumber: string option,
             fingerprint: string option,
-            last4: string option,
-            expectedDebitDate: string option,
-            mandate: string option
+            last4: string option
         ) : PaymentMethodDetailsAuBecsDebit
         =
         {
           BsbNumber = bsbNumber
           Fingerprint = fingerprint
           Last4 = last4
-          ExpectedDebitDate = expectedDebitDate
-          Mandate = mandate
+          ExpectedDebitDate = None
+          Mandate = None
         }
 
 module PaymentMethodDetailsBacsDebit =
@@ -22268,8 +22203,7 @@ module PaymentMethodDetailsBacsDebit =
             fingerprint: string option,
             last4: string option,
             mandate: string option,
-            sortCode: string option,
-            expectedDebitDate: string option
+            sortCode: string option
         ) : PaymentMethodDetailsBacsDebit
         =
         {
@@ -22277,23 +22211,21 @@ module PaymentMethodDetailsBacsDebit =
           Last4 = last4
           Mandate = mandate
           SortCode = sortCode
-          ExpectedDebitDate = expectedDebitDate
+          ExpectedDebitDate = None
         }
 
 module CustomerAcceptance =
     let create
         (
             acceptedAt: DateTime option,
-            ``type``: CustomerAcceptanceType,
-            offline: OfflineAcceptance option,
-            online: OnlineAcceptance option
+            ``type``: CustomerAcceptanceType
         ) : CustomerAcceptance
         =
         {
           AcceptedAt = acceptedAt
           Type = ``type``
-          Offline = offline
-          Online = online
+          Offline = None
+          Online = None
         }
 
 module MandateMultiUse =
@@ -22323,15 +22255,14 @@ module MandateAcssDebit =
         (
             intervalDescription: string option,
             paymentSchedule: MandateAcssDebitPaymentSchedule,
-            transactionType: MandateAcssDebitTransactionType,
-            defaultFor: MandateAcssDebitDefaultFor list option
+            transactionType: MandateAcssDebitTransactionType
         ) : MandateAcssDebit
         =
         {
           IntervalDescription = intervalDescription
           PaymentSchedule = paymentSchedule
           TransactionType = transactionType
-          DefaultFor = defaultFor
+          DefaultFor = None
         }
 
 module MandateAmazonPay =
@@ -22543,49 +22474,30 @@ module MandateUsBankAccount =
 module MandatePaymentMethodDetails =
     let create
         (
-            ``type``: string,
-            acssDebit: MandateAcssDebit option,
-            amazonPay: MandateAmazonPay option,
-            auBecsDebit: MandateAuBecsDebit option,
-            bacsDebit: MandateBacsDebit option,
-            card: CardMandatePaymentMethodDetails option,
-            cashapp: MandateCashapp option,
-            kakaoPay: MandateKakaoPay option,
-            klarna: MandateKlarna option,
-            krCard: MandateKrCard option,
-            link: MandateLink option,
-            naverPay: MandateNaverPay option,
-            nzBankAccount: MandateNzBankAccount option,
-            paypal: MandatePaypal option,
-            payto: MandatePayto option,
-            pix: MandatePix option,
-            revolutPay: MandateRevolutPay option,
-            sepaDebit: MandateSepaDebit option,
-            upi: MandateUpi option,
-            usBankAccount: MandateUsBankAccount option
+            ``type``: string
         ) : MandatePaymentMethodDetails
         =
         {
           Type = ``type``
-          AcssDebit = acssDebit
-          AmazonPay = amazonPay
-          AuBecsDebit = auBecsDebit
-          BacsDebit = bacsDebit
-          Card = card
-          Cashapp = cashapp
-          KakaoPay = kakaoPay
-          Klarna = klarna
-          KrCard = krCard
-          Link = link
-          NaverPay = naverPay
-          NzBankAccount = nzBankAccount
-          Paypal = paypal
-          Payto = payto
-          Pix = pix
-          RevolutPay = revolutPay
-          SepaDebit = sepaDebit
-          Upi = upi
-          UsBankAccount = usBankAccount
+          AcssDebit = None
+          AmazonPay = None
+          AuBecsDebit = None
+          BacsDebit = None
+          Card = None
+          Cashapp = None
+          KakaoPay = None
+          Klarna = None
+          KrCard = None
+          Link = None
+          NaverPay = None
+          NzBankAccount = None
+          Paypal = None
+          Payto = None
+          Pix = None
+          RevolutPay = None
+          SepaDebit = None
+          Upi = None
+          UsBankAccount = None
         }
 
 module MandateSingleUse =
@@ -22808,26 +22720,19 @@ module PaymentMethodDetailsCardWallet =
     let create
         (
             dynamicLast4: string option,
-            ``type``: PaymentMethodDetailsCardWalletType,
-            amexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout option,
-            applePay: PaymentMethodDetailsCardWalletApplePay option,
-            googlePay: PaymentMethodDetailsCardWalletGooglePay option,
-            link: PaymentMethodDetailsCardWalletLink option,
-            masterpass: PaymentMethodDetailsCardWalletMasterpass option,
-            samsungPay: PaymentMethodDetailsCardWalletSamsungPay option,
-            visaCheckout: PaymentMethodDetailsCardWalletVisaCheckout option
+            ``type``: PaymentMethodDetailsCardWalletType
         ) : PaymentMethodDetailsCardWallet
         =
         {
           DynamicLast4 = dynamicLast4
           Type = ``type``
-          AmexExpressCheckout = amexExpressCheckout
-          ApplePay = applePay
-          GooglePay = googlePay
-          Link = link
-          Masterpass = masterpass
-          SamsungPay = samsungPay
-          VisaCheckout = visaCheckout
+          AmexExpressCheckout = None
+          ApplePay = None
+          GooglePay = None
+          Link = None
+          Masterpass = None
+          SamsungPay = None
+          VisaCheckout = None
         }
 
 module PaymentMethodDetailsCard =
@@ -22848,18 +22753,7 @@ module PaymentMethodDetailsCard =
             networkTransactionId: string option,
             regulatedStatus: PaymentMethodDetailsCardRegulatedStatus option,
             threeDSecure: ThreeDSecureDetailsCharge option,
-            wallet: PaymentMethodDetailsCardWallet option,
-            captureBefore: DateTime option,
-            description: string option option,
-            extendedAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization option,
-            fingerprint: string option option,
-            iin: string option option,
-            incrementalAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization option,
-            issuer: string option option,
-            moto: bool option option,
-            multicapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticapture option,
-            networkToken: PaymentMethodDetailsCardNetworkToken option option,
-            overcapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture option
+            wallet: PaymentMethodDetailsCardWallet option
         ) : PaymentMethodDetailsCard
         =
         {
@@ -22879,17 +22773,17 @@ module PaymentMethodDetailsCard =
           RegulatedStatus = regulatedStatus
           ThreeDSecure = threeDSecure
           Wallet = wallet
-          CaptureBefore = captureBefore
-          Description = description |> Option.flatten
-          ExtendedAuthorization = extendedAuthorization
-          Fingerprint = fingerprint |> Option.flatten
-          Iin = iin |> Option.flatten
-          IncrementalAuthorization = incrementalAuthorization
-          Issuer = issuer |> Option.flatten
-          Moto = moto |> Option.flatten
-          Multicapture = multicapture
-          NetworkToken = networkToken |> Option.flatten
-          Overcapture = overcapture
+          CaptureBefore = None
+          Description = None
+          ExtendedAuthorization = None
+          Fingerprint = None
+          Iin = None
+          IncrementalAuthorization = None
+          Issuer = None
+          Moto = None
+          Multicapture = None
+          NetworkToken = None
+          Overcapture = None
         }
 
 module PaymentMethodDetailsCashapp =
@@ -22994,8 +22888,7 @@ module PaymentMethodDetailsInteracPresentReceipt =
             cardholderVerificationMethod: PaymentMethodDetailsInteracPresentReceiptCardholderVerificationMethod option,
             dedicatedFileName: string option,
             terminalVerificationResults: string option,
-            transactionStatusInformation: string option,
-            accountType: PaymentMethodDetailsInteracPresentReceiptAccountType option
+            transactionStatusInformation: string option
         ) : PaymentMethodDetailsInteracPresentReceipt
         =
         {
@@ -23007,7 +22900,7 @@ module PaymentMethodDetailsInteracPresentReceipt =
           DedicatedFileName = dedicatedFileName
           TerminalVerificationResults = terminalVerificationResults
           TransactionStatusInformation = transactionStatusInformation
-          AccountType = accountType
+          AccountType = None
         }
 
 module PaymentMethodDetailsInteracPresent =
@@ -23027,12 +22920,7 @@ module PaymentMethodDetailsInteracPresent =
             networkTransactionId: string option,
             preferredLocales: string list option,
             readMethod: PaymentMethodDetailsInteracPresentReadMethod option,
-            receipt: PaymentMethodDetailsInteracPresentReceipt option,
-            description: string option option,
-            iin: string option option,
-            issuer: string option option,
-            location: string option,
-            reader: string option
+            receipt: PaymentMethodDetailsInteracPresentReceipt option
         ) : PaymentMethodDetailsInteracPresent
         =
         {
@@ -23051,11 +22939,11 @@ module PaymentMethodDetailsInteracPresent =
           PreferredLocales = preferredLocales
           ReadMethod = readMethod
           Receipt = receipt
-          Description = description |> Option.flatten
-          Iin = iin |> Option.flatten
-          Issuer = issuer |> Option.flatten
-          Location = location
-          Reader = reader
+          Description = None
+          Iin = None
+          Issuer = None
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsKakaoPay =
@@ -23075,17 +22963,15 @@ module PaymentMethodDetailsKlarna =
         (
             payerDetails: KlarnaPayerDetails option,
             paymentMethodCategory: string option,
-            preferredLocale: string option,
-            location: string option,
-            reader: string option
+            preferredLocale: string option
         ) : PaymentMethodDetailsKlarna
         =
         {
           PayerDetails = payerDetails
           PaymentMethodCategory = paymentMethodCategory
           PreferredLocale = preferredLocale
-          Location = location
-          Reader = reader
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsKonbiniStore =
@@ -23186,8 +23072,7 @@ module PaymentMethodDetailsNzBankAccount =
             bankName: string,
             branchCode: string,
             last4: string,
-            suffix: string option,
-            expectedDebitDate: string option
+            suffix: string option
         ) : PaymentMethodDetailsNzBankAccount
         =
         {
@@ -23197,7 +23082,7 @@ module PaymentMethodDetailsNzBankAccount =
           BranchCode = branchCode
           Last4 = last4
           Suffix = suffix
-          ExpectedDebitDate = expectedDebitDate
+          ExpectedDebitDate = None
         }
 
 module PaymentMethodDetailsOxxo =
@@ -23249,15 +23134,13 @@ module PaymentMethodDetailsPayco =
 module PaymentMethodDetailsPaynow =
     let create
         (
-            reference: string option,
-            location: string option,
-            reader: string option
+            reference: string option
         ) : PaymentMethodDetailsPaynow
         =
         {
           Reference = reference
-          Location = location
-          Reader = reader
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsPaypal =
@@ -23285,15 +23168,14 @@ module PaymentMethodDetailsPayto =
         (
             bsbNumber: string option,
             last4: string option,
-            payId: string option,
-            mandate: string option
+            payId: string option
         ) : PaymentMethodDetailsPayto
         =
         {
           BsbNumber = bsbNumber
           Last4 = last4
           PayId = payId
-          Mandate = mandate
+          Mandate = None
         }
 
 module PaymentMethodDetailsPix =
@@ -23334,13 +23216,12 @@ module RevolutPayUnderlyingPaymentMethodFundingDetails =
 module PaymentMethodDetailsRevolutPay =
     let create
         (
-            transactionId: string option,
-            funding: RevolutPayUnderlyingPaymentMethodFundingDetails option
+            transactionId: string option
         ) : PaymentMethodDetailsRevolutPay
         =
         {
           TransactionId = transactionId
-          Funding = funding
+          Funding = None
         }
 
 module PaymentMethodDetailsSamsungPay =
@@ -23387,8 +23268,7 @@ module PaymentMethodDetailsSepaDebit =
             country: IsoTypes.IsoCountryCode option,
             fingerprint: string option,
             last4: string option,
-            mandate: string option,
-            expectedDebitDate: string option
+            mandate: string option
         ) : PaymentMethodDetailsSepaDebit
         =
         {
@@ -23398,7 +23278,7 @@ module PaymentMethodDetailsSepaDebit =
           Fingerprint = fingerprint
           Last4 = last4
           Mandate = mandate
-          ExpectedDebitDate = expectedDebitDate
+          ExpectedDebitDate = None
         }
 
 module PaymentMethodDetailsStripeAccount =
@@ -23469,16 +23349,14 @@ module PaymentMethodDetailsWechatPay =
     let create
         (
             fingerprint: string option,
-            transactionId: string option,
-            location: string option,
-            reader: string option
+            transactionId: string option
         ) : PaymentMethodDetailsWechatPay
         =
         {
           Fingerprint = fingerprint
           TransactionId = transactionId
-          Location = location
-          Reader = reader
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsZip =
@@ -23580,8 +23458,7 @@ module PaymentIntentNextActionDisplayBankTransferInstructions =
             currency: IsoTypes.IsoCurrencyCode option,
             hostedInstructionsUrl: string option,
             reference: string option,
-            ``type``: PaymentIntentNextActionDisplayBankTransferInstructionsType,
-            financialAddresses: FundingInstructionsBankTransferFinancialAddress list option
+            ``type``: PaymentIntentNextActionDisplayBankTransferInstructionsType
         ) : PaymentIntentNextActionDisplayBankTransferInstructions
         =
         {
@@ -23590,7 +23467,7 @@ module PaymentIntentNextActionDisplayBankTransferInstructions =
           HostedInstructionsUrl = hostedInstructionsUrl
           Reference = reference
           Type = ``type``
-          FinancialAddresses = financialAddresses
+          FinancialAddresses = None
         }
 
 module PaymentIntentNextActionDisplayMultibancoDetails =
@@ -23642,49 +23519,45 @@ module PaymentIntentNextActionKlarnaDisplayQrCode =
 module PaymentIntentNextActionKonbiniFamilymart =
     let create
         (
-            paymentCode: string,
-            confirmationNumber: string option
+            paymentCode: string
         ) : PaymentIntentNextActionKonbiniFamilymart
         =
         {
           PaymentCode = paymentCode
-          ConfirmationNumber = confirmationNumber
+          ConfirmationNumber = None
         }
 
 module PaymentIntentNextActionKonbiniLawson =
     let create
         (
-            paymentCode: string,
-            confirmationNumber: string option
+            paymentCode: string
         ) : PaymentIntentNextActionKonbiniLawson
         =
         {
           PaymentCode = paymentCode
-          ConfirmationNumber = confirmationNumber
+          ConfirmationNumber = None
         }
 
 module PaymentIntentNextActionKonbiniMinistop =
     let create
         (
-            paymentCode: string,
-            confirmationNumber: string option
+            paymentCode: string
         ) : PaymentIntentNextActionKonbiniMinistop
         =
         {
           PaymentCode = paymentCode
-          ConfirmationNumber = confirmationNumber
+          ConfirmationNumber = None
         }
 
 module PaymentIntentNextActionKonbiniSeicomart =
     let create
         (
-            paymentCode: string,
-            confirmationNumber: string option
+            paymentCode: string
         ) : PaymentIntentNextActionKonbiniSeicomart
         =
         {
           PaymentCode = paymentCode
-          ConfirmationNumber = confirmationNumber
+          ConfirmationNumber = None
         }
 
 module PaymentIntentNextActionKonbiniStores =
@@ -23900,51 +23773,31 @@ module PaymentIntentNextActionWechatPayRedirectToIosApp =
 module PaymentIntentNextAction =
     let create
         (
-            ``type``: PaymentIntentNextActionType,
-            alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect option,
-            boletoDisplayDetails: PaymentIntentNextActionBoleto option,
-            cardAwaitNotification: PaymentIntentNextActionCardAwaitNotification option,
-            cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode option,
-            displayBankTransferInstructions: PaymentIntentNextActionDisplayBankTransferInstructions option,
-            klarnaDisplayQrCode: PaymentIntentNextActionKlarnaDisplayQrCode option,
-            konbiniDisplayDetails: PaymentIntentNextActionKonbini option,
-            multibancoDisplayDetails: PaymentIntentNextActionDisplayMultibancoDetails option,
-            oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails option,
-            paynowDisplayQrCode: PaymentIntentNextActionPaynowDisplayQrCode option,
-            pixDisplayQrCode: PaymentIntentNextActionPixDisplayQrCode option,
-            promptpayDisplayQrCode: PaymentIntentNextActionPromptpayDisplayQrCode option,
-            redirectToUrl: PaymentIntentNextActionRedirectToUrl option,
-            swishHandleRedirectOrDisplayQrCode: PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode option,
-            upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode option,
-            useStripeSdk: string option,
-            verifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits option,
-            wechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode option,
-            wechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp option,
-            wechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp option
+            ``type``: PaymentIntentNextActionType
         ) : PaymentIntentNextAction
         =
         {
           Type = ``type``
-          AlipayHandleRedirect = alipayHandleRedirect
-          BoletoDisplayDetails = boletoDisplayDetails
-          CardAwaitNotification = cardAwaitNotification
-          CashappHandleRedirectOrDisplayQrCode = cashappHandleRedirectOrDisplayQrCode
-          DisplayBankTransferInstructions = displayBankTransferInstructions
-          KlarnaDisplayQrCode = klarnaDisplayQrCode
-          KonbiniDisplayDetails = konbiniDisplayDetails
-          MultibancoDisplayDetails = multibancoDisplayDetails
-          OxxoDisplayDetails = oxxoDisplayDetails
-          PaynowDisplayQrCode = paynowDisplayQrCode
-          PixDisplayQrCode = pixDisplayQrCode
-          PromptpayDisplayQrCode = promptpayDisplayQrCode
-          RedirectToUrl = redirectToUrl
-          SwishHandleRedirectOrDisplayQrCode = swishHandleRedirectOrDisplayQrCode
-          UpiHandleRedirectOrDisplayQrCode = upiHandleRedirectOrDisplayQrCode
-          UseStripeSdk = useStripeSdk
-          VerifyWithMicrodeposits = verifyWithMicrodeposits
-          WechatPayDisplayQrCode = wechatPayDisplayQrCode
-          WechatPayRedirectToAndroidApp = wechatPayRedirectToAndroidApp
-          WechatPayRedirectToIosApp = wechatPayRedirectToIosApp
+          AlipayHandleRedirect = None
+          BoletoDisplayDetails = None
+          CardAwaitNotification = None
+          CashappHandleRedirectOrDisplayQrCode = None
+          DisplayBankTransferInstructions = None
+          KlarnaDisplayQrCode = None
+          KonbiniDisplayDetails = None
+          MultibancoDisplayDetails = None
+          OxxoDisplayDetails = None
+          PaynowDisplayQrCode = None
+          PixDisplayQrCode = None
+          PromptpayDisplayQrCode = None
+          RedirectToUrl = None
+          SwishHandleRedirectOrDisplayQrCode = None
+          UpiHandleRedirectOrDisplayQrCode = None
+          UseStripeSdk = None
+          VerifyWithMicrodeposits = None
+          WechatPayDisplayQrCode = None
+          WechatPayRedirectToAndroidApp = None
+          WechatPayRedirectToIosApp = None
         }
 
 module PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions =
@@ -23986,15 +23839,14 @@ module PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit =
         (
             intervalDescription: string option,
             paymentSchedule: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option,
-            transactionType: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option,
-            customMandateUrl: string option
+            transactionType: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option
         ) : PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit
         =
         {
           IntervalDescription = intervalDescription
           PaymentSchedule = paymentSchedule
           TransactionType = transactionType
-          CustomMandateUrl = customMandateUrl
+          CustomMandateUrl = None
         }
 
 module PaymentIntentPaymentMethodOptionsAcssDebit =
@@ -24105,15 +23957,7 @@ module PaymentIntentPaymentMethodOptionsCard =
             installments: PaymentMethodOptionsCardInstallments option,
             mandateOptions: PaymentMethodOptionsCardMandateOptions option,
             network: PaymentIntentPaymentMethodOptionsCardNetwork option,
-            requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option,
-            requestExtendedAuthorization: PaymentIntentPaymentMethodOptionsCardRequestExtendedAuthorization option,
-            requestIncrementalAuthorization: PaymentIntentPaymentMethodOptionsCardRequestIncrementalAuthorization option,
-            requestMulticapture: PaymentIntentPaymentMethodOptionsCardRequestMulticapture option,
-            requestOvercapture: PaymentIntentPaymentMethodOptionsCardRequestOvercapture option,
-            requireCvcRecollection: bool option,
-            setupFutureUsage: PaymentIntentPaymentMethodOptionsCardSetupFutureUsage option,
-            statementDescriptorSuffixKana: string option,
-            statementDescriptorSuffixKanji: string option
+            requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option
         ) : PaymentIntentPaymentMethodOptionsCard
         =
         {
@@ -24121,14 +23965,14 @@ module PaymentIntentPaymentMethodOptionsCard =
           MandateOptions = mandateOptions
           Network = network
           RequestThreeDSecure = requestThreeDSecure
-          RequestExtendedAuthorization = requestExtendedAuthorization
-          RequestIncrementalAuthorization = requestIncrementalAuthorization
-          RequestMulticapture = requestMulticapture
-          RequestOvercapture = requestOvercapture
-          RequireCvcRecollection = requireCvcRecollection
-          SetupFutureUsage = setupFutureUsage
-          StatementDescriptorSuffixKana = statementDescriptorSuffixKana
-          StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+          RequestExtendedAuthorization = None
+          RequestIncrementalAuthorization = None
+          RequestMulticapture = None
+          RequestOvercapture = None
+          RequireCvcRecollection = None
+          SetupFutureUsage = None
+          StatementDescriptorSuffixKana = None
+          StatementDescriptorSuffixKanji = None
         }
 
 module PaymentIntentPaymentMethodOptionsEps =
@@ -24144,13 +23988,12 @@ module PaymentIntentPaymentMethodOptionsLink =
 
     let create
         (
-            persistentToken: string option,
-            setupFutureUsage: PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage option
+            persistentToken: string option
         ) : PaymentIntentPaymentMethodOptionsLink
         =
         {
           PersistentToken = persistentToken
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module PaymentIntentPaymentMethodOptionsMobilepay =
@@ -24260,17 +24103,14 @@ module PaymentFlowsPrivatePaymentMethodsFinancialConnectionsCommonLinkedAccountO
 module LinkedAccountOptionsCommon =
     let create
         (
-            prefetch: LinkedAccountOptionsCommonPrefetch list option,
-            filters: PaymentFlowsPrivatePaymentMethodsFinancialConnectionsCommonLinkedAccountOptionsFilters option,
-            permissions: LinkedAccountOptionsCommonPermissions list option,
-            returnUrl: string option
+            prefetch: LinkedAccountOptionsCommonPrefetch list option
         ) : LinkedAccountOptionsCommon
         =
         {
           Prefetch = prefetch
-          Filters = filters
-          Permissions = permissions
-          ReturnUrl = returnUrl
+          Filters = None
+          Permissions = None
+          ReturnUrl = None
         }
 
 module PaymentMethodOptionsUsBankAccountMandateOptions =
@@ -24365,13 +24205,12 @@ module PaymentMethodOptionsAmazonPay =
 module PaymentMethodOptionsBancontact =
     let create
         (
-            preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage,
-            setupFutureUsage: PaymentMethodOptionsBancontactSetupFutureUsage option
+            preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage
         ) : PaymentMethodOptionsBancontact
         =
         {
           PreferredLanguage = preferredLanguage
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module PaymentMethodOptionsBillie =
@@ -24381,13 +24220,12 @@ module PaymentMethodOptionsBillie =
 module PaymentMethodOptionsBoleto =
     let create
         (
-            expiresAfterDays: int,
-            setupFutureUsage: PaymentMethodOptionsBoletoSetupFutureUsage option
+            expiresAfterDays: int
         ) : PaymentMethodOptionsBoleto
         =
         {
           ExpiresAfterDays = expiresAfterDays
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module PaymentMethodOptionsCardPresentRouting =
@@ -24404,16 +24242,14 @@ module PaymentMethodOptionsCardPresent =
     let create
         (
             requestExtendedAuthorization: bool option,
-            requestIncrementalAuthorizationSupport: bool option,
-            captureMethod: PaymentMethodOptionsCardPresentCaptureMethod option,
-            routing: PaymentMethodOptionsCardPresentRouting option
+            requestIncrementalAuthorizationSupport: bool option
         ) : PaymentMethodOptionsCardPresent
         =
         {
           RequestExtendedAuthorization = requestExtendedAuthorization
           RequestIncrementalAuthorizationSupport = requestIncrementalAuthorizationSupport
-          CaptureMethod = captureMethod
-          Routing = routing
+          CaptureMethod = None
+          Routing = None
         }
 
 module PaymentMethodOptionsCashapp =
@@ -24449,15 +24285,13 @@ module PaymentMethodOptionsCustomerBalanceEuBankAccount =
 module PaymentMethodOptionsCustomerBalanceBankTransfer =
     let create
         (
-            ``type``: PaymentMethodOptionsCustomerBalanceBankTransferType option,
-            euBankTransfer: PaymentMethodOptionsCustomerBalanceEuBankAccount option,
-            requestedAddressTypes: PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes list option
+            ``type``: PaymentMethodOptionsCustomerBalanceBankTransferType option
         ) : PaymentMethodOptionsCustomerBalanceBankTransfer
         =
         {
           Type = ``type``
-          EuBankTransfer = euBankTransfer
-          RequestedAddressTypes = requestedAddressTypes
+          EuBankTransfer = None
+          RequestedAddressTypes = None
         }
 
 module PaymentMethodOptionsCustomerBalance =
@@ -24526,13 +24360,12 @@ module PaymentMethodOptionsKlarna =
 
     let create
         (
-            preferredLocale: string option,
-            setupFutureUsage: PaymentMethodOptionsKlarnaSetupFutureUsage option
+            preferredLocale: string option
         ) : PaymentMethodOptionsKlarna
         =
         {
           PreferredLocale = preferredLocale
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module PaymentMethodOptionsKonbini =
@@ -24631,14 +24464,13 @@ module PaymentMethodOptionsPaypal =
     let create
         (
             preferredLocale: string option,
-            reference: string option,
-            setupFutureUsage: PaymentMethodOptionsPaypalSetupFutureUsage option
+            reference: string option
         ) : PaymentMethodOptionsPaypal
         =
         {
           PreferredLocale = preferredLocale
           Reference = reference
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module PaymentMethodOptionsMandateOptionsPix =
@@ -24669,18 +24501,15 @@ module PaymentMethodOptionsPix =
     let create
         (
             expiresAfterSeconds: int option,
-            expiresAt: int option,
-            amountIncludesIof: PaymentMethodOptionsPixAmountIncludesIof option,
-            mandateOptions: PaymentMethodOptionsMandateOptionsPix option,
-            setupFutureUsage: PaymentMethodOptionsPixSetupFutureUsage option
+            expiresAt: int option
         ) : PaymentMethodOptionsPix
         =
         {
           ExpiresAfterSeconds = expiresAfterSeconds
           ExpiresAt = expiresAt
-          AmountIncludesIof = amountIncludesIof
-          MandateOptions = mandateOptions
-          SetupFutureUsage = setupFutureUsage
+          AmountIncludesIof = None
+          MandateOptions = None
+          SetupFutureUsage = None
         }
 
 module PaymentMethodOptionsPromptpay =
@@ -24710,13 +24539,12 @@ module PaymentMethodOptionsSatispay =
 module PaymentMethodOptionsSofort =
     let create
         (
-            preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option,
-            setupFutureUsage: PaymentMethodOptionsSofortSetupFutureUsage option
+            preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option
         ) : PaymentMethodOptionsSofort
         =
         {
           PreferredLanguage = preferredLanguage
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module PaymentMethodOptionsTwint =
@@ -24925,13 +24753,12 @@ module PaymentMethodConfigBizPaymentMethodConfigurationDetails =
 module PaymentFlowsAutomaticPaymentMethodsSetupIntent =
     let create
         (
-            enabled: bool option,
-            allowRedirects: PaymentFlowsAutomaticPaymentMethodsSetupIntentAllowRedirects option
+            enabled: bool option
         ) : PaymentFlowsAutomaticPaymentMethodsSetupIntent
         =
         {
           Enabled = enabled
-          AllowRedirects = allowRedirects
+          AllowRedirects = None
         }
 
 module SetupIntentNextActionPixDisplayQrCode =
@@ -24981,23 +24808,17 @@ module SetupIntentNextActionVerifyWithMicrodeposits =
 module SetupIntentNextAction =
     let create
         (
-            ``type``: SetupIntentNextActionType,
-            cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode option,
-            pixDisplayQrCode: SetupIntentNextActionPixDisplayQrCode option,
-            redirectToUrl: SetupIntentNextActionRedirectToUrl option,
-            upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode option,
-            useStripeSdk: string option,
-            verifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits option
+            ``type``: SetupIntentNextActionType
         ) : SetupIntentNextAction
         =
         {
           Type = ``type``
-          CashappHandleRedirectOrDisplayQrCode = cashappHandleRedirectOrDisplayQrCode
-          PixDisplayQrCode = pixDisplayQrCode
-          RedirectToUrl = redirectToUrl
-          UpiHandleRedirectOrDisplayQrCode = upiHandleRedirectOrDisplayQrCode
-          UseStripeSdk = useStripeSdk
-          VerifyWithMicrodeposits = verifyWithMicrodeposits
+          CashappHandleRedirectOrDisplayQrCode = None
+          PixDisplayQrCode = None
+          RedirectToUrl = None
+          UpiHandleRedirectOrDisplayQrCode = None
+          UseStripeSdk = None
+          VerifyWithMicrodeposits = None
         }
 
 module SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit =
@@ -25005,31 +24826,27 @@ module SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit =
         (
             intervalDescription: string option,
             paymentSchedule: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option,
-            transactionType: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option,
-            customMandateUrl: string option,
-            defaultFor: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitDefaultFor list option
+            transactionType: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option
         ) : SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit
         =
         {
           IntervalDescription = intervalDescription
           PaymentSchedule = paymentSchedule
           TransactionType = transactionType
-          CustomMandateUrl = customMandateUrl
-          DefaultFor = defaultFor
+          CustomMandateUrl = None
+          DefaultFor = None
         }
 
 module SetupIntentPaymentMethodOptionsAcssDebit =
     let create
         (
-            currency: SetupIntentPaymentMethodOptionsAcssDebitCurrency option,
-            mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit option,
-            verificationMethod: SetupIntentPaymentMethodOptionsAcssDebitVerificationMethod option
+            currency: SetupIntentPaymentMethodOptionsAcssDebitCurrency option
         ) : SetupIntentPaymentMethodOptionsAcssDebit
         =
         {
           Currency = currency
-          MandateOptions = mandateOptions
-          VerificationMethod = verificationMethod
+          MandateOptions = None
+          VerificationMethod = None
         }
 
 module SetupIntentPaymentMethodOptionsAmazonPay =
@@ -25349,15 +25166,13 @@ module SetupAttemptPaymentMethodDetailsCardChecks =
 module SetupAttemptPaymentMethodDetailsCardWallet =
     let create
         (
-            ``type``: SetupAttemptPaymentMethodDetailsCardWalletType,
-            applePay: PaymentMethodDetailsCardWalletApplePay option,
-            googlePay: PaymentMethodDetailsCardWalletGooglePay option
+            ``type``: SetupAttemptPaymentMethodDetailsCardWalletType
         ) : SetupAttemptPaymentMethodDetailsCardWallet
         =
         {
           Type = ``type``
-          ApplePay = applePay
-          GooglePay = googlePay
+          ApplePay = None
+          GooglePay = None
         }
 
 module SetupAttemptPaymentMethodDetailsCard =
@@ -25372,12 +25187,7 @@ module SetupAttemptPaymentMethodDetailsCard =
             last4: string option,
             network: SetupAttemptPaymentMethodDetailsCardNetwork option,
             threeDSecure: ThreeDSecureDetails option,
-            wallet: SetupAttemptPaymentMethodDetailsCardWallet option,
-            description: string option option,
-            fingerprint: string option option,
-            iin: string option option,
-            issuer: string option option,
-            moto: bool option
+            wallet: SetupAttemptPaymentMethodDetailsCardWallet option
         ) : SetupAttemptPaymentMethodDetailsCard
         =
         {
@@ -25391,11 +25201,11 @@ module SetupAttemptPaymentMethodDetailsCard =
           Network = network
           ThreeDSecure = threeDSecure
           Wallet = wallet
-          Description = description |> Option.flatten
-          Fingerprint = fingerprint |> Option.flatten
-          Iin = iin |> Option.flatten
-          Issuer = issuer |> Option.flatten
-          Moto = moto
+          Description = None
+          Fingerprint = None
+          Iin = None
+          Issuer = None
+          Moto = None
         }
 
 module SetupAttemptPaymentMethodDetailsCashapp =
@@ -25624,26 +25434,19 @@ module PaymentMethodCardWallet =
     let create
         (
             dynamicLast4: string option,
-            ``type``: PaymentMethodCardWalletType,
-            amexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout option,
-            applePay: PaymentMethodCardWalletApplePay option,
-            googlePay: PaymentMethodCardWalletGooglePay option,
-            link: PaymentMethodCardWalletLink option,
-            masterpass: PaymentMethodCardWalletMasterpass option,
-            samsungPay: PaymentMethodCardWalletSamsungPay option,
-            visaCheckout: PaymentMethodCardWalletVisaCheckout option
+            ``type``: PaymentMethodCardWalletType
         ) : PaymentMethodCardWallet
         =
         {
           DynamicLast4 = dynamicLast4
           Type = ``type``
-          AmexExpressCheckout = amexExpressCheckout
-          ApplePay = applePay
-          GooglePay = googlePay
-          Link = link
-          Masterpass = masterpass
-          SamsungPay = samsungPay
-          VisaCheckout = visaCheckout
+          AmexExpressCheckout = None
+          ApplePay = None
+          GooglePay = None
+          Link = None
+          Masterpass = None
+          SamsungPay = None
+          VisaCheckout = None
         }
 
 module PaymentMethodCardPresentNetworks =
@@ -25673,11 +25476,7 @@ module PaymentMethodCardPresent =
             networks: PaymentMethodCardPresentNetworks option,
             offline: PaymentMethodDetailsCardPresentOffline option,
             preferredLocales: string list option,
-            readMethod: PaymentMethodCardPresentReadMethod option,
-            description: string option option,
-            iin: string option option,
-            issuer: string option option,
-            wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet option
+            readMethod: PaymentMethodCardPresentReadMethod option
         ) : PaymentMethodCardPresent
         =
         {
@@ -25694,10 +25493,10 @@ module PaymentMethodCardPresent =
           Offline = offline
           PreferredLocales = preferredLocales
           ReadMethod = readMethod
-          Description = description |> Option.flatten
-          Iin = iin |> Option.flatten
-          Issuer = issuer |> Option.flatten
-          Wallet = wallet
+          Description = None
+          Iin = None
+          Issuer = None
+          Wallet = None
         }
 
 module PaymentMethodCashapp =
@@ -25813,10 +25612,7 @@ module PaymentMethodInteracPresent =
             last4: string option,
             networks: PaymentMethodCardPresentNetworks option,
             preferredLocales: string list option,
-            readMethod: PaymentMethodInteracPresentReadMethod option,
-            description: string option option,
-            iin: string option option,
-            issuer: string option option
+            readMethod: PaymentMethodInteracPresentReadMethod option
         ) : PaymentMethodInteracPresent
         =
         {
@@ -25831,9 +25627,9 @@ module PaymentMethodInteracPresent =
           Networks = networks
           PreferredLocales = preferredLocales
           ReadMethod = readMethod
-          Description = description |> Option.flatten
-          Iin = iin |> Option.flatten
-          Issuer = issuer |> Option.flatten
+          Description = None
+          Iin = None
+          Issuer = None
         }
 
 module PaymentMethodKakaoPay =
@@ -25895,13 +25691,12 @@ module PaymentMethodKrCard =
 module PaymentMethodLink =
     let create
         (
-            email: string option,
-            persistentToken: string option
+            email: string option
         ) : PaymentMethodLink
         =
         {
           Email = email
-          PersistentToken = persistentToken
+          PersistentToken = None
         }
 
 module PaymentMethodMbWay =
@@ -26230,15 +26025,14 @@ module PromotionCodesResourceRestrictions =
         (
             firstTimeTransaction: bool,
             minimumAmount: int option,
-            minimumAmountCurrency: IsoTypes.IsoCurrencyCode option,
-            currencyOptions: Map<string, string list> option
+            minimumAmountCurrency: IsoTypes.IsoCurrencyCode option
         ) : PromotionCodesResourceRestrictions
         =
         {
           FirstTimeTransaction = firstTimeTransaction
           MinimumAmount = minimumAmount
           MinimumAmountCurrency = minimumAmountCurrency
-          CurrencyOptions = currencyOptions
+          CurrencyOptions = None
         }
 
 module SubscriptionItemBillingThresholds =
@@ -26380,13 +26174,12 @@ module BillingBillResourceInvoicingPricingPricing =
 
     let create
         (
-            unitAmountDecimal: string option,
-            priceDetails: BillingBillResourceInvoicingPricingPricingPriceDetails option
+            unitAmountDecimal: string option
         ) : BillingBillResourceInvoicingPricingPricing
         =
         {
           UnitAmountDecimal = unitAmountDecimal
-          PriceDetails = priceDetails
+          PriceDetails = None
         }
 
 module InvoiceLineItemPeriod =
@@ -26513,9 +26306,7 @@ module PaymentMethodDetailsPaymentRecordAcssDebit =
             fingerprint: string option,
             institutionNumber: string option,
             last4: string option,
-            transitNumber: string option,
-            expectedDebitDate: string option,
-            mandate: string option
+            transitNumber: string option
         ) : PaymentMethodDetailsPaymentRecordAcssDebit
         =
         {
@@ -26524,22 +26315,20 @@ module PaymentMethodDetailsPaymentRecordAcssDebit =
           InstitutionNumber = institutionNumber
           Last4 = last4
           TransitNumber = transitNumber
-          ExpectedDebitDate = expectedDebitDate
-          Mandate = mandate
+          ExpectedDebitDate = None
+          Mandate = None
         }
 
 module PaymentMethodDetailsPaymentRecordAffirm =
     let create
         (
-            transactionId: string option,
-            location: string option,
-            reader: string option
+            transactionId: string option
         ) : PaymentMethodDetailsPaymentRecordAffirm
         =
         {
           TransactionId = transactionId
-          Location = location
-          Reader = reader
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsPaymentRecordAfterpayClearpay =
@@ -26557,25 +26346,23 @@ module PaymentMethodDetailsPaymentRecordAfterpayClearpay =
 module PaymentMethodDetailsPaymentRecordAlma =
     let create
         (
-            transactionId: string option,
-            installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments option
+            transactionId: string option
         ) : PaymentMethodDetailsPaymentRecordAlma
         =
         {
           TransactionId = transactionId
-          Installments = installments
+          Installments = None
         }
 
 module PaymentMethodDetailsPaymentRecordAmazonPay =
     let create
         (
-            transactionId: string option,
-            funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding option
+            transactionId: string option
         ) : PaymentMethodDetailsPaymentRecordAmazonPay
         =
         {
           TransactionId = transactionId
-          Funding = funding
+          Funding = None
         }
 
 module PaymentMethodDetailsPaymentRecordBillie =
@@ -26751,15 +26538,13 @@ module PaymentMethodDetailsPaymentRecordPayco =
 module PaymentMethodDetailsPaymentRecordPaynow =
     let create
         (
-            reference: string option,
-            location: string option,
-            reader: string option
+            reference: string option
         ) : PaymentMethodDetailsPaymentRecordPaynow
         =
         {
           Reference = reference
-          Location = location
-          Reader = reader
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsPaymentRecordPix =
@@ -26804,8 +26589,7 @@ module PaymentMethodDetailsPaymentRecordSepaDebit =
             country: IsoTypes.IsoCountryCode option,
             fingerprint: string option,
             last4: string option,
-            mandate: string option,
-            expectedDebitDate: string option
+            mandate: string option
         ) : PaymentMethodDetailsPaymentRecordSepaDebit
         =
         {
@@ -26815,7 +26599,7 @@ module PaymentMethodDetailsPaymentRecordSepaDebit =
           Fingerprint = fingerprint
           Last4 = last4
           Mandate = mandate
-          ExpectedDebitDate = expectedDebitDate
+          ExpectedDebitDate = None
         }
 
 module PaymentMethodDetailsPaymentRecordSwish =
@@ -26856,16 +26640,14 @@ module PaymentMethodDetailsPaymentRecordWechatPay =
     let create
         (
             fingerprint: string option,
-            transactionId: string option,
-            location: string option,
-            reader: string option
+            transactionId: string option
         ) : PaymentMethodDetailsPaymentRecordWechatPay
         =
         {
           Fingerprint = fingerprint
           TransactionId = transactionId
-          Location = location
-          Reader = reader
+          Location = None
+          Reader = None
         }
 
 module PaymentMethodDetailsPaymentRecordZip =
@@ -26971,13 +26753,12 @@ module InvoiceInstallmentsCard =
 module InvoicePaymentMethodOptionsCard =
     let create
         (
-            requestThreeDSecure: InvoicePaymentMethodOptionsCardRequestThreeDSecure option,
-            installments: InvoiceInstallmentsCard option
+            requestThreeDSecure: InvoicePaymentMethodOptionsCardRequestThreeDSecure option
         ) : InvoicePaymentMethodOptionsCard
         =
         {
           RequestThreeDSecure = requestThreeDSecure
-          Installments = installments
+          Installments = None
         }
 
 module InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer =
@@ -26993,13 +26774,12 @@ module InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer =
 module InvoicePaymentMethodOptionsCustomerBalanceBankTransfer =
     let create
         (
-            ``type``: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option,
-            euBankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer option
+            ``type``: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option
         ) : InvoicePaymentMethodOptionsCustomerBalanceBankTransfer
         =
         {
           Type = ``type``
-          EuBankTransfer = euBankTransfer
+          EuBankTransfer = None
         }
 
 module InvoicePaymentMethodOptionsCustomerBalance =
@@ -27052,13 +26832,12 @@ module InvoicePaymentMethodOptionsPayto =
 module InvoicePaymentMethodOptionsPix =
     let create
         (
-            amountIncludesIof: InvoicePaymentMethodOptionsPixAmountIncludesIof option,
-            expiresAfterSeconds: int option
+            amountIncludesIof: InvoicePaymentMethodOptionsPixAmountIncludesIof option
         ) : InvoicePaymentMethodOptionsPix
         =
         {
           AmountIncludesIof = amountIncludesIof
-          ExpiresAfterSeconds = expiresAfterSeconds
+          ExpiresAfterSeconds = None
         }
 
 module InvoicePaymentMethodOptionsSepaDebit =
@@ -27110,15 +26889,13 @@ module InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters =
 module InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions =
     let create
         (
-            prefetch: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPrefetch list option,
-            filters: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters option,
-            permissions: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions list option
+            prefetch: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPrefetch list option
         ) : InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions
         =
         {
           Prefetch = prefetch
-          Filters = filters
-          Permissions = permissions
+          Filters = None
+          Permissions = None
         }
 
 module InvoicePaymentMethodOptionsUsBankAccount =
@@ -27247,8 +27024,7 @@ module InvoicesResourceShippingCost =
             amountSubtotal: int,
             amountTax: int,
             amountTotal: int,
-            shippingRate: InvoicesResourceShippingCostShippingRate'AnyOf option,
-            taxes: LineItemsTaxAmount list option
+            shippingRate: InvoicesResourceShippingCostShippingRate'AnyOf option
         ) : InvoicesResourceShippingCost
         =
         {
@@ -27256,7 +27032,7 @@ module InvoicesResourceShippingCost =
           AmountTax = amountTax
           AmountTotal = amountTotal
           ShippingRate = shippingRate
-          Taxes = taxes
+          Taxes = None
         }
 
 module InvoicesResourceStatusTransitions =
@@ -27302,25 +27078,23 @@ module SubscriptionScheduleCurrentPhase =
 module SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd =
     let create
         (
-            ``type``: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEndType,
-            timestamp: DateTime option
+            ``type``: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEndType
         ) : SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd
         =
         {
           Type = ``type``
-          Timestamp = timestamp
+          Timestamp = None
         }
 
 module SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart =
     let create
         (
-            ``type``: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStartType,
-            timestamp: DateTime option
+            ``type``: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStartType
         ) : SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart
         =
         {
           Type = ``type``
-          Timestamp = timestamp
+          Timestamp = None
         }
 
 module SubscriptionScheduleAddInvoiceItemPeriod =
@@ -27349,14 +27123,13 @@ module SubscriptionsResourceBillingMode =
     let create
         (
             flexible: SubscriptionsResourceBillingModeFlexible option,
-            ``type``: SubscriptionsResourceBillingModeType,
-            updatedAt: DateTime option
+            ``type``: SubscriptionsResourceBillingModeType
         ) : SubscriptionsResourceBillingMode
         =
         {
           Flexible = flexible
           Type = ``type``
-          UpdatedAt = updatedAt
+          UpdatedAt = None
         }
 
 module SubscriptionsResourceBillingCycleAnchorConfig =
@@ -27407,14 +27180,13 @@ module SubscriptionPaymentMethodOptionsCard =
     let create
         (
             network: SubscriptionPaymentMethodOptionsCardNetwork option,
-            requestThreeDSecure: SubscriptionPaymentMethodOptionsCardRequestThreeDSecure option,
-            mandateOptions: InvoiceMandateOptionsCard option
+            requestThreeDSecure: SubscriptionPaymentMethodOptionsCardRequestThreeDSecure option
         ) : SubscriptionPaymentMethodOptionsCard
         =
         {
           Network = network
           RequestThreeDSecure = requestThreeDSecure
-          MandateOptions = mandateOptions
+          MandateOptions = None
         }
 
 module SubscriptionPaymentMethodOptionsMandateOptionsPix =
@@ -27691,14 +27463,13 @@ module CardIssuingAccountTermsOfService =
     let create
         (
             date: int option,
-            ip: string option,
-            userAgent: string option
+            ip: string option
         ) : CardIssuingAccountTermsOfService
         =
         {
           Date = date
           Ip = ip
-          UserAgent = userAgent
+          UserAgent = None
         }
 
 module AccountCardIssuingSettings =
@@ -27728,15 +27499,14 @@ module AccountCardPaymentsSettings =
         (
             statementDescriptorPrefix: string option,
             statementDescriptorPrefixKana: string option,
-            statementDescriptorPrefixKanji: string option,
-            declineOn: AccountDeclineChargeOn option
+            statementDescriptorPrefixKanji: string option
         ) : AccountCardPaymentsSettings
         =
         {
           StatementDescriptorPrefix = statementDescriptorPrefix
           StatementDescriptorPrefixKana = statementDescriptorPrefixKana
           StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
-          DeclineOn = declineOn
+          DeclineOn = None
         }
 
 module AccountDashboardSettings =
@@ -27773,20 +27543,16 @@ module TransferSchedule =
     let create
         (
             delayDays: int,
-            interval: TransferScheduleInterval,
-            monthlyAnchor: int option,
-            monthlyPayoutDays: int list option,
-            weeklyAnchor: string option,
-            weeklyPayoutDays: TransferScheduleWeeklyPayoutDays list option
+            interval: TransferScheduleInterval
         ) : TransferSchedule
         =
         {
           DelayDays = delayDays
           Interval = interval
-          MonthlyAnchor = monthlyAnchor
-          MonthlyPayoutDays = monthlyPayoutDays
-          WeeklyAnchor = weeklyAnchor
-          WeeklyPayoutDays = weeklyPayoutDays
+          MonthlyAnchor = None
+          MonthlyPayoutDays = None
+          WeeklyAnchor = None
+          WeeklyPayoutDays = None
         }
 
 module AccountPayoutSettings =
@@ -27817,14 +27583,13 @@ module AccountTermsOfService =
     let create
         (
             date: int option,
-            ip: string option,
-            userAgent: string option
+            ip: string option
         ) : AccountTermsOfService
         =
         {
           Date = date
           Ip = ip
-          UserAgent = userAgent
+          UserAgent = None
         }
 
 module AccountTreasurySettings =
@@ -27886,21 +27651,16 @@ module AccountUnificationAccountControllerStripeDashboard =
 module AccountUnificationAccountController =
     let create
         (
-            ``type``: AccountUnificationAccountControllerType,
-            fees: AccountUnificationAccountControllerFees option,
-            isController: bool option,
-            losses: AccountUnificationAccountControllerLosses option,
-            requirementCollection: AccountUnificationAccountControllerRequirementCollection option,
-            stripeDashboard: AccountUnificationAccountControllerStripeDashboard option
+            ``type``: AccountUnificationAccountControllerType
         ) : AccountUnificationAccountController
         =
         {
           Type = ``type``
-          Fees = fees
-          IsController = isController
-          Losses = losses
-          RequirementCollection = requirementCollection
-          StripeDashboard = stripeDashboard
+          Fees = None
+          IsController = None
+          Losses = None
+          RequirementCollection = None
+          StripeDashboard = None
         }
 
 module PersonAdditionalTosAcceptance =
@@ -28036,70 +27796,41 @@ module Person =
     let create
         (
             created: DateTime,
-            id: string,
-            account: string option,
-            additionalTosAcceptances: PersonAdditionalTosAcceptances option,
-            address: Address option,
-            addressKana: LegalEntityJapanAddress option option,
-            addressKanji: LegalEntityJapanAddress option option,
-            dob: LegalEntityDob option,
-            email: string option option,
-            firstName: string option option,
-            firstNameKana: string option option,
-            firstNameKanji: string option option,
-            fullNameAliases: string list option,
-            futureRequirements: PersonFutureRequirements option option,
-            gender: string option option,
-            idNumberProvided: bool option,
-            idNumberSecondaryProvided: bool option,
-            lastName: string option option,
-            lastNameKana: string option option,
-            lastNameKanji: string option option,
-            maidenName: string option option,
-            metadata: Map<string, string> option,
-            nationality: string option option,
-            phone: string option option,
-            politicalExposure: PersonPoliticalExposure option,
-            registeredAddress: Address option,
-            relationship: PersonRelationship option,
-            requirements: PersonRequirements option option,
-            ssnLast4Provided: bool option,
-            usCfpbData: PersonUsCfpbData option option,
-            verification: LegalEntityPersonVerification option
+            id: string
         ) : Person
         =
         {
           Created = created
           Id = id
-          Account = account
-          AdditionalTosAcceptances = additionalTosAcceptances
-          Address = address
-          AddressKana = addressKana |> Option.flatten
-          AddressKanji = addressKanji |> Option.flatten
-          Dob = dob
-          Email = email |> Option.flatten
-          FirstName = firstName |> Option.flatten
-          FirstNameKana = firstNameKana |> Option.flatten
-          FirstNameKanji = firstNameKanji |> Option.flatten
-          FullNameAliases = fullNameAliases
-          FutureRequirements = futureRequirements |> Option.flatten
-          Gender = gender |> Option.flatten
-          IdNumberProvided = idNumberProvided
-          IdNumberSecondaryProvided = idNumberSecondaryProvided
-          LastName = lastName |> Option.flatten
-          LastNameKana = lastNameKana |> Option.flatten
-          LastNameKanji = lastNameKanji |> Option.flatten
-          MaidenName = maidenName |> Option.flatten
-          Metadata = metadata
-          Nationality = nationality |> Option.flatten
-          Phone = phone |> Option.flatten
-          PoliticalExposure = politicalExposure
-          RegisteredAddress = registeredAddress
-          Relationship = relationship
-          Requirements = requirements |> Option.flatten
-          SsnLast4Provided = ssnLast4Provided
-          UsCfpbData = usCfpbData |> Option.flatten
-          Verification = verification
+          Account = None
+          AdditionalTosAcceptances = None
+          Address = None
+          AddressKana = None
+          AddressKanji = None
+          Dob = None
+          Email = None
+          FirstName = None
+          FirstNameKana = None
+          FirstNameKanji = None
+          FullNameAliases = None
+          FutureRequirements = None
+          Gender = None
+          IdNumberProvided = None
+          IdNumberSecondaryProvided = None
+          LastName = None
+          LastNameKana = None
+          LastNameKanji = None
+          MaidenName = None
+          Metadata = None
+          Nationality = None
+          Phone = None
+          PoliticalExposure = None
+          RegisteredAddress = None
+          Relationship = None
+          Requirements = None
+          SsnLast4Provided = None
+          UsCfpbData = None
+          Verification = None
         }
 
 module CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer =
@@ -28147,33 +27878,28 @@ module CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionRes
 module CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer =
     let create
         (
-            senderName: string option,
-            network: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransferNetwork option
+            senderName: string option
         ) : CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer
         =
         {
           SenderName = senderName
-          Network = network
+          Network = None
         }
 
 module CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer =
     let create
         (
             reference: string option,
-            ``type``: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferType,
-            euBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer option,
-            gbBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceGbBankTransfer option,
-            jpBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceJpBankTransfer option,
-            usBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer option
+            ``type``: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferType
         ) : CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer
         =
         {
           Reference = reference
           Type = ``type``
-          EuBankTransfer = euBankTransfer
-          GbBankTransfer = gbBankTransfer
-          JpBankTransfer = jpBankTransfer
-          UsBankTransfer = usBankTransfer
+          EuBankTransfer = None
+          GbBankTransfer = None
+          JpBankTransfer = None
+          UsBankTransfer = None
         }
 
 module CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction =
@@ -28322,8 +28048,7 @@ module IssuingCardholderIndividual =
             dob: IssuingCardholderIndividualDob option,
             firstName: string option,
             lastName: string option,
-            verification: IssuingCardholderVerification option,
-            cardIssuing: IssuingCardholderCardIssuing option option
+            verification: IssuingCardholderVerification option
         ) : IssuingCardholderIndividual
         =
         {
@@ -28331,7 +28056,7 @@ module IssuingCardholderIndividual =
           FirstName = firstName
           LastName = lastName
           Verification = verification
-          CardIssuing = cardIssuing |> Option.flatten
+          CardIssuing = None
         }
 
 module IssuingCardholderRequirements =
@@ -28624,16 +28349,14 @@ module IssuingNetworkTokenMastercard =
     let create
         (
             tokenReferenceId: string,
-            tokenRequestorId: string,
-            cardReferenceId: string option,
-            tokenRequestorName: string option
+            tokenRequestorId: string
         ) : IssuingNetworkTokenMastercard
         =
         {
           TokenReferenceId = tokenReferenceId
           TokenRequestorId = tokenRequestorId
-          CardReferenceId = cardReferenceId
-          TokenRequestorName = tokenRequestorName
+          CardReferenceId = None
+          TokenRequestorName = None
         }
 
 module IssuingNetworkTokenVisa =
@@ -28641,15 +28364,14 @@ module IssuingNetworkTokenVisa =
         (
             cardReferenceId: string option,
             tokenReferenceId: string,
-            tokenRequestorId: string,
-            tokenRiskScore: string option
+            tokenRequestorId: string
         ) : IssuingNetworkTokenVisa
         =
         {
           CardReferenceId = cardReferenceId
           TokenReferenceId = tokenReferenceId
           TokenRequestorId = tokenRequestorId
-          TokenRiskScore = tokenRiskScore
+          TokenRiskScore = None
         }
 
 module IssuingNetworkTokenAddress =
@@ -28695,19 +28417,15 @@ module IssuingNetworkTokenWalletProvider =
 module IssuingNetworkTokenNetworkData =
     let create
         (
-            ``type``: IssuingNetworkTokenNetworkDataType,
-            device: IssuingNetworkTokenDevice option,
-            mastercard: IssuingNetworkTokenMastercard option,
-            visa: IssuingNetworkTokenVisa option,
-            walletProvider: IssuingNetworkTokenWalletProvider option
+            ``type``: IssuingNetworkTokenNetworkDataType
         ) : IssuingNetworkTokenNetworkData
         =
         {
           Type = ``type``
-          Device = device
-          Mastercard = mastercard
-          Visa = visa
-          WalletProvider = walletProvider
+          Device = None
+          Mastercard = None
+          Visa = None
+          WalletProvider = None
         }
 
 module IssuingCardSpendingLimit =
@@ -29016,10 +28734,7 @@ module IssuingCard =
             spendingControls: IssuingCardAuthorizationControls,
             status: IssuingCardStatus,
             ``type``: IssuingCardType,
-            wallets: IssuingCardWallets option,
-            cvc: string option,
-            financialAccount: string option option,
-            number: string option
+            wallets: IssuingCardWallets option
         ) : IssuingCard
         =
         {
@@ -29046,9 +28761,9 @@ module IssuingCard =
           Status = status
           Type = ``type``
           Wallets = wallets
-          Cvc = cvc
-          FinancialAccount = financialAccount |> Option.flatten
-          Number = number
+          Cvc = None
+          FinancialAccount = None
+          Number = None
         }
 
 module IssuingToken =
@@ -29064,10 +28779,7 @@ module IssuingToken =
             livemode: bool,
             network: IssuingTokenNetwork,
             networkUpdatedAt: DateTime,
-            status: IssuingTokenStatus,
-            last4: string option,
-            networkData: IssuingNetworkTokenNetworkData option,
-            walletProvider: IssuingTokenWalletProvider option
+            status: IssuingTokenStatus
         ) : IssuingToken
         =
         {
@@ -29079,9 +28791,9 @@ module IssuingToken =
           Network = network
           NetworkUpdatedAt = networkUpdatedAt
           Status = status
-          Last4 = last4
-          NetworkData = networkData
-          WalletProvider = walletProvider
+          Last4 = None
+          NetworkData = None
+          WalletProvider = None
         }
 
 module IssuingAuthorizationTreasury =
@@ -29301,27 +29013,19 @@ module IssuingDisputeServiceNotAsDescribedEvidence =
 module IssuingDisputeEvidence =
     let create
         (
-            reason: IssuingDisputeEvidenceReason,
-            canceled: IssuingDisputeCanceledEvidence option,
-            duplicate: IssuingDisputeDuplicateEvidence option,
-            fraudulent: IssuingDisputeFraudulentEvidence option,
-            merchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence option,
-            noValidAuthorization: IssuingDisputeNoValidAuthorizationEvidence option,
-            notReceived: IssuingDisputeNotReceivedEvidence option,
-            other: IssuingDisputeOtherEvidence option,
-            serviceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence option
+            reason: IssuingDisputeEvidenceReason
         ) : IssuingDisputeEvidence
         =
         {
           Reason = reason
-          Canceled = canceled
-          Duplicate = duplicate
-          Fraudulent = fraudulent
-          MerchandiseNotAsDescribed = merchandiseNotAsDescribed
-          NoValidAuthorization = noValidAuthorization
-          NotReceived = notReceived
-          Other = other
-          ServiceNotAsDescribed = serviceNotAsDescribed
+          Canceled = None
+          Duplicate = None
+          Fraudulent = None
+          MerchandiseNotAsDescribed = None
+          NoValidAuthorization = None
+          NotReceived = None
+          Other = None
+          ServiceNotAsDescribed = None
         }
 
 module IssuingDisputeTreasury =
@@ -29571,53 +29275,32 @@ module Account =
 
     let create
         (
-            id: string,
-            businessProfile: AccountBusinessProfile option option,
-            businessType: AccountBusinessType option option,
-            capabilities: AccountCapabilities option,
-            chargesEnabled: bool option,
-            company: LegalEntityCompany option,
-            controller: AccountUnificationAccountController option,
-            country: IsoTypes.IsoCountryCode option,
-            created: DateTime option,
-            defaultCurrency: IsoTypes.IsoCurrencyCode option,
-            detailsSubmitted: bool option,
-            email: string option option,
-            externalAccounts: AccountExternalAccounts option,
-            futureRequirements: AccountFutureRequirements option,
-            groups: AccountGroupMembership option option,
-            individual: Person option,
-            metadata: Map<string, string> option,
-            payoutsEnabled: bool option,
-            requirements: AccountRequirements option,
-            settings: AccountSettings option option,
-            tosAcceptance: AccountTosAcceptance option,
-            ``type``: AccountType option
+            id: string
         ) : Account
         =
         {
           Id = id
-          BusinessProfile = businessProfile |> Option.flatten
-          BusinessType = businessType |> Option.flatten
-          Capabilities = capabilities
-          ChargesEnabled = chargesEnabled
-          Company = company
-          Controller = controller
-          Country = country
-          Created = created
-          DefaultCurrency = defaultCurrency
-          DetailsSubmitted = detailsSubmitted
-          Email = email |> Option.flatten
-          ExternalAccounts = externalAccounts
-          FutureRequirements = futureRequirements
-          Groups = groups |> Option.flatten
-          Individual = individual
-          Metadata = metadata
-          PayoutsEnabled = payoutsEnabled
-          Requirements = requirements
-          Settings = settings |> Option.flatten
-          TosAcceptance = tosAcceptance
-          Type = ``type``
+          BusinessProfile = None
+          BusinessType = None
+          Capabilities = None
+          ChargesEnabled = None
+          Company = None
+          Controller = None
+          Country = None
+          Created = None
+          DefaultCurrency = None
+          DetailsSubmitted = None
+          Email = None
+          ExternalAccounts = None
+          FutureRequirements = None
+          Groups = None
+          Individual = None
+          Metadata = None
+          PayoutsEnabled = None
+          Requirements = None
+          Settings = None
+          TosAcceptance = None
+          Type = None
         }
 
 module AccountExternalAccounts =
@@ -29655,13 +29338,7 @@ module AccountSettings =
             branding: AccountBrandingSettings,
             cardPayments: AccountCardPaymentsSettings,
             dashboard: AccountDashboardSettings,
-            payments: AccountPaymentsSettings,
-            bacsDebitPayments: AccountBacsDebitPaymentsSettings option,
-            cardIssuing: AccountCardIssuingSettings option,
-            invoices: AccountInvoicesSettings option,
-            payouts: AccountPayoutSettings option,
-            sepaDebitPayments: AccountSepaDebitPaymentsSettings option,
-            treasury: AccountTreasurySettings option
+            payments: AccountPaymentsSettings
         ) : AccountSettings
         =
         {
@@ -29669,52 +29346,37 @@ module AccountSettings =
           CardPayments = cardPayments
           Dashboard = dashboard
           Payments = payments
-          BacsDebitPayments = bacsDebitPayments
-          CardIssuing = cardIssuing
-          Invoices = invoices
-          Payouts = payouts
-          SepaDebitPayments = sepaDebitPayments
-          Treasury = treasury
+          BacsDebitPayments = None
+          CardIssuing = None
+          Invoices = None
+          Payouts = None
+          SepaDebitPayments = None
+          Treasury = None
         }
 
 module ApiErrors =
     let create
         (
-            ``type``: ApiErrorsType,
-            adviceCode: string option,
-            charge: string option,
-            code: ApiErrorsCode option,
-            declineCode: string option,
-            docUrl: string option,
-            message: string option,
-            networkAdviceCode: string option,
-            networkDeclineCode: string option,
-            param: string option,
-            paymentIntent: PaymentIntent option,
-            paymentMethod: PaymentMethod option,
-            paymentMethodType: string option,
-            requestLogUrl: string option,
-            setupIntent: SetupIntent option,
-            source: PaymentSource option
+            ``type``: ApiErrorsType
         ) : ApiErrors
         =
         {
           Type = ``type``
-          AdviceCode = adviceCode
-          Charge = charge
-          Code = code
-          DeclineCode = declineCode
-          DocUrl = docUrl
-          Message = message
-          NetworkAdviceCode = networkAdviceCode
-          NetworkDeclineCode = networkDeclineCode
-          Param = param
-          PaymentIntent = paymentIntent
-          PaymentMethod = paymentMethod
-          PaymentMethodType = paymentMethodType
-          RequestLogUrl = requestLogUrl
-          SetupIntent = setupIntent
-          Source = source
+          AdviceCode = None
+          Charge = None
+          Code = None
+          DeclineCode = None
+          DocUrl = None
+          Message = None
+          NetworkAdviceCode = None
+          NetworkDeclineCode = None
+          Param = None
+          PaymentIntent = None
+          PaymentMethod = None
+          PaymentMethodType = None
+          RequestLogUrl = None
+          SetupIntent = None
+          Source = None
         }
 
 module ApplicationFee =
@@ -29848,14 +29510,7 @@ module BankAccount =
             id: string,
             last4: string,
             routingNumber: string option,
-            status: BankAccountStatus,
-            account: BankAccountAccount'AnyOf option option,
-            availablePayoutMethods: BankAccountAvailablePayoutMethods list option option,
-            customer: BankAccountCustomer'AnyOf option option,
-            defaultForCurrency: bool option option,
-            futureRequirements: ExternalAccountRequirements option option,
-            metadata: Map<string, string> option option,
-            requirements: ExternalAccountRequirements option option
+            status: BankAccountStatus
         ) : BankAccount
         =
         {
@@ -29870,13 +29525,13 @@ module BankAccount =
           Last4 = last4
           RoutingNumber = routingNumber
           Status = status
-          Account = account |> Option.flatten
-          AvailablePayoutMethods = availablePayoutMethods |> Option.flatten
-          Customer = customer |> Option.flatten
-          DefaultForCurrency = defaultForCurrency |> Option.flatten
-          FutureRequirements = futureRequirements |> Option.flatten
-          Metadata = metadata |> Option.flatten
-          Requirements = requirements |> Option.flatten
+          Account = None
+          AvailablePayoutMethods = None
+          Customer = None
+          DefaultForCurrency = None
+          FutureRequirements = None
+          Metadata = None
+          Requirements = None
         }
 
 module BillingCreditBalanceTransaction =
@@ -29928,8 +29583,7 @@ module BillingCreditGrant =
             name: string option,
             testClock: BillingCreditGrantTestClock'AnyOf option,
             updated: DateTime,
-            voidedAt: DateTime option,
-            priority: int option option
+            voidedAt: DateTime option
         ) : BillingCreditGrant
         =
         {
@@ -29948,7 +29602,7 @@ module BillingCreditGrant =
           TestClock = testClock
           Updated = updated
           VoidedAt = voidedAt
-          Priority = priority |> Option.flatten
+          Priority = None
         }
 
 module BillingBillResourceInvoicingParentsInvoiceParent =
@@ -29969,14 +29623,13 @@ module BillingBillResourceInvoicingParentsInvoiceSubscriptionParent =
     let create
         (
             metadata: Map<string, string> option,
-            subscription: BillingBillResourceInvoicingParentsInvoiceSubscriptionParentSubscription'AnyOf,
-            subscriptionProrationDate: DateTime option
+            subscription: BillingBillResourceInvoicingParentsInvoiceSubscriptionParentSubscription'AnyOf
         ) : BillingBillResourceInvoicingParentsInvoiceSubscriptionParent
         =
         {
           Metadata = metadata
           Subscription = subscription
-          SubscriptionProrationDate = subscriptionProrationDate
+          SubscriptionProrationDate = None
         }
 
 module BillingCreditGrantsResourceBalanceCredit =
@@ -30057,19 +29710,7 @@ module Card =
             metadata: Map<string, string> option,
             name: string option,
             regulatedStatus: CardRegulatedStatus option,
-            tokenizationMethod: CardTokenizationMethod option,
-            account: CardAccount'AnyOf option option,
-            allowRedisplay: CardAllowRedisplay option option,
-            availablePayoutMethods: CardAvailablePayoutMethods list option option,
-            currency: IsoTypes.IsoCurrencyCode option option,
-            customer: CardCustomer'AnyOf option option,
-            defaultForCurrency: bool option option,
-            description: string option,
-            fingerprint: string option option,
-            iin: string option,
-            issuer: string option,
-            networks: TokenCardNetworks option,
-            status: CardStatus option option
+            tokenizationMethod: CardTokenizationMethod option
         ) : Card
         =
         {
@@ -30094,18 +29735,18 @@ module Card =
           Name = name
           RegulatedStatus = regulatedStatus
           TokenizationMethod = tokenizationMethod
-          Account = account |> Option.flatten
-          AllowRedisplay = allowRedisplay |> Option.flatten
-          AvailablePayoutMethods = availablePayoutMethods |> Option.flatten
-          Currency = currency |> Option.flatten
-          Customer = customer |> Option.flatten
-          DefaultForCurrency = defaultForCurrency |> Option.flatten
-          Description = description
-          Fingerprint = fingerprint |> Option.flatten
-          Iin = iin
-          Issuer = issuer
-          Networks = networks
-          Status = status |> Option.flatten
+          Account = None
+          AllowRedisplay = None
+          AvailablePayoutMethods = None
+          Currency = None
+          Customer = None
+          DefaultForCurrency = None
+          Description = None
+          Fingerprint = None
+          Iin = None
+          Issuer = None
+          Networks = None
+          Status = None
         }
 
 module Charge =
@@ -30154,13 +29795,7 @@ module Charge =
             statementDescriptorSuffix: string option,
             status: ChargeStatus,
             transferData: ChargeTransferData option,
-            transferGroup: string option,
-            authorizationCode: string option,
-            level3: Level3 option,
-            presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails option,
-            radarOptions: RadarRadarOptions option,
-            refunds: ChargeRefunds option option,
-            transfer: ChargeTransfer'AnyOf option
+            transferGroup: string option
         ) : Charge
         =
         {
@@ -30205,12 +29840,12 @@ module Charge =
           Status = status
           TransferData = transferData
           TransferGroup = transferGroup
-          AuthorizationCode = authorizationCode
-          Level3 = level3
-          PresentmentDetails = presentmentDetails
-          RadarOptions = radarOptions
-          Refunds = refunds |> Option.flatten
-          Transfer = transfer
+          AuthorizationCode = None
+          Level3 = None
+          PresentmentDetails = None
+          RadarOptions = None
+          Refunds = None
+          Transfer = None
         }
 
 module ChargeRefunds =
@@ -30245,13 +29880,12 @@ module ChargeTransferData =
 module ConnectAccountReference =
     let create
         (
-            ``type``: ConnectAccountReferenceType,
-            account: ConnectAccountReferenceAccount'AnyOf option
+            ``type``: ConnectAccountReferenceType
         ) : ConnectAccountReference
         =
         {
           Type = ``type``
-          Account = account
+          Account = None
         }
 
 module ConnectCollectionTransfer =
@@ -30287,30 +29921,7 @@ module Customer =
             email: string option,
             id: string,
             livemode: bool,
-            shipping: Shipping option,
-            address: Address option option,
-            balance: int option,
-            businessName: string option,
-            cashBalance: CashBalance option option,
-            currency: IsoTypes.IsoCurrencyCode option option,
-            customerAccount: string option option,
-            delinquent: bool option option,
-            discount: Discount option option,
-            individualName: string option,
-            invoiceCreditBalance: Map<string, string list> option,
-            invoicePrefix: string option option,
-            invoiceSettings: InvoiceSettingCustomerSetting option,
-            metadata: Map<string, string> option,
-            name: string option option,
-            nextInvoiceSequence: int option,
-            phone: string option option,
-            preferredLocales: string list option option,
-            sources: CustomerSources option,
-            subscriptions: CustomerSubscriptions option,
-            tax: CustomerTax option,
-            taxExempt: CustomerTaxExempt option option,
-            taxIds: CustomerTaxIds option,
-            testClock: CustomerTestClock'AnyOf option option
+            shipping: Shipping option
         ) : Customer
         =
         {
@@ -30321,29 +29932,29 @@ module Customer =
           Id = id
           Livemode = livemode
           Shipping = shipping
-          Address = address |> Option.flatten
-          Balance = balance
-          BusinessName = businessName
-          CashBalance = cashBalance |> Option.flatten
-          Currency = currency |> Option.flatten
-          CustomerAccount = customerAccount |> Option.flatten
-          Delinquent = delinquent |> Option.flatten
-          Discount = discount |> Option.flatten
-          IndividualName = individualName
-          InvoiceCreditBalance = invoiceCreditBalance
-          InvoicePrefix = invoicePrefix |> Option.flatten
-          InvoiceSettings = invoiceSettings
-          Metadata = metadata
-          Name = name |> Option.flatten
-          NextInvoiceSequence = nextInvoiceSequence
-          Phone = phone |> Option.flatten
-          PreferredLocales = preferredLocales |> Option.flatten
-          Sources = sources
-          Subscriptions = subscriptions
-          Tax = tax
-          TaxExempt = taxExempt |> Option.flatten
-          TaxIds = taxIds
-          TestClock = testClock |> Option.flatten
+          Address = None
+          Balance = None
+          BusinessName = None
+          CashBalance = None
+          Currency = None
+          CustomerAccount = None
+          Delinquent = None
+          Discount = None
+          IndividualName = None
+          InvoiceCreditBalance = None
+          InvoicePrefix = None
+          InvoiceSettings = None
+          Metadata = None
+          Name = None
+          NextInvoiceSequence = None
+          Phone = None
+          PreferredLocales = None
+          Sources = None
+          Subscriptions = None
+          Tax = None
+          TaxExempt = None
+          TaxIds = None
+          TestClock = None
         }
 
 module CustomerSources =
@@ -30463,13 +30074,7 @@ module CustomerCashBalanceTransaction =
             id: string,
             livemode: bool,
             netAmount: int,
-            ``type``: CustomerCashBalanceTransactionType,
-            adjustedForOverdraft: CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft option,
-            appliedToPayment: CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction option,
-            funded: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction option,
-            refundedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction option,
-            transferredToBalance: CustomerBalanceResourceCashBalanceTransactionResourceTransferredToBalance option,
-            unappliedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction option
+            ``type``: CustomerCashBalanceTransactionType
         ) : CustomerCashBalanceTransaction
         =
         {
@@ -30482,12 +30087,12 @@ module CustomerCashBalanceTransaction =
           Livemode = livemode
           NetAmount = netAmount
           Type = ``type``
-          AdjustedForOverdraft = adjustedForOverdraft
-          AppliedToPayment = appliedToPayment
-          Funded = funded
-          RefundedFromPayment = refundedFromPayment
-          TransferredToBalance = transferredToBalance
-          UnappliedFromPayment = unappliedFromPayment
+          AdjustedForOverdraft = None
+          AppliedToPayment = None
+          Funded = None
+          RefundedFromPayment = None
+          TransferredToBalance = None
+          UnappliedFromPayment = None
         }
 
 module DeletedDiscount =
@@ -30606,9 +30211,7 @@ module Dispute =
             metadata: Map<string, string>,
             paymentIntent: DisputePaymentIntent'AnyOf option,
             reason: DisputeReason,
-            status: DisputeStatus,
-            networkReasonCode: string option option,
-            paymentMethodDetails: DisputePaymentMethodDetails option
+            status: DisputeStatus
         ) : Dispute
         =
         {
@@ -30627,8 +30230,8 @@ module Dispute =
           PaymentIntent = paymentIntent
           Reason = reason
           Status = status
-          NetworkReasonCode = networkReasonCode |> Option.flatten
-          PaymentMethodDetails = paymentMethodDetails
+          NetworkReasonCode = None
+          PaymentMethodDetails = None
         }
 
 module FeeRefund =
@@ -30729,16 +30332,7 @@ module Invoice =
             totalExcludingTax: int option,
             totalPretaxCreditAmounts: InvoicesResourcePretaxCreditAmount list option,
             totalTaxes: BillingBillResourceInvoicingTaxesTax list option,
-            webhooksDeliveredAt: DateTime option,
-            autoAdvance: bool option,
-            confirmationSecret: InvoicesResourceConfirmationSecret option option,
-            customerTaxIds: InvoicesResourceInvoiceTaxId list option option,
-            hostedInvoiceUrl: string option option,
-            id: string option,
-            invoicePdf: string option option,
-            payments: InvoicePayments option,
-            subscription: InvoiceSubscription'AnyOf option option,
-            thresholdReason: InvoiceThresholdReason option
+            webhooksDeliveredAt: DateTime option
         ) : Invoice
         =
         {
@@ -30810,15 +30404,15 @@ module Invoice =
           TotalPretaxCreditAmounts = totalPretaxCreditAmounts
           TotalTaxes = totalTaxes
           WebhooksDeliveredAt = webhooksDeliveredAt
-          AutoAdvance = autoAdvance
-          ConfirmationSecret = confirmationSecret |> Option.flatten
-          CustomerTaxIds = customerTaxIds |> Option.flatten
-          HostedInvoiceUrl = hostedInvoiceUrl |> Option.flatten
-          Id = id
-          InvoicePdf = invoicePdf |> Option.flatten
-          Payments = payments
-          Subscription = subscription |> Option.flatten
-          ThresholdReason = thresholdReason
+          AutoAdvance = None
+          ConfirmationSecret = None
+          CustomerTaxIds = None
+          HostedInvoiceUrl = None
+          Id = None
+          InvoicePdf = None
+          Payments = None
+          Subscription = None
+          ThresholdReason = None
         }
 
 module InvoiceLines =
@@ -30935,17 +30529,14 @@ module InvoiceSettingSubscriptionScheduleSetting =
 module InvoicesPaymentsInvoicePaymentAssociatedPayment =
     let create
         (
-            ``type``: InvoicesPaymentsInvoicePaymentAssociatedPaymentType,
-            charge: InvoicesPaymentsInvoicePaymentAssociatedPaymentCharge'AnyOf option,
-            paymentIntent: InvoicesPaymentsInvoicePaymentAssociatedPaymentPaymentIntent'AnyOf option,
-            paymentRecord: InvoicesPaymentsInvoicePaymentAssociatedPaymentPaymentRecord'AnyOf option
+            ``type``: InvoicesPaymentsInvoicePaymentAssociatedPaymentType
         ) : InvoicesPaymentsInvoicePaymentAssociatedPayment
         =
         {
           Type = ``type``
-          Charge = charge
-          PaymentIntent = paymentIntent
-          PaymentRecord = paymentRecord
+          Charge = None
+          PaymentIntent = None
+          PaymentRecord = None
         }
 
 module InvoicesResourceFromInvoice =
@@ -30964,16 +30555,14 @@ module InvoicesResourcePretaxCreditAmount =
     let create
         (
             amount: int,
-            ``type``: InvoicesResourcePretaxCreditAmountType,
-            creditBalanceTransaction: InvoicesResourcePretaxCreditAmountCreditBalanceTransaction'AnyOf option option,
-            discount: InvoicesResourcePretaxCreditAmountDiscount'AnyOf option
+            ``type``: InvoicesResourcePretaxCreditAmountType
         ) : InvoicesResourcePretaxCreditAmount
         =
         {
           Amount = amount
           Type = ``type``
-          CreditBalanceTransaction = creditBalanceTransaction |> Option.flatten
-          Discount = discount
+          CreditBalanceTransaction = None
+          Discount = None
         }
 
 module IssuingAuthorization =
@@ -31007,10 +30596,7 @@ module IssuingAuthorization =
             transactions: IssuingTransaction list,
             verificationData: IssuingAuthorizationVerificationData,
             verifiedByFraudChallenge: bool option,
-            wallet: IssuingAuthorizationWallet option,
-            fraudChallenges: IssuingAuthorizationFraudChallenge list option option,
-            token: IssuingAuthorizationToken'AnyOf option option,
-            treasury: IssuingAuthorizationTreasury option option
+            wallet: IssuingAuthorizationWallet option
         ) : IssuingAuthorization
         =
         {
@@ -31040,9 +30626,9 @@ module IssuingAuthorization =
           VerificationData = verificationData
           VerifiedByFraudChallenge = verifiedByFraudChallenge
           Wallet = wallet
-          FraudChallenges = fraudChallenges |> Option.flatten
-          Token = token |> Option.flatten
-          Treasury = treasury |> Option.flatten
+          FraudChallenges = None
+          Token = None
+          Treasury = None
         }
 
 module IssuingDispute =
@@ -31059,10 +30645,7 @@ module IssuingDispute =
             livemode: bool,
             metadata: Map<string, string>,
             status: IssuingDisputeStatus,
-            transaction: IssuingDisputeTransaction'AnyOf,
-            balanceTransactions: BalanceTransaction list option option,
-            lossReason: IssuingDisputeLossReason option,
-            treasury: IssuingDisputeTreasury option option
+            transaction: IssuingDisputeTransaction'AnyOf
         ) : IssuingDispute
         =
         {
@@ -31075,9 +30658,9 @@ module IssuingDispute =
           Metadata = metadata
           Status = status
           Transaction = transaction
-          BalanceTransactions = balanceTransactions |> Option.flatten
-          LossReason = lossReason
-          Treasury = treasury |> Option.flatten
+          BalanceTransactions = None
+          LossReason = None
+          Treasury = None
         }
 
 module IssuingTransaction =
@@ -31103,10 +30686,7 @@ module IssuingTransaction =
             metadata: Map<string, string>,
             networkData: IssuingTransactionNetworkData option,
             ``type``: IssuingTransactionType,
-            wallet: IssuingTransactionWallet option,
-            purchaseDetails: IssuingTransactionPurchaseDetails option option,
-            token: IssuingTransactionToken'AnyOf option option,
-            treasury: IssuingTransactionTreasury option option
+            wallet: IssuingTransactionWallet option
         ) : IssuingTransaction
         =
         {
@@ -31128,9 +30708,9 @@ module IssuingTransaction =
           NetworkData = networkData
           Type = ``type``
           Wallet = wallet
-          PurchaseDetails = purchaseDetails |> Option.flatten
-          Token = token |> Option.flatten
-          Treasury = treasury |> Option.flatten
+          PurchaseDetails = None
+          Token = None
+          Treasury = None
         }
 
 module LineItem =
@@ -31194,10 +30774,7 @@ module Mandate =
             paymentMethod: MandatePaymentMethod'AnyOf,
             paymentMethodDetails: MandatePaymentMethodDetails,
             status: MandateStatus,
-            ``type``: MandateType,
-            multiUse: MandateMultiUse option,
-            onBehalfOf: string option,
-            singleUse: MandateSingleUse option
+            ``type``: MandateType
         ) : Mandate
         =
         {
@@ -31208,9 +30785,9 @@ module Mandate =
           PaymentMethodDetails = paymentMethodDetails
           Status = status
           Type = ``type``
-          MultiUse = multiUse
-          OnBehalfOf = onBehalfOf
-          SingleUse = singleUse
+          MultiUse = None
+          OnBehalfOf = None
+          SingleUse = None
         }
 
 module PaymentIntent =
@@ -31257,12 +30834,7 @@ module PaymentIntent =
             statementDescriptor: string option,
             statementDescriptorSuffix: string option,
             status: PaymentIntentStatus,
-            transferGroup: string option,
-            amountDetails: PaymentFlowsAmountDetails option,
-            hooks: PaymentFlowsPaymentIntentAsyncWorkflows option,
-            paymentDetails: PaymentFlowsPaymentDetails option,
-            presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails option,
-            transferData: TransferData option option
+            transferGroup: string option
         ) : PaymentIntent
         =
         {
@@ -31305,11 +30877,11 @@ module PaymentIntent =
           StatementDescriptorSuffix = statementDescriptorSuffix
           Status = status
           TransferGroup = transferGroup
-          AmountDetails = amountDetails
-          Hooks = hooks
-          PaymentDetails = paymentDetails
-          PresentmentDetails = presentmentDetails
-          TransferData = transferData |> Option.flatten
+          AmountDetails = None
+          Hooks = None
+          PaymentDetails = None
+          PresentmentDetails = None
+          TransferData = None
         }
 
 module PaymentMethod =
@@ -31325,64 +30897,7 @@ module PaymentMethod =
             id: string,
             livemode: bool,
             metadata: Map<string, string> option,
-            ``type``: PaymentMethodType,
-            acssDebit: PaymentMethodAcssDebit option,
-            affirm: PaymentMethodAffirm option,
-            afterpayClearpay: PaymentMethodAfterpayClearpay option,
-            alipay: PaymentFlowsPrivatePaymentMethodsAlipay option,
-            allowRedisplay: PaymentMethodAllowRedisplay option,
-            alma: PaymentMethodAlma option,
-            amazonPay: PaymentMethodAmazonPay option,
-            auBecsDebit: PaymentMethodAuBecsDebit option,
-            bacsDebit: PaymentMethodBacsDebit option,
-            bancontact: PaymentMethodBancontact option,
-            billie: PaymentMethodBillie option,
-            blik: PaymentMethodBlik option,
-            boleto: PaymentMethodBoleto option,
-            card: PaymentMethodCard option,
-            cardPresent: PaymentMethodCardPresent option,
-            cashapp: PaymentMethodCashapp option,
-            crypto: PaymentMethodCrypto option,
-            custom: PaymentMethodCustom option,
-            customerBalance: PaymentMethodCustomerBalance option,
-            eps: PaymentMethodEps option,
-            fpx: PaymentMethodFpx option,
-            giropay: PaymentMethodGiropay option,
-            grabpay: PaymentMethodGrabpay option,
-            ideal: PaymentMethodIdeal option,
-            interacPresent: PaymentMethodInteracPresent option,
-            kakaoPay: PaymentMethodKakaoPay option,
-            klarna: PaymentMethodKlarna option,
-            konbini: PaymentMethodKonbini option,
-            krCard: PaymentMethodKrCard option,
-            link: PaymentMethodLink option,
-            mbWay: PaymentMethodMbWay option,
-            mobilepay: PaymentMethodMobilepay option,
-            multibanco: PaymentMethodMultibanco option,
-            naverPay: PaymentMethodNaverPay option,
-            nzBankAccount: PaymentMethodNzBankAccount option,
-            oxxo: PaymentMethodOxxo option,
-            p24: PaymentMethodP24 option,
-            payByBank: PaymentMethodPayByBank option,
-            payco: PaymentMethodPayco option,
-            paynow: PaymentMethodPaynow option,
-            paypal: PaymentMethodPaypal option,
-            payto: PaymentMethodPayto option,
-            pix: PaymentMethodPix option,
-            promptpay: PaymentMethodPromptpay option,
-            radarOptions: RadarRadarOptions option,
-            revolutPay: PaymentMethodRevolutPay option,
-            samsungPay: PaymentMethodSamsungPay option,
-            satispay: PaymentMethodSatispay option,
-            sepaDebit: PaymentMethodSepaDebit option,
-            sofort: PaymentMethodSofort option,
-            sunbit: PaymentMethodSunbit option,
-            swish: PaymentMethodSwish option,
-            twint: PaymentMethodTwint option,
-            upi: PaymentMethodUpi option,
-            usBankAccount: PaymentMethodUsBankAccount option,
-            wechatPay: PaymentMethodWechatPay option,
-            zip: PaymentMethodZip option
+            ``type``: PaymentMethodType
         ) : PaymentMethod
         =
         {
@@ -31394,63 +30909,63 @@ module PaymentMethod =
           Livemode = livemode
           Metadata = metadata
           Type = ``type``
-          AcssDebit = acssDebit
-          Affirm = affirm
-          AfterpayClearpay = afterpayClearpay
-          Alipay = alipay
-          AllowRedisplay = allowRedisplay
-          Alma = alma
-          AmazonPay = amazonPay
-          AuBecsDebit = auBecsDebit
-          BacsDebit = bacsDebit
-          Bancontact = bancontact
-          Billie = billie
-          Blik = blik
-          Boleto = boleto
-          Card = card
-          CardPresent = cardPresent
-          Cashapp = cashapp
-          Crypto = crypto
-          Custom = custom
-          CustomerBalance = customerBalance
-          Eps = eps
-          Fpx = fpx
-          Giropay = giropay
-          Grabpay = grabpay
-          Ideal = ideal
-          InteracPresent = interacPresent
-          KakaoPay = kakaoPay
-          Klarna = klarna
-          Konbini = konbini
-          KrCard = krCard
-          Link = link
-          MbWay = mbWay
-          Mobilepay = mobilepay
-          Multibanco = multibanco
-          NaverPay = naverPay
-          NzBankAccount = nzBankAccount
-          Oxxo = oxxo
-          P24 = p24
-          PayByBank = payByBank
-          Payco = payco
-          Paynow = paynow
-          Paypal = paypal
-          Payto = payto
-          Pix = pix
-          Promptpay = promptpay
-          RadarOptions = radarOptions
-          RevolutPay = revolutPay
-          SamsungPay = samsungPay
-          Satispay = satispay
-          SepaDebit = sepaDebit
-          Sofort = sofort
-          Sunbit = sunbit
-          Swish = swish
-          Twint = twint
-          Upi = upi
-          UsBankAccount = usBankAccount
-          WechatPay = wechatPay
-          Zip = zip
+          AcssDebit = None
+          Affirm = None
+          AfterpayClearpay = None
+          Alipay = None
+          AllowRedisplay = None
+          Alma = None
+          AmazonPay = None
+          AuBecsDebit = None
+          BacsDebit = None
+          Bancontact = None
+          Billie = None
+          Blik = None
+          Boleto = None
+          Card = None
+          CardPresent = None
+          Cashapp = None
+          Crypto = None
+          Custom = None
+          CustomerBalance = None
+          Eps = None
+          Fpx = None
+          Giropay = None
+          Grabpay = None
+          Ideal = None
+          InteracPresent = None
+          KakaoPay = None
+          Klarna = None
+          Konbini = None
+          KrCard = None
+          Link = None
+          MbWay = None
+          Mobilepay = None
+          Multibanco = None
+          NaverPay = None
+          NzBankAccount = None
+          Oxxo = None
+          P24 = None
+          PayByBank = None
+          Payco = None
+          Paynow = None
+          Paypal = None
+          Payto = None
+          Pix = None
+          Promptpay = None
+          RadarOptions = None
+          RevolutPay = None
+          SamsungPay = None
+          Satispay = None
+          SepaDebit = None
+          Sofort = None
+          Sunbit = None
+          Swish = None
+          Twint = None
+          Upi = None
+          UsBankAccount = None
+          WechatPay = None
+          Zip = None
         }
 
 module PaymentMethodCard =
@@ -31468,11 +30983,7 @@ module PaymentMethodCard =
             networks: Networks option,
             regulatedStatus: PaymentMethodCardRegulatedStatus option,
             threeDSecureUsage: ThreeDSecureUsage option,
-            wallet: PaymentMethodCardWallet option,
-            description: string option option,
-            fingerprint: string option option,
-            iin: string option option,
-            issuer: string option option
+            wallet: PaymentMethodCardWallet option
         ) : PaymentMethodCard
         =
         {
@@ -31489,10 +31000,10 @@ module PaymentMethodCard =
           RegulatedStatus = regulatedStatus
           ThreeDSecureUsage = threeDSecureUsage
           Wallet = wallet
-          Description = description |> Option.flatten
-          Fingerprint = fingerprint |> Option.flatten
-          Iin = iin |> Option.flatten
-          Issuer = issuer |> Option.flatten
+          Description = None
+          Fingerprint = None
+          Iin = None
+          Issuer = None
         }
 
 module PaymentMethodCardGeneratedCard =
@@ -31512,129 +31023,70 @@ module PaymentMethodCardGeneratedCard =
 module PaymentMethodDetails =
     let create
         (
-            ``type``: string,
-            achCreditTransfer: PaymentMethodDetailsAchCreditTransfer option,
-            achDebit: PaymentMethodDetailsAchDebit option,
-            acssDebit: PaymentMethodDetailsAcssDebit option,
-            affirm: PaymentMethodDetailsAffirm option,
-            afterpayClearpay: PaymentMethodDetailsAfterpayClearpay option,
-            alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails option,
-            alma: PaymentMethodDetailsAlma option,
-            amazonPay: PaymentMethodDetailsAmazonPay option,
-            auBecsDebit: PaymentMethodDetailsAuBecsDebit option,
-            bacsDebit: PaymentMethodDetailsBacsDebit option,
-            bancontact: PaymentMethodDetailsBancontact option,
-            billie: PaymentMethodDetailsBillie option,
-            blik: PaymentMethodDetailsBlik option,
-            boleto: PaymentMethodDetailsBoleto option,
-            card: PaymentMethodDetailsCard option,
-            cardPresent: PaymentMethodDetailsCardPresent option,
-            cashapp: PaymentMethodDetailsCashapp option,
-            crypto: PaymentMethodDetailsCrypto option,
-            customerBalance: PaymentMethodDetailsCustomerBalance option,
-            eps: PaymentMethodDetailsEps option,
-            fpx: PaymentMethodDetailsFpx option,
-            giropay: PaymentMethodDetailsGiropay option,
-            grabpay: PaymentMethodDetailsGrabpay option,
-            ideal: PaymentMethodDetailsIdeal option,
-            interacPresent: PaymentMethodDetailsInteracPresent option,
-            kakaoPay: PaymentMethodDetailsKakaoPay option,
-            klarna: PaymentMethodDetailsKlarna option,
-            konbini: PaymentMethodDetailsKonbini option,
-            krCard: PaymentMethodDetailsKrCard option,
-            link: PaymentMethodDetailsLink option,
-            mbWay: PaymentMethodDetailsMbWay option,
-            mobilepay: PaymentMethodDetailsMobilepay option,
-            multibanco: PaymentMethodDetailsMultibanco option,
-            naverPay: PaymentMethodDetailsNaverPay option,
-            nzBankAccount: PaymentMethodDetailsNzBankAccount option,
-            oxxo: PaymentMethodDetailsOxxo option,
-            p24: PaymentMethodDetailsP24 option,
-            payByBank: PaymentMethodDetailsPayByBank option,
-            payco: PaymentMethodDetailsPayco option,
-            paynow: PaymentMethodDetailsPaynow option,
-            paypal: PaymentMethodDetailsPaypal option,
-            payto: PaymentMethodDetailsPayto option,
-            pix: PaymentMethodDetailsPix option,
-            promptpay: PaymentMethodDetailsPromptpay option,
-            revolutPay: PaymentMethodDetailsRevolutPay option,
-            samsungPay: PaymentMethodDetailsSamsungPay option,
-            satispay: PaymentMethodDetailsSatispay option,
-            sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer option,
-            sepaDebit: PaymentMethodDetailsSepaDebit option,
-            sofort: PaymentMethodDetailsSofort option,
-            stripeAccount: PaymentMethodDetailsStripeAccount option,
-            sunbit: PaymentMethodDetailsSunbit option,
-            swish: PaymentMethodDetailsSwish option,
-            twint: PaymentMethodDetailsTwint option,
-            upi: PaymentMethodDetailsUpi option,
-            usBankAccount: PaymentMethodDetailsUsBankAccount option,
-            wechat: PaymentMethodDetailsWechat option,
-            wechatPay: PaymentMethodDetailsWechatPay option,
-            zip: PaymentMethodDetailsZip option
+            ``type``: string
         ) : PaymentMethodDetails
         =
         {
           Type = ``type``
-          AchCreditTransfer = achCreditTransfer
-          AchDebit = achDebit
-          AcssDebit = acssDebit
-          Affirm = affirm
-          AfterpayClearpay = afterpayClearpay
-          Alipay = alipay
-          Alma = alma
-          AmazonPay = amazonPay
-          AuBecsDebit = auBecsDebit
-          BacsDebit = bacsDebit
-          Bancontact = bancontact
-          Billie = billie
-          Blik = blik
-          Boleto = boleto
-          Card = card
-          CardPresent = cardPresent
-          Cashapp = cashapp
-          Crypto = crypto
-          CustomerBalance = customerBalance
-          Eps = eps
-          Fpx = fpx
-          Giropay = giropay
-          Grabpay = grabpay
-          Ideal = ideal
-          InteracPresent = interacPresent
-          KakaoPay = kakaoPay
-          Klarna = klarna
-          Konbini = konbini
-          KrCard = krCard
-          Link = link
-          MbWay = mbWay
-          Mobilepay = mobilepay
-          Multibanco = multibanco
-          NaverPay = naverPay
-          NzBankAccount = nzBankAccount
-          Oxxo = oxxo
-          P24 = p24
-          PayByBank = payByBank
-          Payco = payco
-          Paynow = paynow
-          Paypal = paypal
-          Payto = payto
-          Pix = pix
-          Promptpay = promptpay
-          RevolutPay = revolutPay
-          SamsungPay = samsungPay
-          Satispay = satispay
-          SepaCreditTransfer = sepaCreditTransfer
-          SepaDebit = sepaDebit
-          Sofort = sofort
-          StripeAccount = stripeAccount
-          Sunbit = sunbit
-          Swish = swish
-          Twint = twint
-          Upi = upi
-          UsBankAccount = usBankAccount
-          Wechat = wechat
-          WechatPay = wechatPay
-          Zip = zip
+          AchCreditTransfer = None
+          AchDebit = None
+          AcssDebit = None
+          Affirm = None
+          AfterpayClearpay = None
+          Alipay = None
+          Alma = None
+          AmazonPay = None
+          AuBecsDebit = None
+          BacsDebit = None
+          Bancontact = None
+          Billie = None
+          Blik = None
+          Boleto = None
+          Card = None
+          CardPresent = None
+          Cashapp = None
+          Crypto = None
+          CustomerBalance = None
+          Eps = None
+          Fpx = None
+          Giropay = None
+          Grabpay = None
+          Ideal = None
+          InteracPresent = None
+          KakaoPay = None
+          Klarna = None
+          Konbini = None
+          KrCard = None
+          Link = None
+          MbWay = None
+          Mobilepay = None
+          Multibanco = None
+          NaverPay = None
+          NzBankAccount = None
+          Oxxo = None
+          P24 = None
+          PayByBank = None
+          Payco = None
+          Paynow = None
+          Paypal = None
+          Payto = None
+          Pix = None
+          Promptpay = None
+          RevolutPay = None
+          SamsungPay = None
+          Satispay = None
+          SepaCreditTransfer = None
+          SepaDebit = None
+          Sofort = None
+          StripeAccount = None
+          Sunbit = None
+          Swish = None
+          Twint = None
+          Upi = None
+          UsBankAccount = None
+          Wechat = None
+          WechatPay = None
+          Zip = None
         }
 
 module PaymentMethodDetailsBancontact =
@@ -31764,9 +31216,7 @@ module PaymentMethodDetailsPaymentRecordUsBankAccount =
             fingerprint: string option,
             last4: string option,
             paymentReference: string option,
-            routingNumber: string option,
-            expectedDebitDate: string option,
-            mandate: PaymentMethodDetailsPaymentRecordUsBankAccountMandate'AnyOf option
+            routingNumber: string option
         ) : PaymentMethodDetailsPaymentRecordUsBankAccount
         =
         {
@@ -31777,8 +31227,8 @@ module PaymentMethodDetailsPaymentRecordUsBankAccount =
           Last4 = last4
           PaymentReference = paymentReference
           RoutingNumber = routingNumber
-          ExpectedDebitDate = expectedDebitDate
-          Mandate = mandate
+          ExpectedDebitDate = None
+          Mandate = None
         }
 
 module PaymentMethodDetailsSofort =
@@ -31816,9 +31266,7 @@ module PaymentMethodDetailsUsBankAccount =
             fingerprint: string option,
             last4: string option,
             paymentReference: string option,
-            routingNumber: string option,
-            expectedDebitDate: string option,
-            mandate: PaymentMethodDetailsUsBankAccountMandate'AnyOf option
+            routingNumber: string option
         ) : PaymentMethodDetailsUsBankAccount
         =
         {
@@ -31829,8 +31277,8 @@ module PaymentMethodDetailsUsBankAccount =
           Last4 = last4
           PaymentReference = paymentReference
           RoutingNumber = routingNumber
-          ExpectedDebitDate = expectedDebitDate
-          Mandate = mandate
+          ExpectedDebitDate = None
+          Mandate = None
         }
 
 module PaymentMethodSepaDebit =
@@ -31909,133 +31357,73 @@ module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails =
         (
             billingDetails: PaymentsPrimitivesPaymentRecordsResourceBillingDetails option,
             paymentMethod: string option,
-            ``type``: string,
-            achCreditTransfer: PaymentMethodDetailsAchCreditTransfer option,
-            achDebit: PaymentMethodDetailsAchDebit option,
-            acssDebit: PaymentMethodDetailsPaymentRecordAcssDebit option,
-            affirm: PaymentMethodDetailsPaymentRecordAffirm option,
-            afterpayClearpay: PaymentMethodDetailsPaymentRecordAfterpayClearpay option,
-            alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails option,
-            alma: PaymentMethodDetailsPaymentRecordAlma option,
-            amazonPay: PaymentMethodDetailsPaymentRecordAmazonPay option,
-            auBecsDebit: PaymentMethodDetailsAuBecsDebit option,
-            bacsDebit: PaymentMethodDetailsBacsDebit option,
-            bancontact: PaymentMethodDetailsPaymentRecordBancontact option,
-            billie: PaymentMethodDetailsPaymentRecordBillie option,
-            blik: PaymentMethodDetailsPaymentRecordBlik option,
-            boleto: PaymentMethodDetailsPaymentRecordBoleto option,
-            card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails option,
-            cardPresent: PaymentMethodDetailsCardPresent option,
-            cashapp: PaymentMethodDetailsPaymentRecordCashapp option,
-            crypto: PaymentMethodDetailsCrypto option,
-            custom: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails option,
-            customerBalance: PaymentMethodDetailsCustomerBalance option,
-            eps: PaymentMethodDetailsPaymentRecordEps option,
-            fpx: PaymentMethodDetailsFpx option,
-            giropay: PaymentMethodDetailsPaymentRecordGiropay option,
-            grabpay: PaymentMethodDetailsGrabpay option,
-            ideal: PaymentMethodDetailsPaymentRecordIdeal option,
-            interacPresent: PaymentMethodDetailsInteracPresent option,
-            kakaoPay: PaymentMethodDetailsPaymentRecordKakaoPay option,
-            klarna: PaymentMethodDetailsKlarna option,
-            konbini: PaymentMethodDetailsPaymentRecordKonbini option,
-            krCard: PaymentMethodDetailsKrCard option,
-            link: PaymentMethodDetailsLink option,
-            mbWay: PaymentMethodDetailsPaymentRecordMbWay option,
-            mobilepay: PaymentMethodDetailsPaymentRecordMobilepay option,
-            multibanco: PaymentMethodDetailsPaymentRecordMultibanco option,
-            naverPay: PaymentMethodDetailsPaymentRecordNaverPay option,
-            nzBankAccount: PaymentMethodDetailsNzBankAccount option,
-            oxxo: PaymentMethodDetailsPaymentRecordOxxo option,
-            p24: PaymentMethodDetailsP24 option,
-            payByBank: PaymentMethodDetailsPaymentRecordPayByBank option,
-            payco: PaymentMethodDetailsPaymentRecordPayco option,
-            paynow: PaymentMethodDetailsPaymentRecordPaynow option,
-            paypal: PaymentMethodDetailsPaypal option,
-            payto: PaymentMethodDetailsPayto option,
-            pix: PaymentMethodDetailsPaymentRecordPix option,
-            promptpay: PaymentMethodDetailsPaymentRecordPromptpay option,
-            revolutPay: PaymentMethodDetailsRevolutPay option,
-            samsungPay: PaymentMethodDetailsPaymentRecordSamsungPay option,
-            satispay: PaymentMethodDetailsSatispay option,
-            sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer option,
-            sepaDebit: PaymentMethodDetailsPaymentRecordSepaDebit option,
-            sofort: PaymentMethodDetailsPaymentRecordSofort option,
-            stripeAccount: PaymentMethodDetailsStripeAccount option,
-            sunbit: PaymentMethodDetailsSunbit option,
-            swish: PaymentMethodDetailsPaymentRecordSwish option,
-            twint: PaymentMethodDetailsPaymentRecordTwint option,
-            upi: PaymentMethodDetailsPaymentRecordUpi option,
-            usBankAccount: PaymentMethodDetailsPaymentRecordUsBankAccount option,
-            wechat: PaymentMethodDetailsWechat option,
-            wechatPay: PaymentMethodDetailsPaymentRecordWechatPay option,
-            zip: PaymentMethodDetailsPaymentRecordZip option
+            ``type``: string
         ) : PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails
         =
         {
           BillingDetails = billingDetails
           PaymentMethod = paymentMethod
           Type = ``type``
-          AchCreditTransfer = achCreditTransfer
-          AchDebit = achDebit
-          AcssDebit = acssDebit
-          Affirm = affirm
-          AfterpayClearpay = afterpayClearpay
-          Alipay = alipay
-          Alma = alma
-          AmazonPay = amazonPay
-          AuBecsDebit = auBecsDebit
-          BacsDebit = bacsDebit
-          Bancontact = bancontact
-          Billie = billie
-          Blik = blik
-          Boleto = boleto
-          Card = card
-          CardPresent = cardPresent
-          Cashapp = cashapp
-          Crypto = crypto
-          Custom = custom
-          CustomerBalance = customerBalance
-          Eps = eps
-          Fpx = fpx
-          Giropay = giropay
-          Grabpay = grabpay
-          Ideal = ideal
-          InteracPresent = interacPresent
-          KakaoPay = kakaoPay
-          Klarna = klarna
-          Konbini = konbini
-          KrCard = krCard
-          Link = link
-          MbWay = mbWay
-          Mobilepay = mobilepay
-          Multibanco = multibanco
-          NaverPay = naverPay
-          NzBankAccount = nzBankAccount
-          Oxxo = oxxo
-          P24 = p24
-          PayByBank = payByBank
-          Payco = payco
-          Paynow = paynow
-          Paypal = paypal
-          Payto = payto
-          Pix = pix
-          Promptpay = promptpay
-          RevolutPay = revolutPay
-          SamsungPay = samsungPay
-          Satispay = satispay
-          SepaCreditTransfer = sepaCreditTransfer
-          SepaDebit = sepaDebit
-          Sofort = sofort
-          StripeAccount = stripeAccount
-          Sunbit = sunbit
-          Swish = swish
-          Twint = twint
-          Upi = upi
-          UsBankAccount = usBankAccount
-          Wechat = wechat
-          WechatPay = wechatPay
-          Zip = zip
+          AchCreditTransfer = None
+          AchDebit = None
+          AcssDebit = None
+          Affirm = None
+          AfterpayClearpay = None
+          Alipay = None
+          Alma = None
+          AmazonPay = None
+          AuBecsDebit = None
+          BacsDebit = None
+          Bancontact = None
+          Billie = None
+          Blik = None
+          Boleto = None
+          Card = None
+          CardPresent = None
+          Cashapp = None
+          Crypto = None
+          Custom = None
+          CustomerBalance = None
+          Eps = None
+          Fpx = None
+          Giropay = None
+          Grabpay = None
+          Ideal = None
+          InteracPresent = None
+          KakaoPay = None
+          Klarna = None
+          Konbini = None
+          KrCard = None
+          Link = None
+          MbWay = None
+          Mobilepay = None
+          Multibanco = None
+          NaverPay = None
+          NzBankAccount = None
+          Oxxo = None
+          P24 = None
+          PayByBank = None
+          Payco = None
+          Paynow = None
+          Paypal = None
+          Payto = None
+          Pix = None
+          Promptpay = None
+          RevolutPay = None
+          SamsungPay = None
+          Satispay = None
+          SepaCreditTransfer = None
+          SepaDebit = None
+          Sofort = None
+          StripeAccount = None
+          Sunbit = None
+          Swish = None
+          Twint = None
+          Upi = None
+          UsBankAccount = None
+          Wechat = None
+          WechatPay = None
+          Zip = None
         }
 
 module Payout =
@@ -32156,15 +31544,7 @@ module Refund =
             receiptNumber: string option,
             sourceTransferReversal: RefundSourceTransferReversal'AnyOf option,
             status: RefundStatus option,
-            transferReversal: RefundTransferReversal'AnyOf option,
-            description: string option,
-            destinationDetails: RefundDestinationDetails option,
-            failureBalanceTransaction: RefundFailureBalanceTransaction'AnyOf option,
-            failureReason: RefundFailureReason option,
-            instructionsEmail: string option,
-            nextAction: RefundNextAction option,
-            pendingReason: RefundPendingReason option,
-            presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails option
+            transferReversal: RefundTransferReversal'AnyOf option
         ) : Refund
         =
         {
@@ -32181,14 +31561,14 @@ module Refund =
           SourceTransferReversal = sourceTransferReversal
           Status = status
           TransferReversal = transferReversal
-          Description = description
-          DestinationDetails = destinationDetails
-          FailureBalanceTransaction = failureBalanceTransaction
-          FailureReason = failureReason
-          InstructionsEmail = instructionsEmail
-          NextAction = nextAction
-          PendingReason = pendingReason
-          PresentmentDetails = presentmentDetails
+          Description = None
+          DestinationDetails = None
+          FailureBalanceTransaction = None
+          FailureReason = None
+          InstructionsEmail = None
+          NextAction = None
+          PendingReason = None
+          PresentmentDetails = None
         }
 
 module Review =
@@ -32208,8 +31588,7 @@ module Review =
             ``open``: bool,
             openedReason: ReviewOpenedReason,
             reason: ReviewReason,
-            session: RadarReviewResourceSession option,
-            paymentIntent: ReviewPaymentIntent'AnyOf option
+            session: RadarReviewResourceSession option
         ) : Review
         =
         {
@@ -32225,7 +31604,7 @@ module Review =
           OpenedReason = openedReason
           Reason = reason
           Session = session
-          PaymentIntent = paymentIntent
+          PaymentIntent = None
         }
 
 module SchedulesPhaseAutomaticTax =
@@ -32274,8 +31653,7 @@ module SetupAttempt =
             setupError: ApiErrors option,
             setupIntent: SetupAttemptSetupIntent'AnyOf,
             status: SetupAttemptStatus,
-            usage: SetupAttemptUsage,
-            attachToSelf: bool option
+            usage: SetupAttemptUsage
         ) : SetupAttempt
         =
         {
@@ -32293,65 +31671,41 @@ module SetupAttempt =
           SetupIntent = setupIntent
           Status = status
           Usage = usage
-          AttachToSelf = attachToSelf
+          AttachToSelf = None
         }
 
 module SetupAttemptPaymentMethodDetails =
     let create
         (
-            ``type``: string,
-            acssDebit: SetupAttemptPaymentMethodDetailsAcssDebit option,
-            amazonPay: SetupAttemptPaymentMethodDetailsAmazonPay option,
-            auBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit option,
-            bacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit option,
-            bancontact: SetupAttemptPaymentMethodDetailsBancontact option,
-            boleto: SetupAttemptPaymentMethodDetailsBoleto option,
-            card: SetupAttemptPaymentMethodDetailsCard option,
-            cardPresent: SetupAttemptPaymentMethodDetailsCardPresent option,
-            cashapp: SetupAttemptPaymentMethodDetailsCashapp option,
-            ideal: SetupAttemptPaymentMethodDetailsIdeal option,
-            kakaoPay: SetupAttemptPaymentMethodDetailsKakaoPay option,
-            klarna: SetupAttemptPaymentMethodDetailsKlarna option,
-            krCard: SetupAttemptPaymentMethodDetailsKrCard option,
-            link: SetupAttemptPaymentMethodDetailsLink option,
-            naverPay: SetupAttemptPaymentMethodDetailsNaverPay option,
-            nzBankAccount: SetupAttemptPaymentMethodDetailsNzBankAccount option,
-            paypal: SetupAttemptPaymentMethodDetailsPaypal option,
-            payto: SetupAttemptPaymentMethodDetailsPayto option,
-            pix: SetupAttemptPaymentMethodDetailsPix option,
-            revolutPay: SetupAttemptPaymentMethodDetailsRevolutPay option,
-            sepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit option,
-            sofort: SetupAttemptPaymentMethodDetailsSofort option,
-            upi: SetupAttemptPaymentMethodDetailsUpi option,
-            usBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount option
+            ``type``: string
         ) : SetupAttemptPaymentMethodDetails
         =
         {
           Type = ``type``
-          AcssDebit = acssDebit
-          AmazonPay = amazonPay
-          AuBecsDebit = auBecsDebit
-          BacsDebit = bacsDebit
-          Bancontact = bancontact
-          Boleto = boleto
-          Card = card
-          CardPresent = cardPresent
-          Cashapp = cashapp
-          Ideal = ideal
-          KakaoPay = kakaoPay
-          Klarna = klarna
-          KrCard = krCard
-          Link = link
-          NaverPay = naverPay
-          NzBankAccount = nzBankAccount
-          Paypal = paypal
-          Payto = payto
-          Pix = pix
-          RevolutPay = revolutPay
-          SepaDebit = sepaDebit
-          Sofort = sofort
-          Upi = upi
-          UsBankAccount = usBankAccount
+          AcssDebit = None
+          AmazonPay = None
+          AuBecsDebit = None
+          BacsDebit = None
+          Bancontact = None
+          Boleto = None
+          Card = None
+          CardPresent = None
+          Cashapp = None
+          Ideal = None
+          KakaoPay = None
+          Klarna = None
+          KrCard = None
+          Link = None
+          NaverPay = None
+          NzBankAccount = None
+          Paypal = None
+          Payto = None
+          Pix = None
+          RevolutPay = None
+          SepaDebit = None
+          Sofort = None
+          Upi = None
+          UsBankAccount = None
         }
 
 module SetupAttemptPaymentMethodDetailsBancontact =
@@ -32462,11 +31816,7 @@ module SetupIntent =
             paymentMethodTypes: string list,
             singleUseMandate: SetupIntentSingleUseMandate'AnyOf option,
             status: SetupIntentStatus,
-            usage: string,
-            attachToSelf: bool option,
-            customerAccount: string option option,
-            flowDirections: SetupIntentFlowDirections list option option,
-            managedPayments: SmorResourceManagedPayments option option
+            usage: string
         ) : SetupIntent
         =
         {
@@ -32493,10 +31843,10 @@ module SetupIntent =
           SingleUseMandate = singleUseMandate
           Status = status
           Usage = usage
-          AttachToSelf = attachToSelf
-          CustomerAccount = customerAccount |> Option.flatten
-          FlowDirections = flowDirections |> Option.flatten
-          ManagedPayments = managedPayments |> Option.flatten
+          AttachToSelf = None
+          CustomerAccount = None
+          FlowDirections = None
+          ManagedPayments = None
         }
 
 module StackableDiscountWithDiscountSettings =
@@ -32576,9 +31926,7 @@ module Subscription =
             transferData: SubscriptionTransferData option,
             trialEnd: DateTime option,
             trialSettings: SubscriptionsResourceTrialSettingsTrialSettings option,
-            trialStart: DateTime option,
-            defaultTaxRates: TaxRate list option option,
-            presentmentDetails: SubscriptionsResourceSubscriptionPresentmentDetails option
+            trialStart: DateTime option
         ) : Subscription
         =
         {
@@ -32626,8 +31974,8 @@ module Subscription =
           TrialEnd = trialEnd
           TrialSettings = trialSettings
           TrialStart = trialStart
-          DefaultTaxRates = defaultTaxRates |> Option.flatten
-          PresentmentDetails = presentmentDetails
+          DefaultTaxRates = None
+          PresentmentDetails = None
         }
 
 module SubscriptionItems =
@@ -32678,8 +32026,7 @@ module SubscriptionItem =
             plan: Plan,
             price: Price,
             subscription: string,
-            taxRates: TaxRate list option,
-            quantity: int option
+            taxRates: TaxRate list option
         ) : SubscriptionItem
         =
         {
@@ -32694,7 +32041,7 @@ module SubscriptionItem =
           Price = price
           Subscription = subscription
           TaxRates = taxRates
-          Quantity = quantity
+          Quantity = None
         }
 
 module SubscriptionSchedule =
@@ -32753,8 +32100,7 @@ module SubscriptionScheduleAddInvoiceItem =
             metadata: Map<string, string> option,
             period: SubscriptionScheduleAddInvoiceItemPeriod,
             price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf,
-            quantity: int option,
-            taxRates: TaxRate list option option
+            quantity: int option
         ) : SubscriptionScheduleAddInvoiceItem
         =
         {
@@ -32763,7 +32109,7 @@ module SubscriptionScheduleAddInvoiceItem =
           Period = period
           Price = price
           Quantity = quantity
-          TaxRates = taxRates |> Option.flatten
+          TaxRates = None
         }
 
 module SubscriptionScheduleConfigurationItem =
@@ -32773,9 +32119,7 @@ module SubscriptionScheduleConfigurationItem =
             discounts: StackableDiscountWithDiscountSettings list,
             metadata: Map<string, string> option,
             plan: SubscriptionScheduleConfigurationItemPlan'AnyOf,
-            price: SubscriptionScheduleConfigurationItemPrice'AnyOf,
-            quantity: int option,
-            taxRates: TaxRate list option option
+            price: SubscriptionScheduleConfigurationItemPrice'AnyOf
         ) : SubscriptionScheduleConfigurationItem
         =
         {
@@ -32784,8 +32128,8 @@ module SubscriptionScheduleConfigurationItem =
           Metadata = metadata
           Plan = plan
           Price = price
-          Quantity = quantity
-          TaxRates = taxRates |> Option.flatten
+          Quantity = None
+          TaxRates = None
         }
 
 module SubscriptionSchedulePhaseConfiguration =
@@ -32808,9 +32152,7 @@ module SubscriptionSchedulePhaseConfiguration =
             prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior,
             startDate: DateTime,
             transferData: SubscriptionTransferData option,
-            trialEnd: DateTime option,
-            automaticTax: SchedulesPhaseAutomaticTax option,
-            defaultTaxRates: TaxRate list option option
+            trialEnd: DateTime option
         ) : SubscriptionSchedulePhaseConfiguration
         =
         {
@@ -32832,8 +32174,8 @@ module SubscriptionSchedulePhaseConfiguration =
           StartDate = startDate
           TransferData = transferData
           TrialEnd = trialEnd
-          AutomaticTax = automaticTax
-          DefaultTaxRates = defaultTaxRates |> Option.flatten
+          AutomaticTax = None
+          DefaultTaxRates = None
         }
 
 module SubscriptionSchedulesResourceDefaultSettings =
@@ -32847,8 +32189,7 @@ module SubscriptionSchedulesResourceDefaultSettings =
             description: string option,
             invoiceSettings: InvoiceSettingSubscriptionScheduleSetting,
             onBehalfOf: SubscriptionSchedulesResourceDefaultSettingsOnBehalfOf'AnyOf option,
-            transferData: SubscriptionTransferData option,
-            automaticTax: SubscriptionSchedulesResourceDefaultSettingsAutomaticTax option
+            transferData: SubscriptionTransferData option
         ) : SubscriptionSchedulesResourceDefaultSettings
         =
         {
@@ -32861,7 +32202,7 @@ module SubscriptionSchedulesResourceDefaultSettings =
           InvoiceSettings = invoiceSettings
           OnBehalfOf = onBehalfOf
           TransferData = transferData
-          AutomaticTax = automaticTax
+          AutomaticTax = None
         }
 
 module SubscriptionSchedulesResourceDefaultSettingsAutomaticTax =
@@ -32925,18 +32266,15 @@ module TaxIDsOwner =
     let create
         (
             customerAccount: string option,
-            ``type``: TaxIDsOwnerType,
-            account: TaxIDsOwnerAccount'AnyOf option,
-            application: TaxIDsOwnerApplication'AnyOf option,
-            customer: TaxIDsOwnerCustomer'AnyOf option
+            ``type``: TaxIDsOwnerType
         ) : TaxIDsOwner
         =
         {
           CustomerAccount = customerAccount
           Type = ``type``
-          Account = account
-          Application = application
-          Customer = customer
+          Account = None
+          Application = None
+          Customer = None
         }
 
 module TaxId =
@@ -33030,9 +32368,7 @@ module Transfer =
             reversals: TransferReversals,
             reversed: bool,
             sourceTransaction: TransferSourceTransaction'AnyOf option,
-            transferGroup: string option,
-            destinationPayment: TransferDestinationPayment'AnyOf option,
-            sourceType: TransferSourceType option
+            transferGroup: string option
         ) : Transfer
         =
         {
@@ -33050,8 +32386,8 @@ module Transfer =
           Reversed = reversed
           SourceTransaction = sourceTransaction
           TransferGroup = transferGroup
-          DestinationPayment = destinationPayment
-          SourceType = sourceType
+          DestinationPayment = None
+          SourceType = None
         }
 
 module TransferReversals =
@@ -33074,13 +32410,12 @@ module TransferReversals =
 module TransferData =
     let create
         (
-            destination: TransferDataDestination'AnyOf,
-            amount: int option
+            destination: TransferDataDestination'AnyOf
         ) : TransferData
         =
         {
           Destination = destination
-          Amount = amount
+          Amount = None
         }
 
 module TransferReversal =
@@ -33153,9 +32488,7 @@ module Token =
             id: string,
             livemode: bool,
             ``type``: TokenType,
-            used: bool,
-            bankAccount: BankAccount option,
-            card: Card option
+            used: bool
         ) : Token
         =
         {
@@ -33165,8 +32498,8 @@ module Token =
           Livemode = livemode
           Type = ``type``
           Used = used
-          BankAccount = bankAccount
-          Card = card
+          BankAccount = None
+          Card = None
         }
 
 module TestHelpersTestClockReady =
@@ -33389,10 +32722,7 @@ module ReservePlan =
             livemode: bool,
             percent: int,
             status: ReservePlanStatus,
-            ``type``: ReservePlanType,
-            fixedRelease: ReservesReservePlansResourcesFixedRelease option,
-            metadata: Map<string, string> option,
-            rollingRelease: ReservesReservePlansResourcesRollingRelease option
+            ``type``: ReservePlanType
         ) : ReservePlan
         =
         {
@@ -33405,9 +32735,9 @@ module ReservePlan =
           Percent = percent
           Status = status
           Type = ``type``
-          FixedRelease = fixedRelease
-          Metadata = metadata
-          RollingRelease = rollingRelease
+          FixedRelease = None
+          Metadata = None
+          RollingRelease = None
         }
 
 module ReservesReserveHoldsResourcesReleaseSchedule =
@@ -33438,10 +32768,7 @@ module ReserveHold =
             releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule,
             reservePlan: ReserveHoldReservePlan'AnyOf option,
             sourceCharge: ReserveHoldSourceCharge'AnyOf option,
-            sourceType: ReserveHoldSourceType,
-            amountReleasable: int option,
-            isReleasable: bool option,
-            metadata: Map<string, string> option
+            sourceType: ReserveHoldSourceType
         ) : ReserveHold
         =
         {
@@ -33456,23 +32783,21 @@ module ReserveHold =
           ReservePlan = reservePlan
           SourceCharge = sourceCharge
           SourceType = sourceType
-          AmountReleasable = amountReleasable
-          IsReleasable = isReleasable
-          Metadata = metadata
+          AmountReleasable = None
+          IsReleasable = None
+          Metadata = None
         }
 
 module ReservesReserveReleasesResourcesSourceTransaction =
     let create
         (
-            ``type``: ReservesReserveReleasesResourcesSourceTransactionType,
-            dispute: ReservesReserveReleasesResourcesSourceTransactionDispute'AnyOf option,
-            refund: ReservesReserveReleasesResourcesSourceTransactionRefund'AnyOf option
+            ``type``: ReservesReserveReleasesResourcesSourceTransactionType
         ) : ReservesReserveReleasesResourcesSourceTransaction
         =
         {
           Type = ``type``
-          Dispute = dispute
-          Refund = refund
+          Dispute = None
+          Refund = None
         }
 
 module ReserveRelease =
@@ -33490,9 +32815,7 @@ module ReserveRelease =
             reason: ReserveReleaseReason,
             releasedAt: DateTime,
             reserveHold: ReserveReleaseReserveHold'AnyOf option,
-            reservePlan: ReserveReleaseReservePlan'AnyOf option,
-            metadata: Map<string, string> option,
-            sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction option
+            reservePlan: ReserveReleaseReservePlan'AnyOf option
         ) : ReserveRelease
         =
         {
@@ -33506,8 +32829,8 @@ module ReserveRelease =
           ReleasedAt = releasedAt
           ReserveHold = reserveHold
           ReservePlan = reservePlan
-          Metadata = metadata
-          SourceTransaction = sourceTransaction
+          Metadata = None
+          SourceTransaction = None
         }
 
 module ReserveReleaseCreated =
@@ -33759,14 +33082,13 @@ module InsightsResourcesPaymentEvaluationUserInterventionRaised =
     let create
         (
             key: string,
-            ``type``: InsightsResourcesPaymentEvaluationUserInterventionRaisedType,
-            custom: InsightsResourcesPaymentEvaluationUserInterventionRaisedCustom option
+            ``type``: InsightsResourcesPaymentEvaluationUserInterventionRaisedType
         ) : InsightsResourcesPaymentEvaluationUserInterventionRaised
         =
         {
           Key = key
           Type = ``type``
-          Custom = custom
+          Custom = None
         }
 
 module InsightsResourcesPaymentEvaluationUserInterventionResolved =
@@ -33785,22 +33107,17 @@ module InsightsResourcesPaymentEvaluationEvent =
     let create
         (
             occurredAt: DateTime,
-            ``type``: InsightsResourcesPaymentEvaluationEventType,
-            disputeOpened: InsightsResourcesPaymentEvaluationDisputeOpened option,
-            earlyFraudWarningReceived: InsightsResourcesPaymentEvaluationEarlyFraudWarningReceived option,
-            refunded: InsightsResourcesPaymentEvaluationRefunded option,
-            userInterventionRaised: InsightsResourcesPaymentEvaluationUserInterventionRaised option,
-            userInterventionResolved: InsightsResourcesPaymentEvaluationUserInterventionResolved option
+            ``type``: InsightsResourcesPaymentEvaluationEventType
         ) : InsightsResourcesPaymentEvaluationEvent
         =
         {
           OccurredAt = occurredAt
           Type = ``type``
-          DisputeOpened = disputeOpened
-          EarlyFraudWarningReceived = earlyFraudWarningReceived
-          Refunded = refunded
-          UserInterventionRaised = userInterventionRaised
-          UserInterventionResolved = userInterventionResolved
+          DisputeOpened = None
+          EarlyFraudWarningReceived = None
+          Refunded = None
+          UserInterventionRaised = None
+          UserInterventionResolved = None
         }
 
 module InsightsResourcesPaymentEvaluationMerchantBlocked =
@@ -33866,19 +33183,15 @@ module InsightsResourcesPaymentEvaluationSucceeded =
 module InsightsResourcesPaymentEvaluationOutcome =
     let create
         (
-            ``type``: InsightsResourcesPaymentEvaluationOutcomeType,
-            merchantBlocked: InsightsResourcesPaymentEvaluationMerchantBlocked option,
-            paymentIntentId: string option,
-            rejected: InsightsResourcesPaymentEvaluationRejected option,
-            succeeded: InsightsResourcesPaymentEvaluationSucceeded option
+            ``type``: InsightsResourcesPaymentEvaluationOutcomeType
         ) : InsightsResourcesPaymentEvaluationOutcome
         =
         {
           Type = ``type``
-          MerchantBlocked = merchantBlocked
-          PaymentIntentId = paymentIntentId
-          Rejected = rejected
-          Succeeded = succeeded
+          MerchantBlocked = None
+          PaymentIntentId = None
+          Rejected = None
+          Succeeded = None
         }
 
 module InsightsResourcesPaymentEvaluationMoneyMovementCard =
@@ -34025,12 +33338,7 @@ module RadarPaymentEvaluation =
             livemode: bool,
             metadata: Map<string, string> option,
             recommendedAction: RadarPaymentEvaluationRecommendedAction,
-            signals: InsightsResourcesPaymentEvaluationSignals,
-            clientDeviceMetadataDetails: InsightsResourcesPaymentEvaluationClientDeviceMetadata option,
-            customerDetails: InsightsResourcesPaymentEvaluationCustomerDetails option,
-            events: InsightsResourcesPaymentEvaluationEvent list option,
-            outcome: InsightsResourcesPaymentEvaluationOutcome option option,
-            paymentDetails: InsightsResourcesPaymentEvaluationPaymentDetails option
+            signals: InsightsResourcesPaymentEvaluationSignals
         ) : RadarPaymentEvaluation
         =
         {
@@ -34040,11 +33348,11 @@ module RadarPaymentEvaluation =
           Metadata = metadata
           RecommendedAction = recommendedAction
           Signals = signals
-          ClientDeviceMetadataDetails = clientDeviceMetadataDetails
-          CustomerDetails = customerDetails
-          Events = events
-          Outcome = outcome |> Option.flatten
-          PaymentDetails = paymentDetails
+          ClientDeviceMetadataDetails = None
+          CustomerDetails = None
+          Events = None
+          Outcome = None
+          PaymentDetails = None
         }
 
 module RadarEarlyFraudWarning =
@@ -34058,8 +33366,7 @@ module RadarEarlyFraudWarning =
             created: DateTime,
             fraudType: string,
             id: string,
-            livemode: bool,
-            paymentIntent: RadarEarlyFraudWarningPaymentIntent'AnyOf option
+            livemode: bool
         ) : RadarEarlyFraudWarning
         =
         {
@@ -34069,7 +33376,7 @@ module RadarEarlyFraudWarning =
           FraudType = fraudType
           Id = id
           Livemode = livemode
-          PaymentIntent = paymentIntent
+          PaymentIntent = None
         }
 
 module RadarEarlyFraudWarningUpdated =
@@ -34165,13 +33472,12 @@ module PaymentMethodDomainResourcePaymentMethodStatusDetails =
 module PaymentMethodDomainResourcePaymentMethodStatus =
     let create
         (
-            status: PaymentMethodDomainResourcePaymentMethodStatusStatus,
-            statusDetails: PaymentMethodDomainResourcePaymentMethodStatusDetails option
+            status: PaymentMethodDomainResourcePaymentMethodStatusStatus
         ) : PaymentMethodDomainResourcePaymentMethodStatus
         =
         {
           Status = status
-          StatusDetails = statusDetails
+          StatusDetails = None
         }
 
 module PaymentMethodDomain =
@@ -34245,63 +33551,7 @@ module PaymentMethodConfiguration =
             isDefault: bool,
             livemode: bool,
             name: string,
-            parent: string option,
-            acssDebit: PaymentMethodConfigResourcePaymentMethodProperties option,
-            affirm: PaymentMethodConfigResourcePaymentMethodProperties option,
-            afterpayClearpay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            alipay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            alma: PaymentMethodConfigResourcePaymentMethodProperties option,
-            amazonPay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            applePay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            auBecsDebit: PaymentMethodConfigResourcePaymentMethodProperties option,
-            bacsDebit: PaymentMethodConfigResourcePaymentMethodProperties option,
-            bancontact: PaymentMethodConfigResourcePaymentMethodProperties option,
-            billie: PaymentMethodConfigResourcePaymentMethodProperties option,
-            blik: PaymentMethodConfigResourcePaymentMethodProperties option,
-            boleto: PaymentMethodConfigResourcePaymentMethodProperties option,
-            card: PaymentMethodConfigResourcePaymentMethodProperties option,
-            cartesBancaires: PaymentMethodConfigResourcePaymentMethodProperties option,
-            cashapp: PaymentMethodConfigResourcePaymentMethodProperties option,
-            crypto: PaymentMethodConfigResourcePaymentMethodProperties option,
-            customerBalance: PaymentMethodConfigResourcePaymentMethodProperties option,
-            eps: PaymentMethodConfigResourcePaymentMethodProperties option,
-            fpx: PaymentMethodConfigResourcePaymentMethodProperties option,
-            giropay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            googlePay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            grabpay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            ideal: PaymentMethodConfigResourcePaymentMethodProperties option,
-            jcb: PaymentMethodConfigResourcePaymentMethodProperties option,
-            kakaoPay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            klarna: PaymentMethodConfigResourcePaymentMethodProperties option,
-            konbini: PaymentMethodConfigResourcePaymentMethodProperties option,
-            krCard: PaymentMethodConfigResourcePaymentMethodProperties option,
-            link: PaymentMethodConfigResourcePaymentMethodProperties option,
-            mbWay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            mobilepay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            multibanco: PaymentMethodConfigResourcePaymentMethodProperties option,
-            naverPay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            nzBankAccount: PaymentMethodConfigResourcePaymentMethodProperties option,
-            oxxo: PaymentMethodConfigResourcePaymentMethodProperties option,
-            p24: PaymentMethodConfigResourcePaymentMethodProperties option,
-            payByBank: PaymentMethodConfigResourcePaymentMethodProperties option,
-            payco: PaymentMethodConfigResourcePaymentMethodProperties option,
-            paynow: PaymentMethodConfigResourcePaymentMethodProperties option,
-            paypal: PaymentMethodConfigResourcePaymentMethodProperties option,
-            payto: PaymentMethodConfigResourcePaymentMethodProperties option,
-            pix: PaymentMethodConfigResourcePaymentMethodProperties option,
-            promptpay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            revolutPay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            samsungPay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            satispay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            sepaDebit: PaymentMethodConfigResourcePaymentMethodProperties option,
-            sofort: PaymentMethodConfigResourcePaymentMethodProperties option,
-            sunbit: PaymentMethodConfigResourcePaymentMethodProperties option,
-            swish: PaymentMethodConfigResourcePaymentMethodProperties option,
-            twint: PaymentMethodConfigResourcePaymentMethodProperties option,
-            upi: PaymentMethodConfigResourcePaymentMethodProperties option,
-            usBankAccount: PaymentMethodConfigResourcePaymentMethodProperties option,
-            wechatPay: PaymentMethodConfigResourcePaymentMethodProperties option,
-            zip: PaymentMethodConfigResourcePaymentMethodProperties option
+            parent: string option
         ) : PaymentMethodConfiguration
         =
         {
@@ -34312,62 +33562,62 @@ module PaymentMethodConfiguration =
           Livemode = livemode
           Name = name
           Parent = parent
-          AcssDebit = acssDebit
-          Affirm = affirm
-          AfterpayClearpay = afterpayClearpay
-          Alipay = alipay
-          Alma = alma
-          AmazonPay = amazonPay
-          ApplePay = applePay
-          AuBecsDebit = auBecsDebit
-          BacsDebit = bacsDebit
-          Bancontact = bancontact
-          Billie = billie
-          Blik = blik
-          Boleto = boleto
-          Card = card
-          CartesBancaires = cartesBancaires
-          Cashapp = cashapp
-          Crypto = crypto
-          CustomerBalance = customerBalance
-          Eps = eps
-          Fpx = fpx
-          Giropay = giropay
-          GooglePay = googlePay
-          Grabpay = grabpay
-          Ideal = ideal
-          Jcb = jcb
-          KakaoPay = kakaoPay
-          Klarna = klarna
-          Konbini = konbini
-          KrCard = krCard
-          Link = link
-          MbWay = mbWay
-          Mobilepay = mobilepay
-          Multibanco = multibanco
-          NaverPay = naverPay
-          NzBankAccount = nzBankAccount
-          Oxxo = oxxo
-          P24 = p24
-          PayByBank = payByBank
-          Payco = payco
-          Paynow = paynow
-          Paypal = paypal
-          Payto = payto
-          Pix = pix
-          Promptpay = promptpay
-          RevolutPay = revolutPay
-          SamsungPay = samsungPay
-          Satispay = satispay
-          SepaDebit = sepaDebit
-          Sofort = sofort
-          Sunbit = sunbit
-          Swish = swish
-          Twint = twint
-          Upi = upi
-          UsBankAccount = usBankAccount
-          WechatPay = wechatPay
-          Zip = zip
+          AcssDebit = None
+          Affirm = None
+          AfterpayClearpay = None
+          Alipay = None
+          Alma = None
+          AmazonPay = None
+          ApplePay = None
+          AuBecsDebit = None
+          BacsDebit = None
+          Bancontact = None
+          Billie = None
+          Blik = None
+          Boleto = None
+          Card = None
+          CartesBancaires = None
+          Cashapp = None
+          Crypto = None
+          CustomerBalance = None
+          Eps = None
+          Fpx = None
+          Giropay = None
+          GooglePay = None
+          Grabpay = None
+          Ideal = None
+          Jcb = None
+          KakaoPay = None
+          Klarna = None
+          Konbini = None
+          KrCard = None
+          Link = None
+          MbWay = None
+          Mobilepay = None
+          Multibanco = None
+          NaverPay = None
+          NzBankAccount = None
+          Oxxo = None
+          P24 = None
+          PayByBank = None
+          Payco = None
+          Paynow = None
+          Paypal = None
+          Payto = None
+          Pix = None
+          Promptpay = None
+          RevolutPay = None
+          SamsungPay = None
+          Satispay = None
+          SepaDebit = None
+          Sofort = None
+          Sunbit = None
+          Swish = None
+          Twint = None
+          Upi = None
+          UsBankAccount = None
+          WechatPay = None
+          Zip = None
         }
 
 module PaymentMethodUpdated =
@@ -34452,9 +33702,7 @@ module Item =
             id: string,
             metadata: Map<string, string> option,
             price: Price option,
-            quantity: int option,
-            discounts: LineItemsDiscountAmount list option,
-            taxes: LineItemsTaxAmount list option
+            quantity: int option
         ) : Item
         =
         {
@@ -34469,8 +33717,8 @@ module Item =
           Metadata = metadata
           Price = price
           Quantity = quantity
-          Discounts = discounts
-          Taxes = taxes
+          Discounts = None
+          Taxes = None
         }
 
 module PaymentLinkLineItems =
@@ -34513,15 +33761,13 @@ module PaymentLinksResourceCompletionBehaviorRedirect =
 module PaymentLinksResourceAfterCompletion =
     let create
         (
-            ``type``: PaymentLinksResourceAfterCompletionType,
-            hostedConfirmation: PaymentLinksResourceCompletionBehaviorConfirmationPage option,
-            redirect: PaymentLinksResourceCompletionBehaviorRedirect option
+            ``type``: PaymentLinksResourceAfterCompletionType
         ) : PaymentLinksResourceAfterCompletion
         =
         {
           Type = ``type``
-          HostedConfirmation = hostedConfirmation
-          Redirect = redirect
+          HostedConfirmation = None
+          Redirect = None
         }
 
 module PaymentLinksResourceAutomaticTax =
@@ -34631,10 +33877,7 @@ module PaymentLinksResourceCustomFields =
             key: string,
             label: PaymentLinksResourceCustomFieldsLabel,
             optional: bool,
-            ``type``: PaymentLinksResourceCustomFieldsType,
-            dropdown: PaymentLinksResourceCustomFieldsDropdown option,
-            numeric: PaymentLinksResourceCustomFieldsNumeric option,
-            text: PaymentLinksResourceCustomFieldsText option
+            ``type``: PaymentLinksResourceCustomFieldsType
         ) : PaymentLinksResourceCustomFields
         =
         {
@@ -34642,9 +33885,9 @@ module PaymentLinksResourceCustomFields =
           Label = label
           Optional = optional
           Type = ``type``
-          Dropdown = dropdown
-          Numeric = numeric
-          Text = text
+          Dropdown = None
+          Numeric = None
+          Text = None
         }
 
 module PaymentLinksResourceCustomTextPosition =
@@ -34978,10 +34221,7 @@ module PaymentLink =
             subscriptionData: PaymentLinksResourceSubscriptionData option,
             taxIdCollection: PaymentLinksResourceTaxIdCollection,
             transferData: PaymentLinksResourceTransferData option,
-            url: string,
-            lineItems: PaymentLinkLineItems option,
-            nameCollection: PaymentLinksResourceNameCollection option,
-            optionalItems: PaymentLinksResourceOptionalItem list option option
+            url: string
         ) : PaymentLink
         =
         {
@@ -35017,9 +34257,9 @@ module PaymentLink =
           TaxIdCollection = taxIdCollection
           TransferData = transferData
           Url = url
-          LineItems = lineItems
-          NameCollection = nameCollection
-          OptionalItems = optionalItems |> Option.flatten
+          LineItems = None
+          NameCollection = None
+          OptionalItems = None
         }
 
 module PaymentLinkUpdated =
@@ -35045,13 +34285,12 @@ module PaymentLinkCreated =
 module PaymentFlowsInstallmentOptions =
     let create
         (
-            enabled: bool,
-            plan: PaymentMethodDetailsCardInstallmentsPlan option
+            enabled: bool
         ) : PaymentFlowsInstallmentOptions
         =
         {
           Enabled = enabled
-          Plan = plan
+          Plan = None
         }
 
 module PaymentIntentTypeSpecificPaymentMethodOptionsClient =
@@ -35781,8 +35020,7 @@ module CustomerSession =
             customer: CustomerSessionCustomer'AnyOf,
             customerAccount: string option,
             expiresAt: DateTime,
-            livemode: bool,
-            components: CustomerSessionResourceComponents option
+            livemode: bool
         ) : CustomerSession
         =
         {
@@ -35792,7 +35030,7 @@ module CustomerSession =
           CustomerAccount = customerAccount
           ExpiresAt = expiresAt
           Livemode = livemode
-          Components = components
+          Components = None
         }
 
 module CustomerCashBalanceTransactionCreated =
@@ -36037,17 +35275,15 @@ module CheckoutAcssDebitMandateOptions =
         (
             intervalDescription: string option,
             paymentSchedule: CheckoutAcssDebitMandateOptionsPaymentSchedule option,
-            transactionType: CheckoutAcssDebitMandateOptionsTransactionType option,
-            customMandateUrl: string option,
-            defaultFor: CheckoutAcssDebitMandateOptionsDefaultFor list option
+            transactionType: CheckoutAcssDebitMandateOptionsTransactionType option
         ) : CheckoutAcssDebitMandateOptions
         =
         {
           IntervalDescription = intervalDescription
           PaymentSchedule = paymentSchedule
           TransactionType = transactionType
-          CustomMandateUrl = customMandateUrl
-          DefaultFor = defaultFor
+          CustomMandateUrl = None
+          DefaultFor = None
         }
 
 module CheckoutAcssDebitPaymentMethodOptions =
@@ -36166,13 +35402,12 @@ module CheckoutBilliePaymentMethodOptions =
 module CheckoutBoletoPaymentMethodOptions =
     let create
         (
-            expiresAfterDays: int,
-            setupFutureUsage: CheckoutBoletoPaymentMethodOptionsSetupFutureUsage option
+            expiresAfterDays: int
         ) : CheckoutBoletoPaymentMethodOptions
         =
         {
           ExpiresAfterDays = expiresAfterDays
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module CheckoutCardInstallmentsOptions =
@@ -36201,29 +35436,20 @@ module CheckoutCardPaymentMethodOptions =
 
     let create
         (
-            requestThreeDSecure: CheckoutCardPaymentMethodOptionsRequestThreeDSecure,
-            installments: CheckoutCardInstallmentsOptions option,
-            requestExtendedAuthorization: CheckoutCardPaymentMethodOptionsRequestExtendedAuthorization option,
-            requestIncrementalAuthorization: CheckoutCardPaymentMethodOptionsRequestIncrementalAuthorization option,
-            requestMulticapture: CheckoutCardPaymentMethodOptionsRequestMulticapture option,
-            requestOvercapture: CheckoutCardPaymentMethodOptionsRequestOvercapture option,
-            restrictions: PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictions option,
-            setupFutureUsage: CheckoutCardPaymentMethodOptionsSetupFutureUsage option,
-            statementDescriptorSuffixKana: string option,
-            statementDescriptorSuffixKanji: string option
+            requestThreeDSecure: CheckoutCardPaymentMethodOptionsRequestThreeDSecure
         ) : CheckoutCardPaymentMethodOptions
         =
         {
           RequestThreeDSecure = requestThreeDSecure
-          Installments = installments
-          RequestExtendedAuthorization = requestExtendedAuthorization
-          RequestIncrementalAuthorization = requestIncrementalAuthorization
-          RequestMulticapture = requestMulticapture
-          RequestOvercapture = requestOvercapture
-          Restrictions = restrictions
-          SetupFutureUsage = setupFutureUsage
-          StatementDescriptorSuffixKana = statementDescriptorSuffixKana
-          StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+          Installments = None
+          RequestExtendedAuthorization = None
+          RequestIncrementalAuthorization = None
+          RequestMulticapture = None
+          RequestOvercapture = None
+          Restrictions = None
+          SetupFutureUsage = None
+          StatementDescriptorSuffixKana = None
+          StatementDescriptorSuffixKanji = None
         }
 
 module CheckoutCashappPaymentMethodOptions =
@@ -36239,15 +35465,13 @@ module CheckoutCashappPaymentMethodOptions =
 module CheckoutCustomerBalanceBankTransferPaymentMethodOptions =
     let create
         (
-            ``type``: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType option,
-            euBankTransfer: PaymentMethodOptionsCustomerBalanceEuBankAccount option,
-            requestedAddressTypes: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsRequestedAddressTypes list option
+            ``type``: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType option
         ) : CheckoutCustomerBalanceBankTransferPaymentMethodOptions
         =
         {
           Type = ``type``
-          EuBankTransfer = euBankTransfer
-          RequestedAddressTypes = requestedAddressTypes
+          EuBankTransfer = None
+          RequestedAddressTypes = None
         }
 
 module CheckoutCustomerBalancePaymentMethodOptions =
@@ -36443,14 +35667,13 @@ module CheckoutPaypalPaymentMethodOptions =
     let create
         (
             preferredLocale: string option,
-            reference: string option,
-            setupFutureUsage: CheckoutPaypalPaymentMethodOptionsSetupFutureUsage option
+            reference: string option
         ) : CheckoutPaypalPaymentMethodOptions
         =
         {
           PreferredLocale = preferredLocale
           Reference = reference
-          SetupFutureUsage = setupFutureUsage
+          SetupFutureUsage = None
         }
 
 module MandateOptionsPayto =
@@ -36490,17 +35713,14 @@ module CheckoutPaytoPaymentMethodOptions =
 module CheckoutPixPaymentMethodOptions =
     let create
         (
-            expiresAfterSeconds: int option,
-            amountIncludesIof: CheckoutPixPaymentMethodOptionsAmountIncludesIof option,
-            mandateOptions: PaymentMethodOptionsMandateOptionsPix option,
-            setupFutureUsage: CheckoutPixPaymentMethodOptionsSetupFutureUsage option
+            expiresAfterSeconds: int option
         ) : CheckoutPixPaymentMethodOptions
         =
         {
           ExpiresAfterSeconds = expiresAfterSeconds
-          AmountIncludesIof = amountIncludesIof
-          MandateOptions = mandateOptions
-          SetupFutureUsage = setupFutureUsage
+          AmountIncludesIof = None
+          MandateOptions = None
+          SetupFutureUsage = None
         }
 
 module CheckoutRevolutPayPaymentMethodOptions =
@@ -36785,29 +36005,25 @@ module PaymentPagesCheckoutSessionAutomaticTax =
 module PaymentPagesCheckoutSessionBrandingSettingsIcon =
     let create
         (
-            ``type``: PaymentPagesCheckoutSessionBrandingSettingsIconType,
-            file: string option,
-            url: string option
+            ``type``: PaymentPagesCheckoutSessionBrandingSettingsIconType
         ) : PaymentPagesCheckoutSessionBrandingSettingsIcon
         =
         {
           Type = ``type``
-          File = file
-          Url = url
+          File = None
+          Url = None
         }
 
 module PaymentPagesCheckoutSessionBrandingSettingsLogo =
     let create
         (
-            ``type``: PaymentPagesCheckoutSessionBrandingSettingsLogoType,
-            file: string option,
-            url: string option
+            ``type``: PaymentPagesCheckoutSessionBrandingSettingsLogoType
         ) : PaymentPagesCheckoutSessionBrandingSettingsLogo
         =
         {
           Type = ``type``
-          File = file
-          Url = url
+          File = None
+          Url = None
         }
 
 module PaymentPagesCheckoutSessionBrandingSettings =
@@ -36988,10 +36204,7 @@ module PaymentPagesCheckoutSessionCustomFields =
             key: string,
             label: PaymentPagesCheckoutSessionCustomFieldsLabel,
             optional: bool,
-            ``type``: PaymentPagesCheckoutSessionCustomFieldsType,
-            dropdown: PaymentPagesCheckoutSessionCustomFieldsDropdown option,
-            numeric: PaymentPagesCheckoutSessionCustomFieldsNumeric option,
-            text: PaymentPagesCheckoutSessionCustomFieldsText option
+            ``type``: PaymentPagesCheckoutSessionCustomFieldsType
         ) : PaymentPagesCheckoutSessionCustomFields
         =
         {
@@ -36999,9 +36212,9 @@ module PaymentPagesCheckoutSessionCustomFields =
           Label = label
           Optional = optional
           Type = ``type``
-          Dropdown = dropdown
-          Numeric = numeric
-          Text = text
+          Dropdown = None
+          Numeric = None
+          Text = None
         }
 
 module PaymentPagesCheckoutSessionCustomTextPosition =
@@ -37226,8 +36439,7 @@ module PaymentPagesCheckoutSessionShippingCost =
             amountSubtotal: int,
             amountTax: int,
             amountTotal: int,
-            shippingRate: PaymentPagesCheckoutSessionShippingCostShippingRate'AnyOf option,
-            taxes: LineItemsTaxAmount list option
+            shippingRate: PaymentPagesCheckoutSessionShippingCostShippingRate'AnyOf option
         ) : PaymentPagesCheckoutSessionShippingCost
         =
         {
@@ -37235,7 +36447,7 @@ module PaymentPagesCheckoutSessionShippingCost =
           AmountTax = amountTax
           AmountTotal = amountTotal
           ShippingRate = shippingRate
-          Taxes = taxes
+          Taxes = None
         }
 
 module PaymentPagesCheckoutSessionShippingOption =
@@ -37279,15 +36491,14 @@ module PaymentPagesCheckoutSessionTotalDetails =
         (
             amountDiscount: int,
             amountShipping: int option,
-            amountTax: int,
-            breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown option
+            amountTax: int
         ) : PaymentPagesCheckoutSessionTotalDetails
         =
         {
           AmountDiscount = amountDiscount
           AmountShipping = amountShipping
           AmountTax = amountTax
-          Breakdown = breakdown
+          Breakdown = None
         }
 
 module CheckoutSession =
@@ -37352,17 +36563,7 @@ module CheckoutSession =
             totalDetails: PaymentPagesCheckoutSessionTotalDetails option,
             uiMode: CheckoutSessionUiMode option,
             url: string option,
-            walletOptions: CheckoutSessionWalletOptions option,
-            brandingSettings: PaymentPagesCheckoutSessionBrandingSettings option,
-            excludedPaymentMethodTypes: string list option,
-            lineItems: CheckoutSessionLineItems option,
-            nameCollection: PaymentPagesCheckoutSessionNameCollection option,
-            optionalItems: PaymentPagesCheckoutSessionOptionalItem list option option,
-            phoneNumberCollection: PaymentPagesCheckoutSessionPhoneNumberCollection option,
-            presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails option,
-            redirectOnCompletion: CheckoutSessionRedirectOnCompletion option,
-            returnUrl: string option,
-            taxIdCollection: PaymentPagesCheckoutSessionTaxIdCollection option
+            walletOptions: CheckoutSessionWalletOptions option
         ) : CheckoutSession
         =
         {
@@ -37423,32 +36624,30 @@ module CheckoutSession =
           UiMode = uiMode
           Url = url
           WalletOptions = walletOptions
-          BrandingSettings = brandingSettings
-          ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
-          LineItems = lineItems
-          NameCollection = nameCollection
-          OptionalItems = optionalItems |> Option.flatten
-          PhoneNumberCollection = phoneNumberCollection
-          PresentmentDetails = presentmentDetails
-          RedirectOnCompletion = redirectOnCompletion
-          ReturnUrl = returnUrl
-          TaxIdCollection = taxIdCollection
+          BrandingSettings = None
+          ExcludedPaymentMethodTypes = None
+          LineItems = None
+          NameCollection = None
+          OptionalItems = None
+          PhoneNumberCollection = None
+          PresentmentDetails = None
+          RedirectOnCompletion = None
+          ReturnUrl = None
+          TaxIdCollection = None
         }
 
 module CreditNotesPretaxCreditAmount =
     let create
         (
             amount: int,
-            ``type``: CreditNotesPretaxCreditAmountType,
-            creditBalanceTransaction: CreditNotesPretaxCreditAmountCreditBalanceTransaction'AnyOf option,
-            discount: CreditNotesPretaxCreditAmountDiscount'AnyOf option
+            ``type``: CreditNotesPretaxCreditAmountType
         ) : CreditNotesPretaxCreditAmount
         =
         {
           Amount = amount
           Type = ``type``
-          CreditBalanceTransaction = creditBalanceTransaction
-          Discount = discount
+          CreditBalanceTransaction = None
+          Discount = None
         }
 
 module CreditNoteLineItem =
@@ -37470,8 +36669,7 @@ module CreditNoteLineItem =
             taxes: BillingBillResourceInvoicingTaxesTax list option,
             ``type``: CreditNoteLineItemType,
             unitAmount: int option,
-            unitAmountDecimal: string option,
-            invoiceLineItem: string option
+            unitAmountDecimal: string option
         ) : CreditNoteLineItem
         =
         {
@@ -37489,7 +36687,7 @@ module CreditNoteLineItem =
           Type = ``type``
           UnitAmount = unitAmount
           UnitAmountDecimal = unitAmountDecimal
-          InvoiceLineItem = invoiceLineItem
+          InvoiceLineItem = None
         }
 
 module CreditNoteLines =
@@ -37966,13 +37164,12 @@ module BillingPortalConfigurationCreated =
 module BillingBillResourceInvoiceItemParentsInvoiceItemSubscriptionParent =
     let create
         (
-            subscription: string,
-            subscriptionItem: string option
+            subscription: string
         ) : BillingBillResourceInvoiceItemParentsInvoiceItemSubscriptionParent
         =
         {
           Subscription = subscription
-          SubscriptionItem = subscriptionItem
+          SubscriptionItem = None
         }
 
 module BillingBillResourceInvoiceItemParentsInvoiceItemParent =

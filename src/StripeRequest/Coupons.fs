@@ -171,13 +171,12 @@ module Coupons =
     module RetrieveOptions =
         let create
             (
-                coupon: string,
-                expand: string list option
+                coupon: string
             ) : RetrieveOptions
             =
             {
               Coupon = coupon
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -201,19 +200,15 @@ module Coupons =
     module UpdateOptions =
         let create
             (
-                coupon: string,
-                currencyOptions: Map<string, string> option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                name: string option
+                coupon: string
             ) : UpdateOptions
             =
             {
               Coupon = coupon
-              CurrencyOptions = currencyOptions
-              Expand = expand
-              Metadata = metadata
-              Name = name
+              CurrencyOptions = None
+              Expand = None
+              Metadata = None
+              Name = None
             }
 
     ///<p>Returns a list of your coupons.</p>

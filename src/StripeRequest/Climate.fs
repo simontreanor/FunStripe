@@ -85,23 +85,17 @@ module ClimateOrders =
     module CreateOptions =
         let create
             (
-                product: string,
-                amount: int option,
-                beneficiary: Create'Beneficiary option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                metricTons: string option
+                product: string
             ) : CreateOptions
             =
             {
               Product = product
-              Amount = amount
-              Beneficiary = beneficiary
-              Currency = currency
-              Expand = expand
-              Metadata = metadata
-              MetricTons = metricTons
+              Amount = None
+              Beneficiary = None
+              Currency = None
+              Expand = None
+              Metadata = None
+              MetricTons = None
             }
 
     type RetrieveOptions =
@@ -117,13 +111,12 @@ module ClimateOrders =
     module RetrieveOptions =
         let create
             (
-                order: string,
-                expand: string list option
+                order: string
             ) : RetrieveOptions
             =
             {
               Order = order
-              Expand = expand
+              Expand = None
             }
 
     type Update'BeneficiaryBeneficiaryParams =
@@ -162,17 +155,14 @@ module ClimateOrders =
     module UpdateOptions =
         let create
             (
-                order: string,
-                beneficiary: Choice<Update'BeneficiaryBeneficiaryParams,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                order: string
             ) : UpdateOptions
             =
             {
               Order = order
-              Beneficiary = beneficiary
-              Expand = expand
-              Metadata = metadata
+              Beneficiary = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Lists all Climate order objects. The orders are returned sorted by creation date, with the
@@ -214,13 +204,12 @@ module ClimateOrdersCancel =
     module CancelOptions =
         let create
             (
-                order: string,
-                expand: string list option
+                order: string
             ) : CancelOptions
             =
             {
               Order = order
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Cancels a Climate order. You can cancel an order within 24 hours of creation. Stripe refunds the
@@ -277,13 +266,12 @@ module ClimateProducts =
     module RetrieveOptions =
         let create
             (
-                product: string,
-                expand: string list option
+                product: string
             ) : RetrieveOptions
             =
             {
               Product = product
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Lists all available Climate product objects.</p>
@@ -344,13 +332,12 @@ module ClimateSuppliers =
     module RetrieveOptions =
         let create
             (
-                supplier: string,
-                expand: string list option
+                supplier: string
             ) : RetrieveOptions
             =
             {
               Supplier = supplier
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Lists all available Climate supplier objects.</p>

@@ -23,13 +23,12 @@ module TaxAssociationsFind =
     module FindOptions =
         let create
             (
-                paymentIntent: string,
-                expand: string list option
+                paymentIntent: string
             ) : FindOptions
             =
             {
               PaymentIntent = paymentIntent
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Finds a tax association object by PaymentIntent id.</p>
@@ -447,24 +446,18 @@ module TaxCalculations =
         let create
             (
                 currency: IsoTypes.IsoCurrencyCode,
-                lineItems: Create'LineItems list,
-                customer: string option,
-                customerDetails: Create'CustomerDetails option,
-                expand: string list option,
-                shipFromDetails: Create'ShipFromDetails option,
-                shippingCost: Create'ShippingCost option,
-                taxDate: int option
+                lineItems: Create'LineItems list
             ) : CreateOptions
             =
             {
               Currency = currency
               LineItems = lineItems
-              Customer = customer
-              CustomerDetails = customerDetails
-              Expand = expand
-              ShipFromDetails = shipFromDetails
-              ShippingCost = shippingCost
-              TaxDate = taxDate
+              Customer = None
+              CustomerDetails = None
+              Expand = None
+              ShipFromDetails = None
+              ShippingCost = None
+              TaxDate = None
             }
 
     type RetrieveOptions =
@@ -479,13 +472,12 @@ module TaxCalculations =
     module RetrieveOptions =
         let create
             (
-                calculation: string,
-                expand: string list option
+                calculation: string
             ) : RetrieveOptions
             =
             {
               Calculation = calculation
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Calculates tax based on the input and returns a Tax <code>Calculation</code> object.</p>
@@ -522,19 +514,15 @@ module TaxCalculationsLineItems =
     module ListLineItemsOptions =
         let create
             (
-                calculation: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                calculation: string
             ) : ListLineItemsOptions
             =
             {
               Calculation = calculation
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>Retrieves the line items of a tax calculation as a collection, if the calculation hasn’t expired.</p>
@@ -4789,17 +4777,15 @@ module TaxRegistrations =
             (
                 activeFrom: Choice<Create'ActiveFrom,DateTime>,
                 country: IsoTypes.IsoCountryCode,
-                countryOptions: Create'CountryOptions,
-                expand: string list option,
-                expiresAt: DateTime option
+                countryOptions: Create'CountryOptions
             ) : CreateOptions
             =
             {
               ActiveFrom = activeFrom
               Country = country
               CountryOptions = countryOptions
-              Expand = expand
-              ExpiresAt = expiresAt
+              Expand = None
+              ExpiresAt = None
             }
 
     type RetrieveOptions =
@@ -4814,13 +4800,12 @@ module TaxRegistrations =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type Update'ActiveFrom = | Now
@@ -4845,17 +4830,14 @@ module TaxRegistrations =
     module UpdateOptions =
         let create
             (
-                id: string,
-                activeFrom: Choice<Update'ActiveFrom,DateTime> option,
-                expand: string list option,
-                expiresAt: Choice<Update'ExpiresAt,DateTime,string> option
+                id: string
             ) : UpdateOptions
             =
             {
               Id = id
-              ActiveFrom = activeFrom
-              Expand = expand
-              ExpiresAt = expiresAt
+              ActiveFrom = None
+              Expand = None
+              ExpiresAt = None
             }
 
     ///<p>Returns a list of Tax <code>Registration</code> objects.</p>
@@ -5049,18 +5031,15 @@ module TaxTransactionsCreateFromCalculation =
         let create
             (
                 calculation: string,
-                reference: string,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                postedAt: DateTime option
+                reference: string
             ) : CreateFromCalculationOptions
             =
             {
               Calculation = calculation
               Reference = reference
-              Expand = expand
-              Metadata = metadata
-              PostedAt = postedAt
+              Expand = None
+              Metadata = None
+              PostedAt = None
             }
 
     ///<p>Creates a Tax Transaction from a calculation, if that calculation hasn’t expired. Calculations expire after 90 days.</p>
@@ -5171,23 +5150,18 @@ module TaxTransactionsCreateReversal =
             (
                 mode: CreateReversal'Mode,
                 originalTransaction: string,
-                reference: string,
-                expand: string list option,
-                flatAmount: int option,
-                lineItems: CreateReversal'LineItems list option,
-                metadata: Map<string, string> option,
-                shippingCost: CreateReversal'ShippingCost option
+                reference: string
             ) : CreateReversalOptions
             =
             {
               Mode = mode
               OriginalTransaction = originalTransaction
               Reference = reference
-              Expand = expand
-              FlatAmount = flatAmount
-              LineItems = lineItems
-              Metadata = metadata
-              ShippingCost = shippingCost
+              Expand = None
+              FlatAmount = None
+              LineItems = None
+              Metadata = None
+              ShippingCost = None
             }
 
     ///<p>Partially or fully reverses a previously created <code>Transaction</code>.</p>
@@ -5209,13 +5183,12 @@ module TaxTransactions =
     module RetrieveOptions =
         let create
             (
-                transaction: string,
-                expand: string list option
+                transaction: string
             ) : RetrieveOptions
             =
             {
               Transaction = transaction
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieves a Tax <code>Transaction</code> object.</p>
@@ -5247,19 +5220,15 @@ module TaxTransactionsLineItems =
     module ListLineItemsOptions =
         let create
             (
-                transaction: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                transaction: string
             ) : ListLineItemsOptions
             =
             {
               Transaction = transaction
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>Retrieves the line items of a committed standalone transaction as a collection.</p>
@@ -5314,13 +5283,12 @@ module TaxCodes =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>A list of <a href="https://stripe.com/docs/tax/tax-categories">all tax codes available</a> to add to Products in order to allow specific tax calculations.</p>
@@ -5550,16 +5518,14 @@ module TaxIds =
         let create
             (
                 ``type``: Create'Type,
-                value: string,
-                expand: string list option,
-                owner: Create'Owner option
+                value: string
             ) : CreateOptions
             =
             {
               Type = ``type``
               Value = value
-              Expand = expand
-              Owner = owner
+              Expand = None
+              Owner = None
             }
 
     type DeleteOptions =
@@ -5588,13 +5554,12 @@ module TaxIds =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of tax IDs.</p>
@@ -5726,29 +5691,21 @@ module TaxRates =
             (
                 displayName: string,
                 inclusive: bool,
-                percentage: decimal,
-                active: bool option,
-                country: IsoTypes.IsoCountryCode option,
-                description: string option,
-                expand: string list option,
-                jurisdiction: string option,
-                metadata: Map<string, string> option,
-                state: string option,
-                taxType: Create'TaxType option
+                percentage: decimal
             ) : CreateOptions
             =
             {
               DisplayName = displayName
               Inclusive = inclusive
               Percentage = percentage
-              Active = active
-              Country = country
-              Description = description
-              Expand = expand
-              Jurisdiction = jurisdiction
-              Metadata = metadata
-              State = state
-              TaxType = taxType
+              Active = None
+              Country = None
+              Description = None
+              Expand = None
+              Jurisdiction = None
+              Metadata = None
+              State = None
+              TaxType = None
             }
 
     type RetrieveOptions =
@@ -5763,13 +5720,12 @@ module TaxRates =
     module RetrieveOptions =
         let create
             (
-                taxRate: string,
-                expand: string list option
+                taxRate: string
             ) : RetrieveOptions
             =
             {
               TaxRate = taxRate
-              Expand = expand
+              Expand = None
             }
 
     type Update'TaxType =
@@ -5824,29 +5780,20 @@ module TaxRates =
     module UpdateOptions =
         let create
             (
-                taxRate: string,
-                active: bool option,
-                country: IsoTypes.IsoCountryCode option,
-                description: string option,
-                displayName: string option,
-                expand: string list option,
-                jurisdiction: string option,
-                metadata: Map<string, string> option,
-                state: string option,
-                taxType: Update'TaxType option
+                taxRate: string
             ) : UpdateOptions
             =
             {
               TaxRate = taxRate
-              Active = active
-              Country = country
-              Description = description
-              DisplayName = displayName
-              Expand = expand
-              Jurisdiction = jurisdiction
-              Metadata = metadata
-              State = state
-              TaxType = taxType
+              Active = None
+              Country = None
+              Description = None
+              DisplayName = None
+              Expand = None
+              Jurisdiction = None
+              Metadata = None
+              State = None
+              TaxType = None
             }
 
     ///<p>Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.</p>

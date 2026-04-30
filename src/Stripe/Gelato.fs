@@ -78,12 +78,7 @@ module GelatoVerifiedOutputs =
             firstName: string option,
             idNumberType: GelatoVerifiedOutputsIdNumberType option,
             lastName: string option,
-            phone: string option,
-            dob: GelatoDataVerifiedOutputsDate option option,
-            idNumber: string option option,
-            sex: GelatoVerifiedOutputsSex option option,
-            unparsedPlaceOfBirth: string option option,
-            unparsedSex: string option option
+            phone: string option
         ) : GelatoVerifiedOutputs
         =
         {
@@ -93,11 +88,11 @@ module GelatoVerifiedOutputs =
           IdNumberType = idNumberType
           LastName = lastName
           Phone = phone
-          Dob = dob |> Option.flatten
-          IdNumber = idNumber |> Option.flatten
-          Sex = sex |> Option.flatten
-          UnparsedPlaceOfBirth = unparsedPlaceOfBirth |> Option.flatten
-          UnparsedSex = unparsedSex |> Option.flatten
+          Dob = None
+          IdNumber = None
+          Sex = None
+          UnparsedPlaceOfBirth = None
+          UnparsedSex = None
         }
 
 [<Struct>]
@@ -583,9 +578,7 @@ module GelatoIdNumberReport =
             firstName: string option,
             idNumberType: GelatoIdNumberReportIdNumberType option,
             lastName: string option,
-            status: GelatoIdNumberReportStatus,
-            dob: GelatoDataIdNumberReportDate option option,
-            idNumber: string option option
+            status: GelatoIdNumberReportStatus
         ) : GelatoIdNumberReport
         =
         {
@@ -594,8 +587,8 @@ module GelatoIdNumberReport =
           IdNumberType = idNumberType
           LastName = lastName
           Status = status
-          Dob = dob |> Option.flatten
-          IdNumber = idNumber |> Option.flatten
+          Dob = None
+          IdNumber = None
         }
 
 [<Struct>]
@@ -818,13 +811,7 @@ module GelatoDocumentReport =
             issuingCountry: IsoTypes.IsoCountryCode option,
             lastName: string option,
             status: GelatoDocumentReportStatus,
-            ``type``: GelatoDocumentReportType option,
-            dob: GelatoDataDocumentReportDateOfBirth option option,
-            expirationDate: GelatoDataDocumentReportExpirationDate option option,
-            number: string option option,
-            sex: GelatoDocumentReportSex option option,
-            unparsedPlaceOfBirth: string option option,
-            unparsedSex: string option option
+            ``type``: GelatoDocumentReportType option
         ) : GelatoDocumentReport
         =
         {
@@ -837,11 +824,11 @@ module GelatoDocumentReport =
           LastName = lastName
           Status = status
           Type = ``type``
-          Dob = dob |> Option.flatten
-          ExpirationDate = expirationDate |> Option.flatten
-          Number = number |> Option.flatten
-          Sex = sex |> Option.flatten
-          UnparsedPlaceOfBirth = unparsedPlaceOfBirth |> Option.flatten
-          UnparsedSex = unparsedSex |> Option.flatten
+          Dob = None
+          ExpirationDate = None
+          Number = None
+          Sex = None
+          UnparsedPlaceOfBirth = None
+          UnparsedSex = None
         }
 

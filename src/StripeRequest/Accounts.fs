@@ -3449,13 +3449,12 @@ module Accounts =
     module RetrieveOptions =
         let create
             (
-                account: string,
-                expand: string list option
+                account: string
             ) : RetrieveOptions
             =
             {
               Account = account
-              Expand = expand
+              Expand = None
             }
 
     type Update'BusinessProfileAnnualRevenue =
@@ -6684,41 +6683,26 @@ module Accounts =
     module UpdateOptions =
         let create
             (
-                account: string,
-                accountToken: string option,
-                businessProfile: Update'BusinessProfile option,
-                businessType: Update'BusinessType option,
-                capabilities: Update'Capabilities option,
-                company: Update'Company option,
-                defaultCurrency: IsoTypes.IsoCurrencyCode option,
-                documents: Update'Documents option,
-                email: string option,
-                expand: string list option,
-                externalAccount: string option,
-                groups: Update'Groups option,
-                individual: Update'Individual option,
-                metadata: Map<string, string> option,
-                settings: Update'Settings option,
-                tosAcceptance: Update'TosAcceptance option
+                account: string
             ) : UpdateOptions
             =
             {
               Account = account
-              AccountToken = accountToken
-              BusinessProfile = businessProfile
-              BusinessType = businessType
-              Capabilities = capabilities
-              Company = company
-              DefaultCurrency = defaultCurrency
-              Documents = documents
-              Email = email
-              Expand = expand
-              ExternalAccount = externalAccount
-              Groups = groups
-              Individual = individual
-              Metadata = metadata
-              Settings = settings
-              TosAcceptance = tosAcceptance
+              AccountToken = None
+              BusinessProfile = None
+              BusinessType = None
+              Capabilities = None
+              Company = None
+              DefaultCurrency = None
+              Documents = None
+              Email = None
+              Expand = None
+              ExternalAccount = None
+              Groups = None
+              Individual = None
+              Metadata = None
+              Settings = None
+              TosAcceptance = None
             }
 
     ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
@@ -6778,13 +6762,12 @@ module AccountsCapabilities =
     module CapabilitiesOptions =
         let create
             (
-                account: string,
-                expand: string list option
+                account: string
             ) : CapabilitiesOptions
             =
             {
               Account = account
-              Expand = expand
+              Expand = None
             }
 
     type RetrieveOptions =
@@ -6802,14 +6785,13 @@ module AccountsCapabilities =
         let create
             (
                 account: string,
-                capability: string,
-                expand: string list option
+                capability: string
             ) : RetrieveOptions
             =
             {
               Account = account
               Capability = capability
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -6831,16 +6813,14 @@ module AccountsCapabilities =
         let create
             (
                 account: string,
-                capability: string,
-                expand: string list option,
-                requested: bool option
+                capability: string
             ) : UpdateOptions
             =
             {
               Account = account
               Capability = capability
-              Expand = expand
-              Requested = requested
+              Expand = None
+              Requested = None
             }
 
     ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
@@ -6886,21 +6866,16 @@ module AccountsExternalAccounts =
     module ListOptions =
         let create
             (
-                account: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                object: string option,
-                startingAfter: string option
+                account: string
             ) : ListOptions
             =
             {
               Account = account
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Object = object
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              Object = None
+              StartingAfter = None
             }
 
     type CreateOptions =
@@ -6925,18 +6900,15 @@ module AccountsExternalAccounts =
         let create
             (
                 account: string,
-                externalAccount: string,
-                defaultForCurrency: bool option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                externalAccount: string
             ) : CreateOptions
             =
             {
               Account = account
               ExternalAccount = externalAccount
-              DefaultForCurrency = defaultForCurrency
-              Expand = expand
-              Metadata = metadata
+              DefaultForCurrency = None
+              Expand = None
+              Metadata = None
             }
 
     type DeleteOptions =
@@ -6976,14 +6948,13 @@ module AccountsExternalAccounts =
         let create
             (
                 account: string,
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Account = account
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type Update'AccountHolderType =
@@ -7090,44 +7061,28 @@ module AccountsExternalAccounts =
         let create
             (
                 account: string,
-                id: string,
-                accountHolderName: string option,
-                accountHolderType: Update'AccountHolderType option,
-                accountType: Update'AccountType option,
-                addressCity: string option,
-                addressCountry: IsoTypes.IsoCountryCode option,
-                addressLine1: string option,
-                addressLine2: string option,
-                addressState: string option,
-                addressZip: string option,
-                defaultForCurrency: bool option,
-                documents: Update'Documents option,
-                expMonth: string option,
-                expYear: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                name: string option
+                id: string
             ) : UpdateOptions
             =
             {
               Account = account
               Id = id
-              AccountHolderName = accountHolderName
-              AccountHolderType = accountHolderType
-              AccountType = accountType
-              AddressCity = addressCity
-              AddressCountry = addressCountry
-              AddressLine1 = addressLine1
-              AddressLine2 = addressLine2
-              AddressState = addressState
-              AddressZip = addressZip
-              DefaultForCurrency = defaultForCurrency
-              Documents = documents
-              ExpMonth = expMonth
-              ExpYear = expYear
-              Expand = expand
-              Metadata = metadata
-              Name = name
+              AccountHolderName = None
+              AccountHolderType = None
+              AccountType = None
+              AddressCity = None
+              AddressCountry = None
+              AddressLine1 = None
+              AddressLine2 = None
+              AddressState = None
+              AddressZip = None
+              DefaultForCurrency = None
+              Documents = None
+              ExpMonth = None
+              ExpYear = None
+              Expand = None
+              Metadata = None
+              Name = None
             }
 
     ///<p>List external accounts for an account.</p>
@@ -7176,13 +7131,12 @@ module AccountsLoginLinks =
     module CreateOptions =
         let create
             (
-                account: string,
-                expand: string list option
+                account: string
             ) : CreateOptions
             =
             {
               Account = account
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Creates a login link for a connected account to access the Express Dashboard.</p>
@@ -7217,21 +7171,16 @@ module AccountsPersons =
     module PersonsOptions =
         let create
             (
-                account: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                relationship: Map<string, string> option,
-                startingAfter: string option
+                account: string
             ) : PersonsOptions
             =
             {
               Account = account
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Relationship = relationship
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              Relationship = None
+              StartingAfter = None
             }
 
     type Create'AdditionalTosAcceptancesAccount =
@@ -7885,69 +7834,40 @@ module AccountsPersons =
     module CreateOptions =
         let create
             (
-                account: string,
-                additionalTosAcceptances: Create'AdditionalTosAcceptances option,
-                address: Create'Address option,
-                addressKana: Create'AddressKana option,
-                addressKanji: Create'AddressKanji option,
-                dob: Choice<Create'DobDateOfBirthSpecs,string> option,
-                documents: Create'Documents option,
-                email: string option,
-                expand: string list option,
-                firstName: string option,
-                firstNameKana: string option,
-                firstNameKanji: string option,
-                fullNameAliases: Choice<string list,string> option,
-                gender: string option,
-                idNumber: string option,
-                idNumberSecondary: string option,
-                lastName: string option,
-                lastNameKana: string option,
-                lastNameKanji: string option,
-                maidenName: string option,
-                metadata: Map<string, string> option,
-                nationality: string option,
-                personToken: string option,
-                phone: string option,
-                politicalExposure: Create'PoliticalExposure option,
-                registeredAddress: Create'RegisteredAddress option,
-                relationship: Create'Relationship option,
-                ssnLast4: string option,
-                usCfpbData: Create'UsCfpbData option,
-                verification: Create'Verification option
+                account: string
             ) : CreateOptions
             =
             {
               Account = account
-              AdditionalTosAcceptances = additionalTosAcceptances
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              Dob = dob
-              Documents = documents
-              Email = email
-              Expand = expand
-              FirstName = firstName
-              FirstNameKana = firstNameKana
-              FirstNameKanji = firstNameKanji
-              FullNameAliases = fullNameAliases
-              Gender = gender
-              IdNumber = idNumber
-              IdNumberSecondary = idNumberSecondary
-              LastName = lastName
-              LastNameKana = lastNameKana
-              LastNameKanji = lastNameKanji
-              MaidenName = maidenName
-              Metadata = metadata
-              Nationality = nationality
-              PersonToken = personToken
-              Phone = phone
-              PoliticalExposure = politicalExposure
-              RegisteredAddress = registeredAddress
-              Relationship = relationship
-              SsnLast4 = ssnLast4
-              UsCfpbData = usCfpbData
-              Verification = verification
+              AdditionalTosAcceptances = None
+              Address = None
+              AddressKana = None
+              AddressKanji = None
+              Dob = None
+              Documents = None
+              Email = None
+              Expand = None
+              FirstName = None
+              FirstNameKana = None
+              FirstNameKanji = None
+              FullNameAliases = None
+              Gender = None
+              IdNumber = None
+              IdNumberSecondary = None
+              LastName = None
+              LastNameKana = None
+              LastNameKanji = None
+              MaidenName = None
+              Metadata = None
+              Nationality = None
+              PersonToken = None
+              Phone = None
+              PoliticalExposure = None
+              RegisteredAddress = None
+              Relationship = None
+              SsnLast4 = None
+              UsCfpbData = None
+              Verification = None
             }
 
     type DeleteOptions =
@@ -7983,14 +7903,13 @@ module AccountsPersons =
         let create
             (
                 account: string,
-                person: string,
-                expand: string list option
+                person: string
             ) : RetrieveOptions
             =
             {
               Account = account
               Person = person
-              Expand = expand
+              Expand = None
             }
 
     type Update'AdditionalTosAcceptancesAccount =
@@ -8647,70 +8566,41 @@ module AccountsPersons =
         let create
             (
                 account: string,
-                person: string,
-                additionalTosAcceptances: Update'AdditionalTosAcceptances option,
-                address: Update'Address option,
-                addressKana: Update'AddressKana option,
-                addressKanji: Update'AddressKanji option,
-                dob: Choice<Update'DobDateOfBirthSpecs,string> option,
-                documents: Update'Documents option,
-                email: string option,
-                expand: string list option,
-                firstName: string option,
-                firstNameKana: string option,
-                firstNameKanji: string option,
-                fullNameAliases: Choice<string list,string> option,
-                gender: string option,
-                idNumber: string option,
-                idNumberSecondary: string option,
-                lastName: string option,
-                lastNameKana: string option,
-                lastNameKanji: string option,
-                maidenName: string option,
-                metadata: Map<string, string> option,
-                nationality: string option,
-                personToken: string option,
-                phone: string option,
-                politicalExposure: Update'PoliticalExposure option,
-                registeredAddress: Update'RegisteredAddress option,
-                relationship: Update'Relationship option,
-                ssnLast4: string option,
-                usCfpbData: Update'UsCfpbData option,
-                verification: Update'Verification option
+                person: string
             ) : UpdateOptions
             =
             {
               Account = account
               Person = person
-              AdditionalTosAcceptances = additionalTosAcceptances
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              Dob = dob
-              Documents = documents
-              Email = email
-              Expand = expand
-              FirstName = firstName
-              FirstNameKana = firstNameKana
-              FirstNameKanji = firstNameKanji
-              FullNameAliases = fullNameAliases
-              Gender = gender
-              IdNumber = idNumber
-              IdNumberSecondary = idNumberSecondary
-              LastName = lastName
-              LastNameKana = lastNameKana
-              LastNameKanji = lastNameKanji
-              MaidenName = maidenName
-              Metadata = metadata
-              Nationality = nationality
-              PersonToken = personToken
-              Phone = phone
-              PoliticalExposure = politicalExposure
-              RegisteredAddress = registeredAddress
-              Relationship = relationship
-              SsnLast4 = ssnLast4
-              UsCfpbData = usCfpbData
-              Verification = verification
+              AdditionalTosAcceptances = None
+              Address = None
+              AddressKana = None
+              AddressKanji = None
+              Dob = None
+              Documents = None
+              Email = None
+              Expand = None
+              FirstName = None
+              FirstNameKana = None
+              FirstNameKanji = None
+              FullNameAliases = None
+              Gender = None
+              IdNumber = None
+              IdNumberSecondary = None
+              LastName = None
+              LastNameKana = None
+              LastNameKanji = None
+              MaidenName = None
+              Metadata = None
+              Nationality = None
+              PersonToken = None
+              Phone = None
+              PoliticalExposure = None
+              RegisteredAddress = None
+              Relationship = None
+              SsnLast4 = None
+              UsCfpbData = None
+              Verification = None
             }
 
     ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
@@ -8758,14 +8648,13 @@ module AccountsReject =
         let create
             (
                 account: string,
-                reason: string,
-                expand: string list option
+                reason: string
             ) : RejectOptions
             =
             {
               Account = account
               Reason = reason
-              Expand = expand
+              Expand = None
             }
 
     ///<p>With <a href="/connect">Connect</a>, you can reject accounts that you have flagged as suspicious.</p>

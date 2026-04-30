@@ -344,47 +344,29 @@ module Prices =
     module CreateOptions =
         let create
             (
-                currency: IsoTypes.IsoCurrencyCode,
-                active: bool option,
-                billingScheme: Create'BillingScheme option,
-                currencyOptions: Map<string, string> option,
-                customUnitAmount: Create'CustomUnitAmount option,
-                expand: string list option,
-                lookupKey: string option,
-                metadata: Map<string, string> option,
-                nickname: string option,
-                product: string option,
-                productData: Create'ProductData option,
-                recurring: Create'Recurring option,
-                taxBehavior: Create'TaxBehavior option,
-                tiers: Create'Tiers list option,
-                tiersMode: Create'TiersMode option,
-                transferLookupKey: bool option,
-                transformQuantity: Create'TransformQuantity option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
+                currency: IsoTypes.IsoCurrencyCode
             ) : CreateOptions
             =
             {
               Currency = currency
-              Active = active
-              BillingScheme = billingScheme
-              CurrencyOptions = currencyOptions
-              CustomUnitAmount = customUnitAmount
-              Expand = expand
-              LookupKey = lookupKey
-              Metadata = metadata
-              Nickname = nickname
-              Product = product
-              ProductData = productData
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              Tiers = tiers
-              TiersMode = tiersMode
-              TransferLookupKey = transferLookupKey
-              TransformQuantity = transformQuantity
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
+              Active = None
+              BillingScheme = None
+              CurrencyOptions = None
+              CustomUnitAmount = None
+              Expand = None
+              LookupKey = None
+              Metadata = None
+              Nickname = None
+              Product = None
+              ProductData = None
+              Recurring = None
+              TaxBehavior = None
+              Tiers = None
+              TiersMode = None
+              TransferLookupKey = None
+              TransformQuantity = None
+              UnitAmount = None
+              UnitAmountDecimal = None
             }
 
     type RetrieveOptions =
@@ -399,13 +381,12 @@ module Prices =
     module RetrieveOptions =
         let create
             (
-                price: string,
-                expand: string list option
+                price: string
             ) : RetrieveOptions
             =
             {
               Price = price
-              Expand = expand
+              Expand = None
             }
 
     type Update'TaxBehavior =
@@ -446,27 +427,19 @@ module Prices =
     module UpdateOptions =
         let create
             (
-                price: string,
-                active: bool option,
-                currencyOptions: Choice<Map<string, string>,string> option,
-                expand: string list option,
-                lookupKey: string option,
-                metadata: Map<string, string> option,
-                nickname: string option,
-                taxBehavior: Update'TaxBehavior option,
-                transferLookupKey: bool option
+                price: string
             ) : UpdateOptions
             =
             {
               Price = price
-              Active = active
-              CurrencyOptions = currencyOptions
-              Expand = expand
-              LookupKey = lookupKey
-              Metadata = metadata
-              Nickname = nickname
-              TaxBehavior = taxBehavior
-              TransferLookupKey = transferLookupKey
+              Active = None
+              CurrencyOptions = None
+              Expand = None
+              LookupKey = None
+              Metadata = None
+              Nickname = None
+              TaxBehavior = None
+              TransferLookupKey = None
             }
 
     ///<p>Returns a list of your active prices, excluding <a href="/docs/products-prices/pricing-models#inline-pricing">inline prices</a>. For the list of inactive prices, set <code>active</code> to false.</p>
@@ -512,17 +485,14 @@ module PricesSearch =
     module SearchOptions =
         let create
             (
-                query: string,
-                expand: string list option,
-                limit: int option,
-                page: string option
+                query: string
             ) : SearchOptions
             =
             {
               Query = query
-              Expand = expand
-              Limit = limit
-              Page = page
+              Expand = None
+              Limit = None
+              Page = None
             }
 
     ///<p>Search for prices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.

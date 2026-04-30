@@ -56,14 +56,7 @@ module IdentityVerificationReport =
             id: string,
             livemode: bool,
             ``type``: IdentityVerificationReportType,
-            verificationSession: string option,
-            document: GelatoDocumentReport option,
-            email: GelatoEmailReport option,
-            idNumber: GelatoIdNumberReport option,
-            options: GelatoVerificationReportOptions option,
-            phone: GelatoPhoneReport option,
-            selfie: GelatoSelfieReport option,
-            verificationFlow: string option
+            verificationSession: string option
         ) : IdentityVerificationReport
         =
         {
@@ -73,13 +66,13 @@ module IdentityVerificationReport =
           Livemode = livemode
           Type = ``type``
           VerificationSession = verificationSession
-          Document = document
-          Email = email
-          IdNumber = idNumber
-          Options = options
-          Phone = phone
-          Selfie = selfie
-          VerificationFlow = verificationFlow
+          Document = None
+          Email = None
+          IdNumber = None
+          Options = None
+          Phone = None
+          Selfie = None
+          VerificationFlow = None
         }
 
 type IdentityVerificationSessionLastVerificationReport'AnyOf =
@@ -169,11 +162,7 @@ module IdentityVerificationSession =
             relatedCustomerAccount: string option,
             status: IdentityVerificationSessionStatus,
             ``type``: IdentityVerificationSessionType,
-            url: string option,
-            providedDetails: GelatoProvidedDetails option option,
-            relatedPerson: GelatoRelatedPerson option,
-            verificationFlow: string option,
-            verifiedOutputs: GelatoVerifiedOutputs option option
+            url: string option
         ) : IdentityVerificationSession
         =
         {
@@ -192,10 +181,10 @@ module IdentityVerificationSession =
           Status = status
           Type = ``type``
           Url = url
-          ProvidedDetails = providedDetails |> Option.flatten
-          RelatedPerson = relatedPerson
-          VerificationFlow = verificationFlow
-          VerifiedOutputs = verifiedOutputs |> Option.flatten
+          ProvidedDetails = None
+          RelatedPerson = None
+          VerificationFlow = None
+          VerifiedOutputs = None
         }
 
 /// Occurs whenever a VerificationSession transitions to verified

@@ -45,19 +45,15 @@ module Level3 =
     let create
         (
             lineItems: Level3LineItems list,
-            merchantReference: string,
-            customerReference: string option,
-            shippingAddressZip: string option,
-            shippingAmount: int option,
-            shippingFromZip: string option
+            merchantReference: string
         ) : Level3
         =
         {
           LineItems = lineItems
           MerchantReference = merchantReference
-          CustomerReference = customerReference
-          ShippingAddressZip = shippingAddressZip
-          ShippingAmount = shippingAmount
-          ShippingFromZip = shippingFromZip
+          CustomerReference = None
+          ShippingAddressZip = None
+          ShippingAmount = None
+          ShippingFromZip = None
         }
 

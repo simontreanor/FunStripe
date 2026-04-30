@@ -32,15 +32,13 @@ type BalanceSettingsResourcePayoutSchedule =
 module BalanceSettingsResourcePayoutSchedule =
     let create
         (
-            interval: BalanceSettingsResourcePayoutScheduleInterval option,
-            monthlyPayoutDays: int list option,
-            weeklyPayoutDays: BalanceSettingsResourcePayoutScheduleWeeklyPayoutDays list option
+            interval: BalanceSettingsResourcePayoutScheduleInterval option
         ) : BalanceSettingsResourcePayoutSchedule
         =
         {
           Interval = interval
-          MonthlyPayoutDays = monthlyPayoutDays
-          WeeklyPayoutDays = weeklyPayoutDays
+          MonthlyPayoutDays = None
+          WeeklyPayoutDays = None
         }
 
 [<Struct>]
@@ -87,13 +85,12 @@ type BalanceSettingsResourceSettlementTiming =
 module BalanceSettingsResourceSettlementTiming =
     let create
         (
-            delayDays: int,
-            delayDaysOverride: int option
+            delayDays: int
         ) : BalanceSettingsResourceSettlementTiming
         =
         {
           DelayDays = delayDays
-          DelayDaysOverride = delayDaysOverride
+          DelayDaysOverride = None
         }
 
 type BalanceSettingsResourcePayments =
@@ -186,14 +183,13 @@ module BalanceAmount =
     let create
         (
             amount: int,
-            currency: IsoTypes.IsoCurrencyCode,
-            sourceTypes: BalanceAmountBySourceType option
+            currency: IsoTypes.IsoCurrencyCode
         ) : BalanceAmount
         =
         {
           Amount = amount
           Currency = currency
-          SourceTypes = sourceTypes
+          SourceTypes = None
         }
 
 type BalanceNetAvailable =
@@ -209,14 +205,13 @@ module BalanceNetAvailable =
     let create
         (
             amount: int,
-            destination: string,
-            sourceTypes: BalanceAmountBySourceType option
+            destination: string
         ) : BalanceNetAvailable
         =
         {
           Amount = amount
           Destination = destination
-          SourceTypes = sourceTypes
+          SourceTypes = None
         }
 
 type BalanceAmountNet =
@@ -234,16 +229,14 @@ module BalanceAmountNet =
     let create
         (
             amount: int,
-            currency: IsoTypes.IsoCurrencyCode,
-            netAvailable: BalanceNetAvailable list option,
-            sourceTypes: BalanceAmountBySourceType option
+            currency: IsoTypes.IsoCurrencyCode
         ) : BalanceAmountNet
         =
         {
           Amount = amount
           Currency = currency
-          NetAvailable = netAvailable
-          SourceTypes = sourceTypes
+          NetAvailable = None
+          SourceTypes = None
         }
 
 type BalanceDetail =
@@ -310,21 +303,17 @@ module Balance =
         (
             available: BalanceAmount list,
             livemode: bool,
-            pending: BalanceAmount list,
-            connectReserved: BalanceAmount list option,
-            instantAvailable: BalanceAmountNet list option,
-            issuing: BalanceDetail option,
-            refundAndDisputePrefunding: BalanceDetailUngated option
+            pending: BalanceAmount list
         ) : Balance
         =
         {
           Available = available
           Livemode = livemode
           Pending = pending
-          ConnectReserved = connectReserved
-          InstantAvailable = instantAvailable
-          Issuing = issuing
-          RefundAndDisputePrefunding = refundAndDisputePrefunding
+          ConnectReserved = None
+          InstantAvailable = None
+          Issuing = None
+          RefundAndDisputePrefunding = None
         }
 
 /// Occurs whenever your Stripe balance has been updated (e.g., when a charge is available to be paid out). By default, Stripe automatically transfers funds in your balance to your bank account on a daily basis. This event is not fired for negative transactions.

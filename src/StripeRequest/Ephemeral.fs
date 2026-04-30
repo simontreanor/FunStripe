@@ -57,13 +57,12 @@ module EphemeralKeys =
     module DeleteOptions =
         let create
             (
-                key: string,
-                expand: string list option
+                key: string
             ) : DeleteOptions
             =
             {
               Key = key
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Creates a short-lived API key for a given resource.</p>

@@ -52,13 +52,12 @@ module ExchangeRates =
     module RetrieveOptions =
         let create
             (
-                rateId: string,
-                expand: string list option
+                rateId: string
             ) : RetrieveOptions
             =
             {
               RateId = rateId
-              Expand = expand
+              Expand = None
             }
 
     ///<p>[Deprecated] The <code>ExchangeRate</code> APIs are deprecated. Please use the <a href="https://docs.stripe.com/payments/currencies/localize-prices/fx-quotes-api">FX Quotes API</a> instead.</p>

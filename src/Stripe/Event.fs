@@ -313,9 +313,7 @@ module Event =
             livemode: bool,
             pendingWebhooks: int,
             request: NotificationEventRequest option,
-            ``type``: EventType,
-            account: string option,
-            context: string option
+            ``type``: EventType
         ) : Event
         =
         {
@@ -327,7 +325,7 @@ module Event =
           PendingWebhooks = pendingWebhooks
           Request = request
           Type = ``type``
-          Account = account
-          Context = context
+          Account = None
+          Context = None
         }
 

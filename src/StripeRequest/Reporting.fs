@@ -753,15 +753,13 @@ module ReportingReportRuns =
     module CreateOptions =
         let create
             (
-                reportType: string,
-                expand: string list option,
-                parameters: Create'Parameters option
+                reportType: string
             ) : CreateOptions
             =
             {
               ReportType = reportType
-              Expand = expand
-              Parameters = parameters
+              Expand = None
+              Parameters = None
             }
 
     type RetrieveOptions =
@@ -776,13 +774,12 @@ module ReportingReportRuns =
     module RetrieveOptions =
         let create
             (
-                reportRun: string,
-                expand: string list option
+                reportRun: string
             ) : RetrieveOptions
             =
             {
               ReportRun = reportRun
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of Report Runs, with the most recent appearing first.</p>
@@ -833,13 +830,12 @@ module ReportingReportTypes =
     module RetrieveOptions =
         let create
             (
-                reportType: string,
-                expand: string list option
+                reportType: string
             ) : RetrieveOptions
             =
             {
               ReportType = reportType
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a full list of Report Types.</p>

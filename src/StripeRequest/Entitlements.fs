@@ -30,19 +30,15 @@ module EntitlementsActiveEntitlements =
     module ListOptions =
         let create
             (
-                customer: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                customer: string
             ) : ListOptions
             =
             {
               Customer = customer
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type RetrieveOptions =
@@ -58,13 +54,12 @@ module EntitlementsActiveEntitlements =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieve a list of active entitlements for a customer</p>
@@ -143,16 +138,14 @@ module EntitlementsFeatures =
         let create
             (
                 lookupKey: string,
-                name: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                name: string
             ) : CreateOptions
             =
             {
               LookupKey = lookupKey
               Name = name
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     type RetrieveOptions =
@@ -168,13 +161,12 @@ module EntitlementsFeatures =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -198,19 +190,15 @@ module EntitlementsFeatures =
     module UpdateOptions =
         let create
             (
-                id: string,
-                active: bool option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                name: string option
+                id: string
             ) : UpdateOptions
             =
             {
               Id = id
-              Active = active
-              Expand = expand
-              Metadata = metadata
-              Name = name
+              Active = None
+              Expand = None
+              Metadata = None
+              Name = None
             }
 
     ///<p>Retrieve a list of features</p>

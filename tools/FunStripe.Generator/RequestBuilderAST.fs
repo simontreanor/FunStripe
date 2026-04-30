@@ -443,10 +443,14 @@ module RequestBuilderAST =
         sb.AppendLine($"module {name} =") |> ignore
 
         if not createParams.IsEmpty then
+            // Only required params appear in the function signature; optional fields default to None
+            let requiredParams = createParams |> List.filter (fun p -> not p.IsOptional)
+            let sigParams = if requiredParams.IsEmpty then createParams else requiredParams
+
             let paramStrings =
-                createParams |> List.mapi (fun i p ->
+                sigParams |> List.mapi (fun i p ->
                     let typeStr = if p.IsOptional then $"{p.ParamType} option" else p.ParamType
-                    let comma = if i < createParams.Length - 1 then "," else ""
+                    let comma = if i < sigParams.Length - 1 then "," else ""
                     $"        {p.ParamName}: {typeStr}{comma}")
 
             sb.AppendLine("    let create") |> ignore
@@ -458,7 +462,12 @@ module RequestBuilderAST =
 
             let fieldStrings =
                 createParams |> List.map (fun p ->
-                    $"          {p.PascalFieldName} = {p.ParamName}")
+                    let value =
+                        if p.IsOptional && not (sigParams |> List.exists (fun sp -> sp.ParamName = p.ParamName)) then
+                            "None"
+                        else
+                            p.ParamName
+                    $"          {p.PascalFieldName} = {value}")
 
             sb.AppendLine("        {") |> ignore
             for line in fieldStrings do

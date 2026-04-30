@@ -123,19 +123,16 @@ module ForwardingRequests =
             (
                 paymentMethod: string,
                 replacements: Create'Replacements list,
-                url: string,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                request: Create'Request option
+                url: string
             ) : CreateOptions
             =
             {
               PaymentMethod = paymentMethod
               Replacements = replacements
               Url = url
-              Expand = expand
-              Metadata = metadata
-              Request = request
+              Expand = None
+              Metadata = None
+              Request = None
             }
 
     type RetrieveOptions =
@@ -150,13 +147,12 @@ module ForwardingRequests =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Lists all ForwardingRequest objects.</p>

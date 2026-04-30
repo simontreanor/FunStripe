@@ -105,22 +105,17 @@ module AccountLinks =
         let create
             (
                 account: string,
-                ``type``: Create'Type,
-                collect: Create'Collect option,
-                collectionOptions: Create'CollectionOptions option,
-                expand: string list option,
-                refreshUrl: string option,
-                returnUrl: string option
+                ``type``: Create'Type
             ) : CreateOptions
             =
             {
               Account = account
               Type = ``type``
-              Collect = collect
-              CollectionOptions = collectionOptions
-              Expand = expand
-              RefreshUrl = refreshUrl
-              ReturnUrl = returnUrl
+              Collect = None
+              CollectionOptions = None
+              Expand = None
+              RefreshUrl = None
+              ReturnUrl = None
             }
 
     ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
@@ -1134,14 +1129,13 @@ module AccountSessions =
         let create
             (
                 account: string,
-                components: Create'Components,
-                expand: string list option
+                components: Create'Components
             ) : CreateOptions
             =
             {
               Account = account
               Components = components
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Creates a AccountSession object that includes a single-use token that the platform can use on their front-end to grant client-side API access.</p>
@@ -1205,13 +1199,12 @@ module ApplicationFees =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
@@ -1243,14 +1236,13 @@ module ApplicationFeesRefunds =
         let create
             (
                 fee: string,
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Fee = fee
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -1271,16 +1263,14 @@ module ApplicationFeesRefunds =
         let create
             (
                 fee: string,
-                id: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                id: string
             ) : UpdateOptions
             =
             {
               Fee = fee
               Id = id
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     type ListOptions =
@@ -1304,19 +1294,15 @@ module ApplicationFeesRefunds =
     module ListOptions =
         let create
             (
-                id: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                id: string
             ) : ListOptions
             =
             {
               Id = id
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type CreateOptions =
@@ -1337,17 +1323,14 @@ module ApplicationFeesRefunds =
     module CreateOptions =
         let create
             (
-                id: string,
-                amount: int option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                id: string
             ) : CreateOptions
             =
             {
               Id = id
-              Amount = amount
-              Expand = expand
-              Metadata = metadata
+              Amount = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>By default, you can see the 10 most recent refunds stored directly on the application fee object, but you can also retrieve details about a specific refund stored on the application fee.</p>
@@ -1503,16 +1486,14 @@ module BillingAlerts =
         let create
             (
                 alertType: Create'AlertType,
-                title: string,
-                expand: string list option,
-                usageThreshold: Create'UsageThreshold option
+                title: string
             ) : CreateOptions
             =
             {
               AlertType = alertType
               Title = title
-              Expand = expand
-              UsageThreshold = usageThreshold
+              Expand = None
+              UsageThreshold = None
             }
 
     type RetrieveOptions =
@@ -1527,13 +1508,12 @@ module BillingAlerts =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Lists billing active and inactive alerts</p>
@@ -1567,13 +1547,12 @@ module BillingAlertsActivate =
     module ActivateOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : ActivateOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Reactivates this alert, allowing it to trigger again.</p>
@@ -1595,13 +1574,12 @@ module BillingAlertsArchive =
     module ArchiveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : ArchiveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Archives this alert, removing it from the list view and APIs. This is non-reversible.</p>
@@ -1623,13 +1601,12 @@ module BillingAlertsDeactivate =
     module DeactivateOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : DeactivateOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Deactivates this alert, preventing it from triggering.</p>
@@ -1658,17 +1635,14 @@ module BillingCreditBalanceSummary =
     module RetrieveOptions =
         let create
             (
-                filter: Map<string, string>,
-                customer: string option,
-                customerAccount: string option,
-                expand: string list option
+                filter: Map<string, string>
             ) : RetrieveOptions
             =
             {
               Filter = filter
-              Customer = customer
-              CustomerAccount = customerAccount
-              Expand = expand
+              Customer = None
+              CustomerAccount = None
+              Expand = None
             }
 
     ///<p>Retrieves the credit balance summary for a customer.</p>
@@ -1739,13 +1713,12 @@ module BillingCreditBalanceTransactions =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieve a list of credit balance transactions.</p>
@@ -1953,30 +1926,21 @@ module BillingCreditGrants =
         let create
             (
                 amount: Create'Amount,
-                applicabilityConfig: Create'ApplicabilityConfig,
-                category: Create'Category option,
-                customer: string option,
-                customerAccount: string option,
-                effectiveAt: DateTime option,
-                expand: string list option,
-                expiresAt: DateTime option,
-                metadata: Map<string, string> option,
-                name: string option,
-                priority: int option
+                applicabilityConfig: Create'ApplicabilityConfig
             ) : CreateOptions
             =
             {
               Amount = amount
               ApplicabilityConfig = applicabilityConfig
-              Category = category
-              Customer = customer
-              CustomerAccount = customerAccount
-              EffectiveAt = effectiveAt
-              Expand = expand
-              ExpiresAt = expiresAt
-              Metadata = metadata
-              Name = name
-              Priority = priority
+              Category = None
+              Customer = None
+              CustomerAccount = None
+              EffectiveAt = None
+              Expand = None
+              ExpiresAt = None
+              Metadata = None
+              Name = None
+              Priority = None
             }
 
     type RetrieveOptions =
@@ -1992,13 +1956,12 @@ module BillingCreditGrants =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -2020,17 +1983,14 @@ module BillingCreditGrants =
     module UpdateOptions =
         let create
             (
-                id: string,
-                expand: string list option,
-                expiresAt: Choice<DateTime,string> option,
-                metadata: Map<string, string> option
+                id: string
             ) : UpdateOptions
             =
             {
               Id = id
-              Expand = expand
-              ExpiresAt = expiresAt
-              Metadata = metadata
+              Expand = None
+              ExpiresAt = None
+              Metadata = None
             }
 
     ///<p>Retrieve a list of credit grants.</p>
@@ -2070,13 +2030,12 @@ module BillingCreditGrantsExpire =
     module ExpireOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : ExpireOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Expires a credit grant.</p>
@@ -2099,13 +2058,12 @@ module BillingCreditGrantsVoid =
     module VoidGrantOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : VoidGrantOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Voids a credit grant.</p>
@@ -2154,16 +2112,14 @@ module BillingMeterEventAdjustments =
         let create
             (
                 eventName: string,
-                ``type``: Create'Type,
-                cancel: Create'Cancel option,
-                expand: string list option
+                ``type``: Create'Type
             ) : CreateOptions
             =
             {
               EventName = eventName
               Type = ``type``
-              Cancel = cancel
-              Expand = expand
+              Cancel = None
+              Expand = None
             }
 
     ///<p>Creates a billing meter event adjustment.</p>
@@ -2196,18 +2152,15 @@ module BillingMeterEvents =
         let create
             (
                 eventName: string,
-                payload: Map<string, string>,
-                expand: string list option,
-                identifier: string option,
-                timestamp: DateTime option
+                payload: Map<string, string>
             ) : CreateOptions
             =
             {
               EventName = eventName
               Payload = payload
-              Expand = expand
-              Identifier = identifier
-              Timestamp = timestamp
+              Expand = None
+              Identifier = None
+              Timestamp = None
             }
 
     ///<p>Creates a billing meter event.</p>
@@ -2351,21 +2304,17 @@ module BillingMeters =
             (
                 defaultAggregation: Create'DefaultAggregation,
                 displayName: string,
-                eventName: string,
-                customerMapping: Create'CustomerMapping option,
-                eventTimeWindow: Create'EventTimeWindow option,
-                expand: string list option,
-                valueSettings: Create'ValueSettings option
+                eventName: string
             ) : CreateOptions
             =
             {
               DefaultAggregation = defaultAggregation
               DisplayName = displayName
               EventName = eventName
-              CustomerMapping = customerMapping
-              EventTimeWindow = eventTimeWindow
-              Expand = expand
-              ValueSettings = valueSettings
+              CustomerMapping = None
+              EventTimeWindow = None
+              Expand = None
+              ValueSettings = None
             }
 
     type RetrieveOptions =
@@ -2380,13 +2329,12 @@ module BillingMeters =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -2404,15 +2352,13 @@ module BillingMeters =
     module UpdateOptions =
         let create
             (
-                id: string,
-                displayName: string option,
-                expand: string list option
+                id: string
             ) : UpdateOptions
             =
             {
               Id = id
-              DisplayName = displayName
-              Expand = expand
+              DisplayName = None
+              Expand = None
             }
 
     ///<p>Retrieve a list of billing meters.</p>
@@ -2451,13 +2397,12 @@ module BillingMetersDeactivate =
     module DeactivateOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : DeactivateOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>When a meter is deactivated, no more meter events will be accepted for this meter. You can’t attach a deactivated meter to a price.</p>
@@ -2504,12 +2449,7 @@ module BillingMetersEventSummaries =
                 customer: string,
                 endTime: int,
                 id: string,
-                startTime: int,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                valueGroupingWindow: string option
+                startTime: int
             ) : ListOptions
             =
             {
@@ -2517,11 +2457,11 @@ module BillingMetersEventSummaries =
               EndTime = endTime
               Id = id
               StartTime = startTime
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              ValueGroupingWindow = valueGroupingWindow
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              ValueGroupingWindow = None
             }
 
     ///<p>Retrieve a list of billing meter event summaries.</p>
@@ -2544,13 +2484,12 @@ module BillingMetersReactivate =
     module ReactivateOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : ReactivateOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>When a meter is reactivated, events for this meter can be accepted and you can attach the meter to a price.</p>
@@ -3010,23 +2949,17 @@ module BillingPortalConfigurations =
     module CreateOptions =
         let create
             (
-                features: Create'Features,
-                businessProfile: Create'BusinessProfile option,
-                defaultReturnUrl: Choice<string,string> option,
-                expand: string list option,
-                loginPage: Create'LoginPage option,
-                metadata: Map<string, string> option,
-                name: Choice<string,string> option
+                features: Create'Features
             ) : CreateOptions
             =
             {
               Features = features
-              BusinessProfile = businessProfile
-              DefaultReturnUrl = defaultReturnUrl
-              Expand = expand
-              LoginPage = loginPage
-              Metadata = metadata
-              Name = name
+              BusinessProfile = None
+              DefaultReturnUrl = None
+              Expand = None
+              LoginPage = None
+              Metadata = None
+              Name = None
             }
 
     type RetrieveOptions =
@@ -3041,13 +2974,12 @@ module BillingPortalConfigurations =
     module RetrieveOptions =
         let create
             (
-                configuration: string,
-                expand: string list option
+                configuration: string
             ) : RetrieveOptions
             =
             {
               Configuration = configuration
-              Expand = expand
+              Expand = None
             }
 
     type Update'BusinessProfile =
@@ -3464,27 +3396,19 @@ module BillingPortalConfigurations =
     module UpdateOptions =
         let create
             (
-                configuration: string,
-                active: bool option,
-                businessProfile: Update'BusinessProfile option,
-                defaultReturnUrl: Choice<string,string> option,
-                expand: string list option,
-                features: Update'Features option,
-                loginPage: Update'LoginPage option,
-                metadata: Map<string, string> option,
-                name: Choice<string,string> option
+                configuration: string
             ) : UpdateOptions
             =
             {
               Configuration = configuration
-              Active = active
-              BusinessProfile = businessProfile
-              DefaultReturnUrl = defaultReturnUrl
-              Expand = expand
-              Features = features
-              LoginPage = loginPage
-              Metadata = metadata
-              Name = name
+              Active = None
+              BusinessProfile = None
+              DefaultReturnUrl = None
+              Expand = None
+              Features = None
+              LoginPage = None
+              Metadata = None
+              Name = None
             }
 
     ///<p>Returns a list of configurations that describe the functionality of the customer portal.</p>
@@ -8796,13 +8720,12 @@ module CheckoutSessions =
     module RetrieveOptions =
         let create
             (
-                session: string,
-                expand: string list option
+                session: string
             ) : RetrieveOptions
             =
             {
               Session = session
-              Expand = expand
+              Expand = None
             }
 
     type Update'CollectedInformationShippingDetailsAddress =
@@ -9295,21 +9218,16 @@ module CheckoutSessions =
     module UpdateOptions =
         let create
             (
-                session: string,
-                collectedInformation: Update'CollectedInformation option,
-                expand: string list option,
-                lineItems: Update'LineItems list option,
-                metadata: Map<string, string> option,
-                shippingOptions: Choice<Update'ShippingOptions list,string> option
+                session: string
             ) : UpdateOptions
             =
             {
               Session = session
-              CollectedInformation = collectedInformation
-              Expand = expand
-              LineItems = lineItems
-              Metadata = metadata
-              ShippingOptions = shippingOptions
+              CollectedInformation = None
+              Expand = None
+              LineItems = None
+              Metadata = None
+              ShippingOptions = None
             }
 
     ///<p>Returns a list of Checkout Sessions.</p>
@@ -9349,13 +9267,12 @@ module CheckoutSessionsExpire =
     module ExpireOptions =
         let create
             (
-                session: string,
-                expand: string list option
+                session: string
             ) : ExpireOptions
             =
             {
               Session = session
-              Expand = expand
+              Expand = None
             }
 
     ///<p>A Checkout Session can be expired when it is in one of these statuses: <code>open</code> </p>
@@ -9387,19 +9304,15 @@ module CheckoutSessionsLineItems =
     module ListLineItemsOptions =
         let create
             (
-                session: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                session: string
             ) : ListLineItemsOptions
             =
             {
               Session = session
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>When retrieving a Checkout Session, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
@@ -9689,37 +9602,24 @@ module CreditNotes =
     module CreateOptions =
         let create
             (
-                invoice: string,
-                amount: int option,
-                creditAmount: int option,
-                effectiveAt: DateTime option,
-                emailType: Create'EmailType option,
-                expand: string list option,
-                lines: Create'Lines list option,
-                memo: string option,
-                metadata: Map<string, string> option,
-                outOfBandAmount: int option,
-                reason: Create'Reason option,
-                refundAmount: int option,
-                refunds: Create'Refunds list option,
-                shippingCost: Create'ShippingCost option
+                invoice: string
             ) : CreateOptions
             =
             {
               Invoice = invoice
-              Amount = amount
-              CreditAmount = creditAmount
-              EffectiveAt = effectiveAt
-              EmailType = emailType
-              Expand = expand
-              Lines = lines
-              Memo = memo
-              Metadata = metadata
-              OutOfBandAmount = outOfBandAmount
-              Reason = reason
-              RefundAmount = refundAmount
-              Refunds = refunds
-              ShippingCost = shippingCost
+              Amount = None
+              CreditAmount = None
+              EffectiveAt = None
+              EmailType = None
+              Expand = None
+              Lines = None
+              Memo = None
+              Metadata = None
+              OutOfBandAmount = None
+              Reason = None
+              RefundAmount = None
+              Refunds = None
+              ShippingCost = None
             }
 
     type RetrieveOptions =
@@ -9734,13 +9634,12 @@ module CreditNotes =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -9761,17 +9660,14 @@ module CreditNotes =
     module UpdateOptions =
         let create
             (
-                id: string,
-                expand: string list option,
-                memo: string option,
-                metadata: Map<string, string> option
+                id: string
             ) : UpdateOptions
             =
             {
               Id = id
-              Expand = expand
-              Memo = memo
-              Metadata = metadata
+              Expand = None
+              Memo = None
+              Metadata = None
             }
 
     ///<p>Returns a list of credit notes.</p>
@@ -9856,37 +9752,24 @@ module CreditNotesPreview =
     module PreviewOptions =
         let create
             (
-                invoice: string,
-                amount: int option,
-                creditAmount: int option,
-                effectiveAt: int option,
-                emailType: string option,
-                expand: string list option,
-                lines: string list option,
-                memo: string option,
-                metadata: Map<string, string> option,
-                outOfBandAmount: int option,
-                reason: string option,
-                refundAmount: int option,
-                refunds: string list option,
-                shippingCost: Map<string, string> option
+                invoice: string
             ) : PreviewOptions
             =
             {
               Invoice = invoice
-              Amount = amount
-              CreditAmount = creditAmount
-              EffectiveAt = effectiveAt
-              EmailType = emailType
-              Expand = expand
-              Lines = lines
-              Memo = memo
-              Metadata = metadata
-              OutOfBandAmount = outOfBandAmount
-              Reason = reason
-              RefundAmount = refundAmount
-              Refunds = refunds
-              ShippingCost = shippingCost
+              Amount = None
+              CreditAmount = None
+              EffectiveAt = None
+              EmailType = None
+              Expand = None
+              Lines = None
+              Memo = None
+              Metadata = None
+              OutOfBandAmount = None
+              Reason = None
+              RefundAmount = None
+              Refunds = None
+              ShippingCost = None
             }
 
     ///<p>Get a preview of a credit note without creating it.</p>
@@ -9955,43 +9838,27 @@ module CreditNotesPreviewLines =
     module PreviewLinesOptions =
         let create
             (
-                invoice: string,
-                amount: int option,
-                creditAmount: int option,
-                effectiveAt: int option,
-                emailType: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                lines: string list option,
-                memo: string option,
-                metadata: Map<string, string> option,
-                outOfBandAmount: int option,
-                reason: string option,
-                refundAmount: int option,
-                refunds: string list option,
-                shippingCost: Map<string, string> option,
-                startingAfter: string option
+                invoice: string
             ) : PreviewLinesOptions
             =
             {
               Invoice = invoice
-              Amount = amount
-              CreditAmount = creditAmount
-              EffectiveAt = effectiveAt
-              EmailType = emailType
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Lines = lines
-              Memo = memo
-              Metadata = metadata
-              OutOfBandAmount = outOfBandAmount
-              Reason = reason
-              RefundAmount = refundAmount
-              Refunds = refunds
-              ShippingCost = shippingCost
-              StartingAfter = startingAfter
+              Amount = None
+              CreditAmount = None
+              EffectiveAt = None
+              EmailType = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              Lines = None
+              Memo = None
+              Metadata = None
+              OutOfBandAmount = None
+              Reason = None
+              RefundAmount = None
+              Refunds = None
+              ShippingCost = None
+              StartingAfter = None
             }
 
     ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
@@ -10023,19 +9890,15 @@ module CreditNotesLines =
     module ListOptions =
         let create
             (
-                creditNote: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                creditNote: string
             ) : ListOptions
             =
             {
               CreditNote = creditNote
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>When retrieving a credit note, you’ll get a <strong>lines</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
@@ -10058,13 +9921,12 @@ module CreditNotesVoid =
     module VoidCreditNoteOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : VoidCreditNoteOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Marks a credit note as void. Learn more about <a href="/docs/billing/invoices/credit-notes#voiding">voiding credit notes</a>.</p>
@@ -10397,17 +10259,14 @@ module CustomerSessions =
     module CreateOptions =
         let create
             (
-                components: Create'Components,
-                customer: string option,
-                customerAccount: string option,
-                expand: string list option
+                components: Create'Components
             ) : CreateOptions
             =
             {
               Components = components
-              Customer = customer
-              CustomerAccount = customerAccount
-              Expand = expand
+              Customer = None
+              CustomerAccount = None
+              Expand = None
             }
 
     ///<p>Creates a Customer Session object that includes a single-use client secret that you can use on your front-end to grant client-side API access for certain customer resources.</p>
@@ -10481,13 +10340,12 @@ module InvoicePayments =
     module RetrieveOptions =
         let create
             (
-                invoicePayment: string,
-                expand: string list option
+                invoicePayment: string
             ) : RetrieveOptions
             =
             {
               InvoicePayment = invoicePayment
-              Expand = expand
+              Expand = None
             }
 
     ///<p>When retrieving an invoice, there is an includable payments property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of payments.</p>
@@ -10554,15 +10412,13 @@ module InvoiceRenderingTemplates =
     module RetrieveOptions =
         let create
             (
-                template: string,
-                expand: string list option,
-                version: int option
+                template: string
             ) : RetrieveOptions
             =
             {
               Template = template
-              Expand = expand
-              Version = version
+              Expand = None
+              Version = None
             }
 
     ///<p>List all templates, ordered by creation date, with the most recently created template appearing first.</p>
@@ -10591,13 +10447,12 @@ module InvoiceRenderingTemplatesArchive =
     module ArchiveOptions =
         let create
             (
-                template: string,
-                expand: string list option
+                template: string
             ) : ArchiveOptions
             =
             {
               Template = template
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the status of an invoice rendering template to ‘archived’ so no new Stripe objects (customers, invoices, etc.) can reference it. The template can also no longer be updated. However, if the template is already set on a Stripe object, it will continue to be applied on invoices generated by it.</p>
@@ -10619,13 +10474,12 @@ module InvoiceRenderingTemplatesUnarchive =
     module UnarchiveOptions =
         let create
             (
-                template: string,
-                expand: string list option
+                template: string
             ) : UnarchiveOptions
             =
             {
               Template = template
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Unarchive an invoice rendering template so it can be used on new Stripe objects again.</p>
@@ -11986,13 +11840,12 @@ module Invoices =
     module RetrieveOptions =
         let create
             (
-                invoice: string,
-                expand: string list option
+                invoice: string
             ) : RetrieveOptions
             =
             {
               Invoice = invoice
-              Expand = expand
+              Expand = None
             }
 
     type Update'AutomaticTaxLiabilityType =
@@ -13139,65 +12992,38 @@ module Invoices =
     module UpdateOptions =
         let create
             (
-                invoice: string,
-                accountTaxIds: Choice<string list,string> option,
-                applicationFeeAmount: int option,
-                autoAdvance: bool option,
-                automaticTax: Update'AutomaticTax option,
-                automaticallyFinalizesAt: DateTime option,
-                collectionMethod: Update'CollectionMethod option,
-                customFields: Choice<Update'CustomFields list,string> option,
-                daysUntilDue: int option,
-                defaultPaymentMethod: string option,
-                defaultSource: Choice<string,string> option,
-                defaultTaxRates: Choice<string list,string> option,
-                description: string option,
-                discounts: Choice<Update'Discounts list,string> option,
-                dueDate: DateTime option,
-                effectiveAt: Choice<DateTime,string> option,
-                expand: string list option,
-                footer: string option,
-                issuer: Update'Issuer option,
-                metadata: Map<string, string> option,
-                number: Choice<string,string> option,
-                onBehalfOf: Choice<string,string> option,
-                paymentSettings: Update'PaymentSettings option,
-                rendering: Update'Rendering option,
-                shippingCost: Choice<Update'ShippingCostShippingCost,string> option,
-                shippingDetails: Choice<Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddress,string> option,
-                statementDescriptor: string option,
-                transferData: Choice<Update'TransferDataTransferDataSpecs,string> option
+                invoice: string
             ) : UpdateOptions
             =
             {
               Invoice = invoice
-              AccountTaxIds = accountTaxIds
-              ApplicationFeeAmount = applicationFeeAmount
-              AutoAdvance = autoAdvance
-              AutomaticTax = automaticTax
-              AutomaticallyFinalizesAt = automaticallyFinalizesAt
-              CollectionMethod = collectionMethod
-              CustomFields = customFields
-              DaysUntilDue = daysUntilDue
-              DefaultPaymentMethod = defaultPaymentMethod
-              DefaultSource = defaultSource
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              DueDate = dueDate
-              EffectiveAt = effectiveAt
-              Expand = expand
-              Footer = footer
-              Issuer = issuer
-              Metadata = metadata
-              Number = number
-              OnBehalfOf = onBehalfOf
-              PaymentSettings = paymentSettings
-              Rendering = rendering
-              ShippingCost = shippingCost
-              ShippingDetails = shippingDetails
-              StatementDescriptor = statementDescriptor
-              TransferData = transferData
+              AccountTaxIds = None
+              ApplicationFeeAmount = None
+              AutoAdvance = None
+              AutomaticTax = None
+              AutomaticallyFinalizesAt = None
+              CollectionMethod = None
+              CustomFields = None
+              DaysUntilDue = None
+              DefaultPaymentMethod = None
+              DefaultSource = None
+              DefaultTaxRates = None
+              Description = None
+              Discounts = None
+              DueDate = None
+              EffectiveAt = None
+              Expand = None
+              Footer = None
+              Issuer = None
+              Metadata = None
+              Number = None
+              OnBehalfOf = None
+              PaymentSettings = None
+              Rendering = None
+              ShippingCost = None
+              ShippingDetails = None
+              StatementDescriptor = None
+              TransferData = None
             }
 
     ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
@@ -15074,17 +14900,14 @@ module InvoicesSearch =
     module SearchOptions =
         let create
             (
-                query: string,
-                expand: string list option,
-                limit: int option,
-                page: string option
+                query: string
             ) : SearchOptions
             =
             {
               Query = query
-              Expand = expand
-              Limit = limit
-              Page = page
+              Expand = None
+              Limit = None
+              Page = None
             }
 
     ///<p>Search for invoices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -15480,16 +15303,14 @@ module InvoicesAddLines =
         let create
             (
                 invoice: string,
-                lines: AddLines'Lines list,
-                expand: string list option,
-                invoiceMetadata: Choice<Map<string, string>,string> option
+                lines: AddLines'Lines list
             ) : AddLinesOptions
             =
             {
               Invoice = invoice
               Lines = lines
-              Expand = expand
-              InvoiceMetadata = invoiceMetadata
+              Expand = None
+              InvoiceMetadata = None
             }
 
     ///<p>Adds multiple line items to an invoice. This is only possible when an invoice is still a draft.</p>
@@ -15517,17 +15338,14 @@ module InvoicesAttachPayment =
     module AttachPaymentOptions =
         let create
             (
-                invoice: string,
-                expand: string list option,
-                paymentIntent: string option,
-                paymentRecord: string option
+                invoice: string
             ) : AttachPaymentOptions
             =
             {
               Invoice = invoice
-              Expand = expand
-              PaymentIntent = paymentIntent
-              PaymentRecord = paymentRecord
+              Expand = None
+              PaymentIntent = None
+              PaymentRecord = None
             }
 
     ///<p>Attaches a PaymentIntent or an Out of Band Payment to the invoice, adding it to the list of <code>payments</code>.</p>
@@ -15558,15 +15376,13 @@ module InvoicesFinalize =
     module FinalizeInvoiceOptions =
         let create
             (
-                invoice: string,
-                autoAdvance: bool option,
-                expand: string list option
+                invoice: string
             ) : FinalizeInvoiceOptions
             =
             {
               Invoice = invoice
-              AutoAdvance = autoAdvance
-              Expand = expand
+              AutoAdvance = None
+              Expand = None
             }
 
     ///<p>Stripe automatically finalizes drafts before sending and attempting payment on invoices. However, if you’d like to finalize a draft invoice manually, you can do so using this method.</p>
@@ -15597,19 +15413,15 @@ module InvoicesLines =
     module ListOptions =
         let create
             (
-                invoice: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                invoice: string
             ) : ListOptions
             =
             {
               Invoice = invoice
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type Update'Discounts =
@@ -15951,38 +15763,25 @@ module InvoicesLines =
         let create
             (
                 invoice: string,
-                lineItemId: string,
-                amount: int option,
-                description: string option,
-                discountable: bool option,
-                discounts: Choice<Update'Discounts list,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                period: Update'Period option,
-                priceData: Update'PriceData option,
-                pricing: Update'Pricing option,
-                quantity: int option,
-                quantityDecimal: string option,
-                taxAmounts: Choice<Update'TaxAmounts list,string> option,
-                taxRates: Choice<string list,string> option
+                lineItemId: string
             ) : UpdateOptions
             =
             {
               Invoice = invoice
               LineItemId = lineItemId
-              Amount = amount
-              Description = description
-              Discountable = discountable
-              Discounts = discounts
-              Expand = expand
-              Metadata = metadata
-              Period = period
-              PriceData = priceData
-              Pricing = pricing
-              Quantity = quantity
-              QuantityDecimal = quantityDecimal
-              TaxAmounts = taxAmounts
-              TaxRates = taxRates
+              Amount = None
+              Description = None
+              Discountable = None
+              Discounts = None
+              Expand = None
+              Metadata = None
+              Period = None
+              PriceData = None
+              Pricing = None
+              Quantity = None
+              QuantityDecimal = None
+              TaxAmounts = None
+              TaxRates = None
             }
 
     ///<p>When retrieving an invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
@@ -16013,13 +15812,12 @@ module InvoicesMarkUncollectible =
     module MarkUncollectibleOptions =
         let create
             (
-                invoice: string,
-                expand: string list option
+                invoice: string
             ) : MarkUncollectibleOptions
             =
             {
               Invoice = invoice
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes.</p>
@@ -16060,25 +15858,18 @@ module InvoicesPay =
     module PayOptions =
         let create
             (
-                invoice: string,
-                expand: string list option,
-                forgive: bool option,
-                mandate: Choice<string,string> option,
-                offSession: bool option,
-                paidOutOfBand: bool option,
-                paymentMethod: string option,
-                source: string option
+                invoice: string
             ) : PayOptions
             =
             {
               Invoice = invoice
-              Expand = expand
-              Forgive = forgive
-              Mandate = mandate
-              OffSession = offSession
-              PaidOutOfBand = paidOutOfBand
-              PaymentMethod = paymentMethod
-              Source = source
+              Expand = None
+              Forgive = None
+              Mandate = None
+              OffSession = None
+              PaidOutOfBand = None
+              PaymentMethod = None
+              Source = None
             }
 
     ///<p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
@@ -16133,16 +15924,14 @@ module InvoicesRemoveLines =
         let create
             (
                 invoice: string,
-                lines: RemoveLines'Lines list,
-                expand: string list option,
-                invoiceMetadata: Choice<Map<string, string>,string> option
+                lines: RemoveLines'Lines list
             ) : RemoveLinesOptions
             =
             {
               Invoice = invoice
               Lines = lines
-              Expand = expand
-              InvoiceMetadata = invoiceMetadata
+              Expand = None
+              InvoiceMetadata = None
             }
 
     ///<p>Removes multiple line items from an invoice. This is only possible when an invoice is still a draft.</p>
@@ -16164,13 +15953,12 @@ module InvoicesSend =
     module SendInvoiceOptions =
         let create
             (
-                invoice: string,
-                expand: string list option
+                invoice: string
             ) : SendInvoiceOptions
             =
             {
               Invoice = invoice
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.</p>
@@ -16563,16 +16351,14 @@ module InvoicesUpdateLines =
         let create
             (
                 invoice: string,
-                lines: UpdateLines'Lines list,
-                expand: string list option,
-                invoiceMetadata: Choice<Map<string, string>,string> option
+                lines: UpdateLines'Lines list
             ) : UpdateLinesOptions
             =
             {
               Invoice = invoice
               Lines = lines
-              Expand = expand
-              InvoiceMetadata = invoiceMetadata
+              Expand = None
+              InvoiceMetadata = None
             }
 
     ///<p>Updates multiple line items on an invoice. This is only possible when an invoice is still a draft.</p>
@@ -16594,13 +16380,12 @@ module InvoicesVoid =
     module VoidInvoiceOptions =
         let create
             (
-                invoice: string,
-                expand: string list option
+                invoice: string
             ) : VoidInvoiceOptions
             =
             {
               Invoice = invoice
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is similar to <a href="/api/invoices/delete">deletion</a>, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found.</p>
@@ -16675,13 +16460,12 @@ module IssuingAuthorizations =
     module RetrieveOptions =
         let create
             (
-                authorization: string,
-                expand: string list option
+                authorization: string
             ) : RetrieveOptions
             =
             {
               Authorization = authorization
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -16699,15 +16483,13 @@ module IssuingAuthorizations =
     module UpdateOptions =
         let create
             (
-                authorization: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                authorization: string
             ) : UpdateOptions
             =
             {
               Authorization = authorization
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -16747,17 +16529,14 @@ module IssuingAuthorizationsApprove =
     module ApproveOptions =
         let create
             (
-                authorization: string,
-                amount: int option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                authorization: string
             ) : ApproveOptions
             =
             {
               Authorization = authorization
-              Amount = amount
-              Expand = expand
-              Metadata = metadata
+              Amount = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow. 
@@ -16783,15 +16562,13 @@ module IssuingAuthorizationsDecline =
     module DeclineOptions =
         let create
             (
-                authorization: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                authorization: string
             ) : DeclineOptions
             =
             {
               Authorization = authorization
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>[Deprecated] Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
@@ -18128,32 +17905,22 @@ module IssuingCardholders =
         let create
             (
                 billing: Create'Billing,
-                name: string,
-                company: Create'Company option,
-                email: string option,
-                expand: string list option,
-                individual: Create'Individual option,
-                metadata: Map<string, string> option,
-                phoneNumber: string option,
-                preferredLocales: Create'PreferredLocales list option,
-                spendingControls: Create'SpendingControls option,
-                status: Create'Status option,
-                ``type``: Create'Type option
+                name: string
             ) : CreateOptions
             =
             {
               Billing = billing
               Name = name
-              Company = company
-              Email = email
-              Expand = expand
-              Individual = individual
-              Metadata = metadata
-              PhoneNumber = phoneNumber
-              PreferredLocales = preferredLocales
-              SpendingControls = spendingControls
-              Status = status
-              Type = ``type``
+              Company = None
+              Email = None
+              Expand = None
+              Individual = None
+              Metadata = None
+              PhoneNumber = None
+              PreferredLocales = None
+              SpendingControls = None
+              Status = None
+              Type = None
             }
 
     type RetrieveOptions =
@@ -18168,13 +17935,12 @@ module IssuingCardholders =
     module RetrieveOptions =
         let create
             (
-                cardholder: string,
-                expand: string list option
+                cardholder: string
             ) : RetrieveOptions
             =
             {
               Cardholder = cardholder
-              Expand = expand
+              Expand = None
             }
 
     type Update'BillingAddress =
@@ -19437,31 +19203,21 @@ module IssuingCardholders =
     module UpdateOptions =
         let create
             (
-                cardholder: string,
-                billing: Update'Billing option,
-                company: Update'Company option,
-                email: string option,
-                expand: string list option,
-                individual: Update'Individual option,
-                metadata: Map<string, string> option,
-                phoneNumber: string option,
-                preferredLocales: Update'PreferredLocales list option,
-                spendingControls: Update'SpendingControls option,
-                status: Update'Status option
+                cardholder: string
             ) : UpdateOptions
             =
             {
               Cardholder = cardholder
-              Billing = billing
-              Company = company
-              Email = email
-              Expand = expand
-              Individual = individual
-              Metadata = metadata
-              PhoneNumber = phoneNumber
-              PreferredLocales = preferredLocales
-              SpendingControls = spendingControls
-              Status = status
+              Billing = None
+              Company = None
+              Email = None
+              Expand = None
+              Individual = None
+              Metadata = None
+              PhoneNumber = None
+              PreferredLocales = None
+              SpendingControls = None
+              Status = None
             }
 
     ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -20806,42 +20562,27 @@ module IssuingCards =
         let create
             (
                 currency: IsoTypes.IsoCurrencyCode,
-                ``type``: Create'Type,
-                cardholder: string option,
-                expMonth: int option,
-                expYear: int option,
-                expand: string list option,
-                financialAccount: string option,
-                lifecycleControls: Create'LifecycleControls option,
-                metadata: Map<string, string> option,
-                personalizationDesign: string option,
-                pin: Create'Pin option,
-                replacementFor: string option,
-                replacementReason: Create'ReplacementReason option,
-                secondLine: Choice<string,string> option,
-                shipping: Create'Shipping option,
-                spendingControls: Create'SpendingControls option,
-                status: Create'Status option
+                ``type``: Create'Type
             ) : CreateOptions
             =
             {
               Currency = currency
               Type = ``type``
-              Cardholder = cardholder
-              ExpMonth = expMonth
-              ExpYear = expYear
-              Expand = expand
-              FinancialAccount = financialAccount
-              LifecycleControls = lifecycleControls
-              Metadata = metadata
-              PersonalizationDesign = personalizationDesign
-              Pin = pin
-              ReplacementFor = replacementFor
-              ReplacementReason = replacementReason
-              SecondLine = secondLine
-              Shipping = shipping
-              SpendingControls = spendingControls
-              Status = status
+              Cardholder = None
+              ExpMonth = None
+              ExpYear = None
+              Expand = None
+              FinancialAccount = None
+              LifecycleControls = None
+              Metadata = None
+              PersonalizationDesign = None
+              Pin = None
+              ReplacementFor = None
+              ReplacementReason = None
+              SecondLine = None
+              Shipping = None
+              SpendingControls = None
+              Status = None
             }
 
     type RetrieveOptions =
@@ -20856,13 +20597,12 @@ module IssuingCards =
     module RetrieveOptions =
         let create
             (
-                card: string,
-                expand: string list option
+                card: string
             ) : RetrieveOptions
             =
             {
               Card = card
-              Expand = expand
+              Expand = None
             }
 
     type Update'CancellationReason =
@@ -22046,27 +21786,19 @@ module IssuingCards =
     module UpdateOptions =
         let create
             (
-                card: string,
-                cancellationReason: Update'CancellationReason option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                personalizationDesign: string option,
-                pin: Update'Pin option,
-                shipping: Update'Shipping option,
-                spendingControls: Update'SpendingControls option,
-                status: Update'Status option
+                card: string
             ) : UpdateOptions
             =
             {
               Card = card
-              CancellationReason = cancellationReason
-              Expand = expand
-              Metadata = metadata
-              PersonalizationDesign = personalizationDesign
-              Pin = pin
-              Shipping = shipping
-              SpendingControls = spendingControls
-              Status = status
+              CancellationReason = None
+              Expand = None
+              Metadata = None
+              PersonalizationDesign = None
+              Pin = None
+              Shipping = None
+              SpendingControls = None
+              Status = None
             }
 
     ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -22595,13 +22327,12 @@ module IssuingDisputes =
     module RetrieveOptions =
         let create
             (
-                dispute: string,
-                expand: string list option
+                dispute: string
             ) : RetrieveOptions
             =
             {
               Dispute = dispute
-              Expand = expand
+              Expand = None
             }
 
     type Update'EvidenceCanceledCanceledProductType =
@@ -23009,19 +22740,15 @@ module IssuingDisputes =
     module UpdateOptions =
         let create
             (
-                dispute: string,
-                amount: int option,
-                evidence: Update'Evidence option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                dispute: string
             ) : UpdateOptions
             =
             {
               Dispute = dispute
-              Amount = amount
-              Evidence = evidence
-              Expand = expand
-              Metadata = metadata
+              Amount = None
+              Evidence = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -23063,15 +22790,13 @@ module IssuingDisputesSubmit =
     module SubmitOptions =
         let create
             (
-                dispute: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                dispute: string
             ) : SubmitOptions
             =
             {
               Dispute = dispute
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Submits an Issuing <code>Dispute</code> to the card network. Stripe validates that all evidence fields required for the dispute’s reason are present. For more details, see <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a>.</p>
@@ -23211,27 +22936,19 @@ module IssuingPersonalizationDesigns =
     module CreateOptions =
         let create
             (
-                physicalBundle: string,
-                cardLogo: string option,
-                carrierText: Create'CarrierText option,
-                expand: string list option,
-                lookupKey: string option,
-                metadata: Map<string, string> option,
-                name: string option,
-                preferences: Create'Preferences option,
-                transferLookupKey: bool option
+                physicalBundle: string
             ) : CreateOptions
             =
             {
               PhysicalBundle = physicalBundle
-              CardLogo = cardLogo
-              CarrierText = carrierText
-              Expand = expand
-              LookupKey = lookupKey
-              Metadata = metadata
-              Name = name
-              Preferences = preferences
-              TransferLookupKey = transferLookupKey
+              CardLogo = None
+              CarrierText = None
+              Expand = None
+              LookupKey = None
+              Metadata = None
+              Name = None
+              Preferences = None
+              TransferLookupKey = None
             }
 
     type RetrieveOptions =
@@ -23246,13 +22963,12 @@ module IssuingPersonalizationDesigns =
     module RetrieveOptions =
         let create
             (
-                personalizationDesign: string,
-                expand: string list option
+                personalizationDesign: string
             ) : RetrieveOptions
             =
             {
               PersonalizationDesign = personalizationDesign
-              Expand = expand
+              Expand = None
             }
 
     type Update'CarrierTextCarrierText =
@@ -23340,29 +23056,20 @@ module IssuingPersonalizationDesigns =
     module UpdateOptions =
         let create
             (
-                personalizationDesign: string,
-                cardLogo: Choice<string,string> option,
-                carrierText: Choice<Update'CarrierTextCarrierText,string> option,
-                expand: string list option,
-                lookupKey: Choice<string,string> option,
-                metadata: Map<string, string> option,
-                name: Choice<string,string> option,
-                physicalBundle: string option,
-                preferences: Update'Preferences option,
-                transferLookupKey: bool option
+                personalizationDesign: string
             ) : UpdateOptions
             =
             {
               PersonalizationDesign = personalizationDesign
-              CardLogo = cardLogo
-              CarrierText = carrierText
-              Expand = expand
-              LookupKey = lookupKey
-              Metadata = metadata
-              Name = name
-              PhysicalBundle = physicalBundle
-              Preferences = preferences
-              TransferLookupKey = transferLookupKey
+              CardLogo = None
+              CarrierText = None
+              Expand = None
+              LookupKey = None
+              Metadata = None
+              Name = None
+              PhysicalBundle = None
+              Preferences = None
+              TransferLookupKey = None
             }
 
     ///<p>Returns a list of personalization design objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -23443,13 +23150,12 @@ module IssuingPhysicalBundles =
     module RetrieveOptions =
         let create
             (
-                physicalBundle: string,
-                expand: string list option
+                physicalBundle: string
             ) : RetrieveOptions
             =
             {
               PhysicalBundle = physicalBundle
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of physical bundle objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -23494,23 +23200,17 @@ module IssuingTokens =
     module ListOptions =
         let create
             (
-                card: string,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
+                card: string
             ) : ListOptions
             =
             {
               Card = card
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
+              Created = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              Status = None
             }
 
     type RetrieveOptions =
@@ -23525,13 +23225,12 @@ module IssuingTokens =
     module RetrieveOptions =
         let create
             (
-                token: string,
-                expand: string list option
+                token: string
             ) : RetrieveOptions
             =
             {
               Token = token
-              Expand = expand
+              Expand = None
             }
 
     type Update'Status =
@@ -23555,14 +23254,13 @@ module IssuingTokens =
         let create
             (
                 status: Update'Status,
-                token: string,
-                expand: string list option
+                token: string
             ) : UpdateOptions
             =
             {
               Status = status
               Token = token
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Lists all Issuing <code>Token</code> objects for a given card.</p>
@@ -23648,13 +23346,12 @@ module IssuingTransactions =
     module RetrieveOptions =
         let create
             (
-                transaction: string,
-                expand: string list option
+                transaction: string
             ) : RetrieveOptions
             =
             {
               Transaction = transaction
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -23672,15 +23369,13 @@ module IssuingTransactions =
     module UpdateOptions =
         let create
             (
-                transaction: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                transaction: string
             ) : UpdateOptions
             =
             {
               Transaction = transaction
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -23721,17 +23416,14 @@ module PaymentAttemptRecords =
     module ListOptions =
         let create
             (
-                paymentRecord: string,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                paymentRecord: string
             ) : ListOptions
             =
             {
               PaymentRecord = paymentRecord
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type RetrieveOptions =
@@ -23747,13 +23439,12 @@ module PaymentAttemptRecords =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>List all the Payment Attempt Records attached to the specified Payment Record.</p>
@@ -28516,82 +28207,47 @@ module PaymentIntents =
         let create
             (
                 amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                amountDetails: Create'AmountDetails option,
-                applicationFeeAmount: int option,
-                automaticPaymentMethods: Create'AutomaticPaymentMethods option,
-                captureMethod: Create'CaptureMethod option,
-                confirm: bool option,
-                confirmationMethod: Create'ConfirmationMethod option,
-                confirmationToken: string option,
-                customer: string option,
-                customerAccount: string option,
-                description: string option,
-                errorOnRequiresAction: bool option,
-                excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list option,
-                expand: string list option,
-                hooks: Create'Hooks option,
-                mandate: string option,
-                mandateData: Choice<Create'MandateDataSecretKey,string> option,
-                metadata: Map<string, string> option,
-                offSession: Choice<bool,Create'OffSession> option,
-                onBehalfOf: string option,
-                paymentDetails: Create'PaymentDetails option,
-                paymentMethod: string option,
-                paymentMethodConfiguration: string option,
-                paymentMethodData: Create'PaymentMethodData option,
-                paymentMethodOptions: Create'PaymentMethodOptions option,
-                paymentMethodTypes: string list option,
-                radarOptions: Create'RadarOptions option,
-                receiptEmail: string option,
-                returnUrl: string option,
-                setupFutureUsage: Create'SetupFutureUsage option,
-                shipping: Create'Shipping option,
-                statementDescriptor: string option,
-                statementDescriptorSuffix: string option,
-                transferData: Create'TransferData option,
-                transferGroup: string option,
-                useStripeSdk: bool option
+                currency: IsoTypes.IsoCurrencyCode
             ) : CreateOptions
             =
             {
               Amount = amount
               Currency = currency
-              AmountDetails = amountDetails
-              ApplicationFeeAmount = applicationFeeAmount
-              AutomaticPaymentMethods = automaticPaymentMethods
-              CaptureMethod = captureMethod
-              Confirm = confirm
-              ConfirmationMethod = confirmationMethod
-              ConfirmationToken = confirmationToken
-              Customer = customer
-              CustomerAccount = customerAccount
-              Description = description
-              ErrorOnRequiresAction = errorOnRequiresAction
-              ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
-              Expand = expand
-              Hooks = hooks
-              Mandate = mandate
-              MandateData = mandateData
-              Metadata = metadata
-              OffSession = offSession
-              OnBehalfOf = onBehalfOf
-              PaymentDetails = paymentDetails
-              PaymentMethod = paymentMethod
-              PaymentMethodConfiguration = paymentMethodConfiguration
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-              RadarOptions = radarOptions
-              ReceiptEmail = receiptEmail
-              ReturnUrl = returnUrl
-              SetupFutureUsage = setupFutureUsage
-              Shipping = shipping
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorSuffix = statementDescriptorSuffix
-              TransferData = transferData
-              TransferGroup = transferGroup
-              UseStripeSdk = useStripeSdk
+              AmountDetails = None
+              ApplicationFeeAmount = None
+              AutomaticPaymentMethods = None
+              CaptureMethod = None
+              Confirm = None
+              ConfirmationMethod = None
+              ConfirmationToken = None
+              Customer = None
+              CustomerAccount = None
+              Description = None
+              ErrorOnRequiresAction = None
+              ExcludedPaymentMethodTypes = None
+              Expand = None
+              Hooks = None
+              Mandate = None
+              MandateData = None
+              Metadata = None
+              OffSession = None
+              OnBehalfOf = None
+              PaymentDetails = None
+              PaymentMethod = None
+              PaymentMethodConfiguration = None
+              PaymentMethodData = None
+              PaymentMethodOptions = None
+              PaymentMethodTypes = None
+              RadarOptions = None
+              ReceiptEmail = None
+              ReturnUrl = None
+              SetupFutureUsage = None
+              Shipping = None
+              StatementDescriptor = None
+              StatementDescriptorSuffix = None
+              TransferData = None
+              TransferGroup = None
+              UseStripeSdk = None
             }
 
     type RetrieveOptions =
@@ -28609,15 +28265,13 @@ module PaymentIntents =
     module RetrieveOptions =
         let create
             (
-                intent: string,
-                clientSecret: string option,
-                expand: string list option
+                intent: string
             ) : RetrieveOptions
             =
             {
               Intent = intent
-              ClientSecret = clientSecret
-              Expand = expand
+              ClientSecret = None
+              Expand = None
             }
 
     type Update'AmountDetailsAmountDetailsLineItemsPaymentMethodOptionsCard =
@@ -33140,61 +32794,36 @@ module PaymentIntents =
     module UpdateOptions =
         let create
             (
-                intent: string,
-                amount: int option,
-                amountDetails: Choice<Update'AmountDetailsAmountDetails,string> option,
-                applicationFeeAmount: Choice<int,string> option,
-                captureMethod: Update'CaptureMethod option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customer: string option,
-                customerAccount: string option,
-                description: string option,
-                excludedPaymentMethodTypes: Choice<Update'ExcludedPaymentMethodTypes list,string> option,
-                expand: string list option,
-                hooks: Update'Hooks option,
-                metadata: Map<string, string> option,
-                paymentDetails: Choice<Update'PaymentDetailsPaymentDetails,string> option,
-                paymentMethod: string option,
-                paymentMethodConfiguration: string option,
-                paymentMethodData: Update'PaymentMethodData option,
-                paymentMethodOptions: Update'PaymentMethodOptions option,
-                paymentMethodTypes: string list option,
-                receiptEmail: Choice<string,string> option,
-                setupFutureUsage: Update'SetupFutureUsage option,
-                shipping: Choice<Update'ShippingOptionalFieldsShipping,string> option,
-                statementDescriptor: string option,
-                statementDescriptorSuffix: string option,
-                transferData: Update'TransferData option,
-                transferGroup: string option
+                intent: string
             ) : UpdateOptions
             =
             {
               Intent = intent
-              Amount = amount
-              AmountDetails = amountDetails
-              ApplicationFeeAmount = applicationFeeAmount
-              CaptureMethod = captureMethod
-              Currency = currency
-              Customer = customer
-              CustomerAccount = customerAccount
-              Description = description
-              ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
-              Expand = expand
-              Hooks = hooks
-              Metadata = metadata
-              PaymentDetails = paymentDetails
-              PaymentMethod = paymentMethod
-              PaymentMethodConfiguration = paymentMethodConfiguration
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-              ReceiptEmail = receiptEmail
-              SetupFutureUsage = setupFutureUsage
-              Shipping = shipping
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorSuffix = statementDescriptorSuffix
-              TransferData = transferData
-              TransferGroup = transferGroup
+              Amount = None
+              AmountDetails = None
+              ApplicationFeeAmount = None
+              CaptureMethod = None
+              Currency = None
+              Customer = None
+              CustomerAccount = None
+              Description = None
+              ExcludedPaymentMethodTypes = None
+              Expand = None
+              Hooks = None
+              Metadata = None
+              PaymentDetails = None
+              PaymentMethod = None
+              PaymentMethodConfiguration = None
+              PaymentMethodData = None
+              PaymentMethodOptions = None
+              PaymentMethodTypes = None
+              ReceiptEmail = None
+              SetupFutureUsage = None
+              Shipping = None
+              StatementDescriptor = None
+              StatementDescriptorSuffix = None
+              TransferData = None
+              TransferGroup = None
             }
 
     ///<p>Returns a list of PaymentIntents.</p>
@@ -33254,17 +32883,14 @@ module PaymentIntentsSearch =
     module SearchOptions =
         let create
             (
-                query: string,
-                expand: string list option,
-                limit: int option,
-                page: string option
+                query: string
             ) : SearchOptions
             =
             {
               Query = query
-              Expand = expand
-              Limit = limit
-              Page = page
+              Expand = None
+              Limit = None
+              Page = None
             }
 
     ///<p>Search for PaymentIntents you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -33299,19 +32925,15 @@ module PaymentIntentsAmountDetailsLineItems =
     module ListOptions =
         let create
             (
-                intent: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                intent: string
             ) : ListOptions
             =
             {
               Intent = intent
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>Lists all LineItems of a given PaymentIntent.</p>
@@ -33342,17 +32964,14 @@ module PaymentIntentsApplyCustomerBalance =
     module ApplyCustomerBalanceOptions =
         let create
             (
-                intent: string,
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                expand: string list option
+                intent: string
             ) : ApplyCustomerBalanceOptions
             =
             {
               Intent = intent
-              Amount = amount
-              Currency = currency
-              Expand = expand
+              Amount = None
+              Currency = None
+              Expand = None
             }
 
     ///<p>Manually reconcile the remaining amount for a <code>customer_balance</code> PaymentIntent.</p>
@@ -33383,15 +33002,13 @@ module PaymentIntentsCancel =
     module CancelOptions =
         let create
             (
-                intent: string,
-                cancellationReason: Cancel'CancellationReason option,
-                expand: string list option
+                intent: string
             ) : CancelOptions
             =
             {
               Intent = intent
-              CancellationReason = cancellationReason
-              Expand = expand
+              CancellationReason = None
+              Expand = None
             }
 
     ///<p>You can cancel a PaymentIntent object when it’s in one of these statuses: <code>requires_payment_method</code>, <code>requires_capture</code>, <code>requires_confirmation</code>, <code>requires_action</code> or, <a href="/docs/payments/intents">in rare cases</a>, <code>processing</code>. </p>
@@ -33826,33 +33443,22 @@ module PaymentIntentsCapture =
     module CaptureOptions =
         let create
             (
-                intent: string,
-                amountDetails: Capture'AmountDetails option,
-                amountToCapture: int option,
-                applicationFeeAmount: int option,
-                expand: string list option,
-                finalCapture: bool option,
-                hooks: Capture'Hooks option,
-                metadata: Map<string, string> option,
-                paymentDetails: Choice<Capture'PaymentDetailsPaymentDetailsCaptureParams,string> option,
-                statementDescriptor: string option,
-                statementDescriptorSuffix: string option,
-                transferData: Capture'TransferData option
+                intent: string
             ) : CaptureOptions
             =
             {
               Intent = intent
-              AmountDetails = amountDetails
-              AmountToCapture = amountToCapture
-              ApplicationFeeAmount = applicationFeeAmount
-              Expand = expand
-              FinalCapture = finalCapture
-              Hooks = hooks
-              Metadata = metadata
-              PaymentDetails = paymentDetails
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorSuffix = statementDescriptorSuffix
-              TransferData = transferData
+              AmountDetails = None
+              AmountToCapture = None
+              ApplicationFeeAmount = None
+              Expand = None
+              FinalCapture = None
+              Hooks = None
+              Metadata = None
+              PaymentDetails = None
+              StatementDescriptor = None
+              StatementDescriptorSuffix = None
+              TransferData = None
             }
 
     ///<p>Capture the funds of an existing uncaptured PaymentIntent when its status is <code>requires_capture</code>.</p>
@@ -38516,55 +38122,33 @@ module PaymentIntentsConfirm =
     module ConfirmOptions =
         let create
             (
-                intent: string,
-                amountDetails: Choice<Confirm'AmountDetailsAmountDetails,string> option,
-                amountToConfirm: int option,
-                captureMethod: Confirm'CaptureMethod option,
-                confirmationToken: string option,
-                errorOnRequiresAction: bool option,
-                excludedPaymentMethodTypes: Choice<Confirm'ExcludedPaymentMethodTypes list,string> option,
-                expand: string list option,
-                hooks: Confirm'Hooks option,
-                mandate: string option,
-                mandateData: Choice<Confirm'MandateDataSecretKey,string,Confirm'MandateDataClientKey> option,
-                offSession: Choice<bool,Confirm'OffSession> option,
-                paymentDetails: Choice<Confirm'PaymentDetailsPaymentDetails,string> option,
-                paymentMethod: string option,
-                paymentMethodData: Confirm'PaymentMethodData option,
-                paymentMethodOptions: Confirm'PaymentMethodOptions option,
-                paymentMethodTypes: string list option,
-                radarOptions: Confirm'RadarOptions option,
-                receiptEmail: Choice<string,string> option,
-                returnUrl: string option,
-                setupFutureUsage: Confirm'SetupFutureUsage option,
-                shipping: Choice<Confirm'ShippingOptionalFieldsShipping,string> option,
-                useStripeSdk: bool option
+                intent: string
             ) : ConfirmOptions
             =
             {
               Intent = intent
-              AmountDetails = amountDetails
-              AmountToConfirm = amountToConfirm
-              CaptureMethod = captureMethod
-              ConfirmationToken = confirmationToken
-              ErrorOnRequiresAction = errorOnRequiresAction
-              ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
-              Expand = expand
-              Hooks = hooks
-              Mandate = mandate
-              MandateData = mandateData
-              OffSession = offSession
-              PaymentDetails = paymentDetails
-              PaymentMethod = paymentMethod
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-              RadarOptions = radarOptions
-              ReceiptEmail = receiptEmail
-              ReturnUrl = returnUrl
-              SetupFutureUsage = setupFutureUsage
-              Shipping = shipping
-              UseStripeSdk = useStripeSdk
+              AmountDetails = None
+              AmountToConfirm = None
+              CaptureMethod = None
+              ConfirmationToken = None
+              ErrorOnRequiresAction = None
+              ExcludedPaymentMethodTypes = None
+              Expand = None
+              Hooks = None
+              Mandate = None
+              MandateData = None
+              OffSession = None
+              PaymentDetails = None
+              PaymentMethod = None
+              PaymentMethodData = None
+              PaymentMethodOptions = None
+              PaymentMethodTypes = None
+              RadarOptions = None
+              ReceiptEmail = None
+              ReturnUrl = None
+              SetupFutureUsage = None
+              Shipping = None
+              UseStripeSdk = None
             }
 
     ///<p>Confirm that your customer intends to pay with current or provided
@@ -39018,30 +38602,21 @@ module PaymentIntentsIncrementAuthorization =
         let create
             (
                 amount: int,
-                intent: string,
-                amountDetails: IncrementAuthorization'AmountDetails option,
-                applicationFeeAmount: int option,
-                description: string option,
-                expand: string list option,
-                hooks: IncrementAuthorization'Hooks option,
-                metadata: Map<string, string> option,
-                paymentDetails: IncrementAuthorization'PaymentDetails option,
-                statementDescriptor: string option,
-                transferData: IncrementAuthorization'TransferData option
+                intent: string
             ) : IncrementAuthorizationOptions
             =
             {
               Amount = amount
               Intent = intent
-              AmountDetails = amountDetails
-              ApplicationFeeAmount = applicationFeeAmount
-              Description = description
-              Expand = expand
-              Hooks = hooks
-              Metadata = metadata
-              PaymentDetails = paymentDetails
-              StatementDescriptor = statementDescriptor
-              TransferData = transferData
+              AmountDetails = None
+              ApplicationFeeAmount = None
+              Description = None
+              Expand = None
+              Hooks = None
+              Metadata = None
+              PaymentDetails = None
+              StatementDescriptor = None
+              TransferData = None
             }
 
     ///<p>Perform an incremental authorization on an eligible
@@ -39088,17 +38663,14 @@ module PaymentIntentsVerifyMicrodeposits =
     module VerifyMicrodepositsOptions =
         let create
             (
-                intent: string,
-                amounts: int list option,
-                descriptorCode: string option,
-                expand: string list option
+                intent: string
             ) : VerifyMicrodepositsOptions
             =
             {
               Intent = intent
-              Amounts = amounts
-              DescriptorCode = descriptorCode
-              Expand = expand
+              Amounts = None
+              DescriptorCode = None
+              Expand = None
             }
 
     ///<p>Verifies microdeposits on a PaymentIntent object.</p>
@@ -40781,71 +40353,41 @@ module PaymentLinks =
     module CreateOptions =
         let create
             (
-                lineItems: Create'LineItems list,
-                afterCompletion: Create'AfterCompletion option,
-                allowPromotionCodes: bool option,
-                applicationFeeAmount: int option,
-                applicationFeePercent: decimal option,
-                automaticTax: Create'AutomaticTax option,
-                billingAddressCollection: Create'BillingAddressCollection option,
-                consentCollection: Create'ConsentCollection option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customFields: Create'CustomFields list option,
-                customText: Create'CustomText option,
-                customerCreation: Create'CustomerCreation option,
-                expand: string list option,
-                inactiveMessage: string option,
-                invoiceCreation: Create'InvoiceCreation option,
-                managedPayments: Create'ManagedPayments option,
-                metadata: Map<string, string> option,
-                nameCollection: Create'NameCollection option,
-                onBehalfOf: string option,
-                optionalItems: Create'OptionalItems list option,
-                paymentIntentData: Create'PaymentIntentData option,
-                paymentMethodCollection: Create'PaymentMethodCollection option,
-                paymentMethodTypes: Create'PaymentMethodTypes list option,
-                phoneNumberCollection: Create'PhoneNumberCollection option,
-                restrictions: Create'Restrictions option,
-                shippingAddressCollection: Create'ShippingAddressCollection option,
-                shippingOptions: Create'ShippingOptions list option,
-                submitType: Create'SubmitType option,
-                subscriptionData: Create'SubscriptionData option,
-                taxIdCollection: Create'TaxIdCollection option,
-                transferData: Create'TransferData option
+                lineItems: Create'LineItems list
             ) : CreateOptions
             =
             {
               LineItems = lineItems
-              AfterCompletion = afterCompletion
-              AllowPromotionCodes = allowPromotionCodes
-              ApplicationFeeAmount = applicationFeeAmount
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BillingAddressCollection = billingAddressCollection
-              ConsentCollection = consentCollection
-              Currency = currency
-              CustomFields = customFields
-              CustomText = customText
-              CustomerCreation = customerCreation
-              Expand = expand
-              InactiveMessage = inactiveMessage
-              InvoiceCreation = invoiceCreation
-              ManagedPayments = managedPayments
-              Metadata = metadata
-              NameCollection = nameCollection
-              OnBehalfOf = onBehalfOf
-              OptionalItems = optionalItems
-              PaymentIntentData = paymentIntentData
-              PaymentMethodCollection = paymentMethodCollection
-              PaymentMethodTypes = paymentMethodTypes
-              PhoneNumberCollection = phoneNumberCollection
-              Restrictions = restrictions
-              ShippingAddressCollection = shippingAddressCollection
-              ShippingOptions = shippingOptions
-              SubmitType = submitType
-              SubscriptionData = subscriptionData
-              TaxIdCollection = taxIdCollection
-              TransferData = transferData
+              AfterCompletion = None
+              AllowPromotionCodes = None
+              ApplicationFeeAmount = None
+              ApplicationFeePercent = None
+              AutomaticTax = None
+              BillingAddressCollection = None
+              ConsentCollection = None
+              Currency = None
+              CustomFields = None
+              CustomText = None
+              CustomerCreation = None
+              Expand = None
+              InactiveMessage = None
+              InvoiceCreation = None
+              ManagedPayments = None
+              Metadata = None
+              NameCollection = None
+              OnBehalfOf = None
+              OptionalItems = None
+              PaymentIntentData = None
+              PaymentMethodCollection = None
+              PaymentMethodTypes = None
+              PhoneNumberCollection = None
+              Restrictions = None
+              ShippingAddressCollection = None
+              ShippingOptions = None
+              SubmitType = None
+              SubscriptionData = None
+              TaxIdCollection = None
+              TransferData = None
             }
 
     type RetrieveOptions =
@@ -40860,13 +40402,12 @@ module PaymentLinks =
     module RetrieveOptions =
         let create
             (
-                paymentLink: string,
-                expand: string list option
+                paymentLink: string
             ) : RetrieveOptions
             =
             {
               PaymentLink = paymentLink
-              Expand = expand
+              Expand = None
             }
 
     type Update'AfterCompletionHostedConfirmation =
@@ -42212,59 +41753,35 @@ module PaymentLinks =
     module UpdateOptions =
         let create
             (
-                paymentLink: string,
-                active: bool option,
-                afterCompletion: Update'AfterCompletion option,
-                allowPromotionCodes: bool option,
-                automaticTax: Update'AutomaticTax option,
-                billingAddressCollection: Update'BillingAddressCollection option,
-                customFields: Choice<Update'CustomFields list,string> option,
-                customText: Update'CustomText option,
-                customerCreation: Update'CustomerCreation option,
-                expand: string list option,
-                inactiveMessage: Choice<string,string> option,
-                invoiceCreation: Update'InvoiceCreation option,
-                lineItems: Update'LineItems list option,
-                metadata: Map<string, string> option,
-                nameCollection: Choice<Update'NameCollectionNameCollectionParams,string> option,
-                optionalItems: Choice<Update'OptionalItems list,string> option,
-                paymentIntentData: Update'PaymentIntentData option,
-                paymentMethodCollection: Update'PaymentMethodCollection option,
-                paymentMethodTypes: Choice<Update'PaymentMethodTypes list,string> option,
-                phoneNumberCollection: Update'PhoneNumberCollection option,
-                restrictions: Choice<Update'RestrictionsRestrictionsParams,string> option,
-                shippingAddressCollection: Choice<Update'ShippingAddressCollectionShippingAddressCollectionParams,string> option,
-                submitType: Update'SubmitType option,
-                subscriptionData: Update'SubscriptionData option,
-                taxIdCollection: Update'TaxIdCollection option
+                paymentLink: string
             ) : UpdateOptions
             =
             {
               PaymentLink = paymentLink
-              Active = active
-              AfterCompletion = afterCompletion
-              AllowPromotionCodes = allowPromotionCodes
-              AutomaticTax = automaticTax
-              BillingAddressCollection = billingAddressCollection
-              CustomFields = customFields
-              CustomText = customText
-              CustomerCreation = customerCreation
-              Expand = expand
-              InactiveMessage = inactiveMessage
-              InvoiceCreation = invoiceCreation
-              LineItems = lineItems
-              Metadata = metadata
-              NameCollection = nameCollection
-              OptionalItems = optionalItems
-              PaymentIntentData = paymentIntentData
-              PaymentMethodCollection = paymentMethodCollection
-              PaymentMethodTypes = paymentMethodTypes
-              PhoneNumberCollection = phoneNumberCollection
-              Restrictions = restrictions
-              ShippingAddressCollection = shippingAddressCollection
-              SubmitType = submitType
-              SubscriptionData = subscriptionData
-              TaxIdCollection = taxIdCollection
+              Active = None
+              AfterCompletion = None
+              AllowPromotionCodes = None
+              AutomaticTax = None
+              BillingAddressCollection = None
+              CustomFields = None
+              CustomText = None
+              CustomerCreation = None
+              Expand = None
+              InactiveMessage = None
+              InvoiceCreation = None
+              LineItems = None
+              Metadata = None
+              NameCollection = None
+              OptionalItems = None
+              PaymentIntentData = None
+              PaymentMethodCollection = None
+              PaymentMethodTypes = None
+              PhoneNumberCollection = None
+              Restrictions = None
+              ShippingAddressCollection = None
+              SubmitType = None
+              SubscriptionData = None
+              TaxIdCollection = None
             }
 
     ///<p>Returns a list of your payment links.</p>
@@ -42312,19 +41829,15 @@ module PaymentLinksLineItems =
     module ListLineItemsOptions =
         let create
             (
-                paymentLink: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                paymentLink: string
             ) : ListLineItemsOptions
             =
             {
               PaymentLink = paymentLink
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>When retrieving a payment link, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
@@ -44963,13 +44476,12 @@ module PaymentMethodConfigurations =
     module RetrieveOptions =
         let create
             (
-                configuration: string,
-                expand: string list option
+                configuration: string
             ) : RetrieveOptions
             =
             {
               Configuration = configuration
-              Expand = expand
+              Expand = None
             }
 
     type Update'AcssDebitDisplayPreferencePreference =
@@ -47426,133 +46938,72 @@ module PaymentMethodConfigurations =
     module UpdateOptions =
         let create
             (
-                configuration: string,
-                acssDebit: Update'AcssDebit option,
-                active: bool option,
-                affirm: Update'Affirm option,
-                afterpayClearpay: Update'AfterpayClearpay option,
-                alipay: Update'Alipay option,
-                alma: Update'Alma option,
-                amazonPay: Update'AmazonPay option,
-                applePay: Update'ApplePay option,
-                applePayLater: Update'ApplePayLater option,
-                auBecsDebit: Update'AuBecsDebit option,
-                bacsDebit: Update'BacsDebit option,
-                bancontact: Update'Bancontact option,
-                billie: Update'Billie option,
-                blik: Update'Blik option,
-                boleto: Update'Boleto option,
-                card: Update'Card option,
-                cartesBancaires: Update'CartesBancaires option,
-                cashapp: Update'Cashapp option,
-                crypto: Update'Crypto option,
-                customerBalance: Update'CustomerBalance option,
-                eps: Update'Eps option,
-                expand: string list option,
-                fpx: Update'Fpx option,
-                frMealVoucherConecs: Update'FrMealVoucherConecs option,
-                giropay: Update'Giropay option,
-                googlePay: Update'GooglePay option,
-                grabpay: Update'Grabpay option,
-                ideal: Update'Ideal option,
-                jcb: Update'Jcb option,
-                kakaoPay: Update'KakaoPay option,
-                klarna: Update'Klarna option,
-                konbini: Update'Konbini option,
-                krCard: Update'KrCard option,
-                link: Update'Link option,
-                mbWay: Update'MbWay option,
-                mobilepay: Update'Mobilepay option,
-                multibanco: Update'Multibanco option,
-                name: string option,
-                naverPay: Update'NaverPay option,
-                nzBankAccount: Update'NzBankAccount option,
-                oxxo: Update'Oxxo option,
-                p24: Update'P24 option,
-                payByBank: Update'PayByBank option,
-                payco: Update'Payco option,
-                paynow: Update'Paynow option,
-                paypal: Update'Paypal option,
-                payto: Update'Payto option,
-                pix: Update'Pix option,
-                promptpay: Update'Promptpay option,
-                revolutPay: Update'RevolutPay option,
-                samsungPay: Update'SamsungPay option,
-                satispay: Update'Satispay option,
-                sepaDebit: Update'SepaDebit option,
-                sofort: Update'Sofort option,
-                sunbit: Update'Sunbit option,
-                swish: Update'Swish option,
-                twint: Update'Twint option,
-                upi: Update'Upi option,
-                usBankAccount: Update'UsBankAccount option,
-                wechatPay: Update'WechatPay option,
-                zip: Update'Zip option
+                configuration: string
             ) : UpdateOptions
             =
             {
               Configuration = configuration
-              AcssDebit = acssDebit
-              Active = active
-              Affirm = affirm
-              AfterpayClearpay = afterpayClearpay
-              Alipay = alipay
-              Alma = alma
-              AmazonPay = amazonPay
-              ApplePay = applePay
-              ApplePayLater = applePayLater
-              AuBecsDebit = auBecsDebit
-              BacsDebit = bacsDebit
-              Bancontact = bancontact
-              Billie = billie
-              Blik = blik
-              Boleto = boleto
-              Card = card
-              CartesBancaires = cartesBancaires
-              Cashapp = cashapp
-              Crypto = crypto
-              CustomerBalance = customerBalance
-              Eps = eps
-              Expand = expand
-              Fpx = fpx
-              FrMealVoucherConecs = frMealVoucherConecs
-              Giropay = giropay
-              GooglePay = googlePay
-              Grabpay = grabpay
-              Ideal = ideal
-              Jcb = jcb
-              KakaoPay = kakaoPay
-              Klarna = klarna
-              Konbini = konbini
-              KrCard = krCard
-              Link = link
-              MbWay = mbWay
-              Mobilepay = mobilepay
-              Multibanco = multibanco
-              Name = name
-              NaverPay = naverPay
-              NzBankAccount = nzBankAccount
-              Oxxo = oxxo
-              P24 = p24
-              PayByBank = payByBank
-              Payco = payco
-              Paynow = paynow
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              Promptpay = promptpay
-              RevolutPay = revolutPay
-              SamsungPay = samsungPay
-              Satispay = satispay
-              SepaDebit = sepaDebit
-              Sofort = sofort
-              Sunbit = sunbit
-              Swish = swish
-              Twint = twint
-              Upi = upi
-              UsBankAccount = usBankAccount
-              WechatPay = wechatPay
-              Zip = zip
+              AcssDebit = None
+              Active = None
+              Affirm = None
+              AfterpayClearpay = None
+              Alipay = None
+              Alma = None
+              AmazonPay = None
+              ApplePay = None
+              ApplePayLater = None
+              AuBecsDebit = None
+              BacsDebit = None
+              Bancontact = None
+              Billie = None
+              Blik = None
+              Boleto = None
+              Card = None
+              CartesBancaires = None
+              Cashapp = None
+              Crypto = None
+              CustomerBalance = None
+              Eps = None
+              Expand = None
+              Fpx = None
+              FrMealVoucherConecs = None
+              Giropay = None
+              GooglePay = None
+              Grabpay = None
+              Ideal = None
+              Jcb = None
+              KakaoPay = None
+              Klarna = None
+              Konbini = None
+              KrCard = None
+              Link = None
+              MbWay = None
+              Mobilepay = None
+              Multibanco = None
+              Name = None
+              NaverPay = None
+              NzBankAccount = None
+              Oxxo = None
+              P24 = None
+              PayByBank = None
+              Payco = None
+              Paynow = None
+              Paypal = None
+              Payto = None
+              Pix = None
+              Promptpay = None
+              RevolutPay = None
+              SamsungPay = None
+              Satispay = None
+              SepaDebit = None
+              Sofort = None
+              Sunbit = None
+              Swish = None
+              Twint = None
+              Upi = None
+              UsBankAccount = None
+              WechatPay = None
+              Zip = None
             }
 
     ///<p>List payment method configurations</p>
@@ -47637,15 +47088,13 @@ module PaymentMethodDomains =
     module CreateOptions =
         let create
             (
-                domainName: string,
-                enabled: bool option,
-                expand: string list option
+                domainName: string
             ) : CreateOptions
             =
             {
               DomainName = domainName
-              Enabled = enabled
-              Expand = expand
+              Enabled = None
+              Expand = None
             }
 
     type RetrieveOptions =
@@ -47660,13 +47109,12 @@ module PaymentMethodDomains =
     module RetrieveOptions =
         let create
             (
-                paymentMethodDomain: string,
-                expand: string list option
+                paymentMethodDomain: string
             ) : RetrieveOptions
             =
             {
               PaymentMethodDomain = paymentMethodDomain
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -47684,15 +47132,13 @@ module PaymentMethodDomains =
     module UpdateOptions =
         let create
             (
-                paymentMethodDomain: string,
-                enabled: bool option,
-                expand: string list option
+                paymentMethodDomain: string
             ) : UpdateOptions
             =
             {
               PaymentMethodDomain = paymentMethodDomain
-              Enabled = enabled
-              Expand = expand
+              Enabled = None
+              Expand = None
             }
 
     ///<p>Lists the details of existing payment method domains.</p>
@@ -47731,13 +47177,12 @@ module PaymentMethodDomainsValidate =
     module ValidateOptions =
         let create
             (
-                paymentMethodDomain: string,
-                expand: string list option
+                paymentMethodDomain: string
             ) : ValidateOptions
             =
             {
               PaymentMethodDomain = paymentMethodDomain
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Some payment methods might require additional steps to register a domain. If the requirements weren’t satisfied when the domain was created, the payment method will be inactive on the domain.
@@ -48927,13 +48372,12 @@ module PaymentMethods =
     module RetrieveOptions =
         let create
             (
-                paymentMethod: string,
-                expand: string list option
+                paymentMethod: string
             ) : RetrieveOptions
             =
             {
               PaymentMethod = paymentMethod
-              Expand = expand
+              Expand = None
             }
 
     type Update'AllowRedisplay =
@@ -49156,25 +48600,18 @@ module PaymentMethods =
     module UpdateOptions =
         let create
             (
-                paymentMethod: string,
-                allowRedisplay: Update'AllowRedisplay option,
-                billingDetails: Update'BillingDetails option,
-                card: Update'Card option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                payto: Update'Payto option,
-                usBankAccount: Update'UsBankAccount option
+                paymentMethod: string
             ) : UpdateOptions
             =
             {
               PaymentMethod = paymentMethod
-              AllowRedisplay = allowRedisplay
-              BillingDetails = billingDetails
-              Card = card
-              Expand = expand
-              Metadata = metadata
-              Payto = payto
-              UsBankAccount = usBankAccount
+              AllowRedisplay = None
+              BillingDetails = None
+              Card = None
+              Expand = None
+              Metadata = None
+              Payto = None
+              UsBankAccount = None
             }
 
     ///<p>Returns a list of all PaymentMethods.</p>
@@ -49220,17 +48657,14 @@ module PaymentMethodsAttach =
     module AttachOptions =
         let create
             (
-                paymentMethod: string,
-                customer: string option,
-                customerAccount: string option,
-                expand: string list option
+                paymentMethod: string
             ) : AttachOptions
             =
             {
               PaymentMethod = paymentMethod
-              Customer = customer
-              CustomerAccount = customerAccount
-              Expand = expand
+              Customer = None
+              CustomerAccount = None
+              Expand = None
             }
 
     ///<p>Attaches a PaymentMethod object to a Customer.</p>
@@ -49262,13 +48696,12 @@ module PaymentMethodsDetach =
     module DetachOptions =
         let create
             (
-                paymentMethod: string,
-                expand: string list option
+                paymentMethod: string
             ) : DetachOptions
             =
             {
               PaymentMethod = paymentMethod
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Detaches a PaymentMethod object from a Customer. After a PaymentMethod is detached, it can no longer be used for a payment or re-attached to a Customer.</p>
@@ -49662,33 +49095,23 @@ module PaymentRecordsReportPayment =
             (
                 amountRequested: ReportPayment'AmountRequested,
                 initiatedAt: DateTime,
-                paymentMethodDetails: ReportPayment'PaymentMethodDetails,
-                customerDetails: ReportPayment'CustomerDetails option,
-                customerPresence: ReportPayment'CustomerPresence option,
-                description: string option,
-                expand: string list option,
-                failed: ReportPayment'Failed option,
-                guaranteed: ReportPayment'Guaranteed option,
-                metadata: Map<string, string> option,
-                outcome: ReportPayment'Outcome option,
-                processorDetails: ReportPayment'ProcessorDetails option,
-                shippingDetails: ReportPayment'ShippingDetails option
+                paymentMethodDetails: ReportPayment'PaymentMethodDetails
             ) : ReportPaymentOptions
             =
             {
               AmountRequested = amountRequested
               InitiatedAt = initiatedAt
               PaymentMethodDetails = paymentMethodDetails
-              CustomerDetails = customerDetails
-              CustomerPresence = customerPresence
-              Description = description
-              Expand = expand
-              Failed = failed
-              Guaranteed = guaranteed
-              Metadata = metadata
-              Outcome = outcome
-              ProcessorDetails = processorDetails
-              ShippingDetails = shippingDetails
+              CustomerDetails = None
+              CustomerPresence = None
+              Description = None
+              Expand = None
+              Failed = None
+              Guaranteed = None
+              Metadata = None
+              Outcome = None
+              ProcessorDetails = None
+              ShippingDetails = None
             }
 
     ///<p>Report a new Payment Record. You may report a Payment Record as it is
@@ -49713,13 +49136,12 @@ module PaymentRecords =
     module RetrieveOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : RetrieveOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Retrieves a Payment Record with the given ID</p>
@@ -50005,28 +49427,20 @@ module PaymentRecordsReportPaymentAttempt =
         let create
             (
                 id: string,
-                initiatedAt: DateTime,
-                description: string option,
-                expand: string list option,
-                failed: ReportPaymentAttempt'Failed option,
-                guaranteed: ReportPaymentAttempt'Guaranteed option,
-                metadata: Map<string, string> option,
-                outcome: ReportPaymentAttempt'Outcome option,
-                paymentMethodDetails: ReportPaymentAttempt'PaymentMethodDetails option,
-                shippingDetails: ReportPaymentAttempt'ShippingDetails option
+                initiatedAt: DateTime
             ) : ReportPaymentAttemptOptions
             =
             {
               Id = id
               InitiatedAt = initiatedAt
-              Description = description
-              Expand = expand
-              Failed = failed
-              Guaranteed = guaranteed
-              Metadata = metadata
-              Outcome = outcome
-              PaymentMethodDetails = paymentMethodDetails
-              ShippingDetails = shippingDetails
+              Description = None
+              Expand = None
+              Failed = None
+              Guaranteed = None
+              Metadata = None
+              Outcome = None
+              PaymentMethodDetails = None
+              ShippingDetails = None
             }
 
     ///<p>Report a new payment attempt on the specified Payment Record. A new payment
@@ -50057,16 +49471,14 @@ module PaymentRecordsReportPaymentAttemptCanceled =
         let create
             (
                 canceledAt: DateTime,
-                id: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                id: string
             ) : ReportPaymentAttemptCanceledOptions
             =
             {
               CanceledAt = canceledAt
               Id = id
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Report that the most recent payment attempt on the specified Payment Record
@@ -50097,16 +49509,14 @@ module PaymentRecordsReportPaymentAttemptFailed =
         let create
             (
                 failedAt: DateTime,
-                id: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                id: string
             ) : ReportPaymentAttemptFailedOptions
             =
             {
               FailedAt = failedAt
               Id = id
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Report that the most recent payment attempt on the specified Payment Record
@@ -50137,16 +49547,14 @@ module PaymentRecordsReportPaymentAttemptGuaranteed =
         let create
             (
                 guaranteedAt: DateTime,
-                id: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                id: string
             ) : ReportPaymentAttemptGuaranteedOptions
             =
             {
               GuaranteedAt = guaranteedAt
               Id = id
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Report that the most recent payment attempt on the specified Payment Record
@@ -50283,21 +49691,16 @@ module PaymentRecordsReportPaymentAttemptInformational =
     module ReportPaymentAttemptInformationalOptions =
         let create
             (
-                id: string,
-                customerDetails: ReportPaymentAttemptInformational'CustomerDetails option,
-                description: Choice<string,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                shippingDetails: Choice<ReportPaymentAttemptInformational'ShippingDetailsShippingDetails,string> option
+                id: string
             ) : ReportPaymentAttemptInformationalOptions
             =
             {
               Id = id
-              CustomerDetails = customerDetails
-              Description = description
-              Expand = expand
-              Metadata = metadata
-              ShippingDetails = shippingDetails
+              CustomerDetails = None
+              Description = None
+              Expand = None
+              Metadata = None
+              ShippingDetails = None
             }
 
     ///<p>Report informational updates on the specified Payment Record.</p>
@@ -50423,11 +49826,7 @@ module PaymentRecordsReportRefund =
                 id: string,
                 outcome: ReportRefund'Outcome,
                 processorDetails: ReportRefund'ProcessorDetails,
-                refunded: ReportRefund'Refunded,
-                amount: ReportRefund'Amount option,
-                expand: string list option,
-                initiatedAt: DateTime option,
-                metadata: Map<string, string> option
+                refunded: ReportRefund'Refunded
             ) : ReportRefundOptions
             =
             {
@@ -50435,10 +49834,10 @@ module PaymentRecordsReportRefund =
               Outcome = outcome
               ProcessorDetails = processorDetails
               Refunded = refunded
-              Amount = amount
-              Expand = expand
-              InitiatedAt = initiatedAt
-              Metadata = metadata
+              Amount = None
+              Expand = None
+              InitiatedAt = None
+              Metadata = None
             }
 
     ///<p>Report that the most recent payment attempt on the specified Payment Record
@@ -50605,29 +50004,20 @@ module PromotionCodes =
     module CreateOptions =
         let create
             (
-                promotion: Create'Promotion,
-                active: bool option,
-                code: string option,
-                customer: string option,
-                customerAccount: string option,
-                expand: string list option,
-                expiresAt: DateTime option,
-                maxRedemptions: int option,
-                metadata: Map<string, string> option,
-                restrictions: Create'Restrictions option
+                promotion: Create'Promotion
             ) : CreateOptions
             =
             {
               Promotion = promotion
-              Active = active
-              Code = code
-              Customer = customer
-              CustomerAccount = customerAccount
-              Expand = expand
-              ExpiresAt = expiresAt
-              MaxRedemptions = maxRedemptions
-              Metadata = metadata
-              Restrictions = restrictions
+              Active = None
+              Code = None
+              Customer = None
+              CustomerAccount = None
+              Expand = None
+              ExpiresAt = None
+              MaxRedemptions = None
+              Metadata = None
+              Restrictions = None
             }
 
     type RetrieveOptions =
@@ -50642,13 +50032,12 @@ module PromotionCodes =
     module RetrieveOptions =
         let create
             (
-                promotionCode: string,
-                expand: string list option
+                promotionCode: string
             ) : RetrieveOptions
             =
             {
               PromotionCode = promotionCode
-              Expand = expand
+              Expand = None
             }
 
     type Update'Restrictions =
@@ -50689,19 +50078,15 @@ module PromotionCodes =
     module UpdateOptions =
         let create
             (
-                promotionCode: string,
-                active: bool option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                restrictions: Update'Restrictions option
+                promotionCode: string
             ) : UpdateOptions
             =
             {
               PromotionCode = promotionCode
-              Active = active
-              Expand = expand
-              Metadata = metadata
-              Restrictions = restrictions
+              Active = None
+              Expand = None
+              Metadata = None
+              Restrictions = None
             }
 
     ///<p>Returns a list of your promotion codes.</p>
@@ -50787,13 +50172,12 @@ module RadarEarlyFraudWarnings =
     module RetrieveOptions =
         let create
             (
-                earlyFraudWarning: string,
-                expand: string list option
+                earlyFraudWarning: string
             ) : RetrieveOptions
             =
             {
               EarlyFraudWarning = earlyFraudWarning
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of early fraud warnings.</p>
@@ -51156,18 +50540,15 @@ module RadarPaymentEvaluations =
         let create
             (
                 customerDetails: Create'CustomerDetails,
-                paymentDetails: Create'PaymentDetails,
-                clientDeviceMetadataDetails: Create'ClientDeviceMetadataDetails option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                paymentDetails: Create'PaymentDetails
             ) : CreateOptions
             =
             {
               CustomerDetails = customerDetails
               PaymentDetails = paymentDetails
-              ClientDeviceMetadataDetails = clientDeviceMetadataDetails
-              Expand = expand
-              Metadata = metadata
+              ClientDeviceMetadataDetails = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Request a Radar API fraud risk score from Stripe for a payment before sending it for external processor authorization.</p>
@@ -51205,23 +50586,17 @@ module RadarValueListItems =
     module ListOptions =
         let create
             (
-                valueList: string,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                value: string option
+                valueList: string
             ) : ListOptions
             =
             {
               ValueList = valueList
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Value = value
+              Created = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              Value = None
             }
 
     type CreateOptions =
@@ -51241,14 +50616,13 @@ module RadarValueListItems =
         let create
             (
                 value: string,
-                valueList: string,
-                expand: string list option
+                valueList: string
             ) : CreateOptions
             =
             {
               Value = value
               ValueList = valueList
-              Expand = expand
+              Expand = None
             }
 
     type DeleteOptions =
@@ -51277,13 +50651,12 @@ module RadarValueListItems =
     module RetrieveOptions =
         let create
             (
-                item: string,
-                expand: string list option
+                item: string
             ) : RetrieveOptions
             =
             {
               Item = item
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -51394,18 +50767,15 @@ module RadarValueLists =
         let create
             (
                 alias: string,
-                name: string,
-                expand: string list option,
-                itemType: Create'ItemType option,
-                metadata: Map<string, string> option
+                name: string
             ) : CreateOptions
             =
             {
               Alias = alias
               Name = name
-              Expand = expand
-              ItemType = itemType
-              Metadata = metadata
+              Expand = None
+              ItemType = None
+              Metadata = None
             }
 
     type DeleteOptions =
@@ -51434,13 +50804,12 @@ module RadarValueLists =
     module RetrieveOptions =
         let create
             (
-                valueList: string,
-                expand: string list option
+                valueList: string
             ) : RetrieveOptions
             =
             {
               ValueList = valueList
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -51464,19 +50833,15 @@ module RadarValueLists =
     module UpdateOptions =
         let create
             (
-                valueList: string,
-                alias: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                name: string option
+                valueList: string
             ) : UpdateOptions
             =
             {
               ValueList = valueList
-              Alias = alias
-              Expand = expand
-              Metadata = metadata
-              Name = name
+              Alias = None
+              Expand = None
+              Metadata = None
+              Name = None
             }
 
     ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -51536,21 +50901,16 @@ module SetupAttempts =
     module ListOptions =
         let create
             (
-                setupIntent: string,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                setupIntent: string
             ) : ListOptions
             =
             {
               SetupIntent = setupIntent
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              Created = None
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>Returns a list of SetupAttempts that associate with a provided SetupIntent.</p>
@@ -54046,15 +53406,13 @@ module SetupIntents =
     module RetrieveOptions =
         let create
             (
-                intent: string,
-                clientSecret: string option,
-                expand: string list option
+                intent: string
             ) : RetrieveOptions
             =
             {
               Intent = intent
-              ClientSecret = clientSecret
-              Expand = expand
+              ClientSecret = None
+              Expand = None
             }
 
     type Update'ExcludedPaymentMethodTypes =
@@ -56265,37 +55623,24 @@ module SetupIntents =
     module UpdateOptions =
         let create
             (
-                intent: string,
-                attachToSelf: bool option,
-                customer: string option,
-                customerAccount: string option,
-                description: string option,
-                excludedPaymentMethodTypes: Choice<Update'ExcludedPaymentMethodTypes list,string> option,
-                expand: string list option,
-                flowDirections: Update'FlowDirections list option,
-                metadata: Map<string, string> option,
-                paymentMethod: string option,
-                paymentMethodConfiguration: string option,
-                paymentMethodData: Update'PaymentMethodData option,
-                paymentMethodOptions: Update'PaymentMethodOptions option,
-                paymentMethodTypes: string list option
+                intent: string
             ) : UpdateOptions
             =
             {
               Intent = intent
-              AttachToSelf = attachToSelf
-              Customer = customer
-              CustomerAccount = customerAccount
-              Description = description
-              ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
-              Expand = expand
-              FlowDirections = flowDirections
-              Metadata = metadata
-              PaymentMethod = paymentMethod
-              PaymentMethodConfiguration = paymentMethodConfiguration
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
+              AttachToSelf = None
+              Customer = None
+              CustomerAccount = None
+              Description = None
+              ExcludedPaymentMethodTypes = None
+              Expand = None
+              FlowDirections = None
+              Metadata = None
+              PaymentMethod = None
+              PaymentMethodConfiguration = None
+              PaymentMethodData = None
+              PaymentMethodOptions = None
+              PaymentMethodTypes = None
             }
 
     ///<p>Returns a list of SetupIntents.</p>
@@ -56346,15 +55691,13 @@ module SetupIntentsCancel =
     module CancelOptions =
         let create
             (
-                intent: string,
-                cancellationReason: Cancel'CancellationReason option,
-                expand: string list option
+                intent: string
             ) : CancelOptions
             =
             {
               Intent = intent
-              CancellationReason = cancellationReason
-              Expand = expand
+              CancellationReason = None
+              Expand = None
             }
 
     ///<p>You can cancel a SetupIntent object when it’s in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. </p>
@@ -58637,27 +57980,19 @@ module SetupIntentsConfirm =
     module ConfirmOptions =
         let create
             (
-                intent: string,
-                confirmationToken: string option,
-                expand: string list option,
-                mandateData: Choice<Confirm'MandateDataSecretKey,string,Confirm'MandateDataClientKey> option,
-                paymentMethod: string option,
-                paymentMethodData: Confirm'PaymentMethodData option,
-                paymentMethodOptions: Confirm'PaymentMethodOptions option,
-                returnUrl: string option,
-                useStripeSdk: bool option
+                intent: string
             ) : ConfirmOptions
             =
             {
               Intent = intent
-              ConfirmationToken = confirmationToken
-              Expand = expand
-              MandateData = mandateData
-              PaymentMethod = paymentMethod
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              ReturnUrl = returnUrl
-              UseStripeSdk = useStripeSdk
+              ConfirmationToken = None
+              Expand = None
+              MandateData = None
+              PaymentMethod = None
+              PaymentMethodData = None
+              PaymentMethodOptions = None
+              ReturnUrl = None
+              UseStripeSdk = None
             }
 
     ///<p>Confirm that your customer intends to set up the current or
@@ -58696,17 +58031,14 @@ module SetupIntentsVerifyMicrodeposits =
     module VerifyMicrodepositsOptions =
         let create
             (
-                intent: string,
-                amounts: int list option,
-                descriptorCode: string option,
-                expand: string list option
+                intent: string
             ) : VerifyMicrodepositsOptions
             =
             {
               Intent = intent
-              Amounts = amounts
-              DescriptorCode = descriptorCode
-              Expand = expand
+              Amounts = None
+              DescriptorCode = None
+              Expand = None
             }
 
     ///<p>Verifies microdeposits on a SetupIntent object.</p>
@@ -58738,19 +58070,15 @@ module SubscriptionItems =
     module ListOptions =
         let create
             (
-                subscription: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                subscription: string
             ) : ListOptions
             =
             {
               Subscription = subscription
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type Create'BillingThresholdsItemBillingThresholds =
@@ -58932,35 +58260,23 @@ module SubscriptionItems =
     module CreateOptions =
         let create
             (
-                subscription: string,
-                billingThresholds: Choice<Create'BillingThresholdsItemBillingThresholds,string> option,
-                discounts: Choice<Create'Discounts list,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                paymentBehavior: Create'PaymentBehavior option,
-                plan: string option,
-                price: string option,
-                priceData: Create'PriceData option,
-                prorationBehavior: Create'ProrationBehavior option,
-                prorationDate: DateTime option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
+                subscription: string
             ) : CreateOptions
             =
             {
               Subscription = subscription
-              BillingThresholds = billingThresholds
-              Discounts = discounts
-              Expand = expand
-              Metadata = metadata
-              PaymentBehavior = paymentBehavior
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              ProrationBehavior = prorationBehavior
-              ProrationDate = prorationDate
-              Quantity = quantity
-              TaxRates = taxRates
+              BillingThresholds = None
+              Discounts = None
+              Expand = None
+              Metadata = None
+              PaymentBehavior = None
+              Plan = None
+              Price = None
+              PriceData = None
+              ProrationBehavior = None
+              ProrationDate = None
+              Quantity = None
+              TaxRates = None
             }
 
     type Delete'PaymentBehavior =
@@ -58998,19 +58314,15 @@ module SubscriptionItems =
     module DeleteOptions =
         let create
             (
-                item: string,
-                clearUsage: bool option,
-                paymentBehavior: Delete'PaymentBehavior option,
-                prorationBehavior: Delete'ProrationBehavior option,
-                prorationDate: DateTime option
+                item: string
             ) : DeleteOptions
             =
             {
               Item = item
-              ClearUsage = clearUsage
-              PaymentBehavior = paymentBehavior
-              ProrationBehavior = prorationBehavior
-              ProrationDate = prorationDate
+              ClearUsage = None
+              PaymentBehavior = None
+              ProrationBehavior = None
+              ProrationDate = None
             }
 
     type RetrieveOptions =
@@ -59025,13 +58337,12 @@ module SubscriptionItems =
     module RetrieveOptions =
         let create
             (
-                item: string,
-                expand: string list option
+                item: string
             ) : RetrieveOptions
             =
             {
               Item = item
-              Expand = expand
+              Expand = None
             }
 
     type Update'BillingThresholdsItemBillingThresholds =
@@ -59215,37 +58526,24 @@ module SubscriptionItems =
     module UpdateOptions =
         let create
             (
-                item: string,
-                billingThresholds: Choice<Update'BillingThresholdsItemBillingThresholds,string> option,
-                discounts: Choice<Update'Discounts list,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                offSession: bool option,
-                paymentBehavior: Update'PaymentBehavior option,
-                plan: string option,
-                price: string option,
-                priceData: Update'PriceData option,
-                prorationBehavior: Update'ProrationBehavior option,
-                prorationDate: DateTime option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
+                item: string
             ) : UpdateOptions
             =
             {
               Item = item
-              BillingThresholds = billingThresholds
-              Discounts = discounts
-              Expand = expand
-              Metadata = metadata
-              OffSession = offSession
-              PaymentBehavior = paymentBehavior
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              ProrationBehavior = prorationBehavior
-              ProrationDate = prorationDate
-              Quantity = quantity
-              TaxRates = taxRates
+              BillingThresholds = None
+              Discounts = None
+              Expand = None
+              Metadata = None
+              OffSession = None
+              PaymentBehavior = None
+              Plan = None
+              Price = None
+              PriceData = None
+              ProrationBehavior = None
+              ProrationDate = None
+              Quantity = None
+              TaxRates = None
             }
 
     ///<p>Returns a list of your subscription items for a given subscription.</p>
@@ -60381,13 +59679,12 @@ module SubscriptionSchedules =
     module RetrieveOptions =
         let create
             (
-                schedule: string,
-                expand: string list option
+                schedule: string
             ) : RetrieveOptions
             =
             {
               Schedule = schedule
-              Expand = expand
+              Expand = None
             }
 
     type Update'DefaultSettingsAutomaticTaxLiabilityType =
@@ -61347,23 +60644,17 @@ module SubscriptionSchedules =
     module UpdateOptions =
         let create
             (
-                schedule: string,
-                defaultSettings: Update'DefaultSettings option,
-                endBehavior: Update'EndBehavior option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                phases: Update'Phases list option,
-                prorationBehavior: Update'ProrationBehavior option
+                schedule: string
             ) : UpdateOptions
             =
             {
               Schedule = schedule
-              DefaultSettings = defaultSettings
-              EndBehavior = endBehavior
-              Expand = expand
-              Metadata = metadata
-              Phases = phases
-              ProrationBehavior = prorationBehavior
+              DefaultSettings = None
+              EndBehavior = None
+              Expand = None
+              Metadata = None
+              Phases = None
+              ProrationBehavior = None
             }
 
     ///<p>Retrieves the list of your subscription schedules.</p>
@@ -61408,17 +60699,14 @@ module SubscriptionSchedulesCancel =
     module CancelOptions =
         let create
             (
-                schedule: string,
-                expand: string list option,
-                invoiceNow: bool option,
-                prorate: bool option
+                schedule: string
             ) : CancelOptions
             =
             {
               Schedule = schedule
-              Expand = expand
-              InvoiceNow = invoiceNow
-              Prorate = prorate
+              Expand = None
+              InvoiceNow = None
+              Prorate = None
             }
 
     ///<p>Cancels a subscription schedule and its associated subscription immediately (if the subscription schedule has an active subscription). A subscription schedule can only be canceled if its status is <code>not_started</code> or <code>active</code>.</p>
@@ -61443,15 +60731,13 @@ module SubscriptionSchedulesRelease =
     module ReleaseOptions =
         let create
             (
-                schedule: string,
-                expand: string list option,
-                preserveCancelDate: bool option
+                schedule: string
             ) : ReleaseOptions
             =
             {
               Schedule = schedule
-              Expand = expand
-              PreserveCancelDate = preserveCancelDate
+              Expand = None
+              PreserveCancelDate = None
             }
 
     ///<p>Releases the subscription schedule immediately, which will stop scheduling of its phases, but leave any existing subscription in place. A schedule can only be released if its status is <code>not_started</code> or <code>active</code>. If the subscription schedule is currently associated with a subscription, releasing it will remove its <code>subscription</code> property and set the subscription’s ID to the <code>released_subscription</code> property.</p>
@@ -63123,19 +62409,15 @@ module Subscriptions =
     module CancelOptions =
         let create
             (
-                subscriptionExposedId: string,
-                cancellationDetails: Cancel'CancellationDetails option,
-                expand: string list option,
-                invoiceNow: bool option,
-                prorate: bool option
+                subscriptionExposedId: string
             ) : CancelOptions
             =
             {
               SubscriptionExposedId = subscriptionExposedId
-              CancellationDetails = cancellationDetails
-              Expand = expand
-              InvoiceNow = invoiceNow
-              Prorate = prorate
+              CancellationDetails = None
+              Expand = None
+              InvoiceNow = None
+              Prorate = None
             }
 
     type RetrieveOptions =
@@ -63150,13 +62432,12 @@ module Subscriptions =
     module RetrieveOptions =
         let create
             (
-                subscriptionExposedId: string,
-                expand: string list option
+                subscriptionExposedId: string
             ) : RetrieveOptions
             =
             {
               SubscriptionExposedId = subscriptionExposedId
-              Expand = expand
+              Expand = None
             }
 
     type Update'AddInvoiceItemsDiscounts =
@@ -64588,73 +63869,42 @@ module Subscriptions =
     module UpdateOptions =
         let create
             (
-                subscriptionExposedId: string,
-                addInvoiceItems: Update'AddInvoiceItems list option,
-                applicationFeePercent: Choice<decimal,string> option,
-                automaticTax: Update'AutomaticTax option,
-                billingCycleAnchor: Update'BillingCycleAnchor option,
-                billingThresholds: Choice<Update'BillingThresholdsBillingThresholds,string> option,
-                cancelAt: Choice<DateTime,string,Update'CancelAt> option,
-                cancelAtPeriodEnd: bool option,
-                cancellationDetails: Update'CancellationDetails option,
-                collectionMethod: Update'CollectionMethod option,
-                daysUntilDue: int option,
-                defaultPaymentMethod: string option,
-                defaultSource: Choice<string,string> option,
-                defaultTaxRates: Choice<string list,string> option,
-                description: Choice<string,string> option,
-                discounts: Choice<Update'Discounts list,string> option,
-                expand: string list option,
-                invoiceSettings: Update'InvoiceSettings option,
-                items: Update'Items list option,
-                metadata: Map<string, string> option,
-                offSession: bool option,
-                onBehalfOf: Choice<string,string> option,
-                pauseCollection: Choice<Update'PauseCollectionPauseCollection,string> option,
-                paymentBehavior: Update'PaymentBehavior option,
-                paymentSettings: Update'PaymentSettings option,
-                pendingInvoiceItemInterval: Choice<Update'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string> option,
-                prorationBehavior: Update'ProrationBehavior option,
-                prorationDate: DateTime option,
-                transferData: Choice<Update'TransferDataTransferDataSpecs,string> option,
-                trialEnd: Choice<Update'TrialEnd,DateTime> option,
-                trialFromPlan: bool option,
-                trialSettings: Update'TrialSettings option
+                subscriptionExposedId: string
             ) : UpdateOptions
             =
             {
               SubscriptionExposedId = subscriptionExposedId
-              AddInvoiceItems = addInvoiceItems
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BillingCycleAnchor = billingCycleAnchor
-              BillingThresholds = billingThresholds
-              CancelAt = cancelAt
-              CancelAtPeriodEnd = cancelAtPeriodEnd
-              CancellationDetails = cancellationDetails
-              CollectionMethod = collectionMethod
-              DaysUntilDue = daysUntilDue
-              DefaultPaymentMethod = defaultPaymentMethod
-              DefaultSource = defaultSource
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              Expand = expand
-              InvoiceSettings = invoiceSettings
-              Items = items
-              Metadata = metadata
-              OffSession = offSession
-              OnBehalfOf = onBehalfOf
-              PauseCollection = pauseCollection
-              PaymentBehavior = paymentBehavior
-              PaymentSettings = paymentSettings
-              PendingInvoiceItemInterval = pendingInvoiceItemInterval
-              ProrationBehavior = prorationBehavior
-              ProrationDate = prorationDate
-              TransferData = transferData
-              TrialEnd = trialEnd
-              TrialFromPlan = trialFromPlan
-              TrialSettings = trialSettings
+              AddInvoiceItems = None
+              ApplicationFeePercent = None
+              AutomaticTax = None
+              BillingCycleAnchor = None
+              BillingThresholds = None
+              CancelAt = None
+              CancelAtPeriodEnd = None
+              CancellationDetails = None
+              CollectionMethod = None
+              DaysUntilDue = None
+              DefaultPaymentMethod = None
+              DefaultSource = None
+              DefaultTaxRates = None
+              Description = None
+              Discounts = None
+              Expand = None
+              InvoiceSettings = None
+              Items = None
+              Metadata = None
+              OffSession = None
+              OnBehalfOf = None
+              PauseCollection = None
+              PaymentBehavior = None
+              PaymentSettings = None
+              PendingInvoiceItemInterval = None
+              ProrationBehavior = None
+              ProrationDate = None
+              TransferData = None
+              TrialEnd = None
+              TrialFromPlan = None
+              TrialSettings = None
             }
 
     ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
@@ -64724,17 +63974,14 @@ module SubscriptionsSearch =
     module SearchOptions =
         let create
             (
-                query: string,
-                expand: string list option,
-                limit: int option,
-                page: string option
+                query: string
             ) : SearchOptions
             =
             {
               Query = query
-              Expand = expand
-              Limit = limit
-              Page = page
+              Expand = None
+              Limit = None
+              Page = None
             }
 
     ///<p>Search for subscriptions you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -64830,14 +64077,13 @@ module SubscriptionsMigrate =
         let create
             (
                 billingMode: Migrate'BillingMode,
-                subscription: string,
-                expand: string list option
+                subscription: string
             ) : MigrateOptions
             =
             {
               BillingMode = billingMode
               Subscription = subscription
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Upgrade the billing_mode of an existing subscription.</p>
@@ -64877,19 +64123,15 @@ module SubscriptionsResume =
     module ResumeOptions =
         let create
             (
-                subscription: string,
-                billingCycleAnchor: Resume'BillingCycleAnchor option,
-                expand: string list option,
-                prorationBehavior: Resume'ProrationBehavior option,
-                prorationDate: DateTime option
+                subscription: string
             ) : ResumeOptions
             =
             {
               Subscription = subscription
-              BillingCycleAnchor = billingCycleAnchor
-              Expand = expand
-              ProrationBehavior = prorationBehavior
-              ProrationDate = prorationDate
+              BillingCycleAnchor = None
+              Expand = None
+              ProrationBehavior = None
+              ProrationDate = None
             }
 
     ///<p>Initiates resumption of a paused subscription, optionally resetting the billing cycle anchor and creating prorations. If no resumption invoice is generated, the subscription becomes <code>active</code> immediately. If a resumption invoice is generated, the subscription remains <code>paused</code> until the invoice is paid or marked uncollectible. If the invoice isn’t paid by the expiration date, it is voided and the subscription remains <code>paused</code>. You can only resume subscriptions with <code>collection_method</code> set to <code>charge_automatically</code>. <code>send_invoice</code> subscriptions are not supported.</p>
@@ -66130,17 +65372,15 @@ module TestHelpersCustomersFundCashBalance =
             (
                 amount: int,
                 currency: IsoTypes.IsoCurrencyCode,
-                customer: string,
-                expand: string list option,
-                reference: string option
+                customer: string
             ) : FundCashBalanceOptions
             =
             {
               Amount = amount
               Currency = currency
               Customer = customer
-              Expand = expand
-              Reference = reference
+              Expand = None
+              Reference = None
             }
 
     ///<p>Create an incoming testmode bank transfer</p>
@@ -67072,43 +66312,27 @@ module TestHelpersIssuingAuthorizations =
     module CreateOptions =
         let create
             (
-                card: string,
-                amount: int option,
-                amountDetails: Create'AmountDetails option,
-                authorizationMethod: Create'AuthorizationMethod option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                expand: string list option,
-                fleet: Create'Fleet option,
-                fraudDisputabilityLikelihood: Create'FraudDisputabilityLikelihood option,
-                fuel: Create'Fuel option,
-                isAmountControllable: bool option,
-                merchantAmount: int option,
-                merchantCurrency: IsoTypes.IsoCurrencyCode option,
-                merchantData: Create'MerchantData option,
-                networkData: Create'NetworkData option,
-                riskAssessment: Create'RiskAssessment option,
-                verificationData: Create'VerificationData option,
-                wallet: Create'Wallet option
+                card: string
             ) : CreateOptions
             =
             {
               Card = card
-              Amount = amount
-              AmountDetails = amountDetails
-              AuthorizationMethod = authorizationMethod
-              Currency = currency
-              Expand = expand
-              Fleet = fleet
-              FraudDisputabilityLikelihood = fraudDisputabilityLikelihood
-              Fuel = fuel
-              IsAmountControllable = isAmountControllable
-              MerchantAmount = merchantAmount
-              MerchantCurrency = merchantCurrency
-              MerchantData = merchantData
-              NetworkData = networkData
-              RiskAssessment = riskAssessment
-              VerificationData = verificationData
-              Wallet = wallet
+              Amount = None
+              AmountDetails = None
+              AuthorizationMethod = None
+              Currency = None
+              Expand = None
+              Fleet = None
+              FraudDisputabilityLikelihood = None
+              Fuel = None
+              IsAmountControllable = None
+              MerchantAmount = None
+              MerchantCurrency = None
+              MerchantData = None
+              NetworkData = None
+              RiskAssessment = None
+              VerificationData = None
+              Wallet = None
             }
 
     ///<p>Create a test-mode authorization.</p>
@@ -67524,19 +66748,15 @@ module TestHelpersIssuingAuthorizationsCapture =
     module CaptureOptions =
         let create
             (
-                authorization: string,
-                captureAmount: int option,
-                closeAuthorization: bool option,
-                expand: string list option,
-                purchaseDetails: Capture'PurchaseDetails option
+                authorization: string
             ) : CaptureOptions
             =
             {
               Authorization = authorization
-              CaptureAmount = captureAmount
-              CloseAuthorization = closeAuthorization
-              Expand = expand
-              PurchaseDetails = purchaseDetails
+              CaptureAmount = None
+              CloseAuthorization = None
+              Expand = None
+              PurchaseDetails = None
             }
 
     ///<p>Capture a test-mode authorization.</p>
@@ -67558,13 +66778,12 @@ module TestHelpersIssuingAuthorizationsExpire =
     module ExpireOptions =
         let create
             (
-                authorization: string,
-                expand: string list option
+                authorization: string
             ) : ExpireOptions
             =
             {
               Authorization = authorization
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Expire a test-mode Authorization.</p>
@@ -67812,18 +67031,15 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
         let create
             (
                 authorization: string,
-                finalAmount: int,
-                expand: string list option,
-                fleet: FinalizeAmount'Fleet option,
-                fuel: FinalizeAmount'Fuel option
+                finalAmount: int
             ) : FinalizeAmountOptions
             =
             {
               Authorization = authorization
               FinalAmount = finalAmount
-              Expand = expand
-              Fleet = fleet
-              Fuel = fuel
+              Expand = None
+              Fleet = None
+              Fuel = None
             }
 
     ///<p>Finalize the amount on an Authorization prior to capture, when the initial authorization was for an estimated amount.</p>
@@ -67849,14 +67065,13 @@ module TestHelpersIssuingAuthorizationsFraudChallengesRespond =
         let create
             (
                 authorization: string,
-                confirmed: bool,
-                expand: string list option
+                confirmed: bool
             ) : RespondOptions
             =
             {
               Authorization = authorization
               Confirmed = confirmed
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Respond to a fraud challenge on a testmode Issuing authorization, simulating either a confirmation of fraud or a correction of legitimacy.</p>
@@ -67885,16 +67100,14 @@ module TestHelpersIssuingAuthorizationsIncrement =
         let create
             (
                 authorization: string,
-                incrementAmount: int,
-                expand: string list option,
-                isAmountControllable: bool option
+                incrementAmount: int
             ) : IncrementOptions
             =
             {
               Authorization = authorization
               IncrementAmount = incrementAmount
-              Expand = expand
-              IsAmountControllable = isAmountControllable
+              Expand = None
+              IsAmountControllable = None
             }
 
     ///<p>Increment a test-mode Authorization.</p>
@@ -67919,15 +67132,13 @@ module TestHelpersIssuingAuthorizationsReverse =
     module ReverseOptions =
         let create
             (
-                authorization: string,
-                expand: string list option,
-                reverseAmount: int option
+                authorization: string
             ) : ReverseOptions
             =
             {
               Authorization = authorization
-              Expand = expand
-              ReverseAmount = reverseAmount
+              Expand = None
+              ReverseAmount = None
             }
 
     ///<p>Reverse a test-mode Authorization.</p>
@@ -67949,13 +67160,12 @@ module TestHelpersIssuingCardsShippingDeliver =
     module DeliverCardOptions =
         let create
             (
-                card: string,
-                expand: string list option
+                card: string
             ) : DeliverCardOptions
             =
             {
               Card = card
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>delivered</code>.</p>
@@ -67977,13 +67187,12 @@ module TestHelpersIssuingCardsShippingFail =
     module FailCardOptions =
         let create
             (
-                card: string,
-                expand: string list option
+                card: string
             ) : FailCardOptions
             =
             {
               Card = card
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>failure</code>.</p>
@@ -68005,13 +67214,12 @@ module TestHelpersIssuingCardsShippingReturn =
     module ReturnCardOptions =
         let create
             (
-                card: string,
-                expand: string list option
+                card: string
             ) : ReturnCardOptions
             =
             {
               Card = card
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>returned</code>.</p>
@@ -68033,13 +67241,12 @@ module TestHelpersIssuingCardsShippingShip =
     module ShipCardOptions =
         let create
             (
-                card: string,
-                expand: string list option
+                card: string
             ) : ShipCardOptions
             =
             {
               Card = card
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>shipped</code>.</p>
@@ -68061,13 +67268,12 @@ module TestHelpersIssuingCardsShippingSubmit =
     module SubmitCardOptions =
         let create
             (
-                card: string,
-                expand: string list option
+                card: string
             ) : SubmitCardOptions
             =
             {
               Card = card
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>submitted</code>. This method requires Stripe Version ‘2024-09-30.acacia’ or later.</p>
@@ -68089,13 +67295,12 @@ module TestHelpersIssuingPersonalizationDesignsActivate =
     module ActivateOptions =
         let create
             (
-                personalizationDesign: string,
-                expand: string list option
+                personalizationDesign: string
             ) : ActivateOptions
             =
             {
               PersonalizationDesign = personalizationDesign
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the <code>status</code> of the specified testmode personalization design object to <code>active</code>.</p>
@@ -68117,13 +67322,12 @@ module TestHelpersIssuingPersonalizationDesignsDeactivate =
     module DeactivateOptions =
         let create
             (
-                personalizationDesign: string,
-                expand: string list option
+                personalizationDesign: string
             ) : DeactivateOptions
             =
             {
               PersonalizationDesign = personalizationDesign
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the <code>status</code> of the specified testmode personalization design object to <code>inactive</code>.</p>
@@ -68190,14 +67394,13 @@ module TestHelpersIssuingPersonalizationDesignsReject =
         let create
             (
                 personalizationDesign: string,
-                rejectionReasons: Reject'RejectionReasons,
-                expand: string list option
+                rejectionReasons: Reject'RejectionReasons
             ) : RejectOptions
             =
             {
               PersonalizationDesign = personalizationDesign
               RejectionReasons = rejectionReasons
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates the <code>status</code> of the specified testmode personalization design object to <code>rejected</code>.</p>
@@ -68971,20 +68174,16 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
         let create
             (
                 amount: int,
-                card: string,
-                currency: IsoTypes.IsoCurrencyCode option,
-                expand: string list option,
-                merchantData: CreateForceCapture'MerchantData option,
-                purchaseDetails: CreateForceCapture'PurchaseDetails option
+                card: string
             ) : CreateForceCaptureOptions
             =
             {
               Amount = amount
               Card = card
-              Currency = currency
-              Expand = expand
-              MerchantData = merchantData
-              PurchaseDetails = purchaseDetails
+              Currency = None
+              Expand = None
+              MerchantData = None
+              PurchaseDetails = None
             }
 
     ///<p>Allows the user to capture an arbitrary amount, also known as a forced capture.</p>
@@ -69758,20 +68957,16 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
         let create
             (
                 amount: int,
-                card: string,
-                currency: IsoTypes.IsoCurrencyCode option,
-                expand: string list option,
-                merchantData: CreateUnlinkedRefund'MerchantData option,
-                purchaseDetails: CreateUnlinkedRefund'PurchaseDetails option
+                card: string
             ) : CreateUnlinkedRefundOptions
             =
             {
               Amount = amount
               Card = card
-              Currency = currency
-              Expand = expand
-              MerchantData = merchantData
-              PurchaseDetails = purchaseDetails
+              Currency = None
+              Expand = None
+              MerchantData = None
+              PurchaseDetails = None
             }
 
     ///<p>Allows the user to refund an arbitrary amount, also known as a unlinked refund.</p>
@@ -69796,15 +68991,13 @@ module TestHelpersIssuingTransactionsRefund =
     module RefundOptions =
         let create
             (
-                transaction: string,
-                expand: string list option,
-                refundAmount: int option
+                transaction: string
             ) : RefundOptions
             =
             {
               Transaction = transaction
-              Expand = expand
-              RefundAmount = refundAmount
+              Expand = None
+              RefundAmount = None
             }
 
     ///<p>Refund a test-mode Transaction.</p>
@@ -69826,13 +69019,12 @@ module TestHelpersRefundsExpire =
     module ExpireOptions =
         let create
             (
-                refund: string,
-                expand: string list option
+                refund: string
             ) : ExpireOptions
             =
             {
               Refund = refund
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Expire a refund with a status of <code>requires_action</code>.</p>
@@ -69940,23 +69132,17 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
     module PresentPaymentMethodOptions =
         let create
             (
-                reader: string,
-                amountTip: int option,
-                card: PresentPaymentMethod'Card option,
-                cardPresent: PresentPaymentMethod'CardPresent option,
-                expand: string list option,
-                interacPresent: PresentPaymentMethod'InteracPresent option,
-                ``type``: PresentPaymentMethod'Type option
+                reader: string
             ) : PresentPaymentMethodOptions
             =
             {
               Reader = reader
-              AmountTip = amountTip
-              Card = card
-              CardPresent = cardPresent
-              Expand = expand
-              InteracPresent = interacPresent
-              Type = ``type``
+              AmountTip = None
+              Card = None
+              CardPresent = None
+              Expand = None
+              InteracPresent = None
+              Type = None
             }
 
     ///<p>Presents a payment method on a simulated reader. Can be used to simulate accepting a payment, saving a card or refunding a transaction.</p>
@@ -69985,15 +69171,13 @@ module TestHelpersTerminalReadersSucceedInputCollection =
     module SucceedInputCollectionOptions =
         let create
             (
-                reader: string,
-                expand: string list option,
-                skipNonRequiredInputs: SucceedInputCollection'SkipNonRequiredInputs option
+                reader: string
             ) : SucceedInputCollectionOptions
             =
             {
               Reader = reader
-              Expand = expand
-              SkipNonRequiredInputs = skipNonRequiredInputs
+              Expand = None
+              SkipNonRequiredInputs = None
             }
 
     ///<p>Use this endpoint to trigger a successful input collection on a simulated reader.</p>
@@ -70015,13 +69199,12 @@ module TestHelpersTerminalReadersTimeoutInputCollection =
     module TimeoutInputCollectionOptions =
         let create
             (
-                reader: string,
-                expand: string list option
+                reader: string
             ) : TimeoutInputCollectionOptions
             =
             {
               Reader = reader
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Use this endpoint to complete an input collection with a timeout error on a simulated reader.</p>
@@ -70079,15 +69262,13 @@ module TestHelpersTestClocks =
     module CreateOptions =
         let create
             (
-                frozenTime: DateTime,
-                expand: string list option,
-                name: string option
+                frozenTime: DateTime
             ) : CreateOptions
             =
             {
               FrozenTime = frozenTime
-              Expand = expand
-              Name = name
+              Expand = None
+              Name = None
             }
 
     type DeleteOptions =
@@ -70116,13 +69297,12 @@ module TestHelpersTestClocks =
     module RetrieveOptions =
         let create
             (
-                testClock: string,
-                expand: string list option
+                testClock: string
             ) : RetrieveOptions
             =
             {
               TestClock = testClock
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of your test clocks.</p>
@@ -70165,14 +69345,13 @@ module TestHelpersTestClocksAdvance =
         let create
             (
                 frozenTime: DateTime,
-                testClock: string,
-                expand: string list option
+                testClock: string
             ) : AdvanceOptions
             =
             {
               FrozenTime = frozenTime
               TestClock = testClock
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Starts advancing a test clock to a specified time in the future. Advancement is done when status changes to <code>Ready</code>.</p>
@@ -70229,15 +69408,13 @@ module TestHelpersTreasuryInboundTransfersFail =
     module FailOptions =
         let create
             (
-                id: string,
-                expand: string list option,
-                failureDetails: Fail'FailureDetails option
+                id: string
             ) : FailOptions
             =
             {
               Id = id
-              Expand = expand
-              FailureDetails = failureDetails
+              Expand = None
+              FailureDetails = None
             }
 
     ///<p>Transitions a test mode created InboundTransfer to the <code>failed</code> status. The InboundTransfer must already be in the <code>processing</code> state.</p>
@@ -70259,13 +69436,12 @@ module TestHelpersTreasuryInboundTransfersReturn =
     module ReturnInboundTransferOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : ReturnInboundTransferOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Marks the test mode InboundTransfer object as returned and links the InboundTransfer to a ReceivedDebit. The InboundTransfer must already be in the <code>succeeded</code> state.</p>
@@ -70287,13 +69463,12 @@ module TestHelpersTreasuryInboundTransfersSucceed =
     module SucceedOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : SucceedOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Transitions a test mode created InboundTransfer to the <code>succeeded</code> status. The InboundTransfer must already be in the <code>processing</code> state.</p>
@@ -70394,14 +69569,13 @@ module TestHelpersTreasuryOutboundPayments =
         let create
             (
                 id: string,
-                trackingDetails: Update'TrackingDetails,
-                expand: string list option
+                trackingDetails: Update'TrackingDetails
             ) : UpdateOptions
             =
             {
               Id = id
               TrackingDetails = trackingDetails
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates a test mode created OutboundPayment with tracking details. The OutboundPayment must not be cancelable, and cannot be in the <code>canceled</code> or <code>failed</code> states.</p>
@@ -70423,13 +69597,12 @@ module TestHelpersTreasuryOutboundPaymentsFail =
     module FailOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : FailOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Transitions a test mode created OutboundPayment to the <code>failed</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
@@ -70451,13 +69624,12 @@ module TestHelpersTreasuryOutboundPaymentsPost =
     module PostOptions =
         let create
             (
-                id: string,
-                expand: string list option
+                id: string
             ) : PostOptions
             =
             {
               Id = id
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Transitions a test mode created OutboundPayment to the <code>posted</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
@@ -70511,15 +69683,13 @@ module TestHelpersTreasuryOutboundPaymentsReturn =
     module ReturnOutboundPaymentOptions =
         let create
             (
-                id: string,
-                expand: string list option,
-                returnedDetails: ReturnOutboundPayment'ReturnedDetails option
+                id: string
             ) : ReturnOutboundPaymentOptions
             =
             {
               Id = id
-              Expand = expand
-              ReturnedDetails = returnedDetails
+              Expand = None
+              ReturnedDetails = None
             }
 
     ///<p>Transitions a test mode created OutboundPayment to the <code>returned</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
@@ -70620,14 +69790,13 @@ module TestHelpersTreasuryOutboundTransfers =
         let create
             (
                 outboundTransfer: string,
-                trackingDetails: Update'TrackingDetails,
-                expand: string list option
+                trackingDetails: Update'TrackingDetails
             ) : UpdateOptions
             =
             {
               OutboundTransfer = outboundTransfer
               TrackingDetails = trackingDetails
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Updates a test mode created OutboundTransfer with tracking details. The OutboundTransfer must not be cancelable, and cannot be in the <code>canceled</code> or <code>failed</code> states.</p>
@@ -70649,13 +69818,12 @@ module TestHelpersTreasuryOutboundTransfersFail =
     module FailOptions =
         let create
             (
-                outboundTransfer: string,
-                expand: string list option
+                outboundTransfer: string
             ) : FailOptions
             =
             {
               OutboundTransfer = outboundTransfer
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Transitions a test mode created OutboundTransfer to the <code>failed</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
@@ -70677,13 +69845,12 @@ module TestHelpersTreasuryOutboundTransfersPost =
     module PostOptions =
         let create
             (
-                outboundTransfer: string,
-                expand: string list option
+                outboundTransfer: string
             ) : PostOptions
             =
             {
               OutboundTransfer = outboundTransfer
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Transitions a test mode created OutboundTransfer to the <code>posted</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
@@ -70737,15 +69904,13 @@ module TestHelpersTreasuryOutboundTransfersReturn =
     module ReturnOutboundTransferOptions =
         let create
             (
-                outboundTransfer: string,
-                expand: string list option,
-                returnedDetails: ReturnOutboundTransfer'ReturnedDetails option
+                outboundTransfer: string
             ) : ReturnOutboundTransferOptions
             =
             {
               OutboundTransfer = outboundTransfer
-              Expand = expand
-              ReturnedDetails = returnedDetails
+              Expand = None
+              ReturnedDetails = None
             }
 
     ///<p>Transitions a test mode created OutboundTransfer to the <code>returned</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
@@ -70841,10 +70006,7 @@ module TestHelpersTreasuryReceivedCredits =
                 amount: int,
                 currency: IsoTypes.IsoCurrencyCode,
                 financialAccount: string,
-                network: Create'Network,
-                description: string option,
-                expand: string list option,
-                initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails option
+                network: Create'Network
             ) : CreateOptions
             =
             {
@@ -70852,9 +70014,9 @@ module TestHelpersTreasuryReceivedCredits =
               Currency = currency
               FinancialAccount = financialAccount
               Network = network
-              Description = description
-              Expand = expand
-              InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+              Description = None
+              Expand = None
+              InitiatingPaymentMethodDetails = None
             }
 
     ///<p>Use this endpoint to simulate a test mode ReceivedCredit initiated by a third party. In live mode, you can’t directly create ReceivedCredits initiated by third parties.</p>
@@ -70948,10 +70110,7 @@ module TestHelpersTreasuryReceivedDebits =
                 amount: int,
                 currency: IsoTypes.IsoCurrencyCode,
                 financialAccount: string,
-                network: Create'Network,
-                description: string option,
-                expand: string list option,
-                initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails option
+                network: Create'Network
             ) : CreateOptions
             =
             {
@@ -70959,9 +70118,9 @@ module TestHelpersTreasuryReceivedDebits =
               Currency = currency
               FinancialAccount = financialAccount
               Network = network
-              Description = description
-              Expand = expand
-              InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+              Description = None
+              Expand = None
+              InitiatingPaymentMethodDetails = None
             }
 
     ///<p>Use this endpoint to simulate a test mode ReceivedDebit initiated by a third party. In live mode, you can’t directly create ReceivedDebits initiated by third parties.</p>

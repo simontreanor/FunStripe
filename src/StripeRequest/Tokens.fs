@@ -1890,13 +1890,12 @@ module Tokens =
     module RetrieveOptions =
         let create
             (
-                token: string,
-                expand: string list option
+                token: string
             ) : RetrieveOptions
             =
             {
               Token = token
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Creates a single-use token that represents a bank account’s details.

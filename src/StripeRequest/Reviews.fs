@@ -57,13 +57,12 @@ module Reviews =
     module RetrieveOptions =
         let create
             (
-                review: string,
-                expand: string list option
+                review: string
             ) : RetrieveOptions
             =
             {
               Review = review
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -92,13 +91,12 @@ module ReviewsApprove =
     module ApproveOptions =
         let create
             (
-                review: string,
-                expand: string list option
+                review: string
             ) : ApproveOptions
             =
             {
               Review = review
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Approves a <code>Review</code> object, closing it and removing it from the list of reviews.</p>

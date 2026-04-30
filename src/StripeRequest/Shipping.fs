@@ -200,25 +200,18 @@ module ShippingRates =
     module CreateOptions =
         let create
             (
-                displayName: string,
-                deliveryEstimate: Create'DeliveryEstimate option,
-                expand: string list option,
-                fixedAmount: Create'FixedAmount option,
-                metadata: Map<string, string> option,
-                taxBehavior: Create'TaxBehavior option,
-                taxCode: string option,
-                ``type``: Create'Type option
+                displayName: string
             ) : CreateOptions
             =
             {
               DisplayName = displayName
-              DeliveryEstimate = deliveryEstimate
-              Expand = expand
-              FixedAmount = fixedAmount
-              Metadata = metadata
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              Type = ``type``
+              DeliveryEstimate = None
+              Expand = None
+              FixedAmount = None
+              Metadata = None
+              TaxBehavior = None
+              TaxCode = None
+              Type = None
             }
 
     type RetrieveOptions =
@@ -233,13 +226,12 @@ module ShippingRates =
     module RetrieveOptions =
         let create
             (
-                shippingRateToken: string,
-                expand: string list option
+                shippingRateToken: string
             ) : RetrieveOptions
             =
             {
               ShippingRateToken = shippingRateToken
-              Expand = expand
+              Expand = None
             }
 
     type Update'FixedAmount =
@@ -288,21 +280,16 @@ module ShippingRates =
     module UpdateOptions =
         let create
             (
-                shippingRateToken: string,
-                active: bool option,
-                expand: string list option,
-                fixedAmount: Update'FixedAmount option,
-                metadata: Map<string, string> option,
-                taxBehavior: Update'TaxBehavior option
+                shippingRateToken: string
             ) : UpdateOptions
             =
             {
               ShippingRateToken = shippingRateToken
-              Active = active
-              Expand = expand
-              FixedAmount = fixedAmount
-              Metadata = metadata
-              TaxBehavior = taxBehavior
+              Active = None
+              Expand = None
+              FixedAmount = None
+              Metadata = None
+              TaxBehavior = None
             }
 
     ///<p>Returns a list of your shipping rates.</p>

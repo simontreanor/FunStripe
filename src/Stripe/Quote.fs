@@ -220,9 +220,7 @@ module Quote =
             subscriptionSchedule: QuoteSubscriptionSchedule'AnyOf option,
             testClock: QuoteTestClock'AnyOf option,
             totalDetails: QuotesResourceTotalDetails,
-            transferData: QuotesResourceTransferData option,
-            defaultTaxRates: QuoteDefaultTaxRates'AnyOf list option,
-            lineItems: QuoteLineItems option
+            transferData: QuotesResourceTransferData option
         ) : Quote
         =
         {
@@ -259,8 +257,8 @@ module Quote =
           TestClock = testClock
           TotalDetails = totalDetails
           TransferData = transferData
-          DefaultTaxRates = defaultTaxRates
-          LineItems = lineItems
+          DefaultTaxRates = None
+          LineItems = None
         }
 
 module QuotesResourceFromQuote =

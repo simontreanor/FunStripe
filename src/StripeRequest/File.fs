@@ -74,17 +74,14 @@ module FileLinks =
     module CreateOptions =
         let create
             (
-                file: string,
-                expand: string list option,
-                expiresAt: DateTime option,
-                metadata: Map<string, string> option
+                file: string
             ) : CreateOptions
             =
             {
               File = file
-              Expand = expand
-              ExpiresAt = expiresAt
-              Metadata = metadata
+              Expand = None
+              ExpiresAt = None
+              Metadata = None
             }
 
     type RetrieveOptions =
@@ -99,13 +96,12 @@ module FileLinks =
     module RetrieveOptions =
         let create
             (
-                link: string,
-                expand: string list option
+                link: string
             ) : RetrieveOptions
             =
             {
               Link = link
-              Expand = expand
+              Expand = None
             }
 
     type Update'ExpiresAt = | Now
@@ -128,17 +124,14 @@ module FileLinks =
     module UpdateOptions =
         let create
             (
-                link: string,
-                expand: string list option,
-                expiresAt: Choice<Update'ExpiresAt,DateTime,string> option,
-                metadata: Map<string, string> option
+                link: string
             ) : UpdateOptions
             =
             {
               Link = link
-              Expand = expand
-              ExpiresAt = expiresAt
-              Metadata = metadata
+              Expand = None
+              ExpiresAt = None
+              Metadata = None
             }
 
     ///<p>Returns a list of file links.</p>

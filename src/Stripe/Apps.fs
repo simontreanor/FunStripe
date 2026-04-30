@@ -41,9 +41,7 @@ module AppsSecret =
             id: string,
             livemode: bool,
             name: string,
-            scope: SecretServiceResourceScope,
-            deleted: bool option,
-            payload: string option option
+            scope: SecretServiceResourceScope
         ) : AppsSecret
         =
         {
@@ -53,7 +51,7 @@ module AppsSecret =
           Livemode = livemode
           Name = name
           Scope = scope
-          Deleted = deleted
-          Payload = payload |> Option.flatten
+          Deleted = None
+          Payload = None
         }
 

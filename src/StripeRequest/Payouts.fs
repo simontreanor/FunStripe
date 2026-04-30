@@ -107,28 +107,20 @@ module Payouts =
         let create
             (
                 amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                description: string option,
-                destination: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                method: Create'Method option,
-                payoutMethod: string option,
-                sourceType: Create'SourceType option,
-                statementDescriptor: string option
+                currency: IsoTypes.IsoCurrencyCode
             ) : CreateOptions
             =
             {
               Amount = amount
               Currency = currency
-              Description = description
-              Destination = destination
-              Expand = expand
-              Metadata = metadata
-              Method = method
-              PayoutMethod = payoutMethod
-              SourceType = sourceType
-              StatementDescriptor = statementDescriptor
+              Description = None
+              Destination = None
+              Expand = None
+              Metadata = None
+              Method = None
+              PayoutMethod = None
+              SourceType = None
+              StatementDescriptor = None
             }
 
     type RetrieveOptions =
@@ -143,13 +135,12 @@ module Payouts =
     module RetrieveOptions =
         let create
             (
-                payout: string,
-                expand: string list option
+                payout: string
             ) : RetrieveOptions
             =
             {
               Payout = payout
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -167,15 +158,13 @@ module Payouts =
     module UpdateOptions =
         let create
             (
-                payout: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                payout: string
             ) : UpdateOptions
             =
             {
               Payout = payout
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of existing payouts sent to third-party bank accounts or payouts that Stripe sent to you. The payouts return in sorted order, with the most recently created payouts appearing first.</p>
@@ -216,13 +205,12 @@ module PayoutsCancel =
     module CancelOptions =
         let create
             (
-                payout: string,
-                expand: string list option
+                payout: string
             ) : CancelOptions
             =
             {
               Payout = payout
-              Expand = expand
+              Expand = None
             }
 
     ///<p>You can cancel a previously created payout if its status is <code>pending</code>. Stripe refunds the funds to your available balance. You can’t cancel automatic Stripe payouts.</p>
@@ -247,15 +235,13 @@ module PayoutsReverse =
     module ReverseOptions =
         let create
             (
-                payout: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                payout: string
             ) : ReverseOptions
             =
             {
               Payout = payout
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Reverses a payout by debiting the destination bank account. At this time, you can only reverse payouts for connected accounts to US and Canadian bank accounts. If the payout is manual and in the <code>pending</code> status, use <code>/v1/payouts/:id/cancel</code> instead.</p>

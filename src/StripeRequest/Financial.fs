@@ -62,13 +62,12 @@ module FinancialConnectionsAccounts =
     module RetrieveOptions =
         let create
             (
-                account: string,
-                expand: string list option
+                account: string
             ) : RetrieveOptions
             =
             {
               Account = account
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of Financial Connections <code>Account</code> objects.</p>
@@ -97,13 +96,12 @@ module FinancialConnectionsAccountsDisconnect =
     module DisconnectOptions =
         let create
             (
-                account: string,
-                expand: string list option
+                account: string
             ) : DisconnectOptions
             =
             {
               Account = account
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Disables your access to a Financial Connections <code>Account</code>. You will no longer be able to access data associated with the account (e.g. balances, transactions).</p>
@@ -138,20 +136,16 @@ module FinancialConnectionsAccountsOwners =
         let create
             (
                 account: string,
-                ownership: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                ownership: string
             ) : ListOwnersOptions
             =
             {
               Account = account
               Ownership = ownership
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     ///<p>Lists all owners for a given <code>Account</code></p>
@@ -183,14 +177,13 @@ module FinancialConnectionsAccountsRefresh =
         let create
             (
                 account: string,
-                features: Refresh'Features list,
-                expand: string list option
+                features: Refresh'Features list
             ) : RefreshOptions
             =
             {
               Account = account
               Features = features
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Refreshes the data associated with a Financial Connections <code>Account</code>.</p>
@@ -218,14 +211,13 @@ module FinancialConnectionsAccountsSubscribe =
         let create
             (
                 account: string,
-                features: Subscribe'Features list,
-                expand: string list option
+                features: Subscribe'Features list
             ) : SubscribeOptions
             =
             {
               Account = account
               Features = features
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Subscribes to periodic refreshes of data associated with a Financial Connections <code>Account</code>. When the account status is active, data is typically refreshed once a day.</p>
@@ -253,14 +245,13 @@ module FinancialConnectionsAccountsUnsubscribe =
         let create
             (
                 account: string,
-                features: Unsubscribe'Features list,
-                expand: string list option
+                features: Unsubscribe'Features list
             ) : UnsubscribeOptions
             =
             {
               Account = account
               Features = features
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Unsubscribes from periodic refreshes of data associated with a Financial Connections <code>Account</code>.</p>
@@ -373,20 +364,16 @@ module FinancialConnectionsSessions =
         let create
             (
                 accountHolder: Create'AccountHolder,
-                permissions: Create'Permissions list,
-                expand: string list option,
-                filters: Create'Filters option,
-                prefetch: Create'Prefetch list option,
-                returnUrl: string option
+                permissions: Create'Permissions list
             ) : CreateOptions
             =
             {
               AccountHolder = accountHolder
               Permissions = permissions
-              Expand = expand
-              Filters = filters
-              Prefetch = prefetch
-              ReturnUrl = returnUrl
+              Expand = None
+              Filters = None
+              Prefetch = None
+              ReturnUrl = None
             }
 
     type RetrieveOptions =
@@ -401,13 +388,12 @@ module FinancialConnectionsSessions =
     module RetrieveOptions =
         let create
             (
-                session: string,
-                expand: string list option
+                session: string
             ) : RetrieveOptions
             =
             {
               Session = session
-              Expand = expand
+              Expand = None
             }
 
     ///<p>To launch the Financial Connections authorization flow, create a <code>Session</code>. The session’s <code>client_secret</code> can be used to launch the flow using Stripe.js.</p>
@@ -451,23 +437,17 @@ module FinancialConnectionsTransactions =
     module ListOptions =
         let create
             (
-                account: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                transactedAt: int option,
-                transactionRefresh: Map<string, string> option
+                account: string
             ) : ListOptions
             =
             {
               Account = account
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              TransactedAt = transactedAt
-              TransactionRefresh = transactionRefresh
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              TransactedAt = None
+              TransactionRefresh = None
             }
 
     type RetrieveOptions =
@@ -482,13 +462,12 @@ module FinancialConnectionsTransactions =
     module RetrieveOptions =
         let create
             (
-                transaction: string,
-                expand: string list option
+                transaction: string
             ) : RetrieveOptions
             =
             {
               Transaction = transaction
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Returns a list of Financial Connections <code>Transaction</code> objects.</p>

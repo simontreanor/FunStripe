@@ -318,13 +318,12 @@ module Charges =
     module RetrieveOptions =
         let create
             (
-                charge: string,
-                expand: string list option
+                charge: string
             ) : RetrieveOptions
             =
             {
               Charge = charge
-              Expand = expand
+              Expand = None
             }
 
     type Update'FraudDetailsUserReport =
@@ -460,27 +459,19 @@ module Charges =
     module UpdateOptions =
         let create
             (
-                charge: string,
-                customer: string option,
-                description: string option,
-                expand: string list option,
-                fraudDetails: Update'FraudDetails option,
-                metadata: Map<string, string> option,
-                receiptEmail: string option,
-                shipping: Update'Shipping option,
-                transferGroup: string option
+                charge: string
             ) : UpdateOptions
             =
             {
               Charge = charge
-              Customer = customer
-              Description = description
-              Expand = expand
-              FraudDetails = fraudDetails
-              Metadata = metadata
-              ReceiptEmail = receiptEmail
-              Shipping = shipping
-              TransferGroup = transferGroup
+              Customer = None
+              Description = None
+              Expand = None
+              FraudDetails = None
+              Metadata = None
+              ReceiptEmail = None
+              Shipping = None
+              TransferGroup = None
             }
 
     ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
@@ -528,17 +519,14 @@ module ChargesSearch =
     module SearchOptions =
         let create
             (
-                query: string,
-                expand: string list option,
-                limit: int option,
-                page: string option
+                query: string
             ) : SearchOptions
             =
             {
               Query = query
-              Expand = expand
-              Limit = limit
-              Page = page
+              Expand = None
+              Limit = None
+              Page = None
             }
 
     ///<p>Search for charges you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
@@ -606,29 +594,20 @@ module ChargesCapture =
     module CaptureOptions =
         let create
             (
-                charge: string,
-                amount: int option,
-                applicationFee: int option,
-                applicationFeeAmount: int option,
-                expand: string list option,
-                receiptEmail: string option,
-                statementDescriptor: string option,
-                statementDescriptorSuffix: string option,
-                transferData: Capture'TransferData option,
-                transferGroup: string option
+                charge: string
             ) : CaptureOptions
             =
             {
               Charge = charge
-              Amount = amount
-              ApplicationFee = applicationFee
-              ApplicationFeeAmount = applicationFeeAmount
-              Expand = expand
-              ReceiptEmail = receiptEmail
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorSuffix = statementDescriptorSuffix
-              TransferData = transferData
-              TransferGroup = transferGroup
+              Amount = None
+              ApplicationFee = None
+              ApplicationFeeAmount = None
+              Expand = None
+              ReceiptEmail = None
+              StatementDescriptor = None
+              StatementDescriptorSuffix = None
+              TransferData = None
+              TransferGroup = None
             }
 
     ///<p>Capture the payment of an existing, uncaptured charge that was created with the <code>capture</code> option set to false.</p>
@@ -661,19 +640,15 @@ module ChargesRefunds =
     module ListOptions =
         let create
             (
-                charge: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                charge: string
             ) : ListOptions
             =
             {
               Charge = charge
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type RetrieveOptions =
@@ -691,14 +666,13 @@ module ChargesRefunds =
         let create
             (
                 charge: string,
-                refund: string,
-                expand: string list option
+                refund: string
             ) : RetrieveOptions
             =
             {
               Charge = charge
               Refund = refund
-              Expand = expand
+              Expand = None
             }
 
     ///<p>You can see a list of the refunds belonging to a specific charge. Note that the 10 most recent refunds are always available by default on the charge object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>

@@ -95,19 +95,15 @@ type LegalEntityPersonVerification =
 module LegalEntityPersonVerification =
     let create
         (
-            status: LegalEntityPersonVerificationStatus,
-            additionalDocument: LegalEntityPersonVerificationDocument option option,
-            details: string option option,
-            detailsCode: LegalEntityPersonVerificationDetailsCode option option,
-            document: LegalEntityPersonVerificationDocument option
+            status: LegalEntityPersonVerificationStatus
         ) : LegalEntityPersonVerification
         =
         {
           Status = status
-          AdditionalDocument = additionalDocument |> Option.flatten
-          Details = details |> Option.flatten
-          DetailsCode = detailsCode |> Option.flatten
-          Document = document
+          AdditionalDocument = None
+          Details = None
+          DetailsCode = None
+          Document = None
         }
 
 type LegalEntityDob =

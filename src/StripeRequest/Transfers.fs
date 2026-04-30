@@ -95,26 +95,19 @@ module Transfers =
         let create
             (
                 currency: IsoTypes.IsoCurrencyCode,
-                destination: string,
-                amount: int option,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                sourceTransaction: string option,
-                sourceType: Create'SourceType option,
-                transferGroup: string option
+                destination: string
             ) : CreateOptions
             =
             {
               Currency = currency
               Destination = destination
-              Amount = amount
-              Description = description
-              Expand = expand
-              Metadata = metadata
-              SourceTransaction = sourceTransaction
-              SourceType = sourceType
-              TransferGroup = transferGroup
+              Amount = None
+              Description = None
+              Expand = None
+              Metadata = None
+              SourceTransaction = None
+              SourceType = None
+              TransferGroup = None
             }
 
     type RetrieveOptions =
@@ -129,13 +122,12 @@ module Transfers =
     module RetrieveOptions =
         let create
             (
-                transfer: string,
-                expand: string list option
+                transfer: string
             ) : RetrieveOptions
             =
             {
               Transfer = transfer
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -156,17 +148,14 @@ module Transfers =
     module UpdateOptions =
         let create
             (
-                transfer: string,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                transfer: string
             ) : UpdateOptions
             =
             {
               Transfer = transfer
-              Description = description
-              Expand = expand
-              Metadata = metadata
+              Description = None
+              Expand = None
+              Metadata = None
             }
 
     ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
@@ -215,19 +204,15 @@ module TransfersReversals =
     module ListOptions =
         let create
             (
-                id: string,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
+                id: string
             ) : ListOptions
             =
             {
               Id = id
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
             }
 
     type CreateOptions =
@@ -254,21 +239,16 @@ module TransfersReversals =
     module CreateOptions =
         let create
             (
-                id: string,
-                amount: int option,
-                description: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                refundApplicationFee: bool option
+                id: string
             ) : CreateOptions
             =
             {
               Id = id
-              Amount = amount
-              Description = description
-              Expand = expand
-              Metadata = metadata
-              RefundApplicationFee = refundApplicationFee
+              Amount = None
+              Description = None
+              Expand = None
+              Metadata = None
+              RefundApplicationFee = None
             }
 
     type RetrieveOptions =
@@ -286,14 +266,13 @@ module TransfersReversals =
         let create
             (
                 id: string,
-                transfer: string,
-                expand: string list option
+                transfer: string
             ) : RetrieveOptions
             =
             {
               Id = id
               Transfer = transfer
-              Expand = expand
+              Expand = None
             }
 
     type UpdateOptions =
@@ -314,16 +293,14 @@ module TransfersReversals =
         let create
             (
                 id: string,
-                transfer: string,
-                expand: string list option,
-                metadata: Map<string, string> option
+                transfer: string
             ) : UpdateOptions
             =
             {
               Id = id
               Transfer = transfer
-              Expand = expand
-              Metadata = metadata
+              Expand = None
+              Metadata = None
             }
 
     ///<p>You can see a list of the reversals belonging to a specific transfer. Note that the 10 most recent reversals are always available by default on the transfer object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional reversals.</p>

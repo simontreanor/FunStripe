@@ -28,8 +28,7 @@ module EphemeralKey =
             created: DateTime,
             expires: DateTime,
             id: string,
-            livemode: bool,
-            secret: string option
+            livemode: bool
         ) : EphemeralKey
         =
         {
@@ -37,6 +36,6 @@ module EphemeralKey =
           Expires = expires
           Id = id
           Livemode = livemode
-          Secret = secret
+          Secret = None
         }
 

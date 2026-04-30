@@ -283,9 +283,7 @@ module Price =
             transformQuantity: TransformQuantity option,
             ``type``: PriceType,
             unitAmount: int option,
-            unitAmountDecimal: string option,
-            currencyOptions: Map<string, string list> option,
-            tiers: PriceTier list option
+            unitAmountDecimal: string option
         ) : Price
         =
         {
@@ -307,8 +305,8 @@ module Price =
           Type = ``type``
           UnitAmount = unitAmount
           UnitAmountDecimal = unitAmountDecimal
-          CurrencyOptions = currencyOptions
-          Tiers = tiers
+          CurrencyOptions = None
+          Tiers = None
         }
 
 module Product =
@@ -330,11 +328,7 @@ module Product =
             shippable: bool option,
             ``type``: ProductType,
             updated: DateTime,
-            url: string option,
-            defaultPrice: ProductDefaultPrice'AnyOf option option,
-            statementDescriptor: string option option,
-            taxCode: ProductTaxCode'AnyOf option option,
-            unitLabel: string option option
+            url: string option
         ) : Product
         =
         {
@@ -352,10 +346,10 @@ module Product =
           Type = ``type``
           Updated = updated
           Url = url
-          DefaultPrice = defaultPrice |> Option.flatten
-          StatementDescriptor = statementDescriptor |> Option.flatten
-          TaxCode = taxCode |> Option.flatten
-          UnitLabel = unitLabel |> Option.flatten
+          DefaultPrice = None
+          StatementDescriptor = None
+          TaxCode = None
+          UnitLabel = None
         }
 
 module ProductUpdated =
@@ -424,8 +418,7 @@ module CurrencyOption =
             customUnitAmount: CustomUnitAmount option,
             taxBehavior: CurrencyOptionTaxBehavior option,
             unitAmount: int option,
-            unitAmountDecimal: string option,
-            tiers: PriceTier list option
+            unitAmountDecimal: string option
         ) : CurrencyOption
         =
         {
@@ -433,6 +426,6 @@ module CurrencyOption =
           TaxBehavior = taxBehavior
           UnitAmount = unitAmount
           UnitAmountDecimal = unitAmountDecimal
-          Tiers = tiers
+          Tiers = None
         }
 

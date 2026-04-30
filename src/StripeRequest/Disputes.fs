@@ -67,13 +67,12 @@ module Disputes =
     module RetrieveOptions =
         let create
             (
-                dispute: string,
-                expand: string list option
+                dispute: string
             ) : RetrieveOptions
             =
             {
               Dispute = dispute
-              Expand = expand
+              Expand = None
             }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices =
@@ -507,19 +506,15 @@ module Disputes =
     module UpdateOptions =
         let create
             (
-                dispute: string,
-                evidence: Update'Evidence option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                submit: bool option
+                dispute: string
             ) : UpdateOptions
             =
             {
               Dispute = dispute
-              Evidence = evidence
-              Expand = expand
-              Metadata = metadata
-              Submit = submit
+              Evidence = None
+              Expand = None
+              Metadata = None
+              Submit = None
             }
 
     ///<p>Returns a list of your disputes.</p>
@@ -554,13 +549,12 @@ module DisputesClose =
     module CloseOptions =
         let create
             (
-                dispute: string,
-                expand: string list option
+                dispute: string
             ) : CloseOptions
             =
             {
               Dispute = dispute
-              Expand = expand
+              Expand = None
             }
 
     ///<p>Closing the dispute for a charge indicates that you do not have any evidence to submit and are essentially dismissing the dispute, acknowledging it as lost.</p>

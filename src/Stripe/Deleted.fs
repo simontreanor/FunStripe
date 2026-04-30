@@ -480,14 +480,13 @@ module DeletedBankAccount =
     let create
         (
             deleted: bool,
-            id: string,
-            currency: IsoTypes.IsoCurrencyCode option option
+            id: string
         ) : DeletedBankAccount
         =
         {
           Deleted = deleted
           Id = id
-          Currency = currency |> Option.flatten
+          Currency = None
         }
 
 type DeletedCard =
@@ -507,14 +506,13 @@ module DeletedCard =
     let create
         (
             deleted: bool,
-            id: string,
-            currency: IsoTypes.IsoCurrencyCode option option
+            id: string
         ) : DeletedCard
         =
         {
           Deleted = deleted
           Id = id
-          Currency = currency |> Option.flatten
+          Currency = None
         }
 
 type DeletedPaymentSource =

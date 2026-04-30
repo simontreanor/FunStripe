@@ -113,8 +113,7 @@ module File =
             size: int,
             title: string option,
             ``type``: string option,
-            url: string option,
-            links: FileLinks option option
+            url: string option
         ) : File
         =
         {
@@ -127,7 +126,7 @@ module File =
           Title = title
           Type = ``type``
           Url = url
-          Links = links |> Option.flatten
+          Links = None
         }
 
 module FileLinks =

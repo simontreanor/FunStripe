@@ -578,9 +578,7 @@ module TaxProductResourceTaxTransactionShippingCost =
             amount: int,
             amountTax: int,
             taxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior,
-            taxCode: string,
-            shippingRate: string option,
-            taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+            taxCode: string
         ) : TaxProductResourceTaxTransactionShippingCost
         =
         {
@@ -588,8 +586,8 @@ module TaxProductResourceTaxTransactionShippingCost =
           AmountTax = amountTax
           TaxBehavior = taxBehavior
           TaxCode = taxCode
-          ShippingRate = shippingRate
-          TaxBreakdown = taxBreakdown
+          ShippingRate = None
+          TaxBreakdown = None
         }
 
 type TaxProductResourceTaxTransactionLineItemResourceReversal =
@@ -768,8 +766,7 @@ module TaxTransaction =
             shipFromDetails: TaxProductResourceShipFromDetails option,
             shippingCost: TaxProductResourceTaxTransactionShippingCost option,
             taxDate: DateTime,
-            ``type``: TaxTransactionType,
-            lineItems: TaxTransactionLineItems option option
+            ``type``: TaxTransactionType
         ) : TaxTransaction
         =
         {
@@ -787,7 +784,7 @@ module TaxTransaction =
           ShippingCost = shippingCost
           TaxDate = taxDate
           Type = ``type``
-          LineItems = lineItems |> Option.flatten
+          LineItems = None
         }
 
 [<Struct>]
@@ -969,13 +966,12 @@ type TaxProductRegistrationsResourceCountryOptionsCanada =
 module TaxProductRegistrationsResourceCountryOptionsCanada =
     let create
         (
-            ``type``: TaxProductRegistrationsResourceCountryOptionsCanadaType,
-            provinceStandard: TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard option
+            ``type``: TaxProductRegistrationsResourceCountryOptionsCanadaType
         ) : TaxProductRegistrationsResourceCountryOptionsCanada
         =
         {
           Type = ``type``
-          ProvinceStandard = provinceStandard
+          ProvinceStandard = None
         }
 
 type TaxProductRegistrationsResourceCountryOptionsDefault () = 
@@ -1063,13 +1059,12 @@ type TaxProductRegistrationsResourceCountryOptionsEurope =
 module TaxProductRegistrationsResourceCountryOptionsEurope =
     let create
         (
-            ``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType,
-            standard: TaxProductRegistrationsResourceCountryOptionsEuStandard option
+            ``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType
         ) : TaxProductRegistrationsResourceCountryOptionsEurope
         =
         {
           Type = ``type``
-          Standard = standard
+          Standard = None
         }
 
 type TaxProductRegistrationsResourceCountryOptionsSimplified () = 
@@ -1147,13 +1142,12 @@ type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection =
 module TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection =
     let create
         (
-            ``type``: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType,
-            jurisdiction: string option
+            ``type``: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType
         ) : TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection
         =
         {
           Type = ``type``
-          Jurisdiction = jurisdiction
+          Jurisdiction = None
         }
 
 type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax =
@@ -1187,18 +1181,15 @@ module TaxProductRegistrationsResourceCountryOptionsUnitedStates =
     let create
         (
             state: string,
-            ``type``: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType,
-            localAmusementTax: TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax option,
-            localLeaseTax: TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax option,
-            stateSalesTax: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax option
+            ``type``: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType
         ) : TaxProductRegistrationsResourceCountryOptionsUnitedStates
         =
         {
           State = state
           Type = ``type``
-          LocalAmusementTax = localAmusementTax
-          LocalLeaseTax = localLeaseTax
-          StateSalesTax = stateSalesTax
+          LocalAmusementTax = None
+          LocalLeaseTax = None
+          StateSalesTax = None
         }
 
 type TaxProductRegistrationsResourceCountryOptions =
@@ -1615,8 +1606,7 @@ module TaxCalculationLineItem =
             quantity: int,
             reference: string,
             taxBehavior: TaxCalculationLineItemTaxBehavior,
-            taxCode: string,
-            taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option option
+            taxCode: string
         ) : TaxCalculationLineItem
         =
         {
@@ -1630,7 +1620,7 @@ module TaxCalculationLineItem =
           Reference = reference
           TaxBehavior = taxBehavior
           TaxCode = taxCode
-          TaxBreakdown = taxBreakdown |> Option.flatten
+          TaxBreakdown = None
         }
 
 /// The list of items the customer is purchasing.
@@ -1793,9 +1783,7 @@ module TaxProductResourceTaxCalculationShippingCost =
             amount: int,
             amountTax: int,
             taxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior,
-            taxCode: string,
-            shippingRate: string option,
-            taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+            taxCode: string
         ) : TaxProductResourceTaxCalculationShippingCost
         =
         {
@@ -1803,8 +1791,8 @@ module TaxProductResourceTaxCalculationShippingCost =
           AmountTax = amountTax
           TaxBehavior = taxBehavior
           TaxCode = taxCode
-          ShippingRate = shippingRate
-          TaxBreakdown = taxBreakdown
+          ShippingRate = None
+          TaxBreakdown = None
         }
 
 /// A Tax Calculation allows you to calculate the tax to collect from your customer.
@@ -1858,8 +1846,7 @@ module TaxCalculation =
             taxAmountExclusive: int,
             taxAmountInclusive: int,
             taxBreakdown: TaxProductResourceTaxBreakdown list,
-            taxDate: DateTime,
-            lineItems: TaxCalculationLineItems option option
+            taxDate: DateTime
         ) : TaxCalculation
         =
         {
@@ -1876,7 +1863,7 @@ module TaxCalculation =
           TaxAmountInclusive = taxAmountInclusive
           TaxBreakdown = taxBreakdown
           TaxDate = taxDate
-          LineItems = lineItems |> Option.flatten
+          LineItems = None
         }
 
 type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
@@ -1938,16 +1925,14 @@ module TaxProductResourceTaxAssociationTransactionAttempts =
     let create
         (
             source: string,
-            status: TaxProductResourceTaxAssociationTransactionAttemptsStatus,
-            committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted option,
-            errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored option
+            status: TaxProductResourceTaxAssociationTransactionAttemptsStatus
         ) : TaxProductResourceTaxAssociationTransactionAttempts
         =
         {
           Source = source
           Status = status
-          Committed = committed
-          Errored = errored
+          Committed = None
+          Errored = None
         }
 
 /// A Tax Association exposes the Tax Transactions that Stripe attempted to create on your behalf based on the PaymentIntent input

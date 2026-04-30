@@ -103,9 +103,7 @@ module Invoiceitem =
             quantity: int,
             quantityDecimal: string,
             taxRates: TaxRate list option,
-            testClock: InvoiceitemTestClock'AnyOf option,
-            netAmount: int option,
-            prorationDetails: ProrationDetails option
+            testClock: InvoiceitemTestClock'AnyOf option
         ) : Invoiceitem
         =
         {
@@ -129,8 +127,8 @@ module Invoiceitem =
           QuantityDecimal = quantityDecimal
           TaxRates = taxRates
           TestClock = testClock
-          NetAmount = netAmount
-          ProrationDetails = prorationDetails
+          NetAmount = None
+          ProrationDetails = None
         }
 
 /// Occurs whenever an invoice item is deleted.

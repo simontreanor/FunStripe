@@ -172,14 +172,13 @@ module PortalFlowsSubscriptionUpdateConfirmItem =
     let create
         (
             id: string option,
-            price: string option,
-            quantity: int option
+            price: string option
         ) : PortalFlowsSubscriptionUpdateConfirmItem
         =
         {
           Id = id
           Price = price
-          Quantity = quantity
+          Quantity = None
         }
 
 type PortalFlowsFlowSubscriptionUpdateConfirm =
@@ -528,8 +527,7 @@ module PortalSubscriptionUpdate =
             enabled: bool,
             prorationBehavior: PortalSubscriptionUpdateProrationBehavior,
             scheduleAtPeriodEnd: PortalResourceScheduleUpdateAtPeriodEnd,
-            trialUpdateBehavior: PortalSubscriptionUpdateTrialUpdateBehavior,
-            products: PortalSubscriptionUpdateProduct list option option
+            trialUpdateBehavior: PortalSubscriptionUpdateTrialUpdateBehavior
         ) : PortalSubscriptionUpdate
         =
         {
@@ -539,7 +537,7 @@ module PortalSubscriptionUpdate =
           ProrationBehavior = prorationBehavior
           ScheduleAtPeriodEnd = scheduleAtPeriodEnd
           TrialUpdateBehavior = trialUpdateBehavior
-          Products = products |> Option.flatten
+          Products = None
         }
 
 type PortalFeatures =

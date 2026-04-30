@@ -22,14 +22,12 @@ type PlatformEarningFeeSource =
 module PlatformEarningFeeSource =
     let create
         (
-            ``type``: PlatformEarningFeeSourceType,
-            charge: string option,
-            payout: string option
+            ``type``: PlatformEarningFeeSourceType
         ) : PlatformEarningFeeSource
         =
         {
           Type = ``type``
-          Charge = charge
-          Payout = payout
+          Charge = None
+          Payout = None
         }
 

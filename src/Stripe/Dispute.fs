@@ -82,13 +82,12 @@ type DisputePaymentMethodDetailsKlarna =
 module DisputePaymentMethodDetailsKlarna =
     let create
         (
-            reasonCode: string option,
-            chargebackLossReasonCode: string option
+            reasonCode: string option
         ) : DisputePaymentMethodDetailsKlarna
         =
         {
           ReasonCode = reasonCode
-          ChargebackLossReasonCode = chargebackLossReasonCode
+          ChargebackLossReasonCode = None
         }
 
 type DisputePaymentMethodDetailsPaypal =
@@ -131,19 +130,15 @@ type DisputePaymentMethodDetails =
 module DisputePaymentMethodDetails =
     let create
         (
-            ``type``: DisputePaymentMethodDetailsType,
-            amazonPay: DisputePaymentMethodDetailsAmazonPay option,
-            card: DisputePaymentMethodDetailsCard option,
-            klarna: DisputePaymentMethodDetailsKlarna option,
-            paypal: DisputePaymentMethodDetailsPaypal option
+            ``type``: DisputePaymentMethodDetailsType
         ) : DisputePaymentMethodDetails
         =
         {
           Type = ``type``
-          AmazonPay = amazonPay
-          Card = card
-          Klarna = klarna
-          Paypal = paypal
+          AmazonPay = None
+          Card = None
+          Klarna = None
+          Paypal = None
         }
 
 [<Struct>]

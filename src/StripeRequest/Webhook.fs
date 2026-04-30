@@ -452,22 +452,17 @@ module WebhookEndpoints =
         let create
             (
                 enabledEvents: Create'EnabledEvents list,
-                url: string,
-                apiVersion: Create'ApiVersion option,
-                connect: bool option,
-                description: Choice<string,string> option,
-                expand: string list option,
-                metadata: Map<string, string> option
+                url: string
             ) : CreateOptions
             =
             {
               EnabledEvents = enabledEvents
               Url = url
-              ApiVersion = apiVersion
-              Connect = connect
-              Description = description
-              Expand = expand
-              Metadata = metadata
+              ApiVersion = None
+              Connect = None
+              Description = None
+              Expand = None
+              Metadata = None
             }
 
     type DeleteOptions =
@@ -496,13 +491,12 @@ module WebhookEndpoints =
     module RetrieveOptions =
         let create
             (
-                webhookEndpoint: string,
-                expand: string list option
+                webhookEndpoint: string
             ) : RetrieveOptions
             =
             {
               WebhookEndpoint = webhookEndpoint
-              Expand = expand
+              Expand = None
             }
 
     type Update'EnabledEvents =
@@ -789,23 +783,17 @@ module WebhookEndpoints =
     module UpdateOptions =
         let create
             (
-                webhookEndpoint: string,
-                description: Choice<string,string> option,
-                disabled: bool option,
-                enabledEvents: Update'EnabledEvents list option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                url: string option
+                webhookEndpoint: string
             ) : UpdateOptions
             =
             {
               WebhookEndpoint = webhookEndpoint
-              Description = description
-              Disabled = disabled
-              EnabledEvents = enabledEvents
-              Expand = expand
-              Metadata = metadata
-              Url = url
+              Description = None
+              Disabled = None
+              EnabledEvents = None
+              Expand = None
+              Metadata = None
+              Url = None
             }
 
     ///<p>Returns a list of your webhook endpoints.</p>
