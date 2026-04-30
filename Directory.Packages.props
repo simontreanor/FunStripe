@@ -4,8 +4,12 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="FSharp.Core" Version="10.1.203" />
-    <!-- .NET JSON parsing (not used in Fable projects) -->
+    <!-- .NET JSON parsing for code generator tool (ModelBuilder.fs / RequestBuilder.fs) -->
     <PackageVersion Include="FSharp.Data.Json.Core" Version="8.1.11" />
+    <!-- .NET JSON serialization for the core library (.NET path only) -->
+    <PackageVersion Include="FSharp.SystemTextJson" Version="1.3.13" />
+    <!-- .NET HTTP client for RestApi.fs (not used in Fable projects) -->
+    <PackageVersion Include="FSharp.Data.Http" Version="8.1.11" />
     <!-- Fable HTTP client -->
     <PackageVersion Include="Fable.SimpleHttp" Version="3.6.0" />
     <!-- Fable JSON parsing -->

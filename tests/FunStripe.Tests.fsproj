@@ -3,6 +3,7 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\src\FunStripe.Core\FunStripe.Core.fsproj" />
     <ProjectReference Include="..\tools\FunStripe.Generator\FunStripe.Generator.fsproj" />
   </ItemGroup>
   <ItemGroup>

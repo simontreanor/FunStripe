@@ -15,7 +15,7 @@ module Tests =
     ///Serialise F# class
     let serialise<'a> (parameters:'a) =
         typeof<'a>.GetProperties()
-        |> Seq.collect (fun pi -> Util.format Util.config pi parameters)
+        |> Seq.collect (fun pi -> Util.format pi parameters)
 
     let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 

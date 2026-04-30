@@ -1,6 +1,6 @@
 namespace FunStripe
 
-open FunStripe.Json
+open System.Text.Json.Serialization
 
 ///See [Stripe API docs](https://stripe.com/docs/api/errors)
 module StripeError =
@@ -65,5 +65,5 @@ module StripeError =
 
     ///Record for capturing response errors
     type ErrorResponse = {
-        [<JsonField("error")>]StripeError: ErrorObject
+        [<JsonPropertyName("error")>]StripeError: ErrorObject
     }

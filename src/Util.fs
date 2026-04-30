@@ -1,13 +1,11 @@
 namespace FunStripe
 
-#if !FABLE_COMPILER
-open FSharp.Data
-#endif
 open FSharp.Reflection
 open System
 open System.Globalization
 open System.Text.RegularExpressions
 open System.Reflection
+open System.Text.Json.Serialization
 
 module Util =
 
@@ -19,15 +17,31 @@ module Util =
     let spitNameRegex = Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])")
     let choiceRegex = Regex(@"Choice\d+Of\d+")
 
-    /// Converts names into snake case. Use in [JsonConfig].
+    /// Converts names into snake case. Use for JSON field name defaults.
     let snakeCase (name: string): string =
         if name.Contains "_" then name else //don't double-snake-case!
         let words = spitNameRegex.Split name |> List.ofArray |> List.map(fun s -> s.ToLower())
         words |> String.concat "_"
 
+    /// Read the explicit JSON field name from [<JsonPropertyName>] attribute, or fall back to snake_case.
+    let private getPropertyName (prop: PropertyInfo) =
+        let attrs = prop.GetCustomAttributes(typeof<JsonPropertyNameAttribute>, false)
+        if attrs.Length > 0 then
+            (attrs.[0] :?> JsonPropertyNameAttribute).Name
+        else
+            snakeCase prop.Name
+
+    /// Read the explicit JSON case name from [<JsonPropertyName>] attribute, or fall back to snake_case.
+    let private getUnionCaseName (uci: UnionCaseInfo) =
+        let attrs = uci.GetCustomAttributes typeof<JsonPropertyNameAttribute>
+        if attrs.Length > 0 then
+            (attrs.[0] :?> JsonPropertyNameAttribute).Name
+        else
+            snakeCase uci.Name
+
     ///Recurse through record fields / class properties and format as form key/value pairs
-    let format (config: Json.JsonConfig) (propertyInfo: PropertyInfo) parameters =
-        let key = propertyInfo |> Json.Core.getJsonFieldName config (Json.Core.getJsonFieldProperty propertyInfo)
+    let format (propertyInfo: PropertyInfo) parameters =
+        let key = getPropertyName propertyInfo
         let value = propertyInfo.GetValue(parameters, [||])
         let rec format' (key': string) (value': obj) =
             match value' with
@@ -46,12 +60,12 @@ module Util =
                     | Some o -> format' key' o
                     | None -> Seq.empty
                 | _ ->
-                    let jsonUnionCaseName = FSharpValue.GetUnionFields(value', value'.GetType()) |> fun (uci, _) -> uci |> Json.Core.getJsonUnionCaseName config (Json.Core.getJsonUnionCase uci)
-                    seq {key', $"{jsonUnionCaseName}"}
+                    let caseName = FSharpValue.GetUnionFields(value', value'.GetType()) |> fun (uci, _) -> getUnionCaseName uci
+                    seq {key', $"{caseName}"}
             | _ when FSharpType.IsRecord (value'.GetType()) ->
                 FSharpType.GetRecordFields (value'.GetType())
                 |> Array.map (fun pi ->
-                    let jsonFieldName = pi |> Json.Core.getJsonFieldName config (Json.Core.getJsonFieldProperty pi)
+                    let jsonFieldName = getPropertyName pi
                     format' $"{key'}[{jsonFieldName}]" (pi.GetValue(value', [||]))
                 )
                 |> Seq.concat
@@ -87,7 +101,7 @@ module Util =
             | _ when (unbox value').GetType().IsClass ->
                 (unbox value').GetType().GetProperties()
                 |> Array.map (fun pi ->
-                    let jsonFieldName = pi |> Json.Core.getJsonFieldName config (Json.Core.getJsonFieldProperty pi)
+                    let jsonFieldName = getPropertyName pi
                     format' $"{key'}[{jsonFieldName}]" (pi.GetValue(value', [||]))
                 )
                 |> Seq.concat
@@ -95,45 +109,36 @@ module Util =
                 seq {key', value' |> string}
         format' key value
 
-    ///JSON setting for snake-case formatting (Stripe uses snake-case, F# prefers pascal/camel case)
-    let config = Json.JsonConfig.New(allowUntyped = true, jsonFieldNaming = snakeCase, unformatted = true)
-
     ///Convert JSON strings to F# objects
 #if FABLE_COMPILER
     let deserialise<'a> (data: string) =
-        Json.FableCore.deserializeString config typeof<'a> data :?> 'a
+        Json.FableCore.deserializeString typeof<'a> data :?> 'a
 #else
-    let deserialise<'a> data =
-        let value = JsonValue.Parse(data)
-        (Json.Core.deserialize config Json.JsonPath.Root typeof<'a> value) :?> 'a
+    let deserialise<'a> (data: string) : 'a =
+        System.Text.Json.JsonSerializer.Deserialize<'a>(data, Json.StripeConverter.sharedOptions.Value)
 #endif
 
     ///Serialise F# record as form
     let serialiseForm<'a> (parameters:'a) =
         FSharpType.GetRecordFields typeof<'a>
         |> Array.filter(fun pi -> pi.GetCustomAttributes(typeof<Config.FormAttribute>, false).Length > 0)
-        |> Seq.collect (fun pi -> format config pi parameters)
+        |> Seq.collect (fun pi -> format pi parameters)
 
     //following functions are not required by the library but are useful utilities:
 
    ///Convert F# objects to JSON strings
 #if !FABLE_COMPILER
-    let serialise data =
-        let json = Json.Core.serialize config (data.GetType()) data
-        let saveOptions =
-            match config.Unformatted with
-            | true -> JsonSaveOptions.DisableFormatting
-            | false -> JsonSaveOptions.None
-        json.ToString(saveOptions)
+    let serialise (data: obj) =
+        System.Text.Json.JsonSerializer.Serialize(data, Json.StripeConverter.sharedOptions.Value)
 #endif
         
 #if !FABLE_COMPILER
     let getUnionCaseFromString<'a> (value: string) =
         typeof<'a>.UnderlyingSystemType.GetProperties()
         |> Array.map(fun pi ->
-            pi.GetMethod.GetCustomAttributes(typeof<Json.JsonField>, false)
-            |> Seq.cast<Json.JsonField>
-            |> Seq.map(fun jf -> (pi.Name, jf.Name))
+            pi.GetMethod.GetCustomAttributes(typeof<JsonPropertyNameAttribute>, false)
+            |> Seq.cast<JsonPropertyNameAttribute>
+            |> Seq.map(fun attr -> (pi.Name, attr.Name))
             |> Seq.tryExactlyOne
         )
         |> Array.choose id

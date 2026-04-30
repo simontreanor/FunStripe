@@ -1,7 +1,7 @@
 namespace FunStripe.StripeRequest
 
 open FunStripe
-open FunStripe.Json
+open System.Text.Json.Serialization
 open FunStripe.StripeModel
 open System
 
@@ -4456,12 +4456,12 @@ module PaymentIntents =
             }
 
     type Create'PaymentMethodDataSofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Create'PaymentMethodDataSofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>
@@ -5181,12 +5181,12 @@ module PaymentIntents =
             }
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecureNetworkOptionsCartesBancairesCbAvalgo =
-    | [<JsonUnionCase("0")>] Numeric0
-    | [<JsonUnionCase("1")>] Numeric1
-    | [<JsonUnionCase("2")>] Numeric2
-    | [<JsonUnionCase("3")>] Numeric3
-    | [<JsonUnionCase("4")>] Numeric4
-    | [<JsonUnionCase("A")>] A
+    | [<JsonPropertyName("0")>] Numeric0
+    | [<JsonPropertyName("1")>] Numeric1
+    | [<JsonPropertyName("2")>] Numeric2
+    | [<JsonPropertyName("3")>] Numeric3
+    | [<JsonPropertyName("4")>] Numeric4
+    | [<JsonPropertyName("A")>] A
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecureNetworkOptionsCartesBancaires = {
         ///<summary>The cryptogram calculation algorithm used by the card Issuer's ACS
@@ -5221,31 +5221,31 @@ module PaymentIntents =
             }
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecureAresTransStatus =
-    | [<JsonUnionCase("A")>] A
-    | [<JsonUnionCase("C")>] C
-    | [<JsonUnionCase("I")>] I
-    | [<JsonUnionCase("N")>] N
-    | [<JsonUnionCase("R")>] R
-    | [<JsonUnionCase("U")>] U
-    | [<JsonUnionCase("Y")>] Y
+    | [<JsonPropertyName("A")>] A
+    | [<JsonPropertyName("C")>] C
+    | [<JsonPropertyName("I")>] I
+    | [<JsonPropertyName("N")>] N
+    | [<JsonPropertyName("R")>] R
+    | [<JsonPropertyName("U")>] U
+    | [<JsonPropertyName("Y")>] Y
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecureElectronicCommerceIndicator =
-    | [<JsonUnionCase("01")>] Numeric01
-    | [<JsonUnionCase("02")>] Numeric02
-    | [<JsonUnionCase("05")>] Numeric05
-    | [<JsonUnionCase("06")>] Numeric06
-    | [<JsonUnionCase("07")>] Numeric07
+    | [<JsonPropertyName("01")>] Numeric01
+    | [<JsonPropertyName("02")>] Numeric02
+    | [<JsonPropertyName("05")>] Numeric05
+    | [<JsonPropertyName("06")>] Numeric06
+    | [<JsonPropertyName("07")>] Numeric07
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecureExemptionIndicator =
     | LowRisk
     | None'
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecureVersion =
-    | [<JsonUnionCase("1.0.2")>] Numeric102
-    | [<JsonUnionCase("2.1.0")>] Numeric210
-    | [<JsonUnionCase("2.2.0")>] Numeric220
-    | [<JsonUnionCase("2.3.0")>] Numeric230
-    | [<JsonUnionCase("2.3.1")>] Numeric231
+    | [<JsonPropertyName("1.0.2")>] Numeric102
+    | [<JsonPropertyName("2.1.0")>] Numeric210
+    | [<JsonPropertyName("2.2.0")>] Numeric220
+    | [<JsonPropertyName("2.3.0")>] Numeric230
+    | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecure = {
         ///<summary>The `transStatus` returned from the card Issuer’s ACS in the ARes.</summary>
@@ -5731,52 +5731,52 @@ module PaymentIntents =
     | Manual
 
     type Create'PaymentMethodOptionsKlarnaPaymentMethodOptionsPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-CH")>] DeCH
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-AT")>] EnAT
-    | [<JsonUnionCase("en-AU")>] EnAU
-    | [<JsonUnionCase("en-BE")>] EnBE
-    | [<JsonUnionCase("en-CA")>] EnCA
-    | [<JsonUnionCase("en-CH")>] EnCH
-    | [<JsonUnionCase("en-CZ")>] EnCZ
-    | [<JsonUnionCase("en-DE")>] EnDE
-    | [<JsonUnionCase("en-DK")>] EnDK
-    | [<JsonUnionCase("en-ES")>] EnES
-    | [<JsonUnionCase("en-FI")>] EnFI
-    | [<JsonUnionCase("en-FR")>] EnFR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-GR")>] EnGR
-    | [<JsonUnionCase("en-IE")>] EnIE
-    | [<JsonUnionCase("en-IT")>] EnIT
-    | [<JsonUnionCase("en-NL")>] EnNL
-    | [<JsonUnionCase("en-NO")>] EnNO
-    | [<JsonUnionCase("en-NZ")>] EnNZ
-    | [<JsonUnionCase("en-PL")>] EnPL
-    | [<JsonUnionCase("en-PT")>] EnPT
-    | [<JsonUnionCase("en-RO")>] EnRO
-    | [<JsonUnionCase("en-SE")>] EnSE
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("es-US")>] EsUS
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-CA")>] FrCA
-    | [<JsonUnionCase("fr-CH")>] FrCH
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("it-CH")>] ItCH
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nb-NO")>] NbNO
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("ro-RO")>] RoRO
-    | [<JsonUnionCase("sv-FI")>] SvFI
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-CH")>] DeCH
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-AT")>] EnAT
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-BE")>] EnBE
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-CH")>] EnCH
+    | [<JsonPropertyName("en-CZ")>] EnCZ
+    | [<JsonPropertyName("en-DE")>] EnDE
+    | [<JsonPropertyName("en-DK")>] EnDK
+    | [<JsonPropertyName("en-ES")>] EnES
+    | [<JsonPropertyName("en-FI")>] EnFI
+    | [<JsonPropertyName("en-FR")>] EnFR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-GR")>] EnGR
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IT")>] EnIT
+    | [<JsonPropertyName("en-NL")>] EnNL
+    | [<JsonPropertyName("en-NO")>] EnNO
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-PL")>] EnPL
+    | [<JsonPropertyName("en-PT")>] EnPT
+    | [<JsonPropertyName("en-RO")>] EnRO
+    | [<JsonPropertyName("en-SE")>] EnSE
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("es-US")>] EsUS
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | [<JsonPropertyName("fr-CH")>] FrCH
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("it-CH")>] ItCH
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nb-NO")>] NbNO
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("ro-RO")>] RoRO
+    | [<JsonPropertyName("sv-FI")>] SvFI
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Create'PaymentMethodOptionsKlarnaPaymentMethodOptionsSetupFutureUsage =
     | None'
@@ -6076,27 +6076,27 @@ module PaymentIntents =
     | Manual
 
     type Create'PaymentMethodOptionsPaypalPaymentMethodOptionsPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("de-LU")>] DeLU
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("fr-LU")>] FrLU
-    | [<JsonUnionCase("hu-HU")>] HuHU
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("sk-SK")>] SkSK
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("de-LU")>] DeLU
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("fr-LU")>] FrLU
+    | [<JsonPropertyName("hu-HU")>] HuHU
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("sk-SK")>] SkSK
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Create'PaymentMethodOptionsPaypalPaymentMethodOptionsSetupFutureUsage =
     | None'
@@ -7707,12 +7707,12 @@ module PaymentIntents =
             }
 
     type Update'PaymentMethodDataSofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Update'PaymentMethodDataSofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>
@@ -8432,12 +8432,12 @@ module PaymentIntents =
             }
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecureNetworkOptionsCartesBancairesCbAvalgo =
-    | [<JsonUnionCase("0")>] Numeric0
-    | [<JsonUnionCase("1")>] Numeric1
-    | [<JsonUnionCase("2")>] Numeric2
-    | [<JsonUnionCase("3")>] Numeric3
-    | [<JsonUnionCase("4")>] Numeric4
-    | [<JsonUnionCase("A")>] A
+    | [<JsonPropertyName("0")>] Numeric0
+    | [<JsonPropertyName("1")>] Numeric1
+    | [<JsonPropertyName("2")>] Numeric2
+    | [<JsonPropertyName("3")>] Numeric3
+    | [<JsonPropertyName("4")>] Numeric4
+    | [<JsonPropertyName("A")>] A
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecureNetworkOptionsCartesBancaires = {
         ///<summary>The cryptogram calculation algorithm used by the card Issuer's ACS
@@ -8472,31 +8472,31 @@ module PaymentIntents =
             }
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecureAresTransStatus =
-    | [<JsonUnionCase("A")>] A
-    | [<JsonUnionCase("C")>] C
-    | [<JsonUnionCase("I")>] I
-    | [<JsonUnionCase("N")>] N
-    | [<JsonUnionCase("R")>] R
-    | [<JsonUnionCase("U")>] U
-    | [<JsonUnionCase("Y")>] Y
+    | [<JsonPropertyName("A")>] A
+    | [<JsonPropertyName("C")>] C
+    | [<JsonPropertyName("I")>] I
+    | [<JsonPropertyName("N")>] N
+    | [<JsonPropertyName("R")>] R
+    | [<JsonPropertyName("U")>] U
+    | [<JsonPropertyName("Y")>] Y
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecureElectronicCommerceIndicator =
-    | [<JsonUnionCase("01")>] Numeric01
-    | [<JsonUnionCase("02")>] Numeric02
-    | [<JsonUnionCase("05")>] Numeric05
-    | [<JsonUnionCase("06")>] Numeric06
-    | [<JsonUnionCase("07")>] Numeric07
+    | [<JsonPropertyName("01")>] Numeric01
+    | [<JsonPropertyName("02")>] Numeric02
+    | [<JsonPropertyName("05")>] Numeric05
+    | [<JsonPropertyName("06")>] Numeric06
+    | [<JsonPropertyName("07")>] Numeric07
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecureExemptionIndicator =
     | LowRisk
     | None'
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecureVersion =
-    | [<JsonUnionCase("1.0.2")>] Numeric102
-    | [<JsonUnionCase("2.1.0")>] Numeric210
-    | [<JsonUnionCase("2.2.0")>] Numeric220
-    | [<JsonUnionCase("2.3.0")>] Numeric230
-    | [<JsonUnionCase("2.3.1")>] Numeric231
+    | [<JsonPropertyName("1.0.2")>] Numeric102
+    | [<JsonPropertyName("2.1.0")>] Numeric210
+    | [<JsonPropertyName("2.2.0")>] Numeric220
+    | [<JsonPropertyName("2.3.0")>] Numeric230
+    | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecure = {
         ///<summary>The `transStatus` returned from the card Issuer’s ACS in the ARes.</summary>
@@ -8982,52 +8982,52 @@ module PaymentIntents =
     | Manual
 
     type Update'PaymentMethodOptionsKlarnaPaymentMethodOptionsPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-CH")>] DeCH
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-AT")>] EnAT
-    | [<JsonUnionCase("en-AU")>] EnAU
-    | [<JsonUnionCase("en-BE")>] EnBE
-    | [<JsonUnionCase("en-CA")>] EnCA
-    | [<JsonUnionCase("en-CH")>] EnCH
-    | [<JsonUnionCase("en-CZ")>] EnCZ
-    | [<JsonUnionCase("en-DE")>] EnDE
-    | [<JsonUnionCase("en-DK")>] EnDK
-    | [<JsonUnionCase("en-ES")>] EnES
-    | [<JsonUnionCase("en-FI")>] EnFI
-    | [<JsonUnionCase("en-FR")>] EnFR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-GR")>] EnGR
-    | [<JsonUnionCase("en-IE")>] EnIE
-    | [<JsonUnionCase("en-IT")>] EnIT
-    | [<JsonUnionCase("en-NL")>] EnNL
-    | [<JsonUnionCase("en-NO")>] EnNO
-    | [<JsonUnionCase("en-NZ")>] EnNZ
-    | [<JsonUnionCase("en-PL")>] EnPL
-    | [<JsonUnionCase("en-PT")>] EnPT
-    | [<JsonUnionCase("en-RO")>] EnRO
-    | [<JsonUnionCase("en-SE")>] EnSE
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("es-US")>] EsUS
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-CA")>] FrCA
-    | [<JsonUnionCase("fr-CH")>] FrCH
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("it-CH")>] ItCH
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nb-NO")>] NbNO
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("ro-RO")>] RoRO
-    | [<JsonUnionCase("sv-FI")>] SvFI
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-CH")>] DeCH
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-AT")>] EnAT
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-BE")>] EnBE
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-CH")>] EnCH
+    | [<JsonPropertyName("en-CZ")>] EnCZ
+    | [<JsonPropertyName("en-DE")>] EnDE
+    | [<JsonPropertyName("en-DK")>] EnDK
+    | [<JsonPropertyName("en-ES")>] EnES
+    | [<JsonPropertyName("en-FI")>] EnFI
+    | [<JsonPropertyName("en-FR")>] EnFR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-GR")>] EnGR
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IT")>] EnIT
+    | [<JsonPropertyName("en-NL")>] EnNL
+    | [<JsonPropertyName("en-NO")>] EnNO
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-PL")>] EnPL
+    | [<JsonPropertyName("en-PT")>] EnPT
+    | [<JsonPropertyName("en-RO")>] EnRO
+    | [<JsonPropertyName("en-SE")>] EnSE
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("es-US")>] EsUS
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | [<JsonPropertyName("fr-CH")>] FrCH
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("it-CH")>] ItCH
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nb-NO")>] NbNO
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("ro-RO")>] RoRO
+    | [<JsonPropertyName("sv-FI")>] SvFI
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Update'PaymentMethodOptionsKlarnaPaymentMethodOptionsSetupFutureUsage =
     | None'
@@ -9327,27 +9327,27 @@ module PaymentIntents =
     | Manual
 
     type Update'PaymentMethodOptionsPaypalPaymentMethodOptionsPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("de-LU")>] DeLU
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("fr-LU")>] FrLU
-    | [<JsonUnionCase("hu-HU")>] HuHU
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("sk-SK")>] SkSK
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("de-LU")>] DeLU
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("fr-LU")>] FrLU
+    | [<JsonPropertyName("hu-HU")>] HuHU
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("sk-SK")>] SkSK
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Update'PaymentMethodOptionsPaypalPaymentMethodOptionsSetupFutureUsage =
     | None'
@@ -11360,12 +11360,12 @@ module PaymentIntentsConfirm =
             }
 
     type Confirm'PaymentMethodDataSofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Confirm'PaymentMethodDataSofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>
@@ -12085,12 +12085,12 @@ module PaymentIntentsConfirm =
             }
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecureNetworkOptionsCartesBancairesCbAvalgo =
-    | [<JsonUnionCase("0")>] Numeric0
-    | [<JsonUnionCase("1")>] Numeric1
-    | [<JsonUnionCase("2")>] Numeric2
-    | [<JsonUnionCase("3")>] Numeric3
-    | [<JsonUnionCase("4")>] Numeric4
-    | [<JsonUnionCase("A")>] A
+    | [<JsonPropertyName("0")>] Numeric0
+    | [<JsonPropertyName("1")>] Numeric1
+    | [<JsonPropertyName("2")>] Numeric2
+    | [<JsonPropertyName("3")>] Numeric3
+    | [<JsonPropertyName("4")>] Numeric4
+    | [<JsonPropertyName("A")>] A
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecureNetworkOptionsCartesBancaires = {
         ///<summary>The cryptogram calculation algorithm used by the card Issuer's ACS
@@ -12125,31 +12125,31 @@ module PaymentIntentsConfirm =
             }
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecureAresTransStatus =
-    | [<JsonUnionCase("A")>] A
-    | [<JsonUnionCase("C")>] C
-    | [<JsonUnionCase("I")>] I
-    | [<JsonUnionCase("N")>] N
-    | [<JsonUnionCase("R")>] R
-    | [<JsonUnionCase("U")>] U
-    | [<JsonUnionCase("Y")>] Y
+    | [<JsonPropertyName("A")>] A
+    | [<JsonPropertyName("C")>] C
+    | [<JsonPropertyName("I")>] I
+    | [<JsonPropertyName("N")>] N
+    | [<JsonPropertyName("R")>] R
+    | [<JsonPropertyName("U")>] U
+    | [<JsonPropertyName("Y")>] Y
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecureElectronicCommerceIndicator =
-    | [<JsonUnionCase("01")>] Numeric01
-    | [<JsonUnionCase("02")>] Numeric02
-    | [<JsonUnionCase("05")>] Numeric05
-    | [<JsonUnionCase("06")>] Numeric06
-    | [<JsonUnionCase("07")>] Numeric07
+    | [<JsonPropertyName("01")>] Numeric01
+    | [<JsonPropertyName("02")>] Numeric02
+    | [<JsonPropertyName("05")>] Numeric05
+    | [<JsonPropertyName("06")>] Numeric06
+    | [<JsonPropertyName("07")>] Numeric07
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecureExemptionIndicator =
     | LowRisk
     | None'
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecureVersion =
-    | [<JsonUnionCase("1.0.2")>] Numeric102
-    | [<JsonUnionCase("2.1.0")>] Numeric210
-    | [<JsonUnionCase("2.2.0")>] Numeric220
-    | [<JsonUnionCase("2.3.0")>] Numeric230
-    | [<JsonUnionCase("2.3.1")>] Numeric231
+    | [<JsonPropertyName("1.0.2")>] Numeric102
+    | [<JsonPropertyName("2.1.0")>] Numeric210
+    | [<JsonPropertyName("2.2.0")>] Numeric220
+    | [<JsonPropertyName("2.3.0")>] Numeric230
+    | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecure = {
         ///<summary>The `transStatus` returned from the card Issuer’s ACS in the ARes.</summary>
@@ -12635,52 +12635,52 @@ module PaymentIntentsConfirm =
     | Manual
 
     type Confirm'PaymentMethodOptionsKlarnaPaymentMethodOptionsPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-CH")>] DeCH
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-AT")>] EnAT
-    | [<JsonUnionCase("en-AU")>] EnAU
-    | [<JsonUnionCase("en-BE")>] EnBE
-    | [<JsonUnionCase("en-CA")>] EnCA
-    | [<JsonUnionCase("en-CH")>] EnCH
-    | [<JsonUnionCase("en-CZ")>] EnCZ
-    | [<JsonUnionCase("en-DE")>] EnDE
-    | [<JsonUnionCase("en-DK")>] EnDK
-    | [<JsonUnionCase("en-ES")>] EnES
-    | [<JsonUnionCase("en-FI")>] EnFI
-    | [<JsonUnionCase("en-FR")>] EnFR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-GR")>] EnGR
-    | [<JsonUnionCase("en-IE")>] EnIE
-    | [<JsonUnionCase("en-IT")>] EnIT
-    | [<JsonUnionCase("en-NL")>] EnNL
-    | [<JsonUnionCase("en-NO")>] EnNO
-    | [<JsonUnionCase("en-NZ")>] EnNZ
-    | [<JsonUnionCase("en-PL")>] EnPL
-    | [<JsonUnionCase("en-PT")>] EnPT
-    | [<JsonUnionCase("en-RO")>] EnRO
-    | [<JsonUnionCase("en-SE")>] EnSE
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("es-US")>] EsUS
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-CA")>] FrCA
-    | [<JsonUnionCase("fr-CH")>] FrCH
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("it-CH")>] ItCH
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nb-NO")>] NbNO
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("ro-RO")>] RoRO
-    | [<JsonUnionCase("sv-FI")>] SvFI
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-CH")>] DeCH
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-AT")>] EnAT
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-BE")>] EnBE
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-CH")>] EnCH
+    | [<JsonPropertyName("en-CZ")>] EnCZ
+    | [<JsonPropertyName("en-DE")>] EnDE
+    | [<JsonPropertyName("en-DK")>] EnDK
+    | [<JsonPropertyName("en-ES")>] EnES
+    | [<JsonPropertyName("en-FI")>] EnFI
+    | [<JsonPropertyName("en-FR")>] EnFR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-GR")>] EnGR
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IT")>] EnIT
+    | [<JsonPropertyName("en-NL")>] EnNL
+    | [<JsonPropertyName("en-NO")>] EnNO
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-PL")>] EnPL
+    | [<JsonPropertyName("en-PT")>] EnPT
+    | [<JsonPropertyName("en-RO")>] EnRO
+    | [<JsonPropertyName("en-SE")>] EnSE
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("es-US")>] EsUS
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | [<JsonPropertyName("fr-CH")>] FrCH
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("it-CH")>] ItCH
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nb-NO")>] NbNO
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("ro-RO")>] RoRO
+    | [<JsonPropertyName("sv-FI")>] SvFI
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Confirm'PaymentMethodOptionsKlarnaPaymentMethodOptionsSetupFutureUsage =
     | None'
@@ -12980,27 +12980,27 @@ module PaymentIntentsConfirm =
     | Manual
 
     type Confirm'PaymentMethodOptionsPaypalPaymentMethodOptionsPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("de-LU")>] DeLU
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("fr-LU")>] FrLU
-    | [<JsonUnionCase("hu-HU")>] HuHU
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("sk-SK")>] SkSK
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("de-LU")>] DeLU
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("fr-LU")>] FrLU
+    | [<JsonPropertyName("hu-HU")>] HuHU
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("sk-SK")>] SkSK
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Confirm'PaymentMethodOptionsPaypalPaymentMethodOptionsSetupFutureUsage =
     | None'
@@ -18129,12 +18129,12 @@ module PaymentMethods =
             }
 
     type Create'SofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Create'Sofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>
@@ -20827,12 +20827,12 @@ module SetupIntents =
             }
 
     type Create'PaymentMethodDataSofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Create'PaymentMethodDataSofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>
@@ -21277,12 +21277,12 @@ module SetupIntents =
             }
 
     type Create'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancairesCbAvalgo =
-    | [<JsonUnionCase("0")>] Numeric0
-    | [<JsonUnionCase("1")>] Numeric1
-    | [<JsonUnionCase("2")>] Numeric2
-    | [<JsonUnionCase("3")>] Numeric3
-    | [<JsonUnionCase("4")>] Numeric4
-    | [<JsonUnionCase("A")>] A
+    | [<JsonPropertyName("0")>] Numeric0
+    | [<JsonPropertyName("1")>] Numeric1
+    | [<JsonPropertyName("2")>] Numeric2
+    | [<JsonPropertyName("3")>] Numeric3
+    | [<JsonPropertyName("4")>] Numeric4
+    | [<JsonPropertyName("A")>] A
 
     type Create'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires = {
         ///<summary>The cryptogram calculation algorithm used by the card Issuer's ACS
@@ -21317,27 +21317,27 @@ module SetupIntents =
             }
 
     type Create'PaymentMethodOptionsCardThreeDSecureAresTransStatus =
-    | [<JsonUnionCase("A")>] A
-    | [<JsonUnionCase("C")>] C
-    | [<JsonUnionCase("I")>] I
-    | [<JsonUnionCase("N")>] N
-    | [<JsonUnionCase("R")>] R
-    | [<JsonUnionCase("U")>] U
-    | [<JsonUnionCase("Y")>] Y
+    | [<JsonPropertyName("A")>] A
+    | [<JsonPropertyName("C")>] C
+    | [<JsonPropertyName("I")>] I
+    | [<JsonPropertyName("N")>] N
+    | [<JsonPropertyName("R")>] R
+    | [<JsonPropertyName("U")>] U
+    | [<JsonPropertyName("Y")>] Y
 
     type Create'PaymentMethodOptionsCardThreeDSecureElectronicCommerceIndicator =
-    | [<JsonUnionCase("01")>] Numeric01
-    | [<JsonUnionCase("02")>] Numeric02
-    | [<JsonUnionCase("05")>] Numeric05
-    | [<JsonUnionCase("06")>] Numeric06
-    | [<JsonUnionCase("07")>] Numeric07
+    | [<JsonPropertyName("01")>] Numeric01
+    | [<JsonPropertyName("02")>] Numeric02
+    | [<JsonPropertyName("05")>] Numeric05
+    | [<JsonPropertyName("06")>] Numeric06
+    | [<JsonPropertyName("07")>] Numeric07
 
     type Create'PaymentMethodOptionsCardThreeDSecureVersion =
-    | [<JsonUnionCase("1.0.2")>] Numeric102
-    | [<JsonUnionCase("2.1.0")>] Numeric210
-    | [<JsonUnionCase("2.2.0")>] Numeric220
-    | [<JsonUnionCase("2.3.0")>] Numeric230
-    | [<JsonUnionCase("2.3.1")>] Numeric231
+    | [<JsonPropertyName("1.0.2")>] Numeric102
+    | [<JsonPropertyName("2.1.0")>] Numeric210
+    | [<JsonPropertyName("2.2.0")>] Numeric220
+    | [<JsonPropertyName("2.3.0")>] Numeric230
+    | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type Create'PaymentMethodOptionsCardThreeDSecure = {
         ///<summary>The `transStatus` returned from the card Issuer’s ACS in the ARes.</summary>
@@ -21490,52 +21490,52 @@ module SetupIntents =
             }
 
     type Create'PaymentMethodOptionsKlarnaPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-CH")>] DeCH
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-AT")>] EnAT
-    | [<JsonUnionCase("en-AU")>] EnAU
-    | [<JsonUnionCase("en-BE")>] EnBE
-    | [<JsonUnionCase("en-CA")>] EnCA
-    | [<JsonUnionCase("en-CH")>] EnCH
-    | [<JsonUnionCase("en-CZ")>] EnCZ
-    | [<JsonUnionCase("en-DE")>] EnDE
-    | [<JsonUnionCase("en-DK")>] EnDK
-    | [<JsonUnionCase("en-ES")>] EnES
-    | [<JsonUnionCase("en-FI")>] EnFI
-    | [<JsonUnionCase("en-FR")>] EnFR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-GR")>] EnGR
-    | [<JsonUnionCase("en-IE")>] EnIE
-    | [<JsonUnionCase("en-IT")>] EnIT
-    | [<JsonUnionCase("en-NL")>] EnNL
-    | [<JsonUnionCase("en-NO")>] EnNO
-    | [<JsonUnionCase("en-NZ")>] EnNZ
-    | [<JsonUnionCase("en-PL")>] EnPL
-    | [<JsonUnionCase("en-PT")>] EnPT
-    | [<JsonUnionCase("en-RO")>] EnRO
-    | [<JsonUnionCase("en-SE")>] EnSE
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("es-US")>] EsUS
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-CA")>] FrCA
-    | [<JsonUnionCase("fr-CH")>] FrCH
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("it-CH")>] ItCH
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nb-NO")>] NbNO
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("ro-RO")>] RoRO
-    | [<JsonUnionCase("sv-FI")>] SvFI
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-CH")>] DeCH
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-AT")>] EnAT
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-BE")>] EnBE
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-CH")>] EnCH
+    | [<JsonPropertyName("en-CZ")>] EnCZ
+    | [<JsonPropertyName("en-DE")>] EnDE
+    | [<JsonPropertyName("en-DK")>] EnDK
+    | [<JsonPropertyName("en-ES")>] EnES
+    | [<JsonPropertyName("en-FI")>] EnFI
+    | [<JsonPropertyName("en-FR")>] EnFR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-GR")>] EnGR
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IT")>] EnIT
+    | [<JsonPropertyName("en-NL")>] EnNL
+    | [<JsonPropertyName("en-NO")>] EnNO
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-PL")>] EnPL
+    | [<JsonPropertyName("en-PT")>] EnPT
+    | [<JsonPropertyName("en-RO")>] EnRO
+    | [<JsonPropertyName("en-SE")>] EnSE
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("es-US")>] EsUS
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | [<JsonPropertyName("fr-CH")>] FrCH
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("it-CH")>] ItCH
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nb-NO")>] NbNO
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("ro-RO")>] RoRO
+    | [<JsonPropertyName("sv-FI")>] SvFI
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Create'PaymentMethodOptionsKlarna = {
         ///<summary>The currency of the SetupIntent. Three letter ISO currency code.</summary>
@@ -22433,12 +22433,12 @@ module SetupIntents =
             }
 
     type Update'PaymentMethodDataSofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Update'PaymentMethodDataSofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>
@@ -22883,12 +22883,12 @@ module SetupIntents =
             }
 
     type Update'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancairesCbAvalgo =
-    | [<JsonUnionCase("0")>] Numeric0
-    | [<JsonUnionCase("1")>] Numeric1
-    | [<JsonUnionCase("2")>] Numeric2
-    | [<JsonUnionCase("3")>] Numeric3
-    | [<JsonUnionCase("4")>] Numeric4
-    | [<JsonUnionCase("A")>] A
+    | [<JsonPropertyName("0")>] Numeric0
+    | [<JsonPropertyName("1")>] Numeric1
+    | [<JsonPropertyName("2")>] Numeric2
+    | [<JsonPropertyName("3")>] Numeric3
+    | [<JsonPropertyName("4")>] Numeric4
+    | [<JsonPropertyName("A")>] A
 
     type Update'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires = {
         ///<summary>The cryptogram calculation algorithm used by the card Issuer's ACS
@@ -22923,27 +22923,27 @@ module SetupIntents =
             }
 
     type Update'PaymentMethodOptionsCardThreeDSecureAresTransStatus =
-    | [<JsonUnionCase("A")>] A
-    | [<JsonUnionCase("C")>] C
-    | [<JsonUnionCase("I")>] I
-    | [<JsonUnionCase("N")>] N
-    | [<JsonUnionCase("R")>] R
-    | [<JsonUnionCase("U")>] U
-    | [<JsonUnionCase("Y")>] Y
+    | [<JsonPropertyName("A")>] A
+    | [<JsonPropertyName("C")>] C
+    | [<JsonPropertyName("I")>] I
+    | [<JsonPropertyName("N")>] N
+    | [<JsonPropertyName("R")>] R
+    | [<JsonPropertyName("U")>] U
+    | [<JsonPropertyName("Y")>] Y
 
     type Update'PaymentMethodOptionsCardThreeDSecureElectronicCommerceIndicator =
-    | [<JsonUnionCase("01")>] Numeric01
-    | [<JsonUnionCase("02")>] Numeric02
-    | [<JsonUnionCase("05")>] Numeric05
-    | [<JsonUnionCase("06")>] Numeric06
-    | [<JsonUnionCase("07")>] Numeric07
+    | [<JsonPropertyName("01")>] Numeric01
+    | [<JsonPropertyName("02")>] Numeric02
+    | [<JsonPropertyName("05")>] Numeric05
+    | [<JsonPropertyName("06")>] Numeric06
+    | [<JsonPropertyName("07")>] Numeric07
 
     type Update'PaymentMethodOptionsCardThreeDSecureVersion =
-    | [<JsonUnionCase("1.0.2")>] Numeric102
-    | [<JsonUnionCase("2.1.0")>] Numeric210
-    | [<JsonUnionCase("2.2.0")>] Numeric220
-    | [<JsonUnionCase("2.3.0")>] Numeric230
-    | [<JsonUnionCase("2.3.1")>] Numeric231
+    | [<JsonPropertyName("1.0.2")>] Numeric102
+    | [<JsonPropertyName("2.1.0")>] Numeric210
+    | [<JsonPropertyName("2.2.0")>] Numeric220
+    | [<JsonPropertyName("2.3.0")>] Numeric230
+    | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type Update'PaymentMethodOptionsCardThreeDSecure = {
         ///<summary>The `transStatus` returned from the card Issuer’s ACS in the ARes.</summary>
@@ -23096,52 +23096,52 @@ module SetupIntents =
             }
 
     type Update'PaymentMethodOptionsKlarnaPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-CH")>] DeCH
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-AT")>] EnAT
-    | [<JsonUnionCase("en-AU")>] EnAU
-    | [<JsonUnionCase("en-BE")>] EnBE
-    | [<JsonUnionCase("en-CA")>] EnCA
-    | [<JsonUnionCase("en-CH")>] EnCH
-    | [<JsonUnionCase("en-CZ")>] EnCZ
-    | [<JsonUnionCase("en-DE")>] EnDE
-    | [<JsonUnionCase("en-DK")>] EnDK
-    | [<JsonUnionCase("en-ES")>] EnES
-    | [<JsonUnionCase("en-FI")>] EnFI
-    | [<JsonUnionCase("en-FR")>] EnFR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-GR")>] EnGR
-    | [<JsonUnionCase("en-IE")>] EnIE
-    | [<JsonUnionCase("en-IT")>] EnIT
-    | [<JsonUnionCase("en-NL")>] EnNL
-    | [<JsonUnionCase("en-NO")>] EnNO
-    | [<JsonUnionCase("en-NZ")>] EnNZ
-    | [<JsonUnionCase("en-PL")>] EnPL
-    | [<JsonUnionCase("en-PT")>] EnPT
-    | [<JsonUnionCase("en-RO")>] EnRO
-    | [<JsonUnionCase("en-SE")>] EnSE
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("es-US")>] EsUS
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-CA")>] FrCA
-    | [<JsonUnionCase("fr-CH")>] FrCH
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("it-CH")>] ItCH
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nb-NO")>] NbNO
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("ro-RO")>] RoRO
-    | [<JsonUnionCase("sv-FI")>] SvFI
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-CH")>] DeCH
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-AT")>] EnAT
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-BE")>] EnBE
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-CH")>] EnCH
+    | [<JsonPropertyName("en-CZ")>] EnCZ
+    | [<JsonPropertyName("en-DE")>] EnDE
+    | [<JsonPropertyName("en-DK")>] EnDK
+    | [<JsonPropertyName("en-ES")>] EnES
+    | [<JsonPropertyName("en-FI")>] EnFI
+    | [<JsonPropertyName("en-FR")>] EnFR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-GR")>] EnGR
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IT")>] EnIT
+    | [<JsonPropertyName("en-NL")>] EnNL
+    | [<JsonPropertyName("en-NO")>] EnNO
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-PL")>] EnPL
+    | [<JsonPropertyName("en-PT")>] EnPT
+    | [<JsonPropertyName("en-RO")>] EnRO
+    | [<JsonPropertyName("en-SE")>] EnSE
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("es-US")>] EsUS
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | [<JsonPropertyName("fr-CH")>] FrCH
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("it-CH")>] ItCH
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nb-NO")>] NbNO
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("ro-RO")>] RoRO
+    | [<JsonPropertyName("sv-FI")>] SvFI
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Update'PaymentMethodOptionsKlarna = {
         ///<summary>The currency of the SetupIntent. Three letter ISO currency code.</summary>
@@ -24028,12 +24028,12 @@ module SetupIntentsConfirm =
             }
 
     type Confirm'PaymentMethodDataSofortCountry =
-    | [<JsonUnionCase("AT")>] AT
-    | [<JsonUnionCase("BE")>] BE
-    | [<JsonUnionCase("DE")>] DE
-    | [<JsonUnionCase("ES")>] ES
-    | [<JsonUnionCase("IT")>] IT
-    | [<JsonUnionCase("NL")>] NL
+    | [<JsonPropertyName("AT")>] AT
+    | [<JsonPropertyName("BE")>] BE
+    | [<JsonPropertyName("DE")>] DE
+    | [<JsonPropertyName("ES")>] ES
+    | [<JsonPropertyName("IT")>] IT
+    | [<JsonPropertyName("NL")>] NL
 
     type Confirm'PaymentMethodDataSofort = {
         ///<summary>Two-letter ISO code representing the country the bank account is located in.</summary>
@@ -24478,12 +24478,12 @@ module SetupIntentsConfirm =
             }
 
     type Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancairesCbAvalgo =
-    | [<JsonUnionCase("0")>] Numeric0
-    | [<JsonUnionCase("1")>] Numeric1
-    | [<JsonUnionCase("2")>] Numeric2
-    | [<JsonUnionCase("3")>] Numeric3
-    | [<JsonUnionCase("4")>] Numeric4
-    | [<JsonUnionCase("A")>] A
+    | [<JsonPropertyName("0")>] Numeric0
+    | [<JsonPropertyName("1")>] Numeric1
+    | [<JsonPropertyName("2")>] Numeric2
+    | [<JsonPropertyName("3")>] Numeric3
+    | [<JsonPropertyName("4")>] Numeric4
+    | [<JsonPropertyName("A")>] A
 
     type Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires = {
         ///<summary>The cryptogram calculation algorithm used by the card Issuer's ACS
@@ -24518,27 +24518,27 @@ module SetupIntentsConfirm =
             }
 
     type Confirm'PaymentMethodOptionsCardThreeDSecureAresTransStatus =
-    | [<JsonUnionCase("A")>] A
-    | [<JsonUnionCase("C")>] C
-    | [<JsonUnionCase("I")>] I
-    | [<JsonUnionCase("N")>] N
-    | [<JsonUnionCase("R")>] R
-    | [<JsonUnionCase("U")>] U
-    | [<JsonUnionCase("Y")>] Y
+    | [<JsonPropertyName("A")>] A
+    | [<JsonPropertyName("C")>] C
+    | [<JsonPropertyName("I")>] I
+    | [<JsonPropertyName("N")>] N
+    | [<JsonPropertyName("R")>] R
+    | [<JsonPropertyName("U")>] U
+    | [<JsonPropertyName("Y")>] Y
 
     type Confirm'PaymentMethodOptionsCardThreeDSecureElectronicCommerceIndicator =
-    | [<JsonUnionCase("01")>] Numeric01
-    | [<JsonUnionCase("02")>] Numeric02
-    | [<JsonUnionCase("05")>] Numeric05
-    | [<JsonUnionCase("06")>] Numeric06
-    | [<JsonUnionCase("07")>] Numeric07
+    | [<JsonPropertyName("01")>] Numeric01
+    | [<JsonPropertyName("02")>] Numeric02
+    | [<JsonPropertyName("05")>] Numeric05
+    | [<JsonPropertyName("06")>] Numeric06
+    | [<JsonPropertyName("07")>] Numeric07
 
     type Confirm'PaymentMethodOptionsCardThreeDSecureVersion =
-    | [<JsonUnionCase("1.0.2")>] Numeric102
-    | [<JsonUnionCase("2.1.0")>] Numeric210
-    | [<JsonUnionCase("2.2.0")>] Numeric220
-    | [<JsonUnionCase("2.3.0")>] Numeric230
-    | [<JsonUnionCase("2.3.1")>] Numeric231
+    | [<JsonPropertyName("1.0.2")>] Numeric102
+    | [<JsonPropertyName("2.1.0")>] Numeric210
+    | [<JsonPropertyName("2.2.0")>] Numeric220
+    | [<JsonPropertyName("2.3.0")>] Numeric230
+    | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type Confirm'PaymentMethodOptionsCardThreeDSecure = {
         ///<summary>The `transStatus` returned from the card Issuer’s ACS in the ARes.</summary>
@@ -24691,52 +24691,52 @@ module SetupIntentsConfirm =
             }
 
     type Confirm'PaymentMethodOptionsKlarnaPreferredLocale =
-    | [<JsonUnionCase("cs-CZ")>] CsCZ
-    | [<JsonUnionCase("da-DK")>] DaDK
-    | [<JsonUnionCase("de-AT")>] DeAT
-    | [<JsonUnionCase("de-CH")>] DeCH
-    | [<JsonUnionCase("de-DE")>] DeDE
-    | [<JsonUnionCase("el-GR")>] ElGR
-    | [<JsonUnionCase("en-AT")>] EnAT
-    | [<JsonUnionCase("en-AU")>] EnAU
-    | [<JsonUnionCase("en-BE")>] EnBE
-    | [<JsonUnionCase("en-CA")>] EnCA
-    | [<JsonUnionCase("en-CH")>] EnCH
-    | [<JsonUnionCase("en-CZ")>] EnCZ
-    | [<JsonUnionCase("en-DE")>] EnDE
-    | [<JsonUnionCase("en-DK")>] EnDK
-    | [<JsonUnionCase("en-ES")>] EnES
-    | [<JsonUnionCase("en-FI")>] EnFI
-    | [<JsonUnionCase("en-FR")>] EnFR
-    | [<JsonUnionCase("en-GB")>] EnGB
-    | [<JsonUnionCase("en-GR")>] EnGR
-    | [<JsonUnionCase("en-IE")>] EnIE
-    | [<JsonUnionCase("en-IT")>] EnIT
-    | [<JsonUnionCase("en-NL")>] EnNL
-    | [<JsonUnionCase("en-NO")>] EnNO
-    | [<JsonUnionCase("en-NZ")>] EnNZ
-    | [<JsonUnionCase("en-PL")>] EnPL
-    | [<JsonUnionCase("en-PT")>] EnPT
-    | [<JsonUnionCase("en-RO")>] EnRO
-    | [<JsonUnionCase("en-SE")>] EnSE
-    | [<JsonUnionCase("en-US")>] EnUS
-    | [<JsonUnionCase("es-ES")>] EsES
-    | [<JsonUnionCase("es-US")>] EsUS
-    | [<JsonUnionCase("fi-FI")>] FiFI
-    | [<JsonUnionCase("fr-BE")>] FrBE
-    | [<JsonUnionCase("fr-CA")>] FrCA
-    | [<JsonUnionCase("fr-CH")>] FrCH
-    | [<JsonUnionCase("fr-FR")>] FrFR
-    | [<JsonUnionCase("it-CH")>] ItCH
-    | [<JsonUnionCase("it-IT")>] ItIT
-    | [<JsonUnionCase("nb-NO")>] NbNO
-    | [<JsonUnionCase("nl-BE")>] NlBE
-    | [<JsonUnionCase("nl-NL")>] NlNL
-    | [<JsonUnionCase("pl-PL")>] PlPL
-    | [<JsonUnionCase("pt-PT")>] PtPT
-    | [<JsonUnionCase("ro-RO")>] RoRO
-    | [<JsonUnionCase("sv-FI")>] SvFI
-    | [<JsonUnionCase("sv-SE")>] SvSE
+    | [<JsonPropertyName("cs-CZ")>] CsCZ
+    | [<JsonPropertyName("da-DK")>] DaDK
+    | [<JsonPropertyName("de-AT")>] DeAT
+    | [<JsonPropertyName("de-CH")>] DeCH
+    | [<JsonPropertyName("de-DE")>] DeDE
+    | [<JsonPropertyName("el-GR")>] ElGR
+    | [<JsonPropertyName("en-AT")>] EnAT
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-BE")>] EnBE
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-CH")>] EnCH
+    | [<JsonPropertyName("en-CZ")>] EnCZ
+    | [<JsonPropertyName("en-DE")>] EnDE
+    | [<JsonPropertyName("en-DK")>] EnDK
+    | [<JsonPropertyName("en-ES")>] EnES
+    | [<JsonPropertyName("en-FI")>] EnFI
+    | [<JsonPropertyName("en-FR")>] EnFR
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-GR")>] EnGR
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IT")>] EnIT
+    | [<JsonPropertyName("en-NL")>] EnNL
+    | [<JsonPropertyName("en-NO")>] EnNO
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-PL")>] EnPL
+    | [<JsonPropertyName("en-PT")>] EnPT
+    | [<JsonPropertyName("en-RO")>] EnRO
+    | [<JsonPropertyName("en-SE")>] EnSE
+    | [<JsonPropertyName("en-US")>] EnUS
+    | [<JsonPropertyName("es-ES")>] EsES
+    | [<JsonPropertyName("es-US")>] EsUS
+    | [<JsonPropertyName("fi-FI")>] FiFI
+    | [<JsonPropertyName("fr-BE")>] FrBE
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | [<JsonPropertyName("fr-CH")>] FrCH
+    | [<JsonPropertyName("fr-FR")>] FrFR
+    | [<JsonPropertyName("it-CH")>] ItCH
+    | [<JsonPropertyName("it-IT")>] ItIT
+    | [<JsonPropertyName("nb-NO")>] NbNO
+    | [<JsonPropertyName("nl-BE")>] NlBE
+    | [<JsonPropertyName("nl-NL")>] NlNL
+    | [<JsonPropertyName("pl-PL")>] PlPL
+    | [<JsonPropertyName("pt-PT")>] PtPT
+    | [<JsonPropertyName("ro-RO")>] RoRO
+    | [<JsonPropertyName("sv-FI")>] SvFI
+    | [<JsonPropertyName("sv-SE")>] SvSE
 
     type Confirm'PaymentMethodOptionsKlarna = {
         ///<summary>The currency of the SetupIntent. Three letter ISO currency code.</summary>
@@ -27652,129 +27652,129 @@ module WebhookEndpoints =
     | TreasuryReceivedDebitCreated
 
     type Create'ApiVersion =
-    | [<JsonUnionCase("2011-01-01")>] Numeric20110101
-    | [<JsonUnionCase("2011-06-21")>] Numeric20110621
-    | [<JsonUnionCase("2011-06-28")>] Numeric20110628
-    | [<JsonUnionCase("2011-08-01")>] Numeric20110801
-    | [<JsonUnionCase("2011-09-15")>] Numeric20110915
-    | [<JsonUnionCase("2011-11-17")>] Numeric20111117
-    | [<JsonUnionCase("2012-02-23")>] Numeric20120223
-    | [<JsonUnionCase("2012-03-25")>] Numeric20120325
-    | [<JsonUnionCase("2012-06-18")>] Numeric20120618
-    | [<JsonUnionCase("2012-06-28")>] Numeric20120628
-    | [<JsonUnionCase("2012-07-09")>] Numeric20120709
-    | [<JsonUnionCase("2012-09-24")>] Numeric20120924
-    | [<JsonUnionCase("2012-10-26")>] Numeric20121026
-    | [<JsonUnionCase("2012-11-07")>] Numeric20121107
-    | [<JsonUnionCase("2013-02-11")>] Numeric20130211
-    | [<JsonUnionCase("2013-02-13")>] Numeric20130213
-    | [<JsonUnionCase("2013-07-05")>] Numeric20130705
-    | [<JsonUnionCase("2013-08-12")>] Numeric20130812
-    | [<JsonUnionCase("2013-08-13")>] Numeric20130813
-    | [<JsonUnionCase("2013-10-29")>] Numeric20131029
-    | [<JsonUnionCase("2013-12-03")>] Numeric20131203
-    | [<JsonUnionCase("2014-01-31")>] Numeric20140131
-    | [<JsonUnionCase("2014-03-13")>] Numeric20140313
-    | [<JsonUnionCase("2014-03-28")>] Numeric20140328
-    | [<JsonUnionCase("2014-05-19")>] Numeric20140519
-    | [<JsonUnionCase("2014-06-13")>] Numeric20140613
-    | [<JsonUnionCase("2014-06-17")>] Numeric20140617
-    | [<JsonUnionCase("2014-07-22")>] Numeric20140722
-    | [<JsonUnionCase("2014-07-26")>] Numeric20140726
-    | [<JsonUnionCase("2014-08-04")>] Numeric20140804
-    | [<JsonUnionCase("2014-08-20")>] Numeric20140820
-    | [<JsonUnionCase("2014-09-08")>] Numeric20140908
-    | [<JsonUnionCase("2014-10-07")>] Numeric20141007
-    | [<JsonUnionCase("2014-11-05")>] Numeric20141105
-    | [<JsonUnionCase("2014-11-20")>] Numeric20141120
-    | [<JsonUnionCase("2014-12-08")>] Numeric20141208
-    | [<JsonUnionCase("2014-12-17")>] Numeric20141217
-    | [<JsonUnionCase("2014-12-22")>] Numeric20141222
-    | [<JsonUnionCase("2015-01-11")>] Numeric20150111
-    | [<JsonUnionCase("2015-01-26")>] Numeric20150126
-    | [<JsonUnionCase("2015-02-10")>] Numeric20150210
-    | [<JsonUnionCase("2015-02-16")>] Numeric20150216
-    | [<JsonUnionCase("2015-02-18")>] Numeric20150218
-    | [<JsonUnionCase("2015-03-24")>] Numeric20150324
-    | [<JsonUnionCase("2015-04-07")>] Numeric20150407
-    | [<JsonUnionCase("2015-06-15")>] Numeric20150615
-    | [<JsonUnionCase("2015-07-07")>] Numeric20150707
-    | [<JsonUnionCase("2015-07-13")>] Numeric20150713
-    | [<JsonUnionCase("2015-07-28")>] Numeric20150728
-    | [<JsonUnionCase("2015-08-07")>] Numeric20150807
-    | [<JsonUnionCase("2015-08-19")>] Numeric20150819
-    | [<JsonUnionCase("2015-09-03")>] Numeric20150903
-    | [<JsonUnionCase("2015-09-08")>] Numeric20150908
-    | [<JsonUnionCase("2015-09-23")>] Numeric20150923
-    | [<JsonUnionCase("2015-10-01")>] Numeric20151001
-    | [<JsonUnionCase("2015-10-12")>] Numeric20151012
-    | [<JsonUnionCase("2015-10-16")>] Numeric20151016
-    | [<JsonUnionCase("2016-02-03")>] Numeric20160203
-    | [<JsonUnionCase("2016-02-19")>] Numeric20160219
-    | [<JsonUnionCase("2016-02-22")>] Numeric20160222
-    | [<JsonUnionCase("2016-02-23")>] Numeric20160223
-    | [<JsonUnionCase("2016-02-29")>] Numeric20160229
-    | [<JsonUnionCase("2016-03-07")>] Numeric20160307
-    | [<JsonUnionCase("2016-06-15")>] Numeric20160615
-    | [<JsonUnionCase("2016-07-06")>] Numeric20160706
-    | [<JsonUnionCase("2016-10-19")>] Numeric20161019
-    | [<JsonUnionCase("2017-01-27")>] Numeric20170127
-    | [<JsonUnionCase("2017-02-14")>] Numeric20170214
-    | [<JsonUnionCase("2017-04-06")>] Numeric20170406
-    | [<JsonUnionCase("2017-05-25")>] Numeric20170525
-    | [<JsonUnionCase("2017-06-05")>] Numeric20170605
-    | [<JsonUnionCase("2017-08-15")>] Numeric20170815
-    | [<JsonUnionCase("2017-12-14")>] Numeric20171214
-    | [<JsonUnionCase("2018-01-23")>] Numeric20180123
-    | [<JsonUnionCase("2018-02-05")>] Numeric20180205
-    | [<JsonUnionCase("2018-02-06")>] Numeric20180206
-    | [<JsonUnionCase("2018-02-28")>] Numeric20180228
-    | [<JsonUnionCase("2018-05-21")>] Numeric20180521
-    | [<JsonUnionCase("2018-07-27")>] Numeric20180727
-    | [<JsonUnionCase("2018-08-23")>] Numeric20180823
-    | [<JsonUnionCase("2018-09-06")>] Numeric20180906
-    | [<JsonUnionCase("2018-09-24")>] Numeric20180924
-    | [<JsonUnionCase("2018-10-31")>] Numeric20181031
-    | [<JsonUnionCase("2018-11-08")>] Numeric20181108
-    | [<JsonUnionCase("2019-02-11")>] Numeric20190211
-    | [<JsonUnionCase("2019-02-19")>] Numeric20190219
-    | [<JsonUnionCase("2019-03-14")>] Numeric20190314
-    | [<JsonUnionCase("2019-05-16")>] Numeric20190516
-    | [<JsonUnionCase("2019-08-14")>] Numeric20190814
-    | [<JsonUnionCase("2019-09-09")>] Numeric20190909
-    | [<JsonUnionCase("2019-10-08")>] Numeric20191008
-    | [<JsonUnionCase("2019-10-17")>] Numeric20191017
-    | [<JsonUnionCase("2019-11-05")>] Numeric20191105
-    | [<JsonUnionCase("2019-12-03")>] Numeric20191203
-    | [<JsonUnionCase("2020-03-02")>] Numeric20200302
-    | [<JsonUnionCase("2020-08-27")>] Numeric20200827
-    | [<JsonUnionCase("2022-08-01")>] Numeric20220801
-    | [<JsonUnionCase("2022-11-15")>] Numeric20221115
-    | [<JsonUnionCase("2023-08-16")>] Numeric20230816
-    | [<JsonUnionCase("2023-10-16")>] Numeric20231016
-    | [<JsonUnionCase("2024-04-10")>] Numeric20240410
-    | [<JsonUnionCase("2024-06-20")>] Numeric20240620
-    | [<JsonUnionCase("2024-09-30.acacia")>] Numeric20240930Acacia
-    | [<JsonUnionCase("2024-10-28.acacia")>] Numeric20241028Acacia
-    | [<JsonUnionCase("2024-11-20.acacia")>] Numeric20241120Acacia
-    | [<JsonUnionCase("2024-12-18.acacia")>] Numeric20241218Acacia
-    | [<JsonUnionCase("2025-01-27.acacia")>] Numeric20250127Acacia
-    | [<JsonUnionCase("2025-02-24.acacia")>] Numeric20250224Acacia
-    | [<JsonUnionCase("2025-03-01.dashboard")>] Numeric20250301Dashboard
-    | [<JsonUnionCase("2025-03-31.basil")>] Numeric20250331Basil
-    | [<JsonUnionCase("2025-04-30.basil")>] Numeric20250430Basil
-    | [<JsonUnionCase("2025-05-28.basil")>] Numeric20250528Basil
-    | [<JsonUnionCase("2025-06-30.basil")>] Numeric20250630Basil
-    | [<JsonUnionCase("2025-07-30.basil")>] Numeric20250730Basil
-    | [<JsonUnionCase("2025-08-27.basil")>] Numeric20250827Basil
-    | [<JsonUnionCase("2025-09-30.clover")>] Numeric20250930Clover
-    | [<JsonUnionCase("2025-10-29.clover")>] Numeric20251029Clover
-    | [<JsonUnionCase("2025-11-17.clover")>] Numeric20251117Clover
-    | [<JsonUnionCase("2025-12-15.clover")>] Numeric20251215Clover
-    | [<JsonUnionCase("2026-01-28.clover")>] Numeric20260128Clover
-    | [<JsonUnionCase("2026-02-25.clover")>] Numeric20260225Clover
-    | [<JsonUnionCase("2026-03-25.dahlia")>] Numeric20260325Dahlia
-    | [<JsonUnionCase("2026-04-22.dahlia")>] Numeric20260422Dahlia
+    | [<JsonPropertyName("2011-01-01")>] Numeric20110101
+    | [<JsonPropertyName("2011-06-21")>] Numeric20110621
+    | [<JsonPropertyName("2011-06-28")>] Numeric20110628
+    | [<JsonPropertyName("2011-08-01")>] Numeric20110801
+    | [<JsonPropertyName("2011-09-15")>] Numeric20110915
+    | [<JsonPropertyName("2011-11-17")>] Numeric20111117
+    | [<JsonPropertyName("2012-02-23")>] Numeric20120223
+    | [<JsonPropertyName("2012-03-25")>] Numeric20120325
+    | [<JsonPropertyName("2012-06-18")>] Numeric20120618
+    | [<JsonPropertyName("2012-06-28")>] Numeric20120628
+    | [<JsonPropertyName("2012-07-09")>] Numeric20120709
+    | [<JsonPropertyName("2012-09-24")>] Numeric20120924
+    | [<JsonPropertyName("2012-10-26")>] Numeric20121026
+    | [<JsonPropertyName("2012-11-07")>] Numeric20121107
+    | [<JsonPropertyName("2013-02-11")>] Numeric20130211
+    | [<JsonPropertyName("2013-02-13")>] Numeric20130213
+    | [<JsonPropertyName("2013-07-05")>] Numeric20130705
+    | [<JsonPropertyName("2013-08-12")>] Numeric20130812
+    | [<JsonPropertyName("2013-08-13")>] Numeric20130813
+    | [<JsonPropertyName("2013-10-29")>] Numeric20131029
+    | [<JsonPropertyName("2013-12-03")>] Numeric20131203
+    | [<JsonPropertyName("2014-01-31")>] Numeric20140131
+    | [<JsonPropertyName("2014-03-13")>] Numeric20140313
+    | [<JsonPropertyName("2014-03-28")>] Numeric20140328
+    | [<JsonPropertyName("2014-05-19")>] Numeric20140519
+    | [<JsonPropertyName("2014-06-13")>] Numeric20140613
+    | [<JsonPropertyName("2014-06-17")>] Numeric20140617
+    | [<JsonPropertyName("2014-07-22")>] Numeric20140722
+    | [<JsonPropertyName("2014-07-26")>] Numeric20140726
+    | [<JsonPropertyName("2014-08-04")>] Numeric20140804
+    | [<JsonPropertyName("2014-08-20")>] Numeric20140820
+    | [<JsonPropertyName("2014-09-08")>] Numeric20140908
+    | [<JsonPropertyName("2014-10-07")>] Numeric20141007
+    | [<JsonPropertyName("2014-11-05")>] Numeric20141105
+    | [<JsonPropertyName("2014-11-20")>] Numeric20141120
+    | [<JsonPropertyName("2014-12-08")>] Numeric20141208
+    | [<JsonPropertyName("2014-12-17")>] Numeric20141217
+    | [<JsonPropertyName("2014-12-22")>] Numeric20141222
+    | [<JsonPropertyName("2015-01-11")>] Numeric20150111
+    | [<JsonPropertyName("2015-01-26")>] Numeric20150126
+    | [<JsonPropertyName("2015-02-10")>] Numeric20150210
+    | [<JsonPropertyName("2015-02-16")>] Numeric20150216
+    | [<JsonPropertyName("2015-02-18")>] Numeric20150218
+    | [<JsonPropertyName("2015-03-24")>] Numeric20150324
+    | [<JsonPropertyName("2015-04-07")>] Numeric20150407
+    | [<JsonPropertyName("2015-06-15")>] Numeric20150615
+    | [<JsonPropertyName("2015-07-07")>] Numeric20150707
+    | [<JsonPropertyName("2015-07-13")>] Numeric20150713
+    | [<JsonPropertyName("2015-07-28")>] Numeric20150728
+    | [<JsonPropertyName("2015-08-07")>] Numeric20150807
+    | [<JsonPropertyName("2015-08-19")>] Numeric20150819
+    | [<JsonPropertyName("2015-09-03")>] Numeric20150903
+    | [<JsonPropertyName("2015-09-08")>] Numeric20150908
+    | [<JsonPropertyName("2015-09-23")>] Numeric20150923
+    | [<JsonPropertyName("2015-10-01")>] Numeric20151001
+    | [<JsonPropertyName("2015-10-12")>] Numeric20151012
+    | [<JsonPropertyName("2015-10-16")>] Numeric20151016
+    | [<JsonPropertyName("2016-02-03")>] Numeric20160203
+    | [<JsonPropertyName("2016-02-19")>] Numeric20160219
+    | [<JsonPropertyName("2016-02-22")>] Numeric20160222
+    | [<JsonPropertyName("2016-02-23")>] Numeric20160223
+    | [<JsonPropertyName("2016-02-29")>] Numeric20160229
+    | [<JsonPropertyName("2016-03-07")>] Numeric20160307
+    | [<JsonPropertyName("2016-06-15")>] Numeric20160615
+    | [<JsonPropertyName("2016-07-06")>] Numeric20160706
+    | [<JsonPropertyName("2016-10-19")>] Numeric20161019
+    | [<JsonPropertyName("2017-01-27")>] Numeric20170127
+    | [<JsonPropertyName("2017-02-14")>] Numeric20170214
+    | [<JsonPropertyName("2017-04-06")>] Numeric20170406
+    | [<JsonPropertyName("2017-05-25")>] Numeric20170525
+    | [<JsonPropertyName("2017-06-05")>] Numeric20170605
+    | [<JsonPropertyName("2017-08-15")>] Numeric20170815
+    | [<JsonPropertyName("2017-12-14")>] Numeric20171214
+    | [<JsonPropertyName("2018-01-23")>] Numeric20180123
+    | [<JsonPropertyName("2018-02-05")>] Numeric20180205
+    | [<JsonPropertyName("2018-02-06")>] Numeric20180206
+    | [<JsonPropertyName("2018-02-28")>] Numeric20180228
+    | [<JsonPropertyName("2018-05-21")>] Numeric20180521
+    | [<JsonPropertyName("2018-07-27")>] Numeric20180727
+    | [<JsonPropertyName("2018-08-23")>] Numeric20180823
+    | [<JsonPropertyName("2018-09-06")>] Numeric20180906
+    | [<JsonPropertyName("2018-09-24")>] Numeric20180924
+    | [<JsonPropertyName("2018-10-31")>] Numeric20181031
+    | [<JsonPropertyName("2018-11-08")>] Numeric20181108
+    | [<JsonPropertyName("2019-02-11")>] Numeric20190211
+    | [<JsonPropertyName("2019-02-19")>] Numeric20190219
+    | [<JsonPropertyName("2019-03-14")>] Numeric20190314
+    | [<JsonPropertyName("2019-05-16")>] Numeric20190516
+    | [<JsonPropertyName("2019-08-14")>] Numeric20190814
+    | [<JsonPropertyName("2019-09-09")>] Numeric20190909
+    | [<JsonPropertyName("2019-10-08")>] Numeric20191008
+    | [<JsonPropertyName("2019-10-17")>] Numeric20191017
+    | [<JsonPropertyName("2019-11-05")>] Numeric20191105
+    | [<JsonPropertyName("2019-12-03")>] Numeric20191203
+    | [<JsonPropertyName("2020-03-02")>] Numeric20200302
+    | [<JsonPropertyName("2020-08-27")>] Numeric20200827
+    | [<JsonPropertyName("2022-08-01")>] Numeric20220801
+    | [<JsonPropertyName("2022-11-15")>] Numeric20221115
+    | [<JsonPropertyName("2023-08-16")>] Numeric20230816
+    | [<JsonPropertyName("2023-10-16")>] Numeric20231016
+    | [<JsonPropertyName("2024-04-10")>] Numeric20240410
+    | [<JsonPropertyName("2024-06-20")>] Numeric20240620
+    | [<JsonPropertyName("2024-09-30.acacia")>] Numeric20240930Acacia
+    | [<JsonPropertyName("2024-10-28.acacia")>] Numeric20241028Acacia
+    | [<JsonPropertyName("2024-11-20.acacia")>] Numeric20241120Acacia
+    | [<JsonPropertyName("2024-12-18.acacia")>] Numeric20241218Acacia
+    | [<JsonPropertyName("2025-01-27.acacia")>] Numeric20250127Acacia
+    | [<JsonPropertyName("2025-02-24.acacia")>] Numeric20250224Acacia
+    | [<JsonPropertyName("2025-03-01.dashboard")>] Numeric20250301Dashboard
+    | [<JsonPropertyName("2025-03-31.basil")>] Numeric20250331Basil
+    | [<JsonPropertyName("2025-04-30.basil")>] Numeric20250430Basil
+    | [<JsonPropertyName("2025-05-28.basil")>] Numeric20250528Basil
+    | [<JsonPropertyName("2025-06-30.basil")>] Numeric20250630Basil
+    | [<JsonPropertyName("2025-07-30.basil")>] Numeric20250730Basil
+    | [<JsonPropertyName("2025-08-27.basil")>] Numeric20250827Basil
+    | [<JsonPropertyName("2025-09-30.clover")>] Numeric20250930Clover
+    | [<JsonPropertyName("2025-10-29.clover")>] Numeric20251029Clover
+    | [<JsonPropertyName("2025-11-17.clover")>] Numeric20251117Clover
+    | [<JsonPropertyName("2025-12-15.clover")>] Numeric20251215Clover
+    | [<JsonPropertyName("2026-01-28.clover")>] Numeric20260128Clover
+    | [<JsonPropertyName("2026-02-25.clover")>] Numeric20260225Clover
+    | [<JsonPropertyName("2026-03-25.dahlia")>] Numeric20260325Dahlia
+    | [<JsonPropertyName("2026-04-22.dahlia")>] Numeric20260422Dahlia
 
     type CreateOptions = {
         ///<summary>Events sent to this endpoint will be generated with this Stripe Version instead of your account's default Stripe Version.</summary>

@@ -1,6 +1,6 @@
 namespace FunStripe
 
-open FunStripe.Json
+open System.Text.Json.Serialization
 open FunStripe.Util
 open System
 
@@ -72,9 +72,9 @@ module StripeModel =
 
     type TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions = {
         ///Timestamp describing when the Transaction changed status to `posted`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PostedAt: DateTime option
+        PostedAt: DateTime option
         ///Timestamp describing when the Transaction changed status to `void`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]VoidAt: DateTime option
+        VoidAt: DateTime option
     }
     with
         static member New (postedAt: DateTime option, voidAt: DateTime option) =
@@ -87,7 +87,7 @@ module StripeModel =
         ///Bank name.
         BankName: string option
         ///The last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///The routing number for the bank account.
         RoutingNumber: string option
     }
@@ -109,7 +109,7 @@ module StripeModel =
 
     type TreasuryReceivedDebitsResourceStatusTransitions = {
         ///Timestamp describing when the DebitReversal changed status to `completed`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CompletedAt: DateTime option
+        CompletedAt: DateTime option
     }
     with
         static member New (completedAt: DateTime option) =
@@ -162,7 +162,7 @@ module StripeModel =
 
     type TreasuryReceivedCreditsResourceStatusTransitions = {
         ///Timestamp describing when the CreditReversal changed status to `posted`
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PostedAt: DateTime option
+        PostedAt: DateTime option
     }
     with
         static member New (postedAt: DateTime option) =
@@ -204,13 +204,13 @@ module StripeModel =
 
     type TreasuryOutboundTransfersResourceStatusTransitions = {
         ///Timestamp describing when an OutboundTransfer changed status to `canceled`
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Timestamp describing when an OutboundTransfer changed status to `failed`
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]FailedAt: DateTime option
+        FailedAt: DateTime option
         ///Timestamp describing when an OutboundTransfer changed status to `posted`
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PostedAt: DateTime option
+        PostedAt: DateTime option
         ///Timestamp describing when an OutboundTransfer changed status to `returned`
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
+        ReturnedAt: DateTime option
     }
     with
         static member New (canceledAt: DateTime option, failedAt: DateTime option, postedAt: DateTime option, returnedAt: DateTime option) =
@@ -283,13 +283,13 @@ module StripeModel =
 
     type TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions = {
         ///Timestamp describing when an OutboundPayment changed status to `canceled`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Timestamp describing when an OutboundPayment changed status to `failed`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]FailedAt: DateTime option
+        FailedAt: DateTime option
         ///Timestamp describing when an OutboundPayment changed status to `posted`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PostedAt: DateTime option
+        PostedAt: DateTime option
         ///Timestamp describing when an OutboundPayment changed status to `returned`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
+        ReturnedAt: DateTime option
     }
     with
         static member New (canceledAt: DateTime option, failedAt: DateTime option, postedAt: DateTime option, returnedAt: DateTime option) =
@@ -325,11 +325,11 @@ module StripeModel =
 
     type TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions = {
         ///Timestamp describing when an InboundTransfer changed status to `canceled`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Timestamp describing when an InboundTransfer changed status to `failed`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]FailedAt: DateTime option
+        FailedAt: DateTime option
         ///Timestamp describing when an InboundTransfer changed status to `succeeded`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]SucceededAt: DateTime option
+        SucceededAt: DateTime option
     }
     with
         static member New (failedAt: DateTime option, succeededAt: DateTime option, ?canceledAt: DateTime option) =
@@ -438,7 +438,7 @@ module StripeModel =
         ///The account number.
         AccountNumber: string option
         ///The last four characters of the account number.
-        [<JsonField(Name="account_number_last4")>]AccountNumberLast4: string
+        [<JsonPropertyName("account_number_last4")>]AccountNumberLast4: string
         ///Name of the bank.
         BankName: string
         ///Routing number for the account.
@@ -568,40 +568,40 @@ module StripeModel =
     type TreasuryFinancialAccountRestrictedFeatures =
         | CardIssuing
         | DepositInsurance
-        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
-        | [<JsonUnionCase("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
-        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
+        | [<JsonPropertyName("financial_addresses.aba")>] FinancialAddressesAba
+        | [<JsonPropertyName("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
+        | [<JsonPropertyName("inbound_transfers.ach")>] InboundTransfersAch
         | IntraStripeFlows
-        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
-        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
-        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
-        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+        | [<JsonPropertyName("outbound_payments.ach")>] OutboundPaymentsAch
+        | [<JsonPropertyName("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+        | [<JsonPropertyName("outbound_transfers.ach")>] OutboundTransfersAch
+        | [<JsonPropertyName("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
         | RemoteDepositCapture
 
     type TreasuryFinancialAccountPendingFeatures =
         | CardIssuing
         | DepositInsurance
-        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
-        | [<JsonUnionCase("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
-        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
+        | [<JsonPropertyName("financial_addresses.aba")>] FinancialAddressesAba
+        | [<JsonPropertyName("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
+        | [<JsonPropertyName("inbound_transfers.ach")>] InboundTransfersAch
         | IntraStripeFlows
-        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
-        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
-        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
-        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+        | [<JsonPropertyName("outbound_payments.ach")>] OutboundPaymentsAch
+        | [<JsonPropertyName("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+        | [<JsonPropertyName("outbound_transfers.ach")>] OutboundTransfersAch
+        | [<JsonPropertyName("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
         | RemoteDepositCapture
 
     type TreasuryFinancialAccountActiveFeatures =
         | CardIssuing
         | DepositInsurance
-        | [<JsonUnionCase("financial_addresses.aba")>] FinancialAddressesAba
-        | [<JsonUnionCase("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
-        | [<JsonUnionCase("inbound_transfers.ach")>] InboundTransfersAch
+        | [<JsonPropertyName("financial_addresses.aba")>] FinancialAddressesAba
+        | [<JsonPropertyName("financial_addresses.aba.forwarding")>] FinancialAddressesAbaForwarding
+        | [<JsonPropertyName("inbound_transfers.ach")>] InboundTransfersAch
         | IntraStripeFlows
-        | [<JsonUnionCase("outbound_payments.ach")>] OutboundPaymentsAch
-        | [<JsonUnionCase("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
-        | [<JsonUnionCase("outbound_transfers.ach")>] OutboundTransfersAch
-        | [<JsonUnionCase("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
+        | [<JsonPropertyName("outbound_payments.ach")>] OutboundPaymentsAch
+        | [<JsonPropertyName("outbound_payments.us_domestic_wire")>] OutboundPaymentsUsDomesticWire
+        | [<JsonPropertyName("outbound_transfers.ach")>] OutboundTransfersAch
+        | [<JsonPropertyName("outbound_transfers.us_domestic_wire")>] OutboundTransfersUsDomesticWire
         | RemoteDepositCapture
 
     [<Struct>]
@@ -699,11 +699,11 @@ module StripeModel =
 
     [<Struct>]
     type ThreeDSecureDetailsChargeVersion =
-        | [<JsonUnionCase("1.0.2")>] Numeric102
-        | [<JsonUnionCase("2.1.0")>] Numeric210
-        | [<JsonUnionCase("2.2.0")>] Numeric220
-        | [<JsonUnionCase("2.3.0")>] Numeric230
-        | [<JsonUnionCase("2.3.1")>] Numeric231
+        | [<JsonPropertyName("1.0.2")>] Numeric102
+        | [<JsonPropertyName("2.1.0")>] Numeric210
+        | [<JsonPropertyName("2.2.0")>] Numeric220
+        | [<JsonPropertyName("2.3.0")>] Numeric230
+        | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type ThreeDSecureDetailsChargeResultReason =
         | Abandoned
@@ -725,15 +725,15 @@ module StripeModel =
     [<Struct>]
     type ThreeDSecureDetailsChargeExemptionIndicator =
         | LowRisk
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type ThreeDSecureDetailsChargeElectronicCommerceIndicator =
-        | [<JsonUnionCase("01")>] Numeric01
-        | [<JsonUnionCase("02")>] Numeric02
-        | [<JsonUnionCase("05")>] Numeric05
-        | [<JsonUnionCase("06")>] Numeric06
-        | [<JsonUnionCase("07")>] Numeric07
+        | [<JsonPropertyName("01")>] Numeric01
+        | [<JsonPropertyName("02")>] Numeric02
+        | [<JsonPropertyName("05")>] Numeric05
+        | [<JsonPropertyName("06")>] Numeric06
+        | [<JsonPropertyName("07")>] Numeric07
 
     [<Struct>]
     type ThreeDSecureDetailsChargeAuthenticationFlow =
@@ -742,11 +742,11 @@ module StripeModel =
 
     [<Struct>]
     type ThreeDSecureDetailsVersion =
-        | [<JsonUnionCase("1.0.2")>] Numeric102
-        | [<JsonUnionCase("2.1.0")>] Numeric210
-        | [<JsonUnionCase("2.2.0")>] Numeric220
-        | [<JsonUnionCase("2.3.0")>] Numeric230
-        | [<JsonUnionCase("2.3.1")>] Numeric231
+        | [<JsonPropertyName("1.0.2")>] Numeric102
+        | [<JsonPropertyName("2.1.0")>] Numeric210
+        | [<JsonPropertyName("2.2.0")>] Numeric220
+        | [<JsonPropertyName("2.3.0")>] Numeric230
+        | [<JsonPropertyName("2.3.1")>] Numeric231
 
     type ThreeDSecureDetailsResultReason =
         | Abandoned
@@ -767,11 +767,11 @@ module StripeModel =
 
     [<Struct>]
     type ThreeDSecureDetailsElectronicCommerceIndicator =
-        | [<JsonUnionCase("01")>] Numeric01
-        | [<JsonUnionCase("02")>] Numeric02
-        | [<JsonUnionCase("05")>] Numeric05
-        | [<JsonUnionCase("06")>] Numeric06
-        | [<JsonUnionCase("07")>] Numeric07
+        | [<JsonPropertyName("01")>] Numeric01
+        | [<JsonPropertyName("02")>] Numeric02
+        | [<JsonPropertyName("05")>] Numeric05
+        | [<JsonPropertyName("06")>] Numeric06
+        | [<JsonPropertyName("07")>] Numeric07
 
     [<Struct>]
     type ThreeDSecureDetailsAuthenticationFlow =
@@ -1417,7 +1417,7 @@ module StripeModel =
     [<Struct>]
     type TaxProductResourceCustomerDetailsTaxabilityOverride =
         | CustomerExempt
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | ReverseCharge
 
     [<Struct>]
@@ -1645,9 +1645,9 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The end of the invoicing period. This TDS applies to Stripe fees collected during this invoicing period.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PeriodEnd: DateTime
+        PeriodEnd: DateTime
         ///The start of the invoicing period. This TDS applies to Stripe fees collected during this invoicing period.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PeriodStart: DateTime
+        PeriodStart: DateTime
         ///The TAN that was supplied to Stripe when TDS was assessed
         TaxDeductionAccountNumber: string
     }
@@ -1841,7 +1841,7 @@ module StripeModel =
     type SubscriptionSchedulePhaseConfigurationProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type SubscriptionSchedulePhaseConfigurationCollectionMethod =
@@ -1855,9 +1855,9 @@ module StripeModel =
 
     type SubscriptionScheduleCurrentPhase = {
         ///The end of this phase of the subscription schedule.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime
+        EndDate: DateTime
         ///The start of this phase of the subscription schedule.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartDate: DateTime
+        StartDate: DateTime
     }
     with
         static member New (endDate: DateTime, startDate: DateTime) =
@@ -1877,7 +1877,7 @@ module StripeModel =
     [<Struct>]
     type SubscriptionScheduleEndBehavior =
         | Cancel
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Release
         | Renew
 
@@ -1985,7 +1985,7 @@ module StripeModel =
     type SourceTypeIdeal = {
         Bank: string option
         Bic: string option
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         StatementDescriptor: string option
     }
     with
@@ -2027,7 +2027,7 @@ module StripeModel =
         BankCode: string option
         BankName: string option
         Bic: string option
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         PreferredLanguage: string option
         StatementDescriptor: string option
     }
@@ -2045,7 +2045,7 @@ module StripeModel =
     type SourceTypeAuBecsDebit = {
         BsbNumber: string option
         Fingerprint: string option
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (?bsbNumber: string option, ?fingerprint: string option, ?last4: string option) =
@@ -2126,7 +2126,7 @@ module StripeModel =
         ///The credit transfer rails the sender used to push this transfer. The possible rails are: Faster Payments, BACS, CHAPS, and wire transfers. Currently only Faster Payments is supported.
         FundingMethod: string option
         ///Last 4 digits of sender account number associated with the transfer.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Sender entered arbitrary information about the transfer.
         Reference: string option
         ///Sender account number associated with the transfer.
@@ -2154,7 +2154,7 @@ module StripeModel =
         ///Bank account fingerprint associated with the transfer.
         Fingerprint: string option
         ///Last 4 digits of the account number associated with the transfer.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Routing number associated with the transfer.
         RoutingNumber: string option
     }
@@ -2220,7 +2220,7 @@ module StripeModel =
     type SourceReceiverFlowRefundAttributesMethod =
         | Email
         | Manual
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type SourceOrderItemType =
@@ -2232,7 +2232,7 @@ module StripeModel =
         ///SEPA creditor ID.
         CreditorIdentifier: string option
         ///Last 4 digits of the account number associated with the debit.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Mandate reference associated with the debit.
         MandateReference: string option
     }
@@ -2246,7 +2246,7 @@ module StripeModel =
 
     type SourceMandateNotificationBacsDebitData = {
         ///Last 4 digits of the account number associated with the debit.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (?last4: string) =
@@ -2548,7 +2548,7 @@ module StripeModel =
         ///The raw data string used to generate QR code, it should be used together with QR code library.
         Data: string
         ///The date (unix timestamp) when the PIX expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///The URL to the hosted pix instructions page, which allows customers to view the pix QR code.
         HostedInstructionsUrl: string
         ///The image_url_png string used to render png QR code
@@ -2772,27 +2772,27 @@ module StripeModel =
             }
 
     type SetupAttemptPaymentMethodDetailsIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ADYBNL2A")>] ADYBNL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("BUUTNL2A")>] BUUTNL2A
-        | [<JsonUnionCase("FNOMNL22")>] FNOMNL22
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MLLENL2A")>] MLLENL2A
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("NNBANL2G")>] NNBANL2G
-        | [<JsonUnionCase("NTSBDEB1")>] NTSBDEB1
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("REVOIE23")>] REVOIE23
-        | [<JsonUnionCase("REVOLT21")>] REVOLT21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+        | [<JsonPropertyName("ABNANL2A")>] ABNANL2A
+        | [<JsonPropertyName("ADYBNL2A")>] ADYBNL2A
+        | [<JsonPropertyName("ASNBNL21")>] ASNBNL21
+        | [<JsonPropertyName("BITSNL2A")>] BITSNL2A
+        | [<JsonPropertyName("BUNQNL2A")>] BUNQNL2A
+        | [<JsonPropertyName("BUUTNL2A")>] BUUTNL2A
+        | [<JsonPropertyName("FNOMNL22")>] FNOMNL22
+        | [<JsonPropertyName("FVLBNL22")>] FVLBNL22
+        | [<JsonPropertyName("HANDNL2A")>] HANDNL2A
+        | [<JsonPropertyName("INGBNL2A")>] INGBNL2A
+        | [<JsonPropertyName("KNABNL2H")>] KNABNL2H
+        | [<JsonPropertyName("MLLENL2A")>] MLLENL2A
+        | [<JsonPropertyName("MOYONL21")>] MOYONL21
+        | [<JsonPropertyName("NNBANL2G")>] NNBANL2G
+        | [<JsonPropertyName("NTSBDEB1")>] NTSBDEB1
+        | [<JsonPropertyName("RABONL2U")>] RABONL2U
+        | [<JsonPropertyName("RBRBNL21")>] RBRBNL21
+        | [<JsonPropertyName("REVOIE23")>] REVOIE23
+        | [<JsonPropertyName("REVOLT21")>] REVOLT21
+        | [<JsonPropertyName("SNSBNL2A")>] SNSBNL2A
+        | [<JsonPropertyName("TRIONL2U")>] TRIONL2U
 
     type SetupAttemptPaymentMethodDetailsIdealBank =
         | AbnAmro
@@ -3026,7 +3026,7 @@ module StripeModel =
         ///The time after which all reserved funds are requested for release.
         ReleaseAfter: int
         ///The time at which reserved funds are scheduled for release, automatically set to midnight UTC of the day after `release_after`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ScheduledRelease: DateTime
+        ScheduledRelease: DateTime
     }
     with
         static member New (releaseAfter: int, scheduledRelease: DateTime) =
@@ -3037,9 +3037,9 @@ module StripeModel =
 
     type ReservesReserveHoldsResourcesReleaseSchedule = {
         ///The time after which the ReserveHold is requested to be released.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReleaseAfter: DateTime option
+        ReleaseAfter: DateTime option
         ///The time at which the ReserveHold is scheduled to be released, automatically set to midnight UTC of the day after `release_after`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ScheduledRelease: DateTime option
+        ScheduledRelease: DateTime option
     }
     with
         static member New (releaseAfter: DateTime option, scheduledRelease: DateTime option) =
@@ -3285,7 +3285,7 @@ module StripeModel =
     ///Related guide: [Managing list items](https://docs.stripe.com/radar/lists#managing-list-items)
     type RadarValueListItem = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The name or email address of the user who added this item to the value list.
         CreatedBy: string
         ///Unique identifier for the object.
@@ -3337,11 +3337,11 @@ module StripeModel =
 
     type QuotesResourceStatusTransitions = {
         ///The time that the quote was accepted. Measured in seconds since Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]AcceptedAt: DateTime option
+        AcceptedAt: DateTime option
         ///The time that the quote was canceled. Measured in seconds since Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///The time that the quote was finalized. Measured in seconds since Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]FinalizedAt: DateTime option
+        FinalizedAt: DateTime option
     }
     with
         static member New (acceptedAt: DateTime option, canceledAt: DateTime option, finalizedAt: DateTime option) =
@@ -3475,7 +3475,7 @@ module StripeModel =
     type PortalSubscriptionUpdateProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type PortalSubscriptionUpdateBillingCycleAnchor =
@@ -3496,7 +3496,7 @@ module StripeModel =
     type PortalSubscriptionCancelProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type PortalSubscriptionCancelMode =
@@ -3768,7 +3768,7 @@ module StripeModel =
 
     type PersonAdditionalTosAcceptance = {
         ///The Unix timestamp marking when the legal guardian accepted the service agreement.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Date: DateTime option
+        Date: DateTime option
         ///The IP address from which the legal guardian accepted the service agreement.
         Ip: string option
         ///The user agent of the browser from which the legal guardian accepted the service agreement.
@@ -3785,7 +3785,7 @@ module StripeModel =
     [<Struct>]
     type PersonPoliticalExposure =
         | Existing
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type PaypalSellerProtectionDisputeCategories =
@@ -3891,9 +3891,9 @@ module StripeModel =
 
     [<Struct>]
     type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureVersion =
-        | [<JsonUnionCase("1.0.2")>] Numeric102
-        | [<JsonUnionCase("2.1.0")>] Numeric210
-        | [<JsonUnionCase("2.2.0")>] Numeric220
+        | [<JsonPropertyName("1.0.2")>] Numeric102
+        | [<JsonPropertyName("2.1.0")>] Numeric210
+        | [<JsonPropertyName("2.2.0")>] Numeric220
 
     type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResultReason =
         | Abandoned
@@ -3915,16 +3915,16 @@ module StripeModel =
     [<Struct>]
     type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureExemptionIndicator =
         | LowRisk
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureElectronicCommerceIndicator =
-        | [<JsonUnionCase("01")>] Numeric01
-        | [<JsonUnionCase("02")>] Numeric02
-        | [<JsonUnionCase("03")>] Numeric03
-        | [<JsonUnionCase("04")>] Numeric04
-        | [<JsonUnionCase("05")>] Numeric05
-        | [<JsonUnionCase("06")>] Numeric06
-        | [<JsonUnionCase("07")>] Numeric07
+        | [<JsonPropertyName("01")>] Numeric01
+        | [<JsonPropertyName("02")>] Numeric02
+        | [<JsonPropertyName("03")>] Numeric03
+        | [<JsonPropertyName("04")>] Numeric04
+        | [<JsonPropertyName("05")>] Numeric05
+        | [<JsonPropertyName("06")>] Numeric06
+        | [<JsonPropertyName("07")>] Numeric07
 
     [<Struct>]
     type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureAuthenticationFlow =
@@ -4200,244 +4200,244 @@ module StripeModel =
         | ZwTin
 
     type PaymentPagesCheckoutSessionShippingAddressCollectionAllowedCountries =
-        | [<JsonUnionCase("AC")>] AC
-        | [<JsonUnionCase("AD")>] AD
-        | [<JsonUnionCase("AE")>] AE
-        | [<JsonUnionCase("AF")>] AF
-        | [<JsonUnionCase("AG")>] AG
-        | [<JsonUnionCase("AI")>] AI
-        | [<JsonUnionCase("AL")>] AL
-        | [<JsonUnionCase("AM")>] AM
-        | [<JsonUnionCase("AO")>] AO
-        | [<JsonUnionCase("AQ")>] AQ
-        | [<JsonUnionCase("AR")>] AR
-        | [<JsonUnionCase("AT")>] AT
-        | [<JsonUnionCase("AU")>] AU
-        | [<JsonUnionCase("AW")>] AW
-        | [<JsonUnionCase("AX")>] AX
-        | [<JsonUnionCase("AZ")>] AZ
-        | [<JsonUnionCase("BA")>] BA
-        | [<JsonUnionCase("BB")>] BB
-        | [<JsonUnionCase("BD")>] BD
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("BF")>] BF
-        | [<JsonUnionCase("BG")>] BG
-        | [<JsonUnionCase("BH")>] BH
-        | [<JsonUnionCase("BI")>] BI
-        | [<JsonUnionCase("BJ")>] BJ
-        | [<JsonUnionCase("BL")>] BL
-        | [<JsonUnionCase("BM")>] BM
-        | [<JsonUnionCase("BN")>] BN
-        | [<JsonUnionCase("BO")>] BO
-        | [<JsonUnionCase("BQ")>] BQ
-        | [<JsonUnionCase("BR")>] BR
-        | [<JsonUnionCase("BS")>] BS
-        | [<JsonUnionCase("BT")>] BT
-        | [<JsonUnionCase("BV")>] BV
-        | [<JsonUnionCase("BW")>] BW
-        | [<JsonUnionCase("BY")>] BY
-        | [<JsonUnionCase("BZ")>] BZ
-        | [<JsonUnionCase("CA")>] CA
-        | [<JsonUnionCase("CD")>] CD
-        | [<JsonUnionCase("CF")>] CF
-        | [<JsonUnionCase("CG")>] CG
-        | [<JsonUnionCase("CH")>] CH
-        | [<JsonUnionCase("CI")>] CI
-        | [<JsonUnionCase("CK")>] CK
-        | [<JsonUnionCase("CL")>] CL
-        | [<JsonUnionCase("CM")>] CM
-        | [<JsonUnionCase("CN")>] CN
-        | [<JsonUnionCase("CO")>] CO
-        | [<JsonUnionCase("CR")>] CR
-        | [<JsonUnionCase("CV")>] CV
-        | [<JsonUnionCase("CW")>] CW
-        | [<JsonUnionCase("CY")>] CY
-        | [<JsonUnionCase("CZ")>] CZ
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("DJ")>] DJ
-        | [<JsonUnionCase("DK")>] DK
-        | [<JsonUnionCase("DM")>] DM
-        | [<JsonUnionCase("DO")>] DO
-        | [<JsonUnionCase("DZ")>] DZ
-        | [<JsonUnionCase("EC")>] EC
-        | [<JsonUnionCase("EE")>] EE
-        | [<JsonUnionCase("EG")>] EG
-        | [<JsonUnionCase("EH")>] EH
-        | [<JsonUnionCase("ER")>] ER
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("ET")>] ET
-        | [<JsonUnionCase("FI")>] FI
-        | [<JsonUnionCase("FJ")>] FJ
-        | [<JsonUnionCase("FK")>] FK
-        | [<JsonUnionCase("FO")>] FO
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("GA")>] GA
-        | [<JsonUnionCase("GB")>] GB
-        | [<JsonUnionCase("GD")>] GD
-        | [<JsonUnionCase("GE")>] GE
-        | [<JsonUnionCase("GF")>] GF
-        | [<JsonUnionCase("GG")>] GG
-        | [<JsonUnionCase("GH")>] GH
-        | [<JsonUnionCase("GI")>] GI
-        | [<JsonUnionCase("GL")>] GL
-        | [<JsonUnionCase("GM")>] GM
-        | [<JsonUnionCase("GN")>] GN
-        | [<JsonUnionCase("GP")>] GP
-        | [<JsonUnionCase("GQ")>] GQ
-        | [<JsonUnionCase("GR")>] GR
-        | [<JsonUnionCase("GS")>] GS
-        | [<JsonUnionCase("GT")>] GT
-        | [<JsonUnionCase("GU")>] GU
-        | [<JsonUnionCase("GW")>] GW
-        | [<JsonUnionCase("GY")>] GY
-        | [<JsonUnionCase("HK")>] HK
-        | [<JsonUnionCase("HN")>] HN
-        | [<JsonUnionCase("HR")>] HR
-        | [<JsonUnionCase("HT")>] HT
-        | [<JsonUnionCase("HU")>] HU
-        | [<JsonUnionCase("ID")>] ID
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("IL")>] IL
-        | [<JsonUnionCase("IM")>] IM
-        | [<JsonUnionCase("IN")>] IN
-        | [<JsonUnionCase("IO")>] IO
-        | [<JsonUnionCase("IQ")>] IQ
-        | [<JsonUnionCase("IS")>] IS
-        | [<JsonUnionCase("IT")>] IT
-        | [<JsonUnionCase("JE")>] JE
-        | [<JsonUnionCase("JM")>] JM
-        | [<JsonUnionCase("JO")>] JO
-        | [<JsonUnionCase("JP")>] JP
-        | [<JsonUnionCase("KE")>] KE
-        | [<JsonUnionCase("KG")>] KG
-        | [<JsonUnionCase("KH")>] KH
-        | [<JsonUnionCase("KI")>] KI
-        | [<JsonUnionCase("KM")>] KM
-        | [<JsonUnionCase("KN")>] KN
-        | [<JsonUnionCase("KR")>] KR
-        | [<JsonUnionCase("KW")>] KW
-        | [<JsonUnionCase("KY")>] KY
-        | [<JsonUnionCase("KZ")>] KZ
-        | [<JsonUnionCase("LA")>] LA
-        | [<JsonUnionCase("LB")>] LB
-        | [<JsonUnionCase("LC")>] LC
-        | [<JsonUnionCase("LI")>] LI
-        | [<JsonUnionCase("LK")>] LK
-        | [<JsonUnionCase("LR")>] LR
-        | [<JsonUnionCase("LS")>] LS
-        | [<JsonUnionCase("LT")>] LT
-        | [<JsonUnionCase("LU")>] LU
-        | [<JsonUnionCase("LV")>] LV
-        | [<JsonUnionCase("LY")>] LY
-        | [<JsonUnionCase("MA")>] MA
-        | [<JsonUnionCase("MC")>] MC
-        | [<JsonUnionCase("MD")>] MD
-        | [<JsonUnionCase("ME")>] ME
-        | [<JsonUnionCase("MF")>] MF
-        | [<JsonUnionCase("MG")>] MG
-        | [<JsonUnionCase("MK")>] MK
-        | [<JsonUnionCase("ML")>] ML
-        | [<JsonUnionCase("MM")>] MM
-        | [<JsonUnionCase("MN")>] MN
-        | [<JsonUnionCase("MO")>] MO
-        | [<JsonUnionCase("MQ")>] MQ
-        | [<JsonUnionCase("MR")>] MR
-        | [<JsonUnionCase("MS")>] MS
-        | [<JsonUnionCase("MT")>] MT
-        | [<JsonUnionCase("MU")>] MU
-        | [<JsonUnionCase("MV")>] MV
-        | [<JsonUnionCase("MW")>] MW
-        | [<JsonUnionCase("MX")>] MX
-        | [<JsonUnionCase("MY")>] MY
-        | [<JsonUnionCase("MZ")>] MZ
-        | [<JsonUnionCase("NA")>] NA
-        | [<JsonUnionCase("NC")>] NC
-        | [<JsonUnionCase("NE")>] NE
-        | [<JsonUnionCase("NG")>] NG
-        | [<JsonUnionCase("NI")>] NI
-        | [<JsonUnionCase("NL")>] NL
-        | [<JsonUnionCase("NO")>] NO
-        | [<JsonUnionCase("NP")>] NP
-        | [<JsonUnionCase("NR")>] NR
-        | [<JsonUnionCase("NU")>] NU
-        | [<JsonUnionCase("NZ")>] NZ
-        | [<JsonUnionCase("OM")>] OM
-        | [<JsonUnionCase("PA")>] PA
-        | [<JsonUnionCase("PE")>] PE
-        | [<JsonUnionCase("PF")>] PF
-        | [<JsonUnionCase("PG")>] PG
-        | [<JsonUnionCase("PH")>] PH
-        | [<JsonUnionCase("PK")>] PK
-        | [<JsonUnionCase("PL")>] PL
-        | [<JsonUnionCase("PM")>] PM
-        | [<JsonUnionCase("PN")>] PN
-        | [<JsonUnionCase("PR")>] PR
-        | [<JsonUnionCase("PS")>] PS
-        | [<JsonUnionCase("PT")>] PT
-        | [<JsonUnionCase("PY")>] PY
-        | [<JsonUnionCase("QA")>] QA
-        | [<JsonUnionCase("RE")>] RE
-        | [<JsonUnionCase("RO")>] RO
-        | [<JsonUnionCase("RS")>] RS
-        | [<JsonUnionCase("RU")>] RU
-        | [<JsonUnionCase("RW")>] RW
-        | [<JsonUnionCase("SA")>] SA
-        | [<JsonUnionCase("SB")>] SB
-        | [<JsonUnionCase("SC")>] SC
-        | [<JsonUnionCase("SD")>] SD
-        | [<JsonUnionCase("SE")>] SE
-        | [<JsonUnionCase("SG")>] SG
-        | [<JsonUnionCase("SH")>] SH
-        | [<JsonUnionCase("SI")>] SI
-        | [<JsonUnionCase("SJ")>] SJ
-        | [<JsonUnionCase("SK")>] SK
-        | [<JsonUnionCase("SL")>] SL
-        | [<JsonUnionCase("SM")>] SM
-        | [<JsonUnionCase("SN")>] SN
-        | [<JsonUnionCase("SO")>] SO
-        | [<JsonUnionCase("SR")>] SR
-        | [<JsonUnionCase("SS")>] SS
-        | [<JsonUnionCase("ST")>] ST
-        | [<JsonUnionCase("SV")>] SV
-        | [<JsonUnionCase("SX")>] SX
-        | [<JsonUnionCase("SZ")>] SZ
-        | [<JsonUnionCase("TA")>] TA
-        | [<JsonUnionCase("TC")>] TC
-        | [<JsonUnionCase("TD")>] TD
-        | [<JsonUnionCase("TF")>] TF
-        | [<JsonUnionCase("TG")>] TG
-        | [<JsonUnionCase("TH")>] TH
-        | [<JsonUnionCase("TJ")>] TJ
-        | [<JsonUnionCase("TK")>] TK
-        | [<JsonUnionCase("TL")>] TL
-        | [<JsonUnionCase("TM")>] TM
-        | [<JsonUnionCase("TN")>] TN
-        | [<JsonUnionCase("TO")>] TO
-        | [<JsonUnionCase("TR")>] TR
-        | [<JsonUnionCase("TT")>] TT
-        | [<JsonUnionCase("TV")>] TV
-        | [<JsonUnionCase("TW")>] TW
-        | [<JsonUnionCase("TZ")>] TZ
-        | [<JsonUnionCase("UA")>] UA
-        | [<JsonUnionCase("UG")>] UG
-        | [<JsonUnionCase("US")>] US
-        | [<JsonUnionCase("UY")>] UY
-        | [<JsonUnionCase("UZ")>] UZ
-        | [<JsonUnionCase("VA")>] VA
-        | [<JsonUnionCase("VC")>] VC
-        | [<JsonUnionCase("VE")>] VE
-        | [<JsonUnionCase("VG")>] VG
-        | [<JsonUnionCase("VN")>] VN
-        | [<JsonUnionCase("VU")>] VU
-        | [<JsonUnionCase("WF")>] WF
-        | [<JsonUnionCase("WS")>] WS
-        | [<JsonUnionCase("XK")>] XK
-        | [<JsonUnionCase("YE")>] YE
-        | [<JsonUnionCase("YT")>] YT
-        | [<JsonUnionCase("ZA")>] ZA
-        | [<JsonUnionCase("ZM")>] ZM
-        | [<JsonUnionCase("ZW")>] ZW
-        | [<JsonUnionCase("ZZ")>] ZZ
+        | [<JsonPropertyName("AC")>] AC
+        | [<JsonPropertyName("AD")>] AD
+        | [<JsonPropertyName("AE")>] AE
+        | [<JsonPropertyName("AF")>] AF
+        | [<JsonPropertyName("AG")>] AG
+        | [<JsonPropertyName("AI")>] AI
+        | [<JsonPropertyName("AL")>] AL
+        | [<JsonPropertyName("AM")>] AM
+        | [<JsonPropertyName("AO")>] AO
+        | [<JsonPropertyName("AQ")>] AQ
+        | [<JsonPropertyName("AR")>] AR
+        | [<JsonPropertyName("AT")>] AT
+        | [<JsonPropertyName("AU")>] AU
+        | [<JsonPropertyName("AW")>] AW
+        | [<JsonPropertyName("AX")>] AX
+        | [<JsonPropertyName("AZ")>] AZ
+        | [<JsonPropertyName("BA")>] BA
+        | [<JsonPropertyName("BB")>] BB
+        | [<JsonPropertyName("BD")>] BD
+        | [<JsonPropertyName("BE")>] BE
+        | [<JsonPropertyName("BF")>] BF
+        | [<JsonPropertyName("BG")>] BG
+        | [<JsonPropertyName("BH")>] BH
+        | [<JsonPropertyName("BI")>] BI
+        | [<JsonPropertyName("BJ")>] BJ
+        | [<JsonPropertyName("BL")>] BL
+        | [<JsonPropertyName("BM")>] BM
+        | [<JsonPropertyName("BN")>] BN
+        | [<JsonPropertyName("BO")>] BO
+        | [<JsonPropertyName("BQ")>] BQ
+        | [<JsonPropertyName("BR")>] BR
+        | [<JsonPropertyName("BS")>] BS
+        | [<JsonPropertyName("BT")>] BT
+        | [<JsonPropertyName("BV")>] BV
+        | [<JsonPropertyName("BW")>] BW
+        | [<JsonPropertyName("BY")>] BY
+        | [<JsonPropertyName("BZ")>] BZ
+        | [<JsonPropertyName("CA")>] CA
+        | [<JsonPropertyName("CD")>] CD
+        | [<JsonPropertyName("CF")>] CF
+        | [<JsonPropertyName("CG")>] CG
+        | [<JsonPropertyName("CH")>] CH
+        | [<JsonPropertyName("CI")>] CI
+        | [<JsonPropertyName("CK")>] CK
+        | [<JsonPropertyName("CL")>] CL
+        | [<JsonPropertyName("CM")>] CM
+        | [<JsonPropertyName("CN")>] CN
+        | [<JsonPropertyName("CO")>] CO
+        | [<JsonPropertyName("CR")>] CR
+        | [<JsonPropertyName("CV")>] CV
+        | [<JsonPropertyName("CW")>] CW
+        | [<JsonPropertyName("CY")>] CY
+        | [<JsonPropertyName("CZ")>] CZ
+        | [<JsonPropertyName("DE")>] DE
+        | [<JsonPropertyName("DJ")>] DJ
+        | [<JsonPropertyName("DK")>] DK
+        | [<JsonPropertyName("DM")>] DM
+        | [<JsonPropertyName("DO")>] DO
+        | [<JsonPropertyName("DZ")>] DZ
+        | [<JsonPropertyName("EC")>] EC
+        | [<JsonPropertyName("EE")>] EE
+        | [<JsonPropertyName("EG")>] EG
+        | [<JsonPropertyName("EH")>] EH
+        | [<JsonPropertyName("ER")>] ER
+        | [<JsonPropertyName("ES")>] ES
+        | [<JsonPropertyName("ET")>] ET
+        | [<JsonPropertyName("FI")>] FI
+        | [<JsonPropertyName("FJ")>] FJ
+        | [<JsonPropertyName("FK")>] FK
+        | [<JsonPropertyName("FO")>] FO
+        | [<JsonPropertyName("FR")>] FR
+        | [<JsonPropertyName("GA")>] GA
+        | [<JsonPropertyName("GB")>] GB
+        | [<JsonPropertyName("GD")>] GD
+        | [<JsonPropertyName("GE")>] GE
+        | [<JsonPropertyName("GF")>] GF
+        | [<JsonPropertyName("GG")>] GG
+        | [<JsonPropertyName("GH")>] GH
+        | [<JsonPropertyName("GI")>] GI
+        | [<JsonPropertyName("GL")>] GL
+        | [<JsonPropertyName("GM")>] GM
+        | [<JsonPropertyName("GN")>] GN
+        | [<JsonPropertyName("GP")>] GP
+        | [<JsonPropertyName("GQ")>] GQ
+        | [<JsonPropertyName("GR")>] GR
+        | [<JsonPropertyName("GS")>] GS
+        | [<JsonPropertyName("GT")>] GT
+        | [<JsonPropertyName("GU")>] GU
+        | [<JsonPropertyName("GW")>] GW
+        | [<JsonPropertyName("GY")>] GY
+        | [<JsonPropertyName("HK")>] HK
+        | [<JsonPropertyName("HN")>] HN
+        | [<JsonPropertyName("HR")>] HR
+        | [<JsonPropertyName("HT")>] HT
+        | [<JsonPropertyName("HU")>] HU
+        | [<JsonPropertyName("ID")>] ID
+        | [<JsonPropertyName("IE")>] IE
+        | [<JsonPropertyName("IL")>] IL
+        | [<JsonPropertyName("IM")>] IM
+        | [<JsonPropertyName("IN")>] IN
+        | [<JsonPropertyName("IO")>] IO
+        | [<JsonPropertyName("IQ")>] IQ
+        | [<JsonPropertyName("IS")>] IS
+        | [<JsonPropertyName("IT")>] IT
+        | [<JsonPropertyName("JE")>] JE
+        | [<JsonPropertyName("JM")>] JM
+        | [<JsonPropertyName("JO")>] JO
+        | [<JsonPropertyName("JP")>] JP
+        | [<JsonPropertyName("KE")>] KE
+        | [<JsonPropertyName("KG")>] KG
+        | [<JsonPropertyName("KH")>] KH
+        | [<JsonPropertyName("KI")>] KI
+        | [<JsonPropertyName("KM")>] KM
+        | [<JsonPropertyName("KN")>] KN
+        | [<JsonPropertyName("KR")>] KR
+        | [<JsonPropertyName("KW")>] KW
+        | [<JsonPropertyName("KY")>] KY
+        | [<JsonPropertyName("KZ")>] KZ
+        | [<JsonPropertyName("LA")>] LA
+        | [<JsonPropertyName("LB")>] LB
+        | [<JsonPropertyName("LC")>] LC
+        | [<JsonPropertyName("LI")>] LI
+        | [<JsonPropertyName("LK")>] LK
+        | [<JsonPropertyName("LR")>] LR
+        | [<JsonPropertyName("LS")>] LS
+        | [<JsonPropertyName("LT")>] LT
+        | [<JsonPropertyName("LU")>] LU
+        | [<JsonPropertyName("LV")>] LV
+        | [<JsonPropertyName("LY")>] LY
+        | [<JsonPropertyName("MA")>] MA
+        | [<JsonPropertyName("MC")>] MC
+        | [<JsonPropertyName("MD")>] MD
+        | [<JsonPropertyName("ME")>] ME
+        | [<JsonPropertyName("MF")>] MF
+        | [<JsonPropertyName("MG")>] MG
+        | [<JsonPropertyName("MK")>] MK
+        | [<JsonPropertyName("ML")>] ML
+        | [<JsonPropertyName("MM")>] MM
+        | [<JsonPropertyName("MN")>] MN
+        | [<JsonPropertyName("MO")>] MO
+        | [<JsonPropertyName("MQ")>] MQ
+        | [<JsonPropertyName("MR")>] MR
+        | [<JsonPropertyName("MS")>] MS
+        | [<JsonPropertyName("MT")>] MT
+        | [<JsonPropertyName("MU")>] MU
+        | [<JsonPropertyName("MV")>] MV
+        | [<JsonPropertyName("MW")>] MW
+        | [<JsonPropertyName("MX")>] MX
+        | [<JsonPropertyName("MY")>] MY
+        | [<JsonPropertyName("MZ")>] MZ
+        | [<JsonPropertyName("NA")>] NA
+        | [<JsonPropertyName("NC")>] NC
+        | [<JsonPropertyName("NE")>] NE
+        | [<JsonPropertyName("NG")>] NG
+        | [<JsonPropertyName("NI")>] NI
+        | [<JsonPropertyName("NL")>] NL
+        | [<JsonPropertyName("NO")>] NO
+        | [<JsonPropertyName("NP")>] NP
+        | [<JsonPropertyName("NR")>] NR
+        | [<JsonPropertyName("NU")>] NU
+        | [<JsonPropertyName("NZ")>] NZ
+        | [<JsonPropertyName("OM")>] OM
+        | [<JsonPropertyName("PA")>] PA
+        | [<JsonPropertyName("PE")>] PE
+        | [<JsonPropertyName("PF")>] PF
+        | [<JsonPropertyName("PG")>] PG
+        | [<JsonPropertyName("PH")>] PH
+        | [<JsonPropertyName("PK")>] PK
+        | [<JsonPropertyName("PL")>] PL
+        | [<JsonPropertyName("PM")>] PM
+        | [<JsonPropertyName("PN")>] PN
+        | [<JsonPropertyName("PR")>] PR
+        | [<JsonPropertyName("PS")>] PS
+        | [<JsonPropertyName("PT")>] PT
+        | [<JsonPropertyName("PY")>] PY
+        | [<JsonPropertyName("QA")>] QA
+        | [<JsonPropertyName("RE")>] RE
+        | [<JsonPropertyName("RO")>] RO
+        | [<JsonPropertyName("RS")>] RS
+        | [<JsonPropertyName("RU")>] RU
+        | [<JsonPropertyName("RW")>] RW
+        | [<JsonPropertyName("SA")>] SA
+        | [<JsonPropertyName("SB")>] SB
+        | [<JsonPropertyName("SC")>] SC
+        | [<JsonPropertyName("SD")>] SD
+        | [<JsonPropertyName("SE")>] SE
+        | [<JsonPropertyName("SG")>] SG
+        | [<JsonPropertyName("SH")>] SH
+        | [<JsonPropertyName("SI")>] SI
+        | [<JsonPropertyName("SJ")>] SJ
+        | [<JsonPropertyName("SK")>] SK
+        | [<JsonPropertyName("SL")>] SL
+        | [<JsonPropertyName("SM")>] SM
+        | [<JsonPropertyName("SN")>] SN
+        | [<JsonPropertyName("SO")>] SO
+        | [<JsonPropertyName("SR")>] SR
+        | [<JsonPropertyName("SS")>] SS
+        | [<JsonPropertyName("ST")>] ST
+        | [<JsonPropertyName("SV")>] SV
+        | [<JsonPropertyName("SX")>] SX
+        | [<JsonPropertyName("SZ")>] SZ
+        | [<JsonPropertyName("TA")>] TA
+        | [<JsonPropertyName("TC")>] TC
+        | [<JsonPropertyName("TD")>] TD
+        | [<JsonPropertyName("TF")>] TF
+        | [<JsonPropertyName("TG")>] TG
+        | [<JsonPropertyName("TH")>] TH
+        | [<JsonPropertyName("TJ")>] TJ
+        | [<JsonPropertyName("TK")>] TK
+        | [<JsonPropertyName("TL")>] TL
+        | [<JsonPropertyName("TM")>] TM
+        | [<JsonPropertyName("TN")>] TN
+        | [<JsonPropertyName("TO")>] TO
+        | [<JsonPropertyName("TR")>] TR
+        | [<JsonPropertyName("TT")>] TT
+        | [<JsonPropertyName("TV")>] TV
+        | [<JsonPropertyName("TW")>] TW
+        | [<JsonPropertyName("TZ")>] TZ
+        | [<JsonPropertyName("UA")>] UA
+        | [<JsonPropertyName("UG")>] UG
+        | [<JsonPropertyName("US")>] US
+        | [<JsonPropertyName("UY")>] UY
+        | [<JsonPropertyName("UZ")>] UZ
+        | [<JsonPropertyName("VA")>] VA
+        | [<JsonPropertyName("VC")>] VC
+        | [<JsonPropertyName("VE")>] VE
+        | [<JsonPropertyName("VG")>] VG
+        | [<JsonPropertyName("VN")>] VN
+        | [<JsonPropertyName("VU")>] VU
+        | [<JsonPropertyName("WF")>] WF
+        | [<JsonPropertyName("WS")>] WS
+        | [<JsonPropertyName("XK")>] XK
+        | [<JsonPropertyName("YE")>] YE
+        | [<JsonPropertyName("YT")>] YT
+        | [<JsonPropertyName("ZA")>] ZA
+        | [<JsonPropertyName("ZM")>] ZM
+        | [<JsonPropertyName("ZW")>] ZW
+        | [<JsonPropertyName("ZZ")>] ZZ
 
     [<Struct>]
     type PaymentPagesCheckoutSessionSavedPaymentMethodOptionsAllowRedisplayFilters =
@@ -4517,7 +4517,7 @@ module StripeModel =
     [<Struct>]
     type PaymentPagesCheckoutSessionCustomerDetailsTaxExempt =
         | Exempt
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Reverse
 
     type PaymentPagesCheckoutSessionCustomTextPosition = {
@@ -4602,13 +4602,13 @@ module StripeModel =
 
     [<Struct>]
     type PaymentPagesCheckoutSessionConsentCollectionTermsOfService =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Required
 
     [<Struct>]
     type PaymentPagesCheckoutSessionConsentCollectionPromotions =
         | Auto
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type PaymentPagesCheckoutSessionConsentPromotions =
@@ -4658,7 +4658,7 @@ module StripeModel =
         ///Checkout Session object upon expiration.
         Enabled: bool
         ///The timestamp at which the recovery URL will expire.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///URL that creates a new Checkout Session when clicked that is a copy of this expired Checkout Session
         Url: string option
     }
@@ -4709,18 +4709,18 @@ module StripeModel =
         | TokenizedAccountNumberDeactivated
 
     type PaymentMethodUsBankAccountBlockedNetworkCode =
-        | [<JsonUnionCase("R02")>] R02
-        | [<JsonUnionCase("R03")>] R03
-        | [<JsonUnionCase("R04")>] R04
-        | [<JsonUnionCase("R05")>] R05
-        | [<JsonUnionCase("R07")>] R07
-        | [<JsonUnionCase("R08")>] R08
-        | [<JsonUnionCase("R10")>] R10
-        | [<JsonUnionCase("R11")>] R11
-        | [<JsonUnionCase("R16")>] R16
-        | [<JsonUnionCase("R20")>] R20
-        | [<JsonUnionCase("R29")>] R29
-        | [<JsonUnionCase("R31")>] R31
+        | [<JsonPropertyName("R02")>] R02
+        | [<JsonPropertyName("R03")>] R03
+        | [<JsonPropertyName("R04")>] R04
+        | [<JsonPropertyName("R05")>] R05
+        | [<JsonPropertyName("R07")>] R07
+        | [<JsonPropertyName("R08")>] R08
+        | [<JsonPropertyName("R10")>] R10
+        | [<JsonPropertyName("R11")>] R11
+        | [<JsonPropertyName("R16")>] R16
+        | [<JsonPropertyName("R20")>] R20
+        | [<JsonPropertyName("R29")>] R29
+        | [<JsonPropertyName("R31")>] R31
 
     [<Struct>]
     type PaymentMethodUsBankAccountAccountType =
@@ -4818,7 +4818,7 @@ module StripeModel =
         ///Bank-State-Branch number of the bank account.
         BsbNumber: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///The PayID alias for the bank account.
         PayId: string option
     }
@@ -4928,7 +4928,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsSofortSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentMethodOptionsSofortPreferredLanguage =
@@ -4947,7 +4947,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsRevolutPaySetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentMethodOptionsPromptpay () = 
@@ -4960,7 +4960,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsPixSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
@@ -4970,7 +4970,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsPaypalSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentMethodOptionsPaynow () = 
@@ -5055,7 +5055,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsKrCardSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentMethodOptionsKonbini = {
@@ -5064,7 +5064,7 @@ module StripeModel =
         ///The number of calendar days (between 1 and 60) after which Konbini payment instructions will expire. For example, if a PaymentIntent is confirmed with Konbini and `expires_after_days` set to 2 on Monday JST, the instructions will expire on Wednesday 23:59:59 JST.
         ExpiresAfterDays: int option
         ///The timestamp at which the Konbini payment instructions will expire. Only one of `expires_after_days` or `expires_at` may be set.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///A product descriptor of up to 22 characters, which will appear to customers at the convenience store.
         ProductDescription: string option
     }
@@ -5085,7 +5085,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsKlarnaSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -5100,7 +5100,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsIdealSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentMethodOptionsGrabpay () = 
@@ -5128,12 +5128,12 @@ module StripeModel =
 
 
     type PaymentMethodOptionsCustomerBalanceEuBankAccountCountry =
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("NL")>] NL
+        | [<JsonPropertyName("BE")>] BE
+        | [<JsonPropertyName("DE")>] DE
+        | [<JsonPropertyName("ES")>] ES
+        | [<JsonPropertyName("FR")>] FR
+        | [<JsonPropertyName("IE")>] IE
+        | [<JsonPropertyName("NL")>] NL
 
     type PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes =
         | Aba
@@ -5162,7 +5162,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsCashappSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -5191,7 +5191,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsBoletoSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -5202,7 +5202,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsBancontactSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
@@ -5214,7 +5214,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsAmazonPaySetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentMethodOptionsAlma () = 
@@ -5224,7 +5224,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodOptionsAlipaySetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentMethodOptionsAfterpayClearpay = {
@@ -5274,7 +5274,7 @@ module StripeModel =
         ///The numeric code for the bank account's bank branch.
         BranchCode: string
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string
+        [<JsonPropertyName("last4")>]Last4: string
         ///The suffix of the bank account number.
         Suffix: string option
     }
@@ -5398,27 +5398,27 @@ module StripeModel =
         | Visa
 
     type PaymentMethodIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ADYBNL2A")>] ADYBNL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("BUUTNL2A")>] BUUTNL2A
-        | [<JsonUnionCase("FNOMNL22")>] FNOMNL22
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MLLENL2A")>] MLLENL2A
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("NNBANL2G")>] NNBANL2G
-        | [<JsonUnionCase("NTSBDEB1")>] NTSBDEB1
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("REVOIE23")>] REVOIE23
-        | [<JsonUnionCase("REVOLT21")>] REVOLT21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+        | [<JsonPropertyName("ABNANL2A")>] ABNANL2A
+        | [<JsonPropertyName("ADYBNL2A")>] ADYBNL2A
+        | [<JsonPropertyName("ASNBNL21")>] ASNBNL21
+        | [<JsonPropertyName("BITSNL2A")>] BITSNL2A
+        | [<JsonPropertyName("BUNQNL2A")>] BUNQNL2A
+        | [<JsonPropertyName("BUUTNL2A")>] BUUTNL2A
+        | [<JsonPropertyName("FNOMNL22")>] FNOMNL22
+        | [<JsonPropertyName("FVLBNL22")>] FVLBNL22
+        | [<JsonPropertyName("HANDNL2A")>] HANDNL2A
+        | [<JsonPropertyName("INGBNL2A")>] INGBNL2A
+        | [<JsonPropertyName("KNABNL2H")>] KNABNL2H
+        | [<JsonPropertyName("MLLENL2A")>] MLLENL2A
+        | [<JsonPropertyName("MOYONL21")>] MOYONL21
+        | [<JsonPropertyName("NNBANL2G")>] NNBANL2G
+        | [<JsonPropertyName("NTSBDEB1")>] NTSBDEB1
+        | [<JsonPropertyName("RABONL2U")>] RABONL2U
+        | [<JsonPropertyName("RBRBNL21")>] RBRBNL21
+        | [<JsonPropertyName("REVOIE23")>] REVOIE23
+        | [<JsonPropertyName("REVOLT21")>] REVOLT21
+        | [<JsonPropertyName("SNSBNL2A")>] SNSBNL2A
+        | [<JsonPropertyName("TRIONL2U")>] TRIONL2U
 
     type PaymentMethodIdealBank =
         | AbnAmro
@@ -5607,7 +5607,7 @@ module StripeModel =
         ///Payer bank reference number for the payment
         PaymentReference: string option
         ///The last four digits of the Swish account phone number
-        [<JsonField(Name="verified_phone_last4")>]VerifiedPhoneLast4: string option
+        [<JsonPropertyName("verified_phone_last4")>]VerifiedPhoneLast4: string option
     }
     with
         static member New (fingerprint: string option, paymentReference: string option, verifiedPhoneLast4: string option) =
@@ -5711,7 +5711,7 @@ module StripeModel =
         ///Bank-State-Branch number of the bank account.
         BsbNumber: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
         ///The PayID alias for the bank account.
@@ -5805,7 +5805,7 @@ module StripeModel =
         ///Payer bank reference number for the payment
         PaymentReference: string option
         ///The last four digits of the Swish account phone number
-        [<JsonField(Name="verified_phone_last4")>]VerifiedPhoneLast4: string option
+        [<JsonPropertyName("verified_phone_last4")>]VerifiedPhoneLast4: string option
     }
     with
         static member New (fingerprint: string option, paymentReference: string option, verifiedPhoneLast4: string option) =
@@ -5957,27 +5957,27 @@ module StripeModel =
             }
 
     type PaymentMethodDetailsPaymentRecordIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ADYBNL2A")>] ADYBNL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("BUUTNL2A")>] BUUTNL2A
-        | [<JsonUnionCase("FNOMNL22")>] FNOMNL22
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MLLENL2A")>] MLLENL2A
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("NNBANL2G")>] NNBANL2G
-        | [<JsonUnionCase("NTSBDEB1")>] NTSBDEB1
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("REVOIE23")>] REVOIE23
-        | [<JsonUnionCase("REVOLT21")>] REVOLT21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+        | [<JsonPropertyName("ABNANL2A")>] ABNANL2A
+        | [<JsonPropertyName("ADYBNL2A")>] ADYBNL2A
+        | [<JsonPropertyName("ASNBNL21")>] ASNBNL21
+        | [<JsonPropertyName("BITSNL2A")>] BITSNL2A
+        | [<JsonPropertyName("BUNQNL2A")>] BUNQNL2A
+        | [<JsonPropertyName("BUUTNL2A")>] BUUTNL2A
+        | [<JsonPropertyName("FNOMNL22")>] FNOMNL22
+        | [<JsonPropertyName("FVLBNL22")>] FVLBNL22
+        | [<JsonPropertyName("HANDNL2A")>] HANDNL2A
+        | [<JsonPropertyName("INGBNL2A")>] INGBNL2A
+        | [<JsonPropertyName("KNABNL2H")>] KNABNL2H
+        | [<JsonPropertyName("MLLENL2A")>] MLLENL2A
+        | [<JsonPropertyName("MOYONL21")>] MOYONL21
+        | [<JsonPropertyName("NNBANL2G")>] NNBANL2G
+        | [<JsonPropertyName("NTSBDEB1")>] NTSBDEB1
+        | [<JsonPropertyName("RABONL2U")>] RABONL2U
+        | [<JsonPropertyName("RBRBNL21")>] RBRBNL21
+        | [<JsonPropertyName("REVOIE23")>] REVOIE23
+        | [<JsonPropertyName("REVOLT21")>] REVOLT21
+        | [<JsonPropertyName("SNSBNL2A")>] SNSBNL2A
+        | [<JsonPropertyName("TRIONL2U")>] TRIONL2U
 
     type PaymentMethodDetailsPaymentRecordIdealBank =
         | AbnAmro
@@ -6142,7 +6142,7 @@ module StripeModel =
         ///Institution number of the bank account
         InstitutionNumber: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
         ///Transit number of the bank account.
@@ -6252,7 +6252,7 @@ module StripeModel =
         ///Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
         ExpectedDebitDate: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string
+        [<JsonPropertyName("last4")>]Last4: string
         ///The suffix of the bank account number.
         Suffix: string option
     }
@@ -6350,7 +6350,7 @@ module StripeModel =
     type PaymentMethodDetailsInteracPresentReceiptCardholderVerificationMethod =
         | Approval
         | Failure
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OfflinePin
         | OfflinePinAndSignature
         | OnlinePin
@@ -6398,27 +6398,27 @@ module StripeModel =
         | Visa
 
     type PaymentMethodDetailsIdealBic =
-        | [<JsonUnionCase("ABNANL2A")>] ABNANL2A
-        | [<JsonUnionCase("ADYBNL2A")>] ADYBNL2A
-        | [<JsonUnionCase("ASNBNL21")>] ASNBNL21
-        | [<JsonUnionCase("BITSNL2A")>] BITSNL2A
-        | [<JsonUnionCase("BUNQNL2A")>] BUNQNL2A
-        | [<JsonUnionCase("BUUTNL2A")>] BUUTNL2A
-        | [<JsonUnionCase("FNOMNL22")>] FNOMNL22
-        | [<JsonUnionCase("FVLBNL22")>] FVLBNL22
-        | [<JsonUnionCase("HANDNL2A")>] HANDNL2A
-        | [<JsonUnionCase("INGBNL2A")>] INGBNL2A
-        | [<JsonUnionCase("KNABNL2H")>] KNABNL2H
-        | [<JsonUnionCase("MLLENL2A")>] MLLENL2A
-        | [<JsonUnionCase("MOYONL21")>] MOYONL21
-        | [<JsonUnionCase("NNBANL2G")>] NNBANL2G
-        | [<JsonUnionCase("NTSBDEB1")>] NTSBDEB1
-        | [<JsonUnionCase("RABONL2U")>] RABONL2U
-        | [<JsonUnionCase("RBRBNL21")>] RBRBNL21
-        | [<JsonUnionCase("REVOIE23")>] REVOIE23
-        | [<JsonUnionCase("REVOLT21")>] REVOLT21
-        | [<JsonUnionCase("SNSBNL2A")>] SNSBNL2A
-        | [<JsonUnionCase("TRIONL2U")>] TRIONL2U
+        | [<JsonPropertyName("ABNANL2A")>] ABNANL2A
+        | [<JsonPropertyName("ADYBNL2A")>] ADYBNL2A
+        | [<JsonPropertyName("ASNBNL21")>] ASNBNL21
+        | [<JsonPropertyName("BITSNL2A")>] BITSNL2A
+        | [<JsonPropertyName("BUNQNL2A")>] BUNQNL2A
+        | [<JsonPropertyName("BUUTNL2A")>] BUUTNL2A
+        | [<JsonPropertyName("FNOMNL22")>] FNOMNL22
+        | [<JsonPropertyName("FVLBNL22")>] FVLBNL22
+        | [<JsonPropertyName("HANDNL2A")>] HANDNL2A
+        | [<JsonPropertyName("INGBNL2A")>] INGBNL2A
+        | [<JsonPropertyName("KNABNL2H")>] KNABNL2H
+        | [<JsonPropertyName("MLLENL2A")>] MLLENL2A
+        | [<JsonPropertyName("MOYONL21")>] MOYONL21
+        | [<JsonPropertyName("NNBANL2G")>] NNBANL2G
+        | [<JsonPropertyName("NTSBDEB1")>] NTSBDEB1
+        | [<JsonPropertyName("RABONL2U")>] RABONL2U
+        | [<JsonPropertyName("RBRBNL21")>] RBRBNL21
+        | [<JsonPropertyName("REVOIE23")>] REVOIE23
+        | [<JsonPropertyName("REVOLT21")>] REVOLT21
+        | [<JsonPropertyName("SNSBNL2A")>] SNSBNL2A
+        | [<JsonPropertyName("TRIONL2U")>] TRIONL2U
 
     type PaymentMethodDetailsIdealBank =
         | AbnAmro
@@ -6630,7 +6630,7 @@ module StripeModel =
     type PaymentMethodDetailsCardPresentReceiptCardholderVerificationMethod =
         | Approval
         | Failure
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OfflinePin
         | OfflinePinAndSignature
         | OnlinePin
@@ -6645,7 +6645,7 @@ module StripeModel =
 
     type PaymentMethodDetailsCardPresentOffline = {
         ///Time at which the payment was collected while offline
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StoredAt: DateTime option
+        StoredAt: DateTime option
     }
     with
         ///The method used to process this payment method offline. Only deferred is allowed.
@@ -6817,7 +6817,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
         ///Sort code of the bank account. (e.g., `10-20-30`)
@@ -6841,7 +6841,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
     }
@@ -6894,7 +6894,7 @@ module StripeModel =
         ///Institution number of the bank account
         InstitutionNumber: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: string option
         ///Transit number of the bank account.
@@ -6961,7 +6961,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentMethodConfigResourceDisplayPreferencePreference =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Off
         | On
 
@@ -7160,7 +7160,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Sort code of the bank account. (e.g., `10-20-30`)
         SortCode: string option
     }
@@ -7178,7 +7178,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (bsbNumber: string option, fingerprint: string option, last4: string option) =
@@ -7232,7 +7232,7 @@ module StripeModel =
         ///Institution number of the bank account.
         InstitutionNumber: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Transit number of the bank account.
         TransitNumber: string option
     }
@@ -7315,244 +7315,244 @@ module StripeModel =
         | Never
 
     type PaymentLinksResourceShippingAddressCollectionAllowedCountries =
-        | [<JsonUnionCase("AC")>] AC
-        | [<JsonUnionCase("AD")>] AD
-        | [<JsonUnionCase("AE")>] AE
-        | [<JsonUnionCase("AF")>] AF
-        | [<JsonUnionCase("AG")>] AG
-        | [<JsonUnionCase("AI")>] AI
-        | [<JsonUnionCase("AL")>] AL
-        | [<JsonUnionCase("AM")>] AM
-        | [<JsonUnionCase("AO")>] AO
-        | [<JsonUnionCase("AQ")>] AQ
-        | [<JsonUnionCase("AR")>] AR
-        | [<JsonUnionCase("AT")>] AT
-        | [<JsonUnionCase("AU")>] AU
-        | [<JsonUnionCase("AW")>] AW
-        | [<JsonUnionCase("AX")>] AX
-        | [<JsonUnionCase("AZ")>] AZ
-        | [<JsonUnionCase("BA")>] BA
-        | [<JsonUnionCase("BB")>] BB
-        | [<JsonUnionCase("BD")>] BD
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("BF")>] BF
-        | [<JsonUnionCase("BG")>] BG
-        | [<JsonUnionCase("BH")>] BH
-        | [<JsonUnionCase("BI")>] BI
-        | [<JsonUnionCase("BJ")>] BJ
-        | [<JsonUnionCase("BL")>] BL
-        | [<JsonUnionCase("BM")>] BM
-        | [<JsonUnionCase("BN")>] BN
-        | [<JsonUnionCase("BO")>] BO
-        | [<JsonUnionCase("BQ")>] BQ
-        | [<JsonUnionCase("BR")>] BR
-        | [<JsonUnionCase("BS")>] BS
-        | [<JsonUnionCase("BT")>] BT
-        | [<JsonUnionCase("BV")>] BV
-        | [<JsonUnionCase("BW")>] BW
-        | [<JsonUnionCase("BY")>] BY
-        | [<JsonUnionCase("BZ")>] BZ
-        | [<JsonUnionCase("CA")>] CA
-        | [<JsonUnionCase("CD")>] CD
-        | [<JsonUnionCase("CF")>] CF
-        | [<JsonUnionCase("CG")>] CG
-        | [<JsonUnionCase("CH")>] CH
-        | [<JsonUnionCase("CI")>] CI
-        | [<JsonUnionCase("CK")>] CK
-        | [<JsonUnionCase("CL")>] CL
-        | [<JsonUnionCase("CM")>] CM
-        | [<JsonUnionCase("CN")>] CN
-        | [<JsonUnionCase("CO")>] CO
-        | [<JsonUnionCase("CR")>] CR
-        | [<JsonUnionCase("CV")>] CV
-        | [<JsonUnionCase("CW")>] CW
-        | [<JsonUnionCase("CY")>] CY
-        | [<JsonUnionCase("CZ")>] CZ
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("DJ")>] DJ
-        | [<JsonUnionCase("DK")>] DK
-        | [<JsonUnionCase("DM")>] DM
-        | [<JsonUnionCase("DO")>] DO
-        | [<JsonUnionCase("DZ")>] DZ
-        | [<JsonUnionCase("EC")>] EC
-        | [<JsonUnionCase("EE")>] EE
-        | [<JsonUnionCase("EG")>] EG
-        | [<JsonUnionCase("EH")>] EH
-        | [<JsonUnionCase("ER")>] ER
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("ET")>] ET
-        | [<JsonUnionCase("FI")>] FI
-        | [<JsonUnionCase("FJ")>] FJ
-        | [<JsonUnionCase("FK")>] FK
-        | [<JsonUnionCase("FO")>] FO
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("GA")>] GA
-        | [<JsonUnionCase("GB")>] GB
-        | [<JsonUnionCase("GD")>] GD
-        | [<JsonUnionCase("GE")>] GE
-        | [<JsonUnionCase("GF")>] GF
-        | [<JsonUnionCase("GG")>] GG
-        | [<JsonUnionCase("GH")>] GH
-        | [<JsonUnionCase("GI")>] GI
-        | [<JsonUnionCase("GL")>] GL
-        | [<JsonUnionCase("GM")>] GM
-        | [<JsonUnionCase("GN")>] GN
-        | [<JsonUnionCase("GP")>] GP
-        | [<JsonUnionCase("GQ")>] GQ
-        | [<JsonUnionCase("GR")>] GR
-        | [<JsonUnionCase("GS")>] GS
-        | [<JsonUnionCase("GT")>] GT
-        | [<JsonUnionCase("GU")>] GU
-        | [<JsonUnionCase("GW")>] GW
-        | [<JsonUnionCase("GY")>] GY
-        | [<JsonUnionCase("HK")>] HK
-        | [<JsonUnionCase("HN")>] HN
-        | [<JsonUnionCase("HR")>] HR
-        | [<JsonUnionCase("HT")>] HT
-        | [<JsonUnionCase("HU")>] HU
-        | [<JsonUnionCase("ID")>] ID
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("IL")>] IL
-        | [<JsonUnionCase("IM")>] IM
-        | [<JsonUnionCase("IN")>] IN
-        | [<JsonUnionCase("IO")>] IO
-        | [<JsonUnionCase("IQ")>] IQ
-        | [<JsonUnionCase("IS")>] IS
-        | [<JsonUnionCase("IT")>] IT
-        | [<JsonUnionCase("JE")>] JE
-        | [<JsonUnionCase("JM")>] JM
-        | [<JsonUnionCase("JO")>] JO
-        | [<JsonUnionCase("JP")>] JP
-        | [<JsonUnionCase("KE")>] KE
-        | [<JsonUnionCase("KG")>] KG
-        | [<JsonUnionCase("KH")>] KH
-        | [<JsonUnionCase("KI")>] KI
-        | [<JsonUnionCase("KM")>] KM
-        | [<JsonUnionCase("KN")>] KN
-        | [<JsonUnionCase("KR")>] KR
-        | [<JsonUnionCase("KW")>] KW
-        | [<JsonUnionCase("KY")>] KY
-        | [<JsonUnionCase("KZ")>] KZ
-        | [<JsonUnionCase("LA")>] LA
-        | [<JsonUnionCase("LB")>] LB
-        | [<JsonUnionCase("LC")>] LC
-        | [<JsonUnionCase("LI")>] LI
-        | [<JsonUnionCase("LK")>] LK
-        | [<JsonUnionCase("LR")>] LR
-        | [<JsonUnionCase("LS")>] LS
-        | [<JsonUnionCase("LT")>] LT
-        | [<JsonUnionCase("LU")>] LU
-        | [<JsonUnionCase("LV")>] LV
-        | [<JsonUnionCase("LY")>] LY
-        | [<JsonUnionCase("MA")>] MA
-        | [<JsonUnionCase("MC")>] MC
-        | [<JsonUnionCase("MD")>] MD
-        | [<JsonUnionCase("ME")>] ME
-        | [<JsonUnionCase("MF")>] MF
-        | [<JsonUnionCase("MG")>] MG
-        | [<JsonUnionCase("MK")>] MK
-        | [<JsonUnionCase("ML")>] ML
-        | [<JsonUnionCase("MM")>] MM
-        | [<JsonUnionCase("MN")>] MN
-        | [<JsonUnionCase("MO")>] MO
-        | [<JsonUnionCase("MQ")>] MQ
-        | [<JsonUnionCase("MR")>] MR
-        | [<JsonUnionCase("MS")>] MS
-        | [<JsonUnionCase("MT")>] MT
-        | [<JsonUnionCase("MU")>] MU
-        | [<JsonUnionCase("MV")>] MV
-        | [<JsonUnionCase("MW")>] MW
-        | [<JsonUnionCase("MX")>] MX
-        | [<JsonUnionCase("MY")>] MY
-        | [<JsonUnionCase("MZ")>] MZ
-        | [<JsonUnionCase("NA")>] NA
-        | [<JsonUnionCase("NC")>] NC
-        | [<JsonUnionCase("NE")>] NE
-        | [<JsonUnionCase("NG")>] NG
-        | [<JsonUnionCase("NI")>] NI
-        | [<JsonUnionCase("NL")>] NL
-        | [<JsonUnionCase("NO")>] NO
-        | [<JsonUnionCase("NP")>] NP
-        | [<JsonUnionCase("NR")>] NR
-        | [<JsonUnionCase("NU")>] NU
-        | [<JsonUnionCase("NZ")>] NZ
-        | [<JsonUnionCase("OM")>] OM
-        | [<JsonUnionCase("PA")>] PA
-        | [<JsonUnionCase("PE")>] PE
-        | [<JsonUnionCase("PF")>] PF
-        | [<JsonUnionCase("PG")>] PG
-        | [<JsonUnionCase("PH")>] PH
-        | [<JsonUnionCase("PK")>] PK
-        | [<JsonUnionCase("PL")>] PL
-        | [<JsonUnionCase("PM")>] PM
-        | [<JsonUnionCase("PN")>] PN
-        | [<JsonUnionCase("PR")>] PR
-        | [<JsonUnionCase("PS")>] PS
-        | [<JsonUnionCase("PT")>] PT
-        | [<JsonUnionCase("PY")>] PY
-        | [<JsonUnionCase("QA")>] QA
-        | [<JsonUnionCase("RE")>] RE
-        | [<JsonUnionCase("RO")>] RO
-        | [<JsonUnionCase("RS")>] RS
-        | [<JsonUnionCase("RU")>] RU
-        | [<JsonUnionCase("RW")>] RW
-        | [<JsonUnionCase("SA")>] SA
-        | [<JsonUnionCase("SB")>] SB
-        | [<JsonUnionCase("SC")>] SC
-        | [<JsonUnionCase("SD")>] SD
-        | [<JsonUnionCase("SE")>] SE
-        | [<JsonUnionCase("SG")>] SG
-        | [<JsonUnionCase("SH")>] SH
-        | [<JsonUnionCase("SI")>] SI
-        | [<JsonUnionCase("SJ")>] SJ
-        | [<JsonUnionCase("SK")>] SK
-        | [<JsonUnionCase("SL")>] SL
-        | [<JsonUnionCase("SM")>] SM
-        | [<JsonUnionCase("SN")>] SN
-        | [<JsonUnionCase("SO")>] SO
-        | [<JsonUnionCase("SR")>] SR
-        | [<JsonUnionCase("SS")>] SS
-        | [<JsonUnionCase("ST")>] ST
-        | [<JsonUnionCase("SV")>] SV
-        | [<JsonUnionCase("SX")>] SX
-        | [<JsonUnionCase("SZ")>] SZ
-        | [<JsonUnionCase("TA")>] TA
-        | [<JsonUnionCase("TC")>] TC
-        | [<JsonUnionCase("TD")>] TD
-        | [<JsonUnionCase("TF")>] TF
-        | [<JsonUnionCase("TG")>] TG
-        | [<JsonUnionCase("TH")>] TH
-        | [<JsonUnionCase("TJ")>] TJ
-        | [<JsonUnionCase("TK")>] TK
-        | [<JsonUnionCase("TL")>] TL
-        | [<JsonUnionCase("TM")>] TM
-        | [<JsonUnionCase("TN")>] TN
-        | [<JsonUnionCase("TO")>] TO
-        | [<JsonUnionCase("TR")>] TR
-        | [<JsonUnionCase("TT")>] TT
-        | [<JsonUnionCase("TV")>] TV
-        | [<JsonUnionCase("TW")>] TW
-        | [<JsonUnionCase("TZ")>] TZ
-        | [<JsonUnionCase("UA")>] UA
-        | [<JsonUnionCase("UG")>] UG
-        | [<JsonUnionCase("US")>] US
-        | [<JsonUnionCase("UY")>] UY
-        | [<JsonUnionCase("UZ")>] UZ
-        | [<JsonUnionCase("VA")>] VA
-        | [<JsonUnionCase("VC")>] VC
-        | [<JsonUnionCase("VE")>] VE
-        | [<JsonUnionCase("VG")>] VG
-        | [<JsonUnionCase("VN")>] VN
-        | [<JsonUnionCase("VU")>] VU
-        | [<JsonUnionCase("WF")>] WF
-        | [<JsonUnionCase("WS")>] WS
-        | [<JsonUnionCase("XK")>] XK
-        | [<JsonUnionCase("YE")>] YE
-        | [<JsonUnionCase("YT")>] YT
-        | [<JsonUnionCase("ZA")>] ZA
-        | [<JsonUnionCase("ZM")>] ZM
-        | [<JsonUnionCase("ZW")>] ZW
-        | [<JsonUnionCase("ZZ")>] ZZ
+        | [<JsonPropertyName("AC")>] AC
+        | [<JsonPropertyName("AD")>] AD
+        | [<JsonPropertyName("AE")>] AE
+        | [<JsonPropertyName("AF")>] AF
+        | [<JsonPropertyName("AG")>] AG
+        | [<JsonPropertyName("AI")>] AI
+        | [<JsonPropertyName("AL")>] AL
+        | [<JsonPropertyName("AM")>] AM
+        | [<JsonPropertyName("AO")>] AO
+        | [<JsonPropertyName("AQ")>] AQ
+        | [<JsonPropertyName("AR")>] AR
+        | [<JsonPropertyName("AT")>] AT
+        | [<JsonPropertyName("AU")>] AU
+        | [<JsonPropertyName("AW")>] AW
+        | [<JsonPropertyName("AX")>] AX
+        | [<JsonPropertyName("AZ")>] AZ
+        | [<JsonPropertyName("BA")>] BA
+        | [<JsonPropertyName("BB")>] BB
+        | [<JsonPropertyName("BD")>] BD
+        | [<JsonPropertyName("BE")>] BE
+        | [<JsonPropertyName("BF")>] BF
+        | [<JsonPropertyName("BG")>] BG
+        | [<JsonPropertyName("BH")>] BH
+        | [<JsonPropertyName("BI")>] BI
+        | [<JsonPropertyName("BJ")>] BJ
+        | [<JsonPropertyName("BL")>] BL
+        | [<JsonPropertyName("BM")>] BM
+        | [<JsonPropertyName("BN")>] BN
+        | [<JsonPropertyName("BO")>] BO
+        | [<JsonPropertyName("BQ")>] BQ
+        | [<JsonPropertyName("BR")>] BR
+        | [<JsonPropertyName("BS")>] BS
+        | [<JsonPropertyName("BT")>] BT
+        | [<JsonPropertyName("BV")>] BV
+        | [<JsonPropertyName("BW")>] BW
+        | [<JsonPropertyName("BY")>] BY
+        | [<JsonPropertyName("BZ")>] BZ
+        | [<JsonPropertyName("CA")>] CA
+        | [<JsonPropertyName("CD")>] CD
+        | [<JsonPropertyName("CF")>] CF
+        | [<JsonPropertyName("CG")>] CG
+        | [<JsonPropertyName("CH")>] CH
+        | [<JsonPropertyName("CI")>] CI
+        | [<JsonPropertyName("CK")>] CK
+        | [<JsonPropertyName("CL")>] CL
+        | [<JsonPropertyName("CM")>] CM
+        | [<JsonPropertyName("CN")>] CN
+        | [<JsonPropertyName("CO")>] CO
+        | [<JsonPropertyName("CR")>] CR
+        | [<JsonPropertyName("CV")>] CV
+        | [<JsonPropertyName("CW")>] CW
+        | [<JsonPropertyName("CY")>] CY
+        | [<JsonPropertyName("CZ")>] CZ
+        | [<JsonPropertyName("DE")>] DE
+        | [<JsonPropertyName("DJ")>] DJ
+        | [<JsonPropertyName("DK")>] DK
+        | [<JsonPropertyName("DM")>] DM
+        | [<JsonPropertyName("DO")>] DO
+        | [<JsonPropertyName("DZ")>] DZ
+        | [<JsonPropertyName("EC")>] EC
+        | [<JsonPropertyName("EE")>] EE
+        | [<JsonPropertyName("EG")>] EG
+        | [<JsonPropertyName("EH")>] EH
+        | [<JsonPropertyName("ER")>] ER
+        | [<JsonPropertyName("ES")>] ES
+        | [<JsonPropertyName("ET")>] ET
+        | [<JsonPropertyName("FI")>] FI
+        | [<JsonPropertyName("FJ")>] FJ
+        | [<JsonPropertyName("FK")>] FK
+        | [<JsonPropertyName("FO")>] FO
+        | [<JsonPropertyName("FR")>] FR
+        | [<JsonPropertyName("GA")>] GA
+        | [<JsonPropertyName("GB")>] GB
+        | [<JsonPropertyName("GD")>] GD
+        | [<JsonPropertyName("GE")>] GE
+        | [<JsonPropertyName("GF")>] GF
+        | [<JsonPropertyName("GG")>] GG
+        | [<JsonPropertyName("GH")>] GH
+        | [<JsonPropertyName("GI")>] GI
+        | [<JsonPropertyName("GL")>] GL
+        | [<JsonPropertyName("GM")>] GM
+        | [<JsonPropertyName("GN")>] GN
+        | [<JsonPropertyName("GP")>] GP
+        | [<JsonPropertyName("GQ")>] GQ
+        | [<JsonPropertyName("GR")>] GR
+        | [<JsonPropertyName("GS")>] GS
+        | [<JsonPropertyName("GT")>] GT
+        | [<JsonPropertyName("GU")>] GU
+        | [<JsonPropertyName("GW")>] GW
+        | [<JsonPropertyName("GY")>] GY
+        | [<JsonPropertyName("HK")>] HK
+        | [<JsonPropertyName("HN")>] HN
+        | [<JsonPropertyName("HR")>] HR
+        | [<JsonPropertyName("HT")>] HT
+        | [<JsonPropertyName("HU")>] HU
+        | [<JsonPropertyName("ID")>] ID
+        | [<JsonPropertyName("IE")>] IE
+        | [<JsonPropertyName("IL")>] IL
+        | [<JsonPropertyName("IM")>] IM
+        | [<JsonPropertyName("IN")>] IN
+        | [<JsonPropertyName("IO")>] IO
+        | [<JsonPropertyName("IQ")>] IQ
+        | [<JsonPropertyName("IS")>] IS
+        | [<JsonPropertyName("IT")>] IT
+        | [<JsonPropertyName("JE")>] JE
+        | [<JsonPropertyName("JM")>] JM
+        | [<JsonPropertyName("JO")>] JO
+        | [<JsonPropertyName("JP")>] JP
+        | [<JsonPropertyName("KE")>] KE
+        | [<JsonPropertyName("KG")>] KG
+        | [<JsonPropertyName("KH")>] KH
+        | [<JsonPropertyName("KI")>] KI
+        | [<JsonPropertyName("KM")>] KM
+        | [<JsonPropertyName("KN")>] KN
+        | [<JsonPropertyName("KR")>] KR
+        | [<JsonPropertyName("KW")>] KW
+        | [<JsonPropertyName("KY")>] KY
+        | [<JsonPropertyName("KZ")>] KZ
+        | [<JsonPropertyName("LA")>] LA
+        | [<JsonPropertyName("LB")>] LB
+        | [<JsonPropertyName("LC")>] LC
+        | [<JsonPropertyName("LI")>] LI
+        | [<JsonPropertyName("LK")>] LK
+        | [<JsonPropertyName("LR")>] LR
+        | [<JsonPropertyName("LS")>] LS
+        | [<JsonPropertyName("LT")>] LT
+        | [<JsonPropertyName("LU")>] LU
+        | [<JsonPropertyName("LV")>] LV
+        | [<JsonPropertyName("LY")>] LY
+        | [<JsonPropertyName("MA")>] MA
+        | [<JsonPropertyName("MC")>] MC
+        | [<JsonPropertyName("MD")>] MD
+        | [<JsonPropertyName("ME")>] ME
+        | [<JsonPropertyName("MF")>] MF
+        | [<JsonPropertyName("MG")>] MG
+        | [<JsonPropertyName("MK")>] MK
+        | [<JsonPropertyName("ML")>] ML
+        | [<JsonPropertyName("MM")>] MM
+        | [<JsonPropertyName("MN")>] MN
+        | [<JsonPropertyName("MO")>] MO
+        | [<JsonPropertyName("MQ")>] MQ
+        | [<JsonPropertyName("MR")>] MR
+        | [<JsonPropertyName("MS")>] MS
+        | [<JsonPropertyName("MT")>] MT
+        | [<JsonPropertyName("MU")>] MU
+        | [<JsonPropertyName("MV")>] MV
+        | [<JsonPropertyName("MW")>] MW
+        | [<JsonPropertyName("MX")>] MX
+        | [<JsonPropertyName("MY")>] MY
+        | [<JsonPropertyName("MZ")>] MZ
+        | [<JsonPropertyName("NA")>] NA
+        | [<JsonPropertyName("NC")>] NC
+        | [<JsonPropertyName("NE")>] NE
+        | [<JsonPropertyName("NG")>] NG
+        | [<JsonPropertyName("NI")>] NI
+        | [<JsonPropertyName("NL")>] NL
+        | [<JsonPropertyName("NO")>] NO
+        | [<JsonPropertyName("NP")>] NP
+        | [<JsonPropertyName("NR")>] NR
+        | [<JsonPropertyName("NU")>] NU
+        | [<JsonPropertyName("NZ")>] NZ
+        | [<JsonPropertyName("OM")>] OM
+        | [<JsonPropertyName("PA")>] PA
+        | [<JsonPropertyName("PE")>] PE
+        | [<JsonPropertyName("PF")>] PF
+        | [<JsonPropertyName("PG")>] PG
+        | [<JsonPropertyName("PH")>] PH
+        | [<JsonPropertyName("PK")>] PK
+        | [<JsonPropertyName("PL")>] PL
+        | [<JsonPropertyName("PM")>] PM
+        | [<JsonPropertyName("PN")>] PN
+        | [<JsonPropertyName("PR")>] PR
+        | [<JsonPropertyName("PS")>] PS
+        | [<JsonPropertyName("PT")>] PT
+        | [<JsonPropertyName("PY")>] PY
+        | [<JsonPropertyName("QA")>] QA
+        | [<JsonPropertyName("RE")>] RE
+        | [<JsonPropertyName("RO")>] RO
+        | [<JsonPropertyName("RS")>] RS
+        | [<JsonPropertyName("RU")>] RU
+        | [<JsonPropertyName("RW")>] RW
+        | [<JsonPropertyName("SA")>] SA
+        | [<JsonPropertyName("SB")>] SB
+        | [<JsonPropertyName("SC")>] SC
+        | [<JsonPropertyName("SD")>] SD
+        | [<JsonPropertyName("SE")>] SE
+        | [<JsonPropertyName("SG")>] SG
+        | [<JsonPropertyName("SH")>] SH
+        | [<JsonPropertyName("SI")>] SI
+        | [<JsonPropertyName("SJ")>] SJ
+        | [<JsonPropertyName("SK")>] SK
+        | [<JsonPropertyName("SL")>] SL
+        | [<JsonPropertyName("SM")>] SM
+        | [<JsonPropertyName("SN")>] SN
+        | [<JsonPropertyName("SO")>] SO
+        | [<JsonPropertyName("SR")>] SR
+        | [<JsonPropertyName("SS")>] SS
+        | [<JsonPropertyName("ST")>] ST
+        | [<JsonPropertyName("SV")>] SV
+        | [<JsonPropertyName("SX")>] SX
+        | [<JsonPropertyName("SZ")>] SZ
+        | [<JsonPropertyName("TA")>] TA
+        | [<JsonPropertyName("TC")>] TC
+        | [<JsonPropertyName("TD")>] TD
+        | [<JsonPropertyName("TF")>] TF
+        | [<JsonPropertyName("TG")>] TG
+        | [<JsonPropertyName("TH")>] TH
+        | [<JsonPropertyName("TJ")>] TJ
+        | [<JsonPropertyName("TK")>] TK
+        | [<JsonPropertyName("TL")>] TL
+        | [<JsonPropertyName("TM")>] TM
+        | [<JsonPropertyName("TN")>] TN
+        | [<JsonPropertyName("TO")>] TO
+        | [<JsonPropertyName("TR")>] TR
+        | [<JsonPropertyName("TT")>] TT
+        | [<JsonPropertyName("TV")>] TV
+        | [<JsonPropertyName("TW")>] TW
+        | [<JsonPropertyName("TZ")>] TZ
+        | [<JsonPropertyName("UA")>] UA
+        | [<JsonPropertyName("UG")>] UG
+        | [<JsonPropertyName("US")>] US
+        | [<JsonPropertyName("UY")>] UY
+        | [<JsonPropertyName("UZ")>] UZ
+        | [<JsonPropertyName("VA")>] VA
+        | [<JsonPropertyName("VC")>] VC
+        | [<JsonPropertyName("VE")>] VE
+        | [<JsonPropertyName("VG")>] VG
+        | [<JsonPropertyName("VN")>] VN
+        | [<JsonPropertyName("VU")>] VU
+        | [<JsonPropertyName("WF")>] WF
+        | [<JsonPropertyName("WS")>] WS
+        | [<JsonPropertyName("XK")>] XK
+        | [<JsonPropertyName("YE")>] YE
+        | [<JsonPropertyName("YT")>] YT
+        | [<JsonPropertyName("ZA")>] ZA
+        | [<JsonPropertyName("ZM")>] ZM
+        | [<JsonPropertyName("ZW")>] ZW
+        | [<JsonPropertyName("ZZ")>] ZZ
 
     type PaymentLinksResourcePhoneNumberCollection = {
         ///If `true`, a phone number will be collected during checkout.
@@ -7685,13 +7685,13 @@ module StripeModel =
 
     [<Struct>]
     type PaymentLinksResourceConsentCollectionTermsOfService =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Required
 
     [<Struct>]
     type PaymentLinksResourceConsentCollectionPromotions =
         | Auto
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     type PaymentLinksResourceCompletionBehaviorRedirect = {
         ///The URL the customer will be redirected to after the purchase is complete.
@@ -7818,7 +7818,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentIntentTypeSpecificPaymentMethodOptionsClientSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -7832,7 +7832,7 @@ module StripeModel =
         ///Whether customer approval has been requested for this payment. For payments greater than INR 15000 or mandate amount, the customer must provide explicit approval of the payment with their bank.
         ApprovalRequested: bool option
         ///If customer approval is required, they need to provide approval before this time.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CompletesAt: DateTime option
+        CompletesAt: DateTime option
     }
     with
         static member New (approvalRequested: bool option, completesAt: DateTime option) =
@@ -7856,7 +7856,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsUsBankAccountSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -7878,18 +7878,18 @@ module StripeModel =
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsSepaDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsPaytoSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsNzBankAccountSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -7964,7 +7964,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentIntentPaymentMethodOptionsEps () = 
@@ -7977,7 +7977,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsCardSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -8032,13 +8032,13 @@ module StripeModel =
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsBacsDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsAuBecsDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -8050,7 +8050,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentIntentPaymentMethodOptionsAcssDebitSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -8121,7 +8121,7 @@ module StripeModel =
 
     type PaymentIntentNextActionUpiqrCode = {
         ///The date (unix timestamp) when the QR code expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///The image_url_png string used to render QR code
         ImageUrlPng: string
         ///The image_url_svg string used to render QR code
@@ -8280,7 +8280,7 @@ module StripeModel =
         ///The data being used to generate QR code
         Data: string
         ///The timestamp at which the QR code expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///The image_url_png string used to render QR code
         ImageUrlPng: string
         ///The image_url_svg string used to render QR code
@@ -8297,7 +8297,7 @@ module StripeModel =
 
     type PaymentIntentNextActionDisplayOxxoDetails = {
         ///The timestamp after which the OXXO voucher expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAfter: DateTime option
+        ExpiresAfter: DateTime option
         ///The URL for the hosted OXXO voucher page, which allows customers to view and print an OXXO voucher.
         HostedVoucherUrl: string option
         ///OXXO reference number.
@@ -8315,7 +8315,7 @@ module StripeModel =
         ///Entity number associated with this Multibanco payment.
         Entity: string option
         ///The timestamp at which the Multibanco voucher expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///The URL for the hosted Multibanco voucher page, which allows customers to view a Multibanco voucher.
         HostedVoucherUrl: string option
         ///Reference number associated with this Multibanco payment.
@@ -8340,7 +8340,7 @@ module StripeModel =
 
     type PaymentIntentNextActionCashappQrCode = {
         ///The date (unix timestamp) when the QR code expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///The image_url_png string used to render QR code
         ImageUrlPng: string
         ///The image_url_svg string used to render QR code
@@ -8356,7 +8356,7 @@ module StripeModel =
 
     type PaymentIntentNextActionCardAwaitNotification = {
         ///The time that payment will be attempted. If customer approval is required, they need to provide approval before this time.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ChargeAttemptAt: DateTime option
+        ChargeAttemptAt: DateTime option
         ///For payments greater than INR 15000, the customer must provide explicit approval of the payment with their bank. For payments of lower amount, no customer action is required.
         CustomerApprovalRequired: bool option
     }
@@ -8369,7 +8369,7 @@ module StripeModel =
 
     type PaymentIntentNextActionBoleto = {
         ///The timestamp after which the boleto expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///The URL to the hosted boleto voucher page, which allows customers to view the boleto voucher.
         HostedVoucherUrl: string option
         ///The boleto number.
@@ -8519,7 +8519,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type PaymentFlowsPrivatePaymentMethodsKlarnaPaymentIntentAmountDetailsLineItemPaymentMethodOptions = {
@@ -8555,7 +8555,7 @@ module StripeModel =
 
     [<Struct>]
     type PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
@@ -9116,7 +9116,7 @@ module StripeModel =
     ///A Login Link differs from an [Account Link](https://docs.stripe.com/api/account_links) in that it takes the user directly to their [Express dashboard for the specified account](https://docs.stripe.com/connect/integrate-express-dashboard#create-login-link)
     type LoginLink = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The URL for the login link.
         Url: string
     }
@@ -9194,7 +9194,7 @@ module StripeModel =
 
     type LegalEntityUboDeclaration = {
         ///The Unix timestamp marking when the beneficial owner attestation was made.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Date: DateTime option
+        Date: DateTime option
         ///The IP address from which the beneficial owner attestation was made.
         Ip: string option
         ///The user-agent string from the browser where the beneficial owner attestation was made.
@@ -9210,7 +9210,7 @@ module StripeModel =
 
     type LegalEntityRepresentativeDeclaration = {
         ///The Unix timestamp marking when the representative declaration attestation was made.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Date: DateTime option
+        Date: DateTime option
         ///The IP address from which the representative declaration attestation was made.
         Ip: string option
         ///The user-agent string from the browser where the representative declaration attestation was made.
@@ -9294,7 +9294,7 @@ module StripeModel =
 
     type LegalEntityDirectorshipDeclaration = {
         ///The Unix timestamp marking when the directorship declaration attestation was made.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Date: DateTime option
+        Date: DateTime option
         ///The IP address from which the directorship declaration attestation was made.
         Ip: string option
         ///The user-agent string from the browser where the directorship declaration attestation was made.
@@ -9701,7 +9701,7 @@ module StripeModel =
 
     type IssuingNetworkTokenAddress = {
         ///The street address of the cardholder tokenizing the card.
-        [<JsonField(Name="line1")>]Line1: string
+        [<JsonPropertyName("line1")>]Line1: string
         ///The postal code of the cardholder tokenizing the card.
         PostalCode: string
     }
@@ -9762,7 +9762,7 @@ module StripeModel =
 
     type IssuingCardholderUserTermsAcceptance = {
         ///The Unix timestamp marking when the cardholder accepted the Authorized User Terms.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Date: DateTime option
+        Date: DateTime option
         ///The IP address from which the cardholder accepted the Authorized User Terms.
         Ip: string option
         ///The user agent of the browser from which the cardholder accepted the Authorized User Terms.
@@ -10082,21 +10082,21 @@ module StripeModel =
         | Yearly
 
     type IssuingCardholderRequirementsPastDue =
-        | [<JsonUnionCase("company.tax_id")>] CompanyTaxId
-        | [<JsonUnionCase("individual.card_issuing.user_terms_acceptance.date")>] IndividualCardIssuingUserTermsAcceptanceDate
-        | [<JsonUnionCase("individual.card_issuing.user_terms_acceptance.ip")>] IndividualCardIssuingUserTermsAcceptanceIp
-        | [<JsonUnionCase("individual.dob.day")>] IndividualDobDay
-        | [<JsonUnionCase("individual.dob.month")>] IndividualDobMonth
-        | [<JsonUnionCase("individual.dob.year")>] IndividualDobYear
-        | [<JsonUnionCase("individual.first_name")>] IndividualFirstName
-        | [<JsonUnionCase("individual.last_name")>] IndividualLastName
-        | [<JsonUnionCase("individual.verification.document")>] IndividualVerificationDocument
+        | [<JsonPropertyName("company.tax_id")>] CompanyTaxId
+        | [<JsonPropertyName("individual.card_issuing.user_terms_acceptance.date")>] IndividualCardIssuingUserTermsAcceptanceDate
+        | [<JsonPropertyName("individual.card_issuing.user_terms_acceptance.ip")>] IndividualCardIssuingUserTermsAcceptanceIp
+        | [<JsonPropertyName("individual.dob.day")>] IndividualDobDay
+        | [<JsonPropertyName("individual.dob.month")>] IndividualDobMonth
+        | [<JsonPropertyName("individual.dob.year")>] IndividualDobYear
+        | [<JsonPropertyName("individual.first_name")>] IndividualFirstName
+        | [<JsonPropertyName("individual.last_name")>] IndividualLastName
+        | [<JsonPropertyName("individual.verification.document")>] IndividualVerificationDocument
 
     [<Struct>]
     type IssuingCardholderRequirementsDisabledReason =
         | Listed
-        | [<JsonUnionCase("rejected.listed")>] RejectedListed
-        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
+        | [<JsonPropertyName("rejected.listed")>] RejectedListed
+        | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
         | UnderReview
 
     type IssuingCardholderIndividualDob = {
@@ -12060,13 +12060,13 @@ module StripeModel =
 
     type InvoicesResourceStatusTransitions = {
         ///The time that the invoice draft was finalized.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]FinalizedAt: DateTime option
+        FinalizedAt: DateTime option
         ///The time that the invoice was marked uncollectible.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]MarkedUncollectibleAt: DateTime option
+        MarkedUncollectibleAt: DateTime option
         ///The time that the invoice was paid.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PaidAt: DateTime option
+        PaidAt: DateTime option
         ///The time that the invoice was voided.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]VoidedAt: DateTime option
+        VoidedAt: DateTime option
     }
     with
         static member New (finalizedAt: DateTime option, markedUncollectibleAt: DateTime option, paidAt: DateTime option, voidedAt: DateTime option) =
@@ -12216,9 +12216,9 @@ module StripeModel =
 
     type InvoicesPaymentsInvoicePaymentStatusTransitions = {
         ///The time that the payment was canceled.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///The time that the payment succeeded.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PaidAt: DateTime option
+        PaidAt: DateTime option
     }
     with
         static member New (canceledAt: DateTime option, paidAt: DateTime option) =
@@ -12382,12 +12382,12 @@ module StripeModel =
             }
 
     type InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry =
-        | [<JsonUnionCase("BE")>] BE
-        | [<JsonUnionCase("DE")>] DE
-        | [<JsonUnionCase("ES")>] ES
-        | [<JsonUnionCase("FR")>] FR
-        | [<JsonUnionCase("IE")>] IE
-        | [<JsonUnionCase("NL")>] NL
+        | [<JsonPropertyName("BE")>] BE
+        | [<JsonPropertyName("DE")>] DE
+        | [<JsonPropertyName("ES")>] ES
+        | [<JsonPropertyName("FR")>] FR
+        | [<JsonPropertyName("IE")>] IE
+        | [<JsonPropertyName("NL")>] NL
 
     [<Struct>]
     type InvoicePaymentMethodOptionsCustomerBalanceBankTransferType =
@@ -12452,9 +12452,9 @@ module StripeModel =
 
     type InvoiceLineItemPeriod = {
         ///The end of the period, which must be greater than or equal to the start. This value is inclusive.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]End: DateTime
+        End: DateTime
         ///The start of the period. This value is inclusive.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Start: DateTime
+        Start: DateTime
     }
     with
         static member New (``end``: DateTime, start: DateTime) =
@@ -12484,7 +12484,7 @@ module StripeModel =
     [<Struct>]
     type InvoiceCustomerTaxExempt =
         | Exempt
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Reverse
 
     [<Struct>]
@@ -12522,7 +12522,7 @@ module StripeModel =
 
     [<Struct>]
     type InsightsResourcesPaymentEvaluationUserInterventionRaisedType =
-        | [<JsonUnionCase("3ds")>] Numeric3ds
+        | [<JsonPropertyName("3ds")>] Numeric3ds
         | Captcha
         | Custom
 
@@ -12717,7 +12717,7 @@ module StripeModel =
 
     [<Struct>]
     type GelatoVerifiedOutputsSex =
-        | [<JsonUnionCase("[redacted]")>] Redacted
+        | [<JsonPropertyName("[redacted]")>] Redacted
         | Female
         | Male
         | Unknown
@@ -12740,12 +12740,12 @@ module StripeModel =
 
     [<Struct>]
     type GelatoSessionMatchingOptionsName =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Similar
 
     [<Struct>]
     type GelatoSessionMatchingOptionsDob =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Similar
 
     type GelatoSessionLastErrorCode =
@@ -12903,7 +12903,7 @@ module StripeModel =
 
     [<Struct>]
     type GelatoDocumentReportSex =
-        | [<JsonUnionCase("[redacted]")>] Redacted
+        | [<JsonPropertyName("[redacted]")>] Redacted
         | Female
         | Male
         | Unknown
@@ -13096,7 +13096,7 @@ module StripeModel =
         ///The raw physical address of the owner.
         RawAddress: string option
         ///The timestamp of the refresh that updated this owner.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]RefreshedAt: DateTime option
+        RefreshedAt: DateTime option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -13178,266 +13178,266 @@ module StripeModel =
         | WithheldTax
 
     type EventType =
-        | [<JsonUnionCase("account.application.authorized")>] AccountApplicationAuthorized
-        | [<JsonUnionCase("account.application.deauthorized")>] AccountApplicationDeauthorized
-        | [<JsonUnionCase("account.external_account.created")>] AccountExternalAccountCreated
-        | [<JsonUnionCase("account.external_account.deleted")>] AccountExternalAccountDeleted
-        | [<JsonUnionCase("account.external_account.updated")>] AccountExternalAccountUpdated
-        | [<JsonUnionCase("account.updated")>] AccountUpdated
-        | [<JsonUnionCase("application_fee.created")>] ApplicationFeeCreated
-        | [<JsonUnionCase("application_fee.refund.updated")>] ApplicationFeeRefundUpdated
-        | [<JsonUnionCase("application_fee.refunded")>] ApplicationFeeRefunded
-        | [<JsonUnionCase("balance.available")>] BalanceAvailable
-        | [<JsonUnionCase("balance_settings.updated")>] BalanceSettingsUpdated
-        | [<JsonUnionCase("billing.alert.triggered")>] BillingAlertTriggered
-        | [<JsonUnionCase("billing.credit_grant.created")>] BillingCreditGrantCreated
-        | [<JsonUnionCase("billing_portal.configuration.created")>] BillingPortalConfigurationCreated
-        | [<JsonUnionCase("billing_portal.configuration.updated")>] BillingPortalConfigurationUpdated
-        | [<JsonUnionCase("billing_portal.session.created")>] BillingPortalSessionCreated
-        | [<JsonUnionCase("capability.updated")>] CapabilityUpdated
-        | [<JsonUnionCase("cash_balance.funds_available")>] CashBalanceFundsAvailable
-        | [<JsonUnionCase("charge.captured")>] ChargeCaptured
-        | [<JsonUnionCase("charge.dispute.closed")>] ChargeDisputeClosed
-        | [<JsonUnionCase("charge.dispute.created")>] ChargeDisputeCreated
-        | [<JsonUnionCase("charge.dispute.funds_reinstated")>] ChargeDisputeFundsReinstated
-        | [<JsonUnionCase("charge.dispute.funds_withdrawn")>] ChargeDisputeFundsWithdrawn
-        | [<JsonUnionCase("charge.dispute.updated")>] ChargeDisputeUpdated
-        | [<JsonUnionCase("charge.expired")>] ChargeExpired
-        | [<JsonUnionCase("charge.failed")>] ChargeFailed
-        | [<JsonUnionCase("charge.pending")>] ChargePending
-        | [<JsonUnionCase("charge.refund.updated")>] ChargeRefundUpdated
-        | [<JsonUnionCase("charge.refunded")>] ChargeRefunded
-        | [<JsonUnionCase("charge.succeeded")>] ChargeSucceeded
-        | [<JsonUnionCase("charge.updated")>] ChargeUpdated
-        | [<JsonUnionCase("checkout.session.async_payment_failed")>] CheckoutSessionAsyncPaymentFailed
-        | [<JsonUnionCase("checkout.session.async_payment_succeeded")>] CheckoutSessionAsyncPaymentSucceeded
-        | [<JsonUnionCase("checkout.session.completed")>] CheckoutSessionCompleted
-        | [<JsonUnionCase("checkout.session.expired")>] CheckoutSessionExpired
-        | [<JsonUnionCase("climate.order.canceled")>] ClimateOrderCanceled
-        | [<JsonUnionCase("climate.order.created")>] ClimateOrderCreated
-        | [<JsonUnionCase("climate.order.delayed")>] ClimateOrderDelayed
-        | [<JsonUnionCase("climate.order.delivered")>] ClimateOrderDelivered
-        | [<JsonUnionCase("climate.order.product_substituted")>] ClimateOrderProductSubstituted
-        | [<JsonUnionCase("climate.product.created")>] ClimateProductCreated
-        | [<JsonUnionCase("climate.product.pricing_updated")>] ClimateProductPricingUpdated
-        | [<JsonUnionCase("coupon.created")>] CouponCreated
-        | [<JsonUnionCase("coupon.deleted")>] CouponDeleted
-        | [<JsonUnionCase("coupon.updated")>] CouponUpdated
-        | [<JsonUnionCase("credit_note.created")>] CreditNoteCreated
-        | [<JsonUnionCase("credit_note.updated")>] CreditNoteUpdated
-        | [<JsonUnionCase("credit_note.voided")>] CreditNoteVoided
-        | [<JsonUnionCase("customer.created")>] CustomerCreated
-        | [<JsonUnionCase("customer.deleted")>] CustomerDeleted
-        | [<JsonUnionCase("customer.discount.created")>] CustomerDiscountCreated
-        | [<JsonUnionCase("customer.discount.deleted")>] CustomerDiscountDeleted
-        | [<JsonUnionCase("customer.discount.updated")>] CustomerDiscountUpdated
-        | [<JsonUnionCase("customer.source.created")>] CustomerSourceCreated
-        | [<JsonUnionCase("customer.source.deleted")>] CustomerSourceDeleted
-        | [<JsonUnionCase("customer.source.expiring")>] CustomerSourceExpiring
-        | [<JsonUnionCase("customer.source.updated")>] CustomerSourceUpdated
-        | [<JsonUnionCase("customer.subscription.created")>] CustomerSubscriptionCreated
-        | [<JsonUnionCase("customer.subscription.deleted")>] CustomerSubscriptionDeleted
-        | [<JsonUnionCase("customer.subscription.paused")>] CustomerSubscriptionPaused
-        | [<JsonUnionCase("customer.subscription.pending_update_applied")>] CustomerSubscriptionPendingUpdateApplied
-        | [<JsonUnionCase("customer.subscription.pending_update_expired")>] CustomerSubscriptionPendingUpdateExpired
-        | [<JsonUnionCase("customer.subscription.resumed")>] CustomerSubscriptionResumed
-        | [<JsonUnionCase("customer.subscription.trial_will_end")>] CustomerSubscriptionTrialWillEnd
-        | [<JsonUnionCase("customer.subscription.updated")>] CustomerSubscriptionUpdated
-        | [<JsonUnionCase("customer.tax_id.created")>] CustomerTaxIdCreated
-        | [<JsonUnionCase("customer.tax_id.deleted")>] CustomerTaxIdDeleted
-        | [<JsonUnionCase("customer.tax_id.updated")>] CustomerTaxIdUpdated
-        | [<JsonUnionCase("customer.updated")>] CustomerUpdated
-        | [<JsonUnionCase("customer_cash_balance_transaction.created")>] CustomerCashBalanceTransactionCreated
-        | [<JsonUnionCase("entitlements.active_entitlement_summary.updated")>] EntitlementsActiveEntitlementSummaryUpdated
-        | [<JsonUnionCase("file.created")>] FileCreated
-        | [<JsonUnionCase("financial_connections.account.account_numbers_updated")>] FinancialConnectionsAccountAccountNumbersUpdated
-        | [<JsonUnionCase("financial_connections.account.created")>] FinancialConnectionsAccountCreated
-        | [<JsonUnionCase("financial_connections.account.deactivated")>] FinancialConnectionsAccountDeactivated
-        | [<JsonUnionCase("financial_connections.account.disconnected")>] FinancialConnectionsAccountDisconnected
-        | [<JsonUnionCase("financial_connections.account.reactivated")>] FinancialConnectionsAccountReactivated
-        | [<JsonUnionCase("financial_connections.account.refreshed_balance")>] FinancialConnectionsAccountRefreshedBalance
-        | [<JsonUnionCase("financial_connections.account.refreshed_ownership")>] FinancialConnectionsAccountRefreshedOwnership
-        | [<JsonUnionCase("financial_connections.account.refreshed_transactions")>] FinancialConnectionsAccountRefreshedTransactions
-        | [<JsonUnionCase("financial_connections.account.upcoming_account_number_expiry")>] FinancialConnectionsAccountUpcomingAccountNumberExpiry
-        | [<JsonUnionCase("identity.verification_session.canceled")>] IdentityVerificationSessionCanceled
-        | [<JsonUnionCase("identity.verification_session.created")>] IdentityVerificationSessionCreated
-        | [<JsonUnionCase("identity.verification_session.processing")>] IdentityVerificationSessionProcessing
-        | [<JsonUnionCase("identity.verification_session.redacted")>] IdentityVerificationSessionRedacted
-        | [<JsonUnionCase("identity.verification_session.requires_input")>] IdentityVerificationSessionRequiresInput
-        | [<JsonUnionCase("identity.verification_session.verified")>] IdentityVerificationSessionVerified
-        | [<JsonUnionCase("invoice.created")>] InvoiceCreated
-        | [<JsonUnionCase("invoice.deleted")>] InvoiceDeleted
-        | [<JsonUnionCase("invoice.finalization_failed")>] InvoiceFinalizationFailed
-        | [<JsonUnionCase("invoice.finalized")>] InvoiceFinalized
-        | [<JsonUnionCase("invoice.marked_uncollectible")>] InvoiceMarkedUncollectible
-        | [<JsonUnionCase("invoice.overdue")>] InvoiceOverdue
-        | [<JsonUnionCase("invoice.overpaid")>] InvoiceOverpaid
-        | [<JsonUnionCase("invoice.paid")>] InvoicePaid
-        | [<JsonUnionCase("invoice.payment_action_required")>] InvoicePaymentActionRequired
-        | [<JsonUnionCase("invoice.payment_attempt_required")>] InvoicePaymentAttemptRequired
-        | [<JsonUnionCase("invoice.payment_failed")>] InvoicePaymentFailed
-        | [<JsonUnionCase("invoice.payment_succeeded")>] InvoicePaymentSucceeded
-        | [<JsonUnionCase("invoice.sent")>] InvoiceSent
-        | [<JsonUnionCase("invoice.upcoming")>] InvoiceUpcoming
-        | [<JsonUnionCase("invoice.updated")>] InvoiceUpdated
-        | [<JsonUnionCase("invoice.voided")>] InvoiceVoided
-        | [<JsonUnionCase("invoice.will_be_due")>] InvoiceWillBeDue
-        | [<JsonUnionCase("invoice_payment.paid")>] InvoicePaymentPaid
-        | [<JsonUnionCase("invoiceitem.created")>] InvoiceitemCreated
-        | [<JsonUnionCase("invoiceitem.deleted")>] InvoiceitemDeleted
-        | [<JsonUnionCase("issuing_authorization.created")>] IssuingAuthorizationCreated
-        | [<JsonUnionCase("issuing_authorization.request")>] IssuingAuthorizationRequest
-        | [<JsonUnionCase("issuing_authorization.updated")>] IssuingAuthorizationUpdated
-        | [<JsonUnionCase("issuing_card.created")>] IssuingCardCreated
-        | [<JsonUnionCase("issuing_card.updated")>] IssuingCardUpdated
-        | [<JsonUnionCase("issuing_cardholder.created")>] IssuingCardholderCreated
-        | [<JsonUnionCase("issuing_cardholder.updated")>] IssuingCardholderUpdated
-        | [<JsonUnionCase("issuing_dispute.closed")>] IssuingDisputeClosed
-        | [<JsonUnionCase("issuing_dispute.created")>] IssuingDisputeCreated
-        | [<JsonUnionCase("issuing_dispute.funds_reinstated")>] IssuingDisputeFundsReinstated
-        | [<JsonUnionCase("issuing_dispute.funds_rescinded")>] IssuingDisputeFundsRescinded
-        | [<JsonUnionCase("issuing_dispute.submitted")>] IssuingDisputeSubmitted
-        | [<JsonUnionCase("issuing_dispute.updated")>] IssuingDisputeUpdated
-        | [<JsonUnionCase("issuing_personalization_design.activated")>] IssuingPersonalizationDesignActivated
-        | [<JsonUnionCase("issuing_personalization_design.deactivated")>] IssuingPersonalizationDesignDeactivated
-        | [<JsonUnionCase("issuing_personalization_design.rejected")>] IssuingPersonalizationDesignRejected
-        | [<JsonUnionCase("issuing_personalization_design.updated")>] IssuingPersonalizationDesignUpdated
-        | [<JsonUnionCase("issuing_token.created")>] IssuingTokenCreated
-        | [<JsonUnionCase("issuing_token.updated")>] IssuingTokenUpdated
-        | [<JsonUnionCase("issuing_transaction.created")>] IssuingTransactionCreated
-        | [<JsonUnionCase("issuing_transaction.purchase_details_receipt_updated")>] IssuingTransactionPurchaseDetailsReceiptUpdated
-        | [<JsonUnionCase("issuing_transaction.updated")>] IssuingTransactionUpdated
-        | [<JsonUnionCase("mandate.updated")>] MandateUpdated
-        | [<JsonUnionCase("payment_intent.amount_capturable_updated")>] PaymentIntentAmountCapturableUpdated
-        | [<JsonUnionCase("payment_intent.canceled")>] PaymentIntentCanceled
-        | [<JsonUnionCase("payment_intent.created")>] PaymentIntentCreated
-        | [<JsonUnionCase("payment_intent.partially_funded")>] PaymentIntentPartiallyFunded
-        | [<JsonUnionCase("payment_intent.payment_failed")>] PaymentIntentPaymentFailed
-        | [<JsonUnionCase("payment_intent.processing")>] PaymentIntentProcessing
-        | [<JsonUnionCase("payment_intent.requires_action")>] PaymentIntentRequiresAction
-        | [<JsonUnionCase("payment_intent.succeeded")>] PaymentIntentSucceeded
-        | [<JsonUnionCase("payment_link.created")>] PaymentLinkCreated
-        | [<JsonUnionCase("payment_link.updated")>] PaymentLinkUpdated
-        | [<JsonUnionCase("payment_method.attached")>] PaymentMethodAttached
-        | [<JsonUnionCase("payment_method.automatically_updated")>] PaymentMethodAutomaticallyUpdated
-        | [<JsonUnionCase("payment_method.detached")>] PaymentMethodDetached
-        | [<JsonUnionCase("payment_method.updated")>] PaymentMethodUpdated
-        | [<JsonUnionCase("payout.canceled")>] PayoutCanceled
-        | [<JsonUnionCase("payout.created")>] PayoutCreated
-        | [<JsonUnionCase("payout.failed")>] PayoutFailed
-        | [<JsonUnionCase("payout.paid")>] PayoutPaid
-        | [<JsonUnionCase("payout.reconciliation_completed")>] PayoutReconciliationCompleted
-        | [<JsonUnionCase("payout.updated")>] PayoutUpdated
-        | [<JsonUnionCase("person.created")>] PersonCreated
-        | [<JsonUnionCase("person.deleted")>] PersonDeleted
-        | [<JsonUnionCase("person.updated")>] PersonUpdated
-        | [<JsonUnionCase("plan.created")>] PlanCreated
-        | [<JsonUnionCase("plan.deleted")>] PlanDeleted
-        | [<JsonUnionCase("plan.updated")>] PlanUpdated
-        | [<JsonUnionCase("price.created")>] PriceCreated
-        | [<JsonUnionCase("price.deleted")>] PriceDeleted
-        | [<JsonUnionCase("price.updated")>] PriceUpdated
-        | [<JsonUnionCase("product.created")>] ProductCreated
-        | [<JsonUnionCase("product.deleted")>] ProductDeleted
-        | [<JsonUnionCase("product.updated")>] ProductUpdated
-        | [<JsonUnionCase("promotion_code.created")>] PromotionCodeCreated
-        | [<JsonUnionCase("promotion_code.updated")>] PromotionCodeUpdated
-        | [<JsonUnionCase("quote.accepted")>] QuoteAccepted
-        | [<JsonUnionCase("quote.canceled")>] QuoteCanceled
-        | [<JsonUnionCase("quote.created")>] QuoteCreated
-        | [<JsonUnionCase("quote.finalized")>] QuoteFinalized
-        | [<JsonUnionCase("radar.early_fraud_warning.created")>] RadarEarlyFraudWarningCreated
-        | [<JsonUnionCase("radar.early_fraud_warning.updated")>] RadarEarlyFraudWarningUpdated
-        | [<JsonUnionCase("refund.created")>] RefundCreated
-        | [<JsonUnionCase("refund.failed")>] RefundFailed
-        | [<JsonUnionCase("refund.updated")>] RefundUpdated
-        | [<JsonUnionCase("reporting.report_run.failed")>] ReportingReportRunFailed
-        | [<JsonUnionCase("reporting.report_run.succeeded")>] ReportingReportRunSucceeded
-        | [<JsonUnionCase("reporting.report_type.updated")>] ReportingReportTypeUpdated
-        | [<JsonUnionCase("reserve.hold.created")>] ReserveHoldCreated
-        | [<JsonUnionCase("reserve.hold.updated")>] ReserveHoldUpdated
-        | [<JsonUnionCase("reserve.plan.created")>] ReservePlanCreated
-        | [<JsonUnionCase("reserve.plan.disabled")>] ReservePlanDisabled
-        | [<JsonUnionCase("reserve.plan.expired")>] ReservePlanExpired
-        | [<JsonUnionCase("reserve.plan.updated")>] ReservePlanUpdated
-        | [<JsonUnionCase("reserve.release.created")>] ReserveReleaseCreated
-        | [<JsonUnionCase("review.closed")>] ReviewClosed
-        | [<JsonUnionCase("review.opened")>] ReviewOpened
-        | [<JsonUnionCase("setup_intent.canceled")>] SetupIntentCanceled
-        | [<JsonUnionCase("setup_intent.created")>] SetupIntentCreated
-        | [<JsonUnionCase("setup_intent.requires_action")>] SetupIntentRequiresAction
-        | [<JsonUnionCase("setup_intent.setup_failed")>] SetupIntentSetupFailed
-        | [<JsonUnionCase("setup_intent.succeeded")>] SetupIntentSucceeded
-        | [<JsonUnionCase("sigma.scheduled_query_run.created")>] SigmaScheduledQueryRunCreated
-        | [<JsonUnionCase("source.canceled")>] SourceCanceled
-        | [<JsonUnionCase("source.chargeable")>] SourceChargeable
-        | [<JsonUnionCase("source.failed")>] SourceFailed
-        | [<JsonUnionCase("source.mandate_notification")>] SourceMandateNotification
-        | [<JsonUnionCase("source.refund_attributes_required")>] SourceRefundAttributesRequired
-        | [<JsonUnionCase("source.transaction.created")>] SourceTransactionCreated
-        | [<JsonUnionCase("source.transaction.updated")>] SourceTransactionUpdated
-        | [<JsonUnionCase("subscription_schedule.aborted")>] SubscriptionScheduleAborted
-        | [<JsonUnionCase("subscription_schedule.canceled")>] SubscriptionScheduleCanceled
-        | [<JsonUnionCase("subscription_schedule.completed")>] SubscriptionScheduleCompleted
-        | [<JsonUnionCase("subscription_schedule.created")>] SubscriptionScheduleCreated
-        | [<JsonUnionCase("subscription_schedule.expiring")>] SubscriptionScheduleExpiring
-        | [<JsonUnionCase("subscription_schedule.released")>] SubscriptionScheduleReleased
-        | [<JsonUnionCase("subscription_schedule.updated")>] SubscriptionScheduleUpdated
-        | [<JsonUnionCase("tax.settings.updated")>] TaxSettingsUpdated
-        | [<JsonUnionCase("tax_rate.created")>] TaxRateCreated
-        | [<JsonUnionCase("tax_rate.updated")>] TaxRateUpdated
-        | [<JsonUnionCase("terminal.reader.action_failed")>] TerminalReaderActionFailed
-        | [<JsonUnionCase("terminal.reader.action_succeeded")>] TerminalReaderActionSucceeded
-        | [<JsonUnionCase("terminal.reader.action_updated")>] TerminalReaderActionUpdated
-        | [<JsonUnionCase("test_helpers.test_clock.advancing")>] TestHelpersTestClockAdvancing
-        | [<JsonUnionCase("test_helpers.test_clock.created")>] TestHelpersTestClockCreated
-        | [<JsonUnionCase("test_helpers.test_clock.deleted")>] TestHelpersTestClockDeleted
-        | [<JsonUnionCase("test_helpers.test_clock.internal_failure")>] TestHelpersTestClockInternalFailure
-        | [<JsonUnionCase("test_helpers.test_clock.ready")>] TestHelpersTestClockReady
-        | [<JsonUnionCase("topup.canceled")>] TopupCanceled
-        | [<JsonUnionCase("topup.created")>] TopupCreated
-        | [<JsonUnionCase("topup.failed")>] TopupFailed
-        | [<JsonUnionCase("topup.reversed")>] TopupReversed
-        | [<JsonUnionCase("topup.succeeded")>] TopupSucceeded
-        | [<JsonUnionCase("transfer.created")>] TransferCreated
-        | [<JsonUnionCase("transfer.reversed")>] TransferReversed
-        | [<JsonUnionCase("transfer.updated")>] TransferUpdated
-        | [<JsonUnionCase("treasury.credit_reversal.created")>] TreasuryCreditReversalCreated
-        | [<JsonUnionCase("treasury.credit_reversal.posted")>] TreasuryCreditReversalPosted
-        | [<JsonUnionCase("treasury.debit_reversal.completed")>] TreasuryDebitReversalCompleted
-        | [<JsonUnionCase("treasury.debit_reversal.created")>] TreasuryDebitReversalCreated
-        | [<JsonUnionCase("treasury.debit_reversal.initial_credit_granted")>] TreasuryDebitReversalInitialCreditGranted
-        | [<JsonUnionCase("treasury.financial_account.closed")>] TreasuryFinancialAccountClosed
-        | [<JsonUnionCase("treasury.financial_account.created")>] TreasuryFinancialAccountCreated
-        | [<JsonUnionCase("treasury.financial_account.features_status_updated")>] TreasuryFinancialAccountFeaturesStatusUpdated
-        | [<JsonUnionCase("treasury.inbound_transfer.canceled")>] TreasuryInboundTransferCanceled
-        | [<JsonUnionCase("treasury.inbound_transfer.created")>] TreasuryInboundTransferCreated
-        | [<JsonUnionCase("treasury.inbound_transfer.failed")>] TreasuryInboundTransferFailed
-        | [<JsonUnionCase("treasury.inbound_transfer.succeeded")>] TreasuryInboundTransferSucceeded
-        | [<JsonUnionCase("treasury.outbound_payment.canceled")>] TreasuryOutboundPaymentCanceled
-        | [<JsonUnionCase("treasury.outbound_payment.created")>] TreasuryOutboundPaymentCreated
-        | [<JsonUnionCase("treasury.outbound_payment.expected_arrival_date_updated")>] TreasuryOutboundPaymentExpectedArrivalDateUpdated
-        | [<JsonUnionCase("treasury.outbound_payment.failed")>] TreasuryOutboundPaymentFailed
-        | [<JsonUnionCase("treasury.outbound_payment.posted")>] TreasuryOutboundPaymentPosted
-        | [<JsonUnionCase("treasury.outbound_payment.returned")>] TreasuryOutboundPaymentReturned
-        | [<JsonUnionCase("treasury.outbound_payment.tracking_details_updated")>] TreasuryOutboundPaymentTrackingDetailsUpdated
-        | [<JsonUnionCase("treasury.outbound_transfer.canceled")>] TreasuryOutboundTransferCanceled
-        | [<JsonUnionCase("treasury.outbound_transfer.created")>] TreasuryOutboundTransferCreated
-        | [<JsonUnionCase("treasury.outbound_transfer.expected_arrival_date_updated")>] TreasuryOutboundTransferExpectedArrivalDateUpdated
-        | [<JsonUnionCase("treasury.outbound_transfer.failed")>] TreasuryOutboundTransferFailed
-        | [<JsonUnionCase("treasury.outbound_transfer.posted")>] TreasuryOutboundTransferPosted
-        | [<JsonUnionCase("treasury.outbound_transfer.returned")>] TreasuryOutboundTransferReturned
-        | [<JsonUnionCase("treasury.outbound_transfer.tracking_details_updated")>] TreasuryOutboundTransferTrackingDetailsUpdated
-        | [<JsonUnionCase("treasury.received_credit.created")>] TreasuryReceivedCreditCreated
-        | [<JsonUnionCase("treasury.received_credit.failed")>] TreasuryReceivedCreditFailed
-        | [<JsonUnionCase("treasury.received_credit.succeeded")>] TreasuryReceivedCreditSucceeded
-        | [<JsonUnionCase("treasury.received_debit.created")>] TreasuryReceivedDebitCreated
+        | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
+        | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized
+        | [<JsonPropertyName("account.external_account.created")>] AccountExternalAccountCreated
+        | [<JsonPropertyName("account.external_account.deleted")>] AccountExternalAccountDeleted
+        | [<JsonPropertyName("account.external_account.updated")>] AccountExternalAccountUpdated
+        | [<JsonPropertyName("account.updated")>] AccountUpdated
+        | [<JsonPropertyName("application_fee.created")>] ApplicationFeeCreated
+        | [<JsonPropertyName("application_fee.refund.updated")>] ApplicationFeeRefundUpdated
+        | [<JsonPropertyName("application_fee.refunded")>] ApplicationFeeRefunded
+        | [<JsonPropertyName("balance.available")>] BalanceAvailable
+        | [<JsonPropertyName("balance_settings.updated")>] BalanceSettingsUpdated
+        | [<JsonPropertyName("billing.alert.triggered")>] BillingAlertTriggered
+        | [<JsonPropertyName("billing.credit_grant.created")>] BillingCreditGrantCreated
+        | [<JsonPropertyName("billing_portal.configuration.created")>] BillingPortalConfigurationCreated
+        | [<JsonPropertyName("billing_portal.configuration.updated")>] BillingPortalConfigurationUpdated
+        | [<JsonPropertyName("billing_portal.session.created")>] BillingPortalSessionCreated
+        | [<JsonPropertyName("capability.updated")>] CapabilityUpdated
+        | [<JsonPropertyName("cash_balance.funds_available")>] CashBalanceFundsAvailable
+        | [<JsonPropertyName("charge.captured")>] ChargeCaptured
+        | [<JsonPropertyName("charge.dispute.closed")>] ChargeDisputeClosed
+        | [<JsonPropertyName("charge.dispute.created")>] ChargeDisputeCreated
+        | [<JsonPropertyName("charge.dispute.funds_reinstated")>] ChargeDisputeFundsReinstated
+        | [<JsonPropertyName("charge.dispute.funds_withdrawn")>] ChargeDisputeFundsWithdrawn
+        | [<JsonPropertyName("charge.dispute.updated")>] ChargeDisputeUpdated
+        | [<JsonPropertyName("charge.expired")>] ChargeExpired
+        | [<JsonPropertyName("charge.failed")>] ChargeFailed
+        | [<JsonPropertyName("charge.pending")>] ChargePending
+        | [<JsonPropertyName("charge.refund.updated")>] ChargeRefundUpdated
+        | [<JsonPropertyName("charge.refunded")>] ChargeRefunded
+        | [<JsonPropertyName("charge.succeeded")>] ChargeSucceeded
+        | [<JsonPropertyName("charge.updated")>] ChargeUpdated
+        | [<JsonPropertyName("checkout.session.async_payment_failed")>] CheckoutSessionAsyncPaymentFailed
+        | [<JsonPropertyName("checkout.session.async_payment_succeeded")>] CheckoutSessionAsyncPaymentSucceeded
+        | [<JsonPropertyName("checkout.session.completed")>] CheckoutSessionCompleted
+        | [<JsonPropertyName("checkout.session.expired")>] CheckoutSessionExpired
+        | [<JsonPropertyName("climate.order.canceled")>] ClimateOrderCanceled
+        | [<JsonPropertyName("climate.order.created")>] ClimateOrderCreated
+        | [<JsonPropertyName("climate.order.delayed")>] ClimateOrderDelayed
+        | [<JsonPropertyName("climate.order.delivered")>] ClimateOrderDelivered
+        | [<JsonPropertyName("climate.order.product_substituted")>] ClimateOrderProductSubstituted
+        | [<JsonPropertyName("climate.product.created")>] ClimateProductCreated
+        | [<JsonPropertyName("climate.product.pricing_updated")>] ClimateProductPricingUpdated
+        | [<JsonPropertyName("coupon.created")>] CouponCreated
+        | [<JsonPropertyName("coupon.deleted")>] CouponDeleted
+        | [<JsonPropertyName("coupon.updated")>] CouponUpdated
+        | [<JsonPropertyName("credit_note.created")>] CreditNoteCreated
+        | [<JsonPropertyName("credit_note.updated")>] CreditNoteUpdated
+        | [<JsonPropertyName("credit_note.voided")>] CreditNoteVoided
+        | [<JsonPropertyName("customer.created")>] CustomerCreated
+        | [<JsonPropertyName("customer.deleted")>] CustomerDeleted
+        | [<JsonPropertyName("customer.discount.created")>] CustomerDiscountCreated
+        | [<JsonPropertyName("customer.discount.deleted")>] CustomerDiscountDeleted
+        | [<JsonPropertyName("customer.discount.updated")>] CustomerDiscountUpdated
+        | [<JsonPropertyName("customer.source.created")>] CustomerSourceCreated
+        | [<JsonPropertyName("customer.source.deleted")>] CustomerSourceDeleted
+        | [<JsonPropertyName("customer.source.expiring")>] CustomerSourceExpiring
+        | [<JsonPropertyName("customer.source.updated")>] CustomerSourceUpdated
+        | [<JsonPropertyName("customer.subscription.created")>] CustomerSubscriptionCreated
+        | [<JsonPropertyName("customer.subscription.deleted")>] CustomerSubscriptionDeleted
+        | [<JsonPropertyName("customer.subscription.paused")>] CustomerSubscriptionPaused
+        | [<JsonPropertyName("customer.subscription.pending_update_applied")>] CustomerSubscriptionPendingUpdateApplied
+        | [<JsonPropertyName("customer.subscription.pending_update_expired")>] CustomerSubscriptionPendingUpdateExpired
+        | [<JsonPropertyName("customer.subscription.resumed")>] CustomerSubscriptionResumed
+        | [<JsonPropertyName("customer.subscription.trial_will_end")>] CustomerSubscriptionTrialWillEnd
+        | [<JsonPropertyName("customer.subscription.updated")>] CustomerSubscriptionUpdated
+        | [<JsonPropertyName("customer.tax_id.created")>] CustomerTaxIdCreated
+        | [<JsonPropertyName("customer.tax_id.deleted")>] CustomerTaxIdDeleted
+        | [<JsonPropertyName("customer.tax_id.updated")>] CustomerTaxIdUpdated
+        | [<JsonPropertyName("customer.updated")>] CustomerUpdated
+        | [<JsonPropertyName("customer_cash_balance_transaction.created")>] CustomerCashBalanceTransactionCreated
+        | [<JsonPropertyName("entitlements.active_entitlement_summary.updated")>] EntitlementsActiveEntitlementSummaryUpdated
+        | [<JsonPropertyName("file.created")>] FileCreated
+        | [<JsonPropertyName("financial_connections.account.account_numbers_updated")>] FinancialConnectionsAccountAccountNumbersUpdated
+        | [<JsonPropertyName("financial_connections.account.created")>] FinancialConnectionsAccountCreated
+        | [<JsonPropertyName("financial_connections.account.deactivated")>] FinancialConnectionsAccountDeactivated
+        | [<JsonPropertyName("financial_connections.account.disconnected")>] FinancialConnectionsAccountDisconnected
+        | [<JsonPropertyName("financial_connections.account.reactivated")>] FinancialConnectionsAccountReactivated
+        | [<JsonPropertyName("financial_connections.account.refreshed_balance")>] FinancialConnectionsAccountRefreshedBalance
+        | [<JsonPropertyName("financial_connections.account.refreshed_ownership")>] FinancialConnectionsAccountRefreshedOwnership
+        | [<JsonPropertyName("financial_connections.account.refreshed_transactions")>] FinancialConnectionsAccountRefreshedTransactions
+        | [<JsonPropertyName("financial_connections.account.upcoming_account_number_expiry")>] FinancialConnectionsAccountUpcomingAccountNumberExpiry
+        | [<JsonPropertyName("identity.verification_session.canceled")>] IdentityVerificationSessionCanceled
+        | [<JsonPropertyName("identity.verification_session.created")>] IdentityVerificationSessionCreated
+        | [<JsonPropertyName("identity.verification_session.processing")>] IdentityVerificationSessionProcessing
+        | [<JsonPropertyName("identity.verification_session.redacted")>] IdentityVerificationSessionRedacted
+        | [<JsonPropertyName("identity.verification_session.requires_input")>] IdentityVerificationSessionRequiresInput
+        | [<JsonPropertyName("identity.verification_session.verified")>] IdentityVerificationSessionVerified
+        | [<JsonPropertyName("invoice.created")>] InvoiceCreated
+        | [<JsonPropertyName("invoice.deleted")>] InvoiceDeleted
+        | [<JsonPropertyName("invoice.finalization_failed")>] InvoiceFinalizationFailed
+        | [<JsonPropertyName("invoice.finalized")>] InvoiceFinalized
+        | [<JsonPropertyName("invoice.marked_uncollectible")>] InvoiceMarkedUncollectible
+        | [<JsonPropertyName("invoice.overdue")>] InvoiceOverdue
+        | [<JsonPropertyName("invoice.overpaid")>] InvoiceOverpaid
+        | [<JsonPropertyName("invoice.paid")>] InvoicePaid
+        | [<JsonPropertyName("invoice.payment_action_required")>] InvoicePaymentActionRequired
+        | [<JsonPropertyName("invoice.payment_attempt_required")>] InvoicePaymentAttemptRequired
+        | [<JsonPropertyName("invoice.payment_failed")>] InvoicePaymentFailed
+        | [<JsonPropertyName("invoice.payment_succeeded")>] InvoicePaymentSucceeded
+        | [<JsonPropertyName("invoice.sent")>] InvoiceSent
+        | [<JsonPropertyName("invoice.upcoming")>] InvoiceUpcoming
+        | [<JsonPropertyName("invoice.updated")>] InvoiceUpdated
+        | [<JsonPropertyName("invoice.voided")>] InvoiceVoided
+        | [<JsonPropertyName("invoice.will_be_due")>] InvoiceWillBeDue
+        | [<JsonPropertyName("invoice_payment.paid")>] InvoicePaymentPaid
+        | [<JsonPropertyName("invoiceitem.created")>] InvoiceitemCreated
+        | [<JsonPropertyName("invoiceitem.deleted")>] InvoiceitemDeleted
+        | [<JsonPropertyName("issuing_authorization.created")>] IssuingAuthorizationCreated
+        | [<JsonPropertyName("issuing_authorization.request")>] IssuingAuthorizationRequest
+        | [<JsonPropertyName("issuing_authorization.updated")>] IssuingAuthorizationUpdated
+        | [<JsonPropertyName("issuing_card.created")>] IssuingCardCreated
+        | [<JsonPropertyName("issuing_card.updated")>] IssuingCardUpdated
+        | [<JsonPropertyName("issuing_cardholder.created")>] IssuingCardholderCreated
+        | [<JsonPropertyName("issuing_cardholder.updated")>] IssuingCardholderUpdated
+        | [<JsonPropertyName("issuing_dispute.closed")>] IssuingDisputeClosed
+        | [<JsonPropertyName("issuing_dispute.created")>] IssuingDisputeCreated
+        | [<JsonPropertyName("issuing_dispute.funds_reinstated")>] IssuingDisputeFundsReinstated
+        | [<JsonPropertyName("issuing_dispute.funds_rescinded")>] IssuingDisputeFundsRescinded
+        | [<JsonPropertyName("issuing_dispute.submitted")>] IssuingDisputeSubmitted
+        | [<JsonPropertyName("issuing_dispute.updated")>] IssuingDisputeUpdated
+        | [<JsonPropertyName("issuing_personalization_design.activated")>] IssuingPersonalizationDesignActivated
+        | [<JsonPropertyName("issuing_personalization_design.deactivated")>] IssuingPersonalizationDesignDeactivated
+        | [<JsonPropertyName("issuing_personalization_design.rejected")>] IssuingPersonalizationDesignRejected
+        | [<JsonPropertyName("issuing_personalization_design.updated")>] IssuingPersonalizationDesignUpdated
+        | [<JsonPropertyName("issuing_token.created")>] IssuingTokenCreated
+        | [<JsonPropertyName("issuing_token.updated")>] IssuingTokenUpdated
+        | [<JsonPropertyName("issuing_transaction.created")>] IssuingTransactionCreated
+        | [<JsonPropertyName("issuing_transaction.purchase_details_receipt_updated")>] IssuingTransactionPurchaseDetailsReceiptUpdated
+        | [<JsonPropertyName("issuing_transaction.updated")>] IssuingTransactionUpdated
+        | [<JsonPropertyName("mandate.updated")>] MandateUpdated
+        | [<JsonPropertyName("payment_intent.amount_capturable_updated")>] PaymentIntentAmountCapturableUpdated
+        | [<JsonPropertyName("payment_intent.canceled")>] PaymentIntentCanceled
+        | [<JsonPropertyName("payment_intent.created")>] PaymentIntentCreated
+        | [<JsonPropertyName("payment_intent.partially_funded")>] PaymentIntentPartiallyFunded
+        | [<JsonPropertyName("payment_intent.payment_failed")>] PaymentIntentPaymentFailed
+        | [<JsonPropertyName("payment_intent.processing")>] PaymentIntentProcessing
+        | [<JsonPropertyName("payment_intent.requires_action")>] PaymentIntentRequiresAction
+        | [<JsonPropertyName("payment_intent.succeeded")>] PaymentIntentSucceeded
+        | [<JsonPropertyName("payment_link.created")>] PaymentLinkCreated
+        | [<JsonPropertyName("payment_link.updated")>] PaymentLinkUpdated
+        | [<JsonPropertyName("payment_method.attached")>] PaymentMethodAttached
+        | [<JsonPropertyName("payment_method.automatically_updated")>] PaymentMethodAutomaticallyUpdated
+        | [<JsonPropertyName("payment_method.detached")>] PaymentMethodDetached
+        | [<JsonPropertyName("payment_method.updated")>] PaymentMethodUpdated
+        | [<JsonPropertyName("payout.canceled")>] PayoutCanceled
+        | [<JsonPropertyName("payout.created")>] PayoutCreated
+        | [<JsonPropertyName("payout.failed")>] PayoutFailed
+        | [<JsonPropertyName("payout.paid")>] PayoutPaid
+        | [<JsonPropertyName("payout.reconciliation_completed")>] PayoutReconciliationCompleted
+        | [<JsonPropertyName("payout.updated")>] PayoutUpdated
+        | [<JsonPropertyName("person.created")>] PersonCreated
+        | [<JsonPropertyName("person.deleted")>] PersonDeleted
+        | [<JsonPropertyName("person.updated")>] PersonUpdated
+        | [<JsonPropertyName("plan.created")>] PlanCreated
+        | [<JsonPropertyName("plan.deleted")>] PlanDeleted
+        | [<JsonPropertyName("plan.updated")>] PlanUpdated
+        | [<JsonPropertyName("price.created")>] PriceCreated
+        | [<JsonPropertyName("price.deleted")>] PriceDeleted
+        | [<JsonPropertyName("price.updated")>] PriceUpdated
+        | [<JsonPropertyName("product.created")>] ProductCreated
+        | [<JsonPropertyName("product.deleted")>] ProductDeleted
+        | [<JsonPropertyName("product.updated")>] ProductUpdated
+        | [<JsonPropertyName("promotion_code.created")>] PromotionCodeCreated
+        | [<JsonPropertyName("promotion_code.updated")>] PromotionCodeUpdated
+        | [<JsonPropertyName("quote.accepted")>] QuoteAccepted
+        | [<JsonPropertyName("quote.canceled")>] QuoteCanceled
+        | [<JsonPropertyName("quote.created")>] QuoteCreated
+        | [<JsonPropertyName("quote.finalized")>] QuoteFinalized
+        | [<JsonPropertyName("radar.early_fraud_warning.created")>] RadarEarlyFraudWarningCreated
+        | [<JsonPropertyName("radar.early_fraud_warning.updated")>] RadarEarlyFraudWarningUpdated
+        | [<JsonPropertyName("refund.created")>] RefundCreated
+        | [<JsonPropertyName("refund.failed")>] RefundFailed
+        | [<JsonPropertyName("refund.updated")>] RefundUpdated
+        | [<JsonPropertyName("reporting.report_run.failed")>] ReportingReportRunFailed
+        | [<JsonPropertyName("reporting.report_run.succeeded")>] ReportingReportRunSucceeded
+        | [<JsonPropertyName("reporting.report_type.updated")>] ReportingReportTypeUpdated
+        | [<JsonPropertyName("reserve.hold.created")>] ReserveHoldCreated
+        | [<JsonPropertyName("reserve.hold.updated")>] ReserveHoldUpdated
+        | [<JsonPropertyName("reserve.plan.created")>] ReservePlanCreated
+        | [<JsonPropertyName("reserve.plan.disabled")>] ReservePlanDisabled
+        | [<JsonPropertyName("reserve.plan.expired")>] ReservePlanExpired
+        | [<JsonPropertyName("reserve.plan.updated")>] ReservePlanUpdated
+        | [<JsonPropertyName("reserve.release.created")>] ReserveReleaseCreated
+        | [<JsonPropertyName("review.closed")>] ReviewClosed
+        | [<JsonPropertyName("review.opened")>] ReviewOpened
+        | [<JsonPropertyName("setup_intent.canceled")>] SetupIntentCanceled
+        | [<JsonPropertyName("setup_intent.created")>] SetupIntentCreated
+        | [<JsonPropertyName("setup_intent.requires_action")>] SetupIntentRequiresAction
+        | [<JsonPropertyName("setup_intent.setup_failed")>] SetupIntentSetupFailed
+        | [<JsonPropertyName("setup_intent.succeeded")>] SetupIntentSucceeded
+        | [<JsonPropertyName("sigma.scheduled_query_run.created")>] SigmaScheduledQueryRunCreated
+        | [<JsonPropertyName("source.canceled")>] SourceCanceled
+        | [<JsonPropertyName("source.chargeable")>] SourceChargeable
+        | [<JsonPropertyName("source.failed")>] SourceFailed
+        | [<JsonPropertyName("source.mandate_notification")>] SourceMandateNotification
+        | [<JsonPropertyName("source.refund_attributes_required")>] SourceRefundAttributesRequired
+        | [<JsonPropertyName("source.transaction.created")>] SourceTransactionCreated
+        | [<JsonPropertyName("source.transaction.updated")>] SourceTransactionUpdated
+        | [<JsonPropertyName("subscription_schedule.aborted")>] SubscriptionScheduleAborted
+        | [<JsonPropertyName("subscription_schedule.canceled")>] SubscriptionScheduleCanceled
+        | [<JsonPropertyName("subscription_schedule.completed")>] SubscriptionScheduleCompleted
+        | [<JsonPropertyName("subscription_schedule.created")>] SubscriptionScheduleCreated
+        | [<JsonPropertyName("subscription_schedule.expiring")>] SubscriptionScheduleExpiring
+        | [<JsonPropertyName("subscription_schedule.released")>] SubscriptionScheduleReleased
+        | [<JsonPropertyName("subscription_schedule.updated")>] SubscriptionScheduleUpdated
+        | [<JsonPropertyName("tax.settings.updated")>] TaxSettingsUpdated
+        | [<JsonPropertyName("tax_rate.created")>] TaxRateCreated
+        | [<JsonPropertyName("tax_rate.updated")>] TaxRateUpdated
+        | [<JsonPropertyName("terminal.reader.action_failed")>] TerminalReaderActionFailed
+        | [<JsonPropertyName("terminal.reader.action_succeeded")>] TerminalReaderActionSucceeded
+        | [<JsonPropertyName("terminal.reader.action_updated")>] TerminalReaderActionUpdated
+        | [<JsonPropertyName("test_helpers.test_clock.advancing")>] TestHelpersTestClockAdvancing
+        | [<JsonPropertyName("test_helpers.test_clock.created")>] TestHelpersTestClockCreated
+        | [<JsonPropertyName("test_helpers.test_clock.deleted")>] TestHelpersTestClockDeleted
+        | [<JsonPropertyName("test_helpers.test_clock.internal_failure")>] TestHelpersTestClockInternalFailure
+        | [<JsonPropertyName("test_helpers.test_clock.ready")>] TestHelpersTestClockReady
+        | [<JsonPropertyName("topup.canceled")>] TopupCanceled
+        | [<JsonPropertyName("topup.created")>] TopupCreated
+        | [<JsonPropertyName("topup.failed")>] TopupFailed
+        | [<JsonPropertyName("topup.reversed")>] TopupReversed
+        | [<JsonPropertyName("topup.succeeded")>] TopupSucceeded
+        | [<JsonPropertyName("transfer.created")>] TransferCreated
+        | [<JsonPropertyName("transfer.reversed")>] TransferReversed
+        | [<JsonPropertyName("transfer.updated")>] TransferUpdated
+        | [<JsonPropertyName("treasury.credit_reversal.created")>] TreasuryCreditReversalCreated
+        | [<JsonPropertyName("treasury.credit_reversal.posted")>] TreasuryCreditReversalPosted
+        | [<JsonPropertyName("treasury.debit_reversal.completed")>] TreasuryDebitReversalCompleted
+        | [<JsonPropertyName("treasury.debit_reversal.created")>] TreasuryDebitReversalCreated
+        | [<JsonPropertyName("treasury.debit_reversal.initial_credit_granted")>] TreasuryDebitReversalInitialCreditGranted
+        | [<JsonPropertyName("treasury.financial_account.closed")>] TreasuryFinancialAccountClosed
+        | [<JsonPropertyName("treasury.financial_account.created")>] TreasuryFinancialAccountCreated
+        | [<JsonPropertyName("treasury.financial_account.features_status_updated")>] TreasuryFinancialAccountFeaturesStatusUpdated
+        | [<JsonPropertyName("treasury.inbound_transfer.canceled")>] TreasuryInboundTransferCanceled
+        | [<JsonPropertyName("treasury.inbound_transfer.created")>] TreasuryInboundTransferCreated
+        | [<JsonPropertyName("treasury.inbound_transfer.failed")>] TreasuryInboundTransferFailed
+        | [<JsonPropertyName("treasury.inbound_transfer.succeeded")>] TreasuryInboundTransferSucceeded
+        | [<JsonPropertyName("treasury.outbound_payment.canceled")>] TreasuryOutboundPaymentCanceled
+        | [<JsonPropertyName("treasury.outbound_payment.created")>] TreasuryOutboundPaymentCreated
+        | [<JsonPropertyName("treasury.outbound_payment.expected_arrival_date_updated")>] TreasuryOutboundPaymentExpectedArrivalDateUpdated
+        | [<JsonPropertyName("treasury.outbound_payment.failed")>] TreasuryOutboundPaymentFailed
+        | [<JsonPropertyName("treasury.outbound_payment.posted")>] TreasuryOutboundPaymentPosted
+        | [<JsonPropertyName("treasury.outbound_payment.returned")>] TreasuryOutboundPaymentReturned
+        | [<JsonPropertyName("treasury.outbound_payment.tracking_details_updated")>] TreasuryOutboundPaymentTrackingDetailsUpdated
+        | [<JsonPropertyName("treasury.outbound_transfer.canceled")>] TreasuryOutboundTransferCanceled
+        | [<JsonPropertyName("treasury.outbound_transfer.created")>] TreasuryOutboundTransferCreated
+        | [<JsonPropertyName("treasury.outbound_transfer.expected_arrival_date_updated")>] TreasuryOutboundTransferExpectedArrivalDateUpdated
+        | [<JsonPropertyName("treasury.outbound_transfer.failed")>] TreasuryOutboundTransferFailed
+        | [<JsonPropertyName("treasury.outbound_transfer.posted")>] TreasuryOutboundTransferPosted
+        | [<JsonPropertyName("treasury.outbound_transfer.returned")>] TreasuryOutboundTransferReturned
+        | [<JsonPropertyName("treasury.outbound_transfer.tracking_details_updated")>] TreasuryOutboundTransferTrackingDetailsUpdated
+        | [<JsonPropertyName("treasury.received_credit.created")>] TreasuryReceivedCreditCreated
+        | [<JsonPropertyName("treasury.received_credit.failed")>] TreasuryReceivedCreditFailed
+        | [<JsonPropertyName("treasury.received_credit.succeeded")>] TreasuryReceivedCreditSucceeded
+        | [<JsonPropertyName("treasury.received_debit.created")>] TreasuryReceivedDebitCreated
 
     type EphemeralKey = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Time at which the key will expire. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Expires: DateTime
+        Expires: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -13460,7 +13460,7 @@ module StripeModel =
 
     type EmailSent = {
         ///The timestamp when the email was sent.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EmailSentAt: DateTime
+        EmailSentAt: DateTime
         ///The recipient's email address.
         EmailSentTo: string
     }
@@ -14097,7 +14097,7 @@ module StripeModel =
 
     type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceGbBankTransfer = {
         ///The last 4 digits of the account number of the sender of the funding.
-        [<JsonField(Name="account_number_last4")>]AccountNumberLast4: string option
+        [<JsonPropertyName("account_number_last4")>]AccountNumberLast4: string option
         ///The full name of the sender, as supplied by the sending bank.
         SenderName: string option
         ///The sort code of the bank of the sender of the funding
@@ -14115,7 +14115,7 @@ module StripeModel =
         ///The BIC of the bank of the sender of the funding.
         Bic: string option
         ///The last 4 digits of the IBAN of the sender of the funding.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///The full name of the sender, as supplied by the sending bank.
         SenderName: string option
     }
@@ -14148,7 +14148,7 @@ module StripeModel =
     [<Struct>]
     type CustomerTaxExempt =
         | Exempt
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Reverse
 
     type CustomUnitAmount = {
@@ -14573,13 +14573,13 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
     [<Struct>]
     type CheckoutUpiPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -14611,7 +14611,7 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -14627,12 +14627,12 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutRevolutPayPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
     type CheckoutPixPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
@@ -14642,12 +14642,12 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutPaytoPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
     type CheckoutPaypalPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type CheckoutPaynowPaymentMethodOptions () = 
@@ -14709,7 +14709,7 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutNaverPayPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type CheckoutMultibancoPaymentMethodOptions () = 
@@ -14737,12 +14737,12 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutLinkPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     [<Struct>]
     type CheckoutKrCardPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type CheckoutKonbiniPaymentMethodOptions = {
@@ -14763,13 +14763,13 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutKlarnaPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
     [<Struct>]
     type CheckoutKakaoPayPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type CheckoutIdealPaymentMethodOptions () = 
@@ -14841,7 +14841,7 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutCardPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -14883,7 +14883,7 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutBoletoPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -14902,7 +14902,7 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutBacsDebitPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -14924,7 +14924,7 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutAmazonPayPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
 
     type CheckoutAlmaPaymentMethodOptions () = 
@@ -14968,7 +14968,7 @@ module StripeModel =
 
     [<Struct>]
     type CheckoutAcssDebitPaymentMethodOptionsSetupFutureUsage =
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
 
@@ -15050,14 +15050,14 @@ module StripeModel =
         | De
         | El
         | En
-        | [<JsonUnionCase("en-GB")>] EnGB
+        | [<JsonPropertyName("en-GB")>] EnGB
         | Es
-        | [<JsonUnionCase("es-419")>] Es419
+        | [<JsonPropertyName("es-419")>] Es419
         | Et
         | Fi
         | Fil
         | Fr
-        | [<JsonUnionCase("fr-CA")>] FrCA
+        | [<JsonPropertyName("fr-CA")>] FrCA
         | Hr
         | Hu
         | Id
@@ -15072,7 +15072,7 @@ module StripeModel =
         | Nl
         | Pl
         | Pt
-        | [<JsonUnionCase("pt-BR")>] PtBR
+        | [<JsonPropertyName("pt-BR")>] PtBR
         | Ro
         | Ru
         | Sk
@@ -15082,8 +15082,8 @@ module StripeModel =
         | Tr
         | Vi
         | Zh
-        | [<JsonUnionCase("zh-HK")>] ZhHK
-        | [<JsonUnionCase("zh-TW")>] ZhTW
+        | [<JsonPropertyName("zh-HK")>] ZhHK
+        | [<JsonPropertyName("zh-TW")>] ZhTW
 
     [<Struct>]
     type CheckoutSessionCustomerCreation =
@@ -15189,17 +15189,17 @@ module StripeModel =
         | Unchecked
 
     type CardBrand =
-        | [<JsonUnionCase("American Express")>] AmericanExpress
-        | [<JsonUnionCase("Cartes Bancaires")>] CartesBancaires
-        | [<JsonUnionCase("Diners Club")>] DinersClub
-        | [<JsonUnionCase("Discover")>] Discover
-        | [<JsonUnionCase("Eftpos Australia")>] EftposAustralia
-        | [<JsonUnionCase("Girocard")>] Girocard
-        | [<JsonUnionCase("JCB")>] JCB
-        | [<JsonUnionCase("MasterCard")>] MasterCard
-        | [<JsonUnionCase("UnionPay")>] UnionPay
-        | [<JsonUnionCase("Visa")>] Visa
-        | [<JsonUnionCase("Unknown")>] Unknown
+        | [<JsonPropertyName("American Express")>] AmericanExpress
+        | [<JsonPropertyName("Cartes Bancaires")>] CartesBancaires
+        | [<JsonPropertyName("Diners Club")>] DinersClub
+        | [<JsonPropertyName("Discover")>] Discover
+        | [<JsonPropertyName("Eftpos Australia")>] EftposAustralia
+        | [<JsonPropertyName("Girocard")>] Girocard
+        | [<JsonPropertyName("JCB")>] JCB
+        | [<JsonPropertyName("MasterCard")>] MasterCard
+        | [<JsonPropertyName("UnionPay")>] UnionPay
+        | [<JsonPropertyName("Visa")>] Visa
+        | [<JsonPropertyName("Unknown")>] Unknown
 
     [<Struct>]
     type CardAllowRedisplay =
@@ -15253,20 +15253,20 @@ module StripeModel =
         | De
         | El
         | En
-        | [<JsonUnionCase("en-AU")>] EnAU
-        | [<JsonUnionCase("en-CA")>] EnCA
-        | [<JsonUnionCase("en-GB")>] EnGB
-        | [<JsonUnionCase("en-IE")>] EnIE
-        | [<JsonUnionCase("en-IN")>] EnIN
-        | [<JsonUnionCase("en-NZ")>] EnNZ
-        | [<JsonUnionCase("en-SG")>] EnSG
+        | [<JsonPropertyName("en-AU")>] EnAU
+        | [<JsonPropertyName("en-CA")>] EnCA
+        | [<JsonPropertyName("en-GB")>] EnGB
+        | [<JsonPropertyName("en-IE")>] EnIE
+        | [<JsonPropertyName("en-IN")>] EnIN
+        | [<JsonPropertyName("en-NZ")>] EnNZ
+        | [<JsonPropertyName("en-SG")>] EnSG
         | Es
-        | [<JsonUnionCase("es-419")>] Es419
+        | [<JsonPropertyName("es-419")>] Es419
         | Et
         | Fi
         | Fil
         | Fr
-        | [<JsonUnionCase("fr-CA")>] FrCA
+        | [<JsonPropertyName("fr-CA")>] FrCA
         | Hr
         | Hu
         | Id
@@ -15281,7 +15281,7 @@ module StripeModel =
         | Nl
         | Pl
         | Pt
-        | [<JsonUnionCase("pt-BR")>] PtBR
+        | [<JsonPropertyName("pt-BR")>] PtBR
         | Ro
         | Ru
         | Sk
@@ -15291,8 +15291,8 @@ module StripeModel =
         | Tr
         | Vi
         | Zh
-        | [<JsonUnionCase("zh-HK")>] ZhHK
-        | [<JsonUnionCase("zh-TW")>] ZhTW
+        | [<JsonPropertyName("zh-HK")>] ZhHK
+        | [<JsonPropertyName("zh-TW")>] ZhTW
 
     type BillingMeterResourceCustomerMappingSettings = {
         ///The key in the meter event payload to use for mapping the event to a customer.
@@ -15319,7 +15319,7 @@ module StripeModel =
 
     type BillingMeterResourceBillingMeterStatusTransitions = {
         ///The time the meter was deactivated, if any. Measured in seconds since Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DeactivatedAt: DateTime option
+        DeactivatedAt: DateTime option
     }
     with
         static member New (deactivatedAt: DateTime option) =
@@ -15366,7 +15366,7 @@ module StripeModel =
 
     type BillingClocksResourceStatusDetailsAdvancingStatusDetails = {
         ///The `frozen_time` that the Test Clock is advancing towards.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TargetFrozenTime: DateTime
+        TargetFrozenTime: DateTime
     }
     with
         static member New (targetFrozenTime: DateTime) =
@@ -15437,7 +15437,7 @@ module StripeModel =
         ///Aggregated value of all the events within `start_time` (inclusive) and `end_time` (inclusive). The aggregation strategy is defined on meter via `default_aggregation`.
         AggregatedValue: decimal
         ///End timestamp for this event summary (exclusive). Must be aligned with minute boundaries.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndTime: DateTime
+        EndTime: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -15445,7 +15445,7 @@ module StripeModel =
         ///The meter associated with this event summary.
         Meter: string
         ///Start timestamp for this event summary (inclusive). Must be aligned with minute boundaries.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartTime: DateTime
+        StartTime: DateTime
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -15494,9 +15494,9 @@ module StripeModel =
 
     type BankConnectionsResourceTransactionResourceStatusTransitions = {
         ///Time at which this transaction posted. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PostedAt: DateTime option
+        PostedAt: DateTime option
         ///Time at which this transaction was voided. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]VoidAt: DateTime option
+        VoidAt: DateTime option
     }
     with
         static member New (postedAt: DateTime option, voidAt: DateTime option) =
@@ -15715,7 +15715,7 @@ module StripeModel =
 
     type ApplePayDomain = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         DomainName: string
         ///Unique identifier for the object.
         Id: string
@@ -15945,7 +15945,7 @@ module StripeModel =
     type AccountUnificationAccountControllerStripeDashboardType =
         | Express
         | Full
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
 
     [<Struct>]
     type AccountUnificationAccountControllerLossesPayments =
@@ -15971,7 +15971,7 @@ module StripeModel =
 
     type AccountTosAcceptance = {
         ///The Unix timestamp marking when the account representative accepted their service agreement
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Date: DateTime option
+        Date: DateTime option
         ///The IP address from which the account representative accepted their service agreement
         Ip: string option
         ///The user's service agreement type
@@ -16114,20 +16114,20 @@ module StripeModel =
         | VerificationSupportability
 
     type AccountRequirementsDisabledReason =
-        | [<JsonUnionCase("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
+        | [<JsonPropertyName("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
         | Listed
         | Other
         | PlatformPaused
-        | [<JsonUnionCase("rejected.fraud")>] RejectedFraud
-        | [<JsonUnionCase("rejected.incomplete_verification")>] RejectedIncompleteVerification
-        | [<JsonUnionCase("rejected.listed")>] RejectedListed
-        | [<JsonUnionCase("rejected.other")>] RejectedOther
-        | [<JsonUnionCase("rejected.platform_fraud")>] RejectedPlatformFraud
-        | [<JsonUnionCase("rejected.platform_other")>] RejectedPlatformOther
-        | [<JsonUnionCase("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
-        | [<JsonUnionCase("rejected.terms_of_service")>] RejectedTermsOfService
-        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
-        | [<JsonUnionCase("requirements.pending_verification")>] RequirementsPendingVerification
+        | [<JsonPropertyName("rejected.fraud")>] RejectedFraud
+        | [<JsonPropertyName("rejected.incomplete_verification")>] RejectedIncompleteVerification
+        | [<JsonPropertyName("rejected.listed")>] RejectedListed
+        | [<JsonPropertyName("rejected.other")>] RejectedOther
+        | [<JsonPropertyName("rejected.platform_fraud")>] RejectedPlatformFraud
+        | [<JsonPropertyName("rejected.platform_other")>] RejectedPlatformOther
+        | [<JsonPropertyName("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
+        | [<JsonPropertyName("rejected.terms_of_service")>] RejectedTermsOfService
+        | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
+        | [<JsonPropertyName("requirements.pending_verification")>] RequirementsPendingVerification
         | UnderReview
 
     type AccountPaymentsSettings = {
@@ -16157,9 +16157,9 @@ module StripeModel =
     ///Related guide: [Connect Onboarding](https://docs.stripe.com/connect/custom/hosted-onboarding)
     type AccountLink = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The timestamp at which this account link will expire.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///The URL for the account link.
         Url: string
     }
@@ -16191,20 +16191,20 @@ module StripeModel =
             }
 
     type AccountFutureRequirementsDisabledReason =
-        | [<JsonUnionCase("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
+        | [<JsonPropertyName("action_required.requested_capabilities")>] ActionRequiredRequestedCapabilities
         | Listed
         | Other
         | PlatformPaused
-        | [<JsonUnionCase("rejected.fraud")>] RejectedFraud
-        | [<JsonUnionCase("rejected.incomplete_verification")>] RejectedIncompleteVerification
-        | [<JsonUnionCase("rejected.listed")>] RejectedListed
-        | [<JsonUnionCase("rejected.other")>] RejectedOther
-        | [<JsonUnionCase("rejected.platform_fraud")>] RejectedPlatformFraud
-        | [<JsonUnionCase("rejected.platform_other")>] RejectedPlatformOther
-        | [<JsonUnionCase("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
-        | [<JsonUnionCase("rejected.terms_of_service")>] RejectedTermsOfService
-        | [<JsonUnionCase("requirements.past_due")>] RequirementsPastDue
-        | [<JsonUnionCase("requirements.pending_verification")>] RequirementsPendingVerification
+        | [<JsonPropertyName("rejected.fraud")>] RejectedFraud
+        | [<JsonPropertyName("rejected.incomplete_verification")>] RejectedIncompleteVerification
+        | [<JsonPropertyName("rejected.listed")>] RejectedListed
+        | [<JsonPropertyName("rejected.other")>] RejectedOther
+        | [<JsonPropertyName("rejected.platform_fraud")>] RejectedPlatformFraud
+        | [<JsonPropertyName("rejected.platform_other")>] RejectedPlatformOther
+        | [<JsonPropertyName("rejected.platform_terms_of_service")>] RejectedPlatformTermsOfService
+        | [<JsonPropertyName("rejected.terms_of_service")>] RejectedTermsOfService
+        | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
+        | [<JsonPropertyName("requirements.pending_verification")>] RequirementsPendingVerification
         | UnderReview
 
     type AccountDeclineChargeOn = {
@@ -16235,27 +16235,27 @@ module StripeModel =
 
     type AccountCapabilityRequirementsDisabledReason =
         | Other
-        | [<JsonUnionCase("paused.inactivity")>] PausedInactivity
-        | [<JsonUnionCase("pending.onboarding")>] PendingOnboarding
-        | [<JsonUnionCase("pending.review")>] PendingReview
+        | [<JsonPropertyName("paused.inactivity")>] PausedInactivity
+        | [<JsonPropertyName("pending.onboarding")>] PendingOnboarding
+        | [<JsonPropertyName("pending.review")>] PendingReview
         | PlatformDisabled
         | PlatformPaused
-        | [<JsonUnionCase("rejected.inactivity")>] RejectedInactivity
-        | [<JsonUnionCase("rejected.other")>] RejectedOther
-        | [<JsonUnionCase("rejected.unsupported_business")>] RejectedUnsupportedBusiness
-        | [<JsonUnionCase("requirements.fields_needed")>] RequirementsFieldsNeeded
+        | [<JsonPropertyName("rejected.inactivity")>] RejectedInactivity
+        | [<JsonPropertyName("rejected.other")>] RejectedOther
+        | [<JsonPropertyName("rejected.unsupported_business")>] RejectedUnsupportedBusiness
+        | [<JsonPropertyName("requirements.fields_needed")>] RequirementsFieldsNeeded
 
     type AccountCapabilityFutureRequirementsDisabledReason =
         | Other
-        | [<JsonUnionCase("paused.inactivity")>] PausedInactivity
-        | [<JsonUnionCase("pending.onboarding")>] PendingOnboarding
-        | [<JsonUnionCase("pending.review")>] PendingReview
+        | [<JsonPropertyName("paused.inactivity")>] PausedInactivity
+        | [<JsonPropertyName("pending.onboarding")>] PendingOnboarding
+        | [<JsonPropertyName("pending.review")>] PendingReview
         | PlatformDisabled
         | PlatformPaused
-        | [<JsonUnionCase("rejected.inactivity")>] RejectedInactivity
-        | [<JsonUnionCase("rejected.other")>] RejectedOther
-        | [<JsonUnionCase("rejected.unsupported_business")>] RejectedUnsupportedBusiness
-        | [<JsonUnionCase("requirements.fields_needed")>] RequirementsFieldsNeeded
+        | [<JsonPropertyName("rejected.inactivity")>] RejectedInactivity
+        | [<JsonPropertyName("rejected.other")>] RejectedOther
+        | [<JsonPropertyName("rejected.unsupported_business")>] RejectedUnsupportedBusiness
+        | [<JsonPropertyName("requirements.fields_needed")>] RequirementsFieldsNeeded
 
     [<Struct>]
     type AccountCapabilitiesZipPayments =
@@ -16666,7 +16666,7 @@ module StripeModel =
     type AccountType =
         | Custom
         | Express
-        | [<JsonUnionCase("none")>] None'
+        | [<JsonPropertyName("none")>] None'
         | Standard
 
     [<Struct>]
@@ -16701,7 +16701,7 @@ module StripeModel =
         ///The account's country.
         Country: IsoTypes.IsoCountryCode option
         ///Time at which the account was connected. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime option
+        Created: DateTime option
         ///Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
         DefaultCurrency: IsoTypes.IsoCurrencyCode option
         ///Whether account details have been submitted. Accounts with Stripe Dashboard access, which includes Standard accounts, cannot receive payouts before this is true. Accounts where this is false should be directed to [an onboarding flow](/connect/onboarding) to finish submitting account details.
@@ -16944,7 +16944,7 @@ module StripeModel =
         ///The status of the OXXO payments capability of the account, or whether the account can directly process OXXO charges.
         OxxoPayments: AccountCapabilitiesOxxoPayments option
         ///The status of the P24 payments capability of the account, or whether the account can directly process P24 charges.
-        [<JsonField(Name="p24_payments")>]P24Payments: AccountCapabilitiesP24Payments option
+        [<JsonPropertyName("p24_payments")>]P24Payments: AccountCapabilitiesP24Payments option
         ///The status of the pay_by_bank payments capability of the account, or whether the account can directly process pay_by_bank charges.
         PayByBankPayments: AccountCapabilitiesPayByBankPayments option
         ///The status of the Payco capability of the account, or whether the account can directly process Payco payments.
@@ -16974,9 +16974,9 @@ module StripeModel =
         ///The status of the Swish capability of the account, or whether the account can directly process Swish payments.
         SwishPayments: AccountCapabilitiesSwishPayments option
         ///The status of the tax reporting 1099-K (US) capability of the account.
-        [<JsonField(Name="tax_reporting_us_1099_k")>]TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
+        [<JsonPropertyName("tax_reporting_us_1099_k")>]TaxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K option
         ///The status of the tax reporting 1099-MISC (US) capability of the account.
-        [<JsonField(Name="tax_reporting_us_1099_misc")>]TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
+        [<JsonPropertyName("tax_reporting_us_1099_misc")>]TaxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc option
         ///The status of the transfers capability of the account, or whether your platform can transfer funds to the account.
         Transfers: AccountCapabilitiesTransfers option
         ///The status of the banking capability, or whether the account can have bank accounts.
@@ -17065,7 +17065,7 @@ module StripeModel =
         ///Fields that are due and can be resolved by providing the corresponding alternative fields instead. Multiple alternatives can reference the same `original_fields_due`. When this happens, any of these alternatives can serve as a pathway for attempting to resolve the fields. Additionally, providing `original_fields_due` again also serves as a pathway for attempting to resolve the fields.
         Alternatives: AccountRequirementsAlternative list option
         ///Date on which `future_requirements` becomes the main `requirements` hash and `future_requirements` becomes empty. After the transition, `currently_due` requirements may immediately become `past_due`, but the account may also be given a grace period depending on the capability's enablement state prior to transitioning.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CurrentDeadline: DateTime option
+        CurrentDeadline: DateTime option
         ///Fields that need to be resolved to keep the capability enabled. If not resolved by `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash.
         CurrentlyDue: string list
         ///This is typed as an enum for consistency with `requirements.disabled_reason`, but it safe to assume `future_requirements.disabled_reason` is null because fields in `future_requirements` will never disable the account.
@@ -17096,7 +17096,7 @@ module StripeModel =
         ///Fields that are due and can be resolved by providing the corresponding alternative fields instead. Multiple alternatives can reference the same `original_fields_due`. When this happens, any of these alternatives can serve as a pathway for attempting to resolve the fields. Additionally, providing `original_fields_due` again also serves as a pathway for attempting to resolve the fields.
         Alternatives: AccountRequirementsAlternative list option
         ///The date by which all required account information must be both submitted and verified. This includes fields listed in `currently_due` as well as those in `pending_verification`. If any required information is missing or unverified by this date, the account may be disabled. Note that `current_deadline` may change if additional `currently_due` requirements are requested.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CurrentDeadline: DateTime option
+        CurrentDeadline: DateTime option
         ///Fields that need to be resolved to keep the capability enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the capability is disabled.
         CurrentlyDue: string list
         ///Description of why the capability is disabled. [Learn more about handling verification issues](https://docs.stripe.com/connect/handling-api-verification).
@@ -17154,7 +17154,7 @@ module StripeModel =
         ///Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
         Alternatives: AccountRequirementsAlternative list option
         ///Date on which `future_requirements` becomes the main `requirements` hash and `future_requirements` becomes empty. After the transition, `currently_due` requirements may immediately become `past_due`, but the account may also be given a grace period depending on its enablement state prior to transitioning.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CurrentDeadline: DateTime option
+        CurrentDeadline: DateTime option
         ///Fields that need to be resolved to keep the account enabled. If not resolved by `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash.
         CurrentlyDue: string list option
         ///This is typed as an enum for consistency with `requirements.disabled_reason`.
@@ -17230,7 +17230,7 @@ module StripeModel =
         ///Fields that are due and can be resolved by providing the corresponding alternative fields instead. Many alternatives can list the same `original_fields_due`, and any of these alternatives can serve as a pathway for attempting to resolve the fields again. Re-providing `original_fields_due` also serves as a pathway for attempting to resolve the fields again.
         Alternatives: AccountRequirementsAlternative list option
         ///Date by which the fields in `currently_due` must be collected to keep the account enabled. These fields may disable the account sooner if the next threshold is reached before they are collected.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CurrentDeadline: DateTime option
+        CurrentDeadline: DateTime option
         ///Fields that need to be resolved to keep the account enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
         CurrentlyDue: string list option
         ///If the account is disabled, this enum describes why. [Learn more about handling verification issues](https://docs.stripe.com/connect/handling-api-verification).
@@ -17300,7 +17300,7 @@ module StripeModel =
         ClientSecret: string
         Components: ConnectEmbeddedAccountSessionCreateComponents
         ///The timestamp at which this AccountSession will expire.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
     }
@@ -17411,9 +17411,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode option
         ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
+        [<JsonPropertyName("line1")>]Line1: string option
         ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
+        [<JsonPropertyName("line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
@@ -17507,7 +17507,7 @@ module StripeModel =
         ///ID of the charge that the application fee was taken from.
         Charge: ApplicationFeeCharge'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///Polymorphic source of the application fee. Includes the ID of the object the application fee was created from.
@@ -17592,11 +17592,11 @@ module StripeModel =
     ///Related guide: [Store data between page reloads](https://docs.stripe.com/stripe-apps/store-auth-data-custom-objects)
     and AppsSecret = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///If true, indicates that this secret has been deleted
         Deleted: bool option
         ///The Unix timestamp for the expiry time of the secret, after which the secret deletes.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -17819,11 +17819,11 @@ module StripeModel =
         ///Gross amount of this transaction (in cents (or local equivalent)). A positive value represents funds charged to another party, and a negative value represents funds sent to another party.
         Amount: int
         ///The date that the transaction's net funds become available in the Stripe balance.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]AvailableOn: DateTime
+        AvailableOn: DateTime
         ///The balance that this transaction impacts.
         BalanceType: BalanceTransactionBalanceType
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -17925,7 +17925,7 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string
+        [<JsonPropertyName("last4")>]Last4: string
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///Information about the requirements for the bank account, including what information needs to be collected.
@@ -17973,7 +17973,7 @@ module StripeModel =
 
     and BankConnectionsResourceAccountNumberDetails = {
         ///When the account number is expected to expire, if applicable.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpectedExpiryDate: DateTime option
+        ExpectedExpiryDate: DateTime option
         ///The type of account number associated with the account.
         IdentifierType: BankConnectionsResourceAccountNumberDetailsIdentifierType
         ///Whether the account number is currently active and usable for transactions.
@@ -18018,7 +18018,7 @@ module StripeModel =
 
     and BankConnectionsResourceBalance = {
         ///The time that the external institution calculated this balance. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]AsOf: DateTime
+        AsOf: DateTime
         Cash: BankConnectionsResourceBalanceApiResourceCashBalance option
         Credit: BankConnectionsResourceBalanceApiResourceCreditBalance option
         ///The balances owed to (or by) the account holder, before subtracting any outbound pending transactions or adding any inbound pending transactions.
@@ -18064,9 +18064,9 @@ module StripeModel =
 
     and BankConnectionsResourceBalanceRefresh = {
         ///The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]LastAttemptedAt: DateTime
+        LastAttemptedAt: DateTime
         ///Time at which the next balance refresh can be initiated. This value will be `null` when `status` is `pending`. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]NextRefreshAvailableAt: DateTime option
+        NextRefreshAvailableAt: DateTime option
         ///The status of the last refresh attempt.
         Status: BankConnectionsResourceBalanceRefreshStatus
     }
@@ -18093,9 +18093,9 @@ module StripeModel =
 
     and BankConnectionsResourceOwnershipRefresh = {
         ///The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]LastAttemptedAt: DateTime
+        LastAttemptedAt: DateTime
         ///Time at which the next ownership refresh can be initiated. This value will be `null` when `status` is `pending`. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]NextRefreshAvailableAt: DateTime option
+        NextRefreshAvailableAt: DateTime option
         ///The status of the last refresh attempt.
         Status: BankConnectionsResourceOwnershipRefreshStatus
     }
@@ -18111,9 +18111,9 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]LastAttemptedAt: DateTime
+        LastAttemptedAt: DateTime
         ///Time at which the next transaction refresh can be initiated. This value will be `null` when `status` is `pending`. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]NextRefreshAvailableAt: DateTime option
+        NextRefreshAvailableAt: DateTime option
         ///The status of the last refresh attempt.
         Status: BankConnectionsResourceTransactionRefreshStatus
     }
@@ -18157,7 +18157,7 @@ module StripeModel =
     and BillingAlertTriggered = {
         Alert: BillingAlert
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///ID of customer for which the alert triggered
         Customer: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -18209,7 +18209,7 @@ module StripeModel =
     ///A credit balance transaction is a resource representing a transaction (either a credit or a debit) against an existing credit grant.
     and BillingCreditBalanceTransaction = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Credit details for this credit balance transaction. Only present if type is `credit`.
         Credit: BillingCreditGrantsResourceBalanceCredit option
         ///The credit grant associated with this credit balance transaction.
@@ -18217,7 +18217,7 @@ module StripeModel =
         ///Debit details for this credit balance transaction. Only present if type is `debit`.
         Debit: BillingCreditGrantsResourceBalanceDebit option
         ///The effective time of this credit balance transaction.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EffectiveAt: DateTime
+        EffectiveAt: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -18260,15 +18260,15 @@ module StripeModel =
         ///The category of this credit grant. This is for tracking purposes and isn't displayed to the customer.
         Category: BillingCreditGrantCategory
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///ID of the customer receiving the billing credits.
         Customer: BillingCreditGrantCustomer'AnyOf
         ///ID of the account representing the customer receiving the billing credits
         CustomerAccount: string option
         ///The time when the billing credits become effective-when they're eligible for use.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EffectiveAt: DateTime option
+        EffectiveAt: DateTime option
         ///The time when the billing credits expire. If not present, the billing credits don't expire.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -18282,9 +18282,9 @@ module StripeModel =
         ///ID of the test clock this credit grant belongs to.
         TestClock: BillingCreditGrantTestClock'AnyOf option
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Updated: DateTime
+        Updated: DateTime
         ///The time when this credit grant was voided. If not present, the credit grant hasn't been voided.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]VoidedAt: DateTime option
+        VoidedAt: DateTime option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -18323,7 +18323,7 @@ module StripeModel =
     ///Related guide: [Usage based billing](https://docs.stripe.com/billing/subscriptions/usage-based)
     and BillingMeter = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         CustomerMapping: BillingMeterResourceCustomerMappingSettings
         DefaultAggregation: BillingMeterResourceAggregationSettings
         ///The meter's name.
@@ -18340,7 +18340,7 @@ module StripeModel =
         Status: BillingMeterStatus
         StatusTransitions: BillingMeterResourceBillingMeterStatusTransitions
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Updated: DateTime
+        Updated: DateTime
         ValueSettings: BillingMeterResourceBillingMeterValue
     }
     with
@@ -18366,7 +18366,7 @@ module StripeModel =
     ///Meter events represent actions that customers take in your system. You can use meter events to bill a customer based on their usage. Meter events are associated with billing meters, which define both the contents of the event’s payload and how to aggregate those events.
     and BillingMeterEvent = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The name of the meter event. Corresponds with the `event_name` field on a meter.
         EventName: string
         ///A unique identifier for the event.
@@ -18376,7 +18376,7 @@ module StripeModel =
         ///The payload of the event. This contains the fields corresponding to a meter's `customer_mapping.event_payload_key` (default is `stripe_customer_id`) and `value_settings.event_payload_key` (default is `value`). Read more about the [payload](https://docs.stripe.com/billing/subscriptions/usage-based/meters/configure#meter-configuration-attributes).
         Payload: Map<string, string list>
         ///The timestamp passed in when creating the event. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Timestamp: DateTime
+        Timestamp: DateTime
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -18533,7 +18533,7 @@ module StripeModel =
         ///The subscription that generated this invoice
         Subscription: BillingBillResourceInvoicingParentsInvoiceSubscriptionParentSubscription'AnyOf
         ///Only set for upcoming invoices that preview prorations. The time used to calculate prorations.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]SubscriptionProrationDate: DateTime option
+        SubscriptionProrationDate: DateTime option
     }
     with
         static member New (metadata: Map<string, string> option, subscription: BillingBillResourceInvoicingParentsInvoiceSubscriptionParentSubscription'AnyOf, ?subscriptionProrationDate: DateTime) =
@@ -18779,7 +18779,7 @@ module StripeModel =
         Application: BillingPortalConfigurationApplication'AnyOf option
         BusinessProfile: PortalBusinessProfile
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overriden](https://docs.stripe.com/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
         DefaultReturnUrl: string option
         Features: PortalFeatures
@@ -18795,7 +18795,7 @@ module StripeModel =
         ///The name of the configuration.
         Name: string option
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Updated: DateTime
+        Updated: DateTime
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -18838,7 +18838,7 @@ module StripeModel =
         ///The configuration used by this session, describing the features available.
         Configuration: BillingPortalSessionConfiguration'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The ID of the customer for this session.
         Customer: string
         ///The ID of the account for this session.
@@ -18908,7 +18908,7 @@ module StripeModel =
         ///Whether the capability has been requested.
         Requested: bool
         ///Time at which the capability was requested. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]RequestedAt: DateTime option
+        RequestedAt: DateTime option
         Requirements: AccountCapabilityRequirements option
         ///The status of the capability.
         Status: CapabilityStatus
@@ -18943,11 +18943,11 @@ module StripeModel =
         ///Billing address country, if provided when creating card.
         AddressCountry: IsoTypes.IsoCountryCode option
         ///Address line 1 (Street address/PO Box/Company name).
-        [<JsonField(Name="address_line1")>]AddressLine1: string option
+        [<JsonPropertyName("address_line1")>]AddressLine1: string option
         ///If `address_line1` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: CardAddressLine1Check option
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: CardAddressLine1Check option
         ///Address line 2 (Apartment/Suite/Unit/Building).
-        [<JsonField(Name="address_line2")>]AddressLine2: string option
+        [<JsonPropertyName("address_line2")>]AddressLine2: string option
         ///State/County/Province/Region.
         AddressState: string option
         ///ZIP or postal code.
@@ -18973,7 +18973,7 @@ module StripeModel =
         ///A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
         Description: string option
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        [<JsonPropertyName("dynamic_last4")>]DynamicLast4: string option
         ///Two-digit number representing the card's expiration month.
         ExpMonth: int
         ///Four-digit number representing the card's expiration year.
@@ -18990,7 +18990,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string
+        [<JsonPropertyName("last4")>]Last4: string
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///Cardholder name.
@@ -19116,7 +19116,7 @@ module StripeModel =
         ///If the charge was created without capturing, this Boolean represents whether it is still uncaptured or has since been captured.
         Captured: bool
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///ID of the customer this charge is for if one exists.
@@ -19135,7 +19135,7 @@ module StripeModel =
         FraudDetails: ChargeFraudDetails option
         ///Unique identifier for the object.
         Id: string
-        [<JsonField(Name="level3")>]Level3: Level3 option
+        [<JsonPropertyName("level3")>]Level3: Level3 option
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -19415,7 +19415,7 @@ module StripeModel =
         ///When set, provides configuration for the Checkout Session to gather active consent from customers.
         ConsentCollection: PaymentPagesCheckoutSessionConsentCollection option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode option
         ///Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing) sessions created before 2025-03-31.
@@ -19446,7 +19446,7 @@ module StripeModel =
         ///A list of the types of payment methods (e.g., `card`) that should be excluded from this Checkout Session. This should only be used when payment methods for this Checkout Session are managed through the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
         ExcludedPaymentMethodTypes: string list option
         ///The timestamp at which the Checkout Session will expire.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///Unique identifier for the object.
         Id: string
         ///The integration identifier for this Checkout Session. Multiple Checkout Sessions can have the same integration identifier.
@@ -20032,7 +20032,7 @@ module StripeModel =
         Multibanco: CheckoutMultibancoPaymentMethodOptions option
         NaverPay: CheckoutNaverPayPaymentMethodOptions option
         Oxxo: CheckoutOxxoPaymentMethodOptions option
-        [<JsonField(Name="p24")>]P24: CheckoutP24PaymentMethodOptions option
+        [<JsonPropertyName("p24")>]P24: CheckoutP24PaymentMethodOptions option
         Payco: CheckoutPaycoPaymentMethodOptions option
         Paynow: CheckoutPaynowPaymentMethodOptions option
         Paypal: CheckoutPaypalPaymentMethodOptions option
@@ -20152,21 +20152,21 @@ module StripeModel =
         AmountTotal: int
         Beneficiary: ClimateRemovalsBeneficiary option
         ///Time at which the order was canceled. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Reason for the cancellation of this order.
         CancellationReason: ClimateOrderCancellationReason option
         ///For delivered orders, a URL to a delivery certificate for the order.
         Certificate: string option
         ///Time at which the order was confirmed. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ConfirmedAt: DateTime option
+        ConfirmedAt: DateTime option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase, representing the currency for this order.
         Currency: IsoTypes.IsoCurrencyCode
         ///Time at which the order's expected_delivery_year was delayed. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DelayedAt: DateTime option
+        DelayedAt: DateTime option
         ///Time at which the order was delivered. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DeliveredAt: DateTime option
+        DeliveredAt: DateTime option
         ///Details about the delivery of carbon removal for this order.
         DeliveryDetails: ClimateRemovalsOrderDeliveries list
         ///The year this order is expected to be delivered.
@@ -20182,7 +20182,7 @@ module StripeModel =
         ///Unique ID for the Climate `Product` this order is purchasing.
         Product: ClimateOrderProduct'AnyOf
         ///Time at which the order's product was substituted for a different product. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ProductSubstitutedAt: DateTime option
+        ProductSubstitutedAt: DateTime option
         ///The current status of this order.
         Status: ClimateOrderStatus
     }
@@ -20223,7 +20223,7 @@ module StripeModel =
     ///You can retrieve it to see the current price and availability.
     and ClimateProduct = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Current prices for a metric ton of carbon removal in a currency's smallest unit.
         CurrentPricesPerMetricTon: Map<string, string list>
         ///The year in which the carbon removal is expected to be delivered.
@@ -20311,7 +20311,7 @@ module StripeModel =
     ///The delivery of a specified quantity of carbon for an order.
     and ClimateRemovalsOrderDeliveries = {
         ///Time at which the delivery occurred. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DeliveredAt: DateTime
+        DeliveredAt: DateTime
         ///Specific location of this delivery.
         Location: ClimateRemovalsLocation option
         ///Quantity of carbon removal supplied by this delivery.
@@ -20338,9 +20338,9 @@ module StripeModel =
     ///- [Build two-step confirmation](https://docs.stripe.com/payments/build-a-two-step-confirmation).
     and ConfirmationToken = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Time at which this ConfirmationToken expires and can no longer be used to confirm a PaymentIntent or SetupIntent.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -20486,7 +20486,7 @@ module StripeModel =
         NaverPay: PaymentMethodNaverPay option
         NzBankAccount: PaymentMethodNzBankAccount option
         Oxxo: PaymentMethodOxxo option
-        [<JsonField(Name="p24")>]P24: PaymentMethodP24 option
+        [<JsonPropertyName("p24")>]P24: PaymentMethodP24 option
         PayByBank: PaymentMethodPayByBank option
         Payco: PaymentMethodPayco option
         Paynow: PaymentMethodPaynow option
@@ -20886,7 +20886,7 @@ module StripeModel =
         AmountOff: int option
         AppliesTo: CouponAppliesTo option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///If `amount_off` has been set, the three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the amount to take off.
         Currency: IsoTypes.IsoCurrencyCode option
         ///Coupons defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
@@ -20908,7 +20908,7 @@ module StripeModel =
         ///Percent that will be taken off the subtotal of any invoices for this customer for the duration of the coupon. For example, a coupon with percent_off of 50 will make a $ (or local equivalent)100 invoice $ (or local equivalent)50 instead.
         PercentOff: decimal option
         ///Date after which the coupon can no longer be redeemed.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]RedeemBy: DateTime option
+        RedeemBy: DateTime option
         ///Number of times this coupon has been applied to a customer.
         TimesRedeemed: int
         ///Taking account of the above properties, whether this coupon can still be applied to a customer.
@@ -20967,7 +20967,7 @@ module StripeModel =
         ///This is the sum of all the shipping amounts.
         AmountShipping: int
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///ID of the customer.
@@ -20981,7 +20981,7 @@ module StripeModel =
         ///The aggregate amounts calculated per discount for all line items.
         DiscountAmounts: DiscountsResourceDiscountAmount list
         ///The date when this credit note is in effect. Same as `created` unless overwritten. When defined, this value replaces the system-generated 'Date of issue' printed on the credit note PDF.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EffectiveAt: DateTime option
+        EffectiveAt: DateTime option
         ///Unique identifier for the object.
         Id: string
         ///ID of the invoice.
@@ -21027,7 +21027,7 @@ module StripeModel =
         ///Type of this credit note, one of `pre_payment` or `post_payment`. A `pre_payment` credit note means it was issued when the invoice was open. A `post_payment` credit note means it was issued when the invoice was paid.
         Type: CreditNoteType
         ///The time that the credit note was voided.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]VoidedAt: DateTime option
+        VoidedAt: DateTime option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -21244,7 +21244,7 @@ module StripeModel =
         ///The current funds being held by Stripe on behalf of the customer. You can apply these funds towards payment intents when the source is "cash_balance". The `settings[reconciliation_mode]` field describes if these funds apply to these payment intents manually or automatically.
         CashBalance: CashBalance option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) the customer can be charged in for recurring billing purposes.
         Currency: IsoTypes.IsoCurrencyCode option
         ///The ID of an Account representing a customer. You can use this ID with any v1 API that accepts a customer_account parameter.
@@ -21405,7 +21405,7 @@ module StripeModel =
 
     and CustomerAcceptance = {
         ///The time that the customer accepts the mandate.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]AcceptedAt: DateTime option
+        AcceptedAt: DateTime option
         Offline: OfflineAcceptance option
         Online: OnlineAcceptance option
         ///The mandate includes the type of customer acceptance information, such as: `online` or `offline`.
@@ -21564,7 +21564,7 @@ module StripeModel =
         ///The ID of the checkout session (if any) that created the transaction.
         CheckoutSession: CustomerBalanceTransactionCheckoutSession'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The ID of the credit note (if any) related to the transaction.
         CreditNote: CustomerBalanceTransactionCreditNote'AnyOf option
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -21634,7 +21634,7 @@ module StripeModel =
         AdjustedForOverdraft: CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft option
         AppliedToPayment: CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///The customer whose available cash balance changed as a result of this transaction.
@@ -21694,13 +21694,13 @@ module StripeModel =
         ClientSecret: string
         Components: CustomerSessionResourceComponents option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The Customer the Customer Session was created for.
         Customer: CustomerSessionCustomer'AnyOf
         ///The Account that the Customer Session was created for.
         CustomerAccount: string option
         ///The timestamp at which this Customer Session will expire.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
     }
@@ -21948,7 +21948,7 @@ module StripeModel =
         PromotionCode: DeletedDiscountPromotionCode'AnyOf option
         Source: DiscountSource
         ///Date that the coupon was applied.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Start: DateTime
+        Start: DateTime
         ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
         Subscription: string option
         ///The subscription item that this coupon is applied to, if it is applied to a particular subscription item.
@@ -22024,7 +22024,7 @@ module StripeModel =
         ///The ID of the account representing the customer associated with this discount.
         CustomerAccount: string option
         ///If the coupon has a duration of `repeating`, the date that this discount will end. If the coupon has a duration of `once` or `forever`, this attribute will be null.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]End: DateTime option
+        End: DateTime option
         ///The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
         Id: string
         ///The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
@@ -22035,7 +22035,7 @@ module StripeModel =
         PromotionCode: DiscountPromotionCode'AnyOf option
         Source: DiscountSource
         ///Date that the coupon was applied.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Start: DateTime
+        Start: DateTime
         ///The subscription that this coupon is applied to, if it is applied to a particular subscription.
         Subscription: string option
         ///The subscription item that this coupon is applied to, if it is applied to a particular subscription item.
@@ -22145,7 +22145,7 @@ module StripeModel =
         ///ID of the charge that's disputed.
         Charge: DisputeCharge'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///List of eligibility types that are included in `enhanced_evidence`.
@@ -22389,7 +22389,7 @@ module StripeModel =
 
     and DisputeEvidenceDetails = {
         ///Date by which evidence must be submitted in order to successfully challenge dispute. Will be 0 if the customer's bank or credit card company doesn't allow a response for this particular dispute.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DueBy: DateTime option
+        DueBy: DateTime option
         EnhancedEligibility: DisputeEnhancedEligibility
         ///Whether evidence has been staged for this dispute.
         HasEvidence: bool
@@ -22458,9 +22458,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode option
         ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
+        [<JsonPropertyName("line1")>]Line1: string option
         ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
+        [<JsonPropertyName("line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
@@ -22668,7 +22668,7 @@ module StripeModel =
         ///Authentication context needed to fetch the event or related object.
         Context: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         Data: NotificationEventData
         ///Unique identifier for the object.
         Id: string
@@ -22790,7 +22790,7 @@ module StripeModel =
         ///Balance transaction that describes the impact on your account balance.
         BalanceTransaction: FeeRefundBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///ID of the application fee that was refunded.
@@ -22831,9 +22831,9 @@ module StripeModel =
     ///Related guide: [File upload guide](https://docs.stripe.com/file-upload)
     and File = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The file expires and isn't available at this time in epoch seconds.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///The suitable name for saving the file to a filesystem.
         Filename: string option
         ///Unique identifier for the object.
@@ -22894,11 +22894,11 @@ module StripeModel =
     ///retrieve the contents of the file without authentication.
     and FileLink = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Returns if the link is already expired.
         Expired: bool
         ///Time that the link expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///The file object this link points to.
         File: FileLinkFile'AnyOf
         ///Unique identifier for the object.
@@ -22943,7 +22943,7 @@ module StripeModel =
         ///The type of the account. Account category is further divided in `subcategory`.
         Category: FinancialConnectionsAccountCategory
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///A human-readable name that has been assigned to this account, either by the account holder or by the institution.
         DisplayName: string option
         ///Unique identifier for the object.
@@ -22951,7 +22951,7 @@ module StripeModel =
         ///The name of the institution that holds this account.
         InstitutionName: string
         ///The last 4 digits of the account number. If present, this will be 4 numeric characters.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         ///The most recent information about the account's owners.
@@ -23014,7 +23014,7 @@ module StripeModel =
     ///Describes a snapshot of the owners of an account at a particular point in time.
     and FinancialConnectionsAccountOwnership = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///A paginated list of owners for this account.
@@ -23126,11 +23126,11 @@ module StripeModel =
         Status: FinancialConnectionsTransactionStatus
         StatusTransitions: BankConnectionsResourceTransactionResourceStatusTransitions
         ///Time at which the transaction was transacted. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TransactedAt: DateTime
+        TransactedAt: DateTime
         ///The token of the transaction refresh that last updated or created this transaction.
         TransactionRefresh: string
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Updated: DateTime
+        Updated: DateTime
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -23159,9 +23159,9 @@ module StripeModel =
         ///Currency of objects to be included in the report run.
         Currency: IsoTypes.IsoCurrencyCode option
         ///Ending timestamp of data to be included in the report run. Can be any UTC timestamp between 1 second after the user specified `interval_start` and 1 second before this report's last `data_available_end` value.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]IntervalEnd: DateTime option
+        IntervalEnd: DateTime option
         ///Starting timestamp of data to be included in the report run. Can be any UTC timestamp between 1 second after this report's `data_available_start` and 1 second before the user specified `interval_end` value.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]IntervalStart: DateTime option
+        IntervalStart: DateTime option
         ///Payout ID by which to filter the report run.
         Payout: string option
         ///Category of balance transactions to be included in the report run.
@@ -23230,7 +23230,7 @@ module StripeModel =
     ///Related guide: [Forward card details to third-party API endpoints](https://docs.stripe.com/payments/forwarding).
     and ForwardingRequest = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -23838,7 +23838,7 @@ module StripeModel =
         ///A string to reference this user. This can be a customer ID, a session ID, or similar, and can be used to reconcile this verification with your internal systems.
         ClientReferenceId: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         Document: GelatoDocumentReport option
         Email: GelatoEmailReport option
         ///Unique identifier for the object.
@@ -23892,7 +23892,7 @@ module StripeModel =
         ///The short-lived client secret used by Stripe.js to [show a verification modal](https://docs.stripe.com/js/identity/modal) inside your app. This client secret expires after 24 hours and can only be used once. Don’t store it, log it, embed it in a URL, or expose it to anyone other than the user. Make sure that you have TLS enabled on any page that includes the client secret. Refer to our docs on [passing the client secret to the frontend](https://docs.stripe.com/identity/verification-sessions#client-secret) to learn more.
         ClientSecret: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If present, this property tells you the last error encountered when processing the verification.
@@ -23980,7 +23980,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: InboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
         ///Routing number of the bank account.
@@ -24012,9 +24012,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode option
         ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
+        [<JsonPropertyName("line1")>]Line1: string option
         ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
+        [<JsonPropertyName("line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
@@ -24083,7 +24083,7 @@ module StripeModel =
         DisputeOpened: InsightsResourcesPaymentEvaluationDisputeOpened option
         EarlyFraudWarningReceived: InsightsResourcesPaymentEvaluationEarlyFraudWarningReceived option
         ///Timestamp when the event occurred.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]OccurredAt: DateTime
+        OccurredAt: DateTime
         Refunded: InsightsResourcesPaymentEvaluationRefunded option
         ///Indicates the type of event attached to the payment evaluation.
         Type: InsightsResourcesPaymentEvaluationEventType
@@ -24238,7 +24238,7 @@ module StripeModel =
     ///Details of an rejected card outcome attached to this payment evaluation.
     and InsightsResourcesPaymentEvaluationRejectedCard = {
         ///Result of the address line 1 check.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: InsightsResourcesPaymentEvaluationRejectedCardAddressLine1Check
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: InsightsResourcesPaymentEvaluationRejectedCardAddressLine1Check
         ///Indicates whether the cardholder provided a postal code and if it matched the cardholder’s billing address.
         AddressPostalCodeCheck: InsightsResourcesPaymentEvaluationRejectedCardAddressPostalCodeCheck
         ///Result of the CVC check.
@@ -24274,7 +24274,7 @@ module StripeModel =
     ///A payment evaluation signal with evaluated_at, risk_level, and score fields.
     and InsightsResourcesPaymentEvaluationSignalV2 = {
         ///The time when this signal was evaluated.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EvaluatedAt: DateTime
+        EvaluatedAt: DateTime
         ///Risk level of this signal, based on the score.
         RiskLevel: InsightsResourcesPaymentEvaluationSignalV2RiskLevel
         ///Score for this signal. Possible values for evaluated payments are between 0 and 100. The value is returned with two decimal places and higher scores indicate a higher likelihood of the signal being true. A score of -1 is returned when a model evaluation was not performed, such as requests from incomplete integrations.
@@ -24311,7 +24311,7 @@ module StripeModel =
     ///Details of an succeeded card outcome attached to this payment evaluation.
     and InsightsResourcesPaymentEvaluationSucceededCard = {
         ///Result of the address line 1 check.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: InsightsResourcesPaymentEvaluationSucceededCardAddressLine1Check
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: InsightsResourcesPaymentEvaluationSucceededCardAddressLine1Check
         ///Indicates whether the cardholder provided a postal code and if it matched the cardholder’s billing address.
         AddressPostalCodeCheck: InsightsResourcesPaymentEvaluationSucceededCardAddressPostalCodeCheck
         ///Result of the CVC check.
@@ -24365,7 +24365,7 @@ module StripeModel =
         ///Two digit number representing the card's expiration year
         ExpYear: int option
         ///The last 4 digits of the card
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (brand: string option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, last4: string option) =
@@ -24430,7 +24430,7 @@ module StripeModel =
         AutoAdvance: bool option
         AutomaticTax: AutomaticTax
         ///The time when this invoice is currently scheduled to be automatically finalized. The field will be `null` if the invoice is not scheduled to finalize in the future. If the invoice is not in the draft state, this field will always be `null` - see `finalized_at` for the time when an already-finalized invoice was finalized.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]AutomaticallyFinalizesAt: DateTime option
+        AutomaticallyFinalizesAt: DateTime option
         ///Indicates the reason why the invoice was created.
         ///* `manual`: Unrelated to a subscription, for example, created via the invoice editor.
         ///* `subscription`: No longer in use. Applies to subscriptions from before May 2018 where no distinction was made between updates, cycles, and thresholds.
@@ -24445,7 +24445,7 @@ module StripeModel =
         ///The confirmation secret associated with this invoice. Currently, this contains the client_secret of the PaymentIntent that Stripe creates during invoice finalization.
         ConfirmationSecret: InvoicesResourceConfirmationSecret option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///Custom fields displayed on the invoice.
@@ -24479,9 +24479,9 @@ module StripeModel =
         ///The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
         Discounts: InvoiceDiscounts'AnyOf list
         ///The date on which payment for this invoice is due. This value will be `null` for invoices where `collection_method=charge_automatically`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DueDate: DateTime option
+        DueDate: DateTime option
         ///The date when this invoice is in effect. Same as `finalized_at` unless overwritten. When defined, this value replaces the system-generated 'Date of issue' printed on the invoice PDF and receipt.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EffectiveAt: DateTime option
+        EffectiveAt: DateTime option
         ///Ending customer balance after the invoice is finalized. Invoices are finalized approximately an hour after successful webhook delivery or when payment collection is attempted for the invoice. If the invoice has not been finalized yet, this will be null.
         EndingBalance: int option
         ///Footer displayed on the invoice.
@@ -24506,7 +24506,7 @@ module StripeModel =
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///The time at which payment will next be attempted. This value will be `null` for invoices where `collection_method=send_invoice`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]NextPaymentAttempt: DateTime option
+        NextPaymentAttempt: DateTime option
         ///A unique, identifying string that appears on emails sent to the customer for this invoice. This starts with the customer's unique invoice_prefix if it is specified.
         Number: string option
         ///The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://docs.stripe.com/billing/invoices/connect) documentation for details.
@@ -24517,9 +24517,9 @@ module StripeModel =
         ///Payments for this invoice. Use [invoice payment](/api/invoice-payment) to get more details.
         Payments: InvoicePayments option
         ///The latest timestamp at which invoice items can be associated with this invoice. Use the [line item period](/api/invoices/line_item#invoice_line_item_object-period) to get the service period for each price.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PeriodEnd: DateTime
+        PeriodEnd: DateTime
         ///The earliest timestamp at which invoice items can be associated with this invoice. Use the [line item period](/api/invoices/line_item#invoice_line_item_object-period) to get the service period for each price.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PeriodStart: DateTime
+        PeriodStart: DateTime
         ///Total amount of all post-payment credit notes issued for this invoice.
         PostPaymentCreditNotesAmount: int
         ///Total amount of all pre-payment credit notes issued for this invoice.
@@ -24558,7 +24558,7 @@ module StripeModel =
         ///The aggregate tax information of all line items.
         TotalTaxes: BillingBillResourceInvoicingTaxesTax list option
         ///Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have [been exhausted](https://docs.stripe.com/billing/webhooks#understand). This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]WebhooksDeliveredAt: DateTime option
+        WebhooksDeliveredAt: DateTime option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -24787,7 +24787,7 @@ module StripeModel =
         ///Amount intended to be paid toward this invoice, in cents (or local equivalent)
         AmountRequested: int
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///Unique identifier for the object.
@@ -24913,7 +24913,7 @@ module StripeModel =
         ///A description of the mandate or subscription that is meant to be displayed to the customer.
         Description: string option
         ///End date of the mandate or subscription.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime option
+        EndDate: DateTime option
     }
     with
         static member New (amount: int option, amountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
@@ -25006,7 +25006,7 @@ module StripeModel =
     ///can be created from within the Dashboard, and they can be used over the API when creating invoices.
     and InvoiceRenderingTemplate = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -25140,7 +25140,7 @@ module StripeModel =
         ///The ID of the account to bill for this invoice item.
         CustomerAccount: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Date: DateTime
+        Date: DateTime
         ///An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
         ///If true, discounts will apply to this invoice item. Always false for prorations.
@@ -25429,7 +25429,7 @@ module StripeModel =
         ///The cardholder to whom this authorization belongs.
         Cardholder: IssuingAuthorizationCardholder'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The currency of the cardholder. This currency can be different from the currency presented at authorization and the `merchant_currency` field on this authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///Fleet-specific information for authorizations using Fleet cards.
@@ -25522,7 +25522,7 @@ module StripeModel =
         CancellationReason: IssuingCardCancellationReason option
         Cardholder: IssuingCardholder
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Supported currencies are `usd` in the US, `eur` in the EU, and `gbp` in the UK.
         Currency: IsoTypes.IsoCurrencyCode
         ///The card's CVC. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://docs.stripe.com/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://docs.stripe.com/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
@@ -25536,7 +25536,7 @@ module StripeModel =
         ///Unique identifier for the object.
         Id: string
         ///The last 4 digits of the card number.
-        [<JsonField(Name="last4")>]Last4: string
+        [<JsonPropertyName("last4")>]Last4: string
         ///Stripe’s assessment of whether this card’s details have been compromised. If this property isn't null, cancel and reissue the card to prevent fraudulent activity risk.
         LatestFraudWarning: IssuingCardFraudWarning option
         ///Rules that control the lifecycle of this card, such as automatic cancellation. Refer to our [documentation](/issuing/controls/lifecycle-controls) for more details.
@@ -25620,7 +25620,7 @@ module StripeModel =
         ///Additional information about a `company` cardholder.
         Company: IssuingCardholderCompany option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The cardholder's email address.
         Email: string option
         ///Unique identifier for the object.
@@ -25677,7 +25677,7 @@ module StripeModel =
         ///List of balance transactions associated with the dispute.
         BalanceTransactions: BalanceTransaction list option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The currency the `transaction` was made in.
         Currency: IsoTypes.IsoCurrencyCode
         Evidence: IssuingDisputeEvidence
@@ -25727,7 +25727,7 @@ module StripeModel =
         ///Hash containing carrier text, for use with physical bundles that support carrier text.
         CarrierText: IssuingPersonalizationDesignCarrierText option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -25806,20 +25806,20 @@ module StripeModel =
         ///Card associated with this token.
         Card: IssuingTokenCard'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The hashed ID derived from the device ID from the card network associated with the token.
         DeviceFingerprint: string option
         ///Unique identifier for the object.
         Id: string
         ///The last four digits of the token.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         ///The token service provider / card network associated with the token.
         Network: IssuingTokenNetwork
         NetworkData: IssuingNetworkTokenNetworkData option
         ///Time at which the token was last updated by the card network. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]NetworkUpdatedAt: DateTime
+        NetworkUpdatedAt: DateTime
         ///The usage state of the token.
         Status: IssuingTokenStatus
         ///The digital wallet for this token, if one was used.
@@ -25866,7 +25866,7 @@ module StripeModel =
         ///The cardholder to whom this transaction belongs.
         Cardholder: IssuingTransactionCardholder'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///If you've disputed the transaction, the ID of the dispute.
@@ -26112,7 +26112,7 @@ module StripeModel =
         ///A code created by Stripe which is shared with the merchant to validate the authorization. This field will be populated if the authorization message was approved. The code typically starts with the letter "S", followed by a six-digit number. For example, "S498162". Please note that the code is not guaranteed to be unique across authorizations.
         AuthorizationCode: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///The `pending_request.merchant_amount` at the time of the request, presented in the `merchant_currency` and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
@@ -26126,7 +26126,7 @@ module StripeModel =
         ///If the `request_history.reason` is `webhook_error` because the direct webhook response is invalid (for example, parsing errors or missing parameters), we surface a more detailed error message via this field.
         ReasonMessage: string option
         ///Time when the card network received an authorization request from the acquirer in UTC. Referred to by networks as transmission time.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]RequestedAt: DateTime option
+        RequestedAt: DateTime option
     }
     with
         static member New (amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationCode: string option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, networkRiskScore: int option, reason: IssuingAuthorizationRequestReason, reasonMessage: string option, requestedAt: DateTime option) =
@@ -26173,7 +26173,7 @@ module StripeModel =
 
     and IssuingAuthorizationVerificationData = {
         ///Whether the cardholder provided an address first line and if it matched the cardholder’s `billing.address.line1`.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check
         ///Whether the cardholder provided a postal code and if it matched the cardholder’s `billing.address.postal_code`.
         AddressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck
         ///The exemption applied to this authorization.
@@ -26245,7 +26245,7 @@ module StripeModel =
 
     and IssuingCardFraudWarning = {
         ///Timestamp of the most recent fraud warning.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartedAt: DateTime option
+        StartedAt: DateTime option
         ///The type of fraud warning that most recently took place on this card. This field updates with every new fraud warning, so the value changes over time. If populated, cancel and reissue the card.
         Type: IssuingCardFraudWarningType option
     }
@@ -26287,7 +26287,7 @@ module StripeModel =
         ///Additional information that may be required for clearing customs.
         Customs: IssuingCardShippingCustoms option
         ///A unix timestamp representing a best estimate of when the card will be delivered.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Eta: DateTime option
+        Eta: DateTime option
         ///Recipient name.
         Name: string
         ///The phone number of the receiver of the shipment. Our courier partners will use this number to contact you in the event of card delivery issues. For individual shipments to the EU/UK, if this field is empty, we will provide them with the phone number provided when the cardholder was initially created.
@@ -26505,13 +26505,13 @@ module StripeModel =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         AdditionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf option
         ///Date when order was canceled.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Whether the cardholder was provided with a cancellation policy.
         CancellationPolicyProvided: bool option
         ///Reason for canceling the order.
         CancellationReason: string option
         ///Date when the cardholder expected to receive the product.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpectedAt: DateTime option
+        ExpectedAt: DateTime option
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         ///Description of the merchandise or service that was purchased.
@@ -26521,7 +26521,7 @@ module StripeModel =
         ///Result of cardholder's attempt to return the product.
         ReturnStatus: IssuingDisputeCanceledEvidenceReturnStatus option
         ///Date when the product was returned or attempted to be returned.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
+        ReturnedAt: DateTime option
     }
     with
         static member New (additionalDocumentation: IssuingDisputeCanceledEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationPolicyProvided: bool option, cancellationReason: string option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeCanceledEvidenceProductType option, returnStatus: IssuingDisputeCanceledEvidenceReturnStatus option, returnedAt: DateTime option) =
@@ -26632,13 +26632,13 @@ module StripeModel =
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         ///Date when the product was received.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReceivedAt: DateTime option
+        ReceivedAt: DateTime option
         ///Description of the cardholder's attempt to return the product.
         ReturnDescription: string option
         ///Result of cardholder's attempt to return the product.
         ReturnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option
         ///Date when the product was returned or attempted to be returned.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReturnedAt: DateTime option
+        ReturnedAt: DateTime option
     }
     with
         static member New (additionalDocumentation: IssuingDisputeMerchandiseNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, explanation: string option, receivedAt: DateTime option, returnDescription: string option, returnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option, returnedAt: DateTime option) =
@@ -26676,7 +26676,7 @@ module StripeModel =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         AdditionalDocumentation: IssuingDisputeNotReceivedEvidenceAdditionalDocumentation'AnyOf option
         ///Date when the cardholder expected to receive the product.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpectedAt: DateTime option
+        ExpectedAt: DateTime option
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         ///Description of the merchandise or service that was purchased.
@@ -26725,13 +26725,13 @@ module StripeModel =
         ///(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
         AdditionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option
         ///Date when order was canceled.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Reason for canceling the order.
         CancellationReason: string option
         ///Explanation of why the cardholder is disputing this transaction.
         Explanation: string option
         ///Date when the product was received.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReceivedAt: DateTime option
+        ReceivedAt: DateTime option
     }
     with
         static member New (additionalDocumentation: IssuingDisputeServiceNotAsDescribedEvidenceAdditionalDocumentation'AnyOf option, canceledAt: DateTime option, cancellationReason: string option, explanation: string option, receivedAt: DateTime option) =
@@ -27141,9 +27141,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode option
         ///Block/Building number.
-        [<JsonField(Name="line1")>]Line1: string option
+        [<JsonPropertyName("line1")>]Line1: string option
         ///Building details.
-        [<JsonField(Name="line2")>]Line2: string option
+        [<JsonPropertyName("line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///Prefecture.
@@ -27487,7 +27487,7 @@ module StripeModel =
         ///A description of the mandate or subscription that is meant to be displayed to the customer.
         Description: string option
         ///End date of the mandate or subscription.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime option
+        EndDate: DateTime option
     }
     with
         static member New (amount: int option, amountType: MandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
@@ -27620,7 +27620,7 @@ module StripeModel =
         ///A description of the mandate or subscription that is meant to be displayed to the customer.
         Description: string option
         ///End date of the mandate or subscription.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime option
+        EndDate: DateTime option
     }
     with
         static member New (amount: int option, amountType: MandateUpiAmountType option, description: string option, endDate: DateTime option) =
@@ -27670,7 +27670,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: OutboundPaymentsPaymentMethodDetailsUsBankAccountMandate'AnyOf option
         ///The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
@@ -27721,7 +27721,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: OutboundTransfersPaymentMethodDetailsUsBankAccountMandate'AnyOf option
         ///The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
@@ -27761,7 +27761,7 @@ module StripeModel =
         ///ID of the Connect application that created the PaymentAttemptRecord.
         Application: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Customer information for this payment.
         CustomerDetails: PaymentsPrimitivesPaymentRecordsResourceCustomerDetails option
         ///Indicates whether the customer was present in your checkout flow during this payment.
@@ -28096,7 +28096,7 @@ module StripeModel =
         ///Settings to configure compatible payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods)
         AutomaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option
         ///Populated when `status` is `canceled`, this is the time at which the PaymentIntent was canceled. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Reason for cancellation of this PaymentIntent, either user-provided (`duplicate`, `fraudulent`, `requested_by_customer`, or `abandoned`) or generated by Stripe internally (`failed_invoice`, `void_invoice`, `automatic`, or `expired`).
         CancellationReason: PaymentIntentCancellationReason option
         ///Controls when the funds will be captured from the customer's account.
@@ -28108,7 +28108,7 @@ module StripeModel =
         ///Describes whether we can confirm this PaymentIntent automatically, or if it requires customer action to confirm the payment.
         ConfirmationMethod: PaymentIntentConfirmationMethod
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///ID of the Customer this PaymentIntent belongs to, if one exists.
@@ -28401,7 +28401,7 @@ module StripeModel =
 
     and PaymentIntentNextActionKonbini = {
         ///The timestamp at which the pending Konbini payment expires.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///The URL for the Konbini payment instructions page, which allows customers to view and print a Konbini voucher.
         HostedVoucherUrl: string option
         Stores: PaymentIntentNextActionKonbiniStores
@@ -28462,7 +28462,7 @@ module StripeModel =
 
     and PaymentIntentNextActionVerifyWithMicrodeposits = {
         ///The timestamp when the microdeposits are expected to land.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ArrivalDate: DateTime
+        ArrivalDate: DateTime
         ///The URL for the hosted verification page, which allows customers to verify their bank account.
         HostedVerificationUrl: string
         ///The type of the microdeposit sent to the customer. Used to distinguish between different verification methods.
@@ -28511,7 +28511,7 @@ module StripeModel =
         NaverPay: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions option
         NzBankAccount: PaymentIntentPaymentMethodOptionsNzBankAccount option
         Oxxo: PaymentMethodOptionsOxxo option
-        [<JsonField(Name="p24")>]P24: PaymentMethodOptionsP24 option
+        [<JsonPropertyName("p24")>]P24: PaymentMethodOptionsP24 option
         PayByBank: PaymentMethodOptionsPayByBank option
         Payco: PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions option
         Paynow: PaymentMethodOptionsPaynow option
@@ -29343,7 +29343,7 @@ module StripeModel =
         CardPresent: PaymentMethodCardPresent option
         Cashapp: PaymentMethodCashapp option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         Crypto: PaymentMethodCrypto option
         Custom: PaymentMethodCustom option
         ///The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.
@@ -29373,7 +29373,7 @@ module StripeModel =
         NaverPay: PaymentMethodNaverPay option
         NzBankAccount: PaymentMethodNzBankAccount option
         Oxxo: PaymentMethodOxxo option
-        [<JsonField(Name="p24")>]P24: PaymentMethodP24 option
+        [<JsonPropertyName("p24")>]P24: PaymentMethodP24 option
         PayByBank: PaymentMethodPayByBank option
         Payco: PaymentMethodPayco option
         Paynow: PaymentMethodPaynow option
@@ -29501,7 +29501,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string
+        [<JsonPropertyName("last4")>]Last4: string
         ///Contains information about card networks that can be used to process the payment.
         Networks: Networks option
         ///Status of a card based on the card issuer.
@@ -29535,7 +29535,7 @@ module StripeModel =
 
     and PaymentMethodCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: PaymentMethodCardChecksAddressLine1Check option
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: PaymentMethodCardChecksAddressLine1Check option
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -29594,7 +29594,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Contains information about card networks that can be used to process the payment.
         Networks: PaymentMethodCardPresentNetworks option
         ///Details about payment methods collected offline.
@@ -29644,7 +29644,7 @@ module StripeModel =
         AmexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout option
         ApplePay: PaymentMethodCardWalletApplePay option
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        [<JsonPropertyName("dynamic_last4")>]DynamicLast4: string option
         GooglePay: PaymentMethodCardWalletGooglePay option
         Link: PaymentMethodCardWalletLink option
         Masterpass: PaymentMethodCardWalletMasterpass option
@@ -29791,7 +29791,7 @@ module StripeModel =
         NaverPay: PaymentMethodConfigResourcePaymentMethodProperties option
         NzBankAccount: PaymentMethodConfigResourcePaymentMethodProperties option
         Oxxo: PaymentMethodConfigResourcePaymentMethodProperties option
-        [<JsonField(Name="p24")>]P24: PaymentMethodConfigResourcePaymentMethodProperties option
+        [<JsonPropertyName("p24")>]P24: PaymentMethodConfigResourcePaymentMethodProperties option
         ///For child configs, the configuration's parent configuration.
         Parent: string option
         PayByBank: PaymentMethodConfigResourcePaymentMethodProperties option
@@ -29938,7 +29938,7 @@ module StripeModel =
         NaverPay: PaymentMethodDetailsNaverPay option
         NzBankAccount: PaymentMethodDetailsNzBankAccount option
         Oxxo: PaymentMethodDetailsOxxo option
-        [<JsonField(Name="p24")>]P24: PaymentMethodDetailsP24 option
+        [<JsonPropertyName("p24")>]P24: PaymentMethodDetailsP24 option
         PayByBank: PaymentMethodDetailsPayByBank option
         Payco: PaymentMethodDetailsPayco option
         Paynow: PaymentMethodDetailsPaynow option
@@ -30041,7 +30041,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Routing transit number of the bank account.
         RoutingNumber: string option
     }
@@ -30092,7 +30092,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebitMandate: PaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
         ///Can be one of `en`, `de`, `fr`, or `nl`
         PreferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option
@@ -30129,7 +30129,7 @@ module StripeModel =
         ///Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
         Brand: PaymentMethodDetailsCardBrand option
         ///When using manual capture, a future timestamp at which the charge will be automatically refunded if uncaptured.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CaptureBefore: DateTime option
+        CaptureBefore: DateTime option
         ///Check results by Card networks on Card address and CVC at time of payment.
         Checks: PaymentMethodDetailsCardChecks option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
@@ -30155,7 +30155,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment or created by it.
         Mandate: string option
         ///True if this payment was marked as MOTO and out of scope for SCA.
@@ -30209,7 +30209,7 @@ module StripeModel =
 
     and PaymentMethodDetailsCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -30258,7 +30258,7 @@ module StripeModel =
         ///The [product code](https://stripe.com/docs/card-product-codes) that identifies the specific program or product associated with a card.
         BrandProduct: string option
         ///When using manual capture, a future timestamp after which the charge will be automatically refunded if uncaptured.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CaptureBefore: DateTime option
+        CaptureBefore: DateTime option
         ///The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay.
         CardholderName: string option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
@@ -30285,7 +30285,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the [location](https://docs.stripe.com/api/terminal/locations) that this transaction's reader is assigned to.
         Location: string option
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `interac`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -30376,7 +30376,7 @@ module StripeModel =
         AmexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout option
         ApplePay: PaymentMethodDetailsCardWalletApplePay option
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        [<JsonPropertyName("dynamic_last4")>]DynamicLast4: string option
         GooglePay: PaymentMethodDetailsCardWalletGooglePay option
         Link: PaymentMethodDetailsCardWalletLink option
         Masterpass: PaymentMethodDetailsCardWalletMasterpass option
@@ -30497,7 +30497,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebitMandate: PaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Unique transaction ID generated by iDEAL.
         TransactionId: string option
         ///Owner's verified full name. Values are verified or provided by iDEAL directly
@@ -30551,7 +30551,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the [location](https://docs.stripe.com/api/terminal/locations) that this transaction's reader is assigned to.
         Location: string option
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `interac`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -30676,7 +30676,7 @@ module StripeModel =
         ///A unique identifier for the buyer as determined by the local payment processor.
         BuyerId: string option
         ///The last four digits of the card. This may not be present for American Express cards.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///The Korean Card transaction ID associated with this payment.
         TransactionId: string option
     }
@@ -30740,7 +30740,7 @@ module StripeModel =
         ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
         Funding: PaymentMethodDetailsPassthroughCardFunding option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (brand: PaymentMethodDetailsPassthroughCardBrand option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentMethodDetailsPassthroughCardFunding option, last4: string option) =
@@ -30789,7 +30789,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebitMandate: PaymentMethodDetailsPaymentRecordBancontactGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Preferred language of the Bancontact authorization page that the customer is redirected to. Can be one of `en`, `de`, `fr`, or `nl`
         PreferredLanguage: PaymentMethodDetailsPaymentRecordBancontactPreferredLanguage option
         ///Owner's verified full name. Values are verified or provided by Bancontact directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
@@ -30839,7 +30839,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebitMandate: PaymentMethodDetailsPaymentRecordIdealGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Unique transaction ID generated by iDEAL.
         TransactionId: string option
         ///Owner's verified full name. Values are verified or provided by iDEAL directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
@@ -30897,7 +30897,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Find the ID of the mandate used for this payment under the [payment_method_details.sepa_debit.mandate](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-sepa_debit-mandate) property on the Charge. Use this mandate ID to [retrieve the Mandate](https://docs.stripe.com/api/mandates/retrieve).
         Mandate: string option
     }
@@ -30927,7 +30927,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebitMandate: PaymentMethodDetailsPaymentRecordSofortGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Preferred language of the SOFORT authorization page that the customer is redirected to. Can be one of `de`, `en`, `es`, `fr`, `it`, `nl`, or `pl`
         PreferredLanguage: PaymentMethodDetailsPaymentRecordSofortPreferredLanguage option
         ///Owner's verified full name. Values are verified or provided by SOFORT directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
@@ -30967,7 +30967,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: PaymentMethodDetailsPaymentRecordUsBankAccountMandate'AnyOf option
         ///The ACH payment reference for this transaction.
@@ -31044,7 +31044,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Find the ID of the mandate used for this payment under the [payment_method_details.sepa_debit.mandate](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-sepa_debit-mandate) property on the Charge. Use this mandate ID to [retrieve the Mandate](https://docs.stripe.com/api/mandates/retrieve).
         Mandate: string option
     }
@@ -31074,7 +31074,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.
         GeneratedSepaDebitMandate: PaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Preferred language of the SOFORT authorization page that the customer is redirected to.
         ///Can be one of `de`, `en`, `es`, `fr`, `it`, `nl`, or `pl`
         PreferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option
@@ -31116,7 +31116,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///ID of the mandate used to make this payment.
         Mandate: PaymentMethodDetailsUsBankAccountMandate'AnyOf option
         ///Reference number to locate ACH payments with customer's bank.
@@ -31149,7 +31149,7 @@ module StripeModel =
         AmazonPay: PaymentMethodDomainResourcePaymentMethodStatus
         ApplePay: PaymentMethodDomainResourcePaymentMethodStatus
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The domain name that this payment method domain object represents.
         DomainName: string
         ///Whether this payment method domain is enabled. If the domain is not enabled, payment methods that require a payment method domain will not appear in Elements.
@@ -31254,7 +31254,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Contains information about card networks that can be used to process the payment.
         Networks: PaymentMethodCardPresentNetworks option
         ///The languages that the issuing bank recommends using for localizing any customer-facing text, as read from the card. Referenced from EMV tag 5F2D, data encoded on the card's chip.
@@ -31295,7 +31295,7 @@ module StripeModel =
         ///The local credit or debit card brand.
         Brand: PaymentMethodKrCardBrand option
         ///The last four digits of the card. This may not be present for American Express cards.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (brand: PaymentMethodKrCardBrand option, last4: string option) =
@@ -31402,7 +31402,7 @@ module StripeModel =
         ///A description of the mandate or subscription that is meant to be displayed to the customer.
         Description: string option
         ///End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime option
+        EndDate: DateTime option
         ///Specifies payment frequency. One of `day`, `week`, `month`, `year`, or `sporadic`.
         Interval: PaymentMethodOptionsCardMandateOptionsInterval
         ///The number of intervals between payments. For example, `interval=month` and `interval_count=3` indicates one payment every three months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks). This parameter is optional when `interval=sporadic`.
@@ -31410,7 +31410,7 @@ module StripeModel =
         ///Unique identifier for the mandate or subscription.
         Reference: string
         ///Start date of the mandate or subscription. Start date should not be lesser than yesterday.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartDate: DateTime
+        StartDate: DateTime
         ///Specifies the type of mandates supported. Possible values are `india`.
         SupportedTypes: string list option
     }
@@ -31602,7 +31602,7 @@ module StripeModel =
         ///A description of the mandate or subscription that is meant to be displayed to the customer.
         Description: string option
         ///End date of the mandate or subscription.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime option
+        EndDate: DateTime option
     }
     with
         static member New (amount: int option, amountType: PaymentMethodOptionsMandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
@@ -31762,7 +31762,7 @@ module StripeModel =
         ///Information about the object that generated this PaymentMethod.
         GeneratedFrom: SepaDebitGeneratedFrom option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (bankCode: string option, branchCode: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
@@ -31797,7 +31797,7 @@ module StripeModel =
         ///Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
         Fingerprint: string option
         ///Last four digits of the bank account number.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///Contains information about US bank account networks that can be used.
         Networks: UsBankAccountNetworks option
         ///Routing number of the bank account.
@@ -32365,7 +32365,7 @@ module StripeModel =
         ///ID of the Connect application that created the PaymentRecord.
         Application: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Customer information for this payment.
         CustomerDetails: PaymentsPrimitivesPaymentRecordsResourceCustomerDetails option
         ///Indicates whether the customer was present in your checkout flow during this payment.
@@ -32429,9 +32429,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode option
         ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
+        [<JsonPropertyName("line1")>]Line1: string option
         ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
+        [<JsonPropertyName("line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
@@ -32505,7 +32505,7 @@ module StripeModel =
         ///Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
         Funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardFunding option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardFunding option, last4: string option) =
@@ -32525,7 +32525,7 @@ module StripeModel =
         ///Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
         Brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option
         ///When using manual capture, a future timestamp at which the charge will be automatically refunded if uncaptured.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CaptureBefore: DateTime option
+        CaptureBefore: DateTime option
         ///Check results by Card networks on Card address and CVC at time of payment.
         Checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option
         ///Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
@@ -32548,7 +32548,7 @@ module StripeModel =
         ///The name of the card's issuing bank.
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///True if this payment was marked as MOTO and out of scope for SCA.
         Moto: bool option
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `interac`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -32598,7 +32598,7 @@ module StripeModel =
 
     and PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks = {
         ///If you provide a value for `address.line1`, the check result is one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressLine1Check option
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressLine1Check option
         ///If you provide a address postal code, the check result is one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressPostalCodeCheck option
         ///If you provide a CVC, the check results is one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -32672,7 +32672,7 @@ module StripeModel =
     and PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet = {
         ApplePay: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePay option
         ///(For tokenized numbers only.) The last four digits of the device account number.
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        [<JsonPropertyName("dynamic_last4")>]DynamicLast4: string option
         GooglePay: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay option
         ///The type of the card wallet, one of `apple_pay` or `google_pay`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
         Type: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType
@@ -32737,7 +32737,7 @@ module StripeModel =
         NaverPay: PaymentMethodDetailsPaymentRecordNaverPay option
         NzBankAccount: PaymentMethodDetailsNzBankAccount option
         Oxxo: PaymentMethodDetailsPaymentRecordOxxo option
-        [<JsonField(Name="p24")>]P24: PaymentMethodDetailsP24 option
+        [<JsonPropertyName("p24")>]P24: PaymentMethodDetailsP24 option
         PayByBank: PaymentMethodDetailsPaymentRecordPayByBank option
         Payco: PaymentMethodDetailsPaymentRecordPayco option
         ///ID of the Stripe PaymentMethod used to make this payment.
@@ -32855,7 +32855,7 @@ module StripeModel =
         ///Two digit number representing the card's expiration year
         ExpYear: int option
         ///The last 4 digits of the card
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
     }
     with
         static member New (brand: string option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, last4: string option) =
@@ -32911,13 +32911,13 @@ module StripeModel =
         ///The amount of the application fee (if any) requested for the payout. [See the Connect documentation](https://docs.stripe.com/connect/instant-payouts#monetization-and-fees) for details.
         ApplicationFeeAmount: int option
         ///Date that you can expect the payout to arrive in the bank. This factors in delays to account for weekends or bank holidays.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ArrivalDate: DateTime
+        ArrivalDate: DateTime
         ///Returns `true` if the payout is created by an [automated payout schedule](https://docs.stripe.com/payouts#payout-schedule) and `false` if it's [requested manually](https://stripe.com/docs/payouts#manual-payouts).
         Automatic: bool
         ///ID of the balance transaction that describes the impact of this payout on your account balance.
         BalanceTransaction: PayoutBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -33055,7 +33055,7 @@ module StripeModel =
         ///The Kanji variation of the person's address (Japan only).
         AddressKanji: LegalEntityJapanAddress option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         Dob: LegalEntityDob option
         ///The person's email address. Also available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`.
         Email: string option
@@ -33259,7 +33259,7 @@ module StripeModel =
         ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `amount`) will be charged per unit in `quantity` (for plans with `usage_type=licensed`), or per unit of total usage (for plans with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
         BillingScheme: PlanBillingScheme
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///Unique identifier for the object.
@@ -33549,7 +33549,7 @@ module StripeModel =
         ///Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `unit_amount` or `unit_amount_decimal`) will be charged per unit in `quantity` (for prices with `usage_type=licensed`), or per unit of total usage (for prices with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
         BillingScheme: PriceBillingScheme
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
@@ -33629,7 +33629,7 @@ module StripeModel =
         ///Whether the product is currently available for purchase.
         Active: bool
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The ID of the [Price](https://docs.stripe.com/api/prices) object that is the default price for this product.
         DefaultPrice: ProductDefaultPrice'AnyOf option
         ///The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
@@ -33659,7 +33659,7 @@ module StripeModel =
         ///A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.
         UnitLabel: string option
         ///Time at which the object was last updated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Updated: DateTime
+        Updated: DateTime
         ///A URL of a publicly-accessible webpage for this product.
         Url: string option
     }
@@ -33727,13 +33727,13 @@ module StripeModel =
         ///The customer-facing code. Regardless of case, this code must be unique across all active promotion codes for each customer. Valid characters are lower case letters (a-z), upper case letters (A-Z), digits (0-9), and dashes (-).
         Code: string
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The customer who can use this promotion code.
         Customer: PromotionCodeCustomer'AnyOf option
         ///The account representing the customer who can use this promotion code.
         CustomerAccount: string option
         ///Date at which the promotion code can no longer be redeemed.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -33837,7 +33837,7 @@ module StripeModel =
         CollectionMethod: QuoteCollectionMethod
         Computed: QuotesResourceComputed
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode option
         ///The customer who received this quote. A customer is required to finalize the quote. Once specified, you can't change it.
@@ -33851,7 +33851,7 @@ module StripeModel =
         ///The discounts applied to this quote.
         Discounts: QuoteDiscounts'AnyOf list
         ///The date on which the quote will be canceled if in `open` or `draft` status. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///A footer that will be displayed on the quote PDF.
         Footer: string option
         ///Details of the quote that was cloned. See the [cloning documentation](https://docs.stripe.com/quotes/clone) for more details.
@@ -34076,7 +34076,7 @@ module StripeModel =
         ///The subscription's description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs.
         Description: string option
         ///When creating a new subscription, the date of which the subscription schedule will start after the quote is accepted. This date is ignored if it is in the past when the quote is accepted. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EffectiveDate: DateTime option
+        EffectiveDate: DateTime option
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that will set metadata on the subscription or subscription schedule when the quote is accepted. If a recurring price is included in `line_items`, this field will be passed to the resulting subscription's `metadata` field. If `subscription_data.effective_date` is used, this field will be passed to the resulting subscription schedule's `phases.metadata` field. Unlike object-level metadata, this field is declarative. Updates will clear prior values.
         Metadata: Map<string, string> option
         ///Integer representing the number of trial period days before the customer is charged for the first time.
@@ -34190,7 +34190,7 @@ module StripeModel =
         ///ID of the charge this early fraud warning is for, optionally expanded.
         Charge: RadarEarlyFraudWarningCharge'AnyOf
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
         FraudType: string
         ///Unique identifier for the object.
@@ -34227,7 +34227,7 @@ module StripeModel =
     and RadarPaymentEvaluation = {
         ClientDeviceMetadataDetails: InsightsResourcesPaymentEvaluationClientDeviceMetadata option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CreatedAt: DateTime
+        CreatedAt: DateTime
         CustomerDetails: InsightsResourcesPaymentEvaluationCustomerDetails option
         ///Event information associated with the payment evaluation, such as refunds, dispute, early fraud warnings, or user interventions.
         Events: InsightsResourcesPaymentEvaluationEvent list option
@@ -34269,7 +34269,7 @@ module StripeModel =
         ///The name of the value list for use in rules.
         Alias: string
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The name or email address of the user who created this value list.
         CreatedBy: string
         ///Unique identifier for the object.
@@ -34378,7 +34378,7 @@ module StripeModel =
         ///ID of the charge that's refunded.
         Charge: RefundCharge'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. You can use this for displaying to users (available on non-card refunds only).
@@ -34488,7 +34488,7 @@ module StripeModel =
         Multibanco: RefundDestinationDetailsMultibanco option
         MxBankTransfer: RefundDestinationDetailsMxBankTransfer option
         NzBankTransfer: DestinationDetailsUnimplemented option
-        [<JsonField(Name="p24")>]P24: RefundDestinationDetailsP24 option
+        [<JsonPropertyName("p24")>]P24: RefundDestinationDetailsP24 option
         Paynow: DestinationDetailsUnimplemented option
         Paypal: RefundDestinationDetailsPaypal option
         Pix: DestinationDetailsUnimplemented option
@@ -34740,7 +34740,7 @@ module StripeModel =
     and RefundNextActionDisplayDetails = {
         EmailSent: EmailSent
         ///The expiry timestamp.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
     }
     with
         static member New (emailSent: EmailSent, expiresAt: DateTime) =
@@ -34758,7 +34758,7 @@ module StripeModel =
     ///data), and will error when queried without a [live-mode API key](https://docs.stripe.com/keys#test-live-modes).
     and ReportingReportRun = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///If something should go wrong during the run, a message about the failure (populated when
         /// `status=failed`).
         Error: string option
@@ -34778,7 +34778,7 @@ module StripeModel =
         Status: string
         ///Timestamp at which this run successfully finished (populated when
         /// `status=succeeded`). Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]SucceededAt: DateTime option
+        SucceededAt: DateTime option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -34806,9 +34806,9 @@ module StripeModel =
     ///data), and will error when queried without a [live-mode API key](https://docs.stripe.com/keys#test-live-modes).
     and ReportingReportType = {
         ///Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DataAvailableEnd: DateTime
+        DataAvailableEnd: DateTime
         ///Earliest time for which this Report Type is available. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DataAvailableStart: DateTime
+        DataAvailableStart: DateTime
         ///List of column names that are included by default when this Report Type gets run. (If the Report Type doesn't support the `columns` parameter, this will be null.)
         DefaultColumns: string list option
         ///The [ID of the Report Type](https://docs.stripe.com/reporting/statements/api#available-report-types), such as `balance.summary.1`.
@@ -34818,7 +34818,7 @@ module StripeModel =
         ///Human-readable name of the Report Type
         Name: string
         ///When this Report Type was latest updated. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Updated: DateTime
+        Updated: DateTime
         ///Version of the Report Type. Different versions report with the same ID will have the same purpose, but may take different run parameters or have different result schemas.
         Version: int
     }
@@ -34845,7 +34845,7 @@ module StripeModel =
         ///Amount in cents that can be released from this ReserveHold
         AmountReleasable: int option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Indicates which party created this ReserveHold.
         CreatedBy: ReserveHoldCreatedBy
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -34901,13 +34901,13 @@ module StripeModel =
     ///ReservePlans are used to automatically place holds on a merchant's funds until the plan expires. It takes a portion of each incoming Charge (including those resulting from a Transfer from a platform account).
     and ReservePlan = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Indicates which party created this ReservePlan.
         CreatedBy: ReservePlanCreatedBy
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). An unset currency indicates that the plan applies to all currencies.
         Currency: IsoTypes.IsoCurrencyCode option
         ///Time at which the ReservePlan was disabled.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DisabledAt: DateTime option
+        DisabledAt: DateTime option
         FixedRelease: ReservesReservePlansResourcesFixedRelease option
         ///Unique identifier for the object.
         Id: string
@@ -34948,7 +34948,7 @@ module StripeModel =
         ///Amount released. A positive integer representing how much is released in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         Amount: int
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Indicates which party created this ReserveRelease.
         CreatedBy: ReserveReleaseCreatedBy
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -34962,7 +34962,7 @@ module StripeModel =
         ///The reason for the ReserveRelease, indicating why the funds were released.
         Reason: ReserveReleaseReason
         ///The release timestamp of the funds.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReleasedAt: DateTime
+        ReleasedAt: DateTime
         ///The ReserveHold this ReserveRelease is associated with.
         ReserveHold: ReserveReleaseReserveHold'AnyOf option
         ///The ReservePlan ID this ReserveRelease is associated with. This field is only populated if a ReserveRelease is created by a ReservePlan disable operation, or from a scheduled ReservedHold expiry.
@@ -35053,7 +35053,7 @@ module StripeModel =
         ///The reason the review was closed, or null if it has not yet been closed. One of `approved`, `refunded`, `refunded_as_fraud`, `disputed`, `redacted`, `canceled`, `payment_never_settled`, or `acknowledged`.
         ClosedReason: ReviewClosedReason option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///The IP address where the payment originated.
@@ -35120,9 +35120,9 @@ module StripeModel =
     ///retrieve the query results.
     and ScheduledQueryRun = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///When the query was run, Sigma contained a snapshot of your Stripe data at this time.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DataLoadTime: DateTime
+        DataLoadTime: DateTime
         Error: SigmaScheduledQueryRunError option
         ///The file object representing the results of the query.
         File: File option
@@ -35131,7 +35131,7 @@ module StripeModel =
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         ///Time at which the result expires and is no longer available for download.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ResultAvailableUntil: DateTime
+        ResultAvailableUntil: DateTime
         ///SQL for the query.
         Sql: string
         ///The query's execution status, which will be `completed` for successful runs, and `canceled`, `failed`, or `timed_out` otherwise.
@@ -35218,7 +35218,7 @@ module StripeModel =
         ///It can only be used for this Stripe Account’s own money movement flows like InboundTransfer and OutboundTransfers. It cannot be set to true when setting up a PaymentMethod for a Customer, and defaults to false when attaching a PaymentMethod to a Customer.
         AttachToSelf: bool option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The value of [customer](https://docs.stripe.com/api/setup_intents/object#setup_intent_object-customer) on the SetupIntent at the time of this confirmation.
         Customer: SetupAttemptCustomer'AnyOf option
         ///The value of [customer_account](https://docs.stripe.com/api/setup_intents/object#setup_intent_object-customer_account) on the SetupIntent at the time of this confirmation.
@@ -35358,7 +35358,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
         GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsBancontactGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Preferred language of the Bancontact authorization page that the customer is redirected to.
         ///Can be one of `en`, `de`, `fr`, or `nl`
         PreferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option
@@ -35410,7 +35410,7 @@ module StripeModel =
         ///The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
         Issuer: string option
         ///The last four digits of the card.
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         ///True if this payment was marked as MOTO and out of scope for SCA.
         Moto: bool option
         ///Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `interac`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`.
@@ -35442,7 +35442,7 @@ module StripeModel =
 
     and SetupAttemptPaymentMethodDetailsCardChecks = {
         ///If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: SetupAttemptPaymentMethodDetailsCardChecksAddressLine1Check option
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: SetupAttemptPaymentMethodDetailsCardChecksAddressLine1Check option
         ///If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: SetupAttemptPaymentMethodDetailsCardChecksAddressPostalCodeCheck option
         ///If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -35497,7 +35497,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
         GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsIdealGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Owner's verified full name. Values are verified or provided by iDEAL directly
         ///(if supported) at the time of authorization or settlement. They cannot be set or mutated.
         VerifiedName: string option
@@ -35533,7 +35533,7 @@ module StripeModel =
         ///The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.
         GeneratedSepaDebitMandate: SetupAttemptPaymentMethodDetailsSofortGeneratedSepaDebitMandate'AnyOf option
         ///Last four characters of the IBAN.
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         ///Preferred language of the Sofort authorization page that the customer is redirected to.
         ///Can be one of `en`, `de`, `fr`, or `nl`
         PreferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option
@@ -35593,7 +35593,7 @@ module StripeModel =
         ///The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
         ClientSecret: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///ID of the Customer this SetupIntent belongs to, if one exists.
         ///If present, the SetupIntent's payment method will be attached to the Customer on successful setup. Payment methods attached to other Customers cannot be used with this SetupIntent.
         Customer: SetupIntentCustomer'AnyOf option
@@ -35729,7 +35729,7 @@ module StripeModel =
 
     and SetupIntentNextActionVerifyWithMicrodeposits = {
         ///The timestamp when the microdeposits are expected to land.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ArrivalDate: DateTime
+        ArrivalDate: DateTime
         ///The URL for the hosted verification page, which allows customers to verify their bank account.
         HostedVerificationUrl: string
         ///The type of the microdeposit sent to the customer. Used to distinguish between different verification methods.
@@ -35826,7 +35826,7 @@ module StripeModel =
         ///A description of the mandate or subscription that is meant to be displayed to the customer.
         Description: string option
         ///End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime option
+        EndDate: DateTime option
         ///Specifies payment frequency. One of `day`, `week`, `month`, `year`, or `sporadic`.
         Interval: SetupIntentPaymentMethodOptionsCardMandateOptionsInterval
         ///The number of intervals between payments. For example, `interval=month` and `interval_count=3` indicates one payment every three months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks). This parameter is optional when `interval=sporadic`.
@@ -35834,7 +35834,7 @@ module StripeModel =
         ///Unique identifier for the mandate or subscription.
         Reference: string
         ///Start date of the mandate or subscription. Start date should not be lesser than yesterday.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartDate: DateTime
+        StartDate: DateTime
         ///Specifies the type of mandates supported. Possible values are `india`.
         SupportedTypes: string list option
     }
@@ -36005,7 +36005,7 @@ module StripeModel =
         ///Whether the shipping rate can be used for new purchases. Defaults to `true`.
         Active: bool
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///The estimated range for how long shipping will take, meant to be displayable to the customer. This will appear on CheckoutSessions.
         DeliveryEstimate: ShippingRateDeliveryEstimate option
         ///The name of the shipping rate, meant to be displayable to the customer. This will appear on CheckoutSessions.
@@ -36126,7 +36126,7 @@ module StripeModel =
         ClientSecret: string
         CodeVerification: SourceCodeVerificationFlow option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources.
         Currency: IsoTypes.IsoCurrencyCode option
         ///The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer.
@@ -36146,7 +36146,7 @@ module StripeModel =
         Multibanco: SourceTypeMultibanco option
         ///Information about the owner of the payment instrument that may be used or required by particular source types.
         Owner: SourceOwner option
-        [<JsonField(Name="p24")>]P24: SourceTypeP24 option
+        [<JsonPropertyName("p24")>]P24: SourceTypeP24 option
         Receiver: SourceReceiverFlow option
         Redirect: SourceRedirectFlow option
         SepaCreditTransfer: SourceTypeSepaCreditTransfer option
@@ -36219,7 +36219,7 @@ module StripeModel =
         Amount: int option
         BacsDebit: SourceMandateNotificationBacsDebitData option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -36364,7 +36364,7 @@ module StripeModel =
         Amount: int
         ChfCreditTransfer: SourceTransactionChfCreditTransferData option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         GbpCreditTransfer: SourceTransactionGbpCreditTransferData option
@@ -36408,7 +36408,7 @@ module StripeModel =
         ///Sender's country address.
         SenderAddressCountry: IsoTypes.IsoCountryCode option
         ///Sender's line 1 address.
-        [<JsonField(Name="sender_address_line1")>]SenderAddressLine1: string option
+        [<JsonPropertyName("sender_address_line1")>]SenderAddressLine1: string option
         ///Sender's bank account IBAN.
         SenderIban: string option
         ///Sender's name.
@@ -36428,7 +36428,7 @@ module StripeModel =
         BankName: string option
         Country: IsoTypes.IsoCountryCode option
         Fingerprint: string option
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         RoutingNumber: string option
         Type: string option
     }
@@ -36452,7 +36452,7 @@ module StripeModel =
         Category: string option
         Country: IsoTypes.IsoCountryCode option
         Fingerprint: string option
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         RoutingNumber: string option
     }
     with
@@ -36471,20 +36471,20 @@ module StripeModel =
             }
 
     and SourceTypeCard = {
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: string option
         AddressZipCheck: string option
         Brand: string option
         Country: IsoTypes.IsoCountryCode option
         CvcCheck: string option
         Description: string option
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        [<JsonPropertyName("dynamic_last4")>]DynamicLast4: string option
         ExpMonth: int option
         ExpYear: int option
         Fingerprint: string option
         Funding: string option
         Iin: string option
         Issuer: string option
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         Name: string option
         ThreeDSecure: string option
         TokenizationMethod: string option
@@ -36531,7 +36531,7 @@ module StripeModel =
         Funding: string option
         Iin: string option
         Issuer: string option
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         PosDeviceId: string option
         PosEntryMode: string option
         ReadMethod: string option
@@ -36634,8 +36634,8 @@ module StripeModel =
         Reference: string option
         RefundAccountHolderAddressCity: string option
         RefundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option
-        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
-        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
+        [<JsonPropertyName("refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
+        [<JsonPropertyName("refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
         RefundAccountHolderAddressPostalCode: string option
         RefundAccountHolderAddressState: string option
         RefundAccountHolderName: string option
@@ -36662,8 +36662,8 @@ module StripeModel =
         Iban: string option
         RefundAccountHolderAddressCity: string option
         RefundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option
-        [<JsonField(Name="refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
-        [<JsonField(Name="refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
+        [<JsonPropertyName("refund_account_holder_address_line1")>]RefundAccountHolderAddressLine1: string option
+        [<JsonPropertyName("refund_account_holder_address_line2")>]RefundAccountHolderAddressLine2: string option
         RefundAccountHolderAddressPostalCode: string option
         RefundAccountHolderAddressState: string option
         RefundAccountHolderName: string option
@@ -36690,7 +36690,7 @@ module StripeModel =
         BranchCode: string option
         Country: IsoTypes.IsoCountryCode option
         Fingerprint: string option
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         MandateReference: string option
         MandateUrl: string option
     }
@@ -36711,7 +36711,7 @@ module StripeModel =
         BankName: string option
         Bic: string option
         Country: IsoTypes.IsoCountryCode option
-        [<JsonField(Name="iban_last4")>]IbanLast4: string option
+        [<JsonPropertyName("iban_last4")>]IbanLast4: string option
         PreferredLanguage: string option
         StatementDescriptor: string option
     }
@@ -36728,7 +36728,7 @@ module StripeModel =
             }
 
     and SourceTypeThreeDSecure = {
-        [<JsonField(Name="address_line1_check")>]AddressLine1Check: string option
+        [<JsonPropertyName("address_line1_check")>]AddressLine1Check: string option
         AddressZipCheck: string option
         Authenticated: bool option
         Brand: string option
@@ -36737,14 +36737,14 @@ module StripeModel =
         Customer: string option
         CvcCheck: string option
         Description: string option
-        [<JsonField(Name="dynamic_last4")>]DynamicLast4: string option
+        [<JsonPropertyName("dynamic_last4")>]DynamicLast4: string option
         ExpMonth: int option
         ExpYear: int option
         Fingerprint: string option
         Funding: string option
         Iin: string option
         Issuer: string option
-        [<JsonField(Name="last4")>]Last4: string option
+        [<JsonPropertyName("last4")>]Last4: string option
         Name: string option
         ThreeDSecure: string option
         TokenizationMethod: string option
@@ -36839,24 +36839,24 @@ module StripeModel =
         ApplicationFeePercent: decimal option
         AutomaticTax: SubscriptionAutomaticTax
         ///The reference point that aligns future [billing cycle](https://docs.stripe.com/subscriptions/billing-cycle) dates. It sets the day of week for `week` intervals, the day of month for `month` and `year` intervals, and the month of year for `year` intervals. The timestamp is in UTC format.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]BillingCycleAnchor: DateTime
+        BillingCycleAnchor: DateTime
         ///The fixed values used to calculate the `billing_cycle_anchor`.
         BillingCycleAnchorConfig: SubscriptionsResourceBillingCycleAnchorConfig option
         BillingMode: SubscriptionsResourceBillingMode
         ///Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period
         BillingThresholds: SubscriptionBillingThresholds option
         ///A date in the future at which the subscription will automatically get canceled
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CancelAt: DateTime option
+        CancelAt: DateTime option
         ///Whether this subscription will (if `status=active`) or did (if `status=canceled`) cancel at the end of the current billing period.
         CancelAtPeriodEnd: bool
         ///If the subscription has been canceled, the date of that cancellation. If the subscription was canceled with `cancel_at_period_end`, `canceled_at` will reflect the time of the most recent update request, not the end of the subscription period when the subscription is automatically moved to a canceled state.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Details about why this subscription was cancelled
         CancellationDetails: CancellationDetails option
         ///Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`.
         CollectionMethod: SubscriptionCollectionMethod
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///ID of the customer who owns the subscription.
@@ -36876,7 +36876,7 @@ module StripeModel =
         ///The discounts applied to the subscription. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.
         Discounts: SubscriptionDiscounts'AnyOf list
         ///If the subscription has ended, the date the subscription ended.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndedAt: DateTime option
+        EndedAt: DateTime option
         ///Unique identifier for the object.
         Id: string
         InvoiceSettings: SubscriptionsResourceSubscriptionInvoiceSettings
@@ -36891,7 +36891,7 @@ module StripeModel =
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
         ///Specifies the approximate timestamp on which any pending invoice items will be billed according to the schedule provided at `pending_invoice_item_interval`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]NextPendingInvoiceItemInvoice: DateTime option
+        NextPendingInvoiceItemInvoice: DateTime option
         ///The account (if any) the charge was made on behalf of for charges associated with this subscription. See the [Connect documentation](https://docs.stripe.com/connect/subscriptions#on-behalf-of) for details.
         OnBehalfOf: SubscriptionOnBehalfOf'AnyOf option
         ///If specified, payment collection for this subscription will be paused. Note that the subscription status will be unchanged and will not be updated to `paused`. Learn more about [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment).
@@ -36908,7 +36908,7 @@ module StripeModel =
         ///The schedule attached to the subscription
         Schedule: SubscriptionSchedule'AnyOf option
         ///Date when the subscription was first created. The date might differ from the `created` date due to backdating.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartDate: DateTime
+        StartDate: DateTime
         ///Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, `unpaid`, or `paused`. 
         ///For `collection_method=charge_automatically` a subscription moves into `incomplete` if the initial payment attempt fails. A subscription in this status can only have metadata and default_source updated. Once the first invoice is paid, the subscription moves into an `active` status. If the first invoice is not paid within 23 hours, the subscription transitions to `incomplete_expired`. This is a terminal status, the open invoice will be voided and no further invoices will be generated. 
         ///A subscription that is currently in a trial period is `trialing` and moves to `active` when the trial period is over. 
@@ -36921,11 +36921,11 @@ module StripeModel =
         ///The account (if any) the subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
         TransferData: SubscriptionTransferData option
         ///If the subscription has a trial, the end of that trial.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TrialEnd: DateTime option
+        TrialEnd: DateTime option
         ///Settings related to subscription trials.
         TrialSettings: SubscriptionsResourceTrialSettingsTrialSettings option
         ///If the subscription has a trial, the beginning of that trial.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TrialStart: DateTime option
+        TrialStart: DateTime option
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -37067,9 +37067,9 @@ module StripeModel =
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: int
         ///The end time of this subscription item's current billing period.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CurrentPeriodEnd: DateTime
+        CurrentPeriodEnd: DateTime
         ///The start time of this subscription item's current billing period.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CurrentPeriodStart: DateTime
+        CurrentPeriodStart: DateTime
         ///The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.
         Discounts: SubscriptionItemDiscounts'AnyOf list
         ///Unique identifier for the object.
@@ -37175,11 +37175,11 @@ module StripeModel =
         Application: SubscriptionScheduleApplication'AnyOf option
         BillingMode: SubscriptionsResourceBillingMode
         ///Time at which the subscription schedule was canceled. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CanceledAt: DateTime option
+        CanceledAt: DateTime option
         ///Time at which the subscription schedule was completed. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]CompletedAt: DateTime option
+        CompletedAt: DateTime option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Object representing the start and end dates for the current phase of the subscription schedule, if it is `active`.
         CurrentPhase: SubscriptionScheduleCurrentPhase option
         ///ID of the customer who owns the subscription schedule.
@@ -37198,7 +37198,7 @@ module StripeModel =
         ///Configuration for the subscription schedule's phases.
         Phases: SubscriptionSchedulePhaseConfiguration list
         ///Time at which the subscription schedule was released. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ReleasedAt: DateTime option
+        ReleasedAt: DateTime option
         ///ID of the subscription once managed by the subscription schedule (if it is released).
         ReleasedSubscription: string option
         ///The present status of the subscription schedule. Possible values are `not_started`, `active`, `completed`, `released`, and `canceled`. You can read more about the different states in our [behavior guide](https://docs.stripe.com/billing/subscriptions/subscription-schedules).
@@ -37357,7 +37357,7 @@ module StripeModel =
         ///The stackable discounts that will be applied to the subscription on this phase. Subscription item discounts are applied before subscription discounts.
         Discounts: StackableDiscountWithDiscountSettingsAndDiscountEnd list
         ///The end of this phase of the subscription schedule.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EndDate: DateTime
+        EndDate: DateTime
         ///The invoice settings applicable during this phase.
         InvoiceSettings: InvoiceSettingSubscriptionSchedulePhaseSetting option
         ///Subscription items to configure the subscription to during this phase of the subscription schedule.
@@ -37369,11 +37369,11 @@ module StripeModel =
         ///When transitioning phases, controls how prorations are handled (if any). Possible values are `create_prorations`, `none`, and `always_invoice`.
         ProrationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior
         ///The start of this phase of the subscription schedule.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]StartDate: DateTime
+        StartDate: DateTime
         ///The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices.
         TransferData: SubscriptionTransferData option
         ///When the trial ends within the phase.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TrialEnd: DateTime option
+        TrialEnd: DateTime option
     }
     with
         static member New (addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, currency: IsoTypes.IsoCurrencyCode, defaultPaymentMethod: SubscriptionSchedulePhaseConfigurationDefaultPaymentMethod'AnyOf option, description: string option, discounts: StackableDiscountWithDiscountSettingsAndDiscountEnd list, endDate: DateTime, invoiceSettings: InvoiceSettingSubscriptionSchedulePhaseSetting option, items: SubscriptionScheduleConfigurationItem list, metadata: Map<string, string> option, onBehalfOf: SubscriptionSchedulePhaseConfigurationOnBehalfOf'AnyOf option, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: DateTime, transferData: SubscriptionTransferData option, trialEnd: DateTime option, ?automaticTax: SchedulesPhaseAutomaticTax, ?defaultTaxRates: TaxRate list option) =
@@ -37469,7 +37469,7 @@ module StripeModel =
 
     and SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd = {
         ///A precise Unix timestamp for the end of the invoice item period. Must be greater than or equal to `period.start`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Timestamp: DateTime option
+        Timestamp: DateTime option
         ///Select how to calculate the end of the invoice item period.
         Type: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEndType
     }
@@ -37482,7 +37482,7 @@ module StripeModel =
 
     and SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart = {
         ///A precise Unix timestamp for the start of the invoice item period. Must be less than or equal to `period.end`.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Timestamp: DateTime option
+        Timestamp: DateTime option
         ///Select how to calculate the start of the invoice item period.
         Type: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStartType
     }
@@ -37517,7 +37517,7 @@ module StripeModel =
         ///Controls how prorations and invoices for subscriptions are calculated and orchestrated.
         Type: SubscriptionsResourceBillingModeType
         ///Details on when the current billing_mode was adopted.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]UpdatedAt: DateTime option
+        UpdatedAt: DateTime option
     }
     with
         static member New (flexible: SubscriptionsResourceBillingModeFlexible option, ``type``: SubscriptionsResourceBillingModeType, ?updatedAt: DateTime) =
@@ -37543,7 +37543,7 @@ module StripeModel =
         ///The payment collection behavior for this subscription while paused.
         Behavior: SubscriptionsResourcePauseCollectionBehavior
         ///The time after which the subscription will resume collecting payments.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ResumesAt: DateTime option
+        ResumesAt: DateTime option
     }
     with
         static member New (behavior: SubscriptionsResourcePauseCollectionBehavior, resumesAt: DateTime option) =
@@ -37609,13 +37609,13 @@ module StripeModel =
     ///to the Subscription upon successful payment.
     and SubscriptionsResourcePendingUpdate = {
         ///If the update is applied, determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices. The timestamp is in UTC format.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]BillingCycleAnchor: DateTime option
+        BillingCycleAnchor: DateTime option
         ///The point after which the changes reflected by this update will be discarded and no longer applied.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime
+        ExpiresAt: DateTime
         ///List of subscription items, each with an attached plan, that will be set if the update is applied.
         SubscriptionItems: SubscriptionItem list option
         ///Unix timestamp representing the end of the trial period the customer will get before being charged for the first time, if the update is applied.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TrialEnd: DateTime option
+        TrialEnd: DateTime option
         ///Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more.
         TrialFromPlan: bool option
     }
@@ -37732,7 +37732,7 @@ module StripeModel =
         Customer: string option
         CustomerDetails: TaxProductResourceCustomerDetails
         ///Timestamp of date at which the tax calculation will expire.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///Unique identifier for the calculation.
         Id: string option
         ///The list of items the customer is purchasing.
@@ -37750,7 +37750,7 @@ module StripeModel =
         ///Breakdown of individual tax amounts that add up to the total.
         TaxBreakdown: TaxProductResourceTaxBreakdown list
         ///The calculation uses the tax rules and rates that are in effect at this timestamp. You can use a date up to 31 days in the past or up to 31 days in the future. If you use a future date, Stripe doesn't guarantee that the expected tax rules and rate being used match the actual rules and rate that will be in effect on that date. We deploy tax changes before their effective date, but not within a fixed window.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TaxDate: DateTime
+        TaxDate: DateTime
     }
     with
         ///String representing the object's type. Objects of the same type share the same value.
@@ -37842,14 +37842,14 @@ module StripeModel =
     ///Related guide: [Using the Registrations API](https://docs.stripe.com/tax/registrations-api)
     and TaxRegistration = {
         ///Time at which the registration becomes active. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ActiveFrom: DateTime
+        ActiveFrom: DateTime
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode
         CountryOptions: TaxProductRegistrationsResourceCountryOptions
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///If set, the registration stops being active at this time. If not set, the registration will be active indefinitely. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpiresAt: DateTime option
+        ExpiresAt: DateTime option
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -37902,7 +37902,7 @@ module StripeModel =
     ///Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom#tax-transaction)
     and TaxTransaction = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///The ID of an existing [Customer](https://docs.stripe.com/api/customers/object) used for the resource.
@@ -37917,7 +37917,7 @@ module StripeModel =
         ///Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         ///The Unix timestamp representing when the tax liability is assumed or reduced.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]PostedAt: DateTime
+        PostedAt: DateTime
         ///A custom unique identifier, such as 'myOrder_123'.
         Reference: string
         ///If `type=reversal`, contains information about what was reversed.
@@ -37927,7 +37927,7 @@ module StripeModel =
         ///The shipping cost details for the transaction.
         ShippingCost: TaxProductResourceTaxTransactionShippingCost option
         ///The calculation uses the tax rules and rates that are in effect at this timestamp. You can use a date up to 31 days in the past or up to 31 days in the future. If you use a future date, Stripe doesn't guarantee that the expected tax rules and rate being used match the actual rules and rate that will be in effect on that date. We deploy tax changes before their effective date, but not within a fixed window.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]TaxDate: DateTime
+        TaxDate: DateTime
         ///If `reversal`, this transaction reverses an earlier transaction.
         Type: TaxTransactionType
     }
@@ -38061,7 +38061,7 @@ module StripeModel =
         ///Two-letter ISO code representing the country of the tax ID.
         Country: IsoTypes.IsoCountryCode option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///ID of the customer.
         Customer: TaxIdCustomer'AnyOf option
         ///ID of the Account representing the customer.
@@ -38524,9 +38524,9 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode
         ///Address line 1, such as the street, PO Box, or company name.
-        [<JsonField(Name="line1")>]Line1: string option
+        [<JsonPropertyName("line1")>]Line1: string option
         ///Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonField(Name="line2")>]Line2: string option
+        [<JsonPropertyName("line2")>]Line2: string option
         ///ZIP or postal code.
         PostalCode: string option
         ///State/province as an [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) subdivision code, without country prefix, such as "NY" or "TX".
@@ -38729,7 +38729,7 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
         Description: string option
         ///The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
@@ -38803,7 +38803,7 @@ module StripeModel =
     ///A Configurations object represents how features should be configured for terminal readers.
     ///For information about how to use it, see the [Terminal configurations documentation](https://docs.stripe.com/terminal/fleet/configurations-overview).
     and TerminalConfiguration = {
-        [<JsonField(Name="bbpos_wisepad3")>]BbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("bbpos_wisepad3")>]BbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         BbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         Cellular: TerminalConfigurationConfigurationResourceCellularConfig option
         ///Unique identifier for the object.
@@ -38816,10 +38816,10 @@ module StripeModel =
         Name: string option
         Offline: TerminalConfigurationConfigurationResourceOfflineConfig option
         RebootWindow: TerminalConfigurationConfigurationResourceRebootWindow option
-        [<JsonField(Name="stripe_s700")>]StripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
-        [<JsonField(Name="stripe_s710")>]StripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("stripe_s700")>]StripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("stripe_s710")>]StripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         Tipping: TerminalConfigurationConfigurationResourceTipping option
-        [<JsonField(Name="verifone_p400")>]VerifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("verifone_p400")>]VerifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         Wifi: TerminalConfigurationConfigurationResourceWifiConfig option
     }
     with
@@ -38922,7 +38922,7 @@ module StripeModel =
         ///Custom label given to the reader for easier identification.
         Label: string
         ///The last time this reader reported to Stripe backend. Timestamp is measured in milliseconds since the Unix epoch. Unlike most other Stripe timestamp fields which use seconds, this field uses milliseconds.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]LastSeenAt: DateTime option
+        LastSeenAt: DateTime option
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         ///The location identifier of the reader.
@@ -39394,11 +39394,11 @@ module StripeModel =
     ///you can either validate the current state of your scenario (and test your assumptions), change the current state of your scenario (and test more complex scenarios), or keep advancing forward in time.
     and TestHelpersTestClock = {
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Time at which this clock is scheduled to auto delete.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]DeletesAfter: DateTime
+        DeletesAfter: DateTime
         ///Time at which all objects belonging to this clock are frozen.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]FrozenTime: DateTime
+        FrozenTime: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -39554,7 +39554,7 @@ module StripeModel =
         ///IP address of the client that generates the token.
         ClientIp: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Unique identifier for the object.
         Id: string
         ///If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -39590,7 +39590,7 @@ module StripeModel =
         ///ID of the balance transaction that describes the impact of this top-up on your account balance. May not be specified depending on status of top-up.
         BalanceTransaction: TopupBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -39659,7 +39659,7 @@ module StripeModel =
         ///Balance transaction that describes the impact of this transfer on your account balance.
         BalanceTransaction: TransferBalanceTransaction'AnyOf option
         ///Time that this record of the transfer was first created.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -39781,7 +39781,7 @@ module StripeModel =
         ///Balance transaction that describes the impact on your account balance.
         BalanceTransaction: TransferReversalBalanceTransaction'AnyOf option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///Linked payment refund for the transfer reversal.
@@ -39884,7 +39884,7 @@ module StripeModel =
         ///Amount (in cents) transferred.
         Amount: int
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///The FinancialAccount to reverse funds from.
@@ -39937,7 +39937,7 @@ module StripeModel =
         ///Amount (in cents) transferred.
         Amount: int
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///The FinancialAccount to reverse funds from.
@@ -39997,7 +39997,7 @@ module StripeModel =
         ///Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
         Country: IsoTypes.IsoCountryCode
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         Features: TreasuryFinancialAccountFeatures option
         ///The set of credentials that resolve to a FinancialAccount.
         FinancialAddresses: TreasuryFinancialAccountsResourceFinancialAddress list
@@ -40081,7 +40081,7 @@ module StripeModel =
         ///Returns `true` if the InboundTransfer is able to be canceled.
         Cancelable: bool
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -40153,7 +40153,7 @@ module StripeModel =
         ///Returns `true` if the object can be canceled, and `false` otherwise.
         Cancelable: bool
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///ID of the [customer](https://docs.stripe.com/api/customers) to whom an OutboundPayment is sent.
@@ -40167,7 +40167,7 @@ module StripeModel =
         ///Details about the end user.
         EndUserDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails option
         ///The date when funds are expected to arrive in the destination account.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpectedArrivalDate: DateTime
+        ExpectedArrivalDate: DateTime
         ///The FinancialAccount that funds were pulled from.
         FinancialAccount: string
         ///A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
@@ -40232,7 +40232,7 @@ module StripeModel =
         ///Returns `true` if the object can be canceled, and `false` otherwise.
         Cancelable: bool
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -40241,7 +40241,7 @@ module StripeModel =
         DestinationPaymentMethod: string option
         DestinationPaymentMethodDetails: OutboundTransfersPaymentMethodDetails
         ///The date when funds are expected to arrive in the destination account.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]ExpectedArrivalDate: DateTime
+        ExpectedArrivalDate: DateTime
         ///The FinancialAccount that funds were pulled from.
         FinancialAccount: string
         ///A [hosted transaction receipt](https://docs.stripe.com/treasury/moving-money/regulatory-receipts) URL that is provided when money movement is considered regulated under Stripe's money transmission licenses.
@@ -40300,7 +40300,7 @@ module StripeModel =
         ///Amount (in cents) transferred.
         Amount: int
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -40358,7 +40358,7 @@ module StripeModel =
         ///Amount (in cents) transferred.
         Amount: int
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -40417,7 +40417,7 @@ module StripeModel =
         Amount: int
         BalanceImpact: TreasuryTransactionsResourceBalanceImpact
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///An arbitrary string attached to the object. Often useful for displaying to users.
@@ -40486,11 +40486,11 @@ module StripeModel =
     and TreasuryTransactionEntry = {
         BalanceImpact: TreasuryTransactionsResourceBalanceImpact
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         ///When the TransactionEntry will impact the FinancialAccount's balance.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]EffectiveAt: DateTime
+        EffectiveAt: DateTime
         ///The FinancialAccount associated with this object.
         FinancialAccount: string
         ///Token of the flow associated with the TransactionEntry.
@@ -40827,7 +40827,7 @@ module StripeModel =
 
     and TreasuryReceivedCreditsResourceReversalDetails = {
         ///Time before which a ReceivedCredit can be reversed.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Deadline: DateTime option
+        Deadline: DateTime option
         ///Set if a ReceivedCredit cannot be reversed.
         RestrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option
     }
@@ -40858,7 +40858,7 @@ module StripeModel =
 
     and TreasuryReceivedDebitsResourceReversalDetails = {
         ///Time before which a ReceivedDebit can be reversed.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Deadline: DateTime option
+        Deadline: DateTime option
         ///Set if a ReceivedDebit can't be reversed.
         RestrictedReason: TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason option
     }
@@ -40966,7 +40966,7 @@ module StripeModel =
         ///The ID of the associated Connect application.
         Application: string option
         ///Time at which the object was created. Measured in seconds since the Unix epoch.
-        [<JsonField(Transform=typeof<Transforms.DateTimeEpoch>)>]Created: DateTime
+        Created: DateTime
         ///An optional description of what the webhook is used for.
         Description: string option
         ///The list of events to enable for this endpoint. `['*']` indicates that all events are enabled, except those that require explicit selection.
