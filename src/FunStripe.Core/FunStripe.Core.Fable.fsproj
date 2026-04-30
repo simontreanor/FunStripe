@@ -10,7 +10,8 @@
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library — Fable (Node.js server-side) edition (targets Stripe API $(StripeApiVersion))</PackageDescription>
     <StripeApiVersion>2026-04-22.dahlia</StripeApiVersion>
-    <PackageTags>stripe;fsharp;fable;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
+    <PackageTags>fable-javascript;stripe;fsharp;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
+    <FablePackageType>library</FablePackageType>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
     <DefineConstants>$(DefineConstants);LITE;FABLE_COMPILER</DefineConstants>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -67,5 +68,10 @@
     <PackageReference Include="Thoth.Json" />
     <!-- System.Text.Json: required for [<JsonPropertyName>] attribute used across shared source files -->
     <PackageReference Include="System.Text.Json" />
+    <!-- Fable.Package.SDK: packs F# source into fable/ folder and enables fable.io/packages discovery -->
+    <PackageReference Include="Fable.Package.SDK">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

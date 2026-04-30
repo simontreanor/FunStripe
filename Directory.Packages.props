@@ -12,6 +12,8 @@
     <PackageVersion Include="System.Text.Json" Version="6.0.10" />
     <!-- .NET HTTP client for RestApi.fs (not used in Fable projects) -->
     <PackageVersion Include="FSharp.Data.Http" Version="8.1.11" />
+    <!-- Fable Package SDK (required for fable.io/packages discovery and source packing) -->
+    <PackageVersion Include="Fable.Package.SDK" Version="1.3.2" />
     <!-- Fable HTTP client -->
     <PackageVersion Include="Fable.SimpleHttp" Version="3.6.0" />
     <!-- Fable JSON parsing -->
