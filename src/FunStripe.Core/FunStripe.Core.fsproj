@@ -12,7 +12,7 @@
     <PackageDescription>F# Stripe Library for .NET (targets Stripe API $(StripeApiVersion))</PackageDescription>
     <PackageTags>stripe;fsharp;api;payments;$(StripeApiVersion)</PackageTags>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
-    <DefineConstants>$(DefineConstants);LITE</DefineConstants>
+
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup>

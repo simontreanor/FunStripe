@@ -13,7 +13,7 @@
     <PackageTags>fable-javascript;stripe;fsharp;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
     <FablePackageType>library</FablePackageType>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
-    <DefineConstants>$(DefineConstants);LITE;FABLE_COMPILER</DefineConstants>
+    <DefineConstants>$(DefineConstants);FABLE_COMPILER</DefineConstants>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup>
