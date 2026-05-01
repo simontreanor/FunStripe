@@ -12,7 +12,17 @@ Get the latest version of FunStripe.Core from [NuGet](https://www.nuget.org/pack
 
 ## Usage
 
-Open the StripeModel and StripeRequest modules.
+FunStripe types are organised into per-domain namespaces:
+
+- Response models live under `Stripe.{Domain}` (e.g. `Stripe.PaymentMethod`, `Stripe.Customer`, `Stripe.Invoice`).
+- Request option records live under `StripeRequest.{Domain}` (e.g. `StripeRequest.Payment`, `StripeRequest.Customers`).
+
+Open the domains you need:
+
+```F#
+open Stripe.PaymentMethod
+open StripeRequest.Payment
+```
 
 Here's an example of how to create a new payment method:
 
@@ -153,7 +163,8 @@ The public API is identical to the regular .NET edition.  Your Stripe **secret k
 ```fsharp
 open FunStripe
 open FunStripe.RestApi
-open FunStripe.StripeRequest
+open Stripe.PaymentMethod
+open StripeRequest.Payment
 
 // Secret key — server-side only, never expose this in a browser bundle.
 // Find yours at https://dashboard.stripe.com/apikeys
@@ -178,67 +189,28 @@ let createPaymentMethod () =
 | HTTP layer | `FSharp.Data` (`HttpClient`) | `Fable.SimpleHttp` (Node.js fetch) |
 | JSON parsing | `FSharp.Data.JsonValue` | `Thoth.Json` |
 | JSON serialisation (`Util.serialise`) | ✅ available | ❌ not available |
-| Code generation (`ModelBuilder`, `RequestBuilder`) | ✅ via `FunStripe.Generator` | ❌ not needed |
+| Code generation (`FunStripe.Generator`) | ✅ runs on .NET | ❌ not needed |
 
 ### Code generation
 
-Code generation (`ModelBuilder.fs`, `RequestBuilder.fs`) is .NET-only and intentionally
-excluded from the Fable package.  Run code generation with `dotnet run` (see below) and
-commit the generated `StripeModel.fs` / `StripeRequest.<Group>.fs` files into your repository.
+Code generation is .NET-only and intentionally excluded from the Fable package.
+Run the generator with `dotnet run` (see below) and commit the generated files
+under `src/Stripe/`, `src/StripeRequest/`, and `src/StripeIds.fs` into your
+repository.
 
-## Partial API Loading
+## Modular file layout
 
-FunStripe's API requests are split into resource groups to reduce compile-time overhead and improve build performance, especially for WASM/browser targets. The `Core` group is always included. All other groups are included by default but can be excluded via MSBuild properties.
+`FunStripe.Core` is generated as a set of per-domain F# files rather than a single monolith:
 
-### Available Resource Groups
+- `src/Stripe/{Domain}.fs` — response models grouped by Stripe domain (e.g. `PaymentMethod.fs`, `Customer.fs`, `Invoice.fs`). Each file declares `namespace Stripe.{Domain}`.
+- `src/StripeRequest/{Domain}.fs` — request option records and call-site modules (e.g. `Payment.fs`, `Customers.fs`). Each file declares `namespace StripeRequest.{Domain}`.
+- `src/StripeIds.fs` — phantom-typed `StripeId<'phantom>` and `StripeList<'T>`, auto-opened so the wrappers are available everywhere without an explicit `open`.
 
-| Group                  | Description                                                  | MSBuild Property                           |
-|------------------------|--------------------------------------------------------------|--------------------------------------------|
-| Core                   | Accounts, Payments, Customers, Transfers, etc. (always on) | *(always included)*                        |
-| Connect                | Platform accounts, application fees, secrets               | `FunStripeExcludeConnect=true`             |
-| Billing                | Subscriptions, Invoices, Coupons, Quotes, Tax, etc.        | `FunStripeExcludeBilling=true`             |
-| Checkout               | Checkout Sessions                                          | `FunStripeExcludeCheckout=true`            |
-| FinancialConnections   | Financial Connections accounts and sessions                | `FunStripeExcludeFinancialConnections=true`|
-| Identity               | Identity Verification Reports and Sessions                 | `FunStripeExcludeIdentity=true`            |
-| Issuing                | Issuing cards, cardholders, authorisations, etc.           | `FunStripeExcludeIssuing=true`             |
-| PaymentLinks           | Payment Links                                              | `FunStripeExcludePaymentLinks=true`        |
-| Radar                  | Radar fraud warnings and value lists                       | `FunStripeExcludeRadar=true`               |
-| Reporting              | Reporting runs and report types                            | `FunStripeExcludeReporting=true`           |
-| Sigma                  | Sigma scheduled query runs                                 | `FunStripeExcludeSigma=true`               |
-| Terminal               | Terminal configurations, locations, readers, etc.          | `FunStripeExcludeTerminal=true`            |
-| TestHelpers            | Test mode helper endpoints                                 | `FunStripeExcludeTestHelpers=true`         |
-| Treasury               | Treasury financial accounts, transfers, etc.               | `FunStripeExcludeTreasury=true`            |
-
-### Example: Core + Billing only
-
-To compile only Core and Billing (skipping all other groups), add the following to your project file:
-
-```xml
-<PropertyGroup>
-  <FunStripeExcludeConnect>true</FunStripeExcludeConnect>
-  <FunStripeExcludeCheckout>true</FunStripeExcludeCheckout>
-  <FunStripeExcludeFinancialConnections>true</FunStripeExcludeFinancialConnections>
-  <FunStripeExcludeIdentity>true</FunStripeExcludeIdentity>
-  <FunStripeExcludeIssuing>true</FunStripeExcludeIssuing>
-  <FunStripeExcludePaymentLinks>true</FunStripeExcludePaymentLinks>
-  <FunStripeExcludeRadar>true</FunStripeExcludeRadar>
-  <FunStripeExcludeReporting>true</FunStripeExcludeReporting>
-  <FunStripeExcludeSigma>true</FunStripeExcludeSigma>
-  <FunStripeExcludeTerminal>true</FunStripeExcludeTerminal>
-  <FunStripeExcludeTestHelpers>true</FunStripeExcludeTestHelpers>
-  <FunStripeExcludeTreasury>true</FunStripeExcludeTreasury>
-</PropertyGroup>
-```
-
-Or pass directly to `dotnet build`:
-
-```sh
-dotnet build -p:FunStripeExcludeIssuing=true -p:FunStripeExcludeTreasury=true
-```
+The two folders are wired into the project via auto-generated MSBuild props files (`src/Stripe/Stripe.Modular.props` and `src/StripeRequest/StripeRequest.Modular.props`), imported by both `FunStripe.Core.fsproj` and `FunStripe.Core.Fable.fsproj`. Compile order is determined by the generator from the schema dependency graph.
 
 ## Code Generation
 
-By cloning the source repository, as a developer you can regenerate `StripeModel.fs` and the per-resource-group `StripeRequest.<Group>.fs` files using the `FunStripe.Generator` console tool:
+By cloning the source repository, you can regenerate the modular files using the `FunStripe.Generator` console tool:
 
 ```sh
 dotnet run --project tools/FunStripe.Generator -- \
@@ -247,15 +219,17 @@ dotnet run --project tools/FunStripe.Generator -- \
   --version 1.0.0
 ```
 
-All three arguments are optional and default to the values shown above.
+All three arguments are optional and default to the values shown above. The generator emits:
+
+- `src/StripeIds.fs`
+- `src/Stripe/{Domain}.fs` plus `src/Stripe/Stripe.Modular.props`
+- `src/StripeRequest/{Domain}.fs` plus `src/StripeRequest/StripeRequest.Modular.props`
 
 The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2026-04-22.dahlia.json` used as the default. To regenerate against a different version, pass its path via `--spec`. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
 
-The generator writes all per-group files (`StripeRequest.Core.fs`, `StripeRequest.Billing.fs`, etc.) as well as the legacy monolithic `StripeRequest.fs` for reference. The per-group files are the ones included in the compiled project.
-
 A **Regenerate source files** GitHub Actions workflow (`.github/workflows/regenerate.yml`) is also provided. Trigger it manually from the Actions tab; it will run the generator and open a pull request if any files changed.
 
-You could also customise how the source code is represented by editing `ModelBuilder.fs` and `RequestBuilder.fs`.
+The generator sources live under `tools/FunStripe.Generator/` (notably `ModelBuilderModular.fs`, `RequestBuilderAST.fs`, and `StripeIdsBuilder.fs`); customise emission by editing those files.
 
 ## Comparison with Stripe.net
 
@@ -271,7 +245,7 @@ All enumerated values (field types, event types, error codes, webhook event kind
 
 ### Full API coverage
 
-FunStripe aims to cover the full Stripe API surface and tracks each Stripe API release version. `ModelBuilder.fs` and `RequestBuilder.fs` regenerate `StripeModel.fs` and `StripeRequest.fs` directly from the Stripe OpenAPI specification, making it straightforward to adopt new API versions. Stripe.net's model is maintained by Stripe rather than derived from the public OpenAPI spec, so the generation process is not available to contributors.
+FunStripe aims to cover the full Stripe API surface and tracks each Stripe API release version. The `FunStripe.Generator` console tool regenerates the per-domain `Stripe.{Domain}` and `StripeRequest.{Domain}` files directly from the Stripe OpenAPI specification, making it straightforward to adopt new API versions. Stripe.net's model is maintained by Stripe rather than derived from the public OpenAPI spec, so the generation process is not available to contributors.
 
 ### Summary
 

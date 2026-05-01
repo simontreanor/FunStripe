@@ -7,8 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- Modular per-domain code layout: `Stripe.{Domain}` namespaces under `src/Stripe/` for response models and `StripeRequest.{Domain}` namespaces under `src/StripeRequest/` for request options, replacing the monolithic `StripeModel.fs` / `StripeRequest.*.fs` files
+- Auto-generated `src/Stripe/Stripe.Modular.props` and `src/StripeRequest/StripeRequest.Modular.props` MSBuild imports wiring the per-domain files into both `FunStripe.Core.fsproj` and `FunStripe.Core.Fable.fsproj` in dependency-graph compile order
+- Phantom-typed `StripeId<'phantom>` and `StripeList<'T>` in a new auto-opened `src/StripeIds.fs`, with marker types for ~73 Stripe resources giving compile-time differentiation of ID strings
+- `static member New(...)` augmentations on every modular record and request options record for ergonomic named/optional-argument construction
+- Modular code generators in `tools/FunStripe.Generator/` (`ModelBuilderModular.fs`, `RequestBuilderAST.fs`, `StripeIdsBuilder.fs`)
 - `FunStripe.Core` NuGet package (netstandard2.0/2.1) replacing `FunStripe` and `FunStripeLite`
-- `FunStripe.Core.Fable` NuGet package (netstandard2.0) replacing `FunStripeLite.Fable`
+- `FunStripe.Core.Fable` NuGet package (netstandard2.0); supersedes the in-repo `FunStripeLite.Fable` project (which was never published)
 - `FunStripe.Generator` project (net10.0 console app) containing code generators, separated from the published library
 - Central Package Management via `Directory.Packages.props`
 - `Directory.Build.props` in `src/FunStripe.Core/` to isolate NuGet restore artefacts for the Fable project
@@ -25,16 +30,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `global.json` updated to .NET SDK 10.0.x
 - Tests updated to target net10.0
 - JSON serialization for the `.NET` path replaced: forked `FSharp.Json` (4 files, ~1700 lines) removed and replaced by `FSharp.SystemTextJson` + `StripeConverter.fs` (~230 lines)
-- All `[<JsonUnionCase>]` attributes replaced with `[<JsonPropertyName>]` (from `System.Text.Json.Serialization`) across `IsoTypes.fs`, `StripeModel.fs`, `StripeRequest.*.fs`
+- All `[<JsonUnionCase>]` attributes replaced with `[<JsonPropertyName>]` (from `System.Text.Json.Serialization`) across `IsoTypes.fs` and the generated `Stripe.{Domain}` / `StripeRequest.{Domain}` sources
 - All `open FunStripe.Json` replaced with `open System.Text.Json.Serialization` across the same files
-- `FunStripe.Core.Fable.fsproj`: replaced monolithic `StripeRequest.fs` with the same split `StripeRequest.*.fs` files used by `FunStripe.Core.fsproj`; `PackageTags` updated to `fable-javascript;...`
 - `Config.StripeTestApiKey` now reads from the `STRIPE_TEST_API_KEY` environment variable (set via GitHub Actions secret or local shell); replaces `Microsoft.Extensions.Configuration.UserSecrets`
 
 ### Removed
+- `src/StripeModel.fs` (monolithic response model file, ~50k lines)
+- `src/StripeRequest.fs` and 14 per-group `src/StripeRequest.<Group>.fs` files (monolithic request files)
+- `FunStripeExclude<Group>` MSBuild properties (the modular layout always includes all generated files)
 - `FunStripe` NuGet package
 - `FunStripeLite` NuGet package and project
-- `FunStripeLite.Fable` project
-- `publish-funstripe.yml`, `publish-funstripelite.yml`, `publish-funstripelite-fable.yml` workflows
+- `FunStripeLite.Fable` project (never published)
+- `publish-funstripe.yml` and `publish-funstripelite.yml` workflows
 - `src/Json/InterfaceTypes.fs`, `src/Json/Reflection.fs`, `src/Json/Core.fs`, `src/Json/Transforms.fs`, `src/Json/JsonValueHelpers.fs` (forked FSharp.Json files)
 - `LITE` conditional compilation symbol; `Microsoft.Extensions.Configuration.*` removed as a dependency
 
