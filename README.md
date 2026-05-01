@@ -83,7 +83,7 @@ let createPaymentMethod idempotencyKey =
 
 The idempotency key is propagated transparently through the `AsyncResult`-based wrappers. Keys are never auto-generated — the caller always controls key derivation to guarantee retry safety.
 
-If you don't specify the API key in the settings record, it will look for a default test API key to use, and to keep the keys out of source code, it uses [UserSecrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=windows). It is recommended to use `UserSecrets` during development and web-server configuration settings in production, but if your source code will not be made public you can simply specify the API key as a string, at least for testing purposes. `Config.fs` contains some notes to help you.
+`Config.StripeTestApiKey` reads from the `STRIPE_TEST_API_KEY` environment variable. Set it in your shell, a `.env` file, or a CI secret. For production use, inject the live key via your host's environment/configuration system rather than embedding it in source code.
 
 The `options` can be provided using record notation or if there are many uninitialised properties you can use the static `New` method to instantiate the record more efficiently.
 
