@@ -218,7 +218,7 @@ module Tests =
             match result with
             | Ok (exp, pm, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.That(testCustomer.Value |> StripeId |> Some, Is.EqualTo act.Customer)
+                    Assert.That((testCustomer.Value |> StripeId : StripeId<Markers.Customer>) |> Some, Is.EqualTo act.Customer)
                     Assert.That(pm.Id, Is.EqualTo act.Id)
                     Assert.That([("OrderId", "6735")] |> Map.ofList |> Some, Is.EqualTo act.Metadata)
                 )
@@ -243,7 +243,7 @@ module Tests =
             match result with
             | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.That(testCustomer.Value |> StripeId |> Some, Is.EqualTo act.Customer)
+                    Assert.That((testCustomer.Value |> StripeId : StripeId<Markers.Customer>) |> Some, Is.EqualTo act.Customer)
                     Assert.That(exp.Id, Is.EqualTo act.Id)
                 )
             | Error e ->
