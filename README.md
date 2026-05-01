@@ -2,16 +2,6 @@
 
 An F# library to connect to the Stripe API, including code generators to update the model and requests. Targets .NET Standard 2.0 and .NET Standard 2.1.
 
-## Which version should I use?
-
-FunStripe is maintained on two long-lived branches:
-
-| Track | Branch | NuGet | Recommended for |
-|-------|--------|-------|-----------------|
-| **v2** (active) | `main` | [`FunStripe.Core`](https://www.nuget.org/packages/FunStripe.Core/) / [`FunStripe.Core.Fable`](https://www.nuget.org/packages/FunStripe.Core.Fable/) | New projects. Modular per-domain namespaces, phantom-typed IDs, `FSharp.SystemTextJson` serialization. |
-| **v1** (maintenance) | `v1` | [`FunStripe`](https://www.nuget.org/packages/FunStripe/) / [`FunStripeLite`](https://www.nuget.org/packages/FunStripeLite/) | Existing projects that want Stripe API spec updates without the v2 paradigm shift. |
-
-v1 receives Stripe API spec updates, security fixes, and critical bug fixes only. New features land in v2. See [MIGRATION-v1-to-v2.md](MIGRATION-v1-to-v2.md) for the upgrade path.
 
 ## Changelog
 

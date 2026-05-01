@@ -4,13 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
-
 ## [2.0.0] - 2026-05-01
 
 ### Branch / package strategy
-- Dual-track maintenance model: `main` (this branch) hosts v2 — `FunStripe.Core` / `FunStripe.Core.Fable` packages — while the `v1` branch continues to ship the legacy `FunStripe` / `FunStripeLite` packages with Stripe API spec updates and critical fixes only. See `README.md`, `CONTRIBUTING.md`, and `MIGRATION-v1-to-v2.md` for the full policy.
-- Renamed default branch from `master` → `main`; legacy branch renamed from `master` → `v1` (GitHub auto-redirects old URLs).
+- Renamed default branch from `master` → `main`.
 
 ### Added
 - Modular per-domain code layout: `Stripe.{Domain}` namespaces under `src/Stripe/` for response models and `StripeRequest.{Domain}` namespaces under `src/StripeRequest/` for request options, replacing the monolithic `StripeModel.fs` / `StripeRequest.*.fs` files
@@ -43,7 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - All `open FunStripe.Json` replaced with `open System.Text.Json.Serialization` across the same files
 - `Config.StripeTestApiKey` now reads from the `STRIPE_TEST_API_KEY` environment variable (set via GitHub Actions secret or local shell); replaces `Microsoft.Extensions.Configuration.UserSecrets`
 
-### Removed (from v2; still available on `v1` branch)
+### Removed
 - `src/StripeModel.fs` (monolithic response model file, ~50k lines)
 - `src/StripeRequest.fs` and 14 per-group `src/StripeRequest.<Group>.fs` files (monolithic request files)
 - `FunStripeExclude<Group>` MSBuild properties (the modular layout always includes all generated files)
