@@ -38,19 +38,6 @@ let main argv =
     printfn "Generating StripeIds.fs..."
     StripeIdsBuilder.generate version' outputDir' resolvedSpecPath |> ignore
 
-    printfn "Generating StripeModel.fs..."
-    let model = ModelBuilder.parseModel specPath
-    let modelContent = ModelBuilder.serializeModel version' model
-    File.WriteAllText(Path.Combine(outputDir', "StripeModel.fs"), modelContent |> normalizeLineEndings)
-    printfn "  Written StripeModel.fs"
-
-    printfn "Generating StripeRequest files..."
-    let request = RequestBuilder.parseRequest specPath
-    RequestBuilder.serializeModelByGroups version' outputDir' request
-    let requestContent = RequestBuilder.serializeModel version' request
-    File.WriteAllText(Path.Combine(outputDir', "StripeRequest.fs"), requestContent |> normalizeLineEndings)
-    printfn "  Written StripeRequest.fs and per-group files"
-
     printfn "Generating modular Stripe model files (Stripe/*.fs)..."
     let stripeModelDir = Path.Combine(outputDir', "Stripe")
     let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir specPath
