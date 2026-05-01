@@ -1,18 +1,18 @@
 name: Publish FunStripe.Core to NuGet
 
 on:
+  push:
+    tags:
+      - 'v2/*'
   workflow_dispatch:
     inputs:
       version:
-        description: 'New FunStripe.Core version number'
-        required: true
+        description: 'New FunStripe.Core version number (overrides tag)'
+        required: false
 
 permissions:
   contents: write
   packages: write
-
-env:
-  VERSION: ${{ github.event.inputs.version }}
 
 jobs:
   build:
@@ -27,16 +27,20 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
 
+      - name: Resolve version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "value=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${GITHUB_REF_NAME#v2/}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build
         run: dotnet build ${{ env.PROJECT_FILE }} -c Release
 
       - name: Pack
-        run: dotnet pack ${{ env.PROJECT_FILE }} -c Release -p:Version=$VERSION
+        run: dotnet pack ${{ env.PROJECT_FILE }} -c Release -p:Version=${{ steps.version.outputs.value }}
 
       - name: Publish NuGet package
-        run: dotnet nuget push src/FunStripe.Core/bin/Release/FunStripe.Core.$VERSION.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
-
-      - name: Create Git tag
-        run: |
-          git tag "fsc-$VERSION"
-          git push origin "fsc-$VERSION"
+        run: dotnet nuget push src/FunStripe.Core/bin/Release/FunStripe.Core.${{ steps.version.outputs.value }}.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
