@@ -1,6 +1,6 @@
 # Migrating from FunStripe v1 to v2
 
-FunStripe v2 is a paradigm shift that aligns the library with Stripe's official publishing conventions. v1 remains supported on the [`v1` branch](https://github.com/simontreanor/FunStripe/tree/v1) for spec updates and critical fixes — see the README for the support policy.
+FunStripe v2 is a paradigm shift that aligns the library with Stripe's official publishing conventions. The `v1` branch (`FunStripe` / `FunStripeLite` package IDs) is no longer maintained.
 
 This guide covers the breaking changes and how to update.
 

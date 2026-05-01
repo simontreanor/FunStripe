@@ -15,4 +15,4 @@ All development happens on `main`. NuGet packages: `FunStripe.Core`, `FunStripe.
 
 ## Releases
 
-Releases are cut by maintainers via the workflow dispatch UI using the `publish-funstripe-core.yml` / `publish-funstripe-core-fable.yml` workflows on `main`, triggered by `v2/*` tag pushes.
+Releases are cut by maintainers via the workflow dispatch UI using the `publish-funstripe-core.yml` workflow (triggered by `v2/*` tag pushes) and the `publish-funstripe-core-fable.yml` workflow (triggered by `v2-fable/*` tag pushes), both on `main`.
