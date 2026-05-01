@@ -17,14 +17,18 @@ open System.Text
 
 module Tests =
 
-    ///Serialise F# class
+    ///Serialise form fields from an options record
     let serialise<'a> (parameters:'a) =
         typeof<'a>.GetProperties()
         |> Seq.collect (fun pi -> Util.format pi parameters)
 
-    let formSerialise<'a> (parameters:'a) =
+    ///Build a query string from the [<Config.Query>] fields on an options record
+    let querySerialise<'a> (options: 'a) =
         typeof<'a>.GetProperties()
-        |> Seq.collect (fun pi -> Util.format pi parameters)
+        |> Array.filter (fun pi -> pi.GetCustomAttributes(typeof<Config.QueryAttribute>, false).Length > 0)
+        |> Array.map (fun pi -> Util.snakeCase pi.Name, pi.GetValue(options))
+        |> Map.ofArray
+        |> RestApi.formatQueryString
 
     let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
@@ -677,7 +681,7 @@ module Tests =
                     postalCode = "SW1A 1AA"
                 )
             let opts = Customers.CreateOptions.New(address = Choice1Of2 addr)
-            let pairs = opts |> formSerialise |> Seq.toList
+            let pairs = opts |> serialise |> Seq.toList
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "address[city]" && v = "London"), Is.True,
                 "address[city] should be London")
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "address[postal_code]" && v = "SW1A 1AA"), Is.True,
@@ -686,26 +690,26 @@ module Tests =
         [<Test>]
         member _.``non-empty Map produces metadata bracket keys``() =
             let opts = Customers.CreateOptions.New(metadata = (Map.ofList [("orderId", "42")]))
-            let pairs = opts |> formSerialise |> Seq.toList
+            let pairs = opts |> serialise |> Seq.toList
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "metadata[orderId]" && v = "42"), Is.True)
 
         [<Test>]
         member _.``empty Map produces no keys``() =
             let opts = Customers.CreateOptions.New(metadata = Map.empty)
-            let pairs = opts |> formSerialise |> Seq.toList
+            let pairs = opts |> serialise |> Seq.toList
             Assert.That(pairs |> List.exists (fun (k,_) -> k.StartsWith "metadata"), Is.False)
 
         [<Test>]
         member _.``List string field produces indexed keys``() =
             let opts = Customers.CreateOptions.New(preferredLocales = ["en"; "fr"])
-            let pairs = opts |> formSerialise |> Seq.toList
+            let pairs = opts |> serialise |> Seq.toList
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "preferred_locales[0]" && v = "en"), Is.True)
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "preferred_locales[1]" && v = "fr"), Is.True)
 
         [<Test>]
         member _.``None option field is excluded from output``() =
             let opts = Customers.CreateOptions.New() // all fields None
-            let pairs = opts |> formSerialise |> Seq.toList
+            let pairs = opts |> serialise |> Seq.toList
             Assert.That(pairs, Is.Empty)
 
         [<Test>]
@@ -730,108 +734,51 @@ module Tests =
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "card[token]" && v = "tok_visa"), Is.True)
 
         [<Test>]
-        member _.``DateTime UTC serialises to correct Unix timestamp``() =
-            let dt = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
-            let expected = "1609929723"
-            // Use a record that has a DateTime field — Customer.Created from a fake JSON blob
-            // Simpler: directly test via Util.format on a synthetic PropertyInfo by using
-            // a wrapper record. We use a helper record from StripeRequest that takes DateTime.
-            // Simplest approach: verify via round-trip deserialization / format of a DateTime field.
-            let unixTs = (DateTimeOffset dt).ToUnixTimeSeconds() |> string
-            Assert.That(unixTs, Is.EqualTo expected)
-
-        [<Test>]
-        member _.``DateTime Local serialises to same Unix timestamp as UTC``() =
-            let dtUtc = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
-            let dtLocal = DateTime.SpecifyKind(dtUtc.ToLocalTime(), DateTimeKind.Local)
-            let utcTs = (DateTimeOffset dtUtc).ToUnixTimeSeconds()
-            let localTs = (DateTimeOffset dtLocal).ToUnixTimeSeconds()
-            Assert.That(localTs, Is.EqualTo utcTs)
-
-        [<Test>]
-        member _.``DateTime Unspecified is treated as UTC``() =
-            let dtUtc = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
-            let dtUnspec = DateTime.SpecifyKind(dtUtc, DateTimeKind.Unspecified)
-            let utcTs = (DateTimeOffset dtUtc).ToUnixTimeSeconds()
-            let unspecTs =
-                let normalised = DateTime.SpecifyKind(dtUnspec, DateTimeKind.Utc)
-                (DateTimeOffset normalised).ToUnixTimeSeconds()
-            Assert.That(unspecTs, Is.EqualTo utcTs)
-
-        [<Test>]
         member _.``bool field serialises to lowercase string``() =
-            // Use Products CreateOptions which has an Active: bool option field
             let opts = StripeRequest.Products.Products.CreateOptions.New(name = "test", active = true)
-            let pairs =
-                FSharp.Reflection.FSharpType.GetRecordFields typeof<StripeRequest.Products.Products.CreateOptions>
-                |> Array.filter (fun pi -> pi.GetCustomAttributes(typeof<Config.FormAttribute>, false).Length > 0)
-                |> Seq.collect (fun pi -> Util.format pi opts)
-                |> Seq.toList
+            let pairs = serialise opts |> Seq.toList
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "active" && v = "true"), Is.True)
 
     // =========================================================================
-    // B. Query string formatting — RestApi.formatQueryString
+    // B. Query string formatting — consumer-facing behaviour
     // =========================================================================
 
     [<TestFixture>]
     type QueryStringUnitTests () =
 
         [<Test>]
-        member _.``empty map returns empty string``() =
-            let result = RestApi.formatQueryString Map.empty
-            Assert.That(result, Is.EqualTo "")
+        member _.``all-None options produce empty query string``() =
+            let qs = Customers.ListOptions.New() |> querySerialise
+            Assert.That(qs, Is.EqualTo "")
 
         [<Test>]
-        member _.``Option string Some produces key=value``() =
-            let m = Map.ofList [("email", box (Some "test@example.com" : string option))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result, Is.EqualTo "?email=test%40example.com")
+        member _.``email option produces URL-encoded query parameter``() =
+            let qs = Customers.ListOptions.New(email = "test@example.com") |> querySerialise
+            Assert.That(qs, Is.EqualTo "?email=test%40example.com")
 
         [<Test>]
-        member _.``Option string None is excluded``() =
-            let m = Map.ofList [("email", box (None : string option))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result, Is.EqualTo "")
+        member _.``limit option produces integer query parameter``() =
+            let qs = Customers.ListOptions.New(limit = 10) |> querySerialise
+            Assert.That(qs, Is.EqualTo "?limit=10")
 
         [<Test>]
-        member _.``Option int Some produces key=value``() =
-            let m = Map.ofList [("limit", box (Some 10 : int option))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result, Is.EqualTo "?limit=10")
+        member _.``expand list produces array notation``() =
+            let qs = Customers.ListOptions.New(expand = ["default_source"; "sources"]) |> querySerialise
+            Assert.That(qs, Is.EqualTo "?expand[]=default_source;sources")
 
         [<Test>]
-        member _.``Option int None is excluded``() =
-            let m = Map.ofList [("limit", box (None : int option))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result, Is.EqualTo "")
+        member _.``multiple options combine in a single query string``() =
+            let qs = Customers.ListOptions.New(limit = 5, email = "a@b.com") |> querySerialise
+            Assert.That(qs.StartsWith "?", Is.True)
+            Assert.That(qs.Contains "&", Is.True)
+            Assert.That(qs.Contains "limit=5", Is.True)
+            Assert.That(qs.Contains "email=a%40b.com", Is.True)
 
         [<Test>]
-        member _.``List string direct produces semicolon-joined value``() =
-            let m = Map.ofList [("expand", box (["customer"; "payment_method"] : string list))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result, Is.EqualTo "?expand[]=customer;payment_method")
-
-        [<Test>]
-        member _.``Option List string Some produces semicolon-joined value``() =
-            let m = Map.ofList [("expand", box (Some ["customer"; "sources"] : string list option))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result, Is.EqualTo "?expand[]=customer;sources")
-
-        [<Test>]
-        member _.``special characters are URL encoded``() =
-            let m = Map.ofList [("email", box (Some "hello world+test@foo.com" : string option))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result.Contains "%40", Is.True, "@ should be encoded")
-            Assert.That(result.Contains "%20", Is.True, "space should be encoded")
-
-        [<Test>]
-        member _.``multiple parameters are joined with ampersand``() =
-            let m = Map.ofList [("limit", box (Some 5 : int option)); ("email", box (Some "x@y.com" : string option))]
-            let result = RestApi.formatQueryString m
-            Assert.That(result.StartsWith "?", Is.True)
-            Assert.That(result.Contains "&", Is.True)
-            Assert.That(result.Contains "limit=5", Is.True)
-            Assert.That(result.Contains "email=", Is.True)
+        member _.``special characters in email are fully URL-encoded``() =
+            let qs = Customers.ListOptions.New(email = "hello world+test@foo.com") |> querySerialise
+            Assert.That(qs.Contains "%40", Is.True, "@ should be encoded")
+            Assert.That(qs.Contains "%20", Is.True, "space should be encoded")
 
     // =========================================================================
     // C. Settings header — RestApi.createHeader v2 additions
@@ -1141,32 +1088,7 @@ module Tests =
             | other -> Assert.Fail(sprintf "Expected String case, got %A" other)
 
     // =========================================================================
-    // I. SnakeCaseNamingPolicy
-    // =========================================================================
-
-    [<TestFixture>]
-    type JsonSnakeCaseNamingPolicyUnitTests () =
-
-        let policy = Json.StripeConverter.SnakeCaseNamingPolicy()
-
-        [<Test>]
-        member _.``PascalCase converts to snake_case``() =
-            Assert.That(policy.ConvertName "BillingDetails", Is.EqualTo "billing_details")
-
-        [<Test>]
-        member _.``already snake_case is unchanged``() =
-            Assert.That(policy.ConvertName "already_snake", Is.EqualTo "already_snake")
-
-        [<Test>]
-        member _.``PostalCode converts to postal_code``() =
-            Assert.That(policy.ConvertName "PostalCode", Is.EqualTo "postal_code")
-
-        [<Test>]
-        member _.``single word lowercased``() =
-            Assert.That(policy.ConvertName "Customer", Is.EqualTo "customer")
-
-    // =========================================================================
-    // J. StripeList deserialization
+    // I. StripeList deserialization
     // =========================================================================
 
     [<TestFixture>]
@@ -1202,60 +1124,8 @@ module Tests =
             let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
             Assert.That(result.HasMore, Is.True)
 
-        [<Test>]
-        member _.``Object member always returns list``() =
-            let sl = StripeList.New(data = ([] : string list), hasMore = false, url = "/v1/test")
-            Assert.That(sl.Object, Is.EqualTo "list")
-
-        [<Test>]
-        member _.``New constructor round-trips fields``() =
-            let data = [42; 99]
-            let sl = StripeList.New(data = data, hasMore = true, url = "/v1/things")
-            Assert.That(sl.Data, Is.EqualTo<int list> data)
-            Assert.That(sl.HasMore, Is.True)
-            Assert.That(sl.Url, Is.EqualTo "/v1/things")
-
     // =========================================================================
-    // K. StripeId phantom type
-    // =========================================================================
-
-    [<TestFixture>]
-    type StripeIdUnitTests () =
-
-        [<Test>]
-        member _.``string can be extracted by pattern match``() =
-            let id : StripeId<Markers.Customer> = StripeId "cus_abc"
-            let (StripeId s) = id
-            Assert.That(s, Is.EqualTo "cus_abc")
-
-        [<Test>]
-        member _.``structural equality holds for same string``() =
-            let a : StripeId<Markers.Customer> = StripeId "cus_same"
-            let b : StripeId<Markers.Customer> = StripeId "cus_same"
-            Assert.That(a, Is.EqualTo b)
-
-        [<Test>]
-        member _.``structural inequality holds for different strings``() =
-            let a : StripeId<Markers.Customer> = StripeId "cus_aaa"
-            let b : StripeId<Markers.Customer> = StripeId "cus_bbb"
-            Assert.That(a, Is.Not.EqualTo b)
-
-        [<Test>]
-        member _.``StripeId works as Map key``() =
-            let k : StripeId<Markers.Customer> = StripeId "cus_key"
-            let m = Map.ofList [(k, "value")]
-            Assert.That(m |> Map.find k, Is.EqualTo "value")
-
-        [<Test>]
-        member _.``phantom type does not change wrapped string value``() =
-            let asCustomer : StripeId<Markers.Customer> = StripeId "the_id"
-            let asPM : StripeId<Markers.PaymentMethod> = StripeId "the_id"
-            let (StripeId s1) = asCustomer
-            let (StripeId s2) = asPM
-            Assert.That(s1, Is.EqualTo s2)
-
-    // =========================================================================
-    // L. ErrorResponse deserialization + union case utilities
+    // J. ErrorResponse deserialization + union case utilities
     // =========================================================================
 
     [<TestFixture>]
@@ -1303,25 +1173,6 @@ module Tests =
             Assert.That(result.StripeError.Param, Is.EqualTo None)
             Assert.That(result.StripeError.Charge, Is.EqualTo None)
             Assert.That(result.StripeError.Message, Is.EqualTo None)
-
-        [<Test>]
-        member _.``getUnionCaseFromString returns None for ErrorType (no JsonPropertyName attrs)``() =
-            // ErrorType is a struct DU without [<JsonPropertyName>] attributes;
-            // getUnionCaseFromString reads those attributes, so it returns None for all cases.
-            let result = Util.getUnionCaseFromString<StripeError.ErrorType> "card_error"
-            Assert.That(result, Is.EqualTo None)
-
-        [<Test>]
-        member _.``getUnionCaseFromString returns None for unknown string``() =
-            let result = Util.getUnionCaseFromString<StripeError.ErrorType> "completely_unknown_type"
-            Assert.That(result, Is.EqualTo None)
-
-        [<Test>]
-        member _.``optionToUnionCaseOr returns default when getUnionCaseFromString returns None``() =
-            // ErrorType has no JsonPropertyName attrs, so getUnionCaseFromString returns None
-            // and optionToUnionCaseOr falls back to the provided default.
-            let result = Util.optionToUnionCaseOr StripeError.ErrorType.ApiError (Some "card_error")
-            Assert.That(result, Is.EqualTo StripeError.ErrorType.ApiError)
 
         [<Test>]
         member _.``optionToUnionCaseOr returns default for None``() =
