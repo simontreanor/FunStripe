@@ -9,8 +9,6 @@
     <Tailcalls>true</Tailcalls>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../../src/ModelBuilder.fs" Link="ModelBuilder.fs" />
-    <Compile Include="../../src/RequestBuilder.fs" Link="RequestBuilder.fs" />
     <Compile Include="ModelParsing.fs" />
     <Compile Include="StripeIdsBuilder.fs" />
     <Compile Include="ModelBuilderAST.fs" />
