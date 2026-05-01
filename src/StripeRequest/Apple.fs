@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ApplePayDomain
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ApplePayDomains =
 
     type ListOptions =
@@ -36,24 +36,6 @@ module ApplePayDomains =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                domainName: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              DomainName = domainName
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type CreateOptions =
         {
             [<Config.Form>]
@@ -70,17 +52,6 @@ module ApplePayDomains =
                 Expand = expand
             }
 
-    module CreateOptions =
-        let create
-            (
-                domainName: string
-            ) : CreateOptions
-            =
-            {
-              DomainName = domainName
-              Expand = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Domain: string }
@@ -89,16 +60,6 @@ module ApplePayDomains =
         static member New(domain: string) =
             {
                 Domain = domain
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                domain: string
-            ) : DeleteOptions
-            =
-            {
-              Domain = domain
             }
 
     type RetrieveOptions =
@@ -115,17 +76,6 @@ module ApplePayDomains =
             {
                 Domain = domain
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                domain: string
-            ) : RetrieveOptions
-            =
-            {
-              Domain = domain
-              Expand = None
             }
 
     ///<p>List apple pay domains.</p>

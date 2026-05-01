@@ -10,7 +10,7 @@ open Stripe.Price
 open Stripe.SubscriptionItem
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type SubscriptionScheduleApplication'AnyOf =
     | String of string
     | Application of Application

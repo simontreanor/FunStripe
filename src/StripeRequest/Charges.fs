@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Charges =
 
     type ListOptions =
@@ -49,30 +49,6 @@ module Charges =
                 TransferGroup = transferGroup
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                customer: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                paymentIntent: string option,
-                startingAfter: string option,
-                transferGroup: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Customer = customer
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              PaymentIntent = paymentIntent
-              StartingAfter = startingAfter
-              TransferGroup = transferGroup
-            }
-
     type Create'Destination =
         {
             /// ID of an existing, connected Stripe account.
@@ -90,18 +66,6 @@ module Charges =
                 Amount = amount
             }
 
-    module Create'Destination =
-        let create
-            (
-                account: string option,
-                amount: int option
-            ) : Create'Destination
-            =
-            {
-              Account = account
-              Amount = amount
-            }
-
     type Create'RadarOptions =
         {
             /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
@@ -113,16 +77,6 @@ module Charges =
         static member New(?session: string) =
             {
                 Session = session
-            }
-
-    module Create'RadarOptions =
-        let create
-            (
-                session: string option
-            ) : Create'RadarOptions
-            =
-            {
-              Session = session
             }
 
     type Create'ShippingAddress =
@@ -158,26 +112,6 @@ module Charges =
                 State = state
             }
 
-    module Create'ShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'ShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'Shipping =
         {
             /// Shipping address.
@@ -207,24 +141,6 @@ module Charges =
                 TrackingNumber = trackingNumber
             }
 
-    module Create'Shipping =
-        let create
-            (
-                address: Create'ShippingAddress option,
-                carrier: string option,
-                name: string option,
-                phone: string option,
-                trackingNumber: string option
-            ) : Create'Shipping
-            =
-            {
-              Address = address
-              Carrier = carrier
-              Name = name
-              Phone = phone
-              TrackingNumber = trackingNumber
-            }
-
     type Create'TransferData =
         {
             /// The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
@@ -240,18 +156,6 @@ module Charges =
             {
                 Amount = amount
                 Destination = destination
-            }
-
-    module Create'TransferData =
-        let create
-            (
-                amount: int option,
-                destination: string option
-            ) : Create'TransferData
-            =
-            {
-              Amount = amount
-              Destination = destination
             }
 
     type CreateOptions =
@@ -338,52 +242,6 @@ module Charges =
                 TransferGroup = transferGroup
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int option,
-                applicationFee: int option,
-                applicationFeeAmount: int option,
-                capture: bool option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customer: string option,
-                description: string option,
-                destination: Create'Destination option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option,
-                radarOptions: Create'RadarOptions option,
-                receiptEmail: string option,
-                shipping: Create'Shipping option,
-                source: string option,
-                statementDescriptor: string option,
-                statementDescriptorSuffix: string option,
-                transferData: Create'TransferData option,
-                transferGroup: string option
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              ApplicationFee = applicationFee
-              ApplicationFeeAmount = applicationFeeAmount
-              Capture = capture
-              Currency = currency
-              Customer = customer
-              Description = description
-              Destination = destination
-              Expand = expand
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              RadarOptions = radarOptions
-              ReceiptEmail = receiptEmail
-              Shipping = shipping
-              Source = source
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorSuffix = statementDescriptorSuffix
-              TransferData = transferData
-              TransferGroup = transferGroup
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -398,17 +256,6 @@ module Charges =
             {
                 Charge = charge
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                charge: string
-            ) : RetrieveOptions
-            =
-            {
-              Charge = charge
-              Expand = None
             }
 
     type Update'FraudDetailsUserReport =
@@ -426,16 +273,6 @@ module Charges =
         static member New(?userReport: Update'FraudDetailsUserReport) =
             {
                 UserReport = userReport
-            }
-
-    module Update'FraudDetails =
-        let create
-            (
-                userReport: Update'FraudDetailsUserReport option
-            ) : Update'FraudDetails
-            =
-            {
-              UserReport = userReport
             }
 
     type Update'ShippingAddress =
@@ -471,26 +308,6 @@ module Charges =
                 State = state
             }
 
-    module Update'ShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'ShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'Shipping =
         {
             /// Shipping address.
@@ -518,24 +335,6 @@ module Charges =
                 Name = name
                 Phone = phone
                 TrackingNumber = trackingNumber
-            }
-
-    module Update'Shipping =
-        let create
-            (
-                address: Update'ShippingAddress option,
-                carrier: string option,
-                name: string option,
-                phone: string option,
-                trackingNumber: string option
-            ) : Update'Shipping
-            =
-            {
-              Address = address
-              Carrier = carrier
-              Name = name
-              Phone = phone
-              TrackingNumber = trackingNumber
             }
 
     type UpdateOptions =
@@ -580,24 +379,6 @@ module Charges =
                 ReceiptEmail = receiptEmail
                 Shipping = shipping
                 TransferGroup = transferGroup
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                charge: string
-            ) : UpdateOptions
-            =
-            {
-              Charge = charge
-              Customer = None
-              Description = None
-              Expand = None
-              FraudDetails = None
-              Metadata = None
-              ReceiptEmail = None
-              Shipping = None
-              TransferGroup = None
             }
 
     ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
@@ -651,19 +432,6 @@ module ChargesSearch =
                 Page = page
             }
 
-    module SearchOptions =
-        let create
-            (
-                query: string
-            ) : SearchOptions
-            =
-            {
-              Query = query
-              Expand = None
-              Limit = None
-              Page = None
-            }
-
     ///<p>Search for charges you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
     ///Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
     ///conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
@@ -686,16 +454,6 @@ module ChargesCapture =
         static member New(?amount: int) =
             {
                 Amount = amount
-            }
-
-    module Capture'TransferData =
-        let create
-            (
-                amount: int option
-            ) : Capture'TransferData
-            =
-            {
-              Amount = amount
             }
 
     type CaptureOptions =
@@ -747,25 +505,6 @@ module ChargesCapture =
                 TransferGroup = transferGroup
             }
 
-    module CaptureOptions =
-        let create
-            (
-                charge: string
-            ) : CaptureOptions
-            =
-            {
-              Charge = charge
-              Amount = None
-              ApplicationFee = None
-              ApplicationFeeAmount = None
-              Expand = None
-              ReceiptEmail = None
-              StatementDescriptor = None
-              StatementDescriptorSuffix = None
-              TransferData = None
-              TransferGroup = None
-            }
-
     ///<p>Capture the payment of an existing, uncaptured charge that was created with the <code>capture</code> option set to false.</p>
     ///<p>Uncaptured payments expire a set number of days after they are created (<a href="/docs/charges/placing-a-hold">7 by default</a>), after which they are marked as refunded and capture attempts will fail.</p>
     ///<p>Don’t use this method to capture a PaymentIntent-initiated charge. Use <a href="/docs/api/payment_intents/capture">Capture a PaymentIntent</a>.</p>
@@ -803,20 +542,6 @@ module ChargesRefunds =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                charge: string
-            ) : ListOptions
-            =
-            {
-              Charge = charge
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -834,19 +559,6 @@ module ChargesRefunds =
                 Charge = charge
                 Refund = refund
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                charge: string,
-                refund: string
-            ) : RetrieveOptions
-            =
-            {
-              Charge = charge
-              Refund = refund
-              Expand = None
             }
 
     ///<p>You can see a list of the refunds belonging to a specific charge. Note that the 10 most recent refunds are always available by default on the charge object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional refunds.</p>

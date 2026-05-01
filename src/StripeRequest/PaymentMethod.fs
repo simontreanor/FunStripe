@@ -13,7 +13,7 @@ open Stripe.SubscriptionItem
 open Stripe.SubscriptionSchedule
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Account =
 
     type RetrieveOptions =
@@ -27,16 +27,6 @@ module Account =
         static member New(?expand: string list) =
             {
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                expand: string list option
-            ) : RetrieveOptions
-            =
-            {
-              Expand = expand
             }
 
     ///<p>Retrieves the details of an account.</p>
@@ -74,18 +64,6 @@ module AccountLinks =
             {
                 Fields = fields
                 FutureRequirements = futureRequirements
-            }
-
-    module Create'CollectionOptions =
-        let create
-            (
-                fields: Create'CollectionOptionsFields option,
-                futureRequirements: Create'CollectionOptionsFutureRequirements option
-            ) : Create'CollectionOptions
-            =
-            {
-              Fields = fields
-              FutureRequirements = futureRequirements
             }
 
     type Create'Type =
@@ -130,23 +108,6 @@ module AccountLinks =
                 ReturnUrl = returnUrl
             }
 
-    module CreateOptions =
-        let create
-            (
-                account: string,
-                type': Create'Type
-            ) : CreateOptions
-            =
-            {
-              Account = account
-              Type = type'
-              Collect = None
-              CollectionOptions = None
-              Expand = None
-              RefreshUrl = None
-              ReturnUrl = None
-            }
-
     ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/account_links"
@@ -171,18 +132,6 @@ module AccountSessions =
                 ExternalAccountCollection = externalAccountCollection
             }
 
-    module Create'ComponentsAccountManagementFeatures =
-        let create
-            (
-                disableStripeUserAuthentication: bool option,
-                externalAccountCollection: bool option
-            ) : Create'ComponentsAccountManagementFeatures
-            =
-            {
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              ExternalAccountCollection = externalAccountCollection
-            }
-
     type Create'ComponentsAccountManagement =
         {
             /// Whether the embedded component is enabled.
@@ -198,18 +147,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsAccountManagement =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsAccountManagementFeatures option
-            ) : Create'ComponentsAccountManagement
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsAccountOnboardingFeatures =
@@ -229,18 +166,6 @@ module AccountSessions =
                 ExternalAccountCollection = externalAccountCollection
             }
 
-    module Create'ComponentsAccountOnboardingFeatures =
-        let create
-            (
-                disableStripeUserAuthentication: bool option,
-                externalAccountCollection: bool option
-            ) : Create'ComponentsAccountOnboardingFeatures
-            =
-            {
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              ExternalAccountCollection = externalAccountCollection
-            }
-
     type Create'ComponentsAccountOnboarding =
         {
             /// Whether the embedded component is enabled.
@@ -258,18 +183,6 @@ module AccountSessions =
                 Features = features
             }
 
-    module Create'ComponentsAccountOnboarding =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsAccountOnboardingFeatures option
-            ) : Create'ComponentsAccountOnboarding
-            =
-            {
-              Enabled = enabled
-              Features = features
-            }
-
     type Create'ComponentsBalanceReport =
         {
             /// Whether the embedded component is enabled.
@@ -285,18 +198,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsBalanceReport =
-        let create
-            (
-                enabled: bool option,
-                features: string option
-            ) : Create'ComponentsBalanceReport
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsBalancesFeatures =
@@ -328,24 +229,6 @@ module AccountSessions =
                 StandardPayouts = standardPayouts
             }
 
-    module Create'ComponentsBalancesFeatures =
-        let create
-            (
-                disableStripeUserAuthentication: bool option,
-                editPayoutSchedule: bool option,
-                externalAccountCollection: bool option,
-                instantPayouts: bool option,
-                standardPayouts: bool option
-            ) : Create'ComponentsBalancesFeatures
-            =
-            {
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              EditPayoutSchedule = editPayoutSchedule
-              ExternalAccountCollection = externalAccountCollection
-              InstantPayouts = instantPayouts
-              StandardPayouts = standardPayouts
-            }
-
     type Create'ComponentsBalances =
         {
             /// Whether the embedded component is enabled.
@@ -361,18 +244,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsBalances =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsBalancesFeatures option
-            ) : Create'ComponentsBalances
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsDisputesListFeatures =
@@ -400,22 +271,6 @@ module AccountSessions =
                 RefundManagement = refundManagement
             }
 
-    module Create'ComponentsDisputesListFeatures =
-        let create
-            (
-                capturePayments: bool option,
-                destinationOnBehalfOfChargeManagement: bool option,
-                disputeManagement: bool option,
-                refundManagement: bool option
-            ) : Create'ComponentsDisputesListFeatures
-            =
-            {
-              CapturePayments = capturePayments
-              DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
-              DisputeManagement = disputeManagement
-              RefundManagement = refundManagement
-            }
-
     type Create'ComponentsDisputesList =
         {
             /// Whether the embedded component is enabled.
@@ -433,18 +288,6 @@ module AccountSessions =
                 Features = features
             }
 
-    module Create'ComponentsDisputesList =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsDisputesListFeatures option
-            ) : Create'ComponentsDisputesList
-            =
-            {
-              Enabled = enabled
-              Features = features
-            }
-
     type Create'ComponentsDocuments =
         {
             /// Whether the embedded component is enabled.
@@ -460,18 +303,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsDocuments =
-        let create
-            (
-                enabled: bool option,
-                features: string option
-            ) : Create'ComponentsDocuments
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsFinancialAccountFeatures =
@@ -499,22 +330,6 @@ module AccountSessions =
                 TransferBalance = transferBalance
             }
 
-    module Create'ComponentsFinancialAccountFeatures =
-        let create
-            (
-                disableStripeUserAuthentication: bool option,
-                externalAccountCollection: bool option,
-                sendMoney: bool option,
-                transferBalance: bool option
-            ) : Create'ComponentsFinancialAccountFeatures
-            =
-            {
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              ExternalAccountCollection = externalAccountCollection
-              SendMoney = sendMoney
-              TransferBalance = transferBalance
-            }
-
     type Create'ComponentsFinancialAccount =
         {
             /// Whether the embedded component is enabled.
@@ -532,18 +347,6 @@ module AccountSessions =
                 Features = features
             }
 
-    module Create'ComponentsFinancialAccount =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsFinancialAccountFeatures option
-            ) : Create'ComponentsFinancialAccount
-            =
-            {
-              Enabled = enabled
-              Features = features
-            }
-
     type Create'ComponentsFinancialAccountTransactionsFeatures =
         {
             /// Whether to allow card spend dispute management features.
@@ -555,16 +358,6 @@ module AccountSessions =
         static member New(?cardSpendDisputeManagement: bool) =
             {
                 CardSpendDisputeManagement = cardSpendDisputeManagement
-            }
-
-    module Create'ComponentsFinancialAccountTransactionsFeatures =
-        let create
-            (
-                cardSpendDisputeManagement: bool option
-            ) : Create'ComponentsFinancialAccountTransactionsFeatures
-            =
-            {
-              CardSpendDisputeManagement = cardSpendDisputeManagement
             }
 
     type Create'ComponentsFinancialAccountTransactions =
@@ -582,18 +375,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsFinancialAccountTransactions =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsFinancialAccountTransactionsFeatures option
-            ) : Create'ComponentsFinancialAccountTransactions
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsInstantPayoutsPromotionFeatures =
@@ -617,20 +398,6 @@ module AccountSessions =
                 InstantPayouts = instantPayouts
             }
 
-    module Create'ComponentsInstantPayoutsPromotionFeatures =
-        let create
-            (
-                disableStripeUserAuthentication: bool option,
-                externalAccountCollection: bool option,
-                instantPayouts: bool option
-            ) : Create'ComponentsInstantPayoutsPromotionFeatures
-            =
-            {
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              ExternalAccountCollection = externalAccountCollection
-              InstantPayouts = instantPayouts
-            }
-
     type Create'ComponentsInstantPayoutsPromotion =
         {
             /// Whether the embedded component is enabled.
@@ -646,18 +413,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsInstantPayoutsPromotion =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsInstantPayoutsPromotionFeatures option
-            ) : Create'ComponentsInstantPayoutsPromotion
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsIssuingCardFeatures =
@@ -685,22 +440,6 @@ module AccountSessions =
                 SpendControlManagement = spendControlManagement
             }
 
-    module Create'ComponentsIssuingCardFeatures =
-        let create
-            (
-                cardManagement: bool option,
-                cardSpendDisputeManagement: bool option,
-                cardholderManagement: bool option,
-                spendControlManagement: bool option
-            ) : Create'ComponentsIssuingCardFeatures
-            =
-            {
-              CardManagement = cardManagement
-              CardSpendDisputeManagement = cardSpendDisputeManagement
-              CardholderManagement = cardholderManagement
-              SpendControlManagement = spendControlManagement
-            }
-
     type Create'ComponentsIssuingCard =
         {
             /// Whether the embedded component is enabled.
@@ -716,18 +455,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsIssuingCard =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsIssuingCardFeatures option
-            ) : Create'ComponentsIssuingCard
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsIssuingCardsListFeatures =
@@ -759,24 +486,6 @@ module AccountSessions =
                 SpendControlManagement = spendControlManagement
             }
 
-    module Create'ComponentsIssuingCardsListFeatures =
-        let create
-            (
-                cardManagement: bool option,
-                cardSpendDisputeManagement: bool option,
-                cardholderManagement: bool option,
-                disableStripeUserAuthentication: bool option,
-                spendControlManagement: bool option
-            ) : Create'ComponentsIssuingCardsListFeatures
-            =
-            {
-              CardManagement = cardManagement
-              CardSpendDisputeManagement = cardSpendDisputeManagement
-              CardholderManagement = cardholderManagement
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              SpendControlManagement = spendControlManagement
-            }
-
     type Create'ComponentsIssuingCardsList =
         {
             /// Whether the embedded component is enabled.
@@ -792,18 +501,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsIssuingCardsList =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsIssuingCardsListFeatures option
-            ) : Create'ComponentsIssuingCardsList
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsNotificationBannerFeatures =
@@ -823,18 +520,6 @@ module AccountSessions =
                 ExternalAccountCollection = externalAccountCollection
             }
 
-    module Create'ComponentsNotificationBannerFeatures =
-        let create
-            (
-                disableStripeUserAuthentication: bool option,
-                externalAccountCollection: bool option
-            ) : Create'ComponentsNotificationBannerFeatures
-            =
-            {
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              ExternalAccountCollection = externalAccountCollection
-            }
-
     type Create'ComponentsNotificationBanner =
         {
             /// Whether the embedded component is enabled.
@@ -850,18 +535,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsNotificationBanner =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsNotificationBannerFeatures option
-            ) : Create'ComponentsNotificationBanner
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsPaymentDetailsFeatures =
@@ -889,22 +562,6 @@ module AccountSessions =
                 RefundManagement = refundManagement
             }
 
-    module Create'ComponentsPaymentDetailsFeatures =
-        let create
-            (
-                capturePayments: bool option,
-                destinationOnBehalfOfChargeManagement: bool option,
-                disputeManagement: bool option,
-                refundManagement: bool option
-            ) : Create'ComponentsPaymentDetailsFeatures
-            =
-            {
-              CapturePayments = capturePayments
-              DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
-              DisputeManagement = disputeManagement
-              RefundManagement = refundManagement
-            }
-
     type Create'ComponentsPaymentDetails =
         {
             /// Whether the embedded component is enabled.
@@ -920,18 +577,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsPaymentDetails =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsPaymentDetailsFeatures option
-            ) : Create'ComponentsPaymentDetails
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsPaymentDisputesFeatures =
@@ -955,20 +600,6 @@ module AccountSessions =
                 RefundManagement = refundManagement
             }
 
-    module Create'ComponentsPaymentDisputesFeatures =
-        let create
-            (
-                destinationOnBehalfOfChargeManagement: bool option,
-                disputeManagement: bool option,
-                refundManagement: bool option
-            ) : Create'ComponentsPaymentDisputesFeatures
-            =
-            {
-              DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
-              DisputeManagement = disputeManagement
-              RefundManagement = refundManagement
-            }
-
     type Create'ComponentsPaymentDisputes =
         {
             /// Whether the embedded component is enabled.
@@ -984,18 +615,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsPaymentDisputes =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsPaymentDisputesFeatures option
-            ) : Create'ComponentsPaymentDisputes
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsPaymentsFeatures =
@@ -1023,22 +642,6 @@ module AccountSessions =
                 RefundManagement = refundManagement
             }
 
-    module Create'ComponentsPaymentsFeatures =
-        let create
-            (
-                capturePayments: bool option,
-                destinationOnBehalfOfChargeManagement: bool option,
-                disputeManagement: bool option,
-                refundManagement: bool option
-            ) : Create'ComponentsPaymentsFeatures
-            =
-            {
-              CapturePayments = capturePayments
-              DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
-              DisputeManagement = disputeManagement
-              RefundManagement = refundManagement
-            }
-
     type Create'ComponentsPayments =
         {
             /// Whether the embedded component is enabled.
@@ -1054,18 +657,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsPayments =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsPaymentsFeatures option
-            ) : Create'ComponentsPayments
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsPayoutDetails =
@@ -1085,18 +676,6 @@ module AccountSessions =
                 Features = features
             }
 
-    module Create'ComponentsPayoutDetails =
-        let create
-            (
-                enabled: bool option,
-                features: string option
-            ) : Create'ComponentsPayoutDetails
-            =
-            {
-              Enabled = enabled
-              Features = features
-            }
-
     type Create'ComponentsPayoutReconciliationReport =
         {
             /// Whether the embedded component is enabled.
@@ -1112,18 +691,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsPayoutReconciliationReport =
-        let create
-            (
-                enabled: bool option,
-                features: string option
-            ) : Create'ComponentsPayoutReconciliationReport
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsPayoutsFeatures =
@@ -1155,24 +722,6 @@ module AccountSessions =
                 StandardPayouts = standardPayouts
             }
 
-    module Create'ComponentsPayoutsFeatures =
-        let create
-            (
-                disableStripeUserAuthentication: bool option,
-                editPayoutSchedule: bool option,
-                externalAccountCollection: bool option,
-                instantPayouts: bool option,
-                standardPayouts: bool option
-            ) : Create'ComponentsPayoutsFeatures
-            =
-            {
-              DisableStripeUserAuthentication = disableStripeUserAuthentication
-              EditPayoutSchedule = editPayoutSchedule
-              ExternalAccountCollection = externalAccountCollection
-              InstantPayouts = instantPayouts
-              StandardPayouts = standardPayouts
-            }
-
     type Create'ComponentsPayouts =
         {
             /// Whether the embedded component is enabled.
@@ -1188,18 +737,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsPayouts =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsPayoutsFeatures option
-            ) : Create'ComponentsPayouts
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsPayoutsList =
@@ -1219,18 +756,6 @@ module AccountSessions =
                 Features = features
             }
 
-    module Create'ComponentsPayoutsList =
-        let create
-            (
-                enabled: bool option,
-                features: string option
-            ) : Create'ComponentsPayoutsList
-            =
-            {
-              Enabled = enabled
-              Features = features
-            }
-
     type Create'ComponentsTaxRegistrations =
         {
             /// Whether the embedded component is enabled.
@@ -1248,18 +773,6 @@ module AccountSessions =
                 Features = features
             }
 
-    module Create'ComponentsTaxRegistrations =
-        let create
-            (
-                enabled: bool option,
-                features: string option
-            ) : Create'ComponentsTaxRegistrations
-            =
-            {
-              Enabled = enabled
-              Features = features
-            }
-
     type Create'ComponentsTaxSettings =
         {
             /// Whether the embedded component is enabled.
@@ -1275,18 +788,6 @@ module AccountSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsTaxSettings =
-        let create
-            (
-                enabled: bool option,
-                features: string option
-            ) : Create'ComponentsTaxSettings
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'Components =
@@ -1382,56 +883,6 @@ module AccountSessions =
                 TaxSettings = taxSettings
             }
 
-    module Create'Components =
-        let create
-            (
-                accountManagement: Create'ComponentsAccountManagement option,
-                accountOnboarding: Create'ComponentsAccountOnboarding option,
-                balanceReport: Create'ComponentsBalanceReport option,
-                balances: Create'ComponentsBalances option,
-                disputesList: Create'ComponentsDisputesList option,
-                documents: Create'ComponentsDocuments option,
-                financialAccount: Create'ComponentsFinancialAccount option,
-                financialAccountTransactions: Create'ComponentsFinancialAccountTransactions option,
-                instantPayoutsPromotion: Create'ComponentsInstantPayoutsPromotion option,
-                issuingCard: Create'ComponentsIssuingCard option,
-                issuingCardsList: Create'ComponentsIssuingCardsList option,
-                notificationBanner: Create'ComponentsNotificationBanner option,
-                paymentDetails: Create'ComponentsPaymentDetails option,
-                paymentDisputes: Create'ComponentsPaymentDisputes option,
-                payments: Create'ComponentsPayments option,
-                payoutDetails: Create'ComponentsPayoutDetails option,
-                payoutReconciliationReport: Create'ComponentsPayoutReconciliationReport option,
-                payouts: Create'ComponentsPayouts option,
-                payoutsList: Create'ComponentsPayoutsList option,
-                taxRegistrations: Create'ComponentsTaxRegistrations option,
-                taxSettings: Create'ComponentsTaxSettings option
-            ) : Create'Components
-            =
-            {
-              AccountManagement = accountManagement
-              AccountOnboarding = accountOnboarding
-              BalanceReport = balanceReport
-              Balances = balances
-              DisputesList = disputesList
-              Documents = documents
-              FinancialAccount = financialAccount
-              FinancialAccountTransactions = financialAccountTransactions
-              InstantPayoutsPromotion = instantPayoutsPromotion
-              IssuingCard = issuingCard
-              IssuingCardsList = issuingCardsList
-              NotificationBanner = notificationBanner
-              PaymentDetails = paymentDetails
-              PaymentDisputes = paymentDisputes
-              Payments = payments
-              PayoutDetails = payoutDetails
-              PayoutReconciliationReport = payoutReconciliationReport
-              Payouts = payouts
-              PayoutsList = payoutsList
-              TaxRegistrations = taxRegistrations
-              TaxSettings = taxSettings
-            }
-
     type CreateOptions =
         {
             /// The identifier of the account to create an Account Session for.
@@ -1451,19 +902,6 @@ module AccountSessions =
                 Account = account
                 Components = components
                 Expand = expand
-            }
-
-    module CreateOptions =
-        let create
-            (
-                account: string,
-                components: Create'Components
-            ) : CreateOptions
-            =
-            {
-              Account = account
-              Components = components
-              Expand = None
             }
 
     ///<p>Creates a AccountSession object that includes a single-use token that the platform can use on their front-end to grant client-side API access.</p>
@@ -1506,26 +944,6 @@ module BillingAlerts =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                alertType: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                meter: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              AlertType = alertType
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Meter = meter
-              StartingAfter = startingAfter
-            }
-
     type Create'AlertType = | UsageThreshold
 
     type Create'UsageThresholdFiltersType = | Customer
@@ -1545,18 +963,6 @@ module BillingAlerts =
             {
                 Customer = customer
                 Type = type'
-            }
-
-    module Create'UsageThresholdFilters =
-        let create
-            (
-                customer: string option,
-                type': Create'UsageThresholdFiltersType option
-            ) : Create'UsageThresholdFilters
-            =
-            {
-              Customer = customer
-              Type = type'
             }
 
     type Create'UsageThresholdRecurrence = | OneTime
@@ -1586,22 +992,6 @@ module BillingAlerts =
                 Recurrence = recurrence
             }
 
-    module Create'UsageThreshold =
-        let create
-            (
-                filters: Create'UsageThresholdFilters list option,
-                gte: int option,
-                meter: string option,
-                recurrence: Create'UsageThresholdRecurrence option
-            ) : Create'UsageThreshold
-            =
-            {
-              Filters = filters
-              Gte = gte
-              Meter = meter
-              Recurrence = recurrence
-            }
-
     type CreateOptions =
         {
             /// The type of alert to create.
@@ -1627,20 +1017,6 @@ module BillingAlerts =
                 UsageThreshold = usageThreshold
             }
 
-    module CreateOptions =
-        let create
-            (
-                alertType: Create'AlertType,
-                title: string
-            ) : CreateOptions
-            =
-            {
-              AlertType = alertType
-              Title = title
-              Expand = None
-              UsageThreshold = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -1655,17 +1031,6 @@ module BillingAlerts =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Lists billing active and inactive alerts</p>
@@ -1703,17 +1068,6 @@ module BillingAlertsActivate =
                 Expand = expand
             }
 
-    module ActivateOptions =
-        let create
-            (
-                id: string
-            ) : ActivateOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>Reactivates this alert, allowing it to trigger again.</p>
     let Activate settings (options: ActivateOptions) =
         $"/v1/billing/alerts/{options.Id}/activate"
@@ -1737,17 +1091,6 @@ module BillingAlertsArchive =
                 Expand = expand
             }
 
-    module ArchiveOptions =
-        let create
-            (
-                id: string
-            ) : ArchiveOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>Archives this alert, removing it from the list view and APIs. This is non-reversible.</p>
     let Archive settings (options: ArchiveOptions) =
         $"/v1/billing/alerts/{options.Id}/archive"
@@ -1769,17 +1112,6 @@ module BillingAlertsDeactivate =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module DeactivateOptions =
-        let create
-            (
-                id: string
-            ) : DeactivateOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Deactivates this alert, preventing it from triggering.</p>
@@ -1812,19 +1144,6 @@ module BillingCreditBalanceSummary =
                 Customer = customer
                 CustomerAccount = customerAccount
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                filter: Map<string, string>
-            ) : RetrieveOptions
-            =
-            {
-              Filter = filter
-              Customer = None
-              CustomerAccount = None
-              Expand = None
             }
 
     ///<p>Retrieves the credit balance summary for a customer.</p>
@@ -1872,28 +1191,6 @@ module BillingCreditBalanceTransactions =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                creditGrant: string option,
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              CreditGrant = creditGrant
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -1909,17 +1206,6 @@ module BillingCreditBalanceTransactions =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Retrieve a list of credit balance transactions.</p>
@@ -1969,26 +1255,6 @@ module BillingCreditGrants =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'AmountMonetary =
         {
             /// Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the `value` parameter.
@@ -2004,18 +1270,6 @@ module BillingCreditGrants =
             {
                 Currency = currency
                 Value = value
-            }
-
-    module Create'AmountMonetary =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                value: int option
-            ) : Create'AmountMonetary
-            =
-            {
-              Currency = currency
-              Value = value
             }
 
     type Create'AmountType = | Monetary
@@ -2037,18 +1291,6 @@ module BillingCreditGrants =
                 Type = type'
             }
 
-    module Create'Amount =
-        let create
-            (
-                monetary: Create'AmountMonetary option,
-                type': Create'AmountType option
-            ) : Create'Amount
-            =
-            {
-              Monetary = monetary
-              Type = type'
-            }
-
     type Create'ApplicabilityConfigScopePriceType = | Metered
 
     type Create'ApplicabilityConfigScopePrices =
@@ -2062,16 +1304,6 @@ module BillingCreditGrants =
         static member New(?id: string) =
             {
                 Id = id
-            }
-
-    module Create'ApplicabilityConfigScopePrices =
-        let create
-            (
-                id: string option
-            ) : Create'ApplicabilityConfigScopePrices
-            =
-            {
-              Id = id
             }
 
     type Create'ApplicabilityConfigScope =
@@ -2091,18 +1323,6 @@ module BillingCreditGrants =
                 Prices = prices
             }
 
-    module Create'ApplicabilityConfigScope =
-        let create
-            (
-                priceType: Create'ApplicabilityConfigScopePriceType option,
-                prices: Create'ApplicabilityConfigScopePrices list option
-            ) : Create'ApplicabilityConfigScope
-            =
-            {
-              PriceType = priceType
-              Prices = prices
-            }
-
     type Create'ApplicabilityConfig =
         {
             /// Specify the scope of this applicability config.
@@ -2114,16 +1334,6 @@ module BillingCreditGrants =
         static member New(?scope: Create'ApplicabilityConfigScope) =
             {
                 Scope = scope
-            }
-
-    module Create'ApplicabilityConfig =
-        let create
-            (
-                scope: Create'ApplicabilityConfigScope option
-            ) : Create'ApplicabilityConfig
-            =
-            {
-              Scope = scope
             }
 
     type Create'Category =
@@ -2183,27 +1393,6 @@ module BillingCreditGrants =
                 Priority = priority
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: Create'Amount,
-                applicabilityConfig: Create'ApplicabilityConfig
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              ApplicabilityConfig = applicabilityConfig
-              Category = None
-              Customer = None
-              CustomerAccount = None
-              EffectiveAt = None
-              Expand = None
-              ExpiresAt = None
-              Metadata = None
-              Name = None
-              Priority = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2219,17 +1408,6 @@ module BillingCreditGrants =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     type UpdateOptions =
@@ -2255,19 +1433,6 @@ module BillingCreditGrants =
                 Expand = expand
                 ExpiresAt = expiresAt
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Id = id
-              Expand = None
-              ExpiresAt = None
-              Metadata = None
             }
 
     ///<p>Retrieve a list of credit grants.</p>
@@ -2311,17 +1476,6 @@ module BillingCreditGrantsExpire =
                 Expand = expand
             }
 
-    module ExpireOptions =
-        let create
-            (
-                id: string
-            ) : ExpireOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>Expires a credit grant.</p>
     let Expire settings (options: ExpireOptions) =
         $"/v1/billing/credit_grants/{options.Id}/expire"
@@ -2346,17 +1500,6 @@ module BillingCreditGrantsVoid =
                 Expand = expand
             }
 
-    module VoidGrantOptions =
-        let create
-            (
-                id: string
-            ) : VoidGrantOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>Voids a credit grant.</p>
     let VoidGrant settings (options: VoidGrantOptions) =
         $"/v1/billing/credit_grants/{options.Id}/void"
@@ -2375,16 +1518,6 @@ module BillingMeterEventAdjustments =
         static member New(?identifier: string) =
             {
                 Identifier = identifier
-            }
-
-    module Create'Cancel =
-        let create
-            (
-                identifier: string option
-            ) : Create'Cancel
-            =
-            {
-              Identifier = identifier
             }
 
     type Create'Type = | Cancel
@@ -2412,20 +1545,6 @@ module BillingMeterEventAdjustments =
                 Type = type'
                 Cancel = cancel
                 Expand = expand
-            }
-
-    module CreateOptions =
-        let create
-            (
-                eventName: string,
-                type': Create'Type
-            ) : CreateOptions
-            =
-            {
-              EventName = eventName
-              Type = type'
-              Cancel = None
-              Expand = None
             }
 
     ///<p>Creates a billing meter event adjustment.</p>
@@ -2464,21 +1583,6 @@ module BillingMeterEvents =
                 Timestamp = timestamp
             }
 
-    module CreateOptions =
-        let create
-            (
-                eventName: string,
-                payload: Map<string, string>
-            ) : CreateOptions
-            =
-            {
-              EventName = eventName
-              Payload = payload
-              Expand = None
-              Identifier = None
-              Timestamp = None
-            }
-
     ///<p>Creates a billing meter event.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/billing/meter_events"
@@ -2515,24 +1619,6 @@ module BillingMeters =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type Create'CustomerMappingType = | ById
 
     type Create'CustomerMapping =
@@ -2550,18 +1636,6 @@ module BillingMeters =
             {
                 EventPayloadKey = eventPayloadKey
                 Type = type'
-            }
-
-    module Create'CustomerMapping =
-        let create
-            (
-                eventPayloadKey: string option,
-                type': Create'CustomerMappingType option
-            ) : Create'CustomerMapping
-            =
-            {
-              EventPayloadKey = eventPayloadKey
-              Type = type'
             }
 
     type Create'DefaultAggregationFormula =
@@ -2582,16 +1656,6 @@ module BillingMeters =
                 Formula = formula
             }
 
-    module Create'DefaultAggregation =
-        let create
-            (
-                formula: Create'DefaultAggregationFormula option
-            ) : Create'DefaultAggregation
-            =
-            {
-              Formula = formula
-            }
-
     type Create'EventTimeWindow =
         | Day
         | Hour
@@ -2607,16 +1671,6 @@ module BillingMeters =
         static member New(?eventPayloadKey: string) =
             {
                 EventPayloadKey = eventPayloadKey
-            }
-
-    module Create'ValueSettings =
-        let create
-            (
-                eventPayloadKey: string option
-            ) : Create'ValueSettings
-            =
-            {
-              EventPayloadKey = eventPayloadKey
             }
 
     type CreateOptions =
@@ -2656,24 +1710,6 @@ module BillingMeters =
                 ValueSettings = valueSettings
             }
 
-    module CreateOptions =
-        let create
-            (
-                defaultAggregation: Create'DefaultAggregation,
-                displayName: string,
-                eventName: string
-            ) : CreateOptions
-            =
-            {
-              DefaultAggregation = defaultAggregation
-              DisplayName = displayName
-              EventName = eventName
-              CustomerMapping = None
-              EventTimeWindow = None
-              Expand = None
-              ValueSettings = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2688,17 +1724,6 @@ module BillingMeters =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     type UpdateOptions =
@@ -2719,18 +1744,6 @@ module BillingMeters =
                 Id = id
                 DisplayName = displayName
                 Expand = expand
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Id = id
-              DisplayName = None
-              Expand = None
             }
 
     ///<p>Retrieve a list of billing meters.</p>
@@ -2771,17 +1784,6 @@ module BillingMetersDeactivate =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module DeactivateOptions =
-        let create
-            (
-                id: string
-            ) : DeactivateOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>When a meter is deactivated, no more meter events will be accepted for this meter. You can’t attach a deactivated meter to a price.</p>
@@ -2836,27 +1838,6 @@ module BillingMetersEventSummaries =
                 ValueGroupingWindow = valueGroupingWindow
             }
 
-    module ListOptions =
-        let create
-            (
-                customer: string,
-                endTime: int,
-                id: string,
-                startTime: int
-            ) : ListOptions
-            =
-            {
-              Customer = customer
-              EndTime = endTime
-              Id = id
-              StartTime = startTime
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              ValueGroupingWindow = None
-            }
-
     ///<p>Retrieve a list of billing meter event summaries.</p>
     let List settings (options: ListOptions) =
         let qs = [("customer", options.Customer |> box); ("end_time", options.EndTime |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("start_time", options.StartTime |> box); ("starting_after", options.StartingAfter |> box); ("value_grouping_window", options.ValueGroupingWindow |> box)] |> Map.ofList
@@ -2881,17 +1862,6 @@ module BillingMetersReactivate =
                 Expand = expand
             }
 
-    module ReactivateOptions =
-        let create
-            (
-                id: string
-            ) : ReactivateOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>When a meter is reactivated, events for this meter can be accepted and you can attach the meter to a price.</p>
     let Reactivate settings (options: ReactivateOptions) =
         $"/v1/billing/meters/{options.Id}/reactivate"
@@ -2910,16 +1880,6 @@ module CustomerSessions =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'ComponentsBuyButton =
-        let create
-            (
-                enabled: bool option
-            ) : Create'ComponentsBuyButton
-            =
-            {
-              Enabled = enabled
             }
 
     type Create'ComponentsCustomerSheetFeaturesPaymentMethodAllowRedisplayFilters =
@@ -2951,18 +1911,6 @@ module CustomerSessions =
                 PaymentMethodRemove = paymentMethodRemove
             }
 
-    module Create'ComponentsCustomerSheetFeatures =
-        let create
-            (
-                paymentMethodAllowRedisplayFilters: Create'ComponentsCustomerSheetFeaturesPaymentMethodAllowRedisplayFilters list option,
-                paymentMethodRemove: Create'ComponentsCustomerSheetFeaturesPaymentMethodRemove option
-            ) : Create'ComponentsCustomerSheetFeatures
-            =
-            {
-              PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
-              PaymentMethodRemove = paymentMethodRemove
-            }
-
     type Create'ComponentsCustomerSheet =
         {
             /// Whether the customer sheet is enabled.
@@ -2978,18 +1926,6 @@ module CustomerSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsCustomerSheet =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsCustomerSheetFeatures option
-            ) : Create'ComponentsCustomerSheet
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsMobilePaymentElementFeaturesPaymentMethodAllowRedisplayFilters =
@@ -3049,24 +1985,6 @@ module CustomerSessions =
                 PaymentMethodSaveAllowRedisplayOverride = paymentMethodSaveAllowRedisplayOverride
             }
 
-    module Create'ComponentsMobilePaymentElementFeatures =
-        let create
-            (
-                paymentMethodAllowRedisplayFilters: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodAllowRedisplayFilters list option,
-                paymentMethodRedisplay: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodRedisplay option,
-                paymentMethodRemove: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodRemove option,
-                paymentMethodSave: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodSave option,
-                paymentMethodSaveAllowRedisplayOverride: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodSaveAllowRedisplayOverride option
-            ) : Create'ComponentsMobilePaymentElementFeatures
-            =
-            {
-              PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
-              PaymentMethodRedisplay = paymentMethodRedisplay
-              PaymentMethodRemove = paymentMethodRemove
-              PaymentMethodSave = paymentMethodSave
-              PaymentMethodSaveAllowRedisplayOverride = paymentMethodSaveAllowRedisplayOverride
-            }
-
     type Create'ComponentsMobilePaymentElement =
         {
             /// Whether the mobile payment element is enabled.
@@ -3082,18 +2000,6 @@ module CustomerSessions =
             {
                 Enabled = enabled
                 Features = features
-            }
-
-    module Create'ComponentsMobilePaymentElement =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsMobilePaymentElementFeatures option
-            ) : Create'ComponentsMobilePaymentElement
-            =
-            {
-              Enabled = enabled
-              Features = features
             }
 
     type Create'ComponentsPaymentElementFeaturesPaymentMethodAllowRedisplayFilters =
@@ -3155,26 +2061,6 @@ module CustomerSessions =
                 PaymentMethodSaveUsage = paymentMethodSaveUsage
             }
 
-    module Create'ComponentsPaymentElementFeatures =
-        let create
-            (
-                paymentMethodAllowRedisplayFilters: Create'ComponentsPaymentElementFeaturesPaymentMethodAllowRedisplayFilters list option,
-                paymentMethodRedisplay: Create'ComponentsPaymentElementFeaturesPaymentMethodRedisplay option,
-                paymentMethodRedisplayLimit: int option,
-                paymentMethodRemove: Create'ComponentsPaymentElementFeaturesPaymentMethodRemove option,
-                paymentMethodSave: Create'ComponentsPaymentElementFeaturesPaymentMethodSave option,
-                paymentMethodSaveUsage: Create'ComponentsPaymentElementFeaturesPaymentMethodSaveUsage option
-            ) : Create'ComponentsPaymentElementFeatures
-            =
-            {
-              PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
-              PaymentMethodRedisplay = paymentMethodRedisplay
-              PaymentMethodRedisplayLimit = paymentMethodRedisplayLimit
-              PaymentMethodRemove = paymentMethodRemove
-              PaymentMethodSave = paymentMethodSave
-              PaymentMethodSaveUsage = paymentMethodSaveUsage
-            }
-
     type Create'ComponentsPaymentElement =
         {
             /// Whether the Payment Element is enabled.
@@ -3192,18 +2078,6 @@ module CustomerSessions =
                 Features = features
             }
 
-    module Create'ComponentsPaymentElement =
-        let create
-            (
-                enabled: bool option,
-                features: Create'ComponentsPaymentElementFeatures option
-            ) : Create'ComponentsPaymentElement
-            =
-            {
-              Enabled = enabled
-              Features = features
-            }
-
     type Create'ComponentsPricingTable =
         {
             /// Whether the pricing table is enabled.
@@ -3215,16 +2089,6 @@ module CustomerSessions =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'ComponentsPricingTable =
-        let create
-            (
-                enabled: bool option
-            ) : Create'ComponentsPricingTable
-            =
-            {
-              Enabled = enabled
             }
 
     type Create'Components =
@@ -3256,24 +2120,6 @@ module CustomerSessions =
                 PricingTable = pricingTable
             }
 
-    module Create'Components =
-        let create
-            (
-                buyButton: Create'ComponentsBuyButton option,
-                customerSheet: Create'ComponentsCustomerSheet option,
-                mobilePaymentElement: Create'ComponentsMobilePaymentElement option,
-                paymentElement: Create'ComponentsPaymentElement option,
-                pricingTable: Create'ComponentsPricingTable option
-            ) : Create'Components
-            =
-            {
-              BuyButton = buyButton
-              CustomerSheet = customerSheet
-              MobilePaymentElement = mobilePaymentElement
-              PaymentElement = paymentElement
-              PricingTable = pricingTable
-            }
-
     type CreateOptions =
         {
             /// Configuration for each component. At least 1 component must be enabled.
@@ -3297,19 +2143,6 @@ module CustomerSessions =
                 Customer = customer
                 CustomerAccount = customerAccount
                 Expand = expand
-            }
-
-    module CreateOptions =
-        let create
-            (
-                components: Create'Components
-            ) : CreateOptions
-            =
-            {
-              Components = components
-              Customer = None
-              CustomerAccount = None
-              Expand = None
             }
 
     ///<p>Creates a Customer Session object that includes a single-use client secret that you can use on your front-end to grant client-side API access for certain customer resources.</p>
@@ -3352,26 +2185,6 @@ module FinancialConnectionsAccounts =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                accountHolder: Map<string, string> option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                session: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              AccountHolder = accountHolder
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Session = session
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -3386,17 +2199,6 @@ module FinancialConnectionsAccounts =
             {
                 Account = account
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                account: string
-            ) : RetrieveOptions
-            =
-            {
-              Account = account
-              Expand = None
             }
 
     ///<p>Returns a list of Financial Connections <code>Account</code> objects.</p>
@@ -3427,17 +2229,6 @@ module FinancialConnectionsAccountsDisconnect =
             {
                 Account = account
                 Expand = expand
-            }
-
-    module DisconnectOptions =
-        let create
-            (
-                account: string
-            ) : DisconnectOptions
-            =
-            {
-              Account = account
-              Expand = None
             }
 
     ///<p>Disables your access to a Financial Connections <code>Account</code>. You will no longer be able to access data associated with the account (e.g. balances, transactions).</p>
@@ -3479,22 +2270,6 @@ module FinancialConnectionsAccountsOwners =
                 StartingAfter = startingAfter
             }
 
-    module ListOwnersOptions =
-        let create
-            (
-                account: string,
-                ownership: string
-            ) : ListOwnersOptions
-            =
-            {
-              Account = account
-              Ownership = ownership
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     ///<p>Lists all owners for a given <code>Account</code></p>
     let ListOwners settings (options: ListOwnersOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("ownership", options.Ownership |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -3528,19 +2303,6 @@ module FinancialConnectionsAccountsRefresh =
                 Expand = expand
             }
 
-    module RefreshOptions =
-        let create
-            (
-                account: string,
-                features: Refresh'Features list
-            ) : RefreshOptions
-            =
-            {
-              Account = account
-              Features = features
-              Expand = None
-            }
-
     ///<p>Refreshes the data associated with a Financial Connections <code>Account</code>.</p>
     let Refresh settings (options: RefreshOptions) =
         $"/v1/financial_connections/accounts/{options.Account}/refresh"
@@ -3570,19 +2332,6 @@ module FinancialConnectionsAccountsSubscribe =
                 Expand = expand
             }
 
-    module SubscribeOptions =
-        let create
-            (
-                account: string,
-                features: Subscribe'Features list
-            ) : SubscribeOptions
-            =
-            {
-              Account = account
-              Features = features
-              Expand = None
-            }
-
     ///<p>Subscribes to periodic refreshes of data associated with a Financial Connections <code>Account</code>. When the account status is active, data is typically refreshed once a day.</p>
     let Subscribe settings (options: SubscribeOptions) =
         $"/v1/financial_connections/accounts/{options.Account}/subscribe"
@@ -3610,19 +2359,6 @@ module FinancialConnectionsAccountsUnsubscribe =
                 Account = account
                 Features = features
                 Expand = expand
-            }
-
-    module UnsubscribeOptions =
-        let create
-            (
-                account: string,
-                features: Unsubscribe'Features list
-            ) : UnsubscribeOptions
-            =
-            {
-              Account = account
-              Features = features
-              Expand = None
             }
 
     ///<p>Unsubscribes from periodic refreshes of data associated with a Financial Connections <code>Account</code>.</p>
@@ -3661,22 +2397,6 @@ module FinancialConnectionsSessions =
                 Type = type'
             }
 
-    module Create'AccountHolder =
-        let create
-            (
-                account: string option,
-                customer: string option,
-                customerAccount: string option,
-                type': Create'AccountHolderType option
-            ) : Create'AccountHolder
-            =
-            {
-              Account = account
-              Customer = customer
-              CustomerAccount = customerAccount
-              Type = type'
-            }
-
     type Create'FiltersAccountSubcategories =
         | Checking
         | CreditCard
@@ -3699,18 +2419,6 @@ module FinancialConnectionsSessions =
             {
                 AccountSubcategories = accountSubcategories
                 Countries = countries
-            }
-
-    module Create'Filters =
-        let create
-            (
-                accountSubcategories: Create'FiltersAccountSubcategories list option,
-                countries: string list option
-            ) : Create'Filters
-            =
-            {
-              AccountSubcategories = accountSubcategories
-              Countries = countries
             }
 
     type Create'Permissions =
@@ -3758,22 +2466,6 @@ module FinancialConnectionsSessions =
                 ReturnUrl = returnUrl
             }
 
-    module CreateOptions =
-        let create
-            (
-                accountHolder: Create'AccountHolder,
-                permissions: Create'Permissions list
-            ) : CreateOptions
-            =
-            {
-              AccountHolder = accountHolder
-              Permissions = permissions
-              Expand = None
-              Filters = None
-              Prefetch = None
-              ReturnUrl = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -3788,17 +2480,6 @@ module FinancialConnectionsSessions =
             {
                 Session = session
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                session: string
-            ) : RetrieveOptions
-            =
-            {
-              Session = session
-              Expand = None
             }
 
     ///<p>To launch the Financial Connections authorization flow, create a <code>Session</code>. The session’s <code>client_secret</code> can be used to launch the flow using Stripe.js.</p>
@@ -3851,22 +2532,6 @@ module FinancialConnectionsTransactions =
                 TransactionRefresh = transactionRefresh
             }
 
-    module ListOptions =
-        let create
-            (
-                account: string
-            ) : ListOptions
-            =
-            {
-              Account = account
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              TransactedAt = None
-              TransactionRefresh = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -3881,17 +2546,6 @@ module FinancialConnectionsTransactions =
             {
                 Transaction = transaction
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                transaction: string
-            ) : RetrieveOptions
-            =
-            {
-              Transaction = transaction
-              Expand = None
             }
 
     ///<p>Returns a list of Financial Connections <code>Transaction</code> objects.</p>
@@ -3949,30 +2603,6 @@ module InvoicePayments =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                invoice: string option,
-                limit: int option,
-                payment: Map<string, string> option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Invoice = invoice
-              Limit = limit
-              Payment = payment
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -3987,17 +2617,6 @@ module InvoicePayments =
             {
                 InvoicePayment = invoicePayment
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                invoicePayment: string
-            ) : RetrieveOptions
-            =
-            {
-              InvoicePayment = invoicePayment
-              Expand = None
             }
 
     ///<p>When retrieving an invoice, there is an includable payments property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of payments.</p>
@@ -4042,24 +2661,6 @@ module InvoiceRenderingTemplates =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -4077,18 +2678,6 @@ module InvoiceRenderingTemplates =
                 Template = template
                 Expand = expand
                 Version = version
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                template: string
-            ) : RetrieveOptions
-            =
-            {
-              Template = template
-              Expand = None
-              Version = None
             }
 
     ///<p>List all templates, ordered by creation date, with the most recently created template appearing first.</p>
@@ -4121,17 +2710,6 @@ module InvoiceRenderingTemplatesArchive =
                 Expand = expand
             }
 
-    module ArchiveOptions =
-        let create
-            (
-                template: string
-            ) : ArchiveOptions
-            =
-            {
-              Template = template
-              Expand = None
-            }
-
     ///<p>Updates the status of an invoice rendering template to ‘archived’ so no new Stripe objects (customers, invoices, etc.) can reference it. The template can also no longer be updated. However, if the template is already set on a Stripe object, it will continue to be applied on invoices generated by it.</p>
     let Archive settings (options: ArchiveOptions) =
         $"/v1/invoice_rendering_templates/{options.Template}/archive"
@@ -4153,17 +2731,6 @@ module InvoiceRenderingTemplatesUnarchive =
             {
                 Template = template
                 Expand = expand
-            }
-
-    module UnarchiveOptions =
-        let create
-            (
-                template: string
-            ) : UnarchiveOptions
-            =
-            {
-              Template = template
-              Expand = None
             }
 
     ///<p>Unarchive an invoice rendering template so it can be used on new Stripe objects again.</p>
@@ -4202,24 +2769,6 @@ module PaymentMethodConfigurations =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                application: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Application = application
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'AcssDebitDisplayPreferencePreference =
         | [<JsonPropertyName("none")>] None'
         | Off
@@ -4238,16 +2787,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'AcssDebitDisplayPreference =
-        let create
-            (
-                preference: Create'AcssDebitDisplayPreferencePreference option
-            ) : Create'AcssDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'AcssDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -4259,16 +2798,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'AcssDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'AcssDebit =
-        let create
-            (
-                displayPreference: Create'AcssDebitDisplayPreference option
-            ) : Create'AcssDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'AffirmDisplayPreferencePreference =
@@ -4289,16 +2818,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'AffirmDisplayPreference =
-        let create
-            (
-                preference: Create'AffirmDisplayPreferencePreference option
-            ) : Create'AffirmDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Affirm =
         {
             /// Whether or not the payment method should be displayed.
@@ -4310,16 +2829,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'AffirmDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Affirm =
-        let create
-            (
-                displayPreference: Create'AffirmDisplayPreference option
-            ) : Create'Affirm
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'AfterpayClearpayDisplayPreferencePreference =
@@ -4340,16 +2849,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'AfterpayClearpayDisplayPreference =
-        let create
-            (
-                preference: Create'AfterpayClearpayDisplayPreferencePreference option
-            ) : Create'AfterpayClearpayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'AfterpayClearpay =
         {
             /// Whether or not the payment method should be displayed.
@@ -4361,16 +2860,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'AfterpayClearpayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'AfterpayClearpay =
-        let create
-            (
-                displayPreference: Create'AfterpayClearpayDisplayPreference option
-            ) : Create'AfterpayClearpay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'AlipayDisplayPreferencePreference =
@@ -4391,16 +2880,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'AlipayDisplayPreference =
-        let create
-            (
-                preference: Create'AlipayDisplayPreferencePreference option
-            ) : Create'AlipayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Alipay =
         {
             /// Whether or not the payment method should be displayed.
@@ -4412,16 +2891,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'AlipayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Alipay =
-        let create
-            (
-                displayPreference: Create'AlipayDisplayPreference option
-            ) : Create'Alipay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'AlmaDisplayPreferencePreference =
@@ -4442,16 +2911,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'AlmaDisplayPreference =
-        let create
-            (
-                preference: Create'AlmaDisplayPreferencePreference option
-            ) : Create'AlmaDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Alma =
         {
             /// Whether or not the payment method should be displayed.
@@ -4463,16 +2922,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'AlmaDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Alma =
-        let create
-            (
-                displayPreference: Create'AlmaDisplayPreference option
-            ) : Create'Alma
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'AmazonPayDisplayPreferencePreference =
@@ -4493,16 +2942,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'AmazonPayDisplayPreference =
-        let create
-            (
-                preference: Create'AmazonPayDisplayPreferencePreference option
-            ) : Create'AmazonPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'AmazonPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -4514,16 +2953,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'AmazonPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'AmazonPay =
-        let create
-            (
-                displayPreference: Create'AmazonPayDisplayPreference option
-            ) : Create'AmazonPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'ApplePayDisplayPreferencePreference =
@@ -4544,16 +2973,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'ApplePayDisplayPreference =
-        let create
-            (
-                preference: Create'ApplePayDisplayPreferencePreference option
-            ) : Create'ApplePayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'ApplePay =
         {
             /// Whether or not the payment method should be displayed.
@@ -4565,16 +2984,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'ApplePayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'ApplePay =
-        let create
-            (
-                displayPreference: Create'ApplePayDisplayPreference option
-            ) : Create'ApplePay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'ApplePayLaterDisplayPreferencePreference =
@@ -4595,16 +3004,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'ApplePayLaterDisplayPreference =
-        let create
-            (
-                preference: Create'ApplePayLaterDisplayPreferencePreference option
-            ) : Create'ApplePayLaterDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'ApplePayLater =
         {
             /// Whether or not the payment method should be displayed.
@@ -4616,16 +3015,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'ApplePayLaterDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'ApplePayLater =
-        let create
-            (
-                displayPreference: Create'ApplePayLaterDisplayPreference option
-            ) : Create'ApplePayLater
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'AuBecsDebitDisplayPreferencePreference =
@@ -4646,16 +3035,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'AuBecsDebitDisplayPreference =
-        let create
-            (
-                preference: Create'AuBecsDebitDisplayPreferencePreference option
-            ) : Create'AuBecsDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'AuBecsDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -4667,16 +3046,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'AuBecsDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'AuBecsDebit =
-        let create
-            (
-                displayPreference: Create'AuBecsDebitDisplayPreference option
-            ) : Create'AuBecsDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'BacsDebitDisplayPreferencePreference =
@@ -4697,16 +3066,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'BacsDebitDisplayPreference =
-        let create
-            (
-                preference: Create'BacsDebitDisplayPreferencePreference option
-            ) : Create'BacsDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'BacsDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -4718,16 +3077,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'BacsDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'BacsDebit =
-        let create
-            (
-                displayPreference: Create'BacsDebitDisplayPreference option
-            ) : Create'BacsDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'BancontactDisplayPreferencePreference =
@@ -4748,16 +3097,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'BancontactDisplayPreference =
-        let create
-            (
-                preference: Create'BancontactDisplayPreferencePreference option
-            ) : Create'BancontactDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Bancontact =
         {
             /// Whether or not the payment method should be displayed.
@@ -4769,16 +3108,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'BancontactDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Bancontact =
-        let create
-            (
-                displayPreference: Create'BancontactDisplayPreference option
-            ) : Create'Bancontact
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'BillieDisplayPreferencePreference =
@@ -4799,16 +3128,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'BillieDisplayPreference =
-        let create
-            (
-                preference: Create'BillieDisplayPreferencePreference option
-            ) : Create'BillieDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Billie =
         {
             /// Whether or not the payment method should be displayed.
@@ -4820,16 +3139,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'BillieDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Billie =
-        let create
-            (
-                displayPreference: Create'BillieDisplayPreference option
-            ) : Create'Billie
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'BlikDisplayPreferencePreference =
@@ -4850,16 +3159,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'BlikDisplayPreference =
-        let create
-            (
-                preference: Create'BlikDisplayPreferencePreference option
-            ) : Create'BlikDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Blik =
         {
             /// Whether or not the payment method should be displayed.
@@ -4871,16 +3170,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'BlikDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Blik =
-        let create
-            (
-                displayPreference: Create'BlikDisplayPreference option
-            ) : Create'Blik
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'BoletoDisplayPreferencePreference =
@@ -4901,16 +3190,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'BoletoDisplayPreference =
-        let create
-            (
-                preference: Create'BoletoDisplayPreferencePreference option
-            ) : Create'BoletoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Boleto =
         {
             /// Whether or not the payment method should be displayed.
@@ -4922,16 +3201,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'BoletoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Boleto =
-        let create
-            (
-                displayPreference: Create'BoletoDisplayPreference option
-            ) : Create'Boleto
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'CardDisplayPreferencePreference =
@@ -4952,16 +3221,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'CardDisplayPreference =
-        let create
-            (
-                preference: Create'CardDisplayPreferencePreference option
-            ) : Create'CardDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Card =
         {
             /// Whether or not the payment method should be displayed.
@@ -4973,16 +3232,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'CardDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Card =
-        let create
-            (
-                displayPreference: Create'CardDisplayPreference option
-            ) : Create'Card
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'CartesBancairesDisplayPreferencePreference =
@@ -5003,16 +3252,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'CartesBancairesDisplayPreference =
-        let create
-            (
-                preference: Create'CartesBancairesDisplayPreferencePreference option
-            ) : Create'CartesBancairesDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'CartesBancaires =
         {
             /// Whether or not the payment method should be displayed.
@@ -5024,16 +3263,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'CartesBancairesDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'CartesBancaires =
-        let create
-            (
-                displayPreference: Create'CartesBancairesDisplayPreference option
-            ) : Create'CartesBancaires
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'CashappDisplayPreferencePreference =
@@ -5054,16 +3283,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'CashappDisplayPreference =
-        let create
-            (
-                preference: Create'CashappDisplayPreferencePreference option
-            ) : Create'CashappDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Cashapp =
         {
             /// Whether or not the payment method should be displayed.
@@ -5075,16 +3294,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'CashappDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Cashapp =
-        let create
-            (
-                displayPreference: Create'CashappDisplayPreference option
-            ) : Create'Cashapp
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'CryptoDisplayPreferencePreference =
@@ -5105,16 +3314,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'CryptoDisplayPreference =
-        let create
-            (
-                preference: Create'CryptoDisplayPreferencePreference option
-            ) : Create'CryptoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Crypto =
         {
             /// Whether or not the payment method should be displayed.
@@ -5126,16 +3325,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'CryptoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Crypto =
-        let create
-            (
-                displayPreference: Create'CryptoDisplayPreference option
-            ) : Create'Crypto
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'CustomerBalanceDisplayPreferencePreference =
@@ -5156,16 +3345,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'CustomerBalanceDisplayPreference =
-        let create
-            (
-                preference: Create'CustomerBalanceDisplayPreferencePreference option
-            ) : Create'CustomerBalanceDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'CustomerBalance =
         {
             /// Whether or not the payment method should be displayed.
@@ -5177,16 +3356,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'CustomerBalanceDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'CustomerBalance =
-        let create
-            (
-                displayPreference: Create'CustomerBalanceDisplayPreference option
-            ) : Create'CustomerBalance
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'EpsDisplayPreferencePreference =
@@ -5207,16 +3376,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'EpsDisplayPreference =
-        let create
-            (
-                preference: Create'EpsDisplayPreferencePreference option
-            ) : Create'EpsDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Eps =
         {
             /// Whether or not the payment method should be displayed.
@@ -5228,16 +3387,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'EpsDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Eps =
-        let create
-            (
-                displayPreference: Create'EpsDisplayPreference option
-            ) : Create'Eps
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'FpxDisplayPreferencePreference =
@@ -5258,16 +3407,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'FpxDisplayPreference =
-        let create
-            (
-                preference: Create'FpxDisplayPreferencePreference option
-            ) : Create'FpxDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Fpx =
         {
             /// Whether or not the payment method should be displayed.
@@ -5279,16 +3418,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'FpxDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Fpx =
-        let create
-            (
-                displayPreference: Create'FpxDisplayPreference option
-            ) : Create'Fpx
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'FrMealVoucherConecsDisplayPreferencePreference =
@@ -5309,16 +3438,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'FrMealVoucherConecsDisplayPreference =
-        let create
-            (
-                preference: Create'FrMealVoucherConecsDisplayPreferencePreference option
-            ) : Create'FrMealVoucherConecsDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'FrMealVoucherConecs =
         {
             /// Whether or not the payment method should be displayed.
@@ -5330,16 +3449,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'FrMealVoucherConecsDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'FrMealVoucherConecs =
-        let create
-            (
-                displayPreference: Create'FrMealVoucherConecsDisplayPreference option
-            ) : Create'FrMealVoucherConecs
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'GiropayDisplayPreferencePreference =
@@ -5360,16 +3469,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'GiropayDisplayPreference =
-        let create
-            (
-                preference: Create'GiropayDisplayPreferencePreference option
-            ) : Create'GiropayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Giropay =
         {
             /// Whether or not the payment method should be displayed.
@@ -5381,16 +3480,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'GiropayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Giropay =
-        let create
-            (
-                displayPreference: Create'GiropayDisplayPreference option
-            ) : Create'Giropay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'GooglePayDisplayPreferencePreference =
@@ -5411,16 +3500,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'GooglePayDisplayPreference =
-        let create
-            (
-                preference: Create'GooglePayDisplayPreferencePreference option
-            ) : Create'GooglePayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'GooglePay =
         {
             /// Whether or not the payment method should be displayed.
@@ -5432,16 +3511,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'GooglePayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'GooglePay =
-        let create
-            (
-                displayPreference: Create'GooglePayDisplayPreference option
-            ) : Create'GooglePay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'GrabpayDisplayPreferencePreference =
@@ -5462,16 +3531,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'GrabpayDisplayPreference =
-        let create
-            (
-                preference: Create'GrabpayDisplayPreferencePreference option
-            ) : Create'GrabpayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Grabpay =
         {
             /// Whether or not the payment method should be displayed.
@@ -5483,16 +3542,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'GrabpayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Grabpay =
-        let create
-            (
-                displayPreference: Create'GrabpayDisplayPreference option
-            ) : Create'Grabpay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'IdealDisplayPreferencePreference =
@@ -5513,16 +3562,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'IdealDisplayPreference =
-        let create
-            (
-                preference: Create'IdealDisplayPreferencePreference option
-            ) : Create'IdealDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Ideal =
         {
             /// Whether or not the payment method should be displayed.
@@ -5534,16 +3573,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'IdealDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Ideal =
-        let create
-            (
-                displayPreference: Create'IdealDisplayPreference option
-            ) : Create'Ideal
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'JcbDisplayPreferencePreference =
@@ -5564,16 +3593,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'JcbDisplayPreference =
-        let create
-            (
-                preference: Create'JcbDisplayPreferencePreference option
-            ) : Create'JcbDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Jcb =
         {
             /// Whether or not the payment method should be displayed.
@@ -5585,16 +3604,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'JcbDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Jcb =
-        let create
-            (
-                displayPreference: Create'JcbDisplayPreference option
-            ) : Create'Jcb
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'KakaoPayDisplayPreferencePreference =
@@ -5615,16 +3624,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'KakaoPayDisplayPreference =
-        let create
-            (
-                preference: Create'KakaoPayDisplayPreferencePreference option
-            ) : Create'KakaoPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'KakaoPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -5636,16 +3635,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'KakaoPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'KakaoPay =
-        let create
-            (
-                displayPreference: Create'KakaoPayDisplayPreference option
-            ) : Create'KakaoPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'KlarnaDisplayPreferencePreference =
@@ -5666,16 +3655,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'KlarnaDisplayPreference =
-        let create
-            (
-                preference: Create'KlarnaDisplayPreferencePreference option
-            ) : Create'KlarnaDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Klarna =
         {
             /// Whether or not the payment method should be displayed.
@@ -5687,16 +3666,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'KlarnaDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Klarna =
-        let create
-            (
-                displayPreference: Create'KlarnaDisplayPreference option
-            ) : Create'Klarna
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'KonbiniDisplayPreferencePreference =
@@ -5717,16 +3686,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'KonbiniDisplayPreference =
-        let create
-            (
-                preference: Create'KonbiniDisplayPreferencePreference option
-            ) : Create'KonbiniDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Konbini =
         {
             /// Whether or not the payment method should be displayed.
@@ -5738,16 +3697,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'KonbiniDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Konbini =
-        let create
-            (
-                displayPreference: Create'KonbiniDisplayPreference option
-            ) : Create'Konbini
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'KrCardDisplayPreferencePreference =
@@ -5768,16 +3717,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'KrCardDisplayPreference =
-        let create
-            (
-                preference: Create'KrCardDisplayPreferencePreference option
-            ) : Create'KrCardDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'KrCard =
         {
             /// Whether or not the payment method should be displayed.
@@ -5789,16 +3728,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'KrCardDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'KrCard =
-        let create
-            (
-                displayPreference: Create'KrCardDisplayPreference option
-            ) : Create'KrCard
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'LinkDisplayPreferencePreference =
@@ -5819,16 +3748,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'LinkDisplayPreference =
-        let create
-            (
-                preference: Create'LinkDisplayPreferencePreference option
-            ) : Create'LinkDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Link =
         {
             /// Whether or not the payment method should be displayed.
@@ -5840,16 +3759,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'LinkDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Link =
-        let create
-            (
-                displayPreference: Create'LinkDisplayPreference option
-            ) : Create'Link
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'MbWayDisplayPreferencePreference =
@@ -5870,16 +3779,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'MbWayDisplayPreference =
-        let create
-            (
-                preference: Create'MbWayDisplayPreferencePreference option
-            ) : Create'MbWayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'MbWay =
         {
             /// Whether or not the payment method should be displayed.
@@ -5891,16 +3790,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'MbWayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'MbWay =
-        let create
-            (
-                displayPreference: Create'MbWayDisplayPreference option
-            ) : Create'MbWay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'MobilepayDisplayPreferencePreference =
@@ -5921,16 +3810,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'MobilepayDisplayPreference =
-        let create
-            (
-                preference: Create'MobilepayDisplayPreferencePreference option
-            ) : Create'MobilepayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Mobilepay =
         {
             /// Whether or not the payment method should be displayed.
@@ -5942,16 +3821,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'MobilepayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Mobilepay =
-        let create
-            (
-                displayPreference: Create'MobilepayDisplayPreference option
-            ) : Create'Mobilepay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'MultibancoDisplayPreferencePreference =
@@ -5972,16 +3841,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'MultibancoDisplayPreference =
-        let create
-            (
-                preference: Create'MultibancoDisplayPreferencePreference option
-            ) : Create'MultibancoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Multibanco =
         {
             /// Whether or not the payment method should be displayed.
@@ -5993,16 +3852,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'MultibancoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Multibanco =
-        let create
-            (
-                displayPreference: Create'MultibancoDisplayPreference option
-            ) : Create'Multibanco
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'NaverPayDisplayPreferencePreference =
@@ -6023,16 +3872,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'NaverPayDisplayPreference =
-        let create
-            (
-                preference: Create'NaverPayDisplayPreferencePreference option
-            ) : Create'NaverPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'NaverPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -6044,16 +3883,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'NaverPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'NaverPay =
-        let create
-            (
-                displayPreference: Create'NaverPayDisplayPreference option
-            ) : Create'NaverPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'NzBankAccountDisplayPreferencePreference =
@@ -6074,16 +3903,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'NzBankAccountDisplayPreference =
-        let create
-            (
-                preference: Create'NzBankAccountDisplayPreferencePreference option
-            ) : Create'NzBankAccountDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'NzBankAccount =
         {
             /// Whether or not the payment method should be displayed.
@@ -6095,16 +3914,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'NzBankAccountDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'NzBankAccount =
-        let create
-            (
-                displayPreference: Create'NzBankAccountDisplayPreference option
-            ) : Create'NzBankAccount
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'OxxoDisplayPreferencePreference =
@@ -6125,16 +3934,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'OxxoDisplayPreference =
-        let create
-            (
-                preference: Create'OxxoDisplayPreferencePreference option
-            ) : Create'OxxoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Oxxo =
         {
             /// Whether or not the payment method should be displayed.
@@ -6146,16 +3945,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'OxxoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Oxxo =
-        let create
-            (
-                displayPreference: Create'OxxoDisplayPreference option
-            ) : Create'Oxxo
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'P24DisplayPreferencePreference =
@@ -6176,16 +3965,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'P24DisplayPreference =
-        let create
-            (
-                preference: Create'P24DisplayPreferencePreference option
-            ) : Create'P24DisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'P24 =
         {
             /// Whether or not the payment method should be displayed.
@@ -6197,16 +3976,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'P24DisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'P24 =
-        let create
-            (
-                displayPreference: Create'P24DisplayPreference option
-            ) : Create'P24
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'PayByBankDisplayPreferencePreference =
@@ -6227,16 +3996,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'PayByBankDisplayPreference =
-        let create
-            (
-                preference: Create'PayByBankDisplayPreferencePreference option
-            ) : Create'PayByBankDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'PayByBank =
         {
             /// Whether or not the payment method should be displayed.
@@ -6248,16 +4007,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'PayByBankDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'PayByBank =
-        let create
-            (
-                displayPreference: Create'PayByBankDisplayPreference option
-            ) : Create'PayByBank
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'PaycoDisplayPreferencePreference =
@@ -6278,16 +4027,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'PaycoDisplayPreference =
-        let create
-            (
-                preference: Create'PaycoDisplayPreferencePreference option
-            ) : Create'PaycoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Payco =
         {
             /// Whether or not the payment method should be displayed.
@@ -6299,16 +4038,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'PaycoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Payco =
-        let create
-            (
-                displayPreference: Create'PaycoDisplayPreference option
-            ) : Create'Payco
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'PaynowDisplayPreferencePreference =
@@ -6329,16 +4058,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'PaynowDisplayPreference =
-        let create
-            (
-                preference: Create'PaynowDisplayPreferencePreference option
-            ) : Create'PaynowDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Paynow =
         {
             /// Whether or not the payment method should be displayed.
@@ -6350,16 +4069,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'PaynowDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Paynow =
-        let create
-            (
-                displayPreference: Create'PaynowDisplayPreference option
-            ) : Create'Paynow
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'PaypalDisplayPreferencePreference =
@@ -6380,16 +4089,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'PaypalDisplayPreference =
-        let create
-            (
-                preference: Create'PaypalDisplayPreferencePreference option
-            ) : Create'PaypalDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Paypal =
         {
             /// Whether or not the payment method should be displayed.
@@ -6401,16 +4100,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'PaypalDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Paypal =
-        let create
-            (
-                displayPreference: Create'PaypalDisplayPreference option
-            ) : Create'Paypal
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'PaytoDisplayPreferencePreference =
@@ -6431,16 +4120,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'PaytoDisplayPreference =
-        let create
-            (
-                preference: Create'PaytoDisplayPreferencePreference option
-            ) : Create'PaytoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Payto =
         {
             /// Whether or not the payment method should be displayed.
@@ -6452,16 +4131,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'PaytoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Payto =
-        let create
-            (
-                displayPreference: Create'PaytoDisplayPreference option
-            ) : Create'Payto
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'PixDisplayPreferencePreference =
@@ -6482,16 +4151,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'PixDisplayPreference =
-        let create
-            (
-                preference: Create'PixDisplayPreferencePreference option
-            ) : Create'PixDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Pix =
         {
             /// Whether or not the payment method should be displayed.
@@ -6503,16 +4162,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'PixDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Pix =
-        let create
-            (
-                displayPreference: Create'PixDisplayPreference option
-            ) : Create'Pix
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'PromptpayDisplayPreferencePreference =
@@ -6533,16 +4182,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'PromptpayDisplayPreference =
-        let create
-            (
-                preference: Create'PromptpayDisplayPreferencePreference option
-            ) : Create'PromptpayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Promptpay =
         {
             /// Whether or not the payment method should be displayed.
@@ -6554,16 +4193,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'PromptpayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Promptpay =
-        let create
-            (
-                displayPreference: Create'PromptpayDisplayPreference option
-            ) : Create'Promptpay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'RevolutPayDisplayPreferencePreference =
@@ -6584,16 +4213,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'RevolutPayDisplayPreference =
-        let create
-            (
-                preference: Create'RevolutPayDisplayPreferencePreference option
-            ) : Create'RevolutPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'RevolutPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -6605,16 +4224,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'RevolutPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'RevolutPay =
-        let create
-            (
-                displayPreference: Create'RevolutPayDisplayPreference option
-            ) : Create'RevolutPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'SamsungPayDisplayPreferencePreference =
@@ -6635,16 +4244,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'SamsungPayDisplayPreference =
-        let create
-            (
-                preference: Create'SamsungPayDisplayPreferencePreference option
-            ) : Create'SamsungPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'SamsungPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -6656,16 +4255,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'SamsungPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'SamsungPay =
-        let create
-            (
-                displayPreference: Create'SamsungPayDisplayPreference option
-            ) : Create'SamsungPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'SatispayDisplayPreferencePreference =
@@ -6686,16 +4275,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'SatispayDisplayPreference =
-        let create
-            (
-                preference: Create'SatispayDisplayPreferencePreference option
-            ) : Create'SatispayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Satispay =
         {
             /// Whether or not the payment method should be displayed.
@@ -6707,16 +4286,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'SatispayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Satispay =
-        let create
-            (
-                displayPreference: Create'SatispayDisplayPreference option
-            ) : Create'Satispay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'SepaDebitDisplayPreferencePreference =
@@ -6737,16 +4306,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'SepaDebitDisplayPreference =
-        let create
-            (
-                preference: Create'SepaDebitDisplayPreferencePreference option
-            ) : Create'SepaDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'SepaDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -6758,16 +4317,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'SepaDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'SepaDebit =
-        let create
-            (
-                displayPreference: Create'SepaDebitDisplayPreference option
-            ) : Create'SepaDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'SofortDisplayPreferencePreference =
@@ -6788,16 +4337,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'SofortDisplayPreference =
-        let create
-            (
-                preference: Create'SofortDisplayPreferencePreference option
-            ) : Create'SofortDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Sofort =
         {
             /// Whether or not the payment method should be displayed.
@@ -6809,16 +4348,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'SofortDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Sofort =
-        let create
-            (
-                displayPreference: Create'SofortDisplayPreference option
-            ) : Create'Sofort
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'SunbitDisplayPreferencePreference =
@@ -6839,16 +4368,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'SunbitDisplayPreference =
-        let create
-            (
-                preference: Create'SunbitDisplayPreferencePreference option
-            ) : Create'SunbitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Sunbit =
         {
             /// Whether or not the payment method should be displayed.
@@ -6860,16 +4379,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'SunbitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Sunbit =
-        let create
-            (
-                displayPreference: Create'SunbitDisplayPreference option
-            ) : Create'Sunbit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'SwishDisplayPreferencePreference =
@@ -6890,16 +4399,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'SwishDisplayPreference =
-        let create
-            (
-                preference: Create'SwishDisplayPreferencePreference option
-            ) : Create'SwishDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Swish =
         {
             /// Whether or not the payment method should be displayed.
@@ -6911,16 +4410,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'SwishDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Swish =
-        let create
-            (
-                displayPreference: Create'SwishDisplayPreference option
-            ) : Create'Swish
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'TwintDisplayPreferencePreference =
@@ -6941,16 +4430,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'TwintDisplayPreference =
-        let create
-            (
-                preference: Create'TwintDisplayPreferencePreference option
-            ) : Create'TwintDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Twint =
         {
             /// Whether or not the payment method should be displayed.
@@ -6962,16 +4441,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'TwintDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Twint =
-        let create
-            (
-                displayPreference: Create'TwintDisplayPreference option
-            ) : Create'Twint
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'UpiDisplayPreferencePreference =
@@ -6992,16 +4461,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'UpiDisplayPreference =
-        let create
-            (
-                preference: Create'UpiDisplayPreferencePreference option
-            ) : Create'UpiDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Upi =
         {
             /// Whether or not the payment method should be displayed.
@@ -7013,16 +4472,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'UpiDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Upi =
-        let create
-            (
-                displayPreference: Create'UpiDisplayPreference option
-            ) : Create'Upi
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'UsBankAccountDisplayPreferencePreference =
@@ -7043,16 +4492,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'UsBankAccountDisplayPreference =
-        let create
-            (
-                preference: Create'UsBankAccountDisplayPreferencePreference option
-            ) : Create'UsBankAccountDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'UsBankAccount =
         {
             /// Whether or not the payment method should be displayed.
@@ -7064,16 +4503,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'UsBankAccountDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'UsBankAccount =
-        let create
-            (
-                displayPreference: Create'UsBankAccountDisplayPreference option
-            ) : Create'UsBankAccount
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'WechatPayDisplayPreferencePreference =
@@ -7094,16 +4523,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'WechatPayDisplayPreference =
-        let create
-            (
-                preference: Create'WechatPayDisplayPreferencePreference option
-            ) : Create'WechatPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'WechatPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -7115,16 +4534,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'WechatPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'WechatPay =
-        let create
-            (
-                displayPreference: Create'WechatPayDisplayPreference option
-            ) : Create'WechatPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Create'ZipDisplayPreferencePreference =
@@ -7145,16 +4554,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Create'ZipDisplayPreference =
-        let create
-            (
-                preference: Create'ZipDisplayPreferencePreference option
-            ) : Create'ZipDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Create'Zip =
         {
             /// Whether or not the payment method should be displayed.
@@ -7166,16 +4565,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Create'ZipDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Create'Zip =
-        let create
-            (
-                displayPreference: Create'ZipDisplayPreference option
-            ) : Create'Zip
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type CreateOptions =
@@ -7431,136 +4820,6 @@ module PaymentMethodConfigurations =
                 Zip = zip
             }
 
-    module CreateOptions =
-        let create
-            (
-                acssDebit: Create'AcssDebit option,
-                affirm: Create'Affirm option,
-                afterpayClearpay: Create'AfterpayClearpay option,
-                alipay: Create'Alipay option,
-                alma: Create'Alma option,
-                amazonPay: Create'AmazonPay option,
-                applePay: Create'ApplePay option,
-                applePayLater: Create'ApplePayLater option,
-                auBecsDebit: Create'AuBecsDebit option,
-                bacsDebit: Create'BacsDebit option,
-                bancontact: Create'Bancontact option,
-                billie: Create'Billie option,
-                blik: Create'Blik option,
-                boleto: Create'Boleto option,
-                card: Create'Card option,
-                cartesBancaires: Create'CartesBancaires option,
-                cashapp: Create'Cashapp option,
-                crypto: Create'Crypto option,
-                customerBalance: Create'CustomerBalance option,
-                eps: Create'Eps option,
-                expand: string list option,
-                fpx: Create'Fpx option,
-                frMealVoucherConecs: Create'FrMealVoucherConecs option,
-                giropay: Create'Giropay option,
-                googlePay: Create'GooglePay option,
-                grabpay: Create'Grabpay option,
-                ideal: Create'Ideal option,
-                jcb: Create'Jcb option,
-                kakaoPay: Create'KakaoPay option,
-                klarna: Create'Klarna option,
-                konbini: Create'Konbini option,
-                krCard: Create'KrCard option,
-                link: Create'Link option,
-                mbWay: Create'MbWay option,
-                mobilepay: Create'Mobilepay option,
-                multibanco: Create'Multibanco option,
-                name: string option,
-                naverPay: Create'NaverPay option,
-                nzBankAccount: Create'NzBankAccount option,
-                oxxo: Create'Oxxo option,
-                p24: Create'P24 option,
-                parent: string option,
-                payByBank: Create'PayByBank option,
-                payco: Create'Payco option,
-                paynow: Create'Paynow option,
-                paypal: Create'Paypal option,
-                payto: Create'Payto option,
-                pix: Create'Pix option,
-                promptpay: Create'Promptpay option,
-                revolutPay: Create'RevolutPay option,
-                samsungPay: Create'SamsungPay option,
-                satispay: Create'Satispay option,
-                sepaDebit: Create'SepaDebit option,
-                sofort: Create'Sofort option,
-                sunbit: Create'Sunbit option,
-                swish: Create'Swish option,
-                twint: Create'Twint option,
-                upi: Create'Upi option,
-                usBankAccount: Create'UsBankAccount option,
-                wechatPay: Create'WechatPay option,
-                zip: Create'Zip option
-            ) : CreateOptions
-            =
-            {
-              AcssDebit = acssDebit
-              Affirm = affirm
-              AfterpayClearpay = afterpayClearpay
-              Alipay = alipay
-              Alma = alma
-              AmazonPay = amazonPay
-              ApplePay = applePay
-              ApplePayLater = applePayLater
-              AuBecsDebit = auBecsDebit
-              BacsDebit = bacsDebit
-              Bancontact = bancontact
-              Billie = billie
-              Blik = blik
-              Boleto = boleto
-              Card = card
-              CartesBancaires = cartesBancaires
-              Cashapp = cashapp
-              Crypto = crypto
-              CustomerBalance = customerBalance
-              Eps = eps
-              Expand = expand
-              Fpx = fpx
-              FrMealVoucherConecs = frMealVoucherConecs
-              Giropay = giropay
-              GooglePay = googlePay
-              Grabpay = grabpay
-              Ideal = ideal
-              Jcb = jcb
-              KakaoPay = kakaoPay
-              Klarna = klarna
-              Konbini = konbini
-              KrCard = krCard
-              Link = link
-              MbWay = mbWay
-              Mobilepay = mobilepay
-              Multibanco = multibanco
-              Name = name
-              NaverPay = naverPay
-              NzBankAccount = nzBankAccount
-              Oxxo = oxxo
-              P24 = p24
-              Parent = parent
-              PayByBank = payByBank
-              Payco = payco
-              Paynow = paynow
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              Promptpay = promptpay
-              RevolutPay = revolutPay
-              SamsungPay = samsungPay
-              Satispay = satispay
-              SepaDebit = sepaDebit
-              Sofort = sofort
-              Sunbit = sunbit
-              Swish = swish
-              Twint = twint
-              Upi = upi
-              UsBankAccount = usBankAccount
-              WechatPay = wechatPay
-              Zip = zip
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -7575,17 +4834,6 @@ module PaymentMethodConfigurations =
             {
                 Configuration = configuration
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                configuration: string
-            ) : RetrieveOptions
-            =
-            {
-              Configuration = configuration
-              Expand = None
             }
 
     type Update'AcssDebitDisplayPreferencePreference =
@@ -7606,16 +4854,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'AcssDebitDisplayPreference =
-        let create
-            (
-                preference: Update'AcssDebitDisplayPreferencePreference option
-            ) : Update'AcssDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'AcssDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -7627,16 +4865,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'AcssDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'AcssDebit =
-        let create
-            (
-                displayPreference: Update'AcssDebitDisplayPreference option
-            ) : Update'AcssDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'AffirmDisplayPreferencePreference =
@@ -7657,16 +4885,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'AffirmDisplayPreference =
-        let create
-            (
-                preference: Update'AffirmDisplayPreferencePreference option
-            ) : Update'AffirmDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Affirm =
         {
             /// Whether or not the payment method should be displayed.
@@ -7678,16 +4896,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'AffirmDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Affirm =
-        let create
-            (
-                displayPreference: Update'AffirmDisplayPreference option
-            ) : Update'Affirm
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'AfterpayClearpayDisplayPreferencePreference =
@@ -7708,16 +4916,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'AfterpayClearpayDisplayPreference =
-        let create
-            (
-                preference: Update'AfterpayClearpayDisplayPreferencePreference option
-            ) : Update'AfterpayClearpayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'AfterpayClearpay =
         {
             /// Whether or not the payment method should be displayed.
@@ -7729,16 +4927,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'AfterpayClearpayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'AfterpayClearpay =
-        let create
-            (
-                displayPreference: Update'AfterpayClearpayDisplayPreference option
-            ) : Update'AfterpayClearpay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'AlipayDisplayPreferencePreference =
@@ -7759,16 +4947,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'AlipayDisplayPreference =
-        let create
-            (
-                preference: Update'AlipayDisplayPreferencePreference option
-            ) : Update'AlipayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Alipay =
         {
             /// Whether or not the payment method should be displayed.
@@ -7780,16 +4958,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'AlipayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Alipay =
-        let create
-            (
-                displayPreference: Update'AlipayDisplayPreference option
-            ) : Update'Alipay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'AlmaDisplayPreferencePreference =
@@ -7810,16 +4978,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'AlmaDisplayPreference =
-        let create
-            (
-                preference: Update'AlmaDisplayPreferencePreference option
-            ) : Update'AlmaDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Alma =
         {
             /// Whether or not the payment method should be displayed.
@@ -7831,16 +4989,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'AlmaDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Alma =
-        let create
-            (
-                displayPreference: Update'AlmaDisplayPreference option
-            ) : Update'Alma
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'AmazonPayDisplayPreferencePreference =
@@ -7861,16 +5009,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'AmazonPayDisplayPreference =
-        let create
-            (
-                preference: Update'AmazonPayDisplayPreferencePreference option
-            ) : Update'AmazonPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'AmazonPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -7882,16 +5020,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'AmazonPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'AmazonPay =
-        let create
-            (
-                displayPreference: Update'AmazonPayDisplayPreference option
-            ) : Update'AmazonPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'ApplePayDisplayPreferencePreference =
@@ -7912,16 +5040,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'ApplePayDisplayPreference =
-        let create
-            (
-                preference: Update'ApplePayDisplayPreferencePreference option
-            ) : Update'ApplePayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'ApplePay =
         {
             /// Whether or not the payment method should be displayed.
@@ -7933,16 +5051,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'ApplePayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'ApplePay =
-        let create
-            (
-                displayPreference: Update'ApplePayDisplayPreference option
-            ) : Update'ApplePay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'ApplePayLaterDisplayPreferencePreference =
@@ -7963,16 +5071,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'ApplePayLaterDisplayPreference =
-        let create
-            (
-                preference: Update'ApplePayLaterDisplayPreferencePreference option
-            ) : Update'ApplePayLaterDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'ApplePayLater =
         {
             /// Whether or not the payment method should be displayed.
@@ -7984,16 +5082,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'ApplePayLaterDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'ApplePayLater =
-        let create
-            (
-                displayPreference: Update'ApplePayLaterDisplayPreference option
-            ) : Update'ApplePayLater
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'AuBecsDebitDisplayPreferencePreference =
@@ -8014,16 +5102,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'AuBecsDebitDisplayPreference =
-        let create
-            (
-                preference: Update'AuBecsDebitDisplayPreferencePreference option
-            ) : Update'AuBecsDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'AuBecsDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -8035,16 +5113,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'AuBecsDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'AuBecsDebit =
-        let create
-            (
-                displayPreference: Update'AuBecsDebitDisplayPreference option
-            ) : Update'AuBecsDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'BacsDebitDisplayPreferencePreference =
@@ -8065,16 +5133,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'BacsDebitDisplayPreference =
-        let create
-            (
-                preference: Update'BacsDebitDisplayPreferencePreference option
-            ) : Update'BacsDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'BacsDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -8086,16 +5144,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'BacsDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'BacsDebit =
-        let create
-            (
-                displayPreference: Update'BacsDebitDisplayPreference option
-            ) : Update'BacsDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'BancontactDisplayPreferencePreference =
@@ -8116,16 +5164,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'BancontactDisplayPreference =
-        let create
-            (
-                preference: Update'BancontactDisplayPreferencePreference option
-            ) : Update'BancontactDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Bancontact =
         {
             /// Whether or not the payment method should be displayed.
@@ -8137,16 +5175,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'BancontactDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Bancontact =
-        let create
-            (
-                displayPreference: Update'BancontactDisplayPreference option
-            ) : Update'Bancontact
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'BillieDisplayPreferencePreference =
@@ -8167,16 +5195,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'BillieDisplayPreference =
-        let create
-            (
-                preference: Update'BillieDisplayPreferencePreference option
-            ) : Update'BillieDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Billie =
         {
             /// Whether or not the payment method should be displayed.
@@ -8188,16 +5206,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'BillieDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Billie =
-        let create
-            (
-                displayPreference: Update'BillieDisplayPreference option
-            ) : Update'Billie
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'BlikDisplayPreferencePreference =
@@ -8218,16 +5226,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'BlikDisplayPreference =
-        let create
-            (
-                preference: Update'BlikDisplayPreferencePreference option
-            ) : Update'BlikDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Blik =
         {
             /// Whether or not the payment method should be displayed.
@@ -8239,16 +5237,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'BlikDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Blik =
-        let create
-            (
-                displayPreference: Update'BlikDisplayPreference option
-            ) : Update'Blik
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'BoletoDisplayPreferencePreference =
@@ -8269,16 +5257,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'BoletoDisplayPreference =
-        let create
-            (
-                preference: Update'BoletoDisplayPreferencePreference option
-            ) : Update'BoletoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Boleto =
         {
             /// Whether or not the payment method should be displayed.
@@ -8290,16 +5268,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'BoletoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Boleto =
-        let create
-            (
-                displayPreference: Update'BoletoDisplayPreference option
-            ) : Update'Boleto
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'CardDisplayPreferencePreference =
@@ -8320,16 +5288,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'CardDisplayPreference =
-        let create
-            (
-                preference: Update'CardDisplayPreferencePreference option
-            ) : Update'CardDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Card =
         {
             /// Whether or not the payment method should be displayed.
@@ -8341,16 +5299,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'CardDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Card =
-        let create
-            (
-                displayPreference: Update'CardDisplayPreference option
-            ) : Update'Card
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'CartesBancairesDisplayPreferencePreference =
@@ -8371,16 +5319,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'CartesBancairesDisplayPreference =
-        let create
-            (
-                preference: Update'CartesBancairesDisplayPreferencePreference option
-            ) : Update'CartesBancairesDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'CartesBancaires =
         {
             /// Whether or not the payment method should be displayed.
@@ -8392,16 +5330,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'CartesBancairesDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'CartesBancaires =
-        let create
-            (
-                displayPreference: Update'CartesBancairesDisplayPreference option
-            ) : Update'CartesBancaires
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'CashappDisplayPreferencePreference =
@@ -8422,16 +5350,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'CashappDisplayPreference =
-        let create
-            (
-                preference: Update'CashappDisplayPreferencePreference option
-            ) : Update'CashappDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Cashapp =
         {
             /// Whether or not the payment method should be displayed.
@@ -8443,16 +5361,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'CashappDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Cashapp =
-        let create
-            (
-                displayPreference: Update'CashappDisplayPreference option
-            ) : Update'Cashapp
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'CryptoDisplayPreferencePreference =
@@ -8473,16 +5381,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'CryptoDisplayPreference =
-        let create
-            (
-                preference: Update'CryptoDisplayPreferencePreference option
-            ) : Update'CryptoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Crypto =
         {
             /// Whether or not the payment method should be displayed.
@@ -8494,16 +5392,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'CryptoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Crypto =
-        let create
-            (
-                displayPreference: Update'CryptoDisplayPreference option
-            ) : Update'Crypto
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'CustomerBalanceDisplayPreferencePreference =
@@ -8524,16 +5412,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'CustomerBalanceDisplayPreference =
-        let create
-            (
-                preference: Update'CustomerBalanceDisplayPreferencePreference option
-            ) : Update'CustomerBalanceDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'CustomerBalance =
         {
             /// Whether or not the payment method should be displayed.
@@ -8545,16 +5423,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'CustomerBalanceDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'CustomerBalance =
-        let create
-            (
-                displayPreference: Update'CustomerBalanceDisplayPreference option
-            ) : Update'CustomerBalance
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'EpsDisplayPreferencePreference =
@@ -8575,16 +5443,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'EpsDisplayPreference =
-        let create
-            (
-                preference: Update'EpsDisplayPreferencePreference option
-            ) : Update'EpsDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Eps =
         {
             /// Whether or not the payment method should be displayed.
@@ -8596,16 +5454,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'EpsDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Eps =
-        let create
-            (
-                displayPreference: Update'EpsDisplayPreference option
-            ) : Update'Eps
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'FpxDisplayPreferencePreference =
@@ -8626,16 +5474,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'FpxDisplayPreference =
-        let create
-            (
-                preference: Update'FpxDisplayPreferencePreference option
-            ) : Update'FpxDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Fpx =
         {
             /// Whether or not the payment method should be displayed.
@@ -8647,16 +5485,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'FpxDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Fpx =
-        let create
-            (
-                displayPreference: Update'FpxDisplayPreference option
-            ) : Update'Fpx
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'FrMealVoucherConecsDisplayPreferencePreference =
@@ -8677,16 +5505,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'FrMealVoucherConecsDisplayPreference =
-        let create
-            (
-                preference: Update'FrMealVoucherConecsDisplayPreferencePreference option
-            ) : Update'FrMealVoucherConecsDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'FrMealVoucherConecs =
         {
             /// Whether or not the payment method should be displayed.
@@ -8698,16 +5516,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'FrMealVoucherConecsDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'FrMealVoucherConecs =
-        let create
-            (
-                displayPreference: Update'FrMealVoucherConecsDisplayPreference option
-            ) : Update'FrMealVoucherConecs
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'GiropayDisplayPreferencePreference =
@@ -8728,16 +5536,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'GiropayDisplayPreference =
-        let create
-            (
-                preference: Update'GiropayDisplayPreferencePreference option
-            ) : Update'GiropayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Giropay =
         {
             /// Whether or not the payment method should be displayed.
@@ -8749,16 +5547,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'GiropayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Giropay =
-        let create
-            (
-                displayPreference: Update'GiropayDisplayPreference option
-            ) : Update'Giropay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'GooglePayDisplayPreferencePreference =
@@ -8779,16 +5567,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'GooglePayDisplayPreference =
-        let create
-            (
-                preference: Update'GooglePayDisplayPreferencePreference option
-            ) : Update'GooglePayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'GooglePay =
         {
             /// Whether or not the payment method should be displayed.
@@ -8800,16 +5578,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'GooglePayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'GooglePay =
-        let create
-            (
-                displayPreference: Update'GooglePayDisplayPreference option
-            ) : Update'GooglePay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'GrabpayDisplayPreferencePreference =
@@ -8830,16 +5598,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'GrabpayDisplayPreference =
-        let create
-            (
-                preference: Update'GrabpayDisplayPreferencePreference option
-            ) : Update'GrabpayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Grabpay =
         {
             /// Whether or not the payment method should be displayed.
@@ -8851,16 +5609,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'GrabpayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Grabpay =
-        let create
-            (
-                displayPreference: Update'GrabpayDisplayPreference option
-            ) : Update'Grabpay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'IdealDisplayPreferencePreference =
@@ -8881,16 +5629,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'IdealDisplayPreference =
-        let create
-            (
-                preference: Update'IdealDisplayPreferencePreference option
-            ) : Update'IdealDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Ideal =
         {
             /// Whether or not the payment method should be displayed.
@@ -8902,16 +5640,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'IdealDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Ideal =
-        let create
-            (
-                displayPreference: Update'IdealDisplayPreference option
-            ) : Update'Ideal
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'JcbDisplayPreferencePreference =
@@ -8932,16 +5660,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'JcbDisplayPreference =
-        let create
-            (
-                preference: Update'JcbDisplayPreferencePreference option
-            ) : Update'JcbDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Jcb =
         {
             /// Whether or not the payment method should be displayed.
@@ -8953,16 +5671,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'JcbDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Jcb =
-        let create
-            (
-                displayPreference: Update'JcbDisplayPreference option
-            ) : Update'Jcb
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'KakaoPayDisplayPreferencePreference =
@@ -8983,16 +5691,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'KakaoPayDisplayPreference =
-        let create
-            (
-                preference: Update'KakaoPayDisplayPreferencePreference option
-            ) : Update'KakaoPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'KakaoPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -9004,16 +5702,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'KakaoPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'KakaoPay =
-        let create
-            (
-                displayPreference: Update'KakaoPayDisplayPreference option
-            ) : Update'KakaoPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'KlarnaDisplayPreferencePreference =
@@ -9034,16 +5722,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'KlarnaDisplayPreference =
-        let create
-            (
-                preference: Update'KlarnaDisplayPreferencePreference option
-            ) : Update'KlarnaDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Klarna =
         {
             /// Whether or not the payment method should be displayed.
@@ -9055,16 +5733,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'KlarnaDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Klarna =
-        let create
-            (
-                displayPreference: Update'KlarnaDisplayPreference option
-            ) : Update'Klarna
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'KonbiniDisplayPreferencePreference =
@@ -9085,16 +5753,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'KonbiniDisplayPreference =
-        let create
-            (
-                preference: Update'KonbiniDisplayPreferencePreference option
-            ) : Update'KonbiniDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Konbini =
         {
             /// Whether or not the payment method should be displayed.
@@ -9106,16 +5764,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'KonbiniDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Konbini =
-        let create
-            (
-                displayPreference: Update'KonbiniDisplayPreference option
-            ) : Update'Konbini
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'KrCardDisplayPreferencePreference =
@@ -9136,16 +5784,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'KrCardDisplayPreference =
-        let create
-            (
-                preference: Update'KrCardDisplayPreferencePreference option
-            ) : Update'KrCardDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'KrCard =
         {
             /// Whether or not the payment method should be displayed.
@@ -9157,16 +5795,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'KrCardDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'KrCard =
-        let create
-            (
-                displayPreference: Update'KrCardDisplayPreference option
-            ) : Update'KrCard
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'LinkDisplayPreferencePreference =
@@ -9187,16 +5815,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'LinkDisplayPreference =
-        let create
-            (
-                preference: Update'LinkDisplayPreferencePreference option
-            ) : Update'LinkDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Link =
         {
             /// Whether or not the payment method should be displayed.
@@ -9208,16 +5826,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'LinkDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Link =
-        let create
-            (
-                displayPreference: Update'LinkDisplayPreference option
-            ) : Update'Link
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'MbWayDisplayPreferencePreference =
@@ -9238,16 +5846,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'MbWayDisplayPreference =
-        let create
-            (
-                preference: Update'MbWayDisplayPreferencePreference option
-            ) : Update'MbWayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'MbWay =
         {
             /// Whether or not the payment method should be displayed.
@@ -9259,16 +5857,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'MbWayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'MbWay =
-        let create
-            (
-                displayPreference: Update'MbWayDisplayPreference option
-            ) : Update'MbWay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'MobilepayDisplayPreferencePreference =
@@ -9289,16 +5877,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'MobilepayDisplayPreference =
-        let create
-            (
-                preference: Update'MobilepayDisplayPreferencePreference option
-            ) : Update'MobilepayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Mobilepay =
         {
             /// Whether or not the payment method should be displayed.
@@ -9310,16 +5888,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'MobilepayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Mobilepay =
-        let create
-            (
-                displayPreference: Update'MobilepayDisplayPreference option
-            ) : Update'Mobilepay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'MultibancoDisplayPreferencePreference =
@@ -9340,16 +5908,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'MultibancoDisplayPreference =
-        let create
-            (
-                preference: Update'MultibancoDisplayPreferencePreference option
-            ) : Update'MultibancoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Multibanco =
         {
             /// Whether or not the payment method should be displayed.
@@ -9361,16 +5919,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'MultibancoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Multibanco =
-        let create
-            (
-                displayPreference: Update'MultibancoDisplayPreference option
-            ) : Update'Multibanco
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'NaverPayDisplayPreferencePreference =
@@ -9391,16 +5939,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'NaverPayDisplayPreference =
-        let create
-            (
-                preference: Update'NaverPayDisplayPreferencePreference option
-            ) : Update'NaverPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'NaverPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -9412,16 +5950,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'NaverPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'NaverPay =
-        let create
-            (
-                displayPreference: Update'NaverPayDisplayPreference option
-            ) : Update'NaverPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'NzBankAccountDisplayPreferencePreference =
@@ -9442,16 +5970,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'NzBankAccountDisplayPreference =
-        let create
-            (
-                preference: Update'NzBankAccountDisplayPreferencePreference option
-            ) : Update'NzBankAccountDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'NzBankAccount =
         {
             /// Whether or not the payment method should be displayed.
@@ -9463,16 +5981,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'NzBankAccountDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'NzBankAccount =
-        let create
-            (
-                displayPreference: Update'NzBankAccountDisplayPreference option
-            ) : Update'NzBankAccount
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'OxxoDisplayPreferencePreference =
@@ -9493,16 +6001,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'OxxoDisplayPreference =
-        let create
-            (
-                preference: Update'OxxoDisplayPreferencePreference option
-            ) : Update'OxxoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Oxxo =
         {
             /// Whether or not the payment method should be displayed.
@@ -9514,16 +6012,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'OxxoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Oxxo =
-        let create
-            (
-                displayPreference: Update'OxxoDisplayPreference option
-            ) : Update'Oxxo
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'P24DisplayPreferencePreference =
@@ -9544,16 +6032,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'P24DisplayPreference =
-        let create
-            (
-                preference: Update'P24DisplayPreferencePreference option
-            ) : Update'P24DisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'P24 =
         {
             /// Whether or not the payment method should be displayed.
@@ -9565,16 +6043,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'P24DisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'P24 =
-        let create
-            (
-                displayPreference: Update'P24DisplayPreference option
-            ) : Update'P24
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'PayByBankDisplayPreferencePreference =
@@ -9595,16 +6063,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'PayByBankDisplayPreference =
-        let create
-            (
-                preference: Update'PayByBankDisplayPreferencePreference option
-            ) : Update'PayByBankDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'PayByBank =
         {
             /// Whether or not the payment method should be displayed.
@@ -9616,16 +6074,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'PayByBankDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'PayByBank =
-        let create
-            (
-                displayPreference: Update'PayByBankDisplayPreference option
-            ) : Update'PayByBank
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'PaycoDisplayPreferencePreference =
@@ -9646,16 +6094,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'PaycoDisplayPreference =
-        let create
-            (
-                preference: Update'PaycoDisplayPreferencePreference option
-            ) : Update'PaycoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Payco =
         {
             /// Whether or not the payment method should be displayed.
@@ -9667,16 +6105,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'PaycoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Payco =
-        let create
-            (
-                displayPreference: Update'PaycoDisplayPreference option
-            ) : Update'Payco
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'PaynowDisplayPreferencePreference =
@@ -9697,16 +6125,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'PaynowDisplayPreference =
-        let create
-            (
-                preference: Update'PaynowDisplayPreferencePreference option
-            ) : Update'PaynowDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Paynow =
         {
             /// Whether or not the payment method should be displayed.
@@ -9718,16 +6136,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'PaynowDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Paynow =
-        let create
-            (
-                displayPreference: Update'PaynowDisplayPreference option
-            ) : Update'Paynow
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'PaypalDisplayPreferencePreference =
@@ -9748,16 +6156,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'PaypalDisplayPreference =
-        let create
-            (
-                preference: Update'PaypalDisplayPreferencePreference option
-            ) : Update'PaypalDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Paypal =
         {
             /// Whether or not the payment method should be displayed.
@@ -9769,16 +6167,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'PaypalDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Paypal =
-        let create
-            (
-                displayPreference: Update'PaypalDisplayPreference option
-            ) : Update'Paypal
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'PaytoDisplayPreferencePreference =
@@ -9799,16 +6187,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'PaytoDisplayPreference =
-        let create
-            (
-                preference: Update'PaytoDisplayPreferencePreference option
-            ) : Update'PaytoDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Payto =
         {
             /// Whether or not the payment method should be displayed.
@@ -9820,16 +6198,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'PaytoDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Payto =
-        let create
-            (
-                displayPreference: Update'PaytoDisplayPreference option
-            ) : Update'Payto
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'PixDisplayPreferencePreference =
@@ -9850,16 +6218,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'PixDisplayPreference =
-        let create
-            (
-                preference: Update'PixDisplayPreferencePreference option
-            ) : Update'PixDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Pix =
         {
             /// Whether or not the payment method should be displayed.
@@ -9871,16 +6229,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'PixDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Pix =
-        let create
-            (
-                displayPreference: Update'PixDisplayPreference option
-            ) : Update'Pix
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'PromptpayDisplayPreferencePreference =
@@ -9901,16 +6249,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'PromptpayDisplayPreference =
-        let create
-            (
-                preference: Update'PromptpayDisplayPreferencePreference option
-            ) : Update'PromptpayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Promptpay =
         {
             /// Whether or not the payment method should be displayed.
@@ -9922,16 +6260,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'PromptpayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Promptpay =
-        let create
-            (
-                displayPreference: Update'PromptpayDisplayPreference option
-            ) : Update'Promptpay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'RevolutPayDisplayPreferencePreference =
@@ -9952,16 +6280,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'RevolutPayDisplayPreference =
-        let create
-            (
-                preference: Update'RevolutPayDisplayPreferencePreference option
-            ) : Update'RevolutPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'RevolutPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -9973,16 +6291,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'RevolutPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'RevolutPay =
-        let create
-            (
-                displayPreference: Update'RevolutPayDisplayPreference option
-            ) : Update'RevolutPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'SamsungPayDisplayPreferencePreference =
@@ -10003,16 +6311,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'SamsungPayDisplayPreference =
-        let create
-            (
-                preference: Update'SamsungPayDisplayPreferencePreference option
-            ) : Update'SamsungPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'SamsungPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -10024,16 +6322,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'SamsungPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'SamsungPay =
-        let create
-            (
-                displayPreference: Update'SamsungPayDisplayPreference option
-            ) : Update'SamsungPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'SatispayDisplayPreferencePreference =
@@ -10054,16 +6342,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'SatispayDisplayPreference =
-        let create
-            (
-                preference: Update'SatispayDisplayPreferencePreference option
-            ) : Update'SatispayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Satispay =
         {
             /// Whether or not the payment method should be displayed.
@@ -10075,16 +6353,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'SatispayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Satispay =
-        let create
-            (
-                displayPreference: Update'SatispayDisplayPreference option
-            ) : Update'Satispay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'SepaDebitDisplayPreferencePreference =
@@ -10105,16 +6373,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'SepaDebitDisplayPreference =
-        let create
-            (
-                preference: Update'SepaDebitDisplayPreferencePreference option
-            ) : Update'SepaDebitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'SepaDebit =
         {
             /// Whether or not the payment method should be displayed.
@@ -10126,16 +6384,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'SepaDebitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'SepaDebit =
-        let create
-            (
-                displayPreference: Update'SepaDebitDisplayPreference option
-            ) : Update'SepaDebit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'SofortDisplayPreferencePreference =
@@ -10156,16 +6404,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'SofortDisplayPreference =
-        let create
-            (
-                preference: Update'SofortDisplayPreferencePreference option
-            ) : Update'SofortDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Sofort =
         {
             /// Whether or not the payment method should be displayed.
@@ -10177,16 +6415,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'SofortDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Sofort =
-        let create
-            (
-                displayPreference: Update'SofortDisplayPreference option
-            ) : Update'Sofort
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'SunbitDisplayPreferencePreference =
@@ -10207,16 +6435,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'SunbitDisplayPreference =
-        let create
-            (
-                preference: Update'SunbitDisplayPreferencePreference option
-            ) : Update'SunbitDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Sunbit =
         {
             /// Whether or not the payment method should be displayed.
@@ -10228,16 +6446,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'SunbitDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Sunbit =
-        let create
-            (
-                displayPreference: Update'SunbitDisplayPreference option
-            ) : Update'Sunbit
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'SwishDisplayPreferencePreference =
@@ -10258,16 +6466,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'SwishDisplayPreference =
-        let create
-            (
-                preference: Update'SwishDisplayPreferencePreference option
-            ) : Update'SwishDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Swish =
         {
             /// Whether or not the payment method should be displayed.
@@ -10279,16 +6477,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'SwishDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Swish =
-        let create
-            (
-                displayPreference: Update'SwishDisplayPreference option
-            ) : Update'Swish
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'TwintDisplayPreferencePreference =
@@ -10309,16 +6497,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'TwintDisplayPreference =
-        let create
-            (
-                preference: Update'TwintDisplayPreferencePreference option
-            ) : Update'TwintDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Twint =
         {
             /// Whether or not the payment method should be displayed.
@@ -10330,16 +6508,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'TwintDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Twint =
-        let create
-            (
-                displayPreference: Update'TwintDisplayPreference option
-            ) : Update'Twint
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'UpiDisplayPreferencePreference =
@@ -10360,16 +6528,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'UpiDisplayPreference =
-        let create
-            (
-                preference: Update'UpiDisplayPreferencePreference option
-            ) : Update'UpiDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Upi =
         {
             /// Whether or not the payment method should be displayed.
@@ -10381,16 +6539,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'UpiDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Upi =
-        let create
-            (
-                displayPreference: Update'UpiDisplayPreference option
-            ) : Update'Upi
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'UsBankAccountDisplayPreferencePreference =
@@ -10411,16 +6559,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'UsBankAccountDisplayPreference =
-        let create
-            (
-                preference: Update'UsBankAccountDisplayPreferencePreference option
-            ) : Update'UsBankAccountDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'UsBankAccount =
         {
             /// Whether or not the payment method should be displayed.
@@ -10432,16 +6570,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'UsBankAccountDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'UsBankAccount =
-        let create
-            (
-                displayPreference: Update'UsBankAccountDisplayPreference option
-            ) : Update'UsBankAccount
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'WechatPayDisplayPreferencePreference =
@@ -10462,16 +6590,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'WechatPayDisplayPreference =
-        let create
-            (
-                preference: Update'WechatPayDisplayPreferencePreference option
-            ) : Update'WechatPayDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'WechatPay =
         {
             /// Whether or not the payment method should be displayed.
@@ -10483,16 +6601,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'WechatPayDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'WechatPay =
-        let create
-            (
-                displayPreference: Update'WechatPayDisplayPreference option
-            ) : Update'WechatPay
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type Update'ZipDisplayPreferencePreference =
@@ -10513,16 +6621,6 @@ module PaymentMethodConfigurations =
                 Preference = preference
             }
 
-    module Update'ZipDisplayPreference =
-        let create
-            (
-                preference: Update'ZipDisplayPreferencePreference option
-            ) : Update'ZipDisplayPreference
-            =
-            {
-              Preference = preference
-            }
-
     type Update'Zip =
         {
             /// Whether or not the payment method should be displayed.
@@ -10534,16 +6632,6 @@ module PaymentMethodConfigurations =
         static member New(?displayPreference: Update'ZipDisplayPreference) =
             {
                 DisplayPreference = displayPreference
-            }
-
-    module Update'Zip =
-        let create
-            (
-                displayPreference: Update'ZipDisplayPreference option
-            ) : Update'Zip
-            =
-            {
-              DisplayPreference = displayPreference
             }
 
     type UpdateOptions =
@@ -10802,77 +6890,6 @@ module PaymentMethodConfigurations =
                 Zip = zip
             }
 
-    module UpdateOptions =
-        let create
-            (
-                configuration: string
-            ) : UpdateOptions
-            =
-            {
-              Configuration = configuration
-              AcssDebit = None
-              Active = None
-              Affirm = None
-              AfterpayClearpay = None
-              Alipay = None
-              Alma = None
-              AmazonPay = None
-              ApplePay = None
-              ApplePayLater = None
-              AuBecsDebit = None
-              BacsDebit = None
-              Bancontact = None
-              Billie = None
-              Blik = None
-              Boleto = None
-              Card = None
-              CartesBancaires = None
-              Cashapp = None
-              Crypto = None
-              CustomerBalance = None
-              Eps = None
-              Expand = None
-              Fpx = None
-              FrMealVoucherConecs = None
-              Giropay = None
-              GooglePay = None
-              Grabpay = None
-              Ideal = None
-              Jcb = None
-              KakaoPay = None
-              Klarna = None
-              Konbini = None
-              KrCard = None
-              Link = None
-              MbWay = None
-              Mobilepay = None
-              Multibanco = None
-              Name = None
-              NaverPay = None
-              NzBankAccount = None
-              Oxxo = None
-              P24 = None
-              PayByBank = None
-              Payco = None
-              Paynow = None
-              Paypal = None
-              Payto = None
-              Pix = None
-              Promptpay = None
-              RevolutPay = None
-              SamsungPay = None
-              Satispay = None
-              SepaDebit = None
-              Sofort = None
-              Sunbit = None
-              Swish = None
-              Twint = None
-              Upi = None
-              UsBankAccount = None
-              WechatPay = None
-              Zip = None
-            }
-
     ///<p>List payment method configurations</p>
     let List settings (options: ListOptions) =
         let qs = [("application", options.Application |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -10930,26 +6947,6 @@ module PaymentMethodDomains =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                domainName: string option,
-                enabled: bool option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              DomainName = domainName
-              Enabled = enabled
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type CreateOptions =
         {
             /// The domain name that this payment method domain object represents.
@@ -10971,18 +6968,6 @@ module PaymentMethodDomains =
                 Expand = expand
             }
 
-    module CreateOptions =
-        let create
-            (
-                domainName: string
-            ) : CreateOptions
-            =
-            {
-              DomainName = domainName
-              Enabled = None
-              Expand = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -10997,17 +6982,6 @@ module PaymentMethodDomains =
             {
                 PaymentMethodDomain = paymentMethodDomain
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                paymentMethodDomain: string
-            ) : RetrieveOptions
-            =
-            {
-              PaymentMethodDomain = paymentMethodDomain
-              Expand = None
             }
 
     type UpdateOptions =
@@ -11028,18 +7002,6 @@ module PaymentMethodDomains =
                 PaymentMethodDomain = paymentMethodDomain
                 Enabled = enabled
                 Expand = expand
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                paymentMethodDomain: string
-            ) : UpdateOptions
-            =
-            {
-              PaymentMethodDomain = paymentMethodDomain
-              Enabled = None
-              Expand = None
             }
 
     ///<p>Lists the details of existing payment method domains.</p>
@@ -11082,17 +7044,6 @@ module PaymentMethodDomainsValidate =
                 Expand = expand
             }
 
-    module ValidateOptions =
-        let create
-            (
-                paymentMethodDomain: string
-            ) : ValidateOptions
-            =
-            {
-              PaymentMethodDomain = paymentMethodDomain
-              Expand = None
-            }
-
     ///<p>Some payment methods might require additional steps to register a domain. If the requirements weren’t satisfied when the domain was created, the payment method will be inactive on the domain.
     ///The payment method doesn’t appear in Elements or Embedded Checkout for this domain until it is active.</p>
     ///<p>To activate a payment method on an existing payment method domain, complete the required registration steps specific to the payment method, and then validate the payment method domain with this endpoint.</p>
@@ -11132,20 +7083,6 @@ module SubscriptionItems =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                subscription: string
-            ) : ListOptions
-            =
-            {
-              Subscription = subscription
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type Create'BillingThresholdsItemBillingThresholds =
         {
             /// Number of units that meets the billing threshold to advance the subscription to a new billing period (e.g., it takes 10 $5 units to meet a $50 [monetary threshold](https://docs.stripe.com/api/subscriptions/update#update_subscription-billing_thresholds-amount_gte))
@@ -11157,16 +7094,6 @@ module SubscriptionItems =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module Create'BillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : Create'BillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type Create'Discounts =
@@ -11188,20 +7115,6 @@ module SubscriptionItems =
                 Coupon = coupon
                 Discount = discount
                 PromotionCode = promotionCode
-            }
-
-    module Create'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
             }
 
     type Create'PaymentBehavior =
@@ -11231,18 +7144,6 @@ module SubscriptionItems =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Create'PriceDataRecurring =
-        let create
-            (
-                interval: Create'PriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Create'PriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Create'PriceDataTaxBehavior =
@@ -11281,26 +7182,6 @@ module SubscriptionItems =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Create'PriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: Create'PriceDataRecurring option,
-                taxBehavior: Create'PriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'PriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Create'ProrationBehavior =
@@ -11372,28 +7253,6 @@ module SubscriptionItems =
                 TaxRates = taxRates
             }
 
-    module CreateOptions =
-        let create
-            (
-                subscription: string
-            ) : CreateOptions
-            =
-            {
-              Subscription = subscription
-              BillingThresholds = None
-              Discounts = None
-              Expand = None
-              Metadata = None
-              PaymentBehavior = None
-              Plan = None
-              Price = None
-              PriceData = None
-              ProrationBehavior = None
-              ProrationDate = None
-              Quantity = None
-              TaxRates = None
-            }
-
     type Delete'PaymentBehavior =
         | AllowIncomplete
         | DefaultIncomplete
@@ -11436,20 +7295,6 @@ module SubscriptionItems =
                 ProrationDate = prorationDate
             }
 
-    module DeleteOptions =
-        let create
-            (
-                item: string
-            ) : DeleteOptions
-            =
-            {
-              Item = item
-              ClearUsage = None
-              PaymentBehavior = None
-              ProrationBehavior = None
-              ProrationDate = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -11466,17 +7311,6 @@ module SubscriptionItems =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                item: string
-            ) : RetrieveOptions
-            =
-            {
-              Item = item
-              Expand = None
-            }
-
     type Update'BillingThresholdsItemBillingThresholds =
         {
             /// Number of units that meets the billing threshold to advance the subscription to a new billing period (e.g., it takes 10 $5 units to meet a $50 [monetary threshold](https://docs.stripe.com/api/subscriptions/update#update_subscription-billing_thresholds-amount_gte))
@@ -11488,16 +7322,6 @@ module SubscriptionItems =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module Update'BillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : Update'BillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type Update'Discounts =
@@ -11519,20 +7343,6 @@ module SubscriptionItems =
                 Coupon = coupon
                 Discount = discount
                 PromotionCode = promotionCode
-            }
-
-    module Update'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
             }
 
     type Update'PaymentBehavior =
@@ -11562,18 +7372,6 @@ module SubscriptionItems =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Update'PriceDataRecurring =
-        let create
-            (
-                interval: Update'PriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Update'PriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Update'PriceDataTaxBehavior =
@@ -11612,26 +7410,6 @@ module SubscriptionItems =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Update'PriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: Update'PriceDataRecurring option,
-                taxBehavior: Update'PriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'PriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Update'ProrationBehavior =
@@ -11704,29 +7482,6 @@ module SubscriptionItems =
                 ProrationDate = prorationDate
                 Quantity = quantity
                 TaxRates = taxRates
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                item: string
-            ) : UpdateOptions
-            =
-            {
-              Item = item
-              BillingThresholds = None
-              Discounts = None
-              Expand = None
-              Metadata = None
-              OffSession = None
-              PaymentBehavior = None
-              Plan = None
-              Price = None
-              PriceData = None
-              ProrationBehavior = None
-              ProrationDate = None
-              Quantity = None
-              TaxRates = None
             }
 
     ///<p>Returns a list of your subscription items for a given subscription.</p>
@@ -11811,36 +7566,6 @@ module SubscriptionSchedules =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                canceledAt: int option,
-                completedAt: int option,
-                created: int option,
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                releasedAt: int option,
-                scheduled: bool option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              CanceledAt = canceledAt
-              CompletedAt = completedAt
-              Created = created
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              ReleasedAt = releasedAt
-              Scheduled = scheduled
-              StartingAfter = startingAfter
-            }
-
     type Create'BillingModeFlexibleProrationDiscounts =
         | Included
         | Itemized
@@ -11856,16 +7581,6 @@ module SubscriptionSchedules =
         static member New(?prorationDiscounts: Create'BillingModeFlexibleProrationDiscounts) =
             {
                 ProrationDiscounts = prorationDiscounts
-            }
-
-    module Create'BillingModeFlexible =
-        let create
-            (
-                prorationDiscounts: Create'BillingModeFlexibleProrationDiscounts option
-            ) : Create'BillingModeFlexible
-            =
-            {
-              ProrationDiscounts = prorationDiscounts
             }
 
     type Create'BillingModeType =
@@ -11889,18 +7604,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Create'BillingMode =
-        let create
-            (
-                flexible: Create'BillingModeFlexible option,
-                type': Create'BillingModeType option
-            ) : Create'BillingMode
-            =
-            {
-              Flexible = flexible
-              Type = type'
-            }
-
     type Create'DefaultSettingsAutomaticTaxLiabilityType =
         | Account
         | Self
@@ -11922,18 +7625,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Create'DefaultSettingsAutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Create'DefaultSettingsAutomaticTaxLiabilityType option
-            ) : Create'DefaultSettingsAutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'DefaultSettingsAutomaticTax =
         {
             /// Enabled automatic tax calculation which will automatically compute tax rates on all invoices generated by the subscription.
@@ -11949,18 +7640,6 @@ module SubscriptionSchedules =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Create'DefaultSettingsAutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Create'DefaultSettingsAutomaticTaxLiability option
-            ) : Create'DefaultSettingsAutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Create'DefaultSettingsBillingCycleAnchor =
@@ -11982,18 +7661,6 @@ module SubscriptionSchedules =
             {
                 AmountGte = amountGte
                 ResetBillingCycleAnchor = resetBillingCycleAnchor
-            }
-
-    module Create'DefaultSettingsBillingThresholdsBillingThresholds =
-        let create
-            (
-                amountGte: int option,
-                resetBillingCycleAnchor: bool option
-            ) : Create'DefaultSettingsBillingThresholdsBillingThresholds
-            =
-            {
-              AmountGte = amountGte
-              ResetBillingCycleAnchor = resetBillingCycleAnchor
             }
 
     type Create'DefaultSettingsCollectionMethod =
@@ -12021,18 +7688,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Create'DefaultSettingsInvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': Create'DefaultSettingsInvoiceSettingsIssuerType option
-            ) : Create'DefaultSettingsInvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'DefaultSettingsInvoiceSettings =
         {
             /// The account tax IDs associated with the subscription schedule. Will be set on invoices generated by the subscription schedule.
@@ -12054,20 +7709,6 @@ module SubscriptionSchedules =
                 Issuer = issuer
             }
 
-    module Create'DefaultSettingsInvoiceSettings =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                daysUntilDue: int option,
-                issuer: Create'DefaultSettingsInvoiceSettingsIssuer option
-            ) : Create'DefaultSettingsInvoiceSettings
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              DaysUntilDue = daysUntilDue
-              Issuer = issuer
-            }
-
     type Create'DefaultSettingsTransferDataTransferDataSpecs =
         {
             /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
@@ -12083,18 +7724,6 @@ module SubscriptionSchedules =
             {
                 AmountPercent = amountPercent
                 Destination = destination
-            }
-
-    module Create'DefaultSettingsTransferDataTransferDataSpecs =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : Create'DefaultSettingsTransferDataTransferDataSpecs
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
             }
 
     type Create'DefaultSettings =
@@ -12146,34 +7775,6 @@ module SubscriptionSchedules =
                 TransferData = transferData
             }
 
-    module Create'DefaultSettings =
-        let create
-            (
-                applicationFeePercent: decimal option,
-                automaticTax: Create'DefaultSettingsAutomaticTax option,
-                billingCycleAnchor: Create'DefaultSettingsBillingCycleAnchor option,
-                billingThresholds: Choice<Create'DefaultSettingsBillingThresholdsBillingThresholds,string> option,
-                collectionMethod: Create'DefaultSettingsCollectionMethod option,
-                defaultPaymentMethod: string option,
-                description: Choice<string,string> option,
-                invoiceSettings: Create'DefaultSettingsInvoiceSettings option,
-                onBehalfOf: Choice<string,string> option,
-                transferData: Choice<Create'DefaultSettingsTransferDataTransferDataSpecs,string> option
-            ) : Create'DefaultSettings
-            =
-            {
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BillingCycleAnchor = billingCycleAnchor
-              BillingThresholds = billingThresholds
-              CollectionMethod = collectionMethod
-              DefaultPaymentMethod = defaultPaymentMethod
-              Description = description
-              InvoiceSettings = invoiceSettings
-              OnBehalfOf = onBehalfOf
-              TransferData = transferData
-            }
-
     type Create'EndBehavior =
         | Cancel
         | [<JsonPropertyName("none")>] None'
@@ -12201,20 +7802,6 @@ module SubscriptionSchedules =
                 PromotionCode = promotionCode
             }
 
-    module Create'PhasesAddInvoiceItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'PhasesAddInvoiceItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'PhasesAddInvoiceItemsPeriodEndType =
         | MinItemPeriodEnd
         | PhaseEnd
@@ -12235,18 +7822,6 @@ module SubscriptionSchedules =
             {
                 Timestamp = timestamp
                 Type = type'
-            }
-
-    module Create'PhasesAddInvoiceItemsPeriodEnd =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Create'PhasesAddInvoiceItemsPeriodEndType option
-            ) : Create'PhasesAddInvoiceItemsPeriodEnd
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
             }
 
     type Create'PhasesAddInvoiceItemsPeriodStartType =
@@ -12271,18 +7846,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Create'PhasesAddInvoiceItemsPeriodStart =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Create'PhasesAddInvoiceItemsPeriodStartType option
-            ) : Create'PhasesAddInvoiceItemsPeriodStart
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
-            }
-
     type Create'PhasesAddInvoiceItemsPeriod =
         {
             /// End of the invoice item period.
@@ -12298,18 +7861,6 @@ module SubscriptionSchedules =
             {
                 End = end'
                 Start = start
-            }
-
-    module Create'PhasesAddInvoiceItemsPeriod =
-        let create
-            (
-                end': Create'PhasesAddInvoiceItemsPeriodEnd option,
-                start: Create'PhasesAddInvoiceItemsPeriodStart option
-            ) : Create'PhasesAddInvoiceItemsPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type Create'PhasesAddInvoiceItemsPriceDataTaxBehavior =
@@ -12344,24 +7895,6 @@ module SubscriptionSchedules =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Create'PhasesAddInvoiceItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: Create'PhasesAddInvoiceItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'PhasesAddInvoiceItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Create'PhasesAddInvoiceItems =
@@ -12401,28 +7934,6 @@ module SubscriptionSchedules =
                 TaxRates = taxRates
             }
 
-    module Create'PhasesAddInvoiceItems =
-        let create
-            (
-                discounts: Create'PhasesAddInvoiceItemsDiscounts list option,
-                metadata: Map<string, string> option,
-                period: Create'PhasesAddInvoiceItemsPeriod option,
-                price: string option,
-                priceData: Create'PhasesAddInvoiceItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Create'PhasesAddInvoiceItems
-            =
-            {
-              Discounts = discounts
-              Metadata = metadata
-              Period = period
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Create'PhasesAutomaticTaxLiabilityType =
         | Account
         | Self
@@ -12444,18 +7955,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Create'PhasesAutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Create'PhasesAutomaticTaxLiabilityType option
-            ) : Create'PhasesAutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'PhasesAutomaticTax =
         {
             /// Enabled automatic tax calculation which will automatically compute tax rates on all invoices generated by the subscription.
@@ -12471,18 +7970,6 @@ module SubscriptionSchedules =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Create'PhasesAutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Create'PhasesAutomaticTaxLiability option
-            ) : Create'PhasesAutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Create'PhasesBillingCycleAnchor =
@@ -12504,18 +7991,6 @@ module SubscriptionSchedules =
             {
                 AmountGte = amountGte
                 ResetBillingCycleAnchor = resetBillingCycleAnchor
-            }
-
-    module Create'PhasesBillingThresholdsBillingThresholds =
-        let create
-            (
-                amountGte: int option,
-                resetBillingCycleAnchor: bool option
-            ) : Create'PhasesBillingThresholdsBillingThresholds
-            =
-            {
-              AmountGte = amountGte
-              ResetBillingCycleAnchor = resetBillingCycleAnchor
             }
 
     type Create'PhasesCollectionMethod =
@@ -12543,20 +8018,6 @@ module SubscriptionSchedules =
                 PromotionCode = promotionCode
             }
 
-    module Create'PhasesDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'PhasesDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'PhasesDurationInterval =
         | Day
         | Month
@@ -12580,18 +8041,6 @@ module SubscriptionSchedules =
                 IntervalCount = intervalCount
             }
 
-    module Create'PhasesDuration =
-        let create
-            (
-                interval: Create'PhasesDurationInterval option,
-                intervalCount: int option
-            ) : Create'PhasesDuration
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
-            }
-
     type Create'PhasesInvoiceSettingsIssuerType =
         | Account
         | Self
@@ -12611,18 +8060,6 @@ module SubscriptionSchedules =
             {
                 Account = account
                 Type = type'
-            }
-
-    module Create'PhasesInvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': Create'PhasesInvoiceSettingsIssuerType option
-            ) : Create'PhasesInvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
             }
 
     type Create'PhasesInvoiceSettings =
@@ -12646,20 +8083,6 @@ module SubscriptionSchedules =
                 Issuer = issuer
             }
 
-    module Create'PhasesInvoiceSettings =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                daysUntilDue: int option,
-                issuer: Create'PhasesInvoiceSettingsIssuer option
-            ) : Create'PhasesInvoiceSettings
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              DaysUntilDue = daysUntilDue
-              Issuer = issuer
-            }
-
     type Create'PhasesItemsBillingThresholdsItemBillingThresholds =
         {
             /// Number of units that meets the billing threshold to advance the subscription to a new billing period (e.g., it takes 10 $5 units to meet a $50 [monetary threshold](https://docs.stripe.com/api/subscriptions/update#update_subscription-billing_thresholds-amount_gte))
@@ -12671,16 +8094,6 @@ module SubscriptionSchedules =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module Create'PhasesItemsBillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : Create'PhasesItemsBillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type Create'PhasesItemsDiscounts =
@@ -12704,20 +8117,6 @@ module SubscriptionSchedules =
                 PromotionCode = promotionCode
             }
 
-    module Create'PhasesItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'PhasesItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'PhasesItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -12739,18 +8138,6 @@ module SubscriptionSchedules =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Create'PhasesItemsPriceDataRecurring =
-        let create
-            (
-                interval: Create'PhasesItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Create'PhasesItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Create'PhasesItemsPriceDataTaxBehavior =
@@ -12789,26 +8176,6 @@ module SubscriptionSchedules =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Create'PhasesItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: Create'PhasesItemsPriceDataRecurring option,
-                taxBehavior: Create'PhasesItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'PhasesItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Create'PhasesItems =
@@ -12852,30 +8219,6 @@ module SubscriptionSchedules =
                 TaxRates = taxRates
             }
 
-    module Create'PhasesItems =
-        let create
-            (
-                billingThresholds: Choice<Create'PhasesItemsBillingThresholdsItemBillingThresholds,string> option,
-                discounts: Choice<Create'PhasesItemsDiscounts list,string> option,
-                metadata: Map<string, string> option,
-                plan: string option,
-                price: string option,
-                priceData: Create'PhasesItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Create'PhasesItems
-            =
-            {
-              BillingThresholds = billingThresholds
-              Discounts = discounts
-              Metadata = metadata
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Create'PhasesProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
@@ -12896,18 +8239,6 @@ module SubscriptionSchedules =
             {
                 AmountPercent = amountPercent
                 Destination = destination
-            }
-
-    module Create'PhasesTransferData =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : Create'PhasesTransferData
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
             }
 
     type Create'Phases =
@@ -13003,56 +8334,6 @@ module SubscriptionSchedules =
                 TrialEnd = trialEnd
             }
 
-    module Create'Phases =
-        let create
-            (
-                addInvoiceItems: Create'PhasesAddInvoiceItems list option,
-                applicationFeePercent: decimal option,
-                automaticTax: Create'PhasesAutomaticTax option,
-                billingCycleAnchor: Create'PhasesBillingCycleAnchor option,
-                billingThresholds: Choice<Create'PhasesBillingThresholdsBillingThresholds,string> option,
-                collectionMethod: Create'PhasesCollectionMethod option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                defaultPaymentMethod: string option,
-                defaultTaxRates: Choice<string list,string> option,
-                description: Choice<string,string> option,
-                discounts: Choice<Create'PhasesDiscounts list,string> option,
-                duration: Create'PhasesDuration option,
-                endDate: DateTime option,
-                invoiceSettings: Create'PhasesInvoiceSettings option,
-                items: Create'PhasesItems list option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option,
-                prorationBehavior: Create'PhasesProrationBehavior option,
-                transferData: Create'PhasesTransferData option,
-                trial: bool option,
-                trialEnd: DateTime option
-            ) : Create'Phases
-            =
-            {
-              AddInvoiceItems = addInvoiceItems
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BillingCycleAnchor = billingCycleAnchor
-              BillingThresholds = billingThresholds
-              CollectionMethod = collectionMethod
-              Currency = currency
-              DefaultPaymentMethod = defaultPaymentMethod
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              Duration = duration
-              EndDate = endDate
-              InvoiceSettings = invoiceSettings
-              Items = items
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              ProrationBehavior = prorationBehavior
-              TransferData = transferData
-              Trial = trial
-              TrialEnd = trialEnd
-            }
-
     type Create'StartDate = | Now
 
     type CreateOptions =
@@ -13104,34 +8385,6 @@ module SubscriptionSchedules =
                 StartDate = startDate
             }
 
-    module CreateOptions =
-        let create
-            (
-                billingMode: Create'BillingMode option,
-                customer: string option,
-                customerAccount: string option,
-                defaultSettings: Create'DefaultSettings option,
-                endBehavior: Create'EndBehavior option,
-                expand: string list option,
-                fromSubscription: string option,
-                metadata: Map<string, string> option,
-                phases: Create'Phases list option,
-                startDate: Choice<DateTime,Create'StartDate> option
-            ) : CreateOptions
-            =
-            {
-              BillingMode = billingMode
-              Customer = customer
-              CustomerAccount = customerAccount
-              DefaultSettings = defaultSettings
-              EndBehavior = endBehavior
-              Expand = expand
-              FromSubscription = fromSubscription
-              Metadata = metadata
-              Phases = phases
-              StartDate = startDate
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -13146,17 +8399,6 @@ module SubscriptionSchedules =
             {
                 Schedule = schedule
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                schedule: string
-            ) : RetrieveOptions
-            =
-            {
-              Schedule = schedule
-              Expand = None
             }
 
     type Update'DefaultSettingsAutomaticTaxLiabilityType =
@@ -13180,18 +8422,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Update'DefaultSettingsAutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Update'DefaultSettingsAutomaticTaxLiabilityType option
-            ) : Update'DefaultSettingsAutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'DefaultSettingsAutomaticTax =
         {
             /// Enabled automatic tax calculation which will automatically compute tax rates on all invoices generated by the subscription.
@@ -13207,18 +8437,6 @@ module SubscriptionSchedules =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Update'DefaultSettingsAutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Update'DefaultSettingsAutomaticTaxLiability option
-            ) : Update'DefaultSettingsAutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Update'DefaultSettingsBillingCycleAnchor =
@@ -13240,18 +8458,6 @@ module SubscriptionSchedules =
             {
                 AmountGte = amountGte
                 ResetBillingCycleAnchor = resetBillingCycleAnchor
-            }
-
-    module Update'DefaultSettingsBillingThresholdsBillingThresholds =
-        let create
-            (
-                amountGte: int option,
-                resetBillingCycleAnchor: bool option
-            ) : Update'DefaultSettingsBillingThresholdsBillingThresholds
-            =
-            {
-              AmountGte = amountGte
-              ResetBillingCycleAnchor = resetBillingCycleAnchor
             }
 
     type Update'DefaultSettingsCollectionMethod =
@@ -13279,18 +8485,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Update'DefaultSettingsInvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': Update'DefaultSettingsInvoiceSettingsIssuerType option
-            ) : Update'DefaultSettingsInvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'DefaultSettingsInvoiceSettings =
         {
             /// The account tax IDs associated with the subscription schedule. Will be set on invoices generated by the subscription schedule.
@@ -13312,20 +8506,6 @@ module SubscriptionSchedules =
                 Issuer = issuer
             }
 
-    module Update'DefaultSettingsInvoiceSettings =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                daysUntilDue: int option,
-                issuer: Update'DefaultSettingsInvoiceSettingsIssuer option
-            ) : Update'DefaultSettingsInvoiceSettings
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              DaysUntilDue = daysUntilDue
-              Issuer = issuer
-            }
-
     type Update'DefaultSettingsTransferDataTransferDataSpecs =
         {
             /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
@@ -13341,18 +8521,6 @@ module SubscriptionSchedules =
             {
                 AmountPercent = amountPercent
                 Destination = destination
-            }
-
-    module Update'DefaultSettingsTransferDataTransferDataSpecs =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : Update'DefaultSettingsTransferDataTransferDataSpecs
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
             }
 
     type Update'DefaultSettings =
@@ -13404,34 +8572,6 @@ module SubscriptionSchedules =
                 TransferData = transferData
             }
 
-    module Update'DefaultSettings =
-        let create
-            (
-                applicationFeePercent: decimal option,
-                automaticTax: Update'DefaultSettingsAutomaticTax option,
-                billingCycleAnchor: Update'DefaultSettingsBillingCycleAnchor option,
-                billingThresholds: Choice<Update'DefaultSettingsBillingThresholdsBillingThresholds,string> option,
-                collectionMethod: Update'DefaultSettingsCollectionMethod option,
-                defaultPaymentMethod: string option,
-                description: Choice<string,string> option,
-                invoiceSettings: Update'DefaultSettingsInvoiceSettings option,
-                onBehalfOf: Choice<string,string> option,
-                transferData: Choice<Update'DefaultSettingsTransferDataTransferDataSpecs,string> option
-            ) : Update'DefaultSettings
-            =
-            {
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BillingCycleAnchor = billingCycleAnchor
-              BillingThresholds = billingThresholds
-              CollectionMethod = collectionMethod
-              DefaultPaymentMethod = defaultPaymentMethod
-              Description = description
-              InvoiceSettings = invoiceSettings
-              OnBehalfOf = onBehalfOf
-              TransferData = transferData
-            }
-
     type Update'EndBehavior =
         | Cancel
         | [<JsonPropertyName("none")>] None'
@@ -13459,20 +8599,6 @@ module SubscriptionSchedules =
                 PromotionCode = promotionCode
             }
 
-    module Update'PhasesAddInvoiceItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'PhasesAddInvoiceItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'PhasesAddInvoiceItemsPeriodEndType =
         | MinItemPeriodEnd
         | PhaseEnd
@@ -13493,18 +8619,6 @@ module SubscriptionSchedules =
             {
                 Timestamp = timestamp
                 Type = type'
-            }
-
-    module Update'PhasesAddInvoiceItemsPeriodEnd =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Update'PhasesAddInvoiceItemsPeriodEndType option
-            ) : Update'PhasesAddInvoiceItemsPeriodEnd
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
             }
 
     type Update'PhasesAddInvoiceItemsPeriodStartType =
@@ -13529,18 +8643,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Update'PhasesAddInvoiceItemsPeriodStart =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Update'PhasesAddInvoiceItemsPeriodStartType option
-            ) : Update'PhasesAddInvoiceItemsPeriodStart
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
-            }
-
     type Update'PhasesAddInvoiceItemsPeriod =
         {
             /// End of the invoice item period.
@@ -13556,18 +8658,6 @@ module SubscriptionSchedules =
             {
                 End = end'
                 Start = start
-            }
-
-    module Update'PhasesAddInvoiceItemsPeriod =
-        let create
-            (
-                end': Update'PhasesAddInvoiceItemsPeriodEnd option,
-                start: Update'PhasesAddInvoiceItemsPeriodStart option
-            ) : Update'PhasesAddInvoiceItemsPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type Update'PhasesAddInvoiceItemsPriceDataTaxBehavior =
@@ -13602,24 +8692,6 @@ module SubscriptionSchedules =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Update'PhasesAddInvoiceItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: Update'PhasesAddInvoiceItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'PhasesAddInvoiceItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Update'PhasesAddInvoiceItems =
@@ -13659,28 +8731,6 @@ module SubscriptionSchedules =
                 TaxRates = taxRates
             }
 
-    module Update'PhasesAddInvoiceItems =
-        let create
-            (
-                discounts: Update'PhasesAddInvoiceItemsDiscounts list option,
-                metadata: Map<string, string> option,
-                period: Update'PhasesAddInvoiceItemsPeriod option,
-                price: string option,
-                priceData: Update'PhasesAddInvoiceItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Update'PhasesAddInvoiceItems
-            =
-            {
-              Discounts = discounts
-              Metadata = metadata
-              Period = period
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Update'PhasesAutomaticTaxLiabilityType =
         | Account
         | Self
@@ -13702,18 +8752,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Update'PhasesAutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Update'PhasesAutomaticTaxLiabilityType option
-            ) : Update'PhasesAutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'PhasesAutomaticTax =
         {
             /// Enabled automatic tax calculation which will automatically compute tax rates on all invoices generated by the subscription.
@@ -13729,18 +8767,6 @@ module SubscriptionSchedules =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Update'PhasesAutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Update'PhasesAutomaticTaxLiability option
-            ) : Update'PhasesAutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Update'PhasesBillingCycleAnchor =
@@ -13762,18 +8788,6 @@ module SubscriptionSchedules =
             {
                 AmountGte = amountGte
                 ResetBillingCycleAnchor = resetBillingCycleAnchor
-            }
-
-    module Update'PhasesBillingThresholdsBillingThresholds =
-        let create
-            (
-                amountGte: int option,
-                resetBillingCycleAnchor: bool option
-            ) : Update'PhasesBillingThresholdsBillingThresholds
-            =
-            {
-              AmountGte = amountGte
-              ResetBillingCycleAnchor = resetBillingCycleAnchor
             }
 
     type Update'PhasesCollectionMethod =
@@ -13801,20 +8815,6 @@ module SubscriptionSchedules =
                 PromotionCode = promotionCode
             }
 
-    module Update'PhasesDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'PhasesDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'PhasesDurationInterval =
         | Day
         | Month
@@ -13836,18 +8836,6 @@ module SubscriptionSchedules =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Update'PhasesDuration =
-        let create
-            (
-                interval: Update'PhasesDurationInterval option,
-                intervalCount: int option
-            ) : Update'PhasesDuration
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Update'PhasesEndDate = | Now
@@ -13873,18 +8861,6 @@ module SubscriptionSchedules =
                 Type = type'
             }
 
-    module Update'PhasesInvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': Update'PhasesInvoiceSettingsIssuerType option
-            ) : Update'PhasesInvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'PhasesInvoiceSettings =
         {
             /// The account tax IDs associated with this phase of the subscription schedule. Will be set on invoices generated by this phase of the subscription schedule.
@@ -13906,20 +8882,6 @@ module SubscriptionSchedules =
                 Issuer = issuer
             }
 
-    module Update'PhasesInvoiceSettings =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                daysUntilDue: int option,
-                issuer: Update'PhasesInvoiceSettingsIssuer option
-            ) : Update'PhasesInvoiceSettings
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              DaysUntilDue = daysUntilDue
-              Issuer = issuer
-            }
-
     type Update'PhasesItemsBillingThresholdsItemBillingThresholds =
         {
             /// Number of units that meets the billing threshold to advance the subscription to a new billing period (e.g., it takes 10 $5 units to meet a $50 [monetary threshold](https://docs.stripe.com/api/subscriptions/update#update_subscription-billing_thresholds-amount_gte))
@@ -13931,16 +8893,6 @@ module SubscriptionSchedules =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module Update'PhasesItemsBillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : Update'PhasesItemsBillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type Update'PhasesItemsDiscounts =
@@ -13964,20 +8916,6 @@ module SubscriptionSchedules =
                 PromotionCode = promotionCode
             }
 
-    module Update'PhasesItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'PhasesItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'PhasesItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -13999,18 +8937,6 @@ module SubscriptionSchedules =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Update'PhasesItemsPriceDataRecurring =
-        let create
-            (
-                interval: Update'PhasesItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Update'PhasesItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Update'PhasesItemsPriceDataTaxBehavior =
@@ -14049,26 +8975,6 @@ module SubscriptionSchedules =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Update'PhasesItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: Update'PhasesItemsPriceDataRecurring option,
-                taxBehavior: Update'PhasesItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'PhasesItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Update'PhasesItems =
@@ -14112,30 +9018,6 @@ module SubscriptionSchedules =
                 TaxRates = taxRates
             }
 
-    module Update'PhasesItems =
-        let create
-            (
-                billingThresholds: Choice<Update'PhasesItemsBillingThresholdsItemBillingThresholds,string> option,
-                discounts: Choice<Update'PhasesItemsDiscounts list,string> option,
-                metadata: Map<string, string> option,
-                plan: string option,
-                price: string option,
-                priceData: Update'PhasesItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Update'PhasesItems
-            =
-            {
-              BillingThresholds = billingThresholds
-              Discounts = discounts
-              Metadata = metadata
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Update'PhasesProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
@@ -14158,18 +9040,6 @@ module SubscriptionSchedules =
             {
                 AmountPercent = amountPercent
                 Destination = destination
-            }
-
-    module Update'PhasesTransferData =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : Update'PhasesTransferData
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
             }
 
     type Update'PhasesTrialEnd = | Now
@@ -14271,58 +9141,6 @@ module SubscriptionSchedules =
                 TrialEnd = trialEnd
             }
 
-    module Update'Phases =
-        let create
-            (
-                addInvoiceItems: Update'PhasesAddInvoiceItems list option,
-                applicationFeePercent: decimal option,
-                automaticTax: Update'PhasesAutomaticTax option,
-                billingCycleAnchor: Update'PhasesBillingCycleAnchor option,
-                billingThresholds: Choice<Update'PhasesBillingThresholdsBillingThresholds,string> option,
-                collectionMethod: Update'PhasesCollectionMethod option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                defaultPaymentMethod: string option,
-                defaultTaxRates: Choice<string list,string> option,
-                description: Choice<string,string> option,
-                discounts: Choice<Update'PhasesDiscounts list,string> option,
-                duration: Update'PhasesDuration option,
-                endDate: Choice<DateTime,Update'PhasesEndDate> option,
-                invoiceSettings: Update'PhasesInvoiceSettings option,
-                items: Update'PhasesItems list option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option,
-                prorationBehavior: Update'PhasesProrationBehavior option,
-                startDate: Choice<DateTime,Update'PhasesStartDate> option,
-                transferData: Update'PhasesTransferData option,
-                trial: bool option,
-                trialEnd: Choice<DateTime,Update'PhasesTrialEnd> option
-            ) : Update'Phases
-            =
-            {
-              AddInvoiceItems = addInvoiceItems
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BillingCycleAnchor = billingCycleAnchor
-              BillingThresholds = billingThresholds
-              CollectionMethod = collectionMethod
-              Currency = currency
-              DefaultPaymentMethod = defaultPaymentMethod
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              Duration = duration
-              EndDate = endDate
-              InvoiceSettings = invoiceSettings
-              Items = items
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              ProrationBehavior = prorationBehavior
-              StartDate = startDate
-              TransferData = transferData
-              Trial = trial
-              TrialEnd = trialEnd
-            }
-
     type Update'ProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
@@ -14362,22 +9180,6 @@ module SubscriptionSchedules =
                 Metadata = metadata
                 Phases = phases
                 ProrationBehavior = prorationBehavior
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                schedule: string
-            ) : UpdateOptions
-            =
-            {
-              Schedule = schedule
-              DefaultSettings = None
-              EndBehavior = None
-              Expand = None
-              Metadata = None
-              Phases = None
-              ProrationBehavior = None
             }
 
     ///<p>Retrieves the list of your subscription schedules.</p>
@@ -14428,19 +9230,6 @@ module SubscriptionSchedulesCancel =
                 Prorate = prorate
             }
 
-    module CancelOptions =
-        let create
-            (
-                schedule: string
-            ) : CancelOptions
-            =
-            {
-              Schedule = schedule
-              Expand = None
-              InvoiceNow = None
-              Prorate = None
-            }
-
     ///<p>Cancels a subscription schedule and its associated subscription immediately (if the subscription schedule has an active subscription). A subscription schedule can only be canceled if its status is <code>not_started</code> or <code>active</code>.</p>
     let Cancel settings (options: CancelOptions) =
         $"/v1/subscription_schedules/{options.Schedule}/cancel"
@@ -14466,18 +9255,6 @@ module SubscriptionSchedulesRelease =
                 Schedule = schedule
                 Expand = expand
                 PreserveCancelDate = preserveCancelDate
-            }
-
-    module ReleaseOptions =
-        let create
-            (
-                schedule: string
-            ) : ReleaseOptions
-            =
-            {
-              Schedule = schedule
-              Expand = None
-              PreserveCancelDate = None
             }
 
     ///<p>Releases the subscription schedule immediately, which will stop scheduling of its phases, but leave any existing subscription in place. A schedule can only be released if its status is <code>not_started</code> or <code>active</code>. If the subscription schedule is currently associated with a subscription, releasing it will remove its <code>subscription</code> property and set the subscription’s ID to the <code>released_subscription</code> property.</p>

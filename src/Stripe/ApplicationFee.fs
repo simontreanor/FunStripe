@@ -6,7 +6,7 @@ open System
 open Stripe.FeeRefund
 
 /// A list of refunds that have been applied to the fee.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type ApplicationFeeRefunds =
     {
         /// Details about each object.

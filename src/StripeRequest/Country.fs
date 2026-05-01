@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.CountrySpec
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module CountrySpecs =
 
     type ListOptions =
@@ -33,22 +33,6 @@ module CountrySpecs =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -63,17 +47,6 @@ module CountrySpecs =
             {
                 Country = country
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode
-            ) : RetrieveOptions
-            =
-            {
-              Country = country
-              Expand = None
             }
 
     ///<p>Lists all Country Spec objects available in the API.</p>

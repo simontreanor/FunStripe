@@ -20,7 +20,7 @@ open Stripe.TaxRate
 open Stripe.Transfer
 open Stripe.TransferReversal
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type SourceAllowRedisplay =
     | Always
     | Limited

@@ -6,7 +6,7 @@ open Stripe.ApplicationFee
 open Stripe.FeeRefund
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ApplicationFees =
 
     type ListOptions =
@@ -42,26 +42,6 @@ module ApplicationFees =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                charge: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Charge = charge
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -76,17 +56,6 @@ module ApplicationFees =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
@@ -122,19 +91,6 @@ module ApplicationFeesRefunds =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                fee: string,
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Fee = fee
-              Id = id
-              Expand = None
-            }
-
     type UpdateOptions =
         {
             [<Config.Path>]
@@ -156,20 +112,6 @@ module ApplicationFeesRefunds =
                 Id = id
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                fee: string,
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Fee = fee
-              Id = id
-              Expand = None
-              Metadata = None
             }
 
     type ListOptions =
@@ -200,20 +142,6 @@ module ApplicationFeesRefunds =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                id: string
-            ) : ListOptions
-            =
-            {
-              Id = id
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type CreateOptions =
         {
             [<Config.Path>]
@@ -236,19 +164,6 @@ module ApplicationFeesRefunds =
                 Amount = amount
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module CreateOptions =
-        let create
-            (
-                id: string
-            ) : CreateOptions
-            =
-            {
-              Id = id
-              Amount = None
-              Expand = None
-              Metadata = None
             }
 
     ///<p>By default, you can see the 10 most recent refunds stored directly on the application fee object, but you can also retrieve details about a specific refund stored on the application fee.</p>

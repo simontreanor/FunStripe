@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Invoiceitem
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Invoiceitems =
 
     type ListOptions =
@@ -53,32 +53,6 @@ module Invoiceitems =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                invoice: string option,
-                limit: int option,
-                pending: bool option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Invoice = invoice
-              Limit = limit
-              Pending = pending
-              StartingAfter = startingAfter
-            }
-
     type Create'Discounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -100,20 +74,6 @@ module Invoiceitems =
                 PromotionCode = promotionCode
             }
 
-    module Create'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'Period =
         {
             /// The end of the period, which must be greater than or equal to the start. This value is inclusive.
@@ -129,18 +89,6 @@ module Invoiceitems =
             {
                 End = end'
                 Start = start
-            }
-
-    module Create'Period =
-        let create
-            (
-                end': DateTime option,
-                start: DateTime option
-            ) : Create'Period
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type Create'PriceDataTaxBehavior =
@@ -177,24 +125,6 @@ module Invoiceitems =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module Create'PriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: Create'PriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'PriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type Create'Pricing =
         {
             /// The ID of the price object.
@@ -206,16 +136,6 @@ module Invoiceitems =
         static member New(?price: string) =
             {
                 Price = price
-            }
-
-    module Create'Pricing =
-        let create
-            (
-                price: string option
-            ) : Create'Pricing
-            =
-            {
-              Price = price
             }
 
     type Create'TaxBehavior =
@@ -312,54 +232,6 @@ module Invoiceitems =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customer: string option,
-                customerAccount: string option,
-                description: string option,
-                discountable: bool option,
-                discounts: Choice<Create'Discounts list,string> option,
-                expand: string list option,
-                invoice: string option,
-                metadata: Map<string, string> option,
-                period: Create'Period option,
-                priceData: Create'PriceData option,
-                pricing: Create'Pricing option,
-                quantity: int option,
-                quantityDecimal: string option,
-                subscription: string option,
-                taxBehavior: Create'TaxBehavior option,
-                taxCode: Choice<string,string> option,
-                taxRates: string list option,
-                unitAmountDecimal: string option
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Customer = customer
-              CustomerAccount = customerAccount
-              Description = description
-              Discountable = discountable
-              Discounts = discounts
-              Expand = expand
-              Invoice = invoice
-              Metadata = metadata
-              Period = period
-              PriceData = priceData
-              Pricing = pricing
-              Quantity = quantity
-              QuantityDecimal = quantityDecimal
-              Subscription = subscription
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              TaxRates = taxRates
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Invoiceitem: string }
@@ -368,16 +240,6 @@ module Invoiceitems =
         static member New(invoiceitem: string) =
             {
                 Invoiceitem = invoiceitem
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                invoiceitem: string
-            ) : DeleteOptions
-            =
-            {
-              Invoiceitem = invoiceitem
             }
 
     type RetrieveOptions =
@@ -394,17 +256,6 @@ module Invoiceitems =
             {
                 Invoiceitem = invoiceitem
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                invoiceitem: string
-            ) : RetrieveOptions
-            =
-            {
-              Invoiceitem = invoiceitem
-              Expand = None
             }
 
     type Update'Discounts =
@@ -428,20 +279,6 @@ module Invoiceitems =
                 PromotionCode = promotionCode
             }
 
-    module Update'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'Period =
         {
             /// The end of the period, which must be greater than or equal to the start. This value is inclusive.
@@ -457,18 +294,6 @@ module Invoiceitems =
             {
                 End = end'
                 Start = start
-            }
-
-    module Update'Period =
-        let create
-            (
-                end': DateTime option,
-                start: DateTime option
-            ) : Update'Period
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type Update'PriceDataTaxBehavior =
@@ -505,24 +330,6 @@ module Invoiceitems =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module Update'PriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: Update'PriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'PriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type Update'Pricing =
         {
             /// The ID of the price object.
@@ -534,16 +341,6 @@ module Invoiceitems =
         static member New(?price: string) =
             {
                 Price = price
-            }
-
-    module Update'Pricing =
-        let create
-            (
-                price: string option
-            ) : Update'Pricing
-            =
-            {
-              Price = price
             }
 
     type Update'TaxBehavior =
@@ -621,31 +418,6 @@ module Invoiceitems =
                 TaxCode = taxCode
                 TaxRates = taxRates
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                invoiceitem: string
-            ) : UpdateOptions
-            =
-            {
-              Invoiceitem = invoiceitem
-              Amount = None
-              Description = None
-              Discountable = None
-              Discounts = None
-              Expand = None
-              Metadata = None
-              Period = None
-              PriceData = None
-              Pricing = None
-              Quantity = None
-              QuantityDecimal = None
-              TaxBehavior = None
-              TaxCode = None
-              TaxRates = None
-              UnitAmountDecimal = None
             }
 
     ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>

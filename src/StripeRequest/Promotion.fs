@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PromotionCode
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module PromotionCodes =
 
     type ListOptions =
@@ -57,34 +57,6 @@ module PromotionCodes =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                active: bool option,
-                code: string option,
-                coupon: string option,
-                created: int option,
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Active = active
-              Code = code
-              Coupon = coupon
-              Created = created
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'PromotionType = | Coupon
 
     type Create'Promotion =
@@ -102,18 +74,6 @@ module PromotionCodes =
             {
                 Coupon = coupon
                 Type = type'
-            }
-
-    module Create'Promotion =
-        let create
-            (
-                coupon: string option,
-                type': Create'PromotionType option
-            ) : Create'Promotion
-            =
-            {
-              Coupon = coupon
-              Type = type'
             }
 
     type Create'Restrictions =
@@ -139,22 +99,6 @@ module PromotionCodes =
                 FirstTimeTransaction = firstTimeTransaction
                 MinimumAmount = minimumAmount
                 MinimumAmountCurrency = minimumAmountCurrency
-            }
-
-    module Create'Restrictions =
-        let create
-            (
-                currencyOptions: Map<string, string> option,
-                firstTimeTransaction: bool option,
-                minimumAmount: int option,
-                minimumAmountCurrency: IsoTypes.IsoCurrencyCode option
-            ) : Create'Restrictions
-            =
-            {
-              CurrencyOptions = currencyOptions
-              FirstTimeTransaction = firstTimeTransaction
-              MinimumAmount = minimumAmount
-              MinimumAmountCurrency = minimumAmountCurrency
             }
 
     type CreateOptions =
@@ -207,25 +151,6 @@ module PromotionCodes =
                 Restrictions = restrictions
             }
 
-    module CreateOptions =
-        let create
-            (
-                promotion: Create'Promotion
-            ) : CreateOptions
-            =
-            {
-              Promotion = promotion
-              Active = None
-              Code = None
-              Customer = None
-              CustomerAccount = None
-              Expand = None
-              ExpiresAt = None
-              MaxRedemptions = None
-              Metadata = None
-              Restrictions = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -242,17 +167,6 @@ module PromotionCodes =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                promotionCode: string
-            ) : RetrieveOptions
-            =
-            {
-              PromotionCode = promotionCode
-              Expand = None
-            }
-
     type Update'Restrictions =
         {
             /// Promotion codes defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
@@ -264,16 +178,6 @@ module PromotionCodes =
         static member New(?currencyOptions: Map<string, string>) =
             {
                 CurrencyOptions = currencyOptions
-            }
-
-    module Update'Restrictions =
-        let create
-            (
-                currencyOptions: Map<string, string> option
-            ) : Update'Restrictions
-            =
-            {
-              CurrencyOptions = currencyOptions
             }
 
     type UpdateOptions =
@@ -302,20 +206,6 @@ module PromotionCodes =
                 Expand = expand
                 Metadata = metadata
                 Restrictions = restrictions
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                promotionCode: string
-            ) : UpdateOptions
-            =
-            {
-              PromotionCode = promotionCode
-              Active = None
-              Expand = None
-              Metadata = None
-              Restrictions = None
             }
 
     ///<p>Returns a list of your promotion codes.</p>

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Reporting
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ReportingReportRuns =
 
     type ListOptions =
@@ -35,24 +35,6 @@ module ReportingReportRuns =
                 Expand = expand
                 Limit = limit
                 StartingAfter = startingAfter
-            }
-
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
             }
 
     type Create'ParametersReportingCategory =
@@ -736,30 +718,6 @@ module ReportingReportRuns =
                 Timezone = timezone
             }
 
-    module Create'Parameters =
-        let create
-            (
-                columns: string list option,
-                connectedAccount: string option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                intervalEnd: DateTime option,
-                intervalStart: DateTime option,
-                payout: string option,
-                reportingCategory: Create'ParametersReportingCategory option,
-                timezone: Create'ParametersTimezone option
-            ) : Create'Parameters
-            =
-            {
-              Columns = columns
-              ConnectedAccount = connectedAccount
-              Currency = currency
-              IntervalEnd = intervalEnd
-              IntervalStart = intervalStart
-              Payout = payout
-              ReportingCategory = reportingCategory
-              Timezone = timezone
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -781,18 +739,6 @@ module ReportingReportRuns =
                 Parameters = parameters
             }
 
-    module CreateOptions =
-        let create
-            (
-                reportType: string
-            ) : CreateOptions
-            =
-            {
-              ReportType = reportType
-              Expand = None
-              Parameters = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -807,17 +753,6 @@ module ReportingReportRuns =
             {
                 ReportRun = reportRun
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                reportRun: string
-            ) : RetrieveOptions
-            =
-            {
-              ReportRun = reportRun
-              Expand = None
             }
 
     ///<p>Returns a list of Report Runs, with the most recent appearing first.</p>
@@ -852,16 +787,6 @@ module ReportingReportTypes =
                 Expand = expand
             }
 
-    module ListOptions =
-        let create
-            (
-                expand: string list option
-            ) : ListOptions
-            =
-            {
-              Expand = expand
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -876,17 +801,6 @@ module ReportingReportTypes =
             {
                 ReportType = reportType
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                reportType: string
-            ) : RetrieveOptions
-            =
-            {
-              ReportType = reportType
-              Expand = None
             }
 
     ///<p>Returns a full list of Report Types.</p>

@@ -7,7 +7,7 @@ open System
 /// Account Links are the means by which a Connect platform grants a connected account permission to access
 /// Stripe-hosted applications, such as Connect Onboarding.
 /// Related guide: [Connect Onboarding](https://docs.stripe.com/connect/custom/hosted-onboarding)
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type AccountLink =
     {
         /// Time at which the object was created. Measured in seconds since the Unix epoch.

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Price
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Prices =
 
     type ListOptions =
@@ -61,36 +61,6 @@ module Prices =
                 Type = type'
             }
 
-    module ListOptions =
-        let create
-            (
-                active: bool option,
-                created: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                lookupKeys: string list option,
-                product: string option,
-                recurring: Map<string, string> option,
-                startingAfter: string option,
-                type': string option
-            ) : ListOptions
-            =
-            {
-              Active = active
-              Created = created
-              Currency = currency
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              LookupKeys = lookupKeys
-              Product = product
-              Recurring = recurring
-              StartingAfter = startingAfter
-              Type = type'
-            }
-
     type Create'BillingScheme =
         | PerUnit
         | Tiered
@@ -118,22 +88,6 @@ module Prices =
                 Maximum = maximum
                 Minimum = minimum
                 Preset = preset
-            }
-
-    module Create'CustomUnitAmount =
-        let create
-            (
-                enabled: bool option,
-                maximum: int option,
-                minimum: int option,
-                preset: int option
-            ) : Create'CustomUnitAmount
-            =
-            {
-              Enabled = enabled
-              Maximum = maximum
-              Minimum = minimum
-              Preset = preset
             }
 
     type Create'ProductData =
@@ -172,28 +126,6 @@ module Prices =
                 StatementDescriptor = statementDescriptor
                 TaxCode = taxCode
                 UnitLabel = unitLabel
-            }
-
-    module Create'ProductData =
-        let create
-            (
-                active: bool option,
-                id: string option,
-                metadata: Map<string, string> option,
-                name: string option,
-                statementDescriptor: string option,
-                taxCode: string option,
-                unitLabel: string option
-            ) : Create'ProductData
-            =
-            {
-              Active = active
-              Id = id
-              Metadata = metadata
-              Name = name
-              StatementDescriptor = statementDescriptor
-              TaxCode = taxCode
-              UnitLabel = unitLabel
             }
 
     type Create'RecurringInterval =
@@ -235,24 +167,6 @@ module Prices =
                 UsageType = usageType
             }
 
-    module Create'Recurring =
-        let create
-            (
-                interval: Create'RecurringInterval option,
-                intervalCount: int option,
-                meter: string option,
-                trialPeriodDays: int option,
-                usageType: Create'RecurringUsageType option
-            ) : Create'Recurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
-              Meter = meter
-              TrialPeriodDays = trialPeriodDays
-              UsageType = usageType
-            }
-
     type Create'TaxBehavior =
         | Exclusive
         | Inclusive
@@ -289,24 +203,6 @@ module Prices =
                 UpTo = upTo
             }
 
-    module Create'Tiers =
-        let create
-            (
-                flatAmount: int option,
-                flatAmountDecimal: string option,
-                unitAmount: int option,
-                unitAmountDecimal: string option,
-                upTo: Choice<Create'TiersUpTo,int> option
-            ) : Create'Tiers
-            =
-            {
-              FlatAmount = flatAmount
-              FlatAmountDecimal = flatAmountDecimal
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-              UpTo = upTo
-            }
-
     type Create'TiersMode =
         | Graduated
         | Volume
@@ -330,18 +226,6 @@ module Prices =
             {
                 DivideBy = divideBy
                 Round = round
-            }
-
-    module Create'TransformQuantity =
-        let create
-            (
-                divideBy: int option,
-                round: Create'TransformQuantityRound option
-            ) : Create'TransformQuantity
-            =
-            {
-              DivideBy = divideBy
-              Round = round
             }
 
     type CreateOptions =
@@ -429,34 +313,6 @@ module Prices =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module CreateOptions =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode
-            ) : CreateOptions
-            =
-            {
-              Currency = currency
-              Active = None
-              BillingScheme = None
-              CurrencyOptions = None
-              CustomUnitAmount = None
-              Expand = None
-              LookupKey = None
-              Metadata = None
-              Nickname = None
-              Product = None
-              ProductData = None
-              Recurring = None
-              TaxBehavior = None
-              Tiers = None
-              TiersMode = None
-              TransferLookupKey = None
-              TransformQuantity = None
-              UnitAmount = None
-              UnitAmountDecimal = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -471,17 +327,6 @@ module Prices =
             {
                 Price = price
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                price: string
-            ) : RetrieveOptions
-            =
-            {
-              Price = price
-              Expand = None
             }
 
     type Update'TaxBehavior =
@@ -533,24 +378,6 @@ module Prices =
                 TransferLookupKey = transferLookupKey
             }
 
-    module UpdateOptions =
-        let create
-            (
-                price: string
-            ) : UpdateOptions
-            =
-            {
-              Price = price
-              Active = None
-              CurrencyOptions = None
-              Expand = None
-              LookupKey = None
-              Metadata = None
-              Nickname = None
-              TaxBehavior = None
-              TransferLookupKey = None
-            }
-
     ///<p>Returns a list of your active prices, excluding <a href="/docs/products-prices/pricing-models#inline-pricing">inline prices</a>. For the list of inactive prices, set <code>active</code> to false.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("currency", options.Currency |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("lookup_keys", options.LookupKeys |> box); ("product", options.Product |> box); ("recurring", options.Recurring |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box)] |> Map.ofList
@@ -598,19 +425,6 @@ module PricesSearch =
                 Expand = expand
                 Limit = limit
                 Page = page
-            }
-
-    module SearchOptions =
-        let create
-            (
-                query: string
-            ) : SearchOptions
-            =
-            {
-              Query = query
-              Expand = None
-              Limit = None
-              Page = None
             }
 
     ///<p>Search for prices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.

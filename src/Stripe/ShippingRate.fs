@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type ShippingRateCurrencyOptionTaxBehavior =
     | Exclusive
     | Inclusive

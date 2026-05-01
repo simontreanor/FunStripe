@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type DeletedBankAccount =
     {
         /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.

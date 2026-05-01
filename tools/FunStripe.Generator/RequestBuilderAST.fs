@@ -653,16 +653,6 @@ module RequestBuilderAST =
                         sb.AppendLine(augIndented.TrimEnd()) |> ignore
                         sb.AppendLine() |> ignore
 
-                    // Companion module with `let create`
-                    if not createParams.IsEmpty then
-                        let companionSnippet = serializeRequestCompanionModule name createParams
-                        let companionIndented =
-                            companionSnippet.Split('\n')
-                            |> Array.map (fun line -> if line.Trim() = "" then "" else $"{indent}{line}")
-                            |> String.concat "\n"
-                        sb.AppendLine(companionIndented) |> ignore
-                        sb.AppendLine() |> ignore
-
                 | RequestModule _ -> ()
                 | RequestFunction _ -> ()
 

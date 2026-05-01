@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Sigma
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module SigmaScheduledQueryRuns =
 
     type ListOptions =
@@ -33,22 +33,6 @@ module SigmaScheduledQueryRuns =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -63,17 +47,6 @@ module SigmaScheduledQueryRuns =
             {
                 ScheduledQueryRun = scheduledQueryRun
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                scheduledQueryRun: string
-            ) : RetrieveOptions
-            =
-            {
-              ScheduledQueryRun = scheduledQueryRun
-              Expand = None
             }
 
     ///<p>Returns a list of scheduled query runs.</p>

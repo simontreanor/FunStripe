@@ -6,7 +6,7 @@ open Stripe.Product
 open Stripe.ProductFeature
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Products =
 
     type ListOptions =
@@ -58,34 +58,6 @@ module Products =
                 Url = url
             }
 
-    module ListOptions =
-        let create
-            (
-                active: bool option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                ids: string list option,
-                limit: int option,
-                shippable: bool option,
-                startingAfter: string option,
-                type': string option,
-                url: string option
-            ) : ListOptions
-            =
-            {
-              Active = active
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Ids = ids
-              Limit = limit
-              Shippable = shippable
-              StartingAfter = startingAfter
-              Type = type'
-              Url = url
-            }
-
     type Create'DefaultPriceDataCustomUnitAmount =
         {
             /// Pass in `true` to enable `custom_unit_amount`, otherwise omit `custom_unit_amount`.
@@ -111,22 +83,6 @@ module Products =
                 Preset = preset
             }
 
-    module Create'DefaultPriceDataCustomUnitAmount =
-        let create
-            (
-                enabled: bool option,
-                maximum: int option,
-                minimum: int option,
-                preset: int option
-            ) : Create'DefaultPriceDataCustomUnitAmount
-            =
-            {
-              Enabled = enabled
-              Maximum = maximum
-              Minimum = minimum
-              Preset = preset
-            }
-
     type Create'DefaultPriceDataRecurringInterval =
         | Day
         | Month
@@ -148,18 +104,6 @@ module Products =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Create'DefaultPriceDataRecurring =
-        let create
-            (
-                interval: Create'DefaultPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Create'DefaultPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Create'DefaultPriceDataTaxBehavior =
@@ -208,30 +152,6 @@ module Products =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module Create'DefaultPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                currencyOptions: Map<string, string> option,
-                customUnitAmount: Create'DefaultPriceDataCustomUnitAmount option,
-                metadata: Map<string, string> option,
-                recurring: Create'DefaultPriceDataRecurring option,
-                taxBehavior: Create'DefaultPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'DefaultPriceData
-            =
-            {
-              Currency = currency
-              CurrencyOptions = currencyOptions
-              CustomUnitAmount = customUnitAmount
-              Metadata = metadata
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type Create'MarketingFeatures =
         {
             /// The marketing feature name. Up to 80 characters long.
@@ -243,16 +163,6 @@ module Products =
         static member New(?name: string) =
             {
                 Name = name
-            }
-
-    module Create'MarketingFeatures =
-        let create
-            (
-                name: string option
-            ) : Create'MarketingFeatures
-            =
-            {
-              Name = name
             }
 
     type Create'PackageDimensions =
@@ -278,22 +188,6 @@ module Products =
                 Length = length
                 Weight = weight
                 Width = width
-            }
-
-    module Create'PackageDimensions =
-        let create
-            (
-                height: decimal option,
-                length: decimal option,
-                weight: decimal option,
-                width: decimal option
-            ) : Create'PackageDimensions
-            =
-            {
-              Height = height
-              Length = length
-              Weight = weight
-              Width = width
             }
 
     type Create'Type =
@@ -375,31 +269,6 @@ module Products =
                 Url = url
             }
 
-    module CreateOptions =
-        let create
-            (
-                name: string
-            ) : CreateOptions
-            =
-            {
-              Name = name
-              Active = None
-              DefaultPriceData = None
-              Description = None
-              Expand = None
-              Id = None
-              Images = None
-              MarketingFeatures = None
-              Metadata = None
-              PackageDimensions = None
-              Shippable = None
-              StatementDescriptor = None
-              TaxCode = None
-              Type = None
-              UnitLabel = None
-              Url = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Id: string }
@@ -408,16 +277,6 @@ module Products =
         static member New(id: string) =
             {
                 Id = id
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                id: string
-            ) : DeleteOptions
-            =
-            {
-              Id = id
             }
 
     type RetrieveOptions =
@@ -436,17 +295,6 @@ module Products =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     type Update'MarketingFeatures =
         {
             /// The marketing feature name. Up to 80 characters long.
@@ -458,16 +306,6 @@ module Products =
         static member New(?name: string) =
             {
                 Name = name
-            }
-
-    module Update'MarketingFeatures =
-        let create
-            (
-                name: string option
-            ) : Update'MarketingFeatures
-            =
-            {
-              Name = name
             }
 
     type Update'PackageDimensionsPackageDimensionsSpecs =
@@ -493,22 +331,6 @@ module Products =
                 Length = length
                 Weight = weight
                 Width = width
-            }
-
-    module Update'PackageDimensionsPackageDimensionsSpecs =
-        let create
-            (
-                height: decimal option,
-                length: decimal option,
-                weight: decimal option,
-                width: decimal option
-            ) : Update'PackageDimensionsPackageDimensionsSpecs
-            =
-            {
-              Height = height
-              Length = length
-              Weight = weight
-              Width = width
             }
 
     type UpdateOptions =
@@ -581,30 +403,6 @@ module Products =
                 Url = url
             }
 
-    module UpdateOptions =
-        let create
-            (
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Id = id
-              Active = None
-              DefaultPrice = None
-              Description = None
-              Expand = None
-              Images = None
-              MarketingFeatures = None
-              Metadata = None
-              Name = None
-              PackageDimensions = None
-              Shippable = None
-              StatementDescriptor = None
-              TaxCode = None
-              UnitLabel = None
-              Url = None
-            }
-
     ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("ids", options.Ids |> box); ("limit", options.Limit |> box); ("shippable", options.Shippable |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box); ("url", options.Url |> box)] |> Map.ofList
@@ -659,19 +457,6 @@ module ProductsSearch =
                 Page = page
             }
 
-    module SearchOptions =
-        let create
-            (
-                query: string
-            ) : SearchOptions
-            =
-            {
-              Query = query
-              Expand = None
-              Limit = None
-              Page = None
-            }
-
     ///<p>Search for products you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
     ///Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
     ///conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
@@ -711,20 +496,6 @@ module ProductsFeatures =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                product: string
-            ) : ListOptions
-            =
-            {
-              Product = product
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type CreateOptions =
         {
             [<Config.Path>]
@@ -745,19 +516,6 @@ module ProductsFeatures =
                 Expand = expand
             }
 
-    module CreateOptions =
-        let create
-            (
-                entitlementFeature: string,
-                product: string
-            ) : CreateOptions
-            =
-            {
-              EntitlementFeature = entitlementFeature
-              Product = product
-              Expand = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Id: string
@@ -769,18 +527,6 @@ module ProductsFeatures =
             {
                 Id = id
                 Product = product
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                id: string,
-                product: string
-            ) : DeleteOptions
-            =
-            {
-              Id = id
-              Product = product
             }
 
     type RetrieveOptions =
@@ -802,19 +548,6 @@ module ProductsFeatures =
                 Id = id
                 Product = product
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string,
-                product: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Product = product
-              Expand = None
             }
 
     ///<p>Retrieve a list of features for a product</p>

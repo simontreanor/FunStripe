@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Plan
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Plans =
 
     type ListOptions =
@@ -43,28 +43,6 @@ module Plans =
                 Limit = limit
                 Product = product
                 StartingAfter = startingAfter
-            }
-
-    module ListOptions =
-        let create
-            (
-                active: bool option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                product: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Active = active
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Product = product
-              StartingAfter = startingAfter
             }
 
     type Create'BillingScheme =
@@ -115,28 +93,6 @@ module Plans =
                 UnitLabel = unitLabel
             }
 
-    module Create'ProductInlineProductParams =
-        let create
-            (
-                active: bool option,
-                id: string option,
-                metadata: Map<string, string> option,
-                name: string option,
-                statementDescriptor: string option,
-                taxCode: string option,
-                unitLabel: string option
-            ) : Create'ProductInlineProductParams
-            =
-            {
-              Active = active
-              Id = id
-              Metadata = metadata
-              Name = name
-              StatementDescriptor = statementDescriptor
-              TaxCode = taxCode
-              UnitLabel = unitLabel
-            }
-
     type Create'TiersUpTo = | Inf
 
     type Create'Tiers =
@@ -168,24 +124,6 @@ module Plans =
                 UpTo = upTo
             }
 
-    module Create'Tiers =
-        let create
-            (
-                flatAmount: int option,
-                flatAmountDecimal: string option,
-                unitAmount: int option,
-                unitAmountDecimal: string option,
-                upTo: Choice<Create'TiersUpTo,int> option
-            ) : Create'Tiers
-            =
-            {
-              FlatAmount = flatAmount
-              FlatAmountDecimal = flatAmountDecimal
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-              UpTo = upTo
-            }
-
     type Create'TiersMode =
         | Graduated
         | Volume
@@ -209,18 +147,6 @@ module Plans =
             {
                 DivideBy = divideBy
                 Round = round
-            }
-
-    module Create'TransformUsage =
-        let create
-            (
-                divideBy: int option,
-                round: Create'TransformUsageRound option
-            ) : Create'TransformUsage
-            =
-            {
-              DivideBy = divideBy
-              Round = round
             }
 
     type Create'UsageType =
@@ -307,34 +233,6 @@ module Plans =
                 UsageType = usageType
             }
 
-    module CreateOptions =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode,
-                interval: Create'Interval
-            ) : CreateOptions
-            =
-            {
-              Currency = currency
-              Interval = interval
-              Active = None
-              Amount = None
-              AmountDecimal = None
-              BillingScheme = None
-              Expand = None
-              Id = None
-              IntervalCount = None
-              Metadata = None
-              Meter = None
-              Nickname = None
-              Product = None
-              Tiers = None
-              TiersMode = None
-              TransformUsage = None
-              TrialPeriodDays = None
-              UsageType = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Plan: string }
@@ -343,16 +241,6 @@ module Plans =
         static member New(plan: string) =
             {
                 Plan = plan
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                plan: string
-            ) : DeleteOptions
-            =
-            {
-              Plan = plan
             }
 
     type RetrieveOptions =
@@ -369,17 +257,6 @@ module Plans =
             {
                 Plan = plan
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                plan: string
-            ) : RetrieveOptions
-            =
-            {
-              Plan = plan
-              Expand = None
             }
 
     type UpdateOptions =
@@ -416,22 +293,6 @@ module Plans =
                 Nickname = nickname
                 Product = product
                 TrialPeriodDays = trialPeriodDays
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                plan: string
-            ) : UpdateOptions
-            =
-            {
-              Plan = plan
-              Active = None
-              Expand = None
-              Metadata = None
-              Nickname = None
-              Product = None
-              TrialPeriodDays = None
             }
 
     ///<p>Returns a list of your plans.</p>

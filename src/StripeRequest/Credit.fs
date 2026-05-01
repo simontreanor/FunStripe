@@ -6,7 +6,7 @@ open Stripe.CreditNote
 open Stripe.CreditNoteLineItem
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module CreditNotes =
 
     type ListOptions =
@@ -50,30 +50,6 @@ module CreditNotes =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                invoice: string option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Invoice = invoice
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'EmailType =
         | CreditNote
         | [<JsonPropertyName("none")>] None'
@@ -97,20 +73,6 @@ module CreditNotes =
                 Amount = amount
                 TaxRate = taxRate
                 TaxableAmount = taxableAmount
-            }
-
-    module Create'LinesTaxAmounts =
-        let create
-            (
-                amount: int option,
-                taxRate: string option,
-                taxableAmount: int option
-            ) : Create'LinesTaxAmounts
-            =
-            {
-              Amount = amount
-              TaxRate = taxRate
-              TaxableAmount = taxableAmount
             }
 
     type Create'LinesType =
@@ -166,34 +128,6 @@ module CreditNotes =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module Create'Lines =
-        let create
-            (
-                amount: int option,
-                description: string option,
-                invoiceLineItem: string option,
-                metadata: Map<string, string> option,
-                quantity: int option,
-                taxAmounts: Choice<Create'LinesTaxAmounts list,string> option,
-                taxRates: Choice<string list,string> option,
-                type': Create'LinesType option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'Lines
-            =
-            {
-              Amount = amount
-              Description = description
-              InvoiceLineItem = invoiceLineItem
-              Metadata = metadata
-              Quantity = quantity
-              TaxAmounts = taxAmounts
-              TaxRates = taxRates
-              Type = type'
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type Create'Reason =
         | Duplicate
         | Fraudulent
@@ -215,18 +149,6 @@ module CreditNotes =
             {
                 PaymentRecord = paymentRecord
                 RefundGroup = refundGroup
-            }
-
-    module Create'RefundsPaymentRecordRefund =
-        let create
-            (
-                paymentRecord: string option,
-                refundGroup: string option
-            ) : Create'RefundsPaymentRecordRefund
-            =
-            {
-              PaymentRecord = paymentRecord
-              RefundGroup = refundGroup
             }
 
     type Create'RefundsType =
@@ -258,22 +180,6 @@ module CreditNotes =
                 Type = type'
             }
 
-    module Create'Refunds =
-        let create
-            (
-                amountRefunded: int option,
-                paymentRecordRefund: Create'RefundsPaymentRecordRefund option,
-                refund: string option,
-                type': Create'RefundsType option
-            ) : Create'Refunds
-            =
-            {
-              AmountRefunded = amountRefunded
-              PaymentRecordRefund = paymentRecordRefund
-              Refund = refund
-              Type = type'
-            }
-
     type Create'ShippingCost =
         {
             /// The ID of the shipping rate to use for this order.
@@ -285,16 +191,6 @@ module CreditNotes =
         static member New(?shippingRate: string) =
             {
                 ShippingRate = shippingRate
-            }
-
-    module Create'ShippingCost =
-        let create
-            (
-                shippingRate: string option
-            ) : Create'ShippingCost
-            =
-            {
-              ShippingRate = shippingRate
             }
 
     type CreateOptions =
@@ -362,29 +258,6 @@ module CreditNotes =
                 ShippingCost = shippingCost
             }
 
-    module CreateOptions =
-        let create
-            (
-                invoice: string
-            ) : CreateOptions
-            =
-            {
-              Invoice = invoice
-              Amount = None
-              CreditAmount = None
-              EffectiveAt = None
-              EmailType = None
-              Expand = None
-              Lines = None
-              Memo = None
-              Metadata = None
-              OutOfBandAmount = None
-              Reason = None
-              RefundAmount = None
-              Refunds = None
-              ShippingCost = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -399,17 +272,6 @@ module CreditNotes =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     type UpdateOptions =
@@ -434,19 +296,6 @@ module CreditNotes =
                 Expand = expand
                 Memo = memo
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Id = id
-              Expand = None
-              Memo = None
-              Metadata = None
             }
 
     ///<p>Returns a list of credit notes.</p>
@@ -547,29 +396,6 @@ module CreditNotesPreview =
                 ShippingCost = shippingCost
             }
 
-    module PreviewOptions =
-        let create
-            (
-                invoice: string
-            ) : PreviewOptions
-            =
-            {
-              Invoice = invoice
-              Amount = None
-              CreditAmount = None
-              EffectiveAt = None
-              EmailType = None
-              Expand = None
-              Lines = None
-              Memo = None
-              Metadata = None
-              OutOfBandAmount = None
-              Reason = None
-              RefundAmount = None
-              Refunds = None
-              ShippingCost = None
-            }
-
     ///<p>Get a preview of a credit note without creating it.</p>
     let Preview settings (options: PreviewOptions) =
         let qs = [("amount", options.Amount |> box); ("credit_amount", options.CreditAmount |> box); ("effective_at", options.EffectiveAt |> box); ("email_type", options.EmailType |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("lines", options.Lines |> box); ("memo", options.Memo |> box); ("metadata", options.Metadata |> box); ("out_of_band_amount", options.OutOfBandAmount |> box); ("reason", options.Reason |> box); ("refund_amount", options.RefundAmount |> box); ("refunds", options.Refunds |> box); ("shipping_cost", options.ShippingCost |> box)] |> Map.ofList
@@ -655,32 +481,6 @@ module CreditNotesPreviewLines =
                 StartingAfter = startingAfter
             }
 
-    module PreviewLinesOptions =
-        let create
-            (
-                invoice: string
-            ) : PreviewLinesOptions
-            =
-            {
-              Invoice = invoice
-              Amount = None
-              CreditAmount = None
-              EffectiveAt = None
-              EmailType = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              Lines = None
-              Memo = None
-              Metadata = None
-              OutOfBandAmount = None
-              Reason = None
-              RefundAmount = None
-              Refunds = None
-              ShippingCost = None
-              StartingAfter = None
-            }
-
     ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
     let PreviewLines settings (options: PreviewLinesOptions) =
         let qs = [("amount", options.Amount |> box); ("credit_amount", options.CreditAmount |> box); ("effective_at", options.EffectiveAt |> box); ("email_type", options.EmailType |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("lines", options.Lines |> box); ("memo", options.Memo |> box); ("metadata", options.Metadata |> box); ("out_of_band_amount", options.OutOfBandAmount |> box); ("reason", options.Reason |> box); ("refund_amount", options.RefundAmount |> box); ("refunds", options.Refunds |> box); ("shipping_cost", options.ShippingCost |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -717,20 +517,6 @@ module CreditNotesLines =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                creditNote: string
-            ) : ListOptions
-            =
-            {
-              CreditNote = creditNote
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     ///<p>When retrieving a credit note, you’ll get a <strong>lines</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -753,17 +539,6 @@ module CreditNotesVoid =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module VoidCreditNoteOptions =
-        let create
-            (
-                id: string
-            ) : VoidCreditNoteOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Marks a credit note as void. Learn more about <a href="/docs/billing/invoices/credit-notes#voiding">voiding credit notes</a>.</p>

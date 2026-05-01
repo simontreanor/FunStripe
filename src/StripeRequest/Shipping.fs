@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ShippingRate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ShippingRates =
 
     type ListOptions =
@@ -45,28 +45,6 @@ module ShippingRates =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                active: bool option,
-                created: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Active = active
-              Created = created
-              Currency = currency
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'DeliveryEstimateMaximumUnit =
         | BusinessDay
         | Day
@@ -89,18 +67,6 @@ module ShippingRates =
             {
                 Unit = unit
                 Value = value
-            }
-
-    module Create'DeliveryEstimateMaximum =
-        let create
-            (
-                unit: Create'DeliveryEstimateMaximumUnit option,
-                value: int option
-            ) : Create'DeliveryEstimateMaximum
-            =
-            {
-              Unit = unit
-              Value = value
             }
 
     type Create'DeliveryEstimateMinimumUnit =
@@ -127,18 +93,6 @@ module ShippingRates =
                 Value = value
             }
 
-    module Create'DeliveryEstimateMinimum =
-        let create
-            (
-                unit: Create'DeliveryEstimateMinimumUnit option,
-                value: int option
-            ) : Create'DeliveryEstimateMinimum
-            =
-            {
-              Unit = unit
-              Value = value
-            }
-
     type Create'DeliveryEstimate =
         {
             /// The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -154,18 +108,6 @@ module ShippingRates =
             {
                 Maximum = maximum
                 Minimum = minimum
-            }
-
-    module Create'DeliveryEstimate =
-        let create
-            (
-                maximum: Create'DeliveryEstimateMaximum option,
-                minimum: Create'DeliveryEstimateMinimum option
-            ) : Create'DeliveryEstimate
-            =
-            {
-              Maximum = maximum
-              Minimum = minimum
             }
 
     type Create'FixedAmount =
@@ -187,20 +129,6 @@ module ShippingRates =
                 Amount = amount
                 Currency = currency
                 CurrencyOptions = currencyOptions
-            }
-
-    module Create'FixedAmount =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                currencyOptions: Map<string, string> option
-            ) : Create'FixedAmount
-            =
-            {
-              Amount = amount
-              Currency = currency
-              CurrencyOptions = currencyOptions
             }
 
     type Create'TaxBehavior =
@@ -251,23 +179,6 @@ module ShippingRates =
                 Type = type'
             }
 
-    module CreateOptions =
-        let create
-            (
-                displayName: string
-            ) : CreateOptions
-            =
-            {
-              DisplayName = displayName
-              DeliveryEstimate = None
-              Expand = None
-              FixedAmount = None
-              Metadata = None
-              TaxBehavior = None
-              TaxCode = None
-              Type = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -284,17 +195,6 @@ module ShippingRates =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                shippingRateToken: string
-            ) : RetrieveOptions
-            =
-            {
-              ShippingRateToken = shippingRateToken
-              Expand = None
-            }
-
     type Update'FixedAmount =
         {
             /// Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
@@ -306,16 +206,6 @@ module ShippingRates =
         static member New(?currencyOptions: Map<string, string>) =
             {
                 CurrencyOptions = currencyOptions
-            }
-
-    module Update'FixedAmount =
-        let create
-            (
-                currencyOptions: Map<string, string> option
-            ) : Update'FixedAmount
-            =
-            {
-              CurrencyOptions = currencyOptions
             }
 
     type Update'TaxBehavior =
@@ -353,21 +243,6 @@ module ShippingRates =
                 FixedAmount = fixedAmount
                 Metadata = metadata
                 TaxBehavior = taxBehavior
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                shippingRateToken: string
-            ) : UpdateOptions
-            =
-            {
-              ShippingRateToken = shippingRateToken
-              Active = None
-              Expand = None
-              FixedAmount = None
-              Metadata = None
-              TaxBehavior = None
             }
 
     ///<p>Returns a list of your shipping rates.</p>

@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.TaxId
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Customers =
 
     type ListOptions =
@@ -48,28 +48,6 @@ module Customers =
                 TestClock = testClock
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                email: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                testClock: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Email = email
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              TestClock = testClock
-            }
-
     type Create'AddressOptionalFieldsCustomerAddress =
         {
             /// City, district, suburb, town, or village.
@@ -103,26 +81,6 @@ module Customers =
                 State = state
             }
 
-    module Create'AddressOptionalFieldsCustomerAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'AddressOptionalFieldsCustomerAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'CashBalanceSettingsReconciliationMode =
         | Automatic
         | Manual
@@ -141,16 +99,6 @@ module Customers =
                 ReconciliationMode = reconciliationMode
             }
 
-    module Create'CashBalanceSettings =
-        let create
-            (
-                reconciliationMode: Create'CashBalanceSettingsReconciliationMode option
-            ) : Create'CashBalanceSettings
-            =
-            {
-              ReconciliationMode = reconciliationMode
-            }
-
     type Create'CashBalance =
         {
             /// Settings controlling the behavior of the customer's cash balance,
@@ -163,16 +111,6 @@ module Customers =
         static member New(?settings: Create'CashBalanceSettings) =
             {
                 Settings = settings
-            }
-
-    module Create'CashBalance =
-        let create
-            (
-                settings: Create'CashBalanceSettings option
-            ) : Create'CashBalance
-            =
-            {
-              Settings = settings
             }
 
     type Create'InvoiceSettingsCustomFields =
@@ -190,18 +128,6 @@ module Customers =
             {
                 Name = name
                 Value = value
-            }
-
-    module Create'InvoiceSettingsCustomFields =
-        let create
-            (
-                name: string option,
-                value: string option
-            ) : Create'InvoiceSettingsCustomFields
-            =
-            {
-              Name = name
-              Value = value
             }
 
     type Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptionsAmountTaxDisplay =
@@ -223,18 +149,6 @@ module Customers =
             {
                 AmountTaxDisplay = amountTaxDisplay
                 Template = template
-            }
-
-    module Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptions =
-        let create
-            (
-                amountTaxDisplay: Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptionsAmountTaxDisplay option,
-                template: string option
-            ) : Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptions
-            =
-            {
-              AmountTaxDisplay = amountTaxDisplay
-              Template = template
             }
 
     type Create'InvoiceSettings =
@@ -260,22 +174,6 @@ module Customers =
                 DefaultPaymentMethod = defaultPaymentMethod
                 Footer = footer
                 RenderingOptions = renderingOptions
-            }
-
-    module Create'InvoiceSettings =
-        let create
-            (
-                customFields: Choice<Create'InvoiceSettingsCustomFields list,string> option,
-                defaultPaymentMethod: string option,
-                footer: string option,
-                renderingOptions: Choice<Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptions,string> option
-            ) : Create'InvoiceSettings
-            =
-            {
-              CustomFields = customFields
-              DefaultPaymentMethod = defaultPaymentMethod
-              Footer = footer
-              RenderingOptions = renderingOptions
             }
 
     type Create'ShippingCustomerShippingAddress =
@@ -311,26 +209,6 @@ module Customers =
                 State = state
             }
 
-    module Create'ShippingCustomerShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'ShippingCustomerShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'ShippingCustomerShipping =
         {
             /// Customer shipping address.
@@ -352,20 +230,6 @@ module Customers =
                 Phone = phone
             }
 
-    module Create'ShippingCustomerShipping =
-        let create
-            (
-                address: Create'ShippingCustomerShippingAddress option,
-                name: string option,
-                phone: string option
-            ) : Create'ShippingCustomerShipping
-            =
-            {
-              Address = address
-              Name = name
-              Phone = phone
-            }
-
     type Create'TaxValidateLocation =
         | Deferred
         | Immediately
@@ -385,18 +249,6 @@ module Customers =
             {
                 IpAddress = ipAddress
                 ValidateLocation = validateLocation
-            }
-
-    module Create'Tax =
-        let create
-            (
-                ipAddress: Choice<string,string> option,
-                validateLocation: Create'TaxValidateLocation option
-            ) : Create'Tax
-            =
-            {
-              IpAddress = ipAddress
-              ValidateLocation = validateLocation
             }
 
     type Create'TaxExempt =
@@ -539,18 +391,6 @@ module Customers =
                 Value = value
             }
 
-    module Create'TaxIdData =
-        let create
-            (
-                type': Create'TaxIdDataType option,
-                value: string option
-            ) : Create'TaxIdData
-            =
-            {
-              Type = type'
-              Value = value
-            }
-
     type CreateOptions =
         {
             /// The customer's address. Learn about [country-specific requirements for calculating tax](https://docs.stripe.com/invoicing/taxes?dashboard-or-api=dashboard#set-up-customer).
@@ -649,60 +489,6 @@ module Customers =
                 Validate = validate
             }
 
-    module CreateOptions =
-        let create
-            (
-                address: Choice<Create'AddressOptionalFieldsCustomerAddress,string> option,
-                balance: int option,
-                businessName: Choice<string,string> option,
-                cashBalance: Create'CashBalance option,
-                description: string option,
-                email: string option,
-                expand: string list option,
-                individualName: Choice<string,string> option,
-                invoicePrefix: string option,
-                invoiceSettings: Create'InvoiceSettings option,
-                metadata: Map<string, string> option,
-                name: string option,
-                nextInvoiceSequence: int option,
-                paymentMethod: string option,
-                phone: string option,
-                preferredLocales: string list option,
-                shipping: Choice<Create'ShippingCustomerShipping,string> option,
-                source: string option,
-                tax: Create'Tax option,
-                taxExempt: Create'TaxExempt option,
-                taxIdData: Create'TaxIdData list option,
-                testClock: string option,
-                validate: bool option
-            ) : CreateOptions
-            =
-            {
-              Address = address
-              Balance = balance
-              BusinessName = businessName
-              CashBalance = cashBalance
-              Description = description
-              Email = email
-              Expand = expand
-              IndividualName = individualName
-              InvoicePrefix = invoicePrefix
-              InvoiceSettings = invoiceSettings
-              Metadata = metadata
-              Name = name
-              NextInvoiceSequence = nextInvoiceSequence
-              PaymentMethod = paymentMethod
-              Phone = phone
-              PreferredLocales = preferredLocales
-              Shipping = shipping
-              Source = source
-              Tax = tax
-              TaxExempt = taxExempt
-              TaxIdData = taxIdData
-              TestClock = testClock
-              Validate = validate
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Customer: string }
@@ -711,16 +497,6 @@ module Customers =
         static member New(customer: string) =
             {
                 Customer = customer
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                customer: string
-            ) : DeleteOptions
-            =
-            {
-              Customer = customer
             }
 
     type RetrieveOptions =
@@ -737,17 +513,6 @@ module Customers =
             {
                 Customer = customer
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                customer: string
-            ) : RetrieveOptions
-            =
-            {
-              Customer = customer
-              Expand = None
             }
 
     type Update'AddressOptionalFieldsCustomerAddress =
@@ -783,26 +548,6 @@ module Customers =
                 State = state
             }
 
-    module Update'AddressOptionalFieldsCustomerAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'AddressOptionalFieldsCustomerAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'CashBalanceSettingsReconciliationMode =
         | Automatic
         | Manual
@@ -821,16 +566,6 @@ module Customers =
                 ReconciliationMode = reconciliationMode
             }
 
-    module Update'CashBalanceSettings =
-        let create
-            (
-                reconciliationMode: Update'CashBalanceSettingsReconciliationMode option
-            ) : Update'CashBalanceSettings
-            =
-            {
-              ReconciliationMode = reconciliationMode
-            }
-
     type Update'CashBalance =
         {
             /// Settings controlling the behavior of the customer's cash balance,
@@ -843,16 +578,6 @@ module Customers =
         static member New(?settings: Update'CashBalanceSettings) =
             {
                 Settings = settings
-            }
-
-    module Update'CashBalance =
-        let create
-            (
-                settings: Update'CashBalanceSettings option
-            ) : Update'CashBalance
-            =
-            {
-              Settings = settings
             }
 
     type Update'InvoiceSettingsCustomFields =
@@ -870,18 +595,6 @@ module Customers =
             {
                 Name = name
                 Value = value
-            }
-
-    module Update'InvoiceSettingsCustomFields =
-        let create
-            (
-                name: string option,
-                value: string option
-            ) : Update'InvoiceSettingsCustomFields
-            =
-            {
-              Name = name
-              Value = value
             }
 
     type Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptionsAmountTaxDisplay =
@@ -903,18 +616,6 @@ module Customers =
             {
                 AmountTaxDisplay = amountTaxDisplay
                 Template = template
-            }
-
-    module Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptions =
-        let create
-            (
-                amountTaxDisplay: Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptionsAmountTaxDisplay option,
-                template: string option
-            ) : Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptions
-            =
-            {
-              AmountTaxDisplay = amountTaxDisplay
-              Template = template
             }
 
     type Update'InvoiceSettings =
@@ -940,22 +641,6 @@ module Customers =
                 DefaultPaymentMethod = defaultPaymentMethod
                 Footer = footer
                 RenderingOptions = renderingOptions
-            }
-
-    module Update'InvoiceSettings =
-        let create
-            (
-                customFields: Choice<Update'InvoiceSettingsCustomFields list,string> option,
-                defaultPaymentMethod: string option,
-                footer: string option,
-                renderingOptions: Choice<Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptions,string> option
-            ) : Update'InvoiceSettings
-            =
-            {
-              CustomFields = customFields
-              DefaultPaymentMethod = defaultPaymentMethod
-              Footer = footer
-              RenderingOptions = renderingOptions
             }
 
     type Update'ShippingCustomerShippingAddress =
@@ -991,26 +676,6 @@ module Customers =
                 State = state
             }
 
-    module Update'ShippingCustomerShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'ShippingCustomerShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'ShippingCustomerShipping =
         {
             /// Customer shipping address.
@@ -1030,20 +695,6 @@ module Customers =
                 Address = address
                 Name = name
                 Phone = phone
-            }
-
-    module Update'ShippingCustomerShipping =
-        let create
-            (
-                address: Update'ShippingCustomerShippingAddress option,
-                name: string option,
-                phone: string option
-            ) : Update'ShippingCustomerShipping
-            =
-            {
-              Address = address
-              Name = name
-              Phone = phone
             }
 
     type Update'TaxValidateLocation =
@@ -1066,18 +717,6 @@ module Customers =
             {
                 IpAddress = ipAddress
                 ValidateLocation = validateLocation
-            }
-
-    module Update'Tax =
-        let create
-            (
-                ipAddress: Choice<string,string> option,
-                validateLocation: Update'TaxValidateLocation option
-            ) : Update'Tax
-            =
-            {
-              IpAddress = ipAddress
-              ValidateLocation = validateLocation
             }
 
     type Update'TaxExempt =
@@ -1181,37 +820,6 @@ module Customers =
                 Validate = validate
             }
 
-    module UpdateOptions =
-        let create
-            (
-                customer: string
-            ) : UpdateOptions
-            =
-            {
-              Customer = customer
-              Address = None
-              Balance = None
-              BusinessName = None
-              CashBalance = None
-              DefaultSource = None
-              Description = None
-              Email = None
-              Expand = None
-              IndividualName = None
-              InvoicePrefix = None
-              InvoiceSettings = None
-              Metadata = None
-              Name = None
-              NextInvoiceSequence = None
-              Phone = None
-              PreferredLocales = None
-              Shipping = None
-              Source = None
-              Tax = None
-              TaxExempt = None
-              Validate = None
-            }
-
     ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("email", options.Email |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("test_clock", options.TestClock |> box)] |> Map.ofList
@@ -1267,19 +875,6 @@ module CustomersSearch =
                 Page = page
             }
 
-    module SearchOptions =
-        let create
-            (
-                query: string
-            ) : SearchOptions
-            =
-            {
-              Query = query
-              Expand = None
-              Limit = None
-              Page = None
-            }
-
     ///<p>Search for customers you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
     ///Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
     ///conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
@@ -1327,22 +922,6 @@ module CustomersBalanceTransactions =
                 StartingAfter = startingAfter
             }
 
-    module BalanceTransactionsOptions =
-        let create
-            (
-                customer: string
-            ) : BalanceTransactionsOptions
-            =
-            {
-              Customer = customer
-              Created = None
-              EndingBefore = None
-              Expand = None
-              Invoice = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type CreateOptions =
         {
             [<Config.Path>]
@@ -1375,23 +954,6 @@ module CustomersBalanceTransactions =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                customer: string
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Customer = customer
-              Description = None
-              Expand = None
-              Metadata = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -1409,19 +971,6 @@ module CustomersBalanceTransactions =
                 Customer = customer
                 Transaction = transaction
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                customer: string,
-                transaction: string
-            ) : RetrieveOptions
-            =
-            {
-              Customer = customer
-              Transaction = transaction
-              Expand = None
             }
 
     type UpdateOptions =
@@ -1449,21 +998,6 @@ module CustomersBalanceTransactions =
                 Description = description
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                customer: string,
-                transaction: string
-            ) : UpdateOptions
-            =
-            {
-              Customer = customer
-              Transaction = transaction
-              Description = None
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of transactions that updated the customer’s <a href="/docs/billing/customer/balance">balances</a>.</p>
@@ -1506,17 +1040,6 @@ module CustomersCashBalance =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                customer: string
-            ) : RetrieveOptions
-            =
-            {
-              Customer = customer
-              Expand = None
-            }
-
     type Update'SettingsReconciliationMode =
         | Automatic
         | Manual
@@ -1533,16 +1056,6 @@ module CustomersCashBalance =
         static member New(?reconciliationMode: Update'SettingsReconciliationMode) =
             {
                 ReconciliationMode = reconciliationMode
-            }
-
-    module Update'Settings =
-        let create
-            (
-                reconciliationMode: Update'SettingsReconciliationMode option
-            ) : Update'Settings
-            =
-            {
-              ReconciliationMode = reconciliationMode
             }
 
     type UpdateOptions =
@@ -1563,18 +1076,6 @@ module CustomersCashBalance =
                 Customer = customer
                 Expand = expand
                 Settings = settings
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                customer: string
-            ) : UpdateOptions
-            =
-            {
-              Customer = customer
-              Expand = None
-              Settings = None
             }
 
     ///<p>Retrieves a customer’s cash balance.</p>
@@ -1618,20 +1119,6 @@ module CustomersCashBalanceTransactions =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                customer: string
-            ) : ListOptions
-            =
-            {
-              Customer = customer
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -1649,19 +1136,6 @@ module CustomersCashBalanceTransactions =
                 Customer = customer
                 Transaction = transaction
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                customer: string,
-                transaction: string
-            ) : RetrieveOptions
-            =
-            {
-              Customer = customer
-              Transaction = transaction
-              Expand = None
             }
 
     ///<p>Returns a list of transactions that modified the customer’s <a href="/docs/payments/customer-balance">cash balance</a>.</p>
@@ -1688,16 +1162,6 @@ module CustomersDiscount =
                 Customer = customer
             }
 
-    module DeleteDiscountOptions =
-        let create
-            (
-                customer: string
-            ) : DeleteDiscountOptions
-            =
-            {
-              Customer = customer
-            }
-
     ///<p>Removes the currently applied discount on a customer.</p>
     let DeleteDiscount settings (options: DeleteDiscountOptions) =
         $"/v1/customers/{options.Customer}/discount"
@@ -1716,16 +1180,6 @@ module CustomersFundingInstructions =
         static member New(?country: IsoTypes.IsoCountryCode) =
             {
                 Country = country
-            }
-
-    module CreateFundingInstructions'BankTransferEuBankTransfer =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option
-            ) : CreateFundingInstructions'BankTransferEuBankTransfer
-            =
-            {
-              Country = country
             }
 
     type CreateFundingInstructions'BankTransferRequestedAddressTypes =
@@ -1763,20 +1217,6 @@ module CustomersFundingInstructions =
                 Type = type'
             }
 
-    module CreateFundingInstructions'BankTransfer =
-        let create
-            (
-                euBankTransfer: CreateFundingInstructions'BankTransferEuBankTransfer option,
-                requestedAddressTypes: CreateFundingInstructions'BankTransferRequestedAddressTypes list option,
-                type': CreateFundingInstructions'BankTransferType option
-            ) : CreateFundingInstructions'BankTransfer
-            =
-            {
-              EuBankTransfer = euBankTransfer
-              RequestedAddressTypes = requestedAddressTypes
-              Type = type'
-            }
-
     type CreateFundingInstructions'FundingType = | BankTransfer
 
     type CreateFundingInstructionsOptions =
@@ -1805,23 +1245,6 @@ module CustomersFundingInstructions =
                 Customer = customer
                 FundingType = fundingType
                 Expand = expand
-            }
-
-    module CreateFundingInstructionsOptions =
-        let create
-            (
-                bankTransfer: CreateFundingInstructions'BankTransfer,
-                currency: IsoTypes.IsoCurrencyCode,
-                customer: string,
-                fundingType: CreateFundingInstructions'FundingType
-            ) : CreateFundingInstructionsOptions
-            =
-            {
-              BankTransfer = bankTransfer
-              Currency = currency
-              Customer = customer
-              FundingType = fundingType
-              Expand = None
             }
 
     ///<p>Retrieve funding instructions for a customer cash balance. If funding instructions do not yet exist for the customer, new
@@ -1869,22 +1292,6 @@ module CustomersPaymentMethods =
                 Type = type'
             }
 
-    module ListPaymentMethodsOptions =
-        let create
-            (
-                customer: string
-            ) : ListPaymentMethodsOptions
-            =
-            {
-              Customer = customer
-              AllowRedisplay = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              Type = None
-            }
-
     type RetrievePaymentMethodOptions =
         {
             [<Config.Path>]
@@ -1902,19 +1309,6 @@ module CustomersPaymentMethods =
                 Customer = customer
                 PaymentMethod = paymentMethod
                 Expand = expand
-            }
-
-    module RetrievePaymentMethodOptions =
-        let create
-            (
-                customer: string,
-                paymentMethod: string
-            ) : RetrievePaymentMethodOptions
-            =
-            {
-              Customer = customer
-              PaymentMethod = paymentMethod
-              Expand = None
             }
 
     ///<p>Returns a list of PaymentMethods for a given Customer</p>
@@ -1963,21 +1357,6 @@ module CustomersSources =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                customer: string
-            ) : ListOptions
-            =
-            {
-              Customer = customer
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              Object = None
-              StartingAfter = None
-            }
-
     type CreateOptions =
         {
             [<Config.Path>]
@@ -2005,21 +1384,6 @@ module CustomersSources =
                 Validate = validate
             }
 
-    module CreateOptions =
-        let create
-            (
-                customer: string,
-                source: string
-            ) : CreateOptions
-            =
-            {
-              Customer = customer
-              Source = source
-              Expand = None
-              Metadata = None
-              Validate = None
-            }
-
     type DeleteOptions =
         {
             [<Config.Path>]
@@ -2039,19 +1403,6 @@ module CustomersSources =
                 Expand = expand
             }
 
-    module DeleteOptions =
-        let create
-            (
-                customer: string,
-                id: string
-            ) : DeleteOptions
-            =
-            {
-              Customer = customer
-              Id = id
-              Expand = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -2069,19 +1420,6 @@ module CustomersSources =
                 Customer = customer
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                customer: string,
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Customer = customer
-              Id = id
-              Expand = None
             }
 
     type Update'AccountHolderType =
@@ -2121,26 +1459,6 @@ module CustomersSources =
                 State = state
             }
 
-    module Update'OwnerAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'OwnerAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'Owner =
         {
             /// Owner's address.
@@ -2164,22 +1482,6 @@ module CustomersSources =
                 Email = email
                 Name = name
                 Phone = phone
-            }
-
-    module Update'Owner =
-        let create
-            (
-                address: Update'OwnerAddress option,
-                email: string option,
-                name: string option,
-                phone: string option
-            ) : Update'Owner
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
             }
 
     type UpdateOptions =
@@ -2252,32 +1554,6 @@ module CustomersSources =
                 Owner = owner
             }
 
-    module UpdateOptions =
-        let create
-            (
-                customer: string,
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Customer = customer
-              Id = id
-              AccountHolderName = None
-              AccountHolderType = None
-              AddressCity = None
-              AddressCountry = None
-              AddressLine1 = None
-              AddressLine2 = None
-              AddressState = None
-              AddressZip = None
-              ExpMonth = None
-              ExpYear = None
-              Expand = None
-              Metadata = None
-              Name = None
-              Owner = None
-            }
-
     ///<p>List sources for a specified customer.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("object", options.Object |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -2333,20 +1609,6 @@ module CustomersSourcesVerify =
                 Expand = expand
             }
 
-    module VerifyOptions =
-        let create
-            (
-                customer: string,
-                id: string
-            ) : VerifyOptions
-            =
-            {
-              Customer = customer
-              Id = id
-              Amounts = None
-              Expand = None
-            }
-
     ///<p>Verify a specified bank account for a given customer.</p>
     let Verify settings (options: VerifyOptions) =
         $"/v1/customers/{options.Customer}/sources/{options.Id}/verify"
@@ -2380,20 +1642,6 @@ module CustomersTaxIds =
                 Expand = expand
                 Limit = limit
                 StartingAfter = startingAfter
-            }
-
-    module ListOptions =
-        let create
-            (
-                customer: string
-            ) : ListOptions
-            =
-            {
-              Customer = customer
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
             }
 
     type Create'Type =
@@ -2538,21 +1786,6 @@ module CustomersTaxIds =
                 Expand = expand
             }
 
-    module CreateOptions =
-        let create
-            (
-                customer: string,
-                type': Create'Type,
-                value: string
-            ) : CreateOptions
-            =
-            {
-              Customer = customer
-              Type = type'
-              Value = value
-              Expand = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Customer: string
@@ -2564,18 +1797,6 @@ module CustomersTaxIds =
             {
                 Customer = customer
                 Id = id
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                customer: string,
-                id: string
-            ) : DeleteOptions
-            =
-            {
-              Customer = customer
-              Id = id
             }
 
     type RetrieveOptions =
@@ -2595,19 +1816,6 @@ module CustomersTaxIds =
                 Customer = customer
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                customer: string,
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Customer = customer
-              Id = id
-              Expand = None
             }
 
     ///<p>Returns a list of tax IDs for a customer.</p>

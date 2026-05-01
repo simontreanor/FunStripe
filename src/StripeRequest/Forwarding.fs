@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Forwarding
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ForwardingRequests =
 
     type ListOptions =
@@ -37,24 +37,6 @@ module ForwardingRequests =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: Map<string, string> option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'Replacements =
         | CardCvc
         | CardExpiry
@@ -79,18 +61,6 @@ module ForwardingRequests =
                 Value = value
             }
 
-    module Create'RequestHeaders =
-        let create
-            (
-                name: string option,
-                value: string option
-            ) : Create'RequestHeaders
-            =
-            {
-              Name = name
-              Value = value
-            }
-
     type Create'Request =
         {
             /// The body payload to send to the destination endpoint.
@@ -106,18 +76,6 @@ module ForwardingRequests =
             {
                 Body = body
                 Headers = headers
-            }
-
-    module Create'Request =
-        let create
-            (
-                body: string option,
-                headers: Create'RequestHeaders list option
-            ) : Create'Request
-            =
-            {
-              Body = body
-              Headers = headers
             }
 
     type CreateOptions =
@@ -153,23 +111,6 @@ module ForwardingRequests =
                 Request = request
             }
 
-    module CreateOptions =
-        let create
-            (
-                paymentMethod: string,
-                replacements: Create'Replacements list,
-                url: string
-            ) : CreateOptions
-            =
-            {
-              PaymentMethod = paymentMethod
-              Replacements = replacements
-              Url = url
-              Expand = None
-              Metadata = None
-              Request = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -184,17 +125,6 @@ module ForwardingRequests =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Lists all ForwardingRequest objects.</p>

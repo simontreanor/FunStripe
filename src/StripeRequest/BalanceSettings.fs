@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.BalanceSettings
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module BalanceSettings =
 
     type RetrieveOptions =
@@ -19,16 +19,6 @@ module BalanceSettings =
         static member New(?expand: string list) =
             {
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                expand: string list option
-            ) : RetrieveOptions
-            =
-            {
-              Expand = expand
             }
 
     type Update'PaymentsPayoutsScheduleInterval =
@@ -65,20 +55,6 @@ module BalanceSettings =
                 WeeklyPayoutDays = weeklyPayoutDays
             }
 
-    module Update'PaymentsPayoutsSchedule =
-        let create
-            (
-                interval: Update'PaymentsPayoutsScheduleInterval option,
-                monthlyPayoutDays: int list option,
-                weeklyPayoutDays: Update'PaymentsPayoutsScheduleWeeklyPayoutDays list option
-            ) : Update'PaymentsPayoutsSchedule
-            =
-            {
-              Interval = interval
-              MonthlyPayoutDays = monthlyPayoutDays
-              WeeklyPayoutDays = weeklyPayoutDays
-            }
-
     type Update'PaymentsPayouts =
         {
             /// The minimum balance amount to retain per currency after automatic payouts. Only funds that exceed these amounts are paid out. Learn more about the [minimum balances for automatic payouts](/payouts/minimum-balances-for-automatic-payouts).
@@ -100,20 +76,6 @@ module BalanceSettings =
                 StatementDescriptor = statementDescriptor
             }
 
-    module Update'PaymentsPayouts =
-        let create
-            (
-                minimumBalanceByCurrency: Choice<Map<string, string>,string> option,
-                schedule: Update'PaymentsPayoutsSchedule option,
-                statementDescriptor: string option
-            ) : Update'PaymentsPayouts
-            =
-            {
-              MinimumBalanceByCurrency = minimumBalanceByCurrency
-              Schedule = schedule
-              StatementDescriptor = statementDescriptor
-            }
-
     type Update'PaymentsSettlementTiming =
         {
             /// Change `delay_days` for this account, which determines the number of days charge funds are held before becoming available. The maximum value is 31. Passing an empty string to `delay_days_override` will return `delay_days` to the default, which is the lowest available value for the account. [Learn more about controlling delay days](/connect/manage-payout-schedule).
@@ -125,16 +87,6 @@ module BalanceSettings =
         static member New(?delayDaysOverride: Choice<int,string>) =
             {
                 DelayDaysOverride = delayDaysOverride
-            }
-
-    module Update'PaymentsSettlementTiming =
-        let create
-            (
-                delayDaysOverride: Choice<int,string> option
-            ) : Update'PaymentsSettlementTiming
-            =
-            {
-              DelayDaysOverride = delayDaysOverride
             }
 
     type Update'Payments =
@@ -158,20 +110,6 @@ module BalanceSettings =
                 SettlementTiming = settlementTiming
             }
 
-    module Update'Payments =
-        let create
-            (
-                debitNegativeBalances: bool option,
-                payouts: Update'PaymentsPayouts option,
-                settlementTiming: Update'PaymentsSettlementTiming option
-            ) : Update'Payments
-            =
-            {
-              DebitNegativeBalances = debitNegativeBalances
-              Payouts = payouts
-              SettlementTiming = settlementTiming
-            }
-
     type UpdateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -187,18 +125,6 @@ module BalanceSettings =
             {
                 Expand = expand
                 Payments = payments
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                expand: string list option,
-                payments: Update'Payments option
-            ) : UpdateOptions
-            =
-            {
-              Expand = expand
-              Payments = payments
             }
 
     ///<p>Retrieves balance settings for a given connected account.

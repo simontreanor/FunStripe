@@ -5,7 +5,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <PackageId>FunStripe.Core.Fable</PackageId>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library — Fable (Node.js server-side) edition (targets Stripe API $(StripeApiVersion))</PackageDescription>

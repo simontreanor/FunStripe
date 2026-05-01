@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 
 /// An error response from the Stripe API
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type Error = { Error: ApiErrors }
 
 type Error with

@@ -11,7 +11,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =
@@ -33,20 +33,6 @@ module TestHelpersConfirmationTokens =
                 AccountNumber = accountNumber
                 InstitutionNumber = institutionNumber
                 TransitNumber = transitNumber
-            }
-
-    module Create'PaymentMethodDataAcssDebit =
-        let create
-            (
-                accountNumber: string option,
-                institutionNumber: string option,
-                transitNumber: string option
-            ) : Create'PaymentMethodDataAcssDebit
-            =
-            {
-              AccountNumber = accountNumber
-              InstitutionNumber = institutionNumber
-              TransitNumber = transitNumber
             }
 
     type Create'PaymentMethodDataAllowRedisplay =
@@ -71,18 +57,6 @@ module TestHelpersConfirmationTokens =
                 BsbNumber = bsbNumber
             }
 
-    module Create'PaymentMethodDataAuBecsDebit =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option
-            ) : Create'PaymentMethodDataAuBecsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-            }
-
     type Create'PaymentMethodDataBacsDebit =
         {
             /// Account number of the bank account that the funds will be debited from.
@@ -98,18 +72,6 @@ module TestHelpersConfirmationTokens =
             {
                 AccountNumber = accountNumber
                 SortCode = sortCode
-            }
-
-    module Create'PaymentMethodDataBacsDebit =
-        let create
-            (
-                accountNumber: string option,
-                sortCode: string option
-            ) : Create'PaymentMethodDataBacsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              SortCode = sortCode
             }
 
     type Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
@@ -145,26 +107,6 @@ module TestHelpersConfirmationTokens =
                 State = state
             }
 
-    module Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'PaymentMethodDataBillingDetails =
         {
             /// Billing address.
@@ -194,24 +136,6 @@ module TestHelpersConfirmationTokens =
                 TaxId = taxId
             }
 
-    module Create'PaymentMethodDataBillingDetails =
-        let create
-            (
-                address: Choice<Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress,string> option,
-                email: Choice<string,string> option,
-                name: Choice<string,string> option,
-                phone: Choice<string,string> option,
-                taxId: string option
-            ) : Create'PaymentMethodDataBillingDetails
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
-              TaxId = taxId
-            }
-
     type Create'PaymentMethodDataBoleto =
         {
             /// The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers)
@@ -223,16 +147,6 @@ module TestHelpersConfirmationTokens =
         static member New(?taxId: string) =
             {
                 TaxId = taxId
-            }
-
-    module Create'PaymentMethodDataBoleto =
-        let create
-            (
-                taxId: string option
-            ) : Create'PaymentMethodDataBoleto
-            =
-            {
-              TaxId = taxId
             }
 
     type Create'PaymentMethodDataEpsBank =
@@ -276,16 +190,6 @@ module TestHelpersConfirmationTokens =
         static member New(?bank: Create'PaymentMethodDataEpsBank) =
             {
                 Bank = bank
-            }
-
-    module Create'PaymentMethodDataEps =
-        let create
-            (
-                bank: Create'PaymentMethodDataEpsBank option
-            ) : Create'PaymentMethodDataEps
-            =
-            {
-              Bank = bank
             }
 
     type Create'PaymentMethodDataFpxAccountHolderType =
@@ -333,18 +237,6 @@ module TestHelpersConfirmationTokens =
                 Bank = bank
             }
 
-    module Create'PaymentMethodDataFpx =
-        let create
-            (
-                accountHolderType: Create'PaymentMethodDataFpxAccountHolderType option,
-                bank: Create'PaymentMethodDataFpxBank option
-            ) : Create'PaymentMethodDataFpx
-            =
-            {
-              AccountHolderType = accountHolderType
-              Bank = bank
-            }
-
     type Create'PaymentMethodDataIdealBank =
         | AbnAmro
         | Adyen
@@ -380,16 +272,6 @@ module TestHelpersConfirmationTokens =
                 Bank = bank
             }
 
-    module Create'PaymentMethodDataIdeal =
-        let create
-            (
-                bank: Create'PaymentMethodDataIdealBank option
-            ) : Create'PaymentMethodDataIdeal
-            =
-            {
-              Bank = bank
-            }
-
     type Create'PaymentMethodDataKlarnaDob =
         {
             /// The day of birth, between 1 and 31.
@@ -411,20 +293,6 @@ module TestHelpersConfirmationTokens =
                 Year = year
             }
 
-    module Create'PaymentMethodDataKlarnaDob =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'PaymentMethodDataKlarnaDob
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Create'PaymentMethodDataKlarna =
         {
             /// Customer's date of birth
@@ -436,16 +304,6 @@ module TestHelpersConfirmationTokens =
         static member New(?dob: Create'PaymentMethodDataKlarnaDob) =
             {
                 Dob = dob
-            }
-
-    module Create'PaymentMethodDataKlarna =
-        let create
-            (
-                dob: Create'PaymentMethodDataKlarnaDob option
-            ) : Create'PaymentMethodDataKlarna
-            =
-            {
-              Dob = dob
             }
 
     type Create'PaymentMethodDataNaverPayFunding =
@@ -463,16 +321,6 @@ module TestHelpersConfirmationTokens =
         static member New(?funding: Create'PaymentMethodDataNaverPayFunding) =
             {
                 Funding = funding
-            }
-
-    module Create'PaymentMethodDataNaverPay =
-        let create
-            (
-                funding: Create'PaymentMethodDataNaverPayFunding option
-            ) : Create'PaymentMethodDataNaverPay
-            =
-            {
-              Funding = funding
             }
 
     type Create'PaymentMethodDataNzBankAccount =
@@ -505,26 +353,6 @@ module TestHelpersConfirmationTokens =
                 BranchCode = branchCode
                 Reference = reference
                 Suffix = suffix
-            }
-
-    module Create'PaymentMethodDataNzBankAccount =
-        let create
-            (
-                accountHolderName: string option,
-                accountNumber: string option,
-                bankCode: string option,
-                branchCode: string option,
-                reference: string option,
-                suffix: string option
-            ) : Create'PaymentMethodDataNzBankAccount
-            =
-            {
-              AccountHolderName = accountHolderName
-              AccountNumber = accountNumber
-              BankCode = bankCode
-              BranchCode = branchCode
-              Reference = reference
-              Suffix = suffix
             }
 
     type Create'PaymentMethodDataP24Bank =
@@ -568,16 +396,6 @@ module TestHelpersConfirmationTokens =
                 Bank = bank
             }
 
-    module Create'PaymentMethodDataP24 =
-        let create
-            (
-                bank: Create'PaymentMethodDataP24Bank option
-            ) : Create'PaymentMethodDataP24
-            =
-            {
-              Bank = bank
-            }
-
     type Create'PaymentMethodDataPayto =
         {
             /// The account number for the bank account.
@@ -599,20 +417,6 @@ module TestHelpersConfirmationTokens =
                 PayId = payId
             }
 
-    module Create'PaymentMethodDataPayto =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option,
-                payId: string option
-            ) : Create'PaymentMethodDataPayto
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-              PayId = payId
-            }
-
     type Create'PaymentMethodDataRadarOptions =
         {
             /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
@@ -626,16 +430,6 @@ module TestHelpersConfirmationTokens =
                 Session = session
             }
 
-    module Create'PaymentMethodDataRadarOptions =
-        let create
-            (
-                session: string option
-            ) : Create'PaymentMethodDataRadarOptions
-            =
-            {
-              Session = session
-            }
-
     type Create'PaymentMethodDataSepaDebit =
         {
             /// IBAN of the bank account.
@@ -647,16 +441,6 @@ module TestHelpersConfirmationTokens =
         static member New(?iban: string) =
             {
                 Iban = iban
-            }
-
-    module Create'PaymentMethodDataSepaDebit =
-        let create
-            (
-                iban: string option
-            ) : Create'PaymentMethodDataSepaDebit
-            =
-            {
-              Iban = iban
             }
 
     type Create'PaymentMethodDataSofortCountry =
@@ -678,16 +462,6 @@ module TestHelpersConfirmationTokens =
         static member New(?country: Create'PaymentMethodDataSofortCountry) =
             {
                 Country = country
-            }
-
-    module Create'PaymentMethodDataSofort =
-        let create
-            (
-                country: Create'PaymentMethodDataSofortCountry option
-            ) : Create'PaymentMethodDataSofort
-            =
-            {
-              Country = country
             }
 
     type Create'PaymentMethodDataType =
@@ -772,22 +546,6 @@ module TestHelpersConfirmationTokens =
                 EndDate = endDate
             }
 
-    module Create'PaymentMethodDataUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentMethodDataUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Create'PaymentMethodDataUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Create'PaymentMethodDataUpi =
         {
             /// Configuration options for setting up an eMandate
@@ -799,16 +557,6 @@ module TestHelpersConfirmationTokens =
         static member New(?mandateOptions: Create'PaymentMethodDataUpiMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentMethodDataUpi =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodDataUpiMandateOptions option
-            ) : Create'PaymentMethodDataUpi
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentMethodDataUsBankAccountAccountHolderType =
@@ -846,24 +594,6 @@ module TestHelpersConfirmationTokens =
                 AccountType = accountType
                 FinancialConnectionsAccount = financialConnectionsAccount
                 RoutingNumber = routingNumber
-            }
-
-    module Create'PaymentMethodDataUsBankAccount =
-        let create
-            (
-                accountHolderType: Create'PaymentMethodDataUsBankAccountAccountHolderType option,
-                accountNumber: string option,
-                accountType: Create'PaymentMethodDataUsBankAccountAccountType option,
-                financialConnectionsAccount: string option,
-                routingNumber: string option
-            ) : Create'PaymentMethodDataUsBankAccount
-            =
-            {
-              AccountHolderType = accountHolderType
-              AccountNumber = accountNumber
-              AccountType = accountType
-              FinancialConnectionsAccount = financialConnectionsAccount
-              RoutingNumber = routingNumber
             }
 
     type Create'PaymentMethodData =
@@ -1103,128 +833,6 @@ module TestHelpersConfirmationTokens =
                 Zip = zip
             }
 
-    module Create'PaymentMethodData =
-        let create
-            (
-                acssDebit: Create'PaymentMethodDataAcssDebit option,
-                affirm: string option,
-                afterpayClearpay: string option,
-                alipay: string option,
-                allowRedisplay: Create'PaymentMethodDataAllowRedisplay option,
-                alma: string option,
-                amazonPay: string option,
-                auBecsDebit: Create'PaymentMethodDataAuBecsDebit option,
-                bacsDebit: Create'PaymentMethodDataBacsDebit option,
-                bancontact: string option,
-                billie: string option,
-                billingDetails: Create'PaymentMethodDataBillingDetails option,
-                blik: string option,
-                boleto: Create'PaymentMethodDataBoleto option,
-                cashapp: string option,
-                crypto: string option,
-                customerBalance: string option,
-                eps: Create'PaymentMethodDataEps option,
-                fpx: Create'PaymentMethodDataFpx option,
-                giropay: string option,
-                grabpay: string option,
-                ideal: Create'PaymentMethodDataIdeal option,
-                interacPresent: string option,
-                kakaoPay: string option,
-                klarna: Create'PaymentMethodDataKlarna option,
-                konbini: string option,
-                krCard: string option,
-                link: string option,
-                mbWay: string option,
-                metadata: Map<string, string> option,
-                mobilepay: string option,
-                multibanco: string option,
-                naverPay: Create'PaymentMethodDataNaverPay option,
-                nzBankAccount: Create'PaymentMethodDataNzBankAccount option,
-                oxxo: string option,
-                p24: Create'PaymentMethodDataP24 option,
-                payByBank: string option,
-                payco: string option,
-                paynow: string option,
-                paypal: string option,
-                payto: Create'PaymentMethodDataPayto option,
-                pix: string option,
-                promptpay: string option,
-                radarOptions: Create'PaymentMethodDataRadarOptions option,
-                revolutPay: string option,
-                samsungPay: string option,
-                satispay: string option,
-                sepaDebit: Create'PaymentMethodDataSepaDebit option,
-                sofort: Create'PaymentMethodDataSofort option,
-                sunbit: string option,
-                swish: string option,
-                twint: string option,
-                type': Create'PaymentMethodDataType option,
-                upi: Create'PaymentMethodDataUpi option,
-                usBankAccount: Create'PaymentMethodDataUsBankAccount option,
-                wechatPay: string option,
-                zip: string option
-            ) : Create'PaymentMethodData
-            =
-            {
-              AcssDebit = acssDebit
-              Affirm = affirm
-              AfterpayClearpay = afterpayClearpay
-              Alipay = alipay
-              AllowRedisplay = allowRedisplay
-              Alma = alma
-              AmazonPay = amazonPay
-              AuBecsDebit = auBecsDebit
-              BacsDebit = bacsDebit
-              Bancontact = bancontact
-              Billie = billie
-              BillingDetails = billingDetails
-              Blik = blik
-              Boleto = boleto
-              Cashapp = cashapp
-              Crypto = crypto
-              CustomerBalance = customerBalance
-              Eps = eps
-              Fpx = fpx
-              Giropay = giropay
-              Grabpay = grabpay
-              Ideal = ideal
-              InteracPresent = interacPresent
-              KakaoPay = kakaoPay
-              Klarna = klarna
-              Konbini = konbini
-              KrCard = krCard
-              Link = link
-              MbWay = mbWay
-              Metadata = metadata
-              Mobilepay = mobilepay
-              Multibanco = multibanco
-              NaverPay = naverPay
-              NzBankAccount = nzBankAccount
-              Oxxo = oxxo
-              P24 = p24
-              PayByBank = payByBank
-              Payco = payco
-              Paynow = paynow
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              Promptpay = promptpay
-              RadarOptions = radarOptions
-              RevolutPay = revolutPay
-              SamsungPay = samsungPay
-              Satispay = satispay
-              SepaDebit = sepaDebit
-              Sofort = sofort
-              Sunbit = sunbit
-              Swish = swish
-              Twint = twint
-              Type = type'
-              Upi = upi
-              UsBankAccount = usBankAccount
-              WechatPay = wechatPay
-              Zip = zip
-            }
-
     type Create'PaymentMethodOptionsCardInstallmentsPlanInterval = | Month
 
     type Create'PaymentMethodOptionsCardInstallmentsPlanType =
@@ -1254,20 +862,6 @@ module TestHelpersConfirmationTokens =
                 Type = type'
             }
 
-    module Create'PaymentMethodOptionsCardInstallmentsPlan =
-        let create
-            (
-                count: int option,
-                interval: Create'PaymentMethodOptionsCardInstallmentsPlanInterval option,
-                type': Create'PaymentMethodOptionsCardInstallmentsPlanType option
-            ) : Create'PaymentMethodOptionsCardInstallmentsPlan
-            =
-            {
-              Count = count
-              Interval = interval
-              Type = type'
-            }
-
     type Create'PaymentMethodOptionsCardInstallments =
         {
             /// The selected installment plan to use for this payment attempt.
@@ -1280,16 +874,6 @@ module TestHelpersConfirmationTokens =
         static member New(?plan: Create'PaymentMethodOptionsCardInstallmentsPlan) =
             {
                 Plan = plan
-            }
-
-    module Create'PaymentMethodOptionsCardInstallments =
-        let create
-            (
-                plan: Create'PaymentMethodOptionsCardInstallmentsPlan option
-            ) : Create'PaymentMethodOptionsCardInstallments
-            =
-            {
-              Plan = plan
             }
 
     type Create'PaymentMethodOptionsCard =
@@ -1305,16 +889,6 @@ module TestHelpersConfirmationTokens =
                 Installments = installments
             }
 
-    module Create'PaymentMethodOptionsCard =
-        let create
-            (
-                installments: Create'PaymentMethodOptionsCardInstallments option
-            ) : Create'PaymentMethodOptionsCard
-            =
-            {
-              Installments = installments
-            }
-
     type Create'PaymentMethodOptions =
         {
             /// Configuration for any card payments confirmed using this ConfirmationToken.
@@ -1326,16 +900,6 @@ module TestHelpersConfirmationTokens =
         static member New(?card: Create'PaymentMethodOptionsCard) =
             {
                 Card = card
-            }
-
-    module Create'PaymentMethodOptions =
-        let create
-            (
-                card: Create'PaymentMethodOptionsCard option
-            ) : Create'PaymentMethodOptions
-            =
-            {
-              Card = card
             }
 
     type Create'SetupFutureUsage =
@@ -1375,26 +939,6 @@ module TestHelpersConfirmationTokens =
                 State = state
             }
 
-    module Create'ShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'ShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'Shipping =
         {
             /// Shipping address
@@ -1414,20 +958,6 @@ module TestHelpersConfirmationTokens =
                 Address = address
                 Name = name
                 Phone = phone
-            }
-
-    module Create'Shipping =
-        let create
-            (
-                address: Create'ShippingAddress option,
-                name: string option,
-                phone: Choice<string,string> option
-            ) : Create'Shipping
-            =
-            {
-              Address = address
-              Name = name
-              Phone = phone
             }
 
     type CreateOptions =
@@ -1468,28 +998,6 @@ module TestHelpersConfirmationTokens =
                 Shipping = shipping
             }
 
-    module CreateOptions =
-        let create
-            (
-                expand: string list option,
-                paymentMethod: string option,
-                paymentMethodData: Create'PaymentMethodData option,
-                paymentMethodOptions: Create'PaymentMethodOptions option,
-                returnUrl: string option,
-                setupFutureUsage: Create'SetupFutureUsage option,
-                shipping: Create'Shipping option
-            ) : CreateOptions
-            =
-            {
-              Expand = expand
-              PaymentMethod = paymentMethod
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              ReturnUrl = returnUrl
-              SetupFutureUsage = setupFutureUsage
-              Shipping = shipping
-            }
-
     ///<p>Creates a test mode Confirmation Token server side for your integration tests.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/test_helpers/confirmation_tokens"
@@ -1525,22 +1033,6 @@ module TestHelpersCustomersFundCashBalance =
                 Reference = reference
             }
 
-    module FundCashBalanceOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                customer: string
-            ) : FundCashBalanceOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Customer = customer
-              Expand = None
-              Reference = None
-            }
-
     ///<p>Create an incoming testmode bank transfer</p>
     let FundCashBalance settings (options: FundCashBalanceOptions) =
         $"/v1/test_helpers/customers/{options.Customer}/fund_cash_balance"
@@ -1563,18 +1055,6 @@ module TestHelpersIssuingAuthorizations =
             {
                 AtmFee = atmFee
                 CashbackAmount = cashbackAmount
-            }
-
-    module Create'AmountDetails =
-        let create
-            (
-                atmFee: int option,
-                cashbackAmount: int option
-            ) : Create'AmountDetails
-            =
-            {
-              AtmFee = atmFee
-              CashbackAmount = cashbackAmount
             }
 
     type Create'AuthorizationMethod =
@@ -1613,24 +1093,6 @@ module TestHelpersIssuingAuthorizations =
                 VehicleNumber = vehicleNumber
             }
 
-    module Create'FleetCardholderPromptData =
-        let create
-            (
-                driverId: string option,
-                odometer: int option,
-                unspecifiedId: string option,
-                userId: string option,
-                vehicleNumber: string option
-            ) : Create'FleetCardholderPromptData
-            =
-            {
-              DriverId = driverId
-              Odometer = odometer
-              UnspecifiedId = unspecifiedId
-              UserId = userId
-              VehicleNumber = vehicleNumber
-            }
-
     type Create'FleetPurchaseType =
         | FuelAndNonFuelPurchase
         | FuelPurchase
@@ -1649,16 +1111,6 @@ module TestHelpersIssuingAuthorizations =
                 GrossAmountDecimal = grossAmountDecimal
             }
 
-    module Create'FleetReportedBreakdownFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : Create'FleetReportedBreakdownFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
-            }
-
     type Create'FleetReportedBreakdownNonFuel =
         {
             /// Gross non-fuel amount that should equal the sum of the line items, inclusive of taxes.
@@ -1670,16 +1122,6 @@ module TestHelpersIssuingAuthorizations =
         static member New(?grossAmountDecimal: string) =
             {
                 GrossAmountDecimal = grossAmountDecimal
-            }
-
-    module Create'FleetReportedBreakdownNonFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : Create'FleetReportedBreakdownNonFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
             }
 
     type Create'FleetReportedBreakdownTax =
@@ -1697,18 +1139,6 @@ module TestHelpersIssuingAuthorizations =
             {
                 LocalAmountDecimal = localAmountDecimal
                 NationalAmountDecimal = nationalAmountDecimal
-            }
-
-    module Create'FleetReportedBreakdownTax =
-        let create
-            (
-                localAmountDecimal: string option,
-                nationalAmountDecimal: string option
-            ) : Create'FleetReportedBreakdownTax
-            =
-            {
-              LocalAmountDecimal = localAmountDecimal
-              NationalAmountDecimal = nationalAmountDecimal
             }
 
     type Create'FleetReportedBreakdown =
@@ -1730,20 +1160,6 @@ module TestHelpersIssuingAuthorizations =
                 Fuel = fuel
                 NonFuel = nonFuel
                 Tax = tax
-            }
-
-    module Create'FleetReportedBreakdown =
-        let create
-            (
-                fuel: Create'FleetReportedBreakdownFuel option,
-                nonFuel: Create'FleetReportedBreakdownNonFuel option,
-                tax: Create'FleetReportedBreakdownTax option
-            ) : Create'FleetReportedBreakdown
-            =
-            {
-              Fuel = fuel
-              NonFuel = nonFuel
-              Tax = tax
             }
 
     type Create'FleetServiceType =
@@ -1774,22 +1190,6 @@ module TestHelpersIssuingAuthorizations =
                 PurchaseType = purchaseType
                 ReportedBreakdown = reportedBreakdown
                 ServiceType = serviceType
-            }
-
-    module Create'Fleet =
-        let create
-            (
-                cardholderPromptData: Create'FleetCardholderPromptData option,
-                purchaseType: Create'FleetPurchaseType option,
-                reportedBreakdown: Create'FleetReportedBreakdown option,
-                serviceType: Create'FleetServiceType option
-            ) : Create'Fleet
-            =
-            {
-              CardholderPromptData = cardholderPromptData
-              PurchaseType = purchaseType
-              ReportedBreakdown = reportedBreakdown
-              ServiceType = serviceType
             }
 
     type Create'FraudDisputabilityLikelihood =
@@ -1842,24 +1242,6 @@ module TestHelpersIssuingAuthorizations =
                 Type = type'
                 Unit = unit
                 UnitCostDecimal = unitCostDecimal
-            }
-
-    module Create'Fuel =
-        let create
-            (
-                industryProductCode: string option,
-                quantityDecimal: string option,
-                type': Create'FuelType option,
-                unit: Create'FuelUnit option,
-                unitCostDecimal: string option
-            ) : Create'Fuel
-            =
-            {
-              IndustryProductCode = industryProductCode
-              QuantityDecimal = quantityDecimal
-              Type = type'
-              Unit = unit
-              UnitCostDecimal = unitCostDecimal
             }
 
     type Create'MerchantDataCategory =
@@ -2203,32 +1585,6 @@ module TestHelpersIssuingAuthorizations =
                 Url = url
             }
 
-    module Create'MerchantData =
-        let create
-            (
-                category: Create'MerchantDataCategory option,
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                name: string option,
-                networkId: string option,
-                postalCode: string option,
-                state: string option,
-                terminalId: string option,
-                url: string option
-            ) : Create'MerchantData
-            =
-            {
-              Category = category
-              City = city
-              Country = country
-              Name = name
-              NetworkId = networkId
-              PostalCode = postalCode
-              State = state
-              TerminalId = terminalId
-              Url = url
-            }
-
     type Create'NetworkData =
         {
             /// Identifier assigned to the acquirer by the card network.
@@ -2240,16 +1596,6 @@ module TestHelpersIssuingAuthorizations =
         static member New(?acquiringInstitutionId: string) =
             {
                 AcquiringInstitutionId = acquiringInstitutionId
-            }
-
-    module Create'NetworkData =
-        let create
-            (
-                acquiringInstitutionId: string option
-            ) : Create'NetworkData
-            =
-            {
-              AcquiringInstitutionId = acquiringInstitutionId
             }
 
     type Create'RiskAssessmentCardTestingRiskLevel =
@@ -2281,20 +1627,6 @@ module TestHelpersIssuingAuthorizations =
                 Level = level
             }
 
-    module Create'RiskAssessmentCardTestingRisk =
-        let create
-            (
-                invalidAccountNumberDeclineRatePastHour: int option,
-                invalidCredentialsDeclineRatePastHour: int option,
-                level: Create'RiskAssessmentCardTestingRiskLevel option
-            ) : Create'RiskAssessmentCardTestingRisk
-            =
-            {
-              InvalidAccountNumberDeclineRatePastHour = invalidAccountNumberDeclineRatePastHour
-              InvalidCredentialsDeclineRatePastHour = invalidCredentialsDeclineRatePastHour
-              Level = level
-            }
-
     type Create'RiskAssessmentFraudRiskLevel =
         | Elevated
         | Highest
@@ -2318,18 +1650,6 @@ module TestHelpersIssuingAuthorizations =
             {
                 Level = level
                 Score = score
-            }
-
-    module Create'RiskAssessmentFraudRisk =
-        let create
-            (
-                level: Create'RiskAssessmentFraudRiskLevel option,
-                score: decimal option
-            ) : Create'RiskAssessmentFraudRisk
-            =
-            {
-              Level = level
-              Score = score
             }
 
     type Create'RiskAssessmentMerchantDisputeRiskLevel =
@@ -2357,18 +1677,6 @@ module TestHelpersIssuingAuthorizations =
                 Level = level
             }
 
-    module Create'RiskAssessmentMerchantDisputeRisk =
-        let create
-            (
-                disputeRate: int option,
-                level: Create'RiskAssessmentMerchantDisputeRiskLevel option
-            ) : Create'RiskAssessmentMerchantDisputeRisk
-            =
-            {
-              DisputeRate = disputeRate
-              Level = level
-            }
-
     type Create'RiskAssessment =
         {
             /// Stripe's assessment of this authorization's likelihood of being card testing activity.
@@ -2388,20 +1696,6 @@ module TestHelpersIssuingAuthorizations =
                 CardTestingRisk = cardTestingRisk
                 FraudRisk = fraudRisk
                 MerchantDisputeRisk = merchantDisputeRisk
-            }
-
-    module Create'RiskAssessment =
-        let create
-            (
-                cardTestingRisk: Create'RiskAssessmentCardTestingRisk option,
-                fraudRisk: Create'RiskAssessmentFraudRisk option,
-                merchantDisputeRisk: Create'RiskAssessmentMerchantDisputeRisk option
-            ) : Create'RiskAssessment
-            =
-            {
-              CardTestingRisk = cardTestingRisk
-              FraudRisk = fraudRisk
-              MerchantDisputeRisk = merchantDisputeRisk
             }
 
     type Create'VerificationDataAddressLine1Check =
@@ -2440,18 +1734,6 @@ module TestHelpersIssuingAuthorizations =
                 Type = type'
             }
 
-    module Create'VerificationDataAuthenticationExemption =
-        let create
-            (
-                claimedBy: Create'VerificationDataAuthenticationExemptionClaimedBy option,
-                type': Create'VerificationDataAuthenticationExemptionType option
-            ) : Create'VerificationDataAuthenticationExemption
-            =
-            {
-              ClaimedBy = claimedBy
-              Type = type'
-            }
-
     type Create'VerificationDataCvcCheck =
         | Match
         | Mismatch
@@ -2479,16 +1761,6 @@ module TestHelpersIssuingAuthorizations =
         static member New(?result: Create'VerificationDataThreeDSecureResult) =
             {
                 Result = result
-            }
-
-    module Create'VerificationDataThreeDSecure =
-        let create
-            (
-                result: Create'VerificationDataThreeDSecureResult option
-            ) : Create'VerificationDataThreeDSecure
-            =
-            {
-              Result = result
             }
 
     type Create'VerificationData =
@@ -2522,26 +1794,6 @@ module TestHelpersIssuingAuthorizations =
                 CvcCheck = cvcCheck
                 ExpiryCheck = expiryCheck
                 ThreeDSecure = threeDSecure
-            }
-
-    module Create'VerificationData =
-        let create
-            (
-                addressLine1Check: Create'VerificationDataAddressLine1Check option,
-                addressPostalCodeCheck: Create'VerificationDataAddressPostalCodeCheck option,
-                authenticationExemption: Create'VerificationDataAuthenticationExemption option,
-                cvcCheck: Create'VerificationDataCvcCheck option,
-                expiryCheck: Create'VerificationDataExpiryCheck option,
-                threeDSecure: Create'VerificationDataThreeDSecure option
-            ) : Create'VerificationData
-            =
-            {
-              AddressLine1Check = addressLine1Check
-              AddressPostalCodeCheck = addressPostalCodeCheck
-              AuthenticationExemption = authenticationExemption
-              CvcCheck = cvcCheck
-              ExpiryCheck = expiryCheck
-              ThreeDSecure = threeDSecure
             }
 
     type Create'Wallet =
@@ -2626,32 +1878,6 @@ module TestHelpersIssuingAuthorizations =
                 Wallet = wallet
             }
 
-    module CreateOptions =
-        let create
-            (
-                card: string
-            ) : CreateOptions
-            =
-            {
-              Card = card
-              Amount = None
-              AmountDetails = None
-              AuthorizationMethod = None
-              Currency = None
-              Expand = None
-              Fleet = None
-              FraudDisputabilityLikelihood = None
-              Fuel = None
-              IsAmountControllable = None
-              MerchantAmount = None
-              MerchantCurrency = None
-              MerchantData = None
-              NetworkData = None
-              RiskAssessment = None
-              VerificationData = None
-              Wallet = None
-            }
-
     ///<p>Create a test-mode authorization.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/test_helpers/issuing/authorizations"
@@ -2688,24 +1914,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 VehicleNumber = vehicleNumber
             }
 
-    module Capture'PurchaseDetailsFleetCardholderPromptData =
-        let create
-            (
-                driverId: string option,
-                odometer: int option,
-                unspecifiedId: string option,
-                userId: string option,
-                vehicleNumber: string option
-            ) : Capture'PurchaseDetailsFleetCardholderPromptData
-            =
-            {
-              DriverId = driverId
-              Odometer = odometer
-              UnspecifiedId = unspecifiedId
-              UserId = userId
-              VehicleNumber = vehicleNumber
-            }
-
     type Capture'PurchaseDetailsFleetPurchaseType =
         | FuelAndNonFuelPurchase
         | FuelPurchase
@@ -2724,16 +1932,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 GrossAmountDecimal = grossAmountDecimal
             }
 
-    module Capture'PurchaseDetailsFleetReportedBreakdownFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : Capture'PurchaseDetailsFleetReportedBreakdownFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
-            }
-
     type Capture'PurchaseDetailsFleetReportedBreakdownNonFuel =
         {
             /// Gross non-fuel amount that should equal the sum of the line items, inclusive of taxes.
@@ -2745,16 +1943,6 @@ module TestHelpersIssuingAuthorizationsCapture =
         static member New(?grossAmountDecimal: string) =
             {
                 GrossAmountDecimal = grossAmountDecimal
-            }
-
-    module Capture'PurchaseDetailsFleetReportedBreakdownNonFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : Capture'PurchaseDetailsFleetReportedBreakdownNonFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
             }
 
     type Capture'PurchaseDetailsFleetReportedBreakdownTax =
@@ -2772,18 +1960,6 @@ module TestHelpersIssuingAuthorizationsCapture =
             {
                 LocalAmountDecimal = localAmountDecimal
                 NationalAmountDecimal = nationalAmountDecimal
-            }
-
-    module Capture'PurchaseDetailsFleetReportedBreakdownTax =
-        let create
-            (
-                localAmountDecimal: string option,
-                nationalAmountDecimal: string option
-            ) : Capture'PurchaseDetailsFleetReportedBreakdownTax
-            =
-            {
-              LocalAmountDecimal = localAmountDecimal
-              NationalAmountDecimal = nationalAmountDecimal
             }
 
     type Capture'PurchaseDetailsFleetReportedBreakdown =
@@ -2805,20 +1981,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 Fuel = fuel
                 NonFuel = nonFuel
                 Tax = tax
-            }
-
-    module Capture'PurchaseDetailsFleetReportedBreakdown =
-        let create
-            (
-                fuel: Capture'PurchaseDetailsFleetReportedBreakdownFuel option,
-                nonFuel: Capture'PurchaseDetailsFleetReportedBreakdownNonFuel option,
-                tax: Capture'PurchaseDetailsFleetReportedBreakdownTax option
-            ) : Capture'PurchaseDetailsFleetReportedBreakdown
-            =
-            {
-              Fuel = fuel
-              NonFuel = nonFuel
-              Tax = tax
             }
 
     type Capture'PurchaseDetailsFleetServiceType =
@@ -2849,22 +2011,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 PurchaseType = purchaseType
                 ReportedBreakdown = reportedBreakdown
                 ServiceType = serviceType
-            }
-
-    module Capture'PurchaseDetailsFleet =
-        let create
-            (
-                cardholderPromptData: Capture'PurchaseDetailsFleetCardholderPromptData option,
-                purchaseType: Capture'PurchaseDetailsFleetPurchaseType option,
-                reportedBreakdown: Capture'PurchaseDetailsFleetReportedBreakdown option,
-                serviceType: Capture'PurchaseDetailsFleetServiceType option
-            ) : Capture'PurchaseDetailsFleet
-            =
-            {
-              CardholderPromptData = cardholderPromptData
-              PurchaseType = purchaseType
-              ReportedBreakdown = reportedBreakdown
-              ServiceType = serviceType
             }
 
     type Capture'PurchaseDetailsFlightSegments =
@@ -2900,26 +2046,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 StopoverAllowed = stopoverAllowed
             }
 
-    module Capture'PurchaseDetailsFlightSegments =
-        let create
-            (
-                arrivalAirportCode: string option,
-                carrier: string option,
-                departureAirportCode: string option,
-                flightNumber: string option,
-                serviceClass: string option,
-                stopoverAllowed: bool option
-            ) : Capture'PurchaseDetailsFlightSegments
-            =
-            {
-              ArrivalAirportCode = arrivalAirportCode
-              Carrier = carrier
-              DepartureAirportCode = departureAirportCode
-              FlightNumber = flightNumber
-              ServiceClass = serviceClass
-              StopoverAllowed = stopoverAllowed
-            }
-
     type Capture'PurchaseDetailsFlight =
         {
             /// The time that the flight departed.
@@ -2947,24 +2073,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 Refundable = refundable
                 Segments = segments
                 TravelAgency = travelAgency
-            }
-
-    module Capture'PurchaseDetailsFlight =
-        let create
-            (
-                departureAt: DateTime option,
-                passengerName: string option,
-                refundable: bool option,
-                segments: Capture'PurchaseDetailsFlightSegments list option,
-                travelAgency: string option
-            ) : Capture'PurchaseDetailsFlight
-            =
-            {
-              DepartureAt = departureAt
-              PassengerName = passengerName
-              Refundable = refundable
-              Segments = segments
-              TravelAgency = travelAgency
             }
 
     type Capture'PurchaseDetailsFuelType =
@@ -3013,24 +2121,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 UnitCostDecimal = unitCostDecimal
             }
 
-    module Capture'PurchaseDetailsFuel =
-        let create
-            (
-                industryProductCode: string option,
-                quantityDecimal: string option,
-                type': Capture'PurchaseDetailsFuelType option,
-                unit: Capture'PurchaseDetailsFuelUnit option,
-                unitCostDecimal: string option
-            ) : Capture'PurchaseDetailsFuel
-            =
-            {
-              IndustryProductCode = industryProductCode
-              QuantityDecimal = quantityDecimal
-              Type = type'
-              Unit = unit
-              UnitCostDecimal = unitCostDecimal
-            }
-
     type Capture'PurchaseDetailsLodging =
         {
             /// The time of checking into the lodging.
@@ -3046,18 +2136,6 @@ module TestHelpersIssuingAuthorizationsCapture =
             {
                 CheckInAt = checkInAt
                 Nights = nights
-            }
-
-    module Capture'PurchaseDetailsLodging =
-        let create
-            (
-                checkInAt: DateTime option,
-                nights: int option
-            ) : Capture'PurchaseDetailsLodging
-            =
-            {
-              CheckInAt = checkInAt
-              Nights = nights
             }
 
     type Capture'PurchaseDetailsReceipt =
@@ -3077,22 +2155,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 Quantity = quantity
                 Total = total
                 UnitCost = unitCost
-            }
-
-    module Capture'PurchaseDetailsReceipt =
-        let create
-            (
-                description: string option,
-                quantity: string option,
-                total: int option,
-                unitCost: int option
-            ) : Capture'PurchaseDetailsReceipt
-            =
-            {
-              Description = description
-              Quantity = quantity
-              Total = total
-              UnitCost = unitCost
             }
 
     type Capture'PurchaseDetails =
@@ -3128,26 +2190,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 Reference = reference
             }
 
-    module Capture'PurchaseDetails =
-        let create
-            (
-                fleet: Capture'PurchaseDetailsFleet option,
-                flight: Capture'PurchaseDetailsFlight option,
-                fuel: Capture'PurchaseDetailsFuel option,
-                lodging: Capture'PurchaseDetailsLodging option,
-                receipt: Capture'PurchaseDetailsReceipt list option,
-                reference: string option
-            ) : Capture'PurchaseDetails
-            =
-            {
-              Fleet = fleet
-              Flight = flight
-              Fuel = fuel
-              Lodging = lodging
-              Receipt = receipt
-              Reference = reference
-            }
-
     type CaptureOptions =
         {
             [<Config.Path>]
@@ -3176,20 +2218,6 @@ module TestHelpersIssuingAuthorizationsCapture =
                 PurchaseDetails = purchaseDetails
             }
 
-    module CaptureOptions =
-        let create
-            (
-                authorization: string
-            ) : CaptureOptions
-            =
-            {
-              Authorization = authorization
-              CaptureAmount = None
-              CloseAuthorization = None
-              Expand = None
-              PurchaseDetails = None
-            }
-
     ///<p>Capture a test-mode authorization.</p>
     let Capture settings (options: CaptureOptions) =
         $"/v1/test_helpers/issuing/authorizations/{options.Authorization}/capture"
@@ -3211,17 +2239,6 @@ module TestHelpersIssuingAuthorizationsExpire =
             {
                 Authorization = authorization
                 Expand = expand
-            }
-
-    module ExpireOptions =
-        let create
-            (
-                authorization: string
-            ) : ExpireOptions
-            =
-            {
-              Authorization = authorization
-              Expand = None
             }
 
     ///<p>Expire a test-mode Authorization.</p>
@@ -3260,24 +2277,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
                 VehicleNumber = vehicleNumber
             }
 
-    module FinalizeAmount'FleetCardholderPromptData =
-        let create
-            (
-                driverId: string option,
-                odometer: int option,
-                unspecifiedId: string option,
-                userId: string option,
-                vehicleNumber: string option
-            ) : FinalizeAmount'FleetCardholderPromptData
-            =
-            {
-              DriverId = driverId
-              Odometer = odometer
-              UnspecifiedId = unspecifiedId
-              UserId = userId
-              VehicleNumber = vehicleNumber
-            }
-
     type FinalizeAmount'FleetPurchaseType =
         | FuelAndNonFuelPurchase
         | FuelPurchase
@@ -3296,16 +2295,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
                 GrossAmountDecimal = grossAmountDecimal
             }
 
-    module FinalizeAmount'FleetReportedBreakdownFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : FinalizeAmount'FleetReportedBreakdownFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
-            }
-
     type FinalizeAmount'FleetReportedBreakdownNonFuel =
         {
             /// Gross non-fuel amount that should equal the sum of the line items, inclusive of taxes.
@@ -3317,16 +2306,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
         static member New(?grossAmountDecimal: string) =
             {
                 GrossAmountDecimal = grossAmountDecimal
-            }
-
-    module FinalizeAmount'FleetReportedBreakdownNonFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : FinalizeAmount'FleetReportedBreakdownNonFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
             }
 
     type FinalizeAmount'FleetReportedBreakdownTax =
@@ -3344,18 +2323,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             {
                 LocalAmountDecimal = localAmountDecimal
                 NationalAmountDecimal = nationalAmountDecimal
-            }
-
-    module FinalizeAmount'FleetReportedBreakdownTax =
-        let create
-            (
-                localAmountDecimal: string option,
-                nationalAmountDecimal: string option
-            ) : FinalizeAmount'FleetReportedBreakdownTax
-            =
-            {
-              LocalAmountDecimal = localAmountDecimal
-              NationalAmountDecimal = nationalAmountDecimal
             }
 
     type FinalizeAmount'FleetReportedBreakdown =
@@ -3377,20 +2344,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
                 Fuel = fuel
                 NonFuel = nonFuel
                 Tax = tax
-            }
-
-    module FinalizeAmount'FleetReportedBreakdown =
-        let create
-            (
-                fuel: FinalizeAmount'FleetReportedBreakdownFuel option,
-                nonFuel: FinalizeAmount'FleetReportedBreakdownNonFuel option,
-                tax: FinalizeAmount'FleetReportedBreakdownTax option
-            ) : FinalizeAmount'FleetReportedBreakdown
-            =
-            {
-              Fuel = fuel
-              NonFuel = nonFuel
-              Tax = tax
             }
 
     type FinalizeAmount'FleetServiceType =
@@ -3421,22 +2374,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
                 PurchaseType = purchaseType
                 ReportedBreakdown = reportedBreakdown
                 ServiceType = serviceType
-            }
-
-    module FinalizeAmount'Fleet =
-        let create
-            (
-                cardholderPromptData: FinalizeAmount'FleetCardholderPromptData option,
-                purchaseType: FinalizeAmount'FleetPurchaseType option,
-                reportedBreakdown: FinalizeAmount'FleetReportedBreakdown option,
-                serviceType: FinalizeAmount'FleetServiceType option
-            ) : FinalizeAmount'Fleet
-            =
-            {
-              CardholderPromptData = cardholderPromptData
-              PurchaseType = purchaseType
-              ReportedBreakdown = reportedBreakdown
-              ServiceType = serviceType
             }
 
     type FinalizeAmount'FuelType =
@@ -3485,24 +2422,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
                 UnitCostDecimal = unitCostDecimal
             }
 
-    module FinalizeAmount'Fuel =
-        let create
-            (
-                industryProductCode: string option,
-                quantityDecimal: string option,
-                type': FinalizeAmount'FuelType option,
-                unit: FinalizeAmount'FuelUnit option,
-                unitCostDecimal: string option
-            ) : FinalizeAmount'Fuel
-            =
-            {
-              IndustryProductCode = industryProductCode
-              QuantityDecimal = quantityDecimal
-              Type = type'
-              Unit = unit
-              UnitCostDecimal = unitCostDecimal
-            }
-
     type FinalizeAmountOptions =
         {
             [<Config.Path>]
@@ -3531,21 +2450,6 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
                 Fuel = fuel
             }
 
-    module FinalizeAmountOptions =
-        let create
-            (
-                authorization: string,
-                finalAmount: int
-            ) : FinalizeAmountOptions
-            =
-            {
-              Authorization = authorization
-              FinalAmount = finalAmount
-              Expand = None
-              Fleet = None
-              Fuel = None
-            }
-
     ///<p>Finalize the amount on an Authorization prior to capture, when the initial authorization was for an estimated amount.</p>
     let FinalizeAmount settings (options: FinalizeAmountOptions) =
         $"/v1/test_helpers/issuing/authorizations/{options.Authorization}/finalize_amount"
@@ -3571,19 +2475,6 @@ module TestHelpersIssuingAuthorizationsFraudChallengesRespond =
                 Authorization = authorization
                 Confirmed = confirmed
                 Expand = expand
-            }
-
-    module RespondOptions =
-        let create
-            (
-                authorization: string,
-                confirmed: bool
-            ) : RespondOptions
-            =
-            {
-              Authorization = authorization
-              Confirmed = confirmed
-              Expand = None
             }
 
     ///<p>Respond to a fraud challenge on a testmode Issuing authorization, simulating either a confirmation of fraud or a correction of legitimacy.</p>
@@ -3617,20 +2508,6 @@ module TestHelpersIssuingAuthorizationsIncrement =
                 IsAmountControllable = isAmountControllable
             }
 
-    module IncrementOptions =
-        let create
-            (
-                authorization: string,
-                incrementAmount: int
-            ) : IncrementOptions
-            =
-            {
-              Authorization = authorization
-              IncrementAmount = incrementAmount
-              Expand = None
-              IsAmountControllable = None
-            }
-
     ///<p>Increment a test-mode Authorization.</p>
     let Increment settings (options: IncrementOptions) =
         $"/v1/test_helpers/issuing/authorizations/{options.Authorization}/increment"
@@ -3658,18 +2535,6 @@ module TestHelpersIssuingAuthorizationsReverse =
                 ReverseAmount = reverseAmount
             }
 
-    module ReverseOptions =
-        let create
-            (
-                authorization: string
-            ) : ReverseOptions
-            =
-            {
-              Authorization = authorization
-              Expand = None
-              ReverseAmount = None
-            }
-
     ///<p>Reverse a test-mode Authorization.</p>
     let Reverse settings (options: ReverseOptions) =
         $"/v1/test_helpers/issuing/authorizations/{options.Authorization}/reverse"
@@ -3691,17 +2556,6 @@ module TestHelpersIssuingCardsShippingDeliver =
             {
                 Card = card
                 Expand = expand
-            }
-
-    module DeliverCardOptions =
-        let create
-            (
-                card: string
-            ) : DeliverCardOptions
-            =
-            {
-              Card = card
-              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>delivered</code>.</p>
@@ -3727,17 +2581,6 @@ module TestHelpersIssuingCardsShippingFail =
                 Expand = expand
             }
 
-    module FailCardOptions =
-        let create
-            (
-                card: string
-            ) : FailCardOptions
-            =
-            {
-              Card = card
-              Expand = None
-            }
-
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>failure</code>.</p>
     let FailCard settings (options: FailCardOptions) =
         $"/v1/test_helpers/issuing/cards/{options.Card}/shipping/fail"
@@ -3759,17 +2602,6 @@ module TestHelpersIssuingCardsShippingReturn =
             {
                 Card = card
                 Expand = expand
-            }
-
-    module ReturnCardOptions =
-        let create
-            (
-                card: string
-            ) : ReturnCardOptions
-            =
-            {
-              Card = card
-              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>returned</code>.</p>
@@ -3795,17 +2627,6 @@ module TestHelpersIssuingCardsShippingShip =
                 Expand = expand
             }
 
-    module ShipCardOptions =
-        let create
-            (
-                card: string
-            ) : ShipCardOptions
-            =
-            {
-              Card = card
-              Expand = None
-            }
-
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>shipped</code>.</p>
     let ShipCard settings (options: ShipCardOptions) =
         $"/v1/test_helpers/issuing/cards/{options.Card}/shipping/ship"
@@ -3827,17 +2648,6 @@ module TestHelpersIssuingCardsShippingSubmit =
             {
                 Card = card
                 Expand = expand
-            }
-
-    module SubmitCardOptions =
-        let create
-            (
-                card: string
-            ) : SubmitCardOptions
-            =
-            {
-              Card = card
-              Expand = None
             }
 
     ///<p>Updates the shipping status of the specified Issuing <code>Card</code> object to <code>submitted</code>. This method requires Stripe Version ‘2024-09-30.acacia’ or later.</p>
@@ -3863,17 +2673,6 @@ module TestHelpersIssuingPersonalizationDesignsActivate =
                 Expand = expand
             }
 
-    module ActivateOptions =
-        let create
-            (
-                personalizationDesign: string
-            ) : ActivateOptions
-            =
-            {
-              PersonalizationDesign = personalizationDesign
-              Expand = None
-            }
-
     ///<p>Updates the <code>status</code> of the specified testmode personalization design object to <code>active</code>.</p>
     let Activate settings (options: ActivateOptions) =
         $"/v1/test_helpers/issuing/personalization_designs/{options.PersonalizationDesign}/activate"
@@ -3895,17 +2694,6 @@ module TestHelpersIssuingPersonalizationDesignsDeactivate =
             {
                 PersonalizationDesign = personalizationDesign
                 Expand = expand
-            }
-
-    module DeactivateOptions =
-        let create
-            (
-                personalizationDesign: string
-            ) : DeactivateOptions
-            =
-            {
-              PersonalizationDesign = personalizationDesign
-              Expand = None
             }
 
     ///<p>Updates the <code>status</code> of the specified testmode personalization design object to <code>inactive</code>.</p>
@@ -3951,18 +2739,6 @@ module TestHelpersIssuingPersonalizationDesignsReject =
                 CarrierText = carrierText
             }
 
-    module Reject'RejectionReasons =
-        let create
-            (
-                cardLogo: Reject'RejectionReasonsCardLogo list option,
-                carrierText: Reject'RejectionReasonsCarrierText list option
-            ) : Reject'RejectionReasons
-            =
-            {
-              CardLogo = cardLogo
-              CarrierText = carrierText
-            }
-
     type RejectOptions =
         {
             [<Config.Path>]
@@ -3981,19 +2757,6 @@ module TestHelpersIssuingPersonalizationDesignsReject =
                 PersonalizationDesign = personalizationDesign
                 RejectionReasons = rejectionReasons
                 Expand = expand
-            }
-
-    module RejectOptions =
-        let create
-            (
-                personalizationDesign: string,
-                rejectionReasons: Reject'RejectionReasons
-            ) : RejectOptions
-            =
-            {
-              PersonalizationDesign = personalizationDesign
-              RejectionReasons = rejectionReasons
-              Expand = None
             }
 
     ///<p>Updates the <code>status</code> of the specified testmode personalization design object to <code>rejected</code>.</p>
@@ -4344,32 +3107,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 Url = url
             }
 
-    module CreateForceCapture'MerchantData =
-        let create
-            (
-                category: CreateForceCapture'MerchantDataCategory option,
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                name: string option,
-                networkId: string option,
-                postalCode: string option,
-                state: string option,
-                terminalId: string option,
-                url: string option
-            ) : CreateForceCapture'MerchantData
-            =
-            {
-              Category = category
-              City = city
-              Country = country
-              Name = name
-              NetworkId = networkId
-              PostalCode = postalCode
-              State = state
-              TerminalId = terminalId
-              Url = url
-            }
-
     type CreateForceCapture'PurchaseDetailsFleetCardholderPromptData =
         {
             /// Driver ID.
@@ -4399,24 +3136,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 VehicleNumber = vehicleNumber
             }
 
-    module CreateForceCapture'PurchaseDetailsFleetCardholderPromptData =
-        let create
-            (
-                driverId: string option,
-                odometer: int option,
-                unspecifiedId: string option,
-                userId: string option,
-                vehicleNumber: string option
-            ) : CreateForceCapture'PurchaseDetailsFleetCardholderPromptData
-            =
-            {
-              DriverId = driverId
-              Odometer = odometer
-              UnspecifiedId = unspecifiedId
-              UserId = userId
-              VehicleNumber = vehicleNumber
-            }
-
     type CreateForceCapture'PurchaseDetailsFleetPurchaseType =
         | FuelAndNonFuelPurchase
         | FuelPurchase
@@ -4435,16 +3154,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 GrossAmountDecimal = grossAmountDecimal
             }
 
-    module CreateForceCapture'PurchaseDetailsFleetReportedBreakdownFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : CreateForceCapture'PurchaseDetailsFleetReportedBreakdownFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
-            }
-
     type CreateForceCapture'PurchaseDetailsFleetReportedBreakdownNonFuel =
         {
             /// Gross non-fuel amount that should equal the sum of the line items, inclusive of taxes.
@@ -4456,16 +3165,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
         static member New(?grossAmountDecimal: string) =
             {
                 GrossAmountDecimal = grossAmountDecimal
-            }
-
-    module CreateForceCapture'PurchaseDetailsFleetReportedBreakdownNonFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : CreateForceCapture'PurchaseDetailsFleetReportedBreakdownNonFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
             }
 
     type CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax =
@@ -4483,18 +3182,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             {
                 LocalAmountDecimal = localAmountDecimal
                 NationalAmountDecimal = nationalAmountDecimal
-            }
-
-    module CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax =
-        let create
-            (
-                localAmountDecimal: string option,
-                nationalAmountDecimal: string option
-            ) : CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax
-            =
-            {
-              LocalAmountDecimal = localAmountDecimal
-              NationalAmountDecimal = nationalAmountDecimal
             }
 
     type CreateForceCapture'PurchaseDetailsFleetReportedBreakdown =
@@ -4516,20 +3203,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 Fuel = fuel
                 NonFuel = nonFuel
                 Tax = tax
-            }
-
-    module CreateForceCapture'PurchaseDetailsFleetReportedBreakdown =
-        let create
-            (
-                fuel: CreateForceCapture'PurchaseDetailsFleetReportedBreakdownFuel option,
-                nonFuel: CreateForceCapture'PurchaseDetailsFleetReportedBreakdownNonFuel option,
-                tax: CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax option
-            ) : CreateForceCapture'PurchaseDetailsFleetReportedBreakdown
-            =
-            {
-              Fuel = fuel
-              NonFuel = nonFuel
-              Tax = tax
             }
 
     type CreateForceCapture'PurchaseDetailsFleetServiceType =
@@ -4560,22 +3233,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 PurchaseType = purchaseType
                 ReportedBreakdown = reportedBreakdown
                 ServiceType = serviceType
-            }
-
-    module CreateForceCapture'PurchaseDetailsFleet =
-        let create
-            (
-                cardholderPromptData: CreateForceCapture'PurchaseDetailsFleetCardholderPromptData option,
-                purchaseType: CreateForceCapture'PurchaseDetailsFleetPurchaseType option,
-                reportedBreakdown: CreateForceCapture'PurchaseDetailsFleetReportedBreakdown option,
-                serviceType: CreateForceCapture'PurchaseDetailsFleetServiceType option
-            ) : CreateForceCapture'PurchaseDetailsFleet
-            =
-            {
-              CardholderPromptData = cardholderPromptData
-              PurchaseType = purchaseType
-              ReportedBreakdown = reportedBreakdown
-              ServiceType = serviceType
             }
 
     type CreateForceCapture'PurchaseDetailsFlightSegments =
@@ -4611,26 +3268,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 StopoverAllowed = stopoverAllowed
             }
 
-    module CreateForceCapture'PurchaseDetailsFlightSegments =
-        let create
-            (
-                arrivalAirportCode: string option,
-                carrier: string option,
-                departureAirportCode: string option,
-                flightNumber: string option,
-                serviceClass: string option,
-                stopoverAllowed: bool option
-            ) : CreateForceCapture'PurchaseDetailsFlightSegments
-            =
-            {
-              ArrivalAirportCode = arrivalAirportCode
-              Carrier = carrier
-              DepartureAirportCode = departureAirportCode
-              FlightNumber = flightNumber
-              ServiceClass = serviceClass
-              StopoverAllowed = stopoverAllowed
-            }
-
     type CreateForceCapture'PurchaseDetailsFlight =
         {
             /// The time that the flight departed.
@@ -4658,24 +3295,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 Refundable = refundable
                 Segments = segments
                 TravelAgency = travelAgency
-            }
-
-    module CreateForceCapture'PurchaseDetailsFlight =
-        let create
-            (
-                departureAt: DateTime option,
-                passengerName: string option,
-                refundable: bool option,
-                segments: CreateForceCapture'PurchaseDetailsFlightSegments list option,
-                travelAgency: string option
-            ) : CreateForceCapture'PurchaseDetailsFlight
-            =
-            {
-              DepartureAt = departureAt
-              PassengerName = passengerName
-              Refundable = refundable
-              Segments = segments
-              TravelAgency = travelAgency
             }
 
     type CreateForceCapture'PurchaseDetailsFuelType =
@@ -4724,24 +3343,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 UnitCostDecimal = unitCostDecimal
             }
 
-    module CreateForceCapture'PurchaseDetailsFuel =
-        let create
-            (
-                industryProductCode: string option,
-                quantityDecimal: string option,
-                type': CreateForceCapture'PurchaseDetailsFuelType option,
-                unit: CreateForceCapture'PurchaseDetailsFuelUnit option,
-                unitCostDecimal: string option
-            ) : CreateForceCapture'PurchaseDetailsFuel
-            =
-            {
-              IndustryProductCode = industryProductCode
-              QuantityDecimal = quantityDecimal
-              Type = type'
-              Unit = unit
-              UnitCostDecimal = unitCostDecimal
-            }
-
     type CreateForceCapture'PurchaseDetailsLodging =
         {
             /// The time of checking into the lodging.
@@ -4757,18 +3358,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             {
                 CheckInAt = checkInAt
                 Nights = nights
-            }
-
-    module CreateForceCapture'PurchaseDetailsLodging =
-        let create
-            (
-                checkInAt: DateTime option,
-                nights: int option
-            ) : CreateForceCapture'PurchaseDetailsLodging
-            =
-            {
-              CheckInAt = checkInAt
-              Nights = nights
             }
 
     type CreateForceCapture'PurchaseDetailsReceipt =
@@ -4788,22 +3377,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 Quantity = quantity
                 Total = total
                 UnitCost = unitCost
-            }
-
-    module CreateForceCapture'PurchaseDetailsReceipt =
-        let create
-            (
-                description: string option,
-                quantity: string option,
-                total: int option,
-                unitCost: int option
-            ) : CreateForceCapture'PurchaseDetailsReceipt
-            =
-            {
-              Description = description
-              Quantity = quantity
-              Total = total
-              UnitCost = unitCost
             }
 
     type CreateForceCapture'PurchaseDetails =
@@ -4839,26 +3412,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 Reference = reference
             }
 
-    module CreateForceCapture'PurchaseDetails =
-        let create
-            (
-                fleet: CreateForceCapture'PurchaseDetailsFleet option,
-                flight: CreateForceCapture'PurchaseDetailsFlight option,
-                fuel: CreateForceCapture'PurchaseDetailsFuel option,
-                lodging: CreateForceCapture'PurchaseDetailsLodging option,
-                receipt: CreateForceCapture'PurchaseDetailsReceipt list option,
-                reference: string option
-            ) : CreateForceCapture'PurchaseDetails
-            =
-            {
-              Fleet = fleet
-              Flight = flight
-              Fuel = fuel
-              Lodging = lodging
-              Receipt = receipt
-              Reference = reference
-            }
-
     type CreateForceCaptureOptions =
         {
             /// The total amount to attempt to capture. This amount is in the provided currency, or defaults to the cards currency, and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
@@ -4890,22 +3443,6 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
                 Expand = expand
                 MerchantData = merchantData
                 PurchaseDetails = purchaseDetails
-            }
-
-    module CreateForceCaptureOptions =
-        let create
-            (
-                amount: int,
-                card: string
-            ) : CreateForceCaptureOptions
-            =
-            {
-              Amount = amount
-              Card = card
-              Currency = None
-              Expand = None
-              MerchantData = None
-              PurchaseDetails = None
             }
 
     ///<p>Allows the user to capture an arbitrary amount, also known as a forced capture.</p>
@@ -5256,32 +3793,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 Url = url
             }
 
-    module CreateUnlinkedRefund'MerchantData =
-        let create
-            (
-                category: CreateUnlinkedRefund'MerchantDataCategory option,
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                name: string option,
-                networkId: string option,
-                postalCode: string option,
-                state: string option,
-                terminalId: string option,
-                url: string option
-            ) : CreateUnlinkedRefund'MerchantData
-            =
-            {
-              Category = category
-              City = city
-              Country = country
-              Name = name
-              NetworkId = networkId
-              PostalCode = postalCode
-              State = state
-              TerminalId = terminalId
-              Url = url
-            }
-
     type CreateUnlinkedRefund'PurchaseDetailsFleetCardholderPromptData =
         {
             /// Driver ID.
@@ -5311,24 +3822,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 VehicleNumber = vehicleNumber
             }
 
-    module CreateUnlinkedRefund'PurchaseDetailsFleetCardholderPromptData =
-        let create
-            (
-                driverId: string option,
-                odometer: int option,
-                unspecifiedId: string option,
-                userId: string option,
-                vehicleNumber: string option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFleetCardholderPromptData
-            =
-            {
-              DriverId = driverId
-              Odometer = odometer
-              UnspecifiedId = unspecifiedId
-              UserId = userId
-              VehicleNumber = vehicleNumber
-            }
-
     type CreateUnlinkedRefund'PurchaseDetailsFleetPurchaseType =
         | FuelAndNonFuelPurchase
         | FuelPurchase
@@ -5347,16 +3840,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 GrossAmountDecimal = grossAmountDecimal
             }
 
-    module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
-            }
-
     type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownNonFuel =
         {
             /// Gross non-fuel amount that should equal the sum of the line items, inclusive of taxes.
@@ -5368,16 +3851,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
         static member New(?grossAmountDecimal: string) =
             {
                 GrossAmountDecimal = grossAmountDecimal
-            }
-
-    module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownNonFuel =
-        let create
-            (
-                grossAmountDecimal: string option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownNonFuel
-            =
-            {
-              GrossAmountDecimal = grossAmountDecimal
             }
 
     type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax =
@@ -5395,18 +3868,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             {
                 LocalAmountDecimal = localAmountDecimal
                 NationalAmountDecimal = nationalAmountDecimal
-            }
-
-    module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax =
-        let create
-            (
-                localAmountDecimal: string option,
-                nationalAmountDecimal: string option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax
-            =
-            {
-              LocalAmountDecimal = localAmountDecimal
-              NationalAmountDecimal = nationalAmountDecimal
             }
 
     type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdown =
@@ -5428,20 +3889,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 Fuel = fuel
                 NonFuel = nonFuel
                 Tax = tax
-            }
-
-    module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdown =
-        let create
-            (
-                fuel: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownFuel option,
-                nonFuel: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownNonFuel option,
-                tax: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdown
-            =
-            {
-              Fuel = fuel
-              NonFuel = nonFuel
-              Tax = tax
             }
 
     type CreateUnlinkedRefund'PurchaseDetailsFleetServiceType =
@@ -5472,22 +3919,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 PurchaseType = purchaseType
                 ReportedBreakdown = reportedBreakdown
                 ServiceType = serviceType
-            }
-
-    module CreateUnlinkedRefund'PurchaseDetailsFleet =
-        let create
-            (
-                cardholderPromptData: CreateUnlinkedRefund'PurchaseDetailsFleetCardholderPromptData option,
-                purchaseType: CreateUnlinkedRefund'PurchaseDetailsFleetPurchaseType option,
-                reportedBreakdown: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdown option,
-                serviceType: CreateUnlinkedRefund'PurchaseDetailsFleetServiceType option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFleet
-            =
-            {
-              CardholderPromptData = cardholderPromptData
-              PurchaseType = purchaseType
-              ReportedBreakdown = reportedBreakdown
-              ServiceType = serviceType
             }
 
     type CreateUnlinkedRefund'PurchaseDetailsFlightSegments =
@@ -5523,26 +3954,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 StopoverAllowed = stopoverAllowed
             }
 
-    module CreateUnlinkedRefund'PurchaseDetailsFlightSegments =
-        let create
-            (
-                arrivalAirportCode: string option,
-                carrier: string option,
-                departureAirportCode: string option,
-                flightNumber: string option,
-                serviceClass: string option,
-                stopoverAllowed: bool option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFlightSegments
-            =
-            {
-              ArrivalAirportCode = arrivalAirportCode
-              Carrier = carrier
-              DepartureAirportCode = departureAirportCode
-              FlightNumber = flightNumber
-              ServiceClass = serviceClass
-              StopoverAllowed = stopoverAllowed
-            }
-
     type CreateUnlinkedRefund'PurchaseDetailsFlight =
         {
             /// The time that the flight departed.
@@ -5570,24 +3981,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 Refundable = refundable
                 Segments = segments
                 TravelAgency = travelAgency
-            }
-
-    module CreateUnlinkedRefund'PurchaseDetailsFlight =
-        let create
-            (
-                departureAt: DateTime option,
-                passengerName: string option,
-                refundable: bool option,
-                segments: CreateUnlinkedRefund'PurchaseDetailsFlightSegments list option,
-                travelAgency: string option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFlight
-            =
-            {
-              DepartureAt = departureAt
-              PassengerName = passengerName
-              Refundable = refundable
-              Segments = segments
-              TravelAgency = travelAgency
             }
 
     type CreateUnlinkedRefund'PurchaseDetailsFuelType =
@@ -5636,24 +4029,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 UnitCostDecimal = unitCostDecimal
             }
 
-    module CreateUnlinkedRefund'PurchaseDetailsFuel =
-        let create
-            (
-                industryProductCode: string option,
-                quantityDecimal: string option,
-                type': CreateUnlinkedRefund'PurchaseDetailsFuelType option,
-                unit: CreateUnlinkedRefund'PurchaseDetailsFuelUnit option,
-                unitCostDecimal: string option
-            ) : CreateUnlinkedRefund'PurchaseDetailsFuel
-            =
-            {
-              IndustryProductCode = industryProductCode
-              QuantityDecimal = quantityDecimal
-              Type = type'
-              Unit = unit
-              UnitCostDecimal = unitCostDecimal
-            }
-
     type CreateUnlinkedRefund'PurchaseDetailsLodging =
         {
             /// The time of checking into the lodging.
@@ -5669,18 +4044,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             {
                 CheckInAt = checkInAt
                 Nights = nights
-            }
-
-    module CreateUnlinkedRefund'PurchaseDetailsLodging =
-        let create
-            (
-                checkInAt: DateTime option,
-                nights: int option
-            ) : CreateUnlinkedRefund'PurchaseDetailsLodging
-            =
-            {
-              CheckInAt = checkInAt
-              Nights = nights
             }
 
     type CreateUnlinkedRefund'PurchaseDetailsReceipt =
@@ -5700,22 +4063,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 Quantity = quantity
                 Total = total
                 UnitCost = unitCost
-            }
-
-    module CreateUnlinkedRefund'PurchaseDetailsReceipt =
-        let create
-            (
-                description: string option,
-                quantity: string option,
-                total: int option,
-                unitCost: int option
-            ) : CreateUnlinkedRefund'PurchaseDetailsReceipt
-            =
-            {
-              Description = description
-              Quantity = quantity
-              Total = total
-              UnitCost = unitCost
             }
 
     type CreateUnlinkedRefund'PurchaseDetails =
@@ -5751,26 +4098,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 Reference = reference
             }
 
-    module CreateUnlinkedRefund'PurchaseDetails =
-        let create
-            (
-                fleet: CreateUnlinkedRefund'PurchaseDetailsFleet option,
-                flight: CreateUnlinkedRefund'PurchaseDetailsFlight option,
-                fuel: CreateUnlinkedRefund'PurchaseDetailsFuel option,
-                lodging: CreateUnlinkedRefund'PurchaseDetailsLodging option,
-                receipt: CreateUnlinkedRefund'PurchaseDetailsReceipt list option,
-                reference: string option
-            ) : CreateUnlinkedRefund'PurchaseDetails
-            =
-            {
-              Fleet = fleet
-              Flight = flight
-              Fuel = fuel
-              Lodging = lodging
-              Receipt = receipt
-              Reference = reference
-            }
-
     type CreateUnlinkedRefundOptions =
         {
             /// The total amount to attempt to refund. This amount is in the provided currency, or defaults to the cards currency, and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
@@ -5804,22 +4131,6 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
                 PurchaseDetails = purchaseDetails
             }
 
-    module CreateUnlinkedRefundOptions =
-        let create
-            (
-                amount: int,
-                card: string
-            ) : CreateUnlinkedRefundOptions
-            =
-            {
-              Amount = amount
-              Card = card
-              Currency = None
-              Expand = None
-              MerchantData = None
-              PurchaseDetails = None
-            }
-
     ///<p>Allows the user to refund an arbitrary amount, also known as a unlinked refund.</p>
     let CreateUnlinkedRefund settings (options: CreateUnlinkedRefundOptions) =
         $"/v1/test_helpers/issuing/transactions/create_unlinked_refund"
@@ -5847,18 +4158,6 @@ module TestHelpersIssuingTransactionsRefund =
                 RefundAmount = refundAmount
             }
 
-    module RefundOptions =
-        let create
-            (
-                transaction: string
-            ) : RefundOptions
-            =
-            {
-              Transaction = transaction
-              Expand = None
-              RefundAmount = None
-            }
-
     ///<p>Refund a test-mode Transaction.</p>
     let Refund settings (options: RefundOptions) =
         $"/v1/test_helpers/issuing/transactions/{options.Transaction}/refund"
@@ -5880,17 +4179,6 @@ module TestHelpersRefundsExpire =
             {
                 Refund = refund
                 Expand = expand
-            }
-
-    module ExpireOptions =
-        let create
-            (
-                refund: string
-            ) : ExpireOptions
-            =
-            {
-              Refund = refund
-              Expand = None
             }
 
     ///<p>Expire a refund with a status of <code>requires_action</code>.</p>
@@ -5925,22 +4213,6 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
                 Number = number
             }
 
-    module PresentPaymentMethod'Card =
-        let create
-            (
-                cvc: string option,
-                expMonth: int option,
-                expYear: int option,
-                number: string option
-            ) : PresentPaymentMethod'Card
-            =
-            {
-              Cvc = cvc
-              ExpMonth = expMonth
-              ExpYear = expYear
-              Number = number
-            }
-
     type PresentPaymentMethod'CardPresent =
         {
             /// The card number, as a string without any separators.
@@ -5954,16 +4226,6 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
                 Number = number
             }
 
-    module PresentPaymentMethod'CardPresent =
-        let create
-            (
-                number: string option
-            ) : PresentPaymentMethod'CardPresent
-            =
-            {
-              Number = number
-            }
-
     type PresentPaymentMethod'InteracPresent =
         {
             /// The Interac card number.
@@ -5975,16 +4237,6 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
         static member New(?number: string) =
             {
                 Number = number
-            }
-
-    module PresentPaymentMethod'InteracPresent =
-        let create
-            (
-                number: string option
-            ) : PresentPaymentMethod'InteracPresent
-            =
-            {
-              Number = number
             }
 
     type PresentPaymentMethod'Type =
@@ -6028,22 +4280,6 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
                 Type = type'
             }
 
-    module PresentPaymentMethodOptions =
-        let create
-            (
-                reader: string
-            ) : PresentPaymentMethodOptions
-            =
-            {
-              Reader = reader
-              AmountTip = None
-              Card = None
-              CardPresent = None
-              Expand = None
-              InteracPresent = None
-              Type = None
-            }
-
     ///<p>Presents a payment method on a simulated reader. Can be used to simulate accepting a payment, saving a card or refunding a transaction.</p>
     let PresentPaymentMethod settings (options: PresentPaymentMethodOptions) =
         $"/v1/test_helpers/terminal/readers/{options.Reader}/present_payment_method"
@@ -6075,18 +4311,6 @@ module TestHelpersTerminalReadersSucceedInputCollection =
                 SkipNonRequiredInputs = skipNonRequiredInputs
             }
 
-    module SucceedInputCollectionOptions =
-        let create
-            (
-                reader: string
-            ) : SucceedInputCollectionOptions
-            =
-            {
-              Reader = reader
-              Expand = None
-              SkipNonRequiredInputs = None
-            }
-
     ///<p>Use this endpoint to trigger a successful input collection on a simulated reader.</p>
     let SucceedInputCollection settings (options: SucceedInputCollectionOptions) =
         $"/v1/test_helpers/terminal/readers/{options.Reader}/succeed_input_collection"
@@ -6108,17 +4332,6 @@ module TestHelpersTerminalReadersTimeoutInputCollection =
             {
                 Reader = reader
                 Expand = expand
-            }
-
-    module TimeoutInputCollectionOptions =
-        let create
-            (
-                reader: string
-            ) : TimeoutInputCollectionOptions
-            =
-            {
-              Reader = reader
-              Expand = None
             }
 
     ///<p>Use this endpoint to complete an input collection with a timeout error on a simulated reader.</p>
@@ -6153,22 +4366,6 @@ module TestHelpersTestClocks =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -6190,18 +4387,6 @@ module TestHelpersTestClocks =
                 Name = name
             }
 
-    module CreateOptions =
-        let create
-            (
-                frozenTime: DateTime
-            ) : CreateOptions
-            =
-            {
-              FrozenTime = frozenTime
-              Expand = None
-              Name = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           TestClock: string }
@@ -6210,16 +4395,6 @@ module TestHelpersTestClocks =
         static member New(testClock: string) =
             {
                 TestClock = testClock
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                testClock: string
-            ) : DeleteOptions
-            =
-            {
-              TestClock = testClock
             }
 
     type RetrieveOptions =
@@ -6236,17 +4411,6 @@ module TestHelpersTestClocks =
             {
                 TestClock = testClock
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                testClock: string
-            ) : RetrieveOptions
-            =
-            {
-              TestClock = testClock
-              Expand = None
             }
 
     ///<p>Returns a list of your test clocks.</p>
@@ -6293,19 +4457,6 @@ module TestHelpersTestClocksAdvance =
                 Expand = expand
             }
 
-    module AdvanceOptions =
-        let create
-            (
-                frozenTime: DateTime,
-                testClock: string
-            ) : AdvanceOptions
-            =
-            {
-              FrozenTime = frozenTime
-              TestClock = testClock
-              Expand = None
-            }
-
     ///<p>Starts advancing a test clock to a specified time in the future. Advancement is done when status changes to <code>Ready</code>.</p>
     let Advance settings (options: AdvanceOptions) =
         $"/v1/test_helpers/test_clocks/{options.TestClock}/advance"
@@ -6341,16 +4492,6 @@ module TestHelpersTreasuryInboundTransfersFail =
                 Code = code
             }
 
-    module Fail'FailureDetails =
-        let create
-            (
-                code: Fail'FailureDetailsCode option
-            ) : Fail'FailureDetails
-            =
-            {
-              Code = code
-            }
-
     type FailOptions =
         {
             [<Config.Path>]
@@ -6369,18 +4510,6 @@ module TestHelpersTreasuryInboundTransfersFail =
                 Id = id
                 Expand = expand
                 FailureDetails = failureDetails
-            }
-
-    module FailOptions =
-        let create
-            (
-                id: string
-            ) : FailOptions
-            =
-            {
-              Id = id
-              Expand = None
-              FailureDetails = None
             }
 
     ///<p>Transitions a test mode created InboundTransfer to the <code>failed</code> status. The InboundTransfer must already be in the <code>processing</code> state.</p>
@@ -6406,17 +4535,6 @@ module TestHelpersTreasuryInboundTransfersReturn =
                 Expand = expand
             }
 
-    module ReturnInboundTransferOptions =
-        let create
-            (
-                id: string
-            ) : ReturnInboundTransferOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>Marks the test mode InboundTransfer object as returned and links the InboundTransfer to a ReceivedDebit. The InboundTransfer must already be in the <code>succeeded</code> state.</p>
     let ReturnInboundTransfer settings (options: ReturnInboundTransferOptions) =
         $"/v1/test_helpers/treasury/inbound_transfers/{options.Id}/return"
@@ -6440,17 +4558,6 @@ module TestHelpersTreasuryInboundTransfersSucceed =
                 Expand = expand
             }
 
-    module SucceedOptions =
-        let create
-            (
-                id: string
-            ) : SucceedOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>Transitions a test mode created InboundTransfer to the <code>succeeded</code> status. The InboundTransfer must already be in the <code>processing</code> state.</p>
     let Succeed settings (options: SucceedOptions) =
         $"/v1/test_helpers/treasury/inbound_transfers/{options.Id}/succeed"
@@ -6469,16 +4576,6 @@ module TestHelpersTreasuryOutboundPayments =
         static member New(?traceId: string) =
             {
                 TraceId = traceId
-            }
-
-    module Update'TrackingDetailsAch =
-        let create
-            (
-                traceId: string option
-            ) : Update'TrackingDetailsAch
-            =
-            {
-              TraceId = traceId
             }
 
     type Update'TrackingDetailsType =
@@ -6506,20 +4603,6 @@ module TestHelpersTreasuryOutboundPayments =
                 Omad = omad
             }
 
-    module Update'TrackingDetailsUsDomesticWire =
-        let create
-            (
-                chips: string option,
-                imad: string option,
-                omad: string option
-            ) : Update'TrackingDetailsUsDomesticWire
-            =
-            {
-              Chips = chips
-              Imad = imad
-              Omad = omad
-            }
-
     type Update'TrackingDetails =
         {
             /// ACH network tracking details.
@@ -6541,20 +4624,6 @@ module TestHelpersTreasuryOutboundPayments =
                 UsDomesticWire = usDomesticWire
             }
 
-    module Update'TrackingDetails =
-        let create
-            (
-                ach: Update'TrackingDetailsAch option,
-                type': Update'TrackingDetailsType option,
-                usDomesticWire: Update'TrackingDetailsUsDomesticWire option
-            ) : Update'TrackingDetails
-            =
-            {
-              Ach = ach
-              Type = type'
-              UsDomesticWire = usDomesticWire
-            }
-
     type UpdateOptions =
         {
             [<Config.Path>]
@@ -6573,19 +4642,6 @@ module TestHelpersTreasuryOutboundPayments =
                 Id = id
                 TrackingDetails = trackingDetails
                 Expand = expand
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                id: string,
-                trackingDetails: Update'TrackingDetails
-            ) : UpdateOptions
-            =
-            {
-              Id = id
-              TrackingDetails = trackingDetails
-              Expand = None
             }
 
     ///<p>Updates a test mode created OutboundPayment with tracking details. The OutboundPayment must not be cancelable, and cannot be in the <code>canceled</code> or <code>failed</code> states.</p>
@@ -6611,17 +4667,6 @@ module TestHelpersTreasuryOutboundPaymentsFail =
                 Expand = expand
             }
 
-    module FailOptions =
-        let create
-            (
-                id: string
-            ) : FailOptions
-            =
-            {
-              Id = id
-              Expand = None
-            }
-
     ///<p>Transitions a test mode created OutboundPayment to the <code>failed</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
     let Fail settings (options: FailOptions) =
         $"/v1/test_helpers/treasury/outbound_payments/{options.Id}/fail"
@@ -6643,17 +4688,6 @@ module TestHelpersTreasuryOutboundPaymentsPost =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module PostOptions =
-        let create
-            (
-                id: string
-            ) : PostOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Transitions a test mode created OutboundPayment to the <code>posted</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
@@ -6688,16 +4722,6 @@ module TestHelpersTreasuryOutboundPaymentsReturn =
                 Code = code
             }
 
-    module ReturnOutboundPayment'ReturnedDetails =
-        let create
-            (
-                code: ReturnOutboundPayment'ReturnedDetailsCode option
-            ) : ReturnOutboundPayment'ReturnedDetails
-            =
-            {
-              Code = code
-            }
-
     type ReturnOutboundPaymentOptions =
         {
             [<Config.Path>]
@@ -6718,18 +4742,6 @@ module TestHelpersTreasuryOutboundPaymentsReturn =
                 ReturnedDetails = returnedDetails
             }
 
-    module ReturnOutboundPaymentOptions =
-        let create
-            (
-                id: string
-            ) : ReturnOutboundPaymentOptions
-            =
-            {
-              Id = id
-              Expand = None
-              ReturnedDetails = None
-            }
-
     ///<p>Transitions a test mode created OutboundPayment to the <code>returned</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
     let ReturnOutboundPayment settings (options: ReturnOutboundPaymentOptions) =
         $"/v1/test_helpers/treasury/outbound_payments/{options.Id}/return"
@@ -6748,16 +4760,6 @@ module TestHelpersTreasuryOutboundTransfers =
         static member New(?traceId: string) =
             {
                 TraceId = traceId
-            }
-
-    module Update'TrackingDetailsAch =
-        let create
-            (
-                traceId: string option
-            ) : Update'TrackingDetailsAch
-            =
-            {
-              TraceId = traceId
             }
 
     type Update'TrackingDetailsType =
@@ -6785,20 +4787,6 @@ module TestHelpersTreasuryOutboundTransfers =
                 Omad = omad
             }
 
-    module Update'TrackingDetailsUsDomesticWire =
-        let create
-            (
-                chips: string option,
-                imad: string option,
-                omad: string option
-            ) : Update'TrackingDetailsUsDomesticWire
-            =
-            {
-              Chips = chips
-              Imad = imad
-              Omad = omad
-            }
-
     type Update'TrackingDetails =
         {
             /// ACH network tracking details.
@@ -6820,20 +4808,6 @@ module TestHelpersTreasuryOutboundTransfers =
                 UsDomesticWire = usDomesticWire
             }
 
-    module Update'TrackingDetails =
-        let create
-            (
-                ach: Update'TrackingDetailsAch option,
-                type': Update'TrackingDetailsType option,
-                usDomesticWire: Update'TrackingDetailsUsDomesticWire option
-            ) : Update'TrackingDetails
-            =
-            {
-              Ach = ach
-              Type = type'
-              UsDomesticWire = usDomesticWire
-            }
-
     type UpdateOptions =
         {
             [<Config.Path>]
@@ -6852,19 +4826,6 @@ module TestHelpersTreasuryOutboundTransfers =
                 OutboundTransfer = outboundTransfer
                 TrackingDetails = trackingDetails
                 Expand = expand
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                outboundTransfer: string,
-                trackingDetails: Update'TrackingDetails
-            ) : UpdateOptions
-            =
-            {
-              OutboundTransfer = outboundTransfer
-              TrackingDetails = trackingDetails
-              Expand = None
             }
 
     ///<p>Updates a test mode created OutboundTransfer with tracking details. The OutboundTransfer must not be cancelable, and cannot be in the <code>canceled</code> or <code>failed</code> states.</p>
@@ -6890,17 +4851,6 @@ module TestHelpersTreasuryOutboundTransfersFail =
                 Expand = expand
             }
 
-    module FailOptions =
-        let create
-            (
-                outboundTransfer: string
-            ) : FailOptions
-            =
-            {
-              OutboundTransfer = outboundTransfer
-              Expand = None
-            }
-
     ///<p>Transitions a test mode created OutboundTransfer to the <code>failed</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
     let Fail settings (options: FailOptions) =
         $"/v1/test_helpers/treasury/outbound_transfers/{options.OutboundTransfer}/fail"
@@ -6922,17 +4872,6 @@ module TestHelpersTreasuryOutboundTransfersPost =
             {
                 OutboundTransfer = outboundTransfer
                 Expand = expand
-            }
-
-    module PostOptions =
-        let create
-            (
-                outboundTransfer: string
-            ) : PostOptions
-            =
-            {
-              OutboundTransfer = outboundTransfer
-              Expand = None
             }
 
     ///<p>Transitions a test mode created OutboundTransfer to the <code>posted</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
@@ -6967,16 +4906,6 @@ module TestHelpersTreasuryOutboundTransfersReturn =
                 Code = code
             }
 
-    module ReturnOutboundTransfer'ReturnedDetails =
-        let create
-            (
-                code: ReturnOutboundTransfer'ReturnedDetailsCode option
-            ) : ReturnOutboundTransfer'ReturnedDetails
-            =
-            {
-              Code = code
-            }
-
     type ReturnOutboundTransferOptions =
         {
             [<Config.Path>]
@@ -6995,18 +4924,6 @@ module TestHelpersTreasuryOutboundTransfersReturn =
                 OutboundTransfer = outboundTransfer
                 Expand = expand
                 ReturnedDetails = returnedDetails
-            }
-
-    module ReturnOutboundTransferOptions =
-        let create
-            (
-                outboundTransfer: string
-            ) : ReturnOutboundTransferOptions
-            =
-            {
-              OutboundTransfer = outboundTransfer
-              Expand = None
-              ReturnedDetails = None
             }
 
     ///<p>Transitions a test mode created OutboundTransfer to the <code>returned</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
@@ -7039,20 +4956,6 @@ module TestHelpersTreasuryReceivedCredits =
                 RoutingNumber = routingNumber
             }
 
-    module Create'InitiatingPaymentMethodDetailsUsBankAccount =
-        let create
-            (
-                accountHolderName: string option,
-                accountNumber: string option,
-                routingNumber: string option
-            ) : Create'InitiatingPaymentMethodDetailsUsBankAccount
-            =
-            {
-              AccountHolderName = accountHolderName
-              AccountNumber = accountNumber
-              RoutingNumber = routingNumber
-            }
-
     type Create'InitiatingPaymentMethodDetails =
         {
             /// The source type.
@@ -7068,18 +4971,6 @@ module TestHelpersTreasuryReceivedCredits =
             {
                 Type = type'
                 UsBankAccount = usBankAccount
-            }
-
-    module Create'InitiatingPaymentMethodDetails =
-        let create
-            (
-                type': Create'InitiatingPaymentMethodDetailsType option,
-                usBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount option
-            ) : Create'InitiatingPaymentMethodDetails
-            =
-            {
-              Type = type'
-              UsBankAccount = usBankAccount
             }
 
     type Create'Network =
@@ -7123,25 +5014,6 @@ module TestHelpersTreasuryReceivedCredits =
                 InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                financialAccount: string,
-                network: Create'Network
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              FinancialAccount = financialAccount
-              Network = network
-              Description = None
-              Expand = None
-              InitiatingPaymentMethodDetails = None
-            }
-
     ///<p>Use this endpoint to simulate a test mode ReceivedCredit initiated by a third party. In live mode, you can’t directly create ReceivedCredits initiated by third parties.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/test_helpers/treasury/received_credits"
@@ -7172,20 +5044,6 @@ module TestHelpersTreasuryReceivedDebits =
                 RoutingNumber = routingNumber
             }
 
-    module Create'InitiatingPaymentMethodDetailsUsBankAccount =
-        let create
-            (
-                accountHolderName: string option,
-                accountNumber: string option,
-                routingNumber: string option
-            ) : Create'InitiatingPaymentMethodDetailsUsBankAccount
-            =
-            {
-              AccountHolderName = accountHolderName
-              AccountNumber = accountNumber
-              RoutingNumber = routingNumber
-            }
-
     type Create'InitiatingPaymentMethodDetails =
         {
             /// The source type.
@@ -7201,18 +5059,6 @@ module TestHelpersTreasuryReceivedDebits =
             {
                 Type = type'
                 UsBankAccount = usBankAccount
-            }
-
-    module Create'InitiatingPaymentMethodDetails =
-        let create
-            (
-                type': Create'InitiatingPaymentMethodDetailsType option,
-                usBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount option
-            ) : Create'InitiatingPaymentMethodDetails
-            =
-            {
-              Type = type'
-              UsBankAccount = usBankAccount
             }
 
     type Create'Network = | Ach
@@ -7252,25 +5098,6 @@ module TestHelpersTreasuryReceivedDebits =
                 Description = description
                 Expand = expand
                 InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
-            }
-
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                financialAccount: string,
-                network: Create'Network
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              FinancialAccount = financialAccount
-              Network = network
-              Description = None
-              Expand = None
-              InitiatingPaymentMethodDetails = None
             }
 
     ///<p>Use this endpoint to simulate a test mode ReceivedDebit initiated by a third party. In live mode, you can’t directly create ReceivedDebits initiated by third parties.</p>

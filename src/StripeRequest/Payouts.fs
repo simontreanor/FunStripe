@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Payouts =
 
     type ListOptions =
@@ -47,30 +47,6 @@ module Payouts =
                 Limit = limit
                 StartingAfter = startingAfter
                 Status = status
-            }
-
-    module ListOptions =
-        let create
-            (
-                arrivalDate: int option,
-                created: int option,
-                destination: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              ArrivalDate = arrivalDate
-              Created = created
-              Destination = destination
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
             }
 
     type Create'Method =
@@ -131,26 +107,6 @@ module Payouts =
                 StatementDescriptor = statementDescriptor
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Description = None
-              Destination = None
-              Expand = None
-              Metadata = None
-              Method = None
-              PayoutMethod = None
-              SourceType = None
-              StatementDescriptor = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -165,17 +121,6 @@ module Payouts =
             {
                 Payout = payout
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                payout: string
-            ) : RetrieveOptions
-            =
-            {
-              Payout = payout
-              Expand = None
             }
 
     type UpdateOptions =
@@ -196,18 +141,6 @@ module Payouts =
                 Payout = payout
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                payout: string
-            ) : UpdateOptions
-            =
-            {
-              Payout = payout
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of existing payouts sent to third-party bank accounts or payouts that Stripe sent to you. The payouts return in sorted order, with the most recently created payouts appearing first.</p>
@@ -252,17 +185,6 @@ module PayoutsCancel =
                 Expand = expand
             }
 
-    module CancelOptions =
-        let create
-            (
-                payout: string
-            ) : CancelOptions
-            =
-            {
-              Payout = payout
-              Expand = None
-            }
-
     ///<p>You can cancel a previously created payout if its status is <code>pending</code>. Stripe refunds the funds to your available balance. You can’t cancel automatic Stripe payouts.</p>
     let Cancel settings (options: CancelOptions) =
         $"/v1/payouts/{options.Payout}/cancel"
@@ -288,18 +210,6 @@ module PayoutsReverse =
                 Payout = payout
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module ReverseOptions =
-        let create
-            (
-                payout: string
-            ) : ReverseOptions
-            =
-            {
-              Payout = payout
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Reverses a payout by debiting the destination bank account. At this time, you can only reverse payouts for connected accounts to US and Canadian bank accounts. If the payout is manual and in the <code>pending</code> status, use <code>/v1/payouts/:id/cancel</code> instead.</p>

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Coupon
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Coupons =
 
     type ListOptions =
@@ -37,24 +37,6 @@ module Coupons =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'AppliesTo =
         {
             /// An array of Product IDs that this Coupon will apply to.
@@ -66,16 +48,6 @@ module Coupons =
         static member New(?products: string list) =
             {
                 Products = products
-            }
-
-    module Create'AppliesTo =
-        let create
-            (
-                products: string list option
-            ) : Create'AppliesTo
-            =
-            {
-              Products = products
             }
 
     type Create'Duration =
@@ -144,40 +116,6 @@ module Coupons =
                 RedeemBy = redeemBy
             }
 
-    module CreateOptions =
-        let create
-            (
-                amountOff: int option,
-                appliesTo: Create'AppliesTo option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                currencyOptions: Map<string, string> option,
-                duration: Create'Duration option,
-                durationInMonths: int option,
-                expand: string list option,
-                id: string option,
-                maxRedemptions: int option,
-                metadata: Map<string, string> option,
-                name: string option,
-                percentOff: decimal option,
-                redeemBy: DateTime option
-            ) : CreateOptions
-            =
-            {
-              AmountOff = amountOff
-              AppliesTo = appliesTo
-              Currency = currency
-              CurrencyOptions = currencyOptions
-              Duration = duration
-              DurationInMonths = durationInMonths
-              Expand = expand
-              Id = id
-              MaxRedemptions = maxRedemptions
-              Metadata = metadata
-              Name = name
-              PercentOff = percentOff
-              RedeemBy = redeemBy
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Coupon: string }
@@ -186,16 +124,6 @@ module Coupons =
         static member New(coupon: string) =
             {
                 Coupon = coupon
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                coupon: string
-            ) : DeleteOptions
-            =
-            {
-              Coupon = coupon
             }
 
     type RetrieveOptions =
@@ -212,17 +140,6 @@ module Coupons =
             {
                 Coupon = coupon
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                coupon: string
-            ) : RetrieveOptions
-            =
-            {
-              Coupon = coupon
-              Expand = None
             }
 
     type UpdateOptions =
@@ -251,20 +168,6 @@ module Coupons =
                 Expand = expand
                 Metadata = metadata
                 Name = name
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                coupon: string
-            ) : UpdateOptions
-            =
-            {
-              Coupon = coupon
-              CurrencyOptions = None
-              Expand = None
-              Metadata = None
-              Name = None
             }
 
     ///<p>Returns a list of your coupons.</p>

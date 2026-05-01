@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Terminal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module TerminalConfigurations =
 
     type ListOptions =
@@ -37,24 +37,6 @@ module TerminalConfigurations =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                isAccountDefault: bool option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              IsAccountDefault = isAccountDefault
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'BbposWisepad3 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -66,16 +48,6 @@ module TerminalConfigurations =
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
-            }
-
-    module Create'BbposWisepad3 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Create'BbposWisepad3
-            =
-            {
-              Splashscreen = splashscreen
             }
 
     type Create'BbposWiseposE =
@@ -91,16 +63,6 @@ module TerminalConfigurations =
                 Splashscreen = splashscreen
             }
 
-    module Create'BbposWiseposE =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Create'BbposWiseposE
-            =
-            {
-              Splashscreen = splashscreen
-            }
-
     type Create'CellularCellular =
         {
             /// Determines whether to allow the reader to connect to a cellular network. Defaults to false.
@@ -114,16 +76,6 @@ module TerminalConfigurations =
                 Enabled = enabled
             }
 
-    module Create'CellularCellular =
-        let create
-            (
-                enabled: bool option
-            ) : Create'CellularCellular
-            =
-            {
-              Enabled = enabled
-            }
-
     type Create'OfflineOffline =
         {
             /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
@@ -135,16 +87,6 @@ module TerminalConfigurations =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'OfflineOffline =
-        let create
-            (
-                enabled: bool option
-            ) : Create'OfflineOffline
-            =
-            {
-              Enabled = enabled
             }
 
     type Create'RebootWindow =
@@ -164,18 +106,6 @@ module TerminalConfigurations =
                 StartHour = startHour
             }
 
-    module Create'RebootWindow =
-        let create
-            (
-                endHour: int option,
-                startHour: int option
-            ) : Create'RebootWindow
-            =
-            {
-              EndHour = endHour
-              StartHour = startHour
-            }
-
     type Create'StripeS700 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -189,16 +119,6 @@ module TerminalConfigurations =
                 Splashscreen = splashscreen
             }
 
-    module Create'StripeS700 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Create'StripeS700
-            =
-            {
-              Splashscreen = splashscreen
-            }
-
     type Create'StripeS710 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -210,16 +130,6 @@ module TerminalConfigurations =
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
-            }
-
-    module Create'StripeS710 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Create'StripeS710
-            =
-            {
-              Splashscreen = splashscreen
             }
 
     type Create'TippingTippingAed =
@@ -243,20 +153,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingAed =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingAed
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingAud =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -276,20 +172,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingAud =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingAud
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingCad =
@@ -313,20 +195,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingCad =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingCad
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingChf =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -346,20 +214,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingChf =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingChf
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingCzk =
@@ -383,20 +237,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingCzk =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingCzk
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingDkk =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -416,20 +256,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingDkk =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingDkk
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingEur =
@@ -453,20 +279,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingEur =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingEur
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingGbp =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -486,20 +298,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingGbp =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingGbp
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingGip =
@@ -523,20 +321,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingGip =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingGip
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingHkd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -556,20 +340,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingHkd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingHkd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingHuf =
@@ -593,20 +363,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingHuf =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingHuf
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingJpy =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -626,20 +382,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingJpy =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingJpy
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingMxn =
@@ -663,20 +405,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingMxn =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingMxn
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingMyr =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -696,20 +424,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingMyr =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingMyr
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingNok =
@@ -733,20 +447,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingNok =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingNok
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingNzd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -766,20 +466,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingNzd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingNzd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingPln =
@@ -803,20 +489,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingPln =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingPln
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingRon =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -836,20 +508,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingRon =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingRon
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTippingSek =
@@ -873,20 +531,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingSek =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingSek
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingSgd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -908,20 +552,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Create'TippingTippingSgd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingSgd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Create'TippingTippingUsd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -941,20 +571,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Create'TippingTippingUsd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Create'TippingTippingUsd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Create'TippingTipping =
@@ -1050,56 +666,6 @@ module TerminalConfigurations =
                 Usd = usd
             }
 
-    module Create'TippingTipping =
-        let create
-            (
-                aed: Create'TippingTippingAed option,
-                aud: Create'TippingTippingAud option,
-                cad: Create'TippingTippingCad option,
-                chf: Create'TippingTippingChf option,
-                czk: Create'TippingTippingCzk option,
-                dkk: Create'TippingTippingDkk option,
-                eur: Create'TippingTippingEur option,
-                gbp: Create'TippingTippingGbp option,
-                gip: Create'TippingTippingGip option,
-                hkd: Create'TippingTippingHkd option,
-                huf: Create'TippingTippingHuf option,
-                jpy: Create'TippingTippingJpy option,
-                mxn: Create'TippingTippingMxn option,
-                myr: Create'TippingTippingMyr option,
-                nok: Create'TippingTippingNok option,
-                nzd: Create'TippingTippingNzd option,
-                pln: Create'TippingTippingPln option,
-                ron: Create'TippingTippingRon option,
-                sek: Create'TippingTippingSek option,
-                sgd: Create'TippingTippingSgd option,
-                usd: Create'TippingTippingUsd option
-            ) : Create'TippingTipping
-            =
-            {
-              Aed = aed
-              Aud = aud
-              Cad = cad
-              Chf = chf
-              Czk = czk
-              Dkk = dkk
-              Eur = eur
-              Gbp = gbp
-              Gip = gip
-              Hkd = hkd
-              Huf = huf
-              Jpy = jpy
-              Mxn = mxn
-              Myr = myr
-              Nok = nok
-              Nzd = nzd
-              Pln = pln
-              Ron = ron
-              Sek = sek
-              Sgd = sgd
-              Usd = usd
-            }
-
     type Create'VerifoneP400 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -1111,16 +677,6 @@ module TerminalConfigurations =
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
-            }
-
-    module Create'VerifoneP400 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Create'VerifoneP400
-            =
-            {
-              Splashscreen = splashscreen
             }
 
     type Create'WifiWifiEnterpriseEapPeap =
@@ -1146,22 +702,6 @@ module TerminalConfigurations =
                 Password = password
                 Ssid = ssid
                 Username = username
-            }
-
-    module Create'WifiWifiEnterpriseEapPeap =
-        let create
-            (
-                caCertificateFile: string option,
-                password: string option,
-                ssid: string option,
-                username: string option
-            ) : Create'WifiWifiEnterpriseEapPeap
-            =
-            {
-              CaCertificateFile = caCertificateFile
-              Password = password
-              Ssid = ssid
-              Username = username
             }
 
     type Create'WifiWifiEnterpriseEapTls =
@@ -1193,24 +733,6 @@ module TerminalConfigurations =
                 Ssid = ssid
             }
 
-    module Create'WifiWifiEnterpriseEapTls =
-        let create
-            (
-                caCertificateFile: string option,
-                clientCertificateFile: string option,
-                privateKeyFile: string option,
-                privateKeyFilePassword: string option,
-                ssid: string option
-            ) : Create'WifiWifiEnterpriseEapTls
-            =
-            {
-              CaCertificateFile = caCertificateFile
-              ClientCertificateFile = clientCertificateFile
-              PrivateKeyFile = privateKeyFile
-              PrivateKeyFilePassword = privateKeyFilePassword
-              Ssid = ssid
-            }
-
     type Create'WifiWifiPersonalPsk =
         {
             /// Password for connecting to the WiFi network
@@ -1226,18 +748,6 @@ module TerminalConfigurations =
             {
                 Password = password
                 Ssid = ssid
-            }
-
-    module Create'WifiWifiPersonalPsk =
-        let create
-            (
-                password: string option,
-                ssid: string option
-            ) : Create'WifiWifiPersonalPsk
-            =
-            {
-              Password = password
-              Ssid = ssid
             }
 
     type Create'WifiWifiType =
@@ -1268,22 +778,6 @@ module TerminalConfigurations =
                 EnterpriseEapTls = enterpriseEapTls
                 PersonalPsk = personalPsk
                 Type = type'
-            }
-
-    module Create'WifiWifi =
-        let create
-            (
-                enterpriseEapPeap: Create'WifiWifiEnterpriseEapPeap option,
-                enterpriseEapTls: Create'WifiWifiEnterpriseEapTls option,
-                personalPsk: Create'WifiWifiPersonalPsk option,
-                type': Create'WifiWifiType option
-            ) : Create'WifiWifi
-            =
-            {
-              EnterpriseEapPeap = enterpriseEapPeap
-              EnterpriseEapTls = enterpriseEapTls
-              PersonalPsk = personalPsk
-              Type = type'
             }
 
     type CreateOptions =
@@ -1343,38 +837,6 @@ module TerminalConfigurations =
                 Wifi = wifi
             }
 
-    module CreateOptions =
-        let create
-            (
-                bbposWisepad3: Create'BbposWisepad3 option,
-                bbposWiseposE: Create'BbposWiseposE option,
-                cellular: Choice<Create'CellularCellular,string> option,
-                expand: string list option,
-                name: string option,
-                offline: Choice<Create'OfflineOffline,string> option,
-                rebootWindow: Create'RebootWindow option,
-                stripeS700: Create'StripeS700 option,
-                stripeS710: Create'StripeS710 option,
-                tipping: Choice<Create'TippingTipping,string> option,
-                verifoneP400: Create'VerifoneP400 option,
-                wifi: Choice<Create'WifiWifi,string> option
-            ) : CreateOptions
-            =
-            {
-              BbposWisepad3 = bbposWisepad3
-              BbposWiseposE = bbposWiseposE
-              Cellular = cellular
-              Expand = expand
-              Name = name
-              Offline = offline
-              RebootWindow = rebootWindow
-              StripeS700 = stripeS700
-              StripeS710 = stripeS710
-              Tipping = tipping
-              VerifoneP400 = verifoneP400
-              Wifi = wifi
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Configuration: string }
@@ -1383,16 +845,6 @@ module TerminalConfigurations =
         static member New(configuration: string) =
             {
                 Configuration = configuration
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                configuration: string
-            ) : DeleteOptions
-            =
-            {
-              Configuration = configuration
             }
 
     type RetrieveOptions =
@@ -1411,17 +863,6 @@ module TerminalConfigurations =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                configuration: string
-            ) : RetrieveOptions
-            =
-            {
-              Configuration = configuration
-              Expand = None
-            }
-
     type Update'BbposWisepad3BbposWisePad3 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -1433,16 +874,6 @@ module TerminalConfigurations =
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
-            }
-
-    module Update'BbposWisepad3BbposWisePad3 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Update'BbposWisepad3BbposWisePad3
-            =
-            {
-              Splashscreen = splashscreen
             }
 
     type Update'BbposWiseposEBbposWisePose =
@@ -1458,16 +889,6 @@ module TerminalConfigurations =
                 Splashscreen = splashscreen
             }
 
-    module Update'BbposWiseposEBbposWisePose =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Update'BbposWiseposEBbposWisePose
-            =
-            {
-              Splashscreen = splashscreen
-            }
-
     type Update'CellularCellular =
         {
             /// Determines whether to allow the reader to connect to a cellular network. Defaults to false.
@@ -1481,16 +902,6 @@ module TerminalConfigurations =
                 Enabled = enabled
             }
 
-    module Update'CellularCellular =
-        let create
-            (
-                enabled: bool option
-            ) : Update'CellularCellular
-            =
-            {
-              Enabled = enabled
-            }
-
     type Update'OfflineOffline =
         {
             /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
@@ -1502,16 +913,6 @@ module TerminalConfigurations =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Update'OfflineOffline =
-        let create
-            (
-                enabled: bool option
-            ) : Update'OfflineOffline
-            =
-            {
-              Enabled = enabled
             }
 
     type Update'RebootWindowRebootWindow =
@@ -1531,18 +932,6 @@ module TerminalConfigurations =
                 StartHour = startHour
             }
 
-    module Update'RebootWindowRebootWindow =
-        let create
-            (
-                endHour: int option,
-                startHour: int option
-            ) : Update'RebootWindowRebootWindow
-            =
-            {
-              EndHour = endHour
-              StartHour = startHour
-            }
-
     type Update'StripeS700StripeS700 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -1556,16 +945,6 @@ module TerminalConfigurations =
                 Splashscreen = splashscreen
             }
 
-    module Update'StripeS700StripeS700 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Update'StripeS700StripeS700
-            =
-            {
-              Splashscreen = splashscreen
-            }
-
     type Update'StripeS710StripeS710 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -1577,16 +956,6 @@ module TerminalConfigurations =
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
-            }
-
-    module Update'StripeS710StripeS710 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Update'StripeS710StripeS710
-            =
-            {
-              Splashscreen = splashscreen
             }
 
     type Update'TippingTippingAed =
@@ -1610,20 +979,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingAed =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingAed
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingAud =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -1643,20 +998,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingAud =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingAud
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingCad =
@@ -1680,20 +1021,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingCad =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingCad
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingChf =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -1713,20 +1040,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingChf =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingChf
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingCzk =
@@ -1750,20 +1063,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingCzk =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingCzk
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingDkk =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -1783,20 +1082,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingDkk =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingDkk
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingEur =
@@ -1820,20 +1105,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingEur =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingEur
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingGbp =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -1853,20 +1124,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingGbp =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingGbp
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingGip =
@@ -1890,20 +1147,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingGip =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingGip
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingHkd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -1923,20 +1166,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingHkd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingHkd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingHuf =
@@ -1960,20 +1189,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingHuf =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingHuf
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingJpy =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -1993,20 +1208,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingJpy =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingJpy
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingMxn =
@@ -2030,20 +1231,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingMxn =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingMxn
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingMyr =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -2063,20 +1250,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingMyr =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingMyr
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingNok =
@@ -2100,20 +1273,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingNok =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingNok
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingNzd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -2133,20 +1292,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingNzd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingNzd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingPln =
@@ -2170,20 +1315,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingPln =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingPln
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingRon =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -2203,20 +1334,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingRon =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingRon
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTippingSek =
@@ -2240,20 +1357,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingSek =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingSek
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingSgd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -2275,20 +1378,6 @@ module TerminalConfigurations =
                 SmartTipThreshold = smartTipThreshold
             }
 
-    module Update'TippingTippingSgd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingSgd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
-            }
-
     type Update'TippingTippingUsd =
         {
             /// Fixed amounts displayed when collecting a tip
@@ -2308,20 +1397,6 @@ module TerminalConfigurations =
                 FixedAmounts = fixedAmounts
                 Percentages = percentages
                 SmartTipThreshold = smartTipThreshold
-            }
-
-    module Update'TippingTippingUsd =
-        let create
-            (
-                fixedAmounts: int list option,
-                percentages: int list option,
-                smartTipThreshold: int option
-            ) : Update'TippingTippingUsd
-            =
-            {
-              FixedAmounts = fixedAmounts
-              Percentages = percentages
-              SmartTipThreshold = smartTipThreshold
             }
 
     type Update'TippingTipping =
@@ -2417,56 +1492,6 @@ module TerminalConfigurations =
                 Usd = usd
             }
 
-    module Update'TippingTipping =
-        let create
-            (
-                aed: Update'TippingTippingAed option,
-                aud: Update'TippingTippingAud option,
-                cad: Update'TippingTippingCad option,
-                chf: Update'TippingTippingChf option,
-                czk: Update'TippingTippingCzk option,
-                dkk: Update'TippingTippingDkk option,
-                eur: Update'TippingTippingEur option,
-                gbp: Update'TippingTippingGbp option,
-                gip: Update'TippingTippingGip option,
-                hkd: Update'TippingTippingHkd option,
-                huf: Update'TippingTippingHuf option,
-                jpy: Update'TippingTippingJpy option,
-                mxn: Update'TippingTippingMxn option,
-                myr: Update'TippingTippingMyr option,
-                nok: Update'TippingTippingNok option,
-                nzd: Update'TippingTippingNzd option,
-                pln: Update'TippingTippingPln option,
-                ron: Update'TippingTippingRon option,
-                sek: Update'TippingTippingSek option,
-                sgd: Update'TippingTippingSgd option,
-                usd: Update'TippingTippingUsd option
-            ) : Update'TippingTipping
-            =
-            {
-              Aed = aed
-              Aud = aud
-              Cad = cad
-              Chf = chf
-              Czk = czk
-              Dkk = dkk
-              Eur = eur
-              Gbp = gbp
-              Gip = gip
-              Hkd = hkd
-              Huf = huf
-              Jpy = jpy
-              Mxn = mxn
-              Myr = myr
-              Nok = nok
-              Nzd = nzd
-              Pln = pln
-              Ron = ron
-              Sek = sek
-              Sgd = sgd
-              Usd = usd
-            }
-
     type Update'VerifoneP400VerifoneP400 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -2478,16 +1503,6 @@ module TerminalConfigurations =
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
-            }
-
-    module Update'VerifoneP400VerifoneP400 =
-        let create
-            (
-                splashscreen: Choice<string,string> option
-            ) : Update'VerifoneP400VerifoneP400
-            =
-            {
-              Splashscreen = splashscreen
             }
 
     type Update'WifiWifiEnterpriseEapPeap =
@@ -2513,22 +1528,6 @@ module TerminalConfigurations =
                 Password = password
                 Ssid = ssid
                 Username = username
-            }
-
-    module Update'WifiWifiEnterpriseEapPeap =
-        let create
-            (
-                caCertificateFile: string option,
-                password: string option,
-                ssid: string option,
-                username: string option
-            ) : Update'WifiWifiEnterpriseEapPeap
-            =
-            {
-              CaCertificateFile = caCertificateFile
-              Password = password
-              Ssid = ssid
-              Username = username
             }
 
     type Update'WifiWifiEnterpriseEapTls =
@@ -2560,24 +1559,6 @@ module TerminalConfigurations =
                 Ssid = ssid
             }
 
-    module Update'WifiWifiEnterpriseEapTls =
-        let create
-            (
-                caCertificateFile: string option,
-                clientCertificateFile: string option,
-                privateKeyFile: string option,
-                privateKeyFilePassword: string option,
-                ssid: string option
-            ) : Update'WifiWifiEnterpriseEapTls
-            =
-            {
-              CaCertificateFile = caCertificateFile
-              ClientCertificateFile = clientCertificateFile
-              PrivateKeyFile = privateKeyFile
-              PrivateKeyFilePassword = privateKeyFilePassword
-              Ssid = ssid
-            }
-
     type Update'WifiWifiPersonalPsk =
         {
             /// Password for connecting to the WiFi network
@@ -2593,18 +1574,6 @@ module TerminalConfigurations =
             {
                 Password = password
                 Ssid = ssid
-            }
-
-    module Update'WifiWifiPersonalPsk =
-        let create
-            (
-                password: string option,
-                ssid: string option
-            ) : Update'WifiWifiPersonalPsk
-            =
-            {
-              Password = password
-              Ssid = ssid
             }
 
     type Update'WifiWifiType =
@@ -2635,22 +1604,6 @@ module TerminalConfigurations =
                 EnterpriseEapTls = enterpriseEapTls
                 PersonalPsk = personalPsk
                 Type = type'
-            }
-
-    module Update'WifiWifi =
-        let create
-            (
-                enterpriseEapPeap: Update'WifiWifiEnterpriseEapPeap option,
-                enterpriseEapTls: Update'WifiWifiEnterpriseEapTls option,
-                personalPsk: Update'WifiWifiPersonalPsk option,
-                type': Update'WifiWifiType option
-            ) : Update'WifiWifi
-            =
-            {
-              EnterpriseEapPeap = enterpriseEapPeap
-              EnterpriseEapTls = enterpriseEapTls
-              PersonalPsk = personalPsk
-              Type = type'
             }
 
     type UpdateOptions =
@@ -2713,28 +1666,6 @@ module TerminalConfigurations =
                 Wifi = wifi
             }
 
-    module UpdateOptions =
-        let create
-            (
-                configuration: string
-            ) : UpdateOptions
-            =
-            {
-              Configuration = configuration
-              BbposWisepad3 = None
-              BbposWiseposE = None
-              Cellular = None
-              Expand = None
-              Name = None
-              Offline = None
-              RebootWindow = None
-              StripeS700 = None
-              StripeS710 = None
-              Tipping = None
-              VerifoneP400 = None
-              Wifi = None
-            }
-
     ///<p>Returns a list of <code>Configuration</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("is_account_default", options.IsAccountDefault |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -2781,18 +1712,6 @@ module TerminalConnectionTokens =
                 Location = location
             }
 
-    module CreateOptions =
-        let create
-            (
-                expand: string list option,
-                location: string option
-            ) : CreateOptions
-            =
-            {
-              Expand = expand
-              Location = location
-            }
-
     ///<p>To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/terminal/connection_tokens"
@@ -2823,22 +1742,6 @@ module TerminalLocations =
                 Expand = expand
                 Limit = limit
                 StartingAfter = startingAfter
-            }
-
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
             }
 
     type Create'Address =
@@ -2872,26 +1775,6 @@ module TerminalLocations =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'Address =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'Address
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'AddressKana =
@@ -2931,28 +1814,6 @@ module TerminalLocations =
                 Town = town
             }
 
-    module Create'AddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'AddressKanji =
         {
             /// City or ward.
@@ -2988,28 +1849,6 @@ module TerminalLocations =
                 PostalCode = postalCode
                 State = state
                 Town = town
-            }
-
-    module Create'AddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
             }
 
     type CreateOptions =
@@ -3061,34 +1900,6 @@ module TerminalLocations =
                 Phone = phone
             }
 
-    module CreateOptions =
-        let create
-            (
-                address: Create'Address option,
-                addressKana: Create'AddressKana option,
-                addressKanji: Create'AddressKanji option,
-                configurationOverrides: string option,
-                displayName: string option,
-                displayNameKana: string option,
-                displayNameKanji: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                phone: string option
-            ) : CreateOptions
-            =
-            {
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              ConfigurationOverrides = configurationOverrides
-              DisplayName = displayName
-              DisplayNameKana = displayNameKana
-              DisplayNameKanji = displayNameKanji
-              Expand = expand
-              Metadata = metadata
-              Phone = phone
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Location: string }
@@ -3097,16 +1908,6 @@ module TerminalLocations =
         static member New(location: string) =
             {
                 Location = location
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                location: string
-            ) : DeleteOptions
-            =
-            {
-              Location = location
             }
 
     type RetrieveOptions =
@@ -3123,17 +1924,6 @@ module TerminalLocations =
             {
                 Location = location
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                location: string
-            ) : RetrieveOptions
-            =
-            {
-              Location = location
-              Expand = None
             }
 
     type Update'Address =
@@ -3167,26 +1957,6 @@ module TerminalLocations =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'Address =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'Address
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'AddressKana =
@@ -3226,28 +1996,6 @@ module TerminalLocations =
                 Town = town
             }
 
-    module Update'AddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'AddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Update'AddressKanji =
         {
             /// City or ward.
@@ -3283,28 +2031,6 @@ module TerminalLocations =
                 PostalCode = postalCode
                 State = state
                 Town = town
-            }
-
-    module Update'AddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'AddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
             }
 
     type UpdateOptions =
@@ -3359,26 +2085,6 @@ module TerminalLocations =
                 Phone = phone
             }
 
-    module UpdateOptions =
-        let create
-            (
-                location: string
-            ) : UpdateOptions
-            =
-            {
-              Location = location
-              Address = None
-              AddressKana = None
-              AddressKanji = None
-              ConfigurationOverrides = None
-              DisplayName = None
-              DisplayNameKana = None
-              DisplayNameKanji = None
-              Expand = None
-              Metadata = None
-              Phone = None
-            }
-
     ///<p>Returns a list of <code>Location</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -3426,18 +2132,6 @@ module TerminalOnboardingLinks =
                 MerchantDisplayName = merchantDisplayName
             }
 
-    module Create'LinkOptionsAppleTermsAndConditions =
-        let create
-            (
-                allowRelinking: bool option,
-                merchantDisplayName: string option
-            ) : Create'LinkOptionsAppleTermsAndConditions
-            =
-            {
-              AllowRelinking = allowRelinking
-              MerchantDisplayName = merchantDisplayName
-            }
-
     type Create'LinkOptions =
         {
             /// The options associated with the Apple Terms and Conditions link type.
@@ -3449,16 +2143,6 @@ module TerminalOnboardingLinks =
         static member New(?appleTermsAndConditions: Create'LinkOptionsAppleTermsAndConditions) =
             {
                 AppleTermsAndConditions = appleTermsAndConditions
-            }
-
-    module Create'LinkOptions =
-        let create
-            (
-                appleTermsAndConditions: Create'LinkOptionsAppleTermsAndConditions option
-            ) : Create'LinkOptions
-            =
-            {
-              AppleTermsAndConditions = appleTermsAndConditions
             }
 
     type Create'LinkType = | AppleTermsAndConditions
@@ -3486,20 +2170,6 @@ module TerminalOnboardingLinks =
                 LinkType = linkType
                 Expand = expand
                 OnBehalfOf = onBehalfOf
-            }
-
-    module CreateOptions =
-        let create
-            (
-                linkOptions: Create'LinkOptions,
-                linkType: Create'LinkType
-            ) : CreateOptions
-            =
-            {
-              LinkOptions = linkOptions
-              LinkType = linkType
-              Expand = None
-              OnBehalfOf = None
             }
 
     ///<p>Creates a new <code>OnboardingLink</code> object that contains a redirect_url used for onboarding onto Tap to Pay on iPhone.</p>
@@ -3550,30 +2220,6 @@ module TerminalReaders =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                deviceType: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                location: string option,
-                serialNumber: string option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              DeviceType = deviceType
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Location = location
-              SerialNumber = serialNumber
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -3603,20 +2249,6 @@ module TerminalReaders =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                registrationCode: string
-            ) : CreateOptions
-            =
-            {
-              RegistrationCode = registrationCode
-              Expand = None
-              Label = None
-              Location = None
-              Metadata = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Reader: string }
@@ -3625,16 +2257,6 @@ module TerminalReaders =
         static member New(reader: string) =
             {
                 Reader = reader
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                reader: string
-            ) : DeleteOptions
-            =
-            {
-              Reader = reader
             }
 
     type RetrieveOptions =
@@ -3651,17 +2273,6 @@ module TerminalReaders =
             {
                 Reader = reader
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                reader: string
-            ) : RetrieveOptions
-            =
-            {
-              Reader = reader
-              Expand = None
             }
 
     type UpdateOptions =
@@ -3686,19 +2297,6 @@ module TerminalReaders =
                 Expand = expand
                 Label = label
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                reader: string
-            ) : UpdateOptions
-            =
-            {
-              Reader = reader
-              Expand = None
-              Label = None
-              Metadata = None
             }
 
     ///<p>Returns a list of <code>Reader</code> objects.</p>
@@ -3746,17 +2344,6 @@ module TerminalReadersCancelAction =
                 Expand = expand
             }
 
-    module CancelActionOptions =
-        let create
-            (
-                reader: string
-            ) : CancelActionOptions
-            =
-            {
-              Reader = reader
-              Expand = None
-            }
-
     ///<p>Cancels the current reader action. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven#programmatic-cancellation">Programmatic Cancellation</a> for more details.</p>
     let CancelAction settings (options: CancelActionOptions) =
         $"/v1/terminal/readers/{options.Reader}/cancel_action"
@@ -3789,22 +2376,6 @@ module TerminalReadersCollectInputs =
                 Title = title
             }
 
-    module CollectInputs'InputsCustomText =
-        let create
-            (
-                description: string option,
-                skipButton: string option,
-                submitButton: string option,
-                title: string option
-            ) : CollectInputs'InputsCustomText
-            =
-            {
-              Description = description
-              SkipButton = skipButton
-              SubmitButton = submitButton
-              Title = title
-            }
-
     type CollectInputs'InputsSelectionChoicesStyle =
         | Primary
         | Secondary
@@ -3830,20 +2401,6 @@ module TerminalReadersCollectInputs =
                 Text = text
             }
 
-    module CollectInputs'InputsSelectionChoices =
-        let create
-            (
-                id: string option,
-                style: CollectInputs'InputsSelectionChoicesStyle option,
-                text: string option
-            ) : CollectInputs'InputsSelectionChoices
-            =
-            {
-              Id = id
-              Style = style
-              Text = text
-            }
-
     type CollectInputs'InputsSelection =
         {
             /// List of choices for the `selection` input
@@ -3855,16 +2412,6 @@ module TerminalReadersCollectInputs =
         static member New(?choices: CollectInputs'InputsSelectionChoices list) =
             {
                 Choices = choices
-            }
-
-    module CollectInputs'InputsSelection =
-        let create
-            (
-                choices: CollectInputs'InputsSelectionChoices list option
-            ) : CollectInputs'InputsSelection
-            =
-            {
-              Choices = choices
             }
 
     type CollectInputs'InputsTogglesDefaultValue =
@@ -3890,20 +2437,6 @@ module TerminalReadersCollectInputs =
                 DefaultValue = defaultValue
                 Description = description
                 Title = title
-            }
-
-    module CollectInputs'InputsToggles =
-        let create
-            (
-                defaultValue: CollectInputs'InputsTogglesDefaultValue option,
-                description: string option,
-                title: string option
-            ) : CollectInputs'InputsToggles
-            =
-            {
-              DefaultValue = defaultValue
-              Description = description
-              Title = title
             }
 
     type CollectInputs'InputsType =
@@ -3943,24 +2476,6 @@ module TerminalReadersCollectInputs =
                 Type = type'
             }
 
-    module CollectInputs'Inputs =
-        let create
-            (
-                customText: CollectInputs'InputsCustomText option,
-                required: bool option,
-                selection: CollectInputs'InputsSelection option,
-                toggles: CollectInputs'InputsToggles list option,
-                type': CollectInputs'InputsType option
-            ) : CollectInputs'Inputs
-            =
-            {
-              CustomText = customText
-              Required = required
-              Selection = selection
-              Toggles = toggles
-              Type = type'
-            }
-
     type CollectInputsOptions =
         {
             [<Config.Path>]
@@ -3983,20 +2498,6 @@ module TerminalReadersCollectInputs =
                 Reader = reader
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module CollectInputsOptions =
-        let create
-            (
-                inputs: CollectInputs'Inputs list,
-                reader: string
-            ) : CollectInputsOptions
-            =
-            {
-              Inputs = inputs
-              Reader = reader
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Initiates an <a href="/docs/terminal/features/collect-inputs">input collection flow</a> on a Reader to display input forms and collect information from your customers.</p>
@@ -4024,16 +2525,6 @@ module TerminalReadersCollectPaymentMethod =
                 AmountEligible = amountEligible
             }
 
-    module CollectPaymentMethod'CollectConfigTipping =
-        let create
-            (
-                amountEligible: int option
-            ) : CollectPaymentMethod'CollectConfigTipping
-            =
-            {
-              AmountEligible = amountEligible
-            }
-
     type CollectPaymentMethod'CollectConfig =
         {
             /// This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow.
@@ -4057,22 +2548,6 @@ module TerminalReadersCollectPaymentMethod =
                 EnableCustomerCancellation = enableCustomerCancellation
                 SkipTipping = skipTipping
                 Tipping = tipping
-            }
-
-    module CollectPaymentMethod'CollectConfig =
-        let create
-            (
-                allowRedisplay: CollectPaymentMethod'CollectConfigAllowRedisplay option,
-                enableCustomerCancellation: bool option,
-                skipTipping: bool option,
-                tipping: CollectPaymentMethod'CollectConfigTipping option
-            ) : CollectPaymentMethod'CollectConfig
-            =
-            {
-              AllowRedisplay = allowRedisplay
-              EnableCustomerCancellation = enableCustomerCancellation
-              SkipTipping = skipTipping
-              Tipping = tipping
             }
 
     type CollectPaymentMethodOptions =
@@ -4099,20 +2574,6 @@ module TerminalReadersCollectPaymentMethod =
                 Expand = expand
             }
 
-    module CollectPaymentMethodOptions =
-        let create
-            (
-                paymentIntent: string,
-                reader: string
-            ) : CollectPaymentMethodOptions
-            =
-            {
-              PaymentIntent = paymentIntent
-              Reader = reader
-              CollectConfig = None
-              Expand = None
-            }
-
     ///<p>Initiates a payment flow on a Reader and updates the PaymentIntent with card details before manual confirmation. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven&process=inspect#collect-a-paymentmethod">Collecting a Payment method</a> for more details.</p>
     let CollectPaymentMethod settings (options: CollectPaymentMethodOptions) =
         $"/v1/terminal/readers/{options.Reader}/collect_payment_method"
@@ -4131,16 +2592,6 @@ module TerminalReadersConfirmPaymentIntent =
         static member New(?returnUrl: string) =
             {
                 ReturnUrl = returnUrl
-            }
-
-    module ConfirmPaymentIntent'ConfirmConfig =
-        let create
-            (
-                returnUrl: string option
-            ) : ConfirmPaymentIntent'ConfirmConfig
-            =
-            {
-              ReturnUrl = returnUrl
             }
 
     type ConfirmPaymentIntentOptions =
@@ -4167,20 +2618,6 @@ module TerminalReadersConfirmPaymentIntent =
                 Expand = expand
             }
 
-    module ConfirmPaymentIntentOptions =
-        let create
-            (
-                paymentIntent: string,
-                reader: string
-            ) : ConfirmPaymentIntentOptions
-            =
-            {
-              PaymentIntent = paymentIntent
-              Reader = reader
-              ConfirmConfig = None
-              Expand = None
-            }
-
     ///<p>Finalizes a payment on a Reader. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven&process=inspect#confirm-the-paymentintent">Confirming a Payment</a> for more details.</p>
     let ConfirmPaymentIntent settings (options: ConfirmPaymentIntentOptions) =
         $"/v1/terminal/readers/{options.Reader}/confirm_payment_intent"
@@ -4204,16 +2641,6 @@ module TerminalReadersProcessPaymentIntent =
         static member New(?amountEligible: int) =
             {
                 AmountEligible = amountEligible
-            }
-
-    module ProcessPaymentIntent'ProcessConfigTipping =
-        let create
-            (
-                amountEligible: int option
-            ) : ProcessPaymentIntent'ProcessConfigTipping
-            =
-            {
-              AmountEligible = amountEligible
             }
 
     type ProcessPaymentIntent'ProcessConfig =
@@ -4245,24 +2672,6 @@ module TerminalReadersProcessPaymentIntent =
                 Tipping = tipping
             }
 
-    module ProcessPaymentIntent'ProcessConfig =
-        let create
-            (
-                allowRedisplay: ProcessPaymentIntent'ProcessConfigAllowRedisplay option,
-                enableCustomerCancellation: bool option,
-                returnUrl: string option,
-                skipTipping: bool option,
-                tipping: ProcessPaymentIntent'ProcessConfigTipping option
-            ) : ProcessPaymentIntent'ProcessConfig
-            =
-            {
-              AllowRedisplay = allowRedisplay
-              EnableCustomerCancellation = enableCustomerCancellation
-              ReturnUrl = returnUrl
-              SkipTipping = skipTipping
-              Tipping = tipping
-            }
-
     type ProcessPaymentIntentOptions =
         {
             [<Config.Path>]
@@ -4285,20 +2694,6 @@ module TerminalReadersProcessPaymentIntent =
                 Reader = reader
                 Expand = expand
                 ProcessConfig = processConfig
-            }
-
-    module ProcessPaymentIntentOptions =
-        let create
-            (
-                paymentIntent: string,
-                reader: string
-            ) : ProcessPaymentIntentOptions
-            =
-            {
-              PaymentIntent = paymentIntent
-              Reader = reader
-              Expand = None
-              ProcessConfig = None
             }
 
     ///<p>Initiates a payment flow on a Reader. See <a href="/docs/terminal/payments/collect-card-payment?terminal-sdk-platform=server-driven&process=immediately#process-payment">process the payment</a> for more details.</p>
@@ -4324,16 +2719,6 @@ module TerminalReadersProcessSetupIntent =
         static member New(?enableCustomerCancellation: bool) =
             {
                 EnableCustomerCancellation = enableCustomerCancellation
-            }
-
-    module ProcessSetupIntent'ProcessConfig =
-        let create
-            (
-                enableCustomerCancellation: bool option
-            ) : ProcessSetupIntent'ProcessConfig
-            =
-            {
-              EnableCustomerCancellation = enableCustomerCancellation
             }
 
     type ProcessSetupIntentOptions =
@@ -4364,22 +2749,6 @@ module TerminalReadersProcessSetupIntent =
                 ProcessConfig = processConfig
             }
 
-    module ProcessSetupIntentOptions =
-        let create
-            (
-                allowRedisplay: ProcessSetupIntent'AllowRedisplay,
-                reader: string,
-                setupIntent: string
-            ) : ProcessSetupIntentOptions
-            =
-            {
-              AllowRedisplay = allowRedisplay
-              Reader = reader
-              SetupIntent = setupIntent
-              Expand = None
-              ProcessConfig = None
-            }
-
     ///<p>Initiates a SetupIntent flow on a Reader. See <a href="/docs/terminal/features/saving-payment-details/save-directly">Save directly without charging</a> for more details.</p>
     let ProcessSetupIntent settings (options: ProcessSetupIntentOptions) =
         $"/v1/terminal/readers/{options.Reader}/process_setup_intent"
@@ -4398,16 +2767,6 @@ module TerminalReadersRefundPayment =
         static member New(?enableCustomerCancellation: bool) =
             {
                 EnableCustomerCancellation = enableCustomerCancellation
-            }
-
-    module RefundPayment'RefundPaymentConfig =
-        let create
-            (
-                enableCustomerCancellation: bool option
-            ) : RefundPayment'RefundPaymentConfig
-            =
-            {
-              EnableCustomerCancellation = enableCustomerCancellation
             }
 
     type RefundPaymentOptions =
@@ -4454,24 +2813,6 @@ module TerminalReadersRefundPayment =
                 ReverseTransfer = reverseTransfer
             }
 
-    module RefundPaymentOptions =
-        let create
-            (
-                reader: string
-            ) : RefundPaymentOptions
-            =
-            {
-              Reader = reader
-              Amount = None
-              Charge = None
-              Expand = None
-              Metadata = None
-              PaymentIntent = None
-              RefundApplicationFee = None
-              RefundPaymentConfig = None
-              ReverseTransfer = None
-            }
-
     ///<p>Initiates an in-person refund on a Reader. See <a href="/docs/terminal/payments/regional?integration-country=CA#refund-an-interac-payment">Refund an Interac Payment</a> for more details.</p>
     let RefundPayment settings (options: RefundPaymentOptions) =
         $"/v1/terminal/readers/{options.Reader}/refund_payment"
@@ -4500,20 +2841,6 @@ module TerminalReadersSetReaderDisplay =
                 Quantity = quantity
             }
 
-    module SetReaderDisplay'CartLineItems =
-        let create
-            (
-                amount: int option,
-                description: string option,
-                quantity: int option
-            ) : SetReaderDisplay'CartLineItems
-            =
-            {
-              Amount = amount
-              Description = description
-              Quantity = quantity
-            }
-
     type SetReaderDisplay'Cart =
         {
             /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -4537,22 +2864,6 @@ module TerminalReadersSetReaderDisplay =
                 LineItems = lineItems
                 Tax = tax
                 Total = total
-            }
-
-    module SetReaderDisplay'Cart =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                lineItems: SetReaderDisplay'CartLineItems list option,
-                tax: int option,
-                total: int option
-            ) : SetReaderDisplay'Cart
-            =
-            {
-              Currency = currency
-              LineItems = lineItems
-              Tax = tax
-              Total = total
             }
 
     type SetReaderDisplay'Type = | Cart
@@ -4579,20 +2890,6 @@ module TerminalReadersSetReaderDisplay =
                 Type = type'
                 Cart = cart
                 Expand = expand
-            }
-
-    module SetReaderDisplayOptions =
-        let create
-            (
-                reader: string,
-                type': SetReaderDisplay'Type
-            ) : SetReaderDisplayOptions
-            =
-            {
-              Reader = reader
-              Type = type'
-              Cart = None
-              Expand = None
             }
 
     ///<p>Sets the reader display to show <a href="/docs/terminal/features/display">cart details</a>.</p>

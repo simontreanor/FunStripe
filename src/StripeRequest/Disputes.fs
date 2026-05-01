@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Disputes =
 
     type ListOptions =
@@ -45,28 +45,6 @@ module Disputes =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                charge: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                paymentIntent: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Charge = charge
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              PaymentIntent = paymentIntent
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -81,17 +59,6 @@ module Disputes =
             {
                 Dispute = dispute
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                dispute: string
-            ) : RetrieveOptions
-            =
-            {
-              Dispute = dispute
-              Expand = None
             }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices =
@@ -129,26 +96,6 @@ module Disputes =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionShippingAddress =
-        let create
-            (
-                city: Choice<string,string> option,
-                country: Choice<IsoTypes.IsoCountryCode,string> option,
-                line1: Choice<string,string> option,
-                line2: Choice<string,string> option,
-                postalCode: Choice<string,string> option,
-                state: Choice<string,string> option
-            ) : Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransaction =
@@ -194,30 +141,6 @@ module Disputes =
                 ShippingAddress = shippingAddress
             }
 
-    module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransaction =
-        let create
-            (
-                customerAccountId: Choice<string,string> option,
-                customerDeviceFingerprint: Choice<string,string> option,
-                customerDeviceId: Choice<string,string> option,
-                customerEmailAddress: Choice<string,string> option,
-                customerPurchaseIp: Choice<string,string> option,
-                merchandiseOrServices: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices option,
-                productDescription: Choice<string,string> option,
-                shippingAddress: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionShippingAddress option
-            ) : Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransaction
-            =
-            {
-              CustomerAccountId = customerAccountId
-              CustomerDeviceFingerprint = customerDeviceFingerprint
-              CustomerDeviceId = customerDeviceId
-              CustomerEmailAddress = customerEmailAddress
-              CustomerPurchaseIp = customerPurchaseIp
-              MerchandiseOrServices = merchandiseOrServices
-              ProductDescription = productDescription
-              ShippingAddress = shippingAddress
-            }
-
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress =
         {
             /// City, district, suburb, town, or village.
@@ -249,26 +172,6 @@ module Disputes =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress =
-        let create
-            (
-                city: Choice<string,string> option,
-                country: Choice<IsoTypes.IsoCountryCode,string> option,
-                line1: Choice<string,string> option,
-                line2: Choice<string,string> option,
-                postalCode: Choice<string,string> option,
-                state: Choice<string,string> option
-            ) : Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions =
@@ -313,30 +216,6 @@ module Disputes =
                 ShippingAddress = shippingAddress
             }
 
-    module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions =
-        let create
-            (
-                charge: string option,
-                customerAccountId: Choice<string,string> option,
-                customerDeviceFingerprint: Choice<string,string> option,
-                customerDeviceId: Choice<string,string> option,
-                customerEmailAddress: Choice<string,string> option,
-                customerPurchaseIp: Choice<string,string> option,
-                productDescription: Choice<string,string> option,
-                shippingAddress: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress option
-            ) : Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions
-            =
-            {
-              Charge = charge
-              CustomerAccountId = customerAccountId
-              CustomerDeviceFingerprint = customerDeviceFingerprint
-              CustomerDeviceId = customerDeviceId
-              CustomerEmailAddress = customerEmailAddress
-              CustomerPurchaseIp = customerPurchaseIp
-              ProductDescription = productDescription
-              ShippingAddress = shippingAddress
-            }
-
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3 =
         {
             /// Disputed transaction details for Visa Compelling Evidence 3.0 evidence submission.
@@ -356,18 +235,6 @@ module Disputes =
                 PriorUndisputedTransactions = priorUndisputedTransactions
             }
 
-    module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3 =
-        let create
-            (
-                disputedTransaction: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransaction option,
-                priorUndisputedTransactions: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions list option
-            ) : Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3
-            =
-            {
-              DisputedTransaction = disputedTransaction
-              PriorUndisputedTransactions = priorUndisputedTransactions
-            }
-
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance =
         {
             /// A field acknowledging the fee incurred when countering a Visa compliance dispute. If this field is set to true, evidence can be submitted for the compliance dispute. Stripe collects a 500 USD (or local equivalent) amount to cover the network costs associated with resolving compliance disputes. Stripe refunds the 500 USD network fee if you win the dispute.
@@ -379,16 +246,6 @@ module Disputes =
         static member New(?feeAcknowledged: bool) =
             {
                 FeeAcknowledged = feeAcknowledged
-            }
-
-    module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance =
-        let create
-            (
-                feeAcknowledged: bool option
-            ) : Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance
-            =
-            {
-              FeeAcknowledged = feeAcknowledged
             }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidence =
@@ -406,18 +263,6 @@ module Disputes =
             {
                 VisaCompellingEvidence3 = visaCompellingEvidence3
                 VisaCompliance = visaCompliance
-            }
-
-    module Update'EvidenceEnhancedEvidenceEnhancedEvidence =
-        let create
-            (
-                visaCompellingEvidence3: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3 option,
-                visaCompliance: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance option
-            ) : Update'EvidenceEnhancedEvidenceEnhancedEvidence
-            =
-            {
-              VisaCompellingEvidence3 = visaCompellingEvidence3
-              VisaCompliance = visaCompliance
             }
 
     type Update'Evidence =
@@ -541,70 +386,6 @@ module Disputes =
                 UncategorizedText = uncategorizedText
             }
 
-    module Update'Evidence =
-        let create
-            (
-                accessActivityLog: string option,
-                billingAddress: string option,
-                cancellationPolicy: string option,
-                cancellationPolicyDisclosure: string option,
-                cancellationRebuttal: string option,
-                customerCommunication: string option,
-                customerEmailAddress: string option,
-                customerName: string option,
-                customerPurchaseIp: string option,
-                customerSignature: string option,
-                duplicateChargeDocumentation: string option,
-                duplicateChargeExplanation: string option,
-                duplicateChargeId: string option,
-                enhancedEvidence: Choice<Update'EvidenceEnhancedEvidenceEnhancedEvidence,string> option,
-                productDescription: string option,
-                receipt: string option,
-                refundPolicy: string option,
-                refundPolicyDisclosure: string option,
-                refundRefusalExplanation: string option,
-                serviceDate: string option,
-                serviceDocumentation: string option,
-                shippingAddress: string option,
-                shippingCarrier: string option,
-                shippingDate: string option,
-                shippingDocumentation: string option,
-                shippingTrackingNumber: string option,
-                uncategorizedFile: string option,
-                uncategorizedText: string option
-            ) : Update'Evidence
-            =
-            {
-              AccessActivityLog = accessActivityLog
-              BillingAddress = billingAddress
-              CancellationPolicy = cancellationPolicy
-              CancellationPolicyDisclosure = cancellationPolicyDisclosure
-              CancellationRebuttal = cancellationRebuttal
-              CustomerCommunication = customerCommunication
-              CustomerEmailAddress = customerEmailAddress
-              CustomerName = customerName
-              CustomerPurchaseIp = customerPurchaseIp
-              CustomerSignature = customerSignature
-              DuplicateChargeDocumentation = duplicateChargeDocumentation
-              DuplicateChargeExplanation = duplicateChargeExplanation
-              DuplicateChargeId = duplicateChargeId
-              EnhancedEvidence = enhancedEvidence
-              ProductDescription = productDescription
-              Receipt = receipt
-              RefundPolicy = refundPolicy
-              RefundPolicyDisclosure = refundPolicyDisclosure
-              RefundRefusalExplanation = refundRefusalExplanation
-              ServiceDate = serviceDate
-              ServiceDocumentation = serviceDocumentation
-              ShippingAddress = shippingAddress
-              ShippingCarrier = shippingCarrier
-              ShippingDate = shippingDate
-              ShippingDocumentation = shippingDocumentation
-              ShippingTrackingNumber = shippingTrackingNumber
-              UncategorizedFile = uncategorizedFile
-              UncategorizedText = uncategorizedText
-            }
-
     type UpdateOptions =
         {
             [<Config.Path>]
@@ -631,20 +412,6 @@ module Disputes =
                 Expand = expand
                 Metadata = metadata
                 Submit = submit
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                dispute: string
-            ) : UpdateOptions
-            =
-            {
-              Dispute = dispute
-              Evidence = None
-              Expand = None
-              Metadata = None
-              Submit = None
             }
 
     ///<p>Returns a list of your disputes.</p>
@@ -681,17 +448,6 @@ module DisputesClose =
             {
                 Dispute = dispute
                 Expand = expand
-            }
-
-    module CloseOptions =
-        let create
-            (
-                dispute: string
-            ) : CloseOptions
-            =
-            {
-              Dispute = dispute
-              Expand = None
             }
 
     ///<p>Closing the dispute for a charge indicates that you do not have any evidence to submit and are essentially dismissing the dispute, acknowledging it as lost.</p>

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.EphemeralKey
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module EphemeralKeys =
 
     type CreateOptions =
@@ -37,24 +37,6 @@ module EphemeralKeys =
                 VerificationSession = verificationSession
             }
 
-    module CreateOptions =
-        let create
-            (
-                customer: string option,
-                expand: string list option,
-                issuingCard: string option,
-                nonce: string option,
-                verificationSession: string option
-            ) : CreateOptions
-            =
-            {
-              Customer = customer
-              Expand = expand
-              IssuingCard = issuingCard
-              Nonce = nonce
-              VerificationSession = verificationSession
-            }
-
     type DeleteOptions =
         {
             [<Config.Path>]
@@ -69,17 +51,6 @@ module EphemeralKeys =
             {
                 Key = key
                 Expand = expand
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                key: string
-            ) : DeleteOptions
-            =
-            {
-              Key = key
-              Expand = None
             }
 
     ///<p>Creates a short-lived API key for a given resource.</p>

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.BillingPortal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module BillingPortalConfigurations =
 
     type ListOptions =
@@ -41,26 +41,6 @@ module BillingPortalConfigurations =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                active: bool option,
-                endingBefore: string option,
-                expand: string list option,
-                isDefault: bool option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Active = active
-              EndingBefore = endingBefore
-              Expand = expand
-              IsDefault = isDefault
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'BusinessProfile =
         {
             /// The messaging shown to customers in the portal.
@@ -80,20 +60,6 @@ module BillingPortalConfigurations =
                 Headline = headline
                 PrivacyPolicyUrl = privacyPolicyUrl
                 TermsOfServiceUrl = termsOfServiceUrl
-            }
-
-    module Create'BusinessProfile =
-        let create
-            (
-                headline: Choice<string,string> option,
-                privacyPolicyUrl: string option,
-                termsOfServiceUrl: string option
-            ) : Create'BusinessProfile
-            =
-            {
-              Headline = headline
-              PrivacyPolicyUrl = privacyPolicyUrl
-              TermsOfServiceUrl = termsOfServiceUrl
             }
 
     type Create'FeaturesCustomerUpdateAllowedUpdates =
@@ -121,18 +87,6 @@ module BillingPortalConfigurations =
                 Enabled = enabled
             }
 
-    module Create'FeaturesCustomerUpdate =
-        let create
-            (
-                allowedUpdates: Choice<Create'FeaturesCustomerUpdateAllowedUpdates list,string> option,
-                enabled: bool option
-            ) : Create'FeaturesCustomerUpdate
-            =
-            {
-              AllowedUpdates = allowedUpdates
-              Enabled = enabled
-            }
-
     type Create'FeaturesInvoiceHistory =
         {
             /// Whether the feature is enabled.
@@ -144,16 +98,6 @@ module BillingPortalConfigurations =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'FeaturesInvoiceHistory =
-        let create
-            (
-                enabled: bool option
-            ) : Create'FeaturesInvoiceHistory
-            =
-            {
-              Enabled = enabled
             }
 
     type Create'FeaturesPaymentMethodUpdate =
@@ -171,18 +115,6 @@ module BillingPortalConfigurations =
             {
                 Enabled = enabled
                 PaymentMethodConfiguration = paymentMethodConfiguration
-            }
-
-    module Create'FeaturesPaymentMethodUpdate =
-        let create
-            (
-                enabled: bool option,
-                paymentMethodConfiguration: Choice<string,string> option
-            ) : Create'FeaturesPaymentMethodUpdate
-            =
-            {
-              Enabled = enabled
-              PaymentMethodConfiguration = paymentMethodConfiguration
             }
 
     type Create'FeaturesSubscriptionCancelCancellationReasonOptions =
@@ -210,18 +142,6 @@ module BillingPortalConfigurations =
             {
                 Enabled = enabled
                 Options = options
-            }
-
-    module Create'FeaturesSubscriptionCancelCancellationReason =
-        let create
-            (
-                enabled: bool option,
-                options: Choice<Create'FeaturesSubscriptionCancelCancellationReasonOptions list,string> option
-            ) : Create'FeaturesSubscriptionCancelCancellationReason
-            =
-            {
-              Enabled = enabled
-              Options = options
             }
 
     type Create'FeaturesSubscriptionCancelMode =
@@ -258,22 +178,6 @@ module BillingPortalConfigurations =
                 ProrationBehavior = prorationBehavior
             }
 
-    module Create'FeaturesSubscriptionCancel =
-        let create
-            (
-                cancellationReason: Create'FeaturesSubscriptionCancelCancellationReason option,
-                enabled: bool option,
-                mode: Create'FeaturesSubscriptionCancelMode option,
-                prorationBehavior: Create'FeaturesSubscriptionCancelProrationBehavior option
-            ) : Create'FeaturesSubscriptionCancel
-            =
-            {
-              CancellationReason = cancellationReason
-              Enabled = enabled
-              Mode = mode
-              ProrationBehavior = prorationBehavior
-            }
-
     type Create'FeaturesSubscriptionUpdateBillingCycleAnchor =
         | Now
         | Unchanged
@@ -304,20 +208,6 @@ module BillingPortalConfigurations =
                 Minimum = minimum
             }
 
-    module Create'FeaturesSubscriptionUpdateProductsAdjustableQuantity =
-        let create
-            (
-                enabled: bool option,
-                maximum: int option,
-                minimum: int option
-            ) : Create'FeaturesSubscriptionUpdateProductsAdjustableQuantity
-            =
-            {
-              Enabled = enabled
-              Maximum = maximum
-              Minimum = minimum
-            }
-
     type Create'FeaturesSubscriptionUpdateProducts =
         {
             /// Control whether the quantity of the product can be adjusted.
@@ -337,20 +227,6 @@ module BillingPortalConfigurations =
                 AdjustableQuantity = adjustableQuantity
                 Prices = prices
                 Product = product
-            }
-
-    module Create'FeaturesSubscriptionUpdateProducts =
-        let create
-            (
-                adjustableQuantity: Create'FeaturesSubscriptionUpdateProductsAdjustableQuantity option,
-                prices: string list option,
-                product: string option
-            ) : Create'FeaturesSubscriptionUpdateProducts
-            =
-            {
-              AdjustableQuantity = adjustableQuantity
-              Prices = prices
-              Product = product
             }
 
     type Create'FeaturesSubscriptionUpdateProrationBehavior =
@@ -375,16 +251,6 @@ module BillingPortalConfigurations =
                 Type = type'
             }
 
-    module Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions =
-        let create
-            (
-                type': Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
-            ) : Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions
-            =
-            {
-              Type = type'
-            }
-
     type Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
         {
             /// List of conditions. When any condition is true, the update will be scheduled at the end of the current period.
@@ -396,16 +262,6 @@ module BillingPortalConfigurations =
         static member New(?conditions: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list) =
             {
                 Conditions = conditions
-            }
-
-    module Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
-        let create
-            (
-                conditions: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list option
-            ) : Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd
-            =
-            {
-              Conditions = conditions
             }
 
     type Create'FeaturesSubscriptionUpdateTrialUpdateBehavior =
@@ -449,28 +305,6 @@ module BillingPortalConfigurations =
                 TrialUpdateBehavior = trialUpdateBehavior
             }
 
-    module Create'FeaturesSubscriptionUpdate =
-        let create
-            (
-                billingCycleAnchor: Create'FeaturesSubscriptionUpdateBillingCycleAnchor option,
-                defaultAllowedUpdates: Choice<Create'FeaturesSubscriptionUpdateDefaultAllowedUpdates list,string> option,
-                enabled: bool option,
-                products: Choice<Create'FeaturesSubscriptionUpdateProducts list,string> option,
-                prorationBehavior: Create'FeaturesSubscriptionUpdateProrationBehavior option,
-                scheduleAtPeriodEnd: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd option,
-                trialUpdateBehavior: Create'FeaturesSubscriptionUpdateTrialUpdateBehavior option
-            ) : Create'FeaturesSubscriptionUpdate
-            =
-            {
-              BillingCycleAnchor = billingCycleAnchor
-              DefaultAllowedUpdates = defaultAllowedUpdates
-              Enabled = enabled
-              Products = products
-              ProrationBehavior = prorationBehavior
-              ScheduleAtPeriodEnd = scheduleAtPeriodEnd
-              TrialUpdateBehavior = trialUpdateBehavior
-            }
-
     type Create'Features =
         {
             /// Information about updating the customer details in the portal.
@@ -500,24 +334,6 @@ module BillingPortalConfigurations =
                 SubscriptionUpdate = subscriptionUpdate
             }
 
-    module Create'Features =
-        let create
-            (
-                customerUpdate: Create'FeaturesCustomerUpdate option,
-                invoiceHistory: Create'FeaturesInvoiceHistory option,
-                paymentMethodUpdate: Create'FeaturesPaymentMethodUpdate option,
-                subscriptionCancel: Create'FeaturesSubscriptionCancel option,
-                subscriptionUpdate: Create'FeaturesSubscriptionUpdate option
-            ) : Create'Features
-            =
-            {
-              CustomerUpdate = customerUpdate
-              InvoiceHistory = invoiceHistory
-              PaymentMethodUpdate = paymentMethodUpdate
-              SubscriptionCancel = subscriptionCancel
-              SubscriptionUpdate = subscriptionUpdate
-            }
-
     type Create'LoginPage =
         {
             /// Set to `true` to generate a shareable URL [`login_page.url`](https://docs.stripe.com/api/customer_portal/configuration#portal_configuration_object-login_page-url) that will take your customers to a hosted login page for the customer portal.
@@ -529,16 +345,6 @@ module BillingPortalConfigurations =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'LoginPage =
-        let create
-            (
-                enabled: bool option
-            ) : Create'LoginPage
-            =
-            {
-              Enabled = enabled
             }
 
     type CreateOptions =
@@ -578,22 +384,6 @@ module BillingPortalConfigurations =
                 Name = name
             }
 
-    module CreateOptions =
-        let create
-            (
-                features: Create'Features
-            ) : CreateOptions
-            =
-            {
-              Features = features
-              BusinessProfile = None
-              DefaultReturnUrl = None
-              Expand = None
-              LoginPage = None
-              Metadata = None
-              Name = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -608,17 +398,6 @@ module BillingPortalConfigurations =
             {
                 Configuration = configuration
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                configuration: string
-            ) : RetrieveOptions
-            =
-            {
-              Configuration = configuration
-              Expand = None
             }
 
     type Update'BusinessProfile =
@@ -640,20 +419,6 @@ module BillingPortalConfigurations =
                 Headline = headline
                 PrivacyPolicyUrl = privacyPolicyUrl
                 TermsOfServiceUrl = termsOfServiceUrl
-            }
-
-    module Update'BusinessProfile =
-        let create
-            (
-                headline: Choice<string,string> option,
-                privacyPolicyUrl: Choice<string,string> option,
-                termsOfServiceUrl: Choice<string,string> option
-            ) : Update'BusinessProfile
-            =
-            {
-              Headline = headline
-              PrivacyPolicyUrl = privacyPolicyUrl
-              TermsOfServiceUrl = termsOfServiceUrl
             }
 
     type Update'FeaturesCustomerUpdateAllowedUpdates =
@@ -681,18 +446,6 @@ module BillingPortalConfigurations =
                 Enabled = enabled
             }
 
-    module Update'FeaturesCustomerUpdate =
-        let create
-            (
-                allowedUpdates: Choice<Update'FeaturesCustomerUpdateAllowedUpdates list,string> option,
-                enabled: bool option
-            ) : Update'FeaturesCustomerUpdate
-            =
-            {
-              AllowedUpdates = allowedUpdates
-              Enabled = enabled
-            }
-
     type Update'FeaturesInvoiceHistory =
         {
             /// Whether the feature is enabled.
@@ -704,16 +457,6 @@ module BillingPortalConfigurations =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Update'FeaturesInvoiceHistory =
-        let create
-            (
-                enabled: bool option
-            ) : Update'FeaturesInvoiceHistory
-            =
-            {
-              Enabled = enabled
             }
 
     type Update'FeaturesPaymentMethodUpdate =
@@ -731,18 +474,6 @@ module BillingPortalConfigurations =
             {
                 Enabled = enabled
                 PaymentMethodConfiguration = paymentMethodConfiguration
-            }
-
-    module Update'FeaturesPaymentMethodUpdate =
-        let create
-            (
-                enabled: bool option,
-                paymentMethodConfiguration: Choice<string,string> option
-            ) : Update'FeaturesPaymentMethodUpdate
-            =
-            {
-              Enabled = enabled
-              PaymentMethodConfiguration = paymentMethodConfiguration
             }
 
     type Update'FeaturesSubscriptionCancelCancellationReasonOptions =
@@ -770,18 +501,6 @@ module BillingPortalConfigurations =
             {
                 Enabled = enabled
                 Options = options
-            }
-
-    module Update'FeaturesSubscriptionCancelCancellationReason =
-        let create
-            (
-                enabled: bool option,
-                options: Choice<Update'FeaturesSubscriptionCancelCancellationReasonOptions list,string> option
-            ) : Update'FeaturesSubscriptionCancelCancellationReason
-            =
-            {
-              Enabled = enabled
-              Options = options
             }
 
     type Update'FeaturesSubscriptionCancelMode =
@@ -818,22 +537,6 @@ module BillingPortalConfigurations =
                 ProrationBehavior = prorationBehavior
             }
 
-    module Update'FeaturesSubscriptionCancel =
-        let create
-            (
-                cancellationReason: Update'FeaturesSubscriptionCancelCancellationReason option,
-                enabled: bool option,
-                mode: Update'FeaturesSubscriptionCancelMode option,
-                prorationBehavior: Update'FeaturesSubscriptionCancelProrationBehavior option
-            ) : Update'FeaturesSubscriptionCancel
-            =
-            {
-              CancellationReason = cancellationReason
-              Enabled = enabled
-              Mode = mode
-              ProrationBehavior = prorationBehavior
-            }
-
     type Update'FeaturesSubscriptionUpdateBillingCycleAnchor =
         | Now
         | Unchanged
@@ -864,20 +567,6 @@ module BillingPortalConfigurations =
                 Minimum = minimum
             }
 
-    module Update'FeaturesSubscriptionUpdateProductsAdjustableQuantity =
-        let create
-            (
-                enabled: bool option,
-                maximum: int option,
-                minimum: int option
-            ) : Update'FeaturesSubscriptionUpdateProductsAdjustableQuantity
-            =
-            {
-              Enabled = enabled
-              Maximum = maximum
-              Minimum = minimum
-            }
-
     type Update'FeaturesSubscriptionUpdateProducts =
         {
             /// Control whether the quantity of the product can be adjusted.
@@ -897,20 +586,6 @@ module BillingPortalConfigurations =
                 AdjustableQuantity = adjustableQuantity
                 Prices = prices
                 Product = product
-            }
-
-    module Update'FeaturesSubscriptionUpdateProducts =
-        let create
-            (
-                adjustableQuantity: Update'FeaturesSubscriptionUpdateProductsAdjustableQuantity option,
-                prices: string list option,
-                product: string option
-            ) : Update'FeaturesSubscriptionUpdateProducts
-            =
-            {
-              AdjustableQuantity = adjustableQuantity
-              Prices = prices
-              Product = product
             }
 
     type Update'FeaturesSubscriptionUpdateProrationBehavior =
@@ -935,16 +610,6 @@ module BillingPortalConfigurations =
                 Type = type'
             }
 
-    module Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions =
-        let create
-            (
-                type': Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
-            ) : Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions
-            =
-            {
-              Type = type'
-            }
-
     type Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
         {
             /// List of conditions. When any condition is true, the update will be scheduled at the end of the current period.
@@ -956,16 +621,6 @@ module BillingPortalConfigurations =
         static member New(?conditions: Choice<Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list,string>) =
             {
                 Conditions = conditions
-            }
-
-    module Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
-        let create
-            (
-                conditions: Choice<Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list,string> option
-            ) : Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd
-            =
-            {
-              Conditions = conditions
             }
 
     type Update'FeaturesSubscriptionUpdateTrialUpdateBehavior =
@@ -1009,28 +664,6 @@ module BillingPortalConfigurations =
                 TrialUpdateBehavior = trialUpdateBehavior
             }
 
-    module Update'FeaturesSubscriptionUpdate =
-        let create
-            (
-                billingCycleAnchor: Update'FeaturesSubscriptionUpdateBillingCycleAnchor option,
-                defaultAllowedUpdates: Choice<Update'FeaturesSubscriptionUpdateDefaultAllowedUpdates list,string> option,
-                enabled: bool option,
-                products: Choice<Update'FeaturesSubscriptionUpdateProducts list,string> option,
-                prorationBehavior: Update'FeaturesSubscriptionUpdateProrationBehavior option,
-                scheduleAtPeriodEnd: Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd option,
-                trialUpdateBehavior: Update'FeaturesSubscriptionUpdateTrialUpdateBehavior option
-            ) : Update'FeaturesSubscriptionUpdate
-            =
-            {
-              BillingCycleAnchor = billingCycleAnchor
-              DefaultAllowedUpdates = defaultAllowedUpdates
-              Enabled = enabled
-              Products = products
-              ProrationBehavior = prorationBehavior
-              ScheduleAtPeriodEnd = scheduleAtPeriodEnd
-              TrialUpdateBehavior = trialUpdateBehavior
-            }
-
     type Update'Features =
         {
             /// Information about updating the customer details in the portal.
@@ -1060,24 +693,6 @@ module BillingPortalConfigurations =
                 SubscriptionUpdate = subscriptionUpdate
             }
 
-    module Update'Features =
-        let create
-            (
-                customerUpdate: Update'FeaturesCustomerUpdate option,
-                invoiceHistory: Update'FeaturesInvoiceHistory option,
-                paymentMethodUpdate: Update'FeaturesPaymentMethodUpdate option,
-                subscriptionCancel: Update'FeaturesSubscriptionCancel option,
-                subscriptionUpdate: Update'FeaturesSubscriptionUpdate option
-            ) : Update'Features
-            =
-            {
-              CustomerUpdate = customerUpdate
-              InvoiceHistory = invoiceHistory
-              PaymentMethodUpdate = paymentMethodUpdate
-              SubscriptionCancel = subscriptionCancel
-              SubscriptionUpdate = subscriptionUpdate
-            }
-
     type Update'LoginPage =
         {
             /// Set to `true` to generate a shareable URL [`login_page.url`](https://docs.stripe.com/api/customer_portal/configuration#portal_configuration_object-login_page-url) that will take your customers to a hosted login page for the customer portal.
@@ -1090,16 +705,6 @@ module BillingPortalConfigurations =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Update'LoginPage =
-        let create
-            (
-                enabled: bool option
-            ) : Update'LoginPage
-            =
-            {
-              Enabled = enabled
             }
 
     type UpdateOptions =
@@ -1146,24 +751,6 @@ module BillingPortalConfigurations =
                 Name = name
             }
 
-    module UpdateOptions =
-        let create
-            (
-                configuration: string
-            ) : UpdateOptions
-            =
-            {
-              Configuration = configuration
-              Active = None
-              BusinessProfile = None
-              DefaultReturnUrl = None
-              Expand = None
-              Features = None
-              LoginPage = None
-              Metadata = None
-              Name = None
-            }
-
     ///<p>Returns a list of configurations that describe the functionality of the customer portal.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("is_default", options.IsDefault |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -1201,16 +788,6 @@ module BillingPortalSessions =
                 CustomMessage = customMessage
             }
 
-    module Create'FlowDataAfterCompletionHostedConfirmation =
-        let create
-            (
-                customMessage: string option
-            ) : Create'FlowDataAfterCompletionHostedConfirmation
-            =
-            {
-              CustomMessage = customMessage
-            }
-
     type Create'FlowDataAfterCompletionRedirect =
         {
             /// The URL the customer will be redirected to after the flow is completed.
@@ -1222,16 +799,6 @@ module BillingPortalSessions =
         static member New(?returnUrl: string) =
             {
                 ReturnUrl = returnUrl
-            }
-
-    module Create'FlowDataAfterCompletionRedirect =
-        let create
-            (
-                returnUrl: string option
-            ) : Create'FlowDataAfterCompletionRedirect
-            =
-            {
-              ReturnUrl = returnUrl
             }
 
     type Create'FlowDataAfterCompletionType =
@@ -1260,20 +827,6 @@ module BillingPortalSessions =
                 Type = type'
             }
 
-    module Create'FlowDataAfterCompletion =
-        let create
-            (
-                hostedConfirmation: Create'FlowDataAfterCompletionHostedConfirmation option,
-                redirect: Create'FlowDataAfterCompletionRedirect option,
-                type': Create'FlowDataAfterCompletionType option
-            ) : Create'FlowDataAfterCompletion
-            =
-            {
-              HostedConfirmation = hostedConfirmation
-              Redirect = redirect
-              Type = type'
-            }
-
     type Create'FlowDataSubscriptionCancelRetentionCouponOffer =
         {
             /// The ID of the coupon to be offered.
@@ -1285,16 +838,6 @@ module BillingPortalSessions =
         static member New(?coupon: string) =
             {
                 Coupon = coupon
-            }
-
-    module Create'FlowDataSubscriptionCancelRetentionCouponOffer =
-        let create
-            (
-                coupon: string option
-            ) : Create'FlowDataSubscriptionCancelRetentionCouponOffer
-            =
-            {
-              Coupon = coupon
             }
 
     type Create'FlowDataSubscriptionCancelRetentionType = | CouponOffer
@@ -1316,18 +859,6 @@ module BillingPortalSessions =
                 Type = type'
             }
 
-    module Create'FlowDataSubscriptionCancelRetention =
-        let create
-            (
-                couponOffer: Create'FlowDataSubscriptionCancelRetentionCouponOffer option,
-                type': Create'FlowDataSubscriptionCancelRetentionType option
-            ) : Create'FlowDataSubscriptionCancelRetention
-            =
-            {
-              CouponOffer = couponOffer
-              Type = type'
-            }
-
     type Create'FlowDataSubscriptionCancel =
         {
             /// Specify a retention strategy to be used in the cancellation flow.
@@ -1345,18 +876,6 @@ module BillingPortalSessions =
                 Subscription = subscription
             }
 
-    module Create'FlowDataSubscriptionCancel =
-        let create
-            (
-                retention: Create'FlowDataSubscriptionCancelRetention option,
-                subscription: string option
-            ) : Create'FlowDataSubscriptionCancel
-            =
-            {
-              Retention = retention
-              Subscription = subscription
-            }
-
     type Create'FlowDataSubscriptionUpdate =
         {
             /// The ID of the subscription to be updated.
@@ -1368,16 +887,6 @@ module BillingPortalSessions =
         static member New(?subscription: string) =
             {
                 Subscription = subscription
-            }
-
-    module Create'FlowDataSubscriptionUpdate =
-        let create
-            (
-                subscription: string option
-            ) : Create'FlowDataSubscriptionUpdate
-            =
-            {
-              Subscription = subscription
             }
 
     type Create'FlowDataSubscriptionUpdateConfirmDiscounts =
@@ -1395,18 +904,6 @@ module BillingPortalSessions =
             {
                 Coupon = coupon
                 PromotionCode = promotionCode
-            }
-
-    module Create'FlowDataSubscriptionUpdateConfirmDiscounts =
-        let create
-            (
-                coupon: string option,
-                promotionCode: string option
-            ) : Create'FlowDataSubscriptionUpdateConfirmDiscounts
-            =
-            {
-              Coupon = coupon
-              PromotionCode = promotionCode
             }
 
     type Create'FlowDataSubscriptionUpdateConfirmItems =
@@ -1430,20 +927,6 @@ module BillingPortalSessions =
                 Quantity = quantity
             }
 
-    module Create'FlowDataSubscriptionUpdateConfirmItems =
-        let create
-            (
-                id: string option,
-                price: string option,
-                quantity: int option
-            ) : Create'FlowDataSubscriptionUpdateConfirmItems
-            =
-            {
-              Id = id
-              Price = price
-              Quantity = quantity
-            }
-
     type Create'FlowDataSubscriptionUpdateConfirm =
         {
             /// The coupon or promotion code to apply to this subscription update.
@@ -1463,20 +946,6 @@ module BillingPortalSessions =
                 Discounts = discounts
                 Items = items
                 Subscription = subscription
-            }
-
-    module Create'FlowDataSubscriptionUpdateConfirm =
-        let create
-            (
-                discounts: Create'FlowDataSubscriptionUpdateConfirmDiscounts list option,
-                items: Create'FlowDataSubscriptionUpdateConfirmItems list option,
-                subscription: string option
-            ) : Create'FlowDataSubscriptionUpdateConfirm
-            =
-            {
-              Discounts = discounts
-              Items = items
-              Subscription = subscription
             }
 
     type Create'FlowDataType =
@@ -1512,24 +981,6 @@ module BillingPortalSessions =
                 SubscriptionUpdate = subscriptionUpdate
                 SubscriptionUpdateConfirm = subscriptionUpdateConfirm
                 Type = type'
-            }
-
-    module Create'FlowData =
-        let create
-            (
-                afterCompletion: Create'FlowDataAfterCompletion option,
-                subscriptionCancel: Create'FlowDataSubscriptionCancel option,
-                subscriptionUpdate: Create'FlowDataSubscriptionUpdate option,
-                subscriptionUpdateConfirm: Create'FlowDataSubscriptionUpdateConfirm option,
-                type': Create'FlowDataType option
-            ) : Create'FlowData
-            =
-            {
-              AfterCompletion = afterCompletion
-              SubscriptionCancel = subscriptionCancel
-              SubscriptionUpdate = subscriptionUpdate
-              SubscriptionUpdateConfirm = subscriptionUpdateConfirm
-              Type = type'
             }
 
     type Create'Locale =
@@ -1620,30 +1071,6 @@ module BillingPortalSessions =
                 Locale = locale
                 OnBehalfOf = onBehalfOf
                 ReturnUrl = returnUrl
-            }
-
-    module CreateOptions =
-        let create
-            (
-                configuration: string option,
-                customer: string option,
-                customerAccount: string option,
-                expand: string list option,
-                flowData: Create'FlowData option,
-                locale: Create'Locale option,
-                onBehalfOf: string option,
-                returnUrl: string option
-            ) : CreateOptions
-            =
-            {
-              Configuration = configuration
-              Customer = customer
-              CustomerAccount = customerAccount
-              Expand = expand
-              FlowData = flowData
-              Locale = locale
-              OnBehalfOf = onBehalfOf
-              ReturnUrl = returnUrl
             }
 
     ///<p>Creates a session of the customer portal.</p>

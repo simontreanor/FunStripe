@@ -7,7 +7,7 @@ open Stripe.Entitlements
 
 /// A product_feature represents an attachment between a feature and a product.
 /// When a product is purchased that has a feature attached, Stripe will create an entitlement to the feature for the purchasing customer.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type ProductFeature =
     {
         EntitlementFeature: EntitlementsFeature

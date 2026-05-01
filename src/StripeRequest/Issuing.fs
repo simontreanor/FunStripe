@@ -10,7 +10,7 @@ open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module IssuingAuthorizations =
 
     type ListOptions =
@@ -54,30 +54,6 @@ module IssuingAuthorizations =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                card: string option,
-                cardholder: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              Card = card
-              Cardholder = cardholder
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -92,17 +68,6 @@ module IssuingAuthorizations =
             {
                 Authorization = authorization
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                authorization: string
-            ) : RetrieveOptions
-            =
-            {
-              Authorization = authorization
-              Expand = None
             }
 
     type UpdateOptions =
@@ -123,18 +88,6 @@ module IssuingAuthorizations =
                 Authorization = authorization
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                authorization: string
-            ) : UpdateOptions
-            =
-            {
-              Authorization = authorization
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -180,19 +133,6 @@ module IssuingAuthorizationsApprove =
                 Metadata = metadata
             }
 
-    module ApproveOptions =
-        let create
-            (
-                authorization: string
-            ) : ApproveOptions
-            =
-            {
-              Authorization = authorization
-              Amount = None
-              Expand = None
-              Metadata = None
-            }
-
     ///<p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow. 
     ///This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to approve an authorization</a>.</p>
     let Approve settings (options: ApproveOptions) =
@@ -219,18 +159,6 @@ module IssuingAuthorizationsDecline =
                 Authorization = authorization
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module DeclineOptions =
-        let create
-            (
-                authorization: string
-            ) : DeclineOptions
-            =
-            {
-              Authorization = authorization
-              Expand = None
-              Metadata = None
             }
 
     ///<p>[Deprecated] Declines a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real time authorization</a> flow.
@@ -286,32 +214,6 @@ module IssuingCardholders =
                 Type = type'
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                email: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                phoneNumber: string option,
-                startingAfter: string option,
-                status: string option,
-                type': string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Email = email
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              PhoneNumber = phoneNumber
-              StartingAfter = startingAfter
-              Status = status
-              Type = type'
-            }
-
     type Create'BillingAddress =
         {
             /// City, district, suburb, town, or village.
@@ -345,26 +247,6 @@ module IssuingCardholders =
                 State = state
             }
 
-    module Create'BillingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'BillingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'Billing =
         {
             /// The cardholder’s billing address.
@@ -378,16 +260,6 @@ module IssuingCardholders =
                 Address = address
             }
 
-    module Create'Billing =
-        let create
-            (
-                address: Create'BillingAddress option
-            ) : Create'Billing
-            =
-            {
-              Address = address
-            }
-
     type Create'Company =
         {
             /// The entity's business ID number.
@@ -399,16 +271,6 @@ module IssuingCardholders =
         static member New(?taxId: string) =
             {
                 TaxId = taxId
-            }
-
-    module Create'Company =
-        let create
-            (
-                taxId: string option
-            ) : Create'Company
-            =
-            {
-              TaxId = taxId
             }
 
     type Create'IndividualCardIssuingUserTermsAcceptance =
@@ -432,20 +294,6 @@ module IssuingCardholders =
                 UserAgent = userAgent
             }
 
-    module Create'IndividualCardIssuingUserTermsAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Create'IndividualCardIssuingUserTermsAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Create'IndividualCardIssuing =
         {
             /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.
@@ -457,16 +305,6 @@ module IssuingCardholders =
         static member New(?userTermsAcceptance: Create'IndividualCardIssuingUserTermsAcceptance) =
             {
                 UserTermsAcceptance = userTermsAcceptance
-            }
-
-    module Create'IndividualCardIssuing =
-        let create
-            (
-                userTermsAcceptance: Create'IndividualCardIssuingUserTermsAcceptance option
-            ) : Create'IndividualCardIssuing
-            =
-            {
-              UserTermsAcceptance = userTermsAcceptance
             }
 
     type Create'IndividualDob =
@@ -490,20 +328,6 @@ module IssuingCardholders =
                 Year = year
             }
 
-    module Create'IndividualDob =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'IndividualDob
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Create'IndividualVerificationDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
@@ -521,18 +345,6 @@ module IssuingCardholders =
                 Front = front
             }
 
-    module Create'IndividualVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'IndividualVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Create'IndividualVerification =
         {
             /// An identifying document, either a passport or local ID card.
@@ -544,16 +356,6 @@ module IssuingCardholders =
         static member New(?document: Create'IndividualVerificationDocument) =
             {
                 Document = document
-            }
-
-    module Create'IndividualVerification =
-        let create
-            (
-                document: Create'IndividualVerificationDocument option
-            ) : Create'IndividualVerification
-            =
-            {
-              Document = document
             }
 
     type Create'Individual =
@@ -583,24 +385,6 @@ module IssuingCardholders =
                 FirstName = firstName
                 LastName = lastName
                 Verification = verification
-            }
-
-    module Create'Individual =
-        let create
-            (
-                cardIssuing: Create'IndividualCardIssuing option,
-                dob: Create'IndividualDob option,
-                firstName: string option,
-                lastName: string option,
-                verification: Create'IndividualVerification option
-            ) : Create'Individual
-            =
-            {
-              CardIssuing = cardIssuing
-              Dob = dob
-              FirstName = firstName
-              LastName = lastName
-              Verification = verification
             }
 
     type Create'PreferredLocales =
@@ -1538,20 +1322,6 @@ module IssuingCardholders =
                 Interval = interval
             }
 
-    module Create'SpendingControlsSpendingLimits =
-        let create
-            (
-                amount: int option,
-                categories: Create'SpendingControlsSpendingLimitsCategories list option,
-                interval: Create'SpendingControlsSpendingLimitsInterval option
-            ) : Create'SpendingControlsSpendingLimits
-            =
-            {
-              Amount = amount
-              Categories = categories
-              Interval = interval
-            }
-
     type Create'SpendingControls =
         {
             /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
@@ -1591,30 +1361,6 @@ module IssuingCardholders =
                 BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
                 SpendingLimitsCurrency = spendingLimitsCurrency
-            }
-
-    module Create'SpendingControls =
-        let create
-            (
-                allowedCardPresences: Create'SpendingControlsAllowedCardPresences list option,
-                allowedCategories: Create'SpendingControlsAllowedCategories list option,
-                allowedMerchantCountries: string list option,
-                blockedCardPresences: Create'SpendingControlsBlockedCardPresences list option,
-                blockedCategories: Create'SpendingControlsBlockedCategories list option,
-                blockedMerchantCountries: string list option,
-                spendingLimits: Create'SpendingControlsSpendingLimits list option,
-                spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
-            ) : Create'SpendingControls
-            =
-            {
-              AllowedCardPresences = allowedCardPresences
-              AllowedCategories = allowedCategories
-              AllowedMerchantCountries = allowedMerchantCountries
-              BlockedCardPresences = blockedCardPresences
-              BlockedCategories = blockedCategories
-              BlockedMerchantCountries = blockedMerchantCountries
-              SpendingLimits = spendingLimits
-              SpendingLimitsCurrency = spendingLimitsCurrency
             }
 
     type Create'Status =
@@ -1683,28 +1429,6 @@ module IssuingCardholders =
                 Type = type'
             }
 
-    module CreateOptions =
-        let create
-            (
-                billing: Create'Billing,
-                name: string
-            ) : CreateOptions
-            =
-            {
-              Billing = billing
-              Name = name
-              Company = None
-              Email = None
-              Expand = None
-              Individual = None
-              Metadata = None
-              PhoneNumber = None
-              PreferredLocales = None
-              SpendingControls = None
-              Status = None
-              Type = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -1719,17 +1443,6 @@ module IssuingCardholders =
             {
                 Cardholder = cardholder
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                cardholder: string
-            ) : RetrieveOptions
-            =
-            {
-              Cardholder = cardholder
-              Expand = None
             }
 
     type Update'BillingAddress =
@@ -1765,26 +1478,6 @@ module IssuingCardholders =
                 State = state
             }
 
-    module Update'BillingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'BillingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'Billing =
         {
             /// The cardholder’s billing address.
@@ -1798,16 +1491,6 @@ module IssuingCardholders =
                 Address = address
             }
 
-    module Update'Billing =
-        let create
-            (
-                address: Update'BillingAddress option
-            ) : Update'Billing
-            =
-            {
-              Address = address
-            }
-
     type Update'Company =
         {
             /// The entity's business ID number.
@@ -1819,16 +1502,6 @@ module IssuingCardholders =
         static member New(?taxId: string) =
             {
                 TaxId = taxId
-            }
-
-    module Update'Company =
-        let create
-            (
-                taxId: string option
-            ) : Update'Company
-            =
-            {
-              TaxId = taxId
             }
 
     type Update'IndividualCardIssuingUserTermsAcceptance =
@@ -1852,20 +1525,6 @@ module IssuingCardholders =
                 UserAgent = userAgent
             }
 
-    module Update'IndividualCardIssuingUserTermsAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Update'IndividualCardIssuingUserTermsAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Update'IndividualCardIssuing =
         {
             /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.
@@ -1877,16 +1536,6 @@ module IssuingCardholders =
         static member New(?userTermsAcceptance: Update'IndividualCardIssuingUserTermsAcceptance) =
             {
                 UserTermsAcceptance = userTermsAcceptance
-            }
-
-    module Update'IndividualCardIssuing =
-        let create
-            (
-                userTermsAcceptance: Update'IndividualCardIssuingUserTermsAcceptance option
-            ) : Update'IndividualCardIssuing
-            =
-            {
-              UserTermsAcceptance = userTermsAcceptance
             }
 
     type Update'IndividualDob =
@@ -1910,20 +1559,6 @@ module IssuingCardholders =
                 Year = year
             }
 
-    module Update'IndividualDob =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Update'IndividualDob
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Update'IndividualVerificationDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
@@ -1941,18 +1576,6 @@ module IssuingCardholders =
                 Front = front
             }
 
-    module Update'IndividualVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Update'IndividualVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Update'IndividualVerification =
         {
             /// An identifying document, either a passport or local ID card.
@@ -1964,16 +1587,6 @@ module IssuingCardholders =
         static member New(?document: Update'IndividualVerificationDocument) =
             {
                 Document = document
-            }
-
-    module Update'IndividualVerification =
-        let create
-            (
-                document: Update'IndividualVerificationDocument option
-            ) : Update'IndividualVerification
-            =
-            {
-              Document = document
             }
 
     type Update'Individual =
@@ -2003,24 +1616,6 @@ module IssuingCardholders =
                 FirstName = firstName
                 LastName = lastName
                 Verification = verification
-            }
-
-    module Update'Individual =
-        let create
-            (
-                cardIssuing: Update'IndividualCardIssuing option,
-                dob: Update'IndividualDob option,
-                firstName: string option,
-                lastName: string option,
-                verification: Update'IndividualVerification option
-            ) : Update'Individual
-            =
-            {
-              CardIssuing = cardIssuing
-              Dob = dob
-              FirstName = firstName
-              LastName = lastName
-              Verification = verification
             }
 
     type Update'PreferredLocales =
@@ -2958,20 +2553,6 @@ module IssuingCardholders =
                 Interval = interval
             }
 
-    module Update'SpendingControlsSpendingLimits =
-        let create
-            (
-                amount: int option,
-                categories: Update'SpendingControlsSpendingLimitsCategories list option,
-                interval: Update'SpendingControlsSpendingLimitsInterval option
-            ) : Update'SpendingControlsSpendingLimits
-            =
-            {
-              Amount = amount
-              Categories = categories
-              Interval = interval
-            }
-
     type Update'SpendingControls =
         {
             /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
@@ -3011,30 +2592,6 @@ module IssuingCardholders =
                 BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
                 SpendingLimitsCurrency = spendingLimitsCurrency
-            }
-
-    module Update'SpendingControls =
-        let create
-            (
-                allowedCardPresences: Update'SpendingControlsAllowedCardPresences list option,
-                allowedCategories: Update'SpendingControlsAllowedCategories list option,
-                allowedMerchantCountries: string list option,
-                blockedCardPresences: Update'SpendingControlsBlockedCardPresences list option,
-                blockedCategories: Update'SpendingControlsBlockedCategories list option,
-                blockedMerchantCountries: string list option,
-                spendingLimits: Update'SpendingControlsSpendingLimits list option,
-                spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
-            ) : Update'SpendingControls
-            =
-            {
-              AllowedCardPresences = allowedCardPresences
-              AllowedCategories = allowedCategories
-              AllowedMerchantCountries = allowedMerchantCountries
-              BlockedCardPresences = blockedCardPresences
-              BlockedCategories = blockedCategories
-              BlockedMerchantCountries = blockedMerchantCountries
-              SpendingLimits = spendingLimits
-              SpendingLimitsCurrency = spendingLimitsCurrency
             }
 
     type Update'Status =
@@ -3092,26 +2649,6 @@ module IssuingCardholders =
                 PreferredLocales = preferredLocales
                 SpendingControls = spendingControls
                 Status = status
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                cardholder: string
-            ) : UpdateOptions
-            =
-            {
-              Cardholder = cardholder
-              Billing = None
-              Company = None
-              Email = None
-              Expand = None
-              Individual = None
-              Metadata = None
-              PhoneNumber = None
-              PreferredLocales = None
-              SpendingControls = None
-              Status = None
             }
 
     ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -3194,38 +2731,6 @@ module IssuingCards =
                 Type = type'
             }
 
-    module ListOptions =
-        let create
-            (
-                cardholder: string option,
-                created: int option,
-                endingBefore: string option,
-                expMonth: int option,
-                expYear: int option,
-                expand: string list option,
-                last4: string option,
-                limit: int option,
-                personalizationDesign: string option,
-                startingAfter: string option,
-                status: string option,
-                type': string option
-            ) : ListOptions
-            =
-            {
-              Cardholder = cardholder
-              Created = created
-              EndingBefore = endingBefore
-              ExpMonth = expMonth
-              ExpYear = expYear
-              Expand = expand
-              Last4 = last4
-              Limit = limit
-              PersonalizationDesign = personalizationDesign
-              StartingAfter = startingAfter
-              Status = status
-              Type = type'
-            }
-
     type Create'LifecycleControlsCancelAfter =
         {
             /// The card is automatically cancelled when it makes this number of non-zero payment authorizations and transactions. The count includes penny authorizations, but doesn't include non-payment actions, such as authorization advice.
@@ -3237,16 +2742,6 @@ module IssuingCards =
         static member New(?paymentCount: int) =
             {
                 PaymentCount = paymentCount
-            }
-
-    module Create'LifecycleControlsCancelAfter =
-        let create
-            (
-                paymentCount: int option
-            ) : Create'LifecycleControlsCancelAfter
-            =
-            {
-              PaymentCount = paymentCount
             }
 
     type Create'LifecycleControls =
@@ -3262,16 +2757,6 @@ module IssuingCards =
                 CancelAfter = cancelAfter
             }
 
-    module Create'LifecycleControls =
-        let create
-            (
-                cancelAfter: Create'LifecycleControlsCancelAfter option
-            ) : Create'LifecycleControls
-            =
-            {
-              CancelAfter = cancelAfter
-            }
-
     type Create'Pin =
         {
             /// The card's desired new PIN, encrypted under Stripe's public key.
@@ -3283,16 +2768,6 @@ module IssuingCards =
         static member New(?encryptedNumber: string) =
             {
                 EncryptedNumber = encryptedNumber
-            }
-
-    module Create'Pin =
-        let create
-            (
-                encryptedNumber: string option
-            ) : Create'Pin
-            =
-            {
-              EncryptedNumber = encryptedNumber
             }
 
     type Create'ReplacementReason =
@@ -3334,26 +2809,6 @@ module IssuingCards =
                 State = state
             }
 
-    module Create'ShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'ShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'ShippingAddressValidationMode =
         | Disabled
         | NormalizationOnly
@@ -3372,16 +2827,6 @@ module IssuingCards =
                 Mode = mode
             }
 
-    module Create'ShippingAddressValidation =
-        let create
-            (
-                mode: Create'ShippingAddressValidationMode option
-            ) : Create'ShippingAddressValidation
-            =
-            {
-              Mode = mode
-            }
-
     type Create'ShippingCustoms =
         {
             /// The Economic Operators Registration and Identification (EORI) number to use for Customs. Required for bulk shipments to Europe.
@@ -3393,16 +2838,6 @@ module IssuingCards =
         static member New(?eoriNumber: string) =
             {
                 EoriNumber = eoriNumber
-            }
-
-    module Create'ShippingCustoms =
-        let create
-            (
-                eoriNumber: string option
-            ) : Create'ShippingCustoms
-            =
-            {
-              EoriNumber = eoriNumber
             }
 
     type Create'ShippingService =
@@ -3453,30 +2888,6 @@ module IssuingCards =
                 RequireSignature = requireSignature
                 Service = service
                 Type = type'
-            }
-
-    module Create'Shipping =
-        let create
-            (
-                address: Create'ShippingAddress option,
-                addressValidation: Create'ShippingAddressValidation option,
-                customs: Create'ShippingCustoms option,
-                name: string option,
-                phoneNumber: string option,
-                requireSignature: bool option,
-                service: Create'ShippingService option,
-                type': Create'ShippingType option
-            ) : Create'Shipping
-            =
-            {
-              Address = address
-              AddressValidation = addressValidation
-              Customs = customs
-              Name = name
-              PhoneNumber = phoneNumber
-              RequireSignature = requireSignature
-              Service = service
-              Type = type'
             }
 
     type Create'SpendingControlsAllowedCardPresences =
@@ -4407,20 +3818,6 @@ module IssuingCards =
                 Interval = interval
             }
 
-    module Create'SpendingControlsSpendingLimits =
-        let create
-            (
-                amount: int option,
-                categories: Create'SpendingControlsSpendingLimitsCategories list option,
-                interval: Create'SpendingControlsSpendingLimitsInterval option
-            ) : Create'SpendingControlsSpendingLimits
-            =
-            {
-              Amount = amount
-              Categories = categories
-              Interval = interval
-            }
-
     type Create'SpendingControls =
         {
             /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
@@ -4456,28 +3853,6 @@ module IssuingCards =
                 BlockedCategories = blockedCategories
                 BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
-            }
-
-    module Create'SpendingControls =
-        let create
-            (
-                allowedCardPresences: Create'SpendingControlsAllowedCardPresences list option,
-                allowedCategories: Create'SpendingControlsAllowedCategories list option,
-                allowedMerchantCountries: string list option,
-                blockedCardPresences: Create'SpendingControlsBlockedCardPresences list option,
-                blockedCategories: Create'SpendingControlsBlockedCategories list option,
-                blockedMerchantCountries: string list option,
-                spendingLimits: Create'SpendingControlsSpendingLimits list option
-            ) : Create'SpendingControls
-            =
-            {
-              AllowedCardPresences = allowedCardPresences
-              AllowedCategories = allowedCategories
-              AllowedMerchantCountries = allowedMerchantCountries
-              BlockedCardPresences = blockedCardPresences
-              BlockedCategories = blockedCategories
-              BlockedMerchantCountries = blockedMerchantCountries
-              SpendingLimits = spendingLimits
             }
 
     type Create'Status =
@@ -4565,33 +3940,6 @@ module IssuingCards =
                 Status = status
             }
 
-    module CreateOptions =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode,
-                type': Create'Type
-            ) : CreateOptions
-            =
-            {
-              Currency = currency
-              Type = type'
-              Cardholder = None
-              ExpMonth = None
-              ExpYear = None
-              Expand = None
-              FinancialAccount = None
-              LifecycleControls = None
-              Metadata = None
-              PersonalizationDesign = None
-              Pin = None
-              ReplacementFor = None
-              ReplacementReason = None
-              SecondLine = None
-              Shipping = None
-              SpendingControls = None
-              Status = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -4606,17 +3954,6 @@ module IssuingCards =
             {
                 Card = card
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                card: string
-            ) : RetrieveOptions
-            =
-            {
-              Card = card
-              Expand = None
             }
 
     type Update'CancellationReason =
@@ -4634,16 +3971,6 @@ module IssuingCards =
         static member New(?encryptedNumber: string) =
             {
                 EncryptedNumber = encryptedNumber
-            }
-
-    module Update'Pin =
-        let create
-            (
-                encryptedNumber: string option
-            ) : Update'Pin
-            =
-            {
-              EncryptedNumber = encryptedNumber
             }
 
     type Update'ShippingAddress =
@@ -4679,26 +4006,6 @@ module IssuingCards =
                 State = state
             }
 
-    module Update'ShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'ShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'ShippingAddressValidationMode =
         | Disabled
         | NormalizationOnly
@@ -4717,16 +4024,6 @@ module IssuingCards =
                 Mode = mode
             }
 
-    module Update'ShippingAddressValidation =
-        let create
-            (
-                mode: Update'ShippingAddressValidationMode option
-            ) : Update'ShippingAddressValidation
-            =
-            {
-              Mode = mode
-            }
-
     type Update'ShippingCustoms =
         {
             /// The Economic Operators Registration and Identification (EORI) number to use for Customs. Required for bulk shipments to Europe.
@@ -4738,16 +4035,6 @@ module IssuingCards =
         static member New(?eoriNumber: string) =
             {
                 EoriNumber = eoriNumber
-            }
-
-    module Update'ShippingCustoms =
-        let create
-            (
-                eoriNumber: string option
-            ) : Update'ShippingCustoms
-            =
-            {
-              EoriNumber = eoriNumber
             }
 
     type Update'ShippingService =
@@ -4798,30 +4085,6 @@ module IssuingCards =
                 RequireSignature = requireSignature
                 Service = service
                 Type = type'
-            }
-
-    module Update'Shipping =
-        let create
-            (
-                address: Update'ShippingAddress option,
-                addressValidation: Update'ShippingAddressValidation option,
-                customs: Update'ShippingCustoms option,
-                name: string option,
-                phoneNumber: string option,
-                requireSignature: bool option,
-                service: Update'ShippingService option,
-                type': Update'ShippingType option
-            ) : Update'Shipping
-            =
-            {
-              Address = address
-              AddressValidation = addressValidation
-              Customs = customs
-              Name = name
-              PhoneNumber = phoneNumber
-              RequireSignature = requireSignature
-              Service = service
-              Type = type'
             }
 
     type Update'SpendingControlsAllowedCardPresences =
@@ -5752,20 +5015,6 @@ module IssuingCards =
                 Interval = interval
             }
 
-    module Update'SpendingControlsSpendingLimits =
-        let create
-            (
-                amount: int option,
-                categories: Update'SpendingControlsSpendingLimitsCategories list option,
-                interval: Update'SpendingControlsSpendingLimitsInterval option
-            ) : Update'SpendingControlsSpendingLimits
-            =
-            {
-              Amount = amount
-              Categories = categories
-              Interval = interval
-            }
-
     type Update'SpendingControls =
         {
             /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
@@ -5801,28 +5050,6 @@ module IssuingCards =
                 BlockedCategories = blockedCategories
                 BlockedMerchantCountries = blockedMerchantCountries
                 SpendingLimits = spendingLimits
-            }
-
-    module Update'SpendingControls =
-        let create
-            (
-                allowedCardPresences: Update'SpendingControlsAllowedCardPresences list option,
-                allowedCategories: Update'SpendingControlsAllowedCategories list option,
-                allowedMerchantCountries: string list option,
-                blockedCardPresences: Update'SpendingControlsBlockedCardPresences list option,
-                blockedCategories: Update'SpendingControlsBlockedCategories list option,
-                blockedMerchantCountries: string list option,
-                spendingLimits: Update'SpendingControlsSpendingLimits list option
-            ) : Update'SpendingControls
-            =
-            {
-              AllowedCardPresences = allowedCardPresences
-              AllowedCategories = allowedCategories
-              AllowedMerchantCountries = allowedMerchantCountries
-              BlockedCardPresences = blockedCardPresences
-              BlockedCategories = blockedCategories
-              BlockedMerchantCountries = blockedMerchantCountries
-              SpendingLimits = spendingLimits
             }
 
     type Update'Status =
@@ -5871,24 +5098,6 @@ module IssuingCards =
                 Shipping = shipping
                 SpendingControls = spendingControls
                 Status = status
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                card: string
-            ) : UpdateOptions
-            =
-            {
-              Card = card
-              CancellationReason = None
-              Expand = None
-              Metadata = None
-              PersonalizationDesign = None
-              Pin = None
-              Shipping = None
-              SpendingControls = None
-              Status = None
             }
 
     ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -5952,28 +5161,6 @@ module IssuingDisputes =
                 Transaction = transaction
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option,
-                transaction: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
-              Transaction = transaction
-            }
-
     type Create'EvidenceCanceledCanceledProductType =
         | Merchandise
         | Service
@@ -6031,34 +5218,6 @@ module IssuingDisputes =
                 ReturnedAt = returnedAt
             }
 
-    module Create'EvidenceCanceledCanceled =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                canceledAt: Choice<DateTime,string> option,
-                cancellationPolicyProvided: Choice<bool,string> option,
-                cancellationReason: Choice<string,string> option,
-                expectedAt: Choice<DateTime,string> option,
-                explanation: Choice<string,string> option,
-                productDescription: Choice<string,string> option,
-                productType: Create'EvidenceCanceledCanceledProductType option,
-                returnStatus: Create'EvidenceCanceledCanceledReturnStatus option,
-                returnedAt: Choice<DateTime,string> option
-            ) : Create'EvidenceCanceledCanceled
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              CanceledAt = canceledAt
-              CancellationPolicyProvided = cancellationPolicyProvided
-              CancellationReason = cancellationReason
-              ExpectedAt = expectedAt
-              Explanation = explanation
-              ProductDescription = productDescription
-              ProductType = productType
-              ReturnStatus = returnStatus
-              ReturnedAt = returnedAt
-            }
-
     type Create'EvidenceDuplicateDuplicate =
         {
             /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6092,26 +5251,6 @@ module IssuingDisputes =
                 OriginalTransaction = originalTransaction
             }
 
-    module Create'EvidenceDuplicateDuplicate =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                cardStatement: Choice<string,string> option,
-                cashReceipt: Choice<string,string> option,
-                checkImage: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                originalTransaction: string option
-            ) : Create'EvidenceDuplicateDuplicate
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              CardStatement = cardStatement
-              CashReceipt = cashReceipt
-              CheckImage = checkImage
-              Explanation = explanation
-              OriginalTransaction = originalTransaction
-            }
-
     type Create'EvidenceFraudulentFraudulent =
         {
             /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6127,18 +5266,6 @@ module IssuingDisputes =
             {
                 AdditionalDocumentation = additionalDocumentation
                 Explanation = explanation
-            }
-
-    module Create'EvidenceFraudulentFraudulent =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option
-            ) : Create'EvidenceFraudulentFraudulent
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
             }
 
     type Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus =
@@ -6178,26 +5305,6 @@ module IssuingDisputes =
                 ReturnedAt = returnedAt
             }
 
-    module Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                receivedAt: Choice<DateTime,string> option,
-                returnDescription: Choice<string,string> option,
-                returnStatus: Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus option,
-                returnedAt: Choice<DateTime,string> option
-            ) : Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
-              ReceivedAt = receivedAt
-              ReturnDescription = returnDescription
-              ReturnStatus = returnStatus
-              ReturnedAt = returnedAt
-            }
-
     type Create'EvidenceNoValidAuthorizationNoValidAuthorization =
         {
             /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6213,18 +5320,6 @@ module IssuingDisputes =
             {
                 AdditionalDocumentation = additionalDocumentation
                 Explanation = explanation
-            }
-
-    module Create'EvidenceNoValidAuthorizationNoValidAuthorization =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option
-            ) : Create'EvidenceNoValidAuthorizationNoValidAuthorization
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
             }
 
     type Create'EvidenceNotReceivedNotReceivedProductType =
@@ -6260,24 +5355,6 @@ module IssuingDisputes =
                 ProductType = productType
             }
 
-    module Create'EvidenceNotReceivedNotReceived =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                expectedAt: Choice<DateTime,string> option,
-                explanation: Choice<string,string> option,
-                productDescription: Choice<string,string> option,
-                productType: Create'EvidenceNotReceivedNotReceivedProductType option
-            ) : Create'EvidenceNotReceivedNotReceived
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              ExpectedAt = expectedAt
-              Explanation = explanation
-              ProductDescription = productDescription
-              ProductType = productType
-            }
-
     type Create'EvidenceOtherOtherProductType =
         | Merchandise
         | Service
@@ -6305,22 +5382,6 @@ module IssuingDisputes =
                 Explanation = explanation
                 ProductDescription = productDescription
                 ProductType = productType
-            }
-
-    module Create'EvidenceOtherOther =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                productDescription: Choice<string,string> option,
-                productType: Create'EvidenceOtherOtherProductType option
-            ) : Create'EvidenceOtherOther
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
-              ProductDescription = productDescription
-              ProductType = productType
             }
 
     type Create'EvidenceReason =
@@ -6360,24 +5421,6 @@ module IssuingDisputes =
                 CancellationReason = cancellationReason
                 Explanation = explanation
                 ReceivedAt = receivedAt
-            }
-
-    module Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                canceledAt: Choice<DateTime,string> option,
-                cancellationReason: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                receivedAt: Choice<DateTime,string> option
-            ) : Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              CanceledAt = canceledAt
-              CancellationReason = cancellationReason
-              Explanation = explanation
-              ReceivedAt = receivedAt
             }
 
     type Create'Evidence =
@@ -6426,32 +5469,6 @@ module IssuingDisputes =
                 ServiceNotAsDescribed = serviceNotAsDescribed
             }
 
-    module Create'Evidence =
-        let create
-            (
-                canceled: Choice<Create'EvidenceCanceledCanceled,string> option,
-                duplicate: Choice<Create'EvidenceDuplicateDuplicate,string> option,
-                fraudulent: Choice<Create'EvidenceFraudulentFraudulent,string> option,
-                merchandiseNotAsDescribed: Choice<Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string> option,
-                noValidAuthorization: Choice<Create'EvidenceNoValidAuthorizationNoValidAuthorization,string> option,
-                notReceived: Choice<Create'EvidenceNotReceivedNotReceived,string> option,
-                other: Choice<Create'EvidenceOtherOther,string> option,
-                reason: Create'EvidenceReason option,
-                serviceNotAsDescribed: Choice<Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string> option
-            ) : Create'Evidence
-            =
-            {
-              Canceled = canceled
-              Duplicate = duplicate
-              Fraudulent = fraudulent
-              MerchandiseNotAsDescribed = merchandiseNotAsDescribed
-              NoValidAuthorization = noValidAuthorization
-              NotReceived = notReceived
-              Other = other
-              Reason = reason
-              ServiceNotAsDescribed = serviceNotAsDescribed
-            }
-
     type Create'Treasury =
         {
             /// The ID of the ReceivedDebit to initiate an Issuings dispute for.
@@ -6463,16 +5480,6 @@ module IssuingDisputes =
         static member New(?receivedDebit: string) =
             {
                 ReceivedDebit = receivedDebit
-            }
-
-    module Create'Treasury =
-        let create
-            (
-                receivedDebit: string option
-            ) : Create'Treasury
-            =
-            {
-              ReceivedDebit = receivedDebit
             }
 
     type CreateOptions =
@@ -6508,26 +5515,6 @@ module IssuingDisputes =
                 Treasury = treasury
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int option,
-                evidence: Create'Evidence option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                transaction: string option,
-                treasury: Create'Treasury option
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Evidence = evidence
-              Expand = expand
-              Metadata = metadata
-              Transaction = transaction
-              Treasury = treasury
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -6542,17 +5529,6 @@ module IssuingDisputes =
             {
                 Dispute = dispute
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                dispute: string
-            ) : RetrieveOptions
-            =
-            {
-              Dispute = dispute
-              Expand = None
             }
 
     type Update'EvidenceCanceledCanceledProductType =
@@ -6612,34 +5588,6 @@ module IssuingDisputes =
                 ReturnedAt = returnedAt
             }
 
-    module Update'EvidenceCanceledCanceled =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                canceledAt: Choice<DateTime,string> option,
-                cancellationPolicyProvided: Choice<bool,string> option,
-                cancellationReason: Choice<string,string> option,
-                expectedAt: Choice<DateTime,string> option,
-                explanation: Choice<string,string> option,
-                productDescription: Choice<string,string> option,
-                productType: Update'EvidenceCanceledCanceledProductType option,
-                returnStatus: Update'EvidenceCanceledCanceledReturnStatus option,
-                returnedAt: Choice<DateTime,string> option
-            ) : Update'EvidenceCanceledCanceled
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              CanceledAt = canceledAt
-              CancellationPolicyProvided = cancellationPolicyProvided
-              CancellationReason = cancellationReason
-              ExpectedAt = expectedAt
-              Explanation = explanation
-              ProductDescription = productDescription
-              ProductType = productType
-              ReturnStatus = returnStatus
-              ReturnedAt = returnedAt
-            }
-
     type Update'EvidenceDuplicateDuplicate =
         {
             /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6673,26 +5621,6 @@ module IssuingDisputes =
                 OriginalTransaction = originalTransaction
             }
 
-    module Update'EvidenceDuplicateDuplicate =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                cardStatement: Choice<string,string> option,
-                cashReceipt: Choice<string,string> option,
-                checkImage: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                originalTransaction: string option
-            ) : Update'EvidenceDuplicateDuplicate
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              CardStatement = cardStatement
-              CashReceipt = cashReceipt
-              CheckImage = checkImage
-              Explanation = explanation
-              OriginalTransaction = originalTransaction
-            }
-
     type Update'EvidenceFraudulentFraudulent =
         {
             /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6708,18 +5636,6 @@ module IssuingDisputes =
             {
                 AdditionalDocumentation = additionalDocumentation
                 Explanation = explanation
-            }
-
-    module Update'EvidenceFraudulentFraudulent =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option
-            ) : Update'EvidenceFraudulentFraudulent
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
             }
 
     type Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus =
@@ -6759,26 +5675,6 @@ module IssuingDisputes =
                 ReturnedAt = returnedAt
             }
 
-    module Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                receivedAt: Choice<DateTime,string> option,
-                returnDescription: Choice<string,string> option,
-                returnStatus: Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus option,
-                returnedAt: Choice<DateTime,string> option
-            ) : Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
-              ReceivedAt = receivedAt
-              ReturnDescription = returnDescription
-              ReturnStatus = returnStatus
-              ReturnedAt = returnedAt
-            }
-
     type Update'EvidenceNoValidAuthorizationNoValidAuthorization =
         {
             /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
@@ -6794,18 +5690,6 @@ module IssuingDisputes =
             {
                 AdditionalDocumentation = additionalDocumentation
                 Explanation = explanation
-            }
-
-    module Update'EvidenceNoValidAuthorizationNoValidAuthorization =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option
-            ) : Update'EvidenceNoValidAuthorizationNoValidAuthorization
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
             }
 
     type Update'EvidenceNotReceivedNotReceivedProductType =
@@ -6841,24 +5725,6 @@ module IssuingDisputes =
                 ProductType = productType
             }
 
-    module Update'EvidenceNotReceivedNotReceived =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                expectedAt: Choice<DateTime,string> option,
-                explanation: Choice<string,string> option,
-                productDescription: Choice<string,string> option,
-                productType: Update'EvidenceNotReceivedNotReceivedProductType option
-            ) : Update'EvidenceNotReceivedNotReceived
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              ExpectedAt = expectedAt
-              Explanation = explanation
-              ProductDescription = productDescription
-              ProductType = productType
-            }
-
     type Update'EvidenceOtherOtherProductType =
         | Merchandise
         | Service
@@ -6886,22 +5752,6 @@ module IssuingDisputes =
                 Explanation = explanation
                 ProductDescription = productDescription
                 ProductType = productType
-            }
-
-    module Update'EvidenceOtherOther =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                productDescription: Choice<string,string> option,
-                productType: Update'EvidenceOtherOtherProductType option
-            ) : Update'EvidenceOtherOther
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              Explanation = explanation
-              ProductDescription = productDescription
-              ProductType = productType
             }
 
     type Update'EvidenceReason =
@@ -6941,24 +5791,6 @@ module IssuingDisputes =
                 CancellationReason = cancellationReason
                 Explanation = explanation
                 ReceivedAt = receivedAt
-            }
-
-    module Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed =
-        let create
-            (
-                additionalDocumentation: Choice<string,string> option,
-                canceledAt: Choice<DateTime,string> option,
-                cancellationReason: Choice<string,string> option,
-                explanation: Choice<string,string> option,
-                receivedAt: Choice<DateTime,string> option
-            ) : Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed
-            =
-            {
-              AdditionalDocumentation = additionalDocumentation
-              CanceledAt = canceledAt
-              CancellationReason = cancellationReason
-              Explanation = explanation
-              ReceivedAt = receivedAt
             }
 
     type Update'Evidence =
@@ -7007,32 +5839,6 @@ module IssuingDisputes =
                 ServiceNotAsDescribed = serviceNotAsDescribed
             }
 
-    module Update'Evidence =
-        let create
-            (
-                canceled: Choice<Update'EvidenceCanceledCanceled,string> option,
-                duplicate: Choice<Update'EvidenceDuplicateDuplicate,string> option,
-                fraudulent: Choice<Update'EvidenceFraudulentFraudulent,string> option,
-                merchandiseNotAsDescribed: Choice<Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string> option,
-                noValidAuthorization: Choice<Update'EvidenceNoValidAuthorizationNoValidAuthorization,string> option,
-                notReceived: Choice<Update'EvidenceNotReceivedNotReceived,string> option,
-                other: Choice<Update'EvidenceOtherOther,string> option,
-                reason: Update'EvidenceReason option,
-                serviceNotAsDescribed: Choice<Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string> option
-            ) : Update'Evidence
-            =
-            {
-              Canceled = canceled
-              Duplicate = duplicate
-              Fraudulent = fraudulent
-              MerchandiseNotAsDescribed = merchandiseNotAsDescribed
-              NoValidAuthorization = noValidAuthorization
-              NotReceived = notReceived
-              Other = other
-              Reason = reason
-              ServiceNotAsDescribed = serviceNotAsDescribed
-            }
-
     type UpdateOptions =
         {
             [<Config.Path>]
@@ -7059,20 +5865,6 @@ module IssuingDisputes =
                 Evidence = evidence
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                dispute: string
-            ) : UpdateOptions
-            =
-            {
-              Dispute = dispute
-              Amount = None
-              Evidence = None
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -7119,18 +5911,6 @@ module IssuingDisputesSubmit =
                 Metadata = metadata
             }
 
-    module SubmitOptions =
-        let create
-            (
-                dispute: string
-            ) : SubmitOptions
-            =
-            {
-              Dispute = dispute
-              Expand = None
-              Metadata = None
-            }
-
     ///<p>Submits an Issuing <code>Dispute</code> to the card network. Stripe validates that all evidence fields required for the dispute’s reason are present. For more details, see <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a>.</p>
     let Submit settings (options: SubmitOptions) =
         $"/v1/issuing/disputes/{options.Dispute}/submit"
@@ -7175,28 +5955,6 @@ module IssuingPersonalizationDesigns =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                lookupKeys: string list option,
-                preferences: Map<string, string> option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              LookupKeys = lookupKeys
-              Preferences = preferences
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type Create'CarrierText =
         {
             /// The footer body text of the carrier letter.
@@ -7222,22 +5980,6 @@ module IssuingPersonalizationDesigns =
                 HeaderTitle = headerTitle
             }
 
-    module Create'CarrierText =
-        let create
-            (
-                footerBody: Choice<string,string> option,
-                footerTitle: Choice<string,string> option,
-                headerBody: Choice<string,string> option,
-                headerTitle: Choice<string,string> option
-            ) : Create'CarrierText
-            =
-            {
-              FooterBody = footerBody
-              FooterTitle = footerTitle
-              HeaderBody = headerBody
-              HeaderTitle = headerTitle
-            }
-
     type Create'Preferences =
         {
             /// Whether we use this personalization design to create cards when one isn't specified. A connected account uses the Connect platform's default design if no personalization design is set as the default design.
@@ -7249,16 +5991,6 @@ module IssuingPersonalizationDesigns =
         static member New(?isDefault: bool) =
             {
                 IsDefault = isDefault
-            }
-
-    module Create'Preferences =
-        let create
-            (
-                isDefault: bool option
-            ) : Create'Preferences
-            =
-            {
-              IsDefault = isDefault
             }
 
     type CreateOptions =
@@ -7306,24 +6038,6 @@ module IssuingPersonalizationDesigns =
                 TransferLookupKey = transferLookupKey
             }
 
-    module CreateOptions =
-        let create
-            (
-                physicalBundle: string
-            ) : CreateOptions
-            =
-            {
-              PhysicalBundle = physicalBundle
-              CardLogo = None
-              CarrierText = None
-              Expand = None
-              LookupKey = None
-              Metadata = None
-              Name = None
-              Preferences = None
-              TransferLookupKey = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -7338,17 +6052,6 @@ module IssuingPersonalizationDesigns =
             {
                 PersonalizationDesign = personalizationDesign
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                personalizationDesign: string
-            ) : RetrieveOptions
-            =
-            {
-              PersonalizationDesign = personalizationDesign
-              Expand = None
             }
 
     type Update'CarrierTextCarrierText =
@@ -7376,22 +6079,6 @@ module IssuingPersonalizationDesigns =
                 HeaderTitle = headerTitle
             }
 
-    module Update'CarrierTextCarrierText =
-        let create
-            (
-                footerBody: Choice<string,string> option,
-                footerTitle: Choice<string,string> option,
-                headerBody: Choice<string,string> option,
-                headerTitle: Choice<string,string> option
-            ) : Update'CarrierTextCarrierText
-            =
-            {
-              FooterBody = footerBody
-              FooterTitle = footerTitle
-              HeaderBody = headerBody
-              HeaderTitle = headerTitle
-            }
-
     type Update'Preferences =
         {
             /// Whether we use this personalization design to create cards when one isn't specified. A connected account uses the Connect platform's default design if no personalization design is set as the default design.
@@ -7403,16 +6090,6 @@ module IssuingPersonalizationDesigns =
         static member New(?isDefault: bool) =
             {
                 IsDefault = isDefault
-            }
-
-    module Update'Preferences =
-        let create
-            (
-                isDefault: bool option
-            ) : Update'Preferences
-            =
-            {
-              IsDefault = isDefault
             }
 
     type UpdateOptions =
@@ -7461,25 +6138,6 @@ module IssuingPersonalizationDesigns =
                 PhysicalBundle = physicalBundle
                 Preferences = preferences
                 TransferLookupKey = transferLookupKey
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                personalizationDesign: string
-            ) : UpdateOptions
-            =
-            {
-              PersonalizationDesign = personalizationDesign
-              CardLogo = None
-              CarrierText = None
-              Expand = None
-              LookupKey = None
-              Metadata = None
-              Name = None
-              PhysicalBundle = None
-              Preferences = None
-              TransferLookupKey = None
             }
 
     ///<p>Returns a list of personalization design objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -7539,26 +6197,6 @@ module IssuingPhysicalBundles =
                 Type = type'
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option,
-                type': string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
-              Type = type'
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -7573,17 +6211,6 @@ module IssuingPhysicalBundles =
             {
                 PhysicalBundle = physicalBundle
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                physicalBundle: string
-            ) : RetrieveOptions
-            =
-            {
-              PhysicalBundle = physicalBundle
-              Expand = None
             }
 
     ///<p>Returns a list of physical bundle objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -7637,22 +6264,6 @@ module IssuingTokens =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                card: string
-            ) : ListOptions
-            =
-            {
-              Card = card
-              Created = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              Status = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -7667,17 +6278,6 @@ module IssuingTokens =
             {
                 Token = token
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                token: string
-            ) : RetrieveOptions
-            =
-            {
-              Token = token
-              Expand = None
             }
 
     type Update'Status =
@@ -7703,19 +6303,6 @@ module IssuingTokens =
                 Status = status
                 Token = token
                 Expand = expand
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                status: Update'Status,
-                token: string
-            ) : UpdateOptions
-            =
-            {
-              Status = status
-              Token = token
-              Expand = None
             }
 
     ///<p>Lists all Issuing <code>Token</code> objects for a given card.</p>
@@ -7778,30 +6365,6 @@ module IssuingTransactions =
                 Type = type'
             }
 
-    module ListOptions =
-        let create
-            (
-                card: string option,
-                cardholder: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                type': string option
-            ) : ListOptions
-            =
-            {
-              Card = card
-              Cardholder = cardholder
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Type = type'
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -7816,17 +6379,6 @@ module IssuingTransactions =
             {
                 Transaction = transaction
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                transaction: string
-            ) : RetrieveOptions
-            =
-            {
-              Transaction = transaction
-              Expand = None
             }
 
     type UpdateOptions =
@@ -7847,18 +6399,6 @@ module IssuingTransactions =
                 Transaction = transaction
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                transaction: string
-            ) : UpdateOptions
-            =
-            {
-              Transaction = transaction
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>

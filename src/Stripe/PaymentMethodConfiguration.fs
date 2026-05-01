@@ -14,7 +14,7 @@ open Stripe.PaymentMethod
 /// - [Payment Method Configurations API](https://docs.stripe.com/connect/payment-method-configurations)
 /// - [Multiple configurations on dynamic payment methods](https://docs.stripe.com/payments/multiple-payment-method-configs)
 /// - [Multiple configurations for your Connect accounts](https://docs.stripe.com/connect/multiple-payment-method-configurations)
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type PaymentMethodConfiguration =
     {
         AcssDebit: PaymentMethodConfigResourcePaymentMethodProperties option

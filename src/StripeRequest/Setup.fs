@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SetupAttempt
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module SetupAttempts =
 
     type ListOptions =
@@ -43,21 +43,6 @@ module SetupAttempts =
                 Expand = expand
                 Limit = limit
                 StartingAfter = startingAfter
-            }
-
-    module ListOptions =
-        let create
-            (
-                setupIntent: string
-            ) : ListOptions
-            =
-            {
-              SetupIntent = setupIntent
-              Created = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
             }
 
     ///<p>Returns a list of SetupAttempts that associate with a provided SetupIntent.</p>
@@ -114,32 +99,6 @@ module SetupIntents =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                attachToSelf: bool option,
-                created: int option,
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                paymentMethod: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              AttachToSelf = attachToSelf
-              Created = created
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              PaymentMethod = paymentMethod
-              StartingAfter = startingAfter
-            }
-
     type Create'AutomaticPaymentMethodsAllowRedirects =
         | Always
         | Never
@@ -160,18 +119,6 @@ module SetupIntents =
             {
                 AllowRedirects = allowRedirects
                 Enabled = enabled
-            }
-
-    module Create'AutomaticPaymentMethods =
-        let create
-            (
-                allowRedirects: Create'AutomaticPaymentMethodsAllowRedirects option,
-                enabled: bool option
-            ) : Create'AutomaticPaymentMethods
-            =
-            {
-              AllowRedirects = allowRedirects
-              Enabled = enabled
             }
 
     type Create'ExcludedPaymentMethodTypes =
@@ -248,18 +195,6 @@ module SetupIntents =
                 UserAgent = userAgent
             }
 
-    module Create'MandateDataSecretKeyCustomerAcceptanceOnline =
-        let create
-            (
-                ipAddress: string option,
-                userAgent: string option
-            ) : Create'MandateDataSecretKeyCustomerAcceptanceOnline
-            =
-            {
-              IpAddress = ipAddress
-              UserAgent = userAgent
-            }
-
     type Create'MandateDataSecretKeyCustomerAcceptanceType =
         | Offline
         | Online
@@ -289,22 +224,6 @@ module SetupIntents =
                 Type = type'
             }
 
-    module Create'MandateDataSecretKeyCustomerAcceptance =
-        let create
-            (
-                acceptedAt: DateTime option,
-                offline: string option,
-                online: Create'MandateDataSecretKeyCustomerAcceptanceOnline option,
-                type': Create'MandateDataSecretKeyCustomerAcceptanceType option
-            ) : Create'MandateDataSecretKeyCustomerAcceptance
-            =
-            {
-              AcceptedAt = acceptedAt
-              Offline = offline
-              Online = online
-              Type = type'
-            }
-
     type Create'MandateDataSecretKey =
         {
             /// This hash contains details about the customer acceptance of the Mandate.
@@ -316,16 +235,6 @@ module SetupIntents =
         static member New(?customerAcceptance: Create'MandateDataSecretKeyCustomerAcceptance) =
             {
                 CustomerAcceptance = customerAcceptance
-            }
-
-    module Create'MandateDataSecretKey =
-        let create
-            (
-                customerAcceptance: Create'MandateDataSecretKeyCustomerAcceptance option
-            ) : Create'MandateDataSecretKey
-            =
-            {
-              CustomerAcceptance = customerAcceptance
             }
 
     type Create'PaymentMethodDataAcssDebit =
@@ -347,20 +256,6 @@ module SetupIntents =
                 AccountNumber = accountNumber
                 InstitutionNumber = institutionNumber
                 TransitNumber = transitNumber
-            }
-
-    module Create'PaymentMethodDataAcssDebit =
-        let create
-            (
-                accountNumber: string option,
-                institutionNumber: string option,
-                transitNumber: string option
-            ) : Create'PaymentMethodDataAcssDebit
-            =
-            {
-              AccountNumber = accountNumber
-              InstitutionNumber = institutionNumber
-              TransitNumber = transitNumber
             }
 
     type Create'PaymentMethodDataAllowRedisplay =
@@ -385,18 +280,6 @@ module SetupIntents =
                 BsbNumber = bsbNumber
             }
 
-    module Create'PaymentMethodDataAuBecsDebit =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option
-            ) : Create'PaymentMethodDataAuBecsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-            }
-
     type Create'PaymentMethodDataBacsDebit =
         {
             /// Account number of the bank account that the funds will be debited from.
@@ -412,18 +295,6 @@ module SetupIntents =
             {
                 AccountNumber = accountNumber
                 SortCode = sortCode
-            }
-
-    module Create'PaymentMethodDataBacsDebit =
-        let create
-            (
-                accountNumber: string option,
-                sortCode: string option
-            ) : Create'PaymentMethodDataBacsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              SortCode = sortCode
             }
 
     type Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
@@ -459,26 +330,6 @@ module SetupIntents =
                 State = state
             }
 
-    module Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'PaymentMethodDataBillingDetails =
         {
             /// Billing address.
@@ -508,24 +359,6 @@ module SetupIntents =
                 TaxId = taxId
             }
 
-    module Create'PaymentMethodDataBillingDetails =
-        let create
-            (
-                address: Choice<Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress,string> option,
-                email: Choice<string,string> option,
-                name: Choice<string,string> option,
-                phone: Choice<string,string> option,
-                taxId: string option
-            ) : Create'PaymentMethodDataBillingDetails
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
-              TaxId = taxId
-            }
-
     type Create'PaymentMethodDataBoleto =
         {
             /// The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers)
@@ -537,16 +370,6 @@ module SetupIntents =
         static member New(?taxId: string) =
             {
                 TaxId = taxId
-            }
-
-    module Create'PaymentMethodDataBoleto =
-        let create
-            (
-                taxId: string option
-            ) : Create'PaymentMethodDataBoleto
-            =
-            {
-              TaxId = taxId
             }
 
     type Create'PaymentMethodDataEpsBank =
@@ -590,16 +413,6 @@ module SetupIntents =
         static member New(?bank: Create'PaymentMethodDataEpsBank) =
             {
                 Bank = bank
-            }
-
-    module Create'PaymentMethodDataEps =
-        let create
-            (
-                bank: Create'PaymentMethodDataEpsBank option
-            ) : Create'PaymentMethodDataEps
-            =
-            {
-              Bank = bank
             }
 
     type Create'PaymentMethodDataFpxAccountHolderType =
@@ -647,18 +460,6 @@ module SetupIntents =
                 Bank = bank
             }
 
-    module Create'PaymentMethodDataFpx =
-        let create
-            (
-                accountHolderType: Create'PaymentMethodDataFpxAccountHolderType option,
-                bank: Create'PaymentMethodDataFpxBank option
-            ) : Create'PaymentMethodDataFpx
-            =
-            {
-              AccountHolderType = accountHolderType
-              Bank = bank
-            }
-
     type Create'PaymentMethodDataIdealBank =
         | AbnAmro
         | Adyen
@@ -694,16 +495,6 @@ module SetupIntents =
                 Bank = bank
             }
 
-    module Create'PaymentMethodDataIdeal =
-        let create
-            (
-                bank: Create'PaymentMethodDataIdealBank option
-            ) : Create'PaymentMethodDataIdeal
-            =
-            {
-              Bank = bank
-            }
-
     type Create'PaymentMethodDataKlarnaDob =
         {
             /// The day of birth, between 1 and 31.
@@ -725,20 +516,6 @@ module SetupIntents =
                 Year = year
             }
 
-    module Create'PaymentMethodDataKlarnaDob =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'PaymentMethodDataKlarnaDob
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Create'PaymentMethodDataKlarna =
         {
             /// Customer's date of birth
@@ -750,16 +527,6 @@ module SetupIntents =
         static member New(?dob: Create'PaymentMethodDataKlarnaDob) =
             {
                 Dob = dob
-            }
-
-    module Create'PaymentMethodDataKlarna =
-        let create
-            (
-                dob: Create'PaymentMethodDataKlarnaDob option
-            ) : Create'PaymentMethodDataKlarna
-            =
-            {
-              Dob = dob
             }
 
     type Create'PaymentMethodDataNaverPayFunding =
@@ -777,16 +544,6 @@ module SetupIntents =
         static member New(?funding: Create'PaymentMethodDataNaverPayFunding) =
             {
                 Funding = funding
-            }
-
-    module Create'PaymentMethodDataNaverPay =
-        let create
-            (
-                funding: Create'PaymentMethodDataNaverPayFunding option
-            ) : Create'PaymentMethodDataNaverPay
-            =
-            {
-              Funding = funding
             }
 
     type Create'PaymentMethodDataNzBankAccount =
@@ -819,26 +576,6 @@ module SetupIntents =
                 BranchCode = branchCode
                 Reference = reference
                 Suffix = suffix
-            }
-
-    module Create'PaymentMethodDataNzBankAccount =
-        let create
-            (
-                accountHolderName: string option,
-                accountNumber: string option,
-                bankCode: string option,
-                branchCode: string option,
-                reference: string option,
-                suffix: string option
-            ) : Create'PaymentMethodDataNzBankAccount
-            =
-            {
-              AccountHolderName = accountHolderName
-              AccountNumber = accountNumber
-              BankCode = bankCode
-              BranchCode = branchCode
-              Reference = reference
-              Suffix = suffix
             }
 
     type Create'PaymentMethodDataP24Bank =
@@ -882,16 +619,6 @@ module SetupIntents =
                 Bank = bank
             }
 
-    module Create'PaymentMethodDataP24 =
-        let create
-            (
-                bank: Create'PaymentMethodDataP24Bank option
-            ) : Create'PaymentMethodDataP24
-            =
-            {
-              Bank = bank
-            }
-
     type Create'PaymentMethodDataPayto =
         {
             /// The account number for the bank account.
@@ -913,20 +640,6 @@ module SetupIntents =
                 PayId = payId
             }
 
-    module Create'PaymentMethodDataPayto =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option,
-                payId: string option
-            ) : Create'PaymentMethodDataPayto
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-              PayId = payId
-            }
-
     type Create'PaymentMethodDataRadarOptions =
         {
             /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
@@ -940,16 +653,6 @@ module SetupIntents =
                 Session = session
             }
 
-    module Create'PaymentMethodDataRadarOptions =
-        let create
-            (
-                session: string option
-            ) : Create'PaymentMethodDataRadarOptions
-            =
-            {
-              Session = session
-            }
-
     type Create'PaymentMethodDataSepaDebit =
         {
             /// IBAN of the bank account.
@@ -961,16 +664,6 @@ module SetupIntents =
         static member New(?iban: string) =
             {
                 Iban = iban
-            }
-
-    module Create'PaymentMethodDataSepaDebit =
-        let create
-            (
-                iban: string option
-            ) : Create'PaymentMethodDataSepaDebit
-            =
-            {
-              Iban = iban
             }
 
     type Create'PaymentMethodDataSofortCountry =
@@ -992,16 +685,6 @@ module SetupIntents =
         static member New(?country: Create'PaymentMethodDataSofortCountry) =
             {
                 Country = country
-            }
-
-    module Create'PaymentMethodDataSofort =
-        let create
-            (
-                country: Create'PaymentMethodDataSofortCountry option
-            ) : Create'PaymentMethodDataSofort
-            =
-            {
-              Country = country
             }
 
     type Create'PaymentMethodDataType =
@@ -1086,22 +769,6 @@ module SetupIntents =
                 EndDate = endDate
             }
 
-    module Create'PaymentMethodDataUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentMethodDataUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Create'PaymentMethodDataUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Create'PaymentMethodDataUpi =
         {
             /// Configuration options for setting up an eMandate
@@ -1113,16 +780,6 @@ module SetupIntents =
         static member New(?mandateOptions: Create'PaymentMethodDataUpiMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentMethodDataUpi =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodDataUpiMandateOptions option
-            ) : Create'PaymentMethodDataUpi
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentMethodDataUsBankAccountAccountHolderType =
@@ -1160,24 +817,6 @@ module SetupIntents =
                 AccountType = accountType
                 FinancialConnectionsAccount = financialConnectionsAccount
                 RoutingNumber = routingNumber
-            }
-
-    module Create'PaymentMethodDataUsBankAccount =
-        let create
-            (
-                accountHolderType: Create'PaymentMethodDataUsBankAccountAccountHolderType option,
-                accountNumber: string option,
-                accountType: Create'PaymentMethodDataUsBankAccountAccountType option,
-                financialConnectionsAccount: string option,
-                routingNumber: string option
-            ) : Create'PaymentMethodDataUsBankAccount
-            =
-            {
-              AccountHolderType = accountHolderType
-              AccountNumber = accountNumber
-              AccountType = accountType
-              FinancialConnectionsAccount = financialConnectionsAccount
-              RoutingNumber = routingNumber
             }
 
     type Create'PaymentMethodData =
@@ -1417,128 +1056,6 @@ module SetupIntents =
                 Zip = zip
             }
 
-    module Create'PaymentMethodData =
-        let create
-            (
-                acssDebit: Create'PaymentMethodDataAcssDebit option,
-                affirm: string option,
-                afterpayClearpay: string option,
-                alipay: string option,
-                allowRedisplay: Create'PaymentMethodDataAllowRedisplay option,
-                alma: string option,
-                amazonPay: string option,
-                auBecsDebit: Create'PaymentMethodDataAuBecsDebit option,
-                bacsDebit: Create'PaymentMethodDataBacsDebit option,
-                bancontact: string option,
-                billie: string option,
-                billingDetails: Create'PaymentMethodDataBillingDetails option,
-                blik: string option,
-                boleto: Create'PaymentMethodDataBoleto option,
-                cashapp: string option,
-                crypto: string option,
-                customerBalance: string option,
-                eps: Create'PaymentMethodDataEps option,
-                fpx: Create'PaymentMethodDataFpx option,
-                giropay: string option,
-                grabpay: string option,
-                ideal: Create'PaymentMethodDataIdeal option,
-                interacPresent: string option,
-                kakaoPay: string option,
-                klarna: Create'PaymentMethodDataKlarna option,
-                konbini: string option,
-                krCard: string option,
-                link: string option,
-                mbWay: string option,
-                metadata: Map<string, string> option,
-                mobilepay: string option,
-                multibanco: string option,
-                naverPay: Create'PaymentMethodDataNaverPay option,
-                nzBankAccount: Create'PaymentMethodDataNzBankAccount option,
-                oxxo: string option,
-                p24: Create'PaymentMethodDataP24 option,
-                payByBank: string option,
-                payco: string option,
-                paynow: string option,
-                paypal: string option,
-                payto: Create'PaymentMethodDataPayto option,
-                pix: string option,
-                promptpay: string option,
-                radarOptions: Create'PaymentMethodDataRadarOptions option,
-                revolutPay: string option,
-                samsungPay: string option,
-                satispay: string option,
-                sepaDebit: Create'PaymentMethodDataSepaDebit option,
-                sofort: Create'PaymentMethodDataSofort option,
-                sunbit: string option,
-                swish: string option,
-                twint: string option,
-                type': Create'PaymentMethodDataType option,
-                upi: Create'PaymentMethodDataUpi option,
-                usBankAccount: Create'PaymentMethodDataUsBankAccount option,
-                wechatPay: string option,
-                zip: string option
-            ) : Create'PaymentMethodData
-            =
-            {
-              AcssDebit = acssDebit
-              Affirm = affirm
-              AfterpayClearpay = afterpayClearpay
-              Alipay = alipay
-              AllowRedisplay = allowRedisplay
-              Alma = alma
-              AmazonPay = amazonPay
-              AuBecsDebit = auBecsDebit
-              BacsDebit = bacsDebit
-              Bancontact = bancontact
-              Billie = billie
-              BillingDetails = billingDetails
-              Blik = blik
-              Boleto = boleto
-              Cashapp = cashapp
-              Crypto = crypto
-              CustomerBalance = customerBalance
-              Eps = eps
-              Fpx = fpx
-              Giropay = giropay
-              Grabpay = grabpay
-              Ideal = ideal
-              InteracPresent = interacPresent
-              KakaoPay = kakaoPay
-              Klarna = klarna
-              Konbini = konbini
-              KrCard = krCard
-              Link = link
-              MbWay = mbWay
-              Metadata = metadata
-              Mobilepay = mobilepay
-              Multibanco = multibanco
-              NaverPay = naverPay
-              NzBankAccount = nzBankAccount
-              Oxxo = oxxo
-              P24 = p24
-              PayByBank = payByBank
-              Payco = payco
-              Paynow = paynow
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              Promptpay = promptpay
-              RadarOptions = radarOptions
-              RevolutPay = revolutPay
-              SamsungPay = samsungPay
-              Satispay = satispay
-              SepaDebit = sepaDebit
-              Sofort = sofort
-              Sunbit = sunbit
-              Swish = swish
-              Twint = twint
-              Type = type'
-              Upi = upi
-              UsBankAccount = usBankAccount
-              WechatPay = wechatPay
-              Zip = zip
-            }
-
     type Create'PaymentMethodOptionsAcssDebitCurrency =
         | Cad
         | Usd
@@ -1587,24 +1104,6 @@ module SetupIntents =
                 TransactionType = transactionType
             }
 
-    module Create'PaymentMethodOptionsAcssDebitMandateOptions =
-        let create
-            (
-                customMandateUrl: Choice<string,string> option,
-                defaultFor: Create'PaymentMethodOptionsAcssDebitMandateOptionsDefaultFor list option,
-                intervalDescription: string option,
-                paymentSchedule: Create'PaymentMethodOptionsAcssDebitMandateOptionsPaymentSchedule option,
-                transactionType: Create'PaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
-            ) : Create'PaymentMethodOptionsAcssDebitMandateOptions
-            =
-            {
-              CustomMandateUrl = customMandateUrl
-              DefaultFor = defaultFor
-              IntervalDescription = intervalDescription
-              PaymentSchedule = paymentSchedule
-              TransactionType = transactionType
-            }
-
     type Create'PaymentMethodOptionsAcssDebitVerificationMethod =
         | Automatic
         | Instant
@@ -1631,20 +1130,6 @@ module SetupIntents =
                 VerificationMethod = verificationMethod
             }
 
-    module Create'PaymentMethodOptionsAcssDebit =
-        let create
-            (
-                currency: Create'PaymentMethodOptionsAcssDebitCurrency option,
-                mandateOptions: Create'PaymentMethodOptionsAcssDebitMandateOptions option,
-                verificationMethod: Create'PaymentMethodOptionsAcssDebitVerificationMethod option
-            ) : Create'PaymentMethodOptionsAcssDebit
-            =
-            {
-              Currency = currency
-              MandateOptions = mandateOptions
-              VerificationMethod = verificationMethod
-            }
-
     type Create'PaymentMethodOptionsBacsDebitMandateOptions =
         {
             /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'DDIC' or 'STRIPE'.
@@ -1658,16 +1143,6 @@ module SetupIntents =
                 ReferencePrefix = referencePrefix
             }
 
-    module Create'PaymentMethodOptionsBacsDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Create'PaymentMethodOptionsBacsDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
-            }
-
     type Create'PaymentMethodOptionsBacsDebit =
         {
             /// Additional fields for Mandate creation
@@ -1679,16 +1154,6 @@ module SetupIntents =
         static member New(?mandateOptions: Create'PaymentMethodOptionsBacsDebitMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentMethodOptionsBacsDebit =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsBacsDebitMandateOptions option
-            ) : Create'PaymentMethodOptionsBacsDebit
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentMethodOptionsCardMandateOptionsAmountType =
@@ -1751,34 +1216,6 @@ module SetupIntents =
                 Reference = reference
                 StartDate = startDate
                 SupportedTypes = supportedTypes
-            }
-
-    module Create'PaymentMethodOptionsCardMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentMethodOptionsCardMandateOptionsAmountType option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                description: string option,
-                endDate: DateTime option,
-                interval: Create'PaymentMethodOptionsCardMandateOptionsInterval option,
-                intervalCount: int option,
-                reference: string option,
-                startDate: DateTime option,
-                supportedTypes: Create'PaymentMethodOptionsCardMandateOptionsSupportedTypes list option
-            ) : Create'PaymentMethodOptionsCardMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Currency = currency
-              Description = description
-              EndDate = endDate
-              Interval = interval
-              IntervalCount = intervalCount
-              Reference = reference
-              StartDate = startDate
-              SupportedTypes = supportedTypes
             }
 
     type Create'PaymentMethodOptionsCardNetwork =
@@ -1852,20 +1289,6 @@ module SetupIntents =
                 CbScore = cbScore
             }
 
-    module Create'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires =
-        let create
-            (
-                cbAvalgo: Create'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancairesCbAvalgo option,
-                cbExemption: string option,
-                cbScore: int option
-            ) : Create'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires
-            =
-            {
-              CbAvalgo = cbAvalgo
-              CbExemption = cbExemption
-              CbScore = cbScore
-            }
-
     type Create'PaymentMethodOptionsCardThreeDSecureNetworkOptions =
         {
             /// Cartes Bancaires-specific 3DS fields.
@@ -1877,16 +1300,6 @@ module SetupIntents =
         static member New(?cartesBancaires: Create'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires) =
             {
                 CartesBancaires = cartesBancaires
-            }
-
-    module Create'PaymentMethodOptionsCardThreeDSecureNetworkOptions =
-        let create
-            (
-                cartesBancaires: Create'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires option
-            ) : Create'PaymentMethodOptionsCardThreeDSecureNetworkOptions
-            =
-            {
-              CartesBancaires = cartesBancaires
             }
 
     type Create'PaymentMethodOptionsCardThreeDSecureVersion =
@@ -1941,28 +1354,6 @@ module SetupIntents =
                 Version = version
             }
 
-    module Create'PaymentMethodOptionsCardThreeDSecure =
-        let create
-            (
-                aresTransStatus: Create'PaymentMethodOptionsCardThreeDSecureAresTransStatus option,
-                cryptogram: string option,
-                electronicCommerceIndicator: Create'PaymentMethodOptionsCardThreeDSecureElectronicCommerceIndicator option,
-                networkOptions: Create'PaymentMethodOptionsCardThreeDSecureNetworkOptions option,
-                requestorChallengeIndicator: string option,
-                transactionId: string option,
-                version: Create'PaymentMethodOptionsCardThreeDSecureVersion option
-            ) : Create'PaymentMethodOptionsCardThreeDSecure
-            =
-            {
-              AresTransStatus = aresTransStatus
-              Cryptogram = cryptogram
-              ElectronicCommerceIndicator = electronicCommerceIndicator
-              NetworkOptions = networkOptions
-              RequestorChallengeIndicator = requestorChallengeIndicator
-              TransactionId = transactionId
-              Version = version
-            }
-
     type Create'PaymentMethodOptionsCard =
         {
             /// Configuration options for setting up an eMandate for cards issued in India.
@@ -1993,24 +1384,6 @@ module SetupIntents =
                 Network = network
                 RequestThreeDSecure = requestThreeDSecure
                 ThreeDSecure = threeDSecure
-            }
-
-    module Create'PaymentMethodOptionsCard =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsCardMandateOptions option,
-                moto: bool option,
-                network: Create'PaymentMethodOptionsCardNetwork option,
-                requestThreeDSecure: Create'PaymentMethodOptionsCardRequestThreeDSecure option,
-                threeDSecure: Create'PaymentMethodOptionsCardThreeDSecure option
-            ) : Create'PaymentMethodOptionsCard
-            =
-            {
-              MandateOptions = mandateOptions
-              Moto = moto
-              Network = network
-              RequestThreeDSecure = requestThreeDSecure
-              ThreeDSecure = threeDSecure
             }
 
     type Create'PaymentMethodOptionsKlarnaOnDemandPurchaseInterval =
@@ -2046,24 +1419,6 @@ module SetupIntents =
                 MinimumAmount = minimumAmount
                 PurchaseInterval = purchaseInterval
                 PurchaseIntervalCount = purchaseIntervalCount
-            }
-
-    module Create'PaymentMethodOptionsKlarnaOnDemand =
-        let create
-            (
-                averageAmount: int option,
-                maximumAmount: int option,
-                minimumAmount: int option,
-                purchaseInterval: Create'PaymentMethodOptionsKlarnaOnDemandPurchaseInterval option,
-                purchaseIntervalCount: int option
-            ) : Create'PaymentMethodOptionsKlarnaOnDemand
-            =
-            {
-              AverageAmount = averageAmount
-              MaximumAmount = maximumAmount
-              MinimumAmount = minimumAmount
-              PurchaseInterval = purchaseInterval
-              PurchaseIntervalCount = purchaseIntervalCount
             }
 
     type Create'PaymentMethodOptionsKlarnaPreferredLocale =
@@ -2137,18 +1492,6 @@ module SetupIntents =
                 Date = date
             }
 
-    module Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling =
-        let create
-            (
-                amount: int option,
-                date: string option
-            ) : Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling
-            =
-            {
-              Amount = amount
-              Date = date
-            }
-
     type Create'PaymentMethodOptionsKlarnaSubscriptions =
         {
             /// Unit of time between subscription charges.
@@ -2178,24 +1521,6 @@ module SetupIntents =
                 Reference = reference
             }
 
-    module Create'PaymentMethodOptionsKlarnaSubscriptions =
-        let create
-            (
-                interval: Create'PaymentMethodOptionsKlarnaSubscriptionsInterval option,
-                intervalCount: int option,
-                name: string option,
-                nextBilling: Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling option,
-                reference: string option
-            ) : Create'PaymentMethodOptionsKlarnaSubscriptions
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
-              Name = name
-              NextBilling = nextBilling
-              Reference = reference
-            }
-
     type Create'PaymentMethodOptionsKlarna =
         {
             /// The currency of the SetupIntent. Three letter ISO currency code.
@@ -2221,22 +1546,6 @@ module SetupIntents =
                 Subscriptions = subscriptions
             }
 
-    module Create'PaymentMethodOptionsKlarna =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                onDemand: Create'PaymentMethodOptionsKlarnaOnDemand option,
-                preferredLocale: Create'PaymentMethodOptionsKlarnaPreferredLocale option,
-                subscriptions: Choice<Create'PaymentMethodOptionsKlarnaSubscriptions list,string> option
-            ) : Create'PaymentMethodOptionsKlarna
-            =
-            {
-              Currency = currency
-              OnDemand = onDemand
-              PreferredLocale = preferredLocale
-              Subscriptions = subscriptions
-            }
-
     type Create'PaymentMethodOptionsLink =
         {
             /// [Deprecated] This is a legacy parameter that no longer has any function.
@@ -2250,16 +1559,6 @@ module SetupIntents =
                 PersistentToken = persistentToken
             }
 
-    module Create'PaymentMethodOptionsLink =
-        let create
-            (
-                persistentToken: string option
-            ) : Create'PaymentMethodOptionsLink
-            =
-            {
-              PersistentToken = persistentToken
-            }
-
     type Create'PaymentMethodOptionsPaypal =
         {
             /// The PayPal Billing Agreement ID (BAID). This is an ID generated by PayPal which represents the mandate between the merchant and the customer.
@@ -2271,16 +1570,6 @@ module SetupIntents =
         static member New(?billingAgreementId: string) =
             {
                 BillingAgreementId = billingAgreementId
-            }
-
-    module Create'PaymentMethodOptionsPaypal =
-        let create
-            (
-                billingAgreementId: string option
-            ) : Create'PaymentMethodOptionsPaypal
-            =
-            {
-              BillingAgreementId = billingAgreementId
             }
 
     type Create'PaymentMethodOptionsPaytoMandateOptionsAmountType =
@@ -2347,28 +1636,6 @@ module SetupIntents =
                 StartDate = startDate
             }
 
-    module Create'PaymentMethodOptionsPaytoMandateOptions =
-        let create
-            (
-                amount: Choice<int,string> option,
-                amountType: Create'PaymentMethodOptionsPaytoMandateOptionsAmountType option,
-                endDate: Choice<string,string> option,
-                paymentSchedule: Create'PaymentMethodOptionsPaytoMandateOptionsPaymentSchedule option,
-                paymentsPerPeriod: Choice<int,string> option,
-                purpose: Create'PaymentMethodOptionsPaytoMandateOptionsPurpose option,
-                startDate: Choice<string,string> option
-            ) : Create'PaymentMethodOptionsPaytoMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              PaymentsPerPeriod = paymentsPerPeriod
-              Purpose = purpose
-              StartDate = startDate
-            }
-
     type Create'PaymentMethodOptionsPayto =
         {
             /// Additional fields for Mandate creation.
@@ -2380,16 +1647,6 @@ module SetupIntents =
         static member New(?mandateOptions: Create'PaymentMethodOptionsPaytoMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentMethodOptionsPayto =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsPaytoMandateOptions option
-            ) : Create'PaymentMethodOptionsPayto
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof =
@@ -2448,30 +1705,6 @@ module SetupIntents =
                 StartDate = startDate
             }
 
-    module Create'PaymentMethodOptionsPixMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountIncludesIof: Create'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof option,
-                amountType: Create'PaymentMethodOptionsPixMandateOptionsAmountType option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                endDate: string option,
-                paymentSchedule: Create'PaymentMethodOptionsPixMandateOptionsPaymentSchedule option,
-                reference: string option,
-                startDate: string option
-            ) : Create'PaymentMethodOptionsPixMandateOptions
-            =
-            {
-              Amount = amount
-              AmountIncludesIof = amountIncludesIof
-              AmountType = amountType
-              Currency = currency
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              Reference = reference
-              StartDate = startDate
-            }
-
     type Create'PaymentMethodOptionsPix =
         {
             /// Additional fields for mandate creation.
@@ -2483,16 +1716,6 @@ module SetupIntents =
         static member New(?mandateOptions: Create'PaymentMethodOptionsPixMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentMethodOptionsPix =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsPixMandateOptions option
-            ) : Create'PaymentMethodOptionsPix
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentMethodOptionsSepaDebitMandateOptions =
@@ -2508,16 +1731,6 @@ module SetupIntents =
                 ReferencePrefix = referencePrefix
             }
 
-    module Create'PaymentMethodOptionsSepaDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Create'PaymentMethodOptionsSepaDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
-            }
-
     type Create'PaymentMethodOptionsSepaDebit =
         {
             /// Additional fields for Mandate creation
@@ -2529,16 +1742,6 @@ module SetupIntents =
         static member New(?mandateOptions: Create'PaymentMethodOptionsSepaDebitMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentMethodOptionsSepaDebit =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsSepaDebitMandateOptions option
-            ) : Create'PaymentMethodOptionsSepaDebit
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentMethodOptionsUpiMandateOptionsAmountType =
@@ -2570,22 +1773,6 @@ module SetupIntents =
                 EndDate = endDate
             }
 
-    module Create'PaymentMethodOptionsUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentMethodOptionsUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Create'PaymentMethodOptionsUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Create'PaymentMethodOptionsUpiSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -2607,18 +1794,6 @@ module SetupIntents =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsUpi =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsUpiMandateOptions option,
-                setupFutureUsage: Create'PaymentMethodOptionsUpiSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsUpi
-            =
-            {
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories =
         | Checking
         | Savings
@@ -2635,16 +1810,6 @@ module SetupIntents =
         static member New(?accountSubcategories: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories list) =
             {
                 AccountSubcategories = accountSubcategories
-            }
-
-    module Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters =
-        let create
-            (
-                accountSubcategories: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories list option
-            ) : Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters
-            =
-            {
-              AccountSubcategories = accountSubcategories
             }
 
     type Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions =
@@ -2683,22 +1848,6 @@ module SetupIntents =
                 ReturnUrl = returnUrl
             }
 
-    module Create'PaymentMethodOptionsUsBankAccountFinancialConnections =
-        let create
-            (
-                filters: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters option,
-                permissions: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions list option,
-                prefetch: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPrefetch list option,
-                returnUrl: string option
-            ) : Create'PaymentMethodOptionsUsBankAccountFinancialConnections
-            =
-            {
-              Filters = filters
-              Permissions = permissions
-              Prefetch = prefetch
-              ReturnUrl = returnUrl
-            }
-
     type Create'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod = | Paper
 
     type Create'PaymentMethodOptionsUsBankAccountMandateOptions =
@@ -2712,16 +1861,6 @@ module SetupIntents =
         static member New(?collectionMethod: Create'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod) =
             {
                 CollectionMethod = collectionMethod
-            }
-
-    module Create'PaymentMethodOptionsUsBankAccountMandateOptions =
-        let create
-            (
-                collectionMethod: Create'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod option
-            ) : Create'PaymentMethodOptionsUsBankAccountMandateOptions
-            =
-            {
-              CollectionMethod = collectionMethod
             }
 
     type Create'PaymentMethodOptionsUsBankAccountNetworksRequested =
@@ -2739,16 +1878,6 @@ module SetupIntents =
         static member New(?requested: Create'PaymentMethodOptionsUsBankAccountNetworksRequested list) =
             {
                 Requested = requested
-            }
-
-    module Create'PaymentMethodOptionsUsBankAccountNetworks =
-        let create
-            (
-                requested: Create'PaymentMethodOptionsUsBankAccountNetworksRequested list option
-            ) : Create'PaymentMethodOptionsUsBankAccountNetworks
-            =
-            {
-              Requested = requested
             }
 
     type Create'PaymentMethodOptionsUsBankAccountVerificationMethod =
@@ -2779,22 +1908,6 @@ module SetupIntents =
                 MandateOptions = mandateOptions
                 Networks = networks
                 VerificationMethod = verificationMethod
-            }
-
-    module Create'PaymentMethodOptionsUsBankAccount =
-        let create
-            (
-                financialConnections: Create'PaymentMethodOptionsUsBankAccountFinancialConnections option,
-                mandateOptions: Create'PaymentMethodOptionsUsBankAccountMandateOptions option,
-                networks: Create'PaymentMethodOptionsUsBankAccountNetworks option,
-                verificationMethod: Create'PaymentMethodOptionsUsBankAccountVerificationMethod option
-            ) : Create'PaymentMethodOptionsUsBankAccount
-            =
-            {
-              FinancialConnections = financialConnections
-              MandateOptions = mandateOptions
-              Networks = networks
-              VerificationMethod = verificationMethod
             }
 
     type Create'PaymentMethodOptions =
@@ -2858,40 +1971,6 @@ module SetupIntents =
                 UsBankAccount = usBankAccount
             }
 
-    module Create'PaymentMethodOptions =
-        let create
-            (
-                acssDebit: Create'PaymentMethodOptionsAcssDebit option,
-                amazonPay: string option,
-                bacsDebit: Create'PaymentMethodOptionsBacsDebit option,
-                card: Create'PaymentMethodOptionsCard option,
-                cardPresent: string option,
-                klarna: Create'PaymentMethodOptionsKlarna option,
-                link: Create'PaymentMethodOptionsLink option,
-                paypal: Create'PaymentMethodOptionsPaypal option,
-                payto: Create'PaymentMethodOptionsPayto option,
-                pix: Create'PaymentMethodOptionsPix option,
-                sepaDebit: Create'PaymentMethodOptionsSepaDebit option,
-                upi: Create'PaymentMethodOptionsUpi option,
-                usBankAccount: Create'PaymentMethodOptionsUsBankAccount option
-            ) : Create'PaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              AmazonPay = amazonPay
-              BacsDebit = bacsDebit
-              Card = card
-              CardPresent = cardPresent
-              Klarna = klarna
-              Link = link
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              SepaDebit = sepaDebit
-              Upi = upi
-              UsBankAccount = usBankAccount
-            }
-
     type Create'SingleUse =
         {
             /// Amount the customer is granting permission to collect later. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
@@ -2907,18 +1986,6 @@ module SetupIntents =
             {
                 Amount = amount
                 Currency = currency
-            }
-
-    module Create'SingleUse =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option
-            ) : Create'SingleUse
-            =
-            {
-              Amount = amount
-              Currency = currency
             }
 
     type Create'Usage =
@@ -3029,58 +2096,6 @@ module SetupIntents =
                 UseStripeSdk = useStripeSdk
             }
 
-    module CreateOptions =
-        let create
-            (
-                attachToSelf: bool option,
-                automaticPaymentMethods: Create'AutomaticPaymentMethods option,
-                confirm: bool option,
-                confirmationToken: string option,
-                customer: string option,
-                customerAccount: string option,
-                description: string option,
-                excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list option,
-                expand: string list option,
-                flowDirections: Create'FlowDirections list option,
-                mandateData: Choice<Create'MandateDataSecretKey,string> option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option,
-                paymentMethod: string option,
-                paymentMethodConfiguration: string option,
-                paymentMethodData: Create'PaymentMethodData option,
-                paymentMethodOptions: Create'PaymentMethodOptions option,
-                paymentMethodTypes: string list option,
-                returnUrl: string option,
-                singleUse: Create'SingleUse option,
-                usage: Create'Usage option,
-                useStripeSdk: bool option
-            ) : CreateOptions
-            =
-            {
-              AttachToSelf = attachToSelf
-              AutomaticPaymentMethods = automaticPaymentMethods
-              Confirm = confirm
-              ConfirmationToken = confirmationToken
-              Customer = customer
-              CustomerAccount = customerAccount
-              Description = description
-              ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
-              Expand = expand
-              FlowDirections = flowDirections
-              MandateData = mandateData
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              PaymentMethod = paymentMethod
-              PaymentMethodConfiguration = paymentMethodConfiguration
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-              ReturnUrl = returnUrl
-              SingleUse = singleUse
-              Usage = usage
-              UseStripeSdk = useStripeSdk
-            }
-
     type RetrieveOptions =
         {
             /// The client secret of the SetupIntent. We require this string if you use a publishable key to retrieve the SetupIntent.
@@ -3099,18 +2114,6 @@ module SetupIntents =
                 Intent = intent
                 ClientSecret = clientSecret
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                intent: string
-            ) : RetrieveOptions
-            =
-            {
-              Intent = intent
-              ClientSecret = None
-              Expand = None
             }
 
     type Update'ExcludedPaymentMethodTypes =
@@ -3191,20 +2194,6 @@ module SetupIntents =
                 TransitNumber = transitNumber
             }
 
-    module Update'PaymentMethodDataAcssDebit =
-        let create
-            (
-                accountNumber: string option,
-                institutionNumber: string option,
-                transitNumber: string option
-            ) : Update'PaymentMethodDataAcssDebit
-            =
-            {
-              AccountNumber = accountNumber
-              InstitutionNumber = institutionNumber
-              TransitNumber = transitNumber
-            }
-
     type Update'PaymentMethodDataAllowRedisplay =
         | Always
         | Limited
@@ -3227,18 +2216,6 @@ module SetupIntents =
                 BsbNumber = bsbNumber
             }
 
-    module Update'PaymentMethodDataAuBecsDebit =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option
-            ) : Update'PaymentMethodDataAuBecsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-            }
-
     type Update'PaymentMethodDataBacsDebit =
         {
             /// Account number of the bank account that the funds will be debited from.
@@ -3254,18 +2231,6 @@ module SetupIntents =
             {
                 AccountNumber = accountNumber
                 SortCode = sortCode
-            }
-
-    module Update'PaymentMethodDataBacsDebit =
-        let create
-            (
-                accountNumber: string option,
-                sortCode: string option
-            ) : Update'PaymentMethodDataBacsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              SortCode = sortCode
             }
 
     type Update'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
@@ -3301,26 +2266,6 @@ module SetupIntents =
                 State = state
             }
 
-    module Update'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'PaymentMethodDataBillingDetails =
         {
             /// Billing address.
@@ -3350,24 +2295,6 @@ module SetupIntents =
                 TaxId = taxId
             }
 
-    module Update'PaymentMethodDataBillingDetails =
-        let create
-            (
-                address: Choice<Update'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress,string> option,
-                email: Choice<string,string> option,
-                name: Choice<string,string> option,
-                phone: Choice<string,string> option,
-                taxId: string option
-            ) : Update'PaymentMethodDataBillingDetails
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
-              TaxId = taxId
-            }
-
     type Update'PaymentMethodDataBoleto =
         {
             /// The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers)
@@ -3379,16 +2306,6 @@ module SetupIntents =
         static member New(?taxId: string) =
             {
                 TaxId = taxId
-            }
-
-    module Update'PaymentMethodDataBoleto =
-        let create
-            (
-                taxId: string option
-            ) : Update'PaymentMethodDataBoleto
-            =
-            {
-              TaxId = taxId
             }
 
     type Update'PaymentMethodDataEpsBank =
@@ -3432,16 +2349,6 @@ module SetupIntents =
         static member New(?bank: Update'PaymentMethodDataEpsBank) =
             {
                 Bank = bank
-            }
-
-    module Update'PaymentMethodDataEps =
-        let create
-            (
-                bank: Update'PaymentMethodDataEpsBank option
-            ) : Update'PaymentMethodDataEps
-            =
-            {
-              Bank = bank
             }
 
     type Update'PaymentMethodDataFpxAccountHolderType =
@@ -3489,18 +2396,6 @@ module SetupIntents =
                 Bank = bank
             }
 
-    module Update'PaymentMethodDataFpx =
-        let create
-            (
-                accountHolderType: Update'PaymentMethodDataFpxAccountHolderType option,
-                bank: Update'PaymentMethodDataFpxBank option
-            ) : Update'PaymentMethodDataFpx
-            =
-            {
-              AccountHolderType = accountHolderType
-              Bank = bank
-            }
-
     type Update'PaymentMethodDataIdealBank =
         | AbnAmro
         | Adyen
@@ -3536,16 +2431,6 @@ module SetupIntents =
                 Bank = bank
             }
 
-    module Update'PaymentMethodDataIdeal =
-        let create
-            (
-                bank: Update'PaymentMethodDataIdealBank option
-            ) : Update'PaymentMethodDataIdeal
-            =
-            {
-              Bank = bank
-            }
-
     type Update'PaymentMethodDataKlarnaDob =
         {
             /// The day of birth, between 1 and 31.
@@ -3567,20 +2452,6 @@ module SetupIntents =
                 Year = year
             }
 
-    module Update'PaymentMethodDataKlarnaDob =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Update'PaymentMethodDataKlarnaDob
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Update'PaymentMethodDataKlarna =
         {
             /// Customer's date of birth
@@ -3592,16 +2463,6 @@ module SetupIntents =
         static member New(?dob: Update'PaymentMethodDataKlarnaDob) =
             {
                 Dob = dob
-            }
-
-    module Update'PaymentMethodDataKlarna =
-        let create
-            (
-                dob: Update'PaymentMethodDataKlarnaDob option
-            ) : Update'PaymentMethodDataKlarna
-            =
-            {
-              Dob = dob
             }
 
     type Update'PaymentMethodDataNaverPayFunding =
@@ -3619,16 +2480,6 @@ module SetupIntents =
         static member New(?funding: Update'PaymentMethodDataNaverPayFunding) =
             {
                 Funding = funding
-            }
-
-    module Update'PaymentMethodDataNaverPay =
-        let create
-            (
-                funding: Update'PaymentMethodDataNaverPayFunding option
-            ) : Update'PaymentMethodDataNaverPay
-            =
-            {
-              Funding = funding
             }
 
     type Update'PaymentMethodDataNzBankAccount =
@@ -3661,26 +2512,6 @@ module SetupIntents =
                 BranchCode = branchCode
                 Reference = reference
                 Suffix = suffix
-            }
-
-    module Update'PaymentMethodDataNzBankAccount =
-        let create
-            (
-                accountHolderName: string option,
-                accountNumber: string option,
-                bankCode: string option,
-                branchCode: string option,
-                reference: string option,
-                suffix: string option
-            ) : Update'PaymentMethodDataNzBankAccount
-            =
-            {
-              AccountHolderName = accountHolderName
-              AccountNumber = accountNumber
-              BankCode = bankCode
-              BranchCode = branchCode
-              Reference = reference
-              Suffix = suffix
             }
 
     type Update'PaymentMethodDataP24Bank =
@@ -3724,16 +2555,6 @@ module SetupIntents =
                 Bank = bank
             }
 
-    module Update'PaymentMethodDataP24 =
-        let create
-            (
-                bank: Update'PaymentMethodDataP24Bank option
-            ) : Update'PaymentMethodDataP24
-            =
-            {
-              Bank = bank
-            }
-
     type Update'PaymentMethodDataPayto =
         {
             /// The account number for the bank account.
@@ -3755,20 +2576,6 @@ module SetupIntents =
                 PayId = payId
             }
 
-    module Update'PaymentMethodDataPayto =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option,
-                payId: string option
-            ) : Update'PaymentMethodDataPayto
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-              PayId = payId
-            }
-
     type Update'PaymentMethodDataRadarOptions =
         {
             /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
@@ -3782,16 +2589,6 @@ module SetupIntents =
                 Session = session
             }
 
-    module Update'PaymentMethodDataRadarOptions =
-        let create
-            (
-                session: string option
-            ) : Update'PaymentMethodDataRadarOptions
-            =
-            {
-              Session = session
-            }
-
     type Update'PaymentMethodDataSepaDebit =
         {
             /// IBAN of the bank account.
@@ -3803,16 +2600,6 @@ module SetupIntents =
         static member New(?iban: string) =
             {
                 Iban = iban
-            }
-
-    module Update'PaymentMethodDataSepaDebit =
-        let create
-            (
-                iban: string option
-            ) : Update'PaymentMethodDataSepaDebit
-            =
-            {
-              Iban = iban
             }
 
     type Update'PaymentMethodDataSofortCountry =
@@ -3834,16 +2621,6 @@ module SetupIntents =
         static member New(?country: Update'PaymentMethodDataSofortCountry) =
             {
                 Country = country
-            }
-
-    module Update'PaymentMethodDataSofort =
-        let create
-            (
-                country: Update'PaymentMethodDataSofortCountry option
-            ) : Update'PaymentMethodDataSofort
-            =
-            {
-              Country = country
             }
 
     type Update'PaymentMethodDataType =
@@ -3928,22 +2705,6 @@ module SetupIntents =
                 EndDate = endDate
             }
 
-    module Update'PaymentMethodDataUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Update'PaymentMethodDataUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Update'PaymentMethodDataUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Update'PaymentMethodDataUpi =
         {
             /// Configuration options for setting up an eMandate
@@ -3955,16 +2716,6 @@ module SetupIntents =
         static member New(?mandateOptions: Update'PaymentMethodDataUpiMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentMethodDataUpi =
-        let create
-            (
-                mandateOptions: Update'PaymentMethodDataUpiMandateOptions option
-            ) : Update'PaymentMethodDataUpi
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentMethodDataUsBankAccountAccountHolderType =
@@ -4002,24 +2753,6 @@ module SetupIntents =
                 AccountType = accountType
                 FinancialConnectionsAccount = financialConnectionsAccount
                 RoutingNumber = routingNumber
-            }
-
-    module Update'PaymentMethodDataUsBankAccount =
-        let create
-            (
-                accountHolderType: Update'PaymentMethodDataUsBankAccountAccountHolderType option,
-                accountNumber: string option,
-                accountType: Update'PaymentMethodDataUsBankAccountAccountType option,
-                financialConnectionsAccount: string option,
-                routingNumber: string option
-            ) : Update'PaymentMethodDataUsBankAccount
-            =
-            {
-              AccountHolderType = accountHolderType
-              AccountNumber = accountNumber
-              AccountType = accountType
-              FinancialConnectionsAccount = financialConnectionsAccount
-              RoutingNumber = routingNumber
             }
 
     type Update'PaymentMethodData =
@@ -4259,128 +2992,6 @@ module SetupIntents =
                 Zip = zip
             }
 
-    module Update'PaymentMethodData =
-        let create
-            (
-                acssDebit: Update'PaymentMethodDataAcssDebit option,
-                affirm: string option,
-                afterpayClearpay: string option,
-                alipay: string option,
-                allowRedisplay: Update'PaymentMethodDataAllowRedisplay option,
-                alma: string option,
-                amazonPay: string option,
-                auBecsDebit: Update'PaymentMethodDataAuBecsDebit option,
-                bacsDebit: Update'PaymentMethodDataBacsDebit option,
-                bancontact: string option,
-                billie: string option,
-                billingDetails: Update'PaymentMethodDataBillingDetails option,
-                blik: string option,
-                boleto: Update'PaymentMethodDataBoleto option,
-                cashapp: string option,
-                crypto: string option,
-                customerBalance: string option,
-                eps: Update'PaymentMethodDataEps option,
-                fpx: Update'PaymentMethodDataFpx option,
-                giropay: string option,
-                grabpay: string option,
-                ideal: Update'PaymentMethodDataIdeal option,
-                interacPresent: string option,
-                kakaoPay: string option,
-                klarna: Update'PaymentMethodDataKlarna option,
-                konbini: string option,
-                krCard: string option,
-                link: string option,
-                mbWay: string option,
-                metadata: Map<string, string> option,
-                mobilepay: string option,
-                multibanco: string option,
-                naverPay: Update'PaymentMethodDataNaverPay option,
-                nzBankAccount: Update'PaymentMethodDataNzBankAccount option,
-                oxxo: string option,
-                p24: Update'PaymentMethodDataP24 option,
-                payByBank: string option,
-                payco: string option,
-                paynow: string option,
-                paypal: string option,
-                payto: Update'PaymentMethodDataPayto option,
-                pix: string option,
-                promptpay: string option,
-                radarOptions: Update'PaymentMethodDataRadarOptions option,
-                revolutPay: string option,
-                samsungPay: string option,
-                satispay: string option,
-                sepaDebit: Update'PaymentMethodDataSepaDebit option,
-                sofort: Update'PaymentMethodDataSofort option,
-                sunbit: string option,
-                swish: string option,
-                twint: string option,
-                type': Update'PaymentMethodDataType option,
-                upi: Update'PaymentMethodDataUpi option,
-                usBankAccount: Update'PaymentMethodDataUsBankAccount option,
-                wechatPay: string option,
-                zip: string option
-            ) : Update'PaymentMethodData
-            =
-            {
-              AcssDebit = acssDebit
-              Affirm = affirm
-              AfterpayClearpay = afterpayClearpay
-              Alipay = alipay
-              AllowRedisplay = allowRedisplay
-              Alma = alma
-              AmazonPay = amazonPay
-              AuBecsDebit = auBecsDebit
-              BacsDebit = bacsDebit
-              Bancontact = bancontact
-              Billie = billie
-              BillingDetails = billingDetails
-              Blik = blik
-              Boleto = boleto
-              Cashapp = cashapp
-              Crypto = crypto
-              CustomerBalance = customerBalance
-              Eps = eps
-              Fpx = fpx
-              Giropay = giropay
-              Grabpay = grabpay
-              Ideal = ideal
-              InteracPresent = interacPresent
-              KakaoPay = kakaoPay
-              Klarna = klarna
-              Konbini = konbini
-              KrCard = krCard
-              Link = link
-              MbWay = mbWay
-              Metadata = metadata
-              Mobilepay = mobilepay
-              Multibanco = multibanco
-              NaverPay = naverPay
-              NzBankAccount = nzBankAccount
-              Oxxo = oxxo
-              P24 = p24
-              PayByBank = payByBank
-              Payco = payco
-              Paynow = paynow
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              Promptpay = promptpay
-              RadarOptions = radarOptions
-              RevolutPay = revolutPay
-              SamsungPay = samsungPay
-              Satispay = satispay
-              SepaDebit = sepaDebit
-              Sofort = sofort
-              Sunbit = sunbit
-              Swish = swish
-              Twint = twint
-              Type = type'
-              Upi = upi
-              UsBankAccount = usBankAccount
-              WechatPay = wechatPay
-              Zip = zip
-            }
-
     type Update'PaymentMethodOptionsAcssDebitCurrency =
         | Cad
         | Usd
@@ -4429,24 +3040,6 @@ module SetupIntents =
                 TransactionType = transactionType
             }
 
-    module Update'PaymentMethodOptionsAcssDebitMandateOptions =
-        let create
-            (
-                customMandateUrl: Choice<string,string> option,
-                defaultFor: Update'PaymentMethodOptionsAcssDebitMandateOptionsDefaultFor list option,
-                intervalDescription: string option,
-                paymentSchedule: Update'PaymentMethodOptionsAcssDebitMandateOptionsPaymentSchedule option,
-                transactionType: Update'PaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
-            ) : Update'PaymentMethodOptionsAcssDebitMandateOptions
-            =
-            {
-              CustomMandateUrl = customMandateUrl
-              DefaultFor = defaultFor
-              IntervalDescription = intervalDescription
-              PaymentSchedule = paymentSchedule
-              TransactionType = transactionType
-            }
-
     type Update'PaymentMethodOptionsAcssDebitVerificationMethod =
         | Automatic
         | Instant
@@ -4473,20 +3066,6 @@ module SetupIntents =
                 VerificationMethod = verificationMethod
             }
 
-    module Update'PaymentMethodOptionsAcssDebit =
-        let create
-            (
-                currency: Update'PaymentMethodOptionsAcssDebitCurrency option,
-                mandateOptions: Update'PaymentMethodOptionsAcssDebitMandateOptions option,
-                verificationMethod: Update'PaymentMethodOptionsAcssDebitVerificationMethod option
-            ) : Update'PaymentMethodOptionsAcssDebit
-            =
-            {
-              Currency = currency
-              MandateOptions = mandateOptions
-              VerificationMethod = verificationMethod
-            }
-
     type Update'PaymentMethodOptionsBacsDebitMandateOptions =
         {
             /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'DDIC' or 'STRIPE'.
@@ -4500,16 +3079,6 @@ module SetupIntents =
                 ReferencePrefix = referencePrefix
             }
 
-    module Update'PaymentMethodOptionsBacsDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Update'PaymentMethodOptionsBacsDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
-            }
-
     type Update'PaymentMethodOptionsBacsDebit =
         {
             /// Additional fields for Mandate creation
@@ -4521,16 +3090,6 @@ module SetupIntents =
         static member New(?mandateOptions: Update'PaymentMethodOptionsBacsDebitMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentMethodOptionsBacsDebit =
-        let create
-            (
-                mandateOptions: Update'PaymentMethodOptionsBacsDebitMandateOptions option
-            ) : Update'PaymentMethodOptionsBacsDebit
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentMethodOptionsCardMandateOptionsAmountType =
@@ -4593,34 +3152,6 @@ module SetupIntents =
                 Reference = reference
                 StartDate = startDate
                 SupportedTypes = supportedTypes
-            }
-
-    module Update'PaymentMethodOptionsCardMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Update'PaymentMethodOptionsCardMandateOptionsAmountType option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                description: string option,
-                endDate: DateTime option,
-                interval: Update'PaymentMethodOptionsCardMandateOptionsInterval option,
-                intervalCount: int option,
-                reference: string option,
-                startDate: DateTime option,
-                supportedTypes: Update'PaymentMethodOptionsCardMandateOptionsSupportedTypes list option
-            ) : Update'PaymentMethodOptionsCardMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Currency = currency
-              Description = description
-              EndDate = endDate
-              Interval = interval
-              IntervalCount = intervalCount
-              Reference = reference
-              StartDate = startDate
-              SupportedTypes = supportedTypes
             }
 
     type Update'PaymentMethodOptionsCardNetwork =
@@ -4694,20 +3225,6 @@ module SetupIntents =
                 CbScore = cbScore
             }
 
-    module Update'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires =
-        let create
-            (
-                cbAvalgo: Update'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancairesCbAvalgo option,
-                cbExemption: string option,
-                cbScore: int option
-            ) : Update'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires
-            =
-            {
-              CbAvalgo = cbAvalgo
-              CbExemption = cbExemption
-              CbScore = cbScore
-            }
-
     type Update'PaymentMethodOptionsCardThreeDSecureNetworkOptions =
         {
             /// Cartes Bancaires-specific 3DS fields.
@@ -4719,16 +3236,6 @@ module SetupIntents =
         static member New(?cartesBancaires: Update'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires) =
             {
                 CartesBancaires = cartesBancaires
-            }
-
-    module Update'PaymentMethodOptionsCardThreeDSecureNetworkOptions =
-        let create
-            (
-                cartesBancaires: Update'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires option
-            ) : Update'PaymentMethodOptionsCardThreeDSecureNetworkOptions
-            =
-            {
-              CartesBancaires = cartesBancaires
             }
 
     type Update'PaymentMethodOptionsCardThreeDSecureVersion =
@@ -4783,28 +3290,6 @@ module SetupIntents =
                 Version = version
             }
 
-    module Update'PaymentMethodOptionsCardThreeDSecure =
-        let create
-            (
-                aresTransStatus: Update'PaymentMethodOptionsCardThreeDSecureAresTransStatus option,
-                cryptogram: string option,
-                electronicCommerceIndicator: Update'PaymentMethodOptionsCardThreeDSecureElectronicCommerceIndicator option,
-                networkOptions: Update'PaymentMethodOptionsCardThreeDSecureNetworkOptions option,
-                requestorChallengeIndicator: string option,
-                transactionId: string option,
-                version: Update'PaymentMethodOptionsCardThreeDSecureVersion option
-            ) : Update'PaymentMethodOptionsCardThreeDSecure
-            =
-            {
-              AresTransStatus = aresTransStatus
-              Cryptogram = cryptogram
-              ElectronicCommerceIndicator = electronicCommerceIndicator
-              NetworkOptions = networkOptions
-              RequestorChallengeIndicator = requestorChallengeIndicator
-              TransactionId = transactionId
-              Version = version
-            }
-
     type Update'PaymentMethodOptionsCard =
         {
             /// Configuration options for setting up an eMandate for cards issued in India.
@@ -4835,24 +3320,6 @@ module SetupIntents =
                 Network = network
                 RequestThreeDSecure = requestThreeDSecure
                 ThreeDSecure = threeDSecure
-            }
-
-    module Update'PaymentMethodOptionsCard =
-        let create
-            (
-                mandateOptions: Update'PaymentMethodOptionsCardMandateOptions option,
-                moto: bool option,
-                network: Update'PaymentMethodOptionsCardNetwork option,
-                requestThreeDSecure: Update'PaymentMethodOptionsCardRequestThreeDSecure option,
-                threeDSecure: Update'PaymentMethodOptionsCardThreeDSecure option
-            ) : Update'PaymentMethodOptionsCard
-            =
-            {
-              MandateOptions = mandateOptions
-              Moto = moto
-              Network = network
-              RequestThreeDSecure = requestThreeDSecure
-              ThreeDSecure = threeDSecure
             }
 
     type Update'PaymentMethodOptionsKlarnaOnDemandPurchaseInterval =
@@ -4888,24 +3355,6 @@ module SetupIntents =
                 MinimumAmount = minimumAmount
                 PurchaseInterval = purchaseInterval
                 PurchaseIntervalCount = purchaseIntervalCount
-            }
-
-    module Update'PaymentMethodOptionsKlarnaOnDemand =
-        let create
-            (
-                averageAmount: int option,
-                maximumAmount: int option,
-                minimumAmount: int option,
-                purchaseInterval: Update'PaymentMethodOptionsKlarnaOnDemandPurchaseInterval option,
-                purchaseIntervalCount: int option
-            ) : Update'PaymentMethodOptionsKlarnaOnDemand
-            =
-            {
-              AverageAmount = averageAmount
-              MaximumAmount = maximumAmount
-              MinimumAmount = minimumAmount
-              PurchaseInterval = purchaseInterval
-              PurchaseIntervalCount = purchaseIntervalCount
             }
 
     type Update'PaymentMethodOptionsKlarnaPreferredLocale =
@@ -4979,18 +3428,6 @@ module SetupIntents =
                 Date = date
             }
 
-    module Update'PaymentMethodOptionsKlarnaSubscriptionsNextBilling =
-        let create
-            (
-                amount: int option,
-                date: string option
-            ) : Update'PaymentMethodOptionsKlarnaSubscriptionsNextBilling
-            =
-            {
-              Amount = amount
-              Date = date
-            }
-
     type Update'PaymentMethodOptionsKlarnaSubscriptions =
         {
             /// Unit of time between subscription charges.
@@ -5020,24 +3457,6 @@ module SetupIntents =
                 Reference = reference
             }
 
-    module Update'PaymentMethodOptionsKlarnaSubscriptions =
-        let create
-            (
-                interval: Update'PaymentMethodOptionsKlarnaSubscriptionsInterval option,
-                intervalCount: int option,
-                name: string option,
-                nextBilling: Update'PaymentMethodOptionsKlarnaSubscriptionsNextBilling option,
-                reference: string option
-            ) : Update'PaymentMethodOptionsKlarnaSubscriptions
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
-              Name = name
-              NextBilling = nextBilling
-              Reference = reference
-            }
-
     type Update'PaymentMethodOptionsKlarna =
         {
             /// The currency of the SetupIntent. Three letter ISO currency code.
@@ -5063,22 +3482,6 @@ module SetupIntents =
                 Subscriptions = subscriptions
             }
 
-    module Update'PaymentMethodOptionsKlarna =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                onDemand: Update'PaymentMethodOptionsKlarnaOnDemand option,
-                preferredLocale: Update'PaymentMethodOptionsKlarnaPreferredLocale option,
-                subscriptions: Choice<Update'PaymentMethodOptionsKlarnaSubscriptions list,string> option
-            ) : Update'PaymentMethodOptionsKlarna
-            =
-            {
-              Currency = currency
-              OnDemand = onDemand
-              PreferredLocale = preferredLocale
-              Subscriptions = subscriptions
-            }
-
     type Update'PaymentMethodOptionsLink =
         {
             /// [Deprecated] This is a legacy parameter that no longer has any function.
@@ -5092,16 +3495,6 @@ module SetupIntents =
                 PersistentToken = persistentToken
             }
 
-    module Update'PaymentMethodOptionsLink =
-        let create
-            (
-                persistentToken: string option
-            ) : Update'PaymentMethodOptionsLink
-            =
-            {
-              PersistentToken = persistentToken
-            }
-
     type Update'PaymentMethodOptionsPaypal =
         {
             /// The PayPal Billing Agreement ID (BAID). This is an ID generated by PayPal which represents the mandate between the merchant and the customer.
@@ -5113,16 +3506,6 @@ module SetupIntents =
         static member New(?billingAgreementId: string) =
             {
                 BillingAgreementId = billingAgreementId
-            }
-
-    module Update'PaymentMethodOptionsPaypal =
-        let create
-            (
-                billingAgreementId: string option
-            ) : Update'PaymentMethodOptionsPaypal
-            =
-            {
-              BillingAgreementId = billingAgreementId
             }
 
     type Update'PaymentMethodOptionsPaytoMandateOptionsAmountType =
@@ -5189,28 +3572,6 @@ module SetupIntents =
                 StartDate = startDate
             }
 
-    module Update'PaymentMethodOptionsPaytoMandateOptions =
-        let create
-            (
-                amount: Choice<int,string> option,
-                amountType: Update'PaymentMethodOptionsPaytoMandateOptionsAmountType option,
-                endDate: Choice<string,string> option,
-                paymentSchedule: Update'PaymentMethodOptionsPaytoMandateOptionsPaymentSchedule option,
-                paymentsPerPeriod: Choice<int,string> option,
-                purpose: Update'PaymentMethodOptionsPaytoMandateOptionsPurpose option,
-                startDate: Choice<string,string> option
-            ) : Update'PaymentMethodOptionsPaytoMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              PaymentsPerPeriod = paymentsPerPeriod
-              Purpose = purpose
-              StartDate = startDate
-            }
-
     type Update'PaymentMethodOptionsPayto =
         {
             /// Additional fields for Mandate creation.
@@ -5222,16 +3583,6 @@ module SetupIntents =
         static member New(?mandateOptions: Update'PaymentMethodOptionsPaytoMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentMethodOptionsPayto =
-        let create
-            (
-                mandateOptions: Update'PaymentMethodOptionsPaytoMandateOptions option
-            ) : Update'PaymentMethodOptionsPayto
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof =
@@ -5290,30 +3641,6 @@ module SetupIntents =
                 StartDate = startDate
             }
 
-    module Update'PaymentMethodOptionsPixMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountIncludesIof: Update'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof option,
-                amountType: Update'PaymentMethodOptionsPixMandateOptionsAmountType option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                endDate: string option,
-                paymentSchedule: Update'PaymentMethodOptionsPixMandateOptionsPaymentSchedule option,
-                reference: string option,
-                startDate: string option
-            ) : Update'PaymentMethodOptionsPixMandateOptions
-            =
-            {
-              Amount = amount
-              AmountIncludesIof = amountIncludesIof
-              AmountType = amountType
-              Currency = currency
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              Reference = reference
-              StartDate = startDate
-            }
-
     type Update'PaymentMethodOptionsPix =
         {
             /// Additional fields for mandate creation.
@@ -5325,16 +3652,6 @@ module SetupIntents =
         static member New(?mandateOptions: Update'PaymentMethodOptionsPixMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentMethodOptionsPix =
-        let create
-            (
-                mandateOptions: Update'PaymentMethodOptionsPixMandateOptions option
-            ) : Update'PaymentMethodOptionsPix
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentMethodOptionsSepaDebitMandateOptions =
@@ -5350,16 +3667,6 @@ module SetupIntents =
                 ReferencePrefix = referencePrefix
             }
 
-    module Update'PaymentMethodOptionsSepaDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Update'PaymentMethodOptionsSepaDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
-            }
-
     type Update'PaymentMethodOptionsSepaDebit =
         {
             /// Additional fields for Mandate creation
@@ -5371,16 +3678,6 @@ module SetupIntents =
         static member New(?mandateOptions: Update'PaymentMethodOptionsSepaDebitMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentMethodOptionsSepaDebit =
-        let create
-            (
-                mandateOptions: Update'PaymentMethodOptionsSepaDebitMandateOptions option
-            ) : Update'PaymentMethodOptionsSepaDebit
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentMethodOptionsUpiMandateOptionsAmountType =
@@ -5412,22 +3709,6 @@ module SetupIntents =
                 EndDate = endDate
             }
 
-    module Update'PaymentMethodOptionsUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Update'PaymentMethodOptionsUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Update'PaymentMethodOptionsUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Update'PaymentMethodOptionsUpiSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -5449,18 +3730,6 @@ module SetupIntents =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Update'PaymentMethodOptionsUpi =
-        let create
-            (
-                mandateOptions: Update'PaymentMethodOptionsUpiMandateOptions option,
-                setupFutureUsage: Update'PaymentMethodOptionsUpiSetupFutureUsage option
-            ) : Update'PaymentMethodOptionsUpi
-            =
-            {
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories =
         | Checking
         | Savings
@@ -5477,16 +3746,6 @@ module SetupIntents =
         static member New(?accountSubcategories: Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories list) =
             {
                 AccountSubcategories = accountSubcategories
-            }
-
-    module Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters =
-        let create
-            (
-                accountSubcategories: Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories list option
-            ) : Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters
-            =
-            {
-              AccountSubcategories = accountSubcategories
             }
 
     type Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions =
@@ -5525,22 +3784,6 @@ module SetupIntents =
                 ReturnUrl = returnUrl
             }
 
-    module Update'PaymentMethodOptionsUsBankAccountFinancialConnections =
-        let create
-            (
-                filters: Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters option,
-                permissions: Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions list option,
-                prefetch: Update'PaymentMethodOptionsUsBankAccountFinancialConnectionsPrefetch list option,
-                returnUrl: string option
-            ) : Update'PaymentMethodOptionsUsBankAccountFinancialConnections
-            =
-            {
-              Filters = filters
-              Permissions = permissions
-              Prefetch = prefetch
-              ReturnUrl = returnUrl
-            }
-
     type Update'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod = | Paper
 
     type Update'PaymentMethodOptionsUsBankAccountMandateOptions =
@@ -5554,16 +3797,6 @@ module SetupIntents =
         static member New(?collectionMethod: Update'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod) =
             {
                 CollectionMethod = collectionMethod
-            }
-
-    module Update'PaymentMethodOptionsUsBankAccountMandateOptions =
-        let create
-            (
-                collectionMethod: Update'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod option
-            ) : Update'PaymentMethodOptionsUsBankAccountMandateOptions
-            =
-            {
-              CollectionMethod = collectionMethod
             }
 
     type Update'PaymentMethodOptionsUsBankAccountNetworksRequested =
@@ -5581,16 +3814,6 @@ module SetupIntents =
         static member New(?requested: Update'PaymentMethodOptionsUsBankAccountNetworksRequested list) =
             {
                 Requested = requested
-            }
-
-    module Update'PaymentMethodOptionsUsBankAccountNetworks =
-        let create
-            (
-                requested: Update'PaymentMethodOptionsUsBankAccountNetworksRequested list option
-            ) : Update'PaymentMethodOptionsUsBankAccountNetworks
-            =
-            {
-              Requested = requested
             }
 
     type Update'PaymentMethodOptionsUsBankAccountVerificationMethod =
@@ -5621,22 +3844,6 @@ module SetupIntents =
                 MandateOptions = mandateOptions
                 Networks = networks
                 VerificationMethod = verificationMethod
-            }
-
-    module Update'PaymentMethodOptionsUsBankAccount =
-        let create
-            (
-                financialConnections: Update'PaymentMethodOptionsUsBankAccountFinancialConnections option,
-                mandateOptions: Update'PaymentMethodOptionsUsBankAccountMandateOptions option,
-                networks: Update'PaymentMethodOptionsUsBankAccountNetworks option,
-                verificationMethod: Update'PaymentMethodOptionsUsBankAccountVerificationMethod option
-            ) : Update'PaymentMethodOptionsUsBankAccount
-            =
-            {
-              FinancialConnections = financialConnections
-              MandateOptions = mandateOptions
-              Networks = networks
-              VerificationMethod = verificationMethod
             }
 
     type Update'PaymentMethodOptions =
@@ -5698,40 +3905,6 @@ module SetupIntents =
                 SepaDebit = sepaDebit
                 Upi = upi
                 UsBankAccount = usBankAccount
-            }
-
-    module Update'PaymentMethodOptions =
-        let create
-            (
-                acssDebit: Update'PaymentMethodOptionsAcssDebit option,
-                amazonPay: string option,
-                bacsDebit: Update'PaymentMethodOptionsBacsDebit option,
-                card: Update'PaymentMethodOptionsCard option,
-                cardPresent: string option,
-                klarna: Update'PaymentMethodOptionsKlarna option,
-                link: Update'PaymentMethodOptionsLink option,
-                paypal: Update'PaymentMethodOptionsPaypal option,
-                payto: Update'PaymentMethodOptionsPayto option,
-                pix: Update'PaymentMethodOptionsPix option,
-                sepaDebit: Update'PaymentMethodOptionsSepaDebit option,
-                upi: Update'PaymentMethodOptionsUpi option,
-                usBankAccount: Update'PaymentMethodOptionsUsBankAccount option
-            ) : Update'PaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              AmazonPay = amazonPay
-              BacsDebit = bacsDebit
-              Card = card
-              CardPresent = cardPresent
-              Klarna = klarna
-              Link = link
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              SepaDebit = sepaDebit
-              Upi = upi
-              UsBankAccount = usBankAccount
             }
 
     type UpdateOptions =
@@ -5803,29 +3976,6 @@ module SetupIntents =
                 PaymentMethodTypes = paymentMethodTypes
             }
 
-    module UpdateOptions =
-        let create
-            (
-                intent: string
-            ) : UpdateOptions
-            =
-            {
-              Intent = intent
-              AttachToSelf = None
-              Customer = None
-              CustomerAccount = None
-              Description = None
-              ExcludedPaymentMethodTypes = None
-              Expand = None
-              FlowDirections = None
-              Metadata = None
-              PaymentMethod = None
-              PaymentMethodConfiguration = None
-              PaymentMethodData = None
-              PaymentMethodOptions = None
-              PaymentMethodTypes = None
-            }
-
     ///<p>Returns a list of SetupIntents.</p>
     let List settings (options: ListOptions) =
         let qs = [("attach_to_self", options.AttachToSelf |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_method", options.PaymentMethod |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -5879,18 +4029,6 @@ module SetupIntentsCancel =
                 Expand = expand
             }
 
-    module CancelOptions =
-        let create
-            (
-                intent: string
-            ) : CancelOptions
-            =
-            {
-              Intent = intent
-              CancellationReason = None
-              Expand = None
-            }
-
     ///<p>You can cancel a SetupIntent object when it’s in one of these statuses: <code>requires_payment_method</code>, <code>requires_confirmation</code>, or <code>requires_action</code>. </p>
     ///<p>After you cancel it, setup is abandoned and any operations on the SetupIntent fail with an error. You can’t cancel the SetupIntent for a Checkout Session. <a href="/docs/api/checkout/sessions/expire">Expire the Checkout Session</a> instead.</p>
     let Cancel settings (options: CancelOptions) =
@@ -5914,18 +4052,6 @@ module SetupIntentsConfirm =
             {
                 IpAddress = ipAddress
                 UserAgent = userAgent
-            }
-
-    module Confirm'MandateDataSecretKeyCustomerAcceptanceOnline =
-        let create
-            (
-                ipAddress: string option,
-                userAgent: string option
-            ) : Confirm'MandateDataSecretKeyCustomerAcceptanceOnline
-            =
-            {
-              IpAddress = ipAddress
-              UserAgent = userAgent
             }
 
     type Confirm'MandateDataSecretKeyCustomerAcceptanceType =
@@ -5957,22 +4083,6 @@ module SetupIntentsConfirm =
                 Type = type'
             }
 
-    module Confirm'MandateDataSecretKeyCustomerAcceptance =
-        let create
-            (
-                acceptedAt: DateTime option,
-                offline: string option,
-                online: Confirm'MandateDataSecretKeyCustomerAcceptanceOnline option,
-                type': Confirm'MandateDataSecretKeyCustomerAcceptanceType option
-            ) : Confirm'MandateDataSecretKeyCustomerAcceptance
-            =
-            {
-              AcceptedAt = acceptedAt
-              Offline = offline
-              Online = online
-              Type = type'
-            }
-
     type Confirm'MandateDataSecretKey =
         {
             /// This hash contains details about the customer acceptance of the Mandate.
@@ -5984,16 +4094,6 @@ module SetupIntentsConfirm =
         static member New(?customerAcceptance: Confirm'MandateDataSecretKeyCustomerAcceptance) =
             {
                 CustomerAcceptance = customerAcceptance
-            }
-
-    module Confirm'MandateDataSecretKey =
-        let create
-            (
-                customerAcceptance: Confirm'MandateDataSecretKeyCustomerAcceptance option
-            ) : Confirm'MandateDataSecretKey
-            =
-            {
-              CustomerAcceptance = customerAcceptance
             }
 
     type Confirm'MandateDataClientKeyCustomerAcceptanceOnline =
@@ -6011,18 +4111,6 @@ module SetupIntentsConfirm =
             {
                 IpAddress = ipAddress
                 UserAgent = userAgent
-            }
-
-    module Confirm'MandateDataClientKeyCustomerAcceptanceOnline =
-        let create
-            (
-                ipAddress: string option,
-                userAgent: string option
-            ) : Confirm'MandateDataClientKeyCustomerAcceptanceOnline
-            =
-            {
-              IpAddress = ipAddress
-              UserAgent = userAgent
             }
 
     type Confirm'MandateDataClientKeyCustomerAcceptanceType = | Online
@@ -6044,18 +4132,6 @@ module SetupIntentsConfirm =
                 Type = type'
             }
 
-    module Confirm'MandateDataClientKeyCustomerAcceptance =
-        let create
-            (
-                online: Confirm'MandateDataClientKeyCustomerAcceptanceOnline option,
-                type': Confirm'MandateDataClientKeyCustomerAcceptanceType option
-            ) : Confirm'MandateDataClientKeyCustomerAcceptance
-            =
-            {
-              Online = online
-              Type = type'
-            }
-
     type Confirm'MandateDataClientKey =
         {
             /// This hash contains details about the customer acceptance of the Mandate.
@@ -6067,16 +4143,6 @@ module SetupIntentsConfirm =
         static member New(?customerAcceptance: Confirm'MandateDataClientKeyCustomerAcceptance) =
             {
                 CustomerAcceptance = customerAcceptance
-            }
-
-    module Confirm'MandateDataClientKey =
-        let create
-            (
-                customerAcceptance: Confirm'MandateDataClientKeyCustomerAcceptance option
-            ) : Confirm'MandateDataClientKey
-            =
-            {
-              CustomerAcceptance = customerAcceptance
             }
 
     type Confirm'PaymentMethodDataAcssDebit =
@@ -6098,20 +4164,6 @@ module SetupIntentsConfirm =
                 AccountNumber = accountNumber
                 InstitutionNumber = institutionNumber
                 TransitNumber = transitNumber
-            }
-
-    module Confirm'PaymentMethodDataAcssDebit =
-        let create
-            (
-                accountNumber: string option,
-                institutionNumber: string option,
-                transitNumber: string option
-            ) : Confirm'PaymentMethodDataAcssDebit
-            =
-            {
-              AccountNumber = accountNumber
-              InstitutionNumber = institutionNumber
-              TransitNumber = transitNumber
             }
 
     type Confirm'PaymentMethodDataAllowRedisplay =
@@ -6136,18 +4188,6 @@ module SetupIntentsConfirm =
                 BsbNumber = bsbNumber
             }
 
-    module Confirm'PaymentMethodDataAuBecsDebit =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option
-            ) : Confirm'PaymentMethodDataAuBecsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-            }
-
     type Confirm'PaymentMethodDataBacsDebit =
         {
             /// Account number of the bank account that the funds will be debited from.
@@ -6163,18 +4203,6 @@ module SetupIntentsConfirm =
             {
                 AccountNumber = accountNumber
                 SortCode = sortCode
-            }
-
-    module Confirm'PaymentMethodDataBacsDebit =
-        let create
-            (
-                accountNumber: string option,
-                sortCode: string option
-            ) : Confirm'PaymentMethodDataBacsDebit
-            =
-            {
-              AccountNumber = accountNumber
-              SortCode = sortCode
             }
 
     type Confirm'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
@@ -6210,26 +4238,6 @@ module SetupIntentsConfirm =
                 State = state
             }
 
-    module Confirm'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Confirm'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Confirm'PaymentMethodDataBillingDetails =
         {
             /// Billing address.
@@ -6259,24 +4267,6 @@ module SetupIntentsConfirm =
                 TaxId = taxId
             }
 
-    module Confirm'PaymentMethodDataBillingDetails =
-        let create
-            (
-                address: Choice<Confirm'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress,string> option,
-                email: Choice<string,string> option,
-                name: Choice<string,string> option,
-                phone: Choice<string,string> option,
-                taxId: string option
-            ) : Confirm'PaymentMethodDataBillingDetails
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
-              TaxId = taxId
-            }
-
     type Confirm'PaymentMethodDataBoleto =
         {
             /// The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers)
@@ -6288,16 +4278,6 @@ module SetupIntentsConfirm =
         static member New(?taxId: string) =
             {
                 TaxId = taxId
-            }
-
-    module Confirm'PaymentMethodDataBoleto =
-        let create
-            (
-                taxId: string option
-            ) : Confirm'PaymentMethodDataBoleto
-            =
-            {
-              TaxId = taxId
             }
 
     type Confirm'PaymentMethodDataEpsBank =
@@ -6341,16 +4321,6 @@ module SetupIntentsConfirm =
         static member New(?bank: Confirm'PaymentMethodDataEpsBank) =
             {
                 Bank = bank
-            }
-
-    module Confirm'PaymentMethodDataEps =
-        let create
-            (
-                bank: Confirm'PaymentMethodDataEpsBank option
-            ) : Confirm'PaymentMethodDataEps
-            =
-            {
-              Bank = bank
             }
 
     type Confirm'PaymentMethodDataFpxAccountHolderType =
@@ -6398,18 +4368,6 @@ module SetupIntentsConfirm =
                 Bank = bank
             }
 
-    module Confirm'PaymentMethodDataFpx =
-        let create
-            (
-                accountHolderType: Confirm'PaymentMethodDataFpxAccountHolderType option,
-                bank: Confirm'PaymentMethodDataFpxBank option
-            ) : Confirm'PaymentMethodDataFpx
-            =
-            {
-              AccountHolderType = accountHolderType
-              Bank = bank
-            }
-
     type Confirm'PaymentMethodDataIdealBank =
         | AbnAmro
         | Adyen
@@ -6445,16 +4403,6 @@ module SetupIntentsConfirm =
                 Bank = bank
             }
 
-    module Confirm'PaymentMethodDataIdeal =
-        let create
-            (
-                bank: Confirm'PaymentMethodDataIdealBank option
-            ) : Confirm'PaymentMethodDataIdeal
-            =
-            {
-              Bank = bank
-            }
-
     type Confirm'PaymentMethodDataKlarnaDob =
         {
             /// The day of birth, between 1 and 31.
@@ -6476,20 +4424,6 @@ module SetupIntentsConfirm =
                 Year = year
             }
 
-    module Confirm'PaymentMethodDataKlarnaDob =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Confirm'PaymentMethodDataKlarnaDob
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Confirm'PaymentMethodDataKlarna =
         {
             /// Customer's date of birth
@@ -6501,16 +4435,6 @@ module SetupIntentsConfirm =
         static member New(?dob: Confirm'PaymentMethodDataKlarnaDob) =
             {
                 Dob = dob
-            }
-
-    module Confirm'PaymentMethodDataKlarna =
-        let create
-            (
-                dob: Confirm'PaymentMethodDataKlarnaDob option
-            ) : Confirm'PaymentMethodDataKlarna
-            =
-            {
-              Dob = dob
             }
 
     type Confirm'PaymentMethodDataNaverPayFunding =
@@ -6528,16 +4452,6 @@ module SetupIntentsConfirm =
         static member New(?funding: Confirm'PaymentMethodDataNaverPayFunding) =
             {
                 Funding = funding
-            }
-
-    module Confirm'PaymentMethodDataNaverPay =
-        let create
-            (
-                funding: Confirm'PaymentMethodDataNaverPayFunding option
-            ) : Confirm'PaymentMethodDataNaverPay
-            =
-            {
-              Funding = funding
             }
 
     type Confirm'PaymentMethodDataNzBankAccount =
@@ -6570,26 +4484,6 @@ module SetupIntentsConfirm =
                 BranchCode = branchCode
                 Reference = reference
                 Suffix = suffix
-            }
-
-    module Confirm'PaymentMethodDataNzBankAccount =
-        let create
-            (
-                accountHolderName: string option,
-                accountNumber: string option,
-                bankCode: string option,
-                branchCode: string option,
-                reference: string option,
-                suffix: string option
-            ) : Confirm'PaymentMethodDataNzBankAccount
-            =
-            {
-              AccountHolderName = accountHolderName
-              AccountNumber = accountNumber
-              BankCode = bankCode
-              BranchCode = branchCode
-              Reference = reference
-              Suffix = suffix
             }
 
     type Confirm'PaymentMethodDataP24Bank =
@@ -6633,16 +4527,6 @@ module SetupIntentsConfirm =
                 Bank = bank
             }
 
-    module Confirm'PaymentMethodDataP24 =
-        let create
-            (
-                bank: Confirm'PaymentMethodDataP24Bank option
-            ) : Confirm'PaymentMethodDataP24
-            =
-            {
-              Bank = bank
-            }
-
     type Confirm'PaymentMethodDataPayto =
         {
             /// The account number for the bank account.
@@ -6664,20 +4548,6 @@ module SetupIntentsConfirm =
                 PayId = payId
             }
 
-    module Confirm'PaymentMethodDataPayto =
-        let create
-            (
-                accountNumber: string option,
-                bsbNumber: string option,
-                payId: string option
-            ) : Confirm'PaymentMethodDataPayto
-            =
-            {
-              AccountNumber = accountNumber
-              BsbNumber = bsbNumber
-              PayId = payId
-            }
-
     type Confirm'PaymentMethodDataRadarOptions =
         {
             /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
@@ -6691,16 +4561,6 @@ module SetupIntentsConfirm =
                 Session = session
             }
 
-    module Confirm'PaymentMethodDataRadarOptions =
-        let create
-            (
-                session: string option
-            ) : Confirm'PaymentMethodDataRadarOptions
-            =
-            {
-              Session = session
-            }
-
     type Confirm'PaymentMethodDataSepaDebit =
         {
             /// IBAN of the bank account.
@@ -6712,16 +4572,6 @@ module SetupIntentsConfirm =
         static member New(?iban: string) =
             {
                 Iban = iban
-            }
-
-    module Confirm'PaymentMethodDataSepaDebit =
-        let create
-            (
-                iban: string option
-            ) : Confirm'PaymentMethodDataSepaDebit
-            =
-            {
-              Iban = iban
             }
 
     type Confirm'PaymentMethodDataSofortCountry =
@@ -6743,16 +4593,6 @@ module SetupIntentsConfirm =
         static member New(?country: Confirm'PaymentMethodDataSofortCountry) =
             {
                 Country = country
-            }
-
-    module Confirm'PaymentMethodDataSofort =
-        let create
-            (
-                country: Confirm'PaymentMethodDataSofortCountry option
-            ) : Confirm'PaymentMethodDataSofort
-            =
-            {
-              Country = country
             }
 
     type Confirm'PaymentMethodDataType =
@@ -6837,22 +4677,6 @@ module SetupIntentsConfirm =
                 EndDate = endDate
             }
 
-    module Confirm'PaymentMethodDataUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Confirm'PaymentMethodDataUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Confirm'PaymentMethodDataUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Confirm'PaymentMethodDataUpi =
         {
             /// Configuration options for setting up an eMandate
@@ -6864,16 +4688,6 @@ module SetupIntentsConfirm =
         static member New(?mandateOptions: Confirm'PaymentMethodDataUpiMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Confirm'PaymentMethodDataUpi =
-        let create
-            (
-                mandateOptions: Confirm'PaymentMethodDataUpiMandateOptions option
-            ) : Confirm'PaymentMethodDataUpi
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Confirm'PaymentMethodDataUsBankAccountAccountHolderType =
@@ -6911,24 +4725,6 @@ module SetupIntentsConfirm =
                 AccountType = accountType
                 FinancialConnectionsAccount = financialConnectionsAccount
                 RoutingNumber = routingNumber
-            }
-
-    module Confirm'PaymentMethodDataUsBankAccount =
-        let create
-            (
-                accountHolderType: Confirm'PaymentMethodDataUsBankAccountAccountHolderType option,
-                accountNumber: string option,
-                accountType: Confirm'PaymentMethodDataUsBankAccountAccountType option,
-                financialConnectionsAccount: string option,
-                routingNumber: string option
-            ) : Confirm'PaymentMethodDataUsBankAccount
-            =
-            {
-              AccountHolderType = accountHolderType
-              AccountNumber = accountNumber
-              AccountType = accountType
-              FinancialConnectionsAccount = financialConnectionsAccount
-              RoutingNumber = routingNumber
             }
 
     type Confirm'PaymentMethodData =
@@ -7168,128 +4964,6 @@ module SetupIntentsConfirm =
                 Zip = zip
             }
 
-    module Confirm'PaymentMethodData =
-        let create
-            (
-                acssDebit: Confirm'PaymentMethodDataAcssDebit option,
-                affirm: string option,
-                afterpayClearpay: string option,
-                alipay: string option,
-                allowRedisplay: Confirm'PaymentMethodDataAllowRedisplay option,
-                alma: string option,
-                amazonPay: string option,
-                auBecsDebit: Confirm'PaymentMethodDataAuBecsDebit option,
-                bacsDebit: Confirm'PaymentMethodDataBacsDebit option,
-                bancontact: string option,
-                billie: string option,
-                billingDetails: Confirm'PaymentMethodDataBillingDetails option,
-                blik: string option,
-                boleto: Confirm'PaymentMethodDataBoleto option,
-                cashapp: string option,
-                crypto: string option,
-                customerBalance: string option,
-                eps: Confirm'PaymentMethodDataEps option,
-                fpx: Confirm'PaymentMethodDataFpx option,
-                giropay: string option,
-                grabpay: string option,
-                ideal: Confirm'PaymentMethodDataIdeal option,
-                interacPresent: string option,
-                kakaoPay: string option,
-                klarna: Confirm'PaymentMethodDataKlarna option,
-                konbini: string option,
-                krCard: string option,
-                link: string option,
-                mbWay: string option,
-                metadata: Map<string, string> option,
-                mobilepay: string option,
-                multibanco: string option,
-                naverPay: Confirm'PaymentMethodDataNaverPay option,
-                nzBankAccount: Confirm'PaymentMethodDataNzBankAccount option,
-                oxxo: string option,
-                p24: Confirm'PaymentMethodDataP24 option,
-                payByBank: string option,
-                payco: string option,
-                paynow: string option,
-                paypal: string option,
-                payto: Confirm'PaymentMethodDataPayto option,
-                pix: string option,
-                promptpay: string option,
-                radarOptions: Confirm'PaymentMethodDataRadarOptions option,
-                revolutPay: string option,
-                samsungPay: string option,
-                satispay: string option,
-                sepaDebit: Confirm'PaymentMethodDataSepaDebit option,
-                sofort: Confirm'PaymentMethodDataSofort option,
-                sunbit: string option,
-                swish: string option,
-                twint: string option,
-                type': Confirm'PaymentMethodDataType option,
-                upi: Confirm'PaymentMethodDataUpi option,
-                usBankAccount: Confirm'PaymentMethodDataUsBankAccount option,
-                wechatPay: string option,
-                zip: string option
-            ) : Confirm'PaymentMethodData
-            =
-            {
-              AcssDebit = acssDebit
-              Affirm = affirm
-              AfterpayClearpay = afterpayClearpay
-              Alipay = alipay
-              AllowRedisplay = allowRedisplay
-              Alma = alma
-              AmazonPay = amazonPay
-              AuBecsDebit = auBecsDebit
-              BacsDebit = bacsDebit
-              Bancontact = bancontact
-              Billie = billie
-              BillingDetails = billingDetails
-              Blik = blik
-              Boleto = boleto
-              Cashapp = cashapp
-              Crypto = crypto
-              CustomerBalance = customerBalance
-              Eps = eps
-              Fpx = fpx
-              Giropay = giropay
-              Grabpay = grabpay
-              Ideal = ideal
-              InteracPresent = interacPresent
-              KakaoPay = kakaoPay
-              Klarna = klarna
-              Konbini = konbini
-              KrCard = krCard
-              Link = link
-              MbWay = mbWay
-              Metadata = metadata
-              Mobilepay = mobilepay
-              Multibanco = multibanco
-              NaverPay = naverPay
-              NzBankAccount = nzBankAccount
-              Oxxo = oxxo
-              P24 = p24
-              PayByBank = payByBank
-              Payco = payco
-              Paynow = paynow
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              Promptpay = promptpay
-              RadarOptions = radarOptions
-              RevolutPay = revolutPay
-              SamsungPay = samsungPay
-              Satispay = satispay
-              SepaDebit = sepaDebit
-              Sofort = sofort
-              Sunbit = sunbit
-              Swish = swish
-              Twint = twint
-              Type = type'
-              Upi = upi
-              UsBankAccount = usBankAccount
-              WechatPay = wechatPay
-              Zip = zip
-            }
-
     type Confirm'PaymentMethodOptionsAcssDebitCurrency =
         | Cad
         | Usd
@@ -7338,24 +5012,6 @@ module SetupIntentsConfirm =
                 TransactionType = transactionType
             }
 
-    module Confirm'PaymentMethodOptionsAcssDebitMandateOptions =
-        let create
-            (
-                customMandateUrl: Choice<string,string> option,
-                defaultFor: Confirm'PaymentMethodOptionsAcssDebitMandateOptionsDefaultFor list option,
-                intervalDescription: string option,
-                paymentSchedule: Confirm'PaymentMethodOptionsAcssDebitMandateOptionsPaymentSchedule option,
-                transactionType: Confirm'PaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
-            ) : Confirm'PaymentMethodOptionsAcssDebitMandateOptions
-            =
-            {
-              CustomMandateUrl = customMandateUrl
-              DefaultFor = defaultFor
-              IntervalDescription = intervalDescription
-              PaymentSchedule = paymentSchedule
-              TransactionType = transactionType
-            }
-
     type Confirm'PaymentMethodOptionsAcssDebitVerificationMethod =
         | Automatic
         | Instant
@@ -7382,20 +5038,6 @@ module SetupIntentsConfirm =
                 VerificationMethod = verificationMethod
             }
 
-    module Confirm'PaymentMethodOptionsAcssDebit =
-        let create
-            (
-                currency: Confirm'PaymentMethodOptionsAcssDebitCurrency option,
-                mandateOptions: Confirm'PaymentMethodOptionsAcssDebitMandateOptions option,
-                verificationMethod: Confirm'PaymentMethodOptionsAcssDebitVerificationMethod option
-            ) : Confirm'PaymentMethodOptionsAcssDebit
-            =
-            {
-              Currency = currency
-              MandateOptions = mandateOptions
-              VerificationMethod = verificationMethod
-            }
-
     type Confirm'PaymentMethodOptionsBacsDebitMandateOptions =
         {
             /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'DDIC' or 'STRIPE'.
@@ -7409,16 +5051,6 @@ module SetupIntentsConfirm =
                 ReferencePrefix = referencePrefix
             }
 
-    module Confirm'PaymentMethodOptionsBacsDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Confirm'PaymentMethodOptionsBacsDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
-            }
-
     type Confirm'PaymentMethodOptionsBacsDebit =
         {
             /// Additional fields for Mandate creation
@@ -7430,16 +5062,6 @@ module SetupIntentsConfirm =
         static member New(?mandateOptions: Confirm'PaymentMethodOptionsBacsDebitMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Confirm'PaymentMethodOptionsBacsDebit =
-        let create
-            (
-                mandateOptions: Confirm'PaymentMethodOptionsBacsDebitMandateOptions option
-            ) : Confirm'PaymentMethodOptionsBacsDebit
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Confirm'PaymentMethodOptionsCardMandateOptionsAmountType =
@@ -7502,34 +5124,6 @@ module SetupIntentsConfirm =
                 Reference = reference
                 StartDate = startDate
                 SupportedTypes = supportedTypes
-            }
-
-    module Confirm'PaymentMethodOptionsCardMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Confirm'PaymentMethodOptionsCardMandateOptionsAmountType option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                description: string option,
-                endDate: DateTime option,
-                interval: Confirm'PaymentMethodOptionsCardMandateOptionsInterval option,
-                intervalCount: int option,
-                reference: string option,
-                startDate: DateTime option,
-                supportedTypes: Confirm'PaymentMethodOptionsCardMandateOptionsSupportedTypes list option
-            ) : Confirm'PaymentMethodOptionsCardMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Currency = currency
-              Description = description
-              EndDate = endDate
-              Interval = interval
-              IntervalCount = intervalCount
-              Reference = reference
-              StartDate = startDate
-              SupportedTypes = supportedTypes
             }
 
     type Confirm'PaymentMethodOptionsCardNetwork =
@@ -7603,20 +5197,6 @@ module SetupIntentsConfirm =
                 CbScore = cbScore
             }
 
-    module Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires =
-        let create
-            (
-                cbAvalgo: Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancairesCbAvalgo option,
-                cbExemption: string option,
-                cbScore: int option
-            ) : Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires
-            =
-            {
-              CbAvalgo = cbAvalgo
-              CbExemption = cbExemption
-              CbScore = cbScore
-            }
-
     type Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptions =
         {
             /// Cartes Bancaires-specific 3DS fields.
@@ -7628,16 +5208,6 @@ module SetupIntentsConfirm =
         static member New(?cartesBancaires: Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires) =
             {
                 CartesBancaires = cartesBancaires
-            }
-
-    module Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptions =
-        let create
-            (
-                cartesBancaires: Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptionsCartesBancaires option
-            ) : Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptions
-            =
-            {
-              CartesBancaires = cartesBancaires
             }
 
     type Confirm'PaymentMethodOptionsCardThreeDSecureVersion =
@@ -7692,28 +5262,6 @@ module SetupIntentsConfirm =
                 Version = version
             }
 
-    module Confirm'PaymentMethodOptionsCardThreeDSecure =
-        let create
-            (
-                aresTransStatus: Confirm'PaymentMethodOptionsCardThreeDSecureAresTransStatus option,
-                cryptogram: string option,
-                electronicCommerceIndicator: Confirm'PaymentMethodOptionsCardThreeDSecureElectronicCommerceIndicator option,
-                networkOptions: Confirm'PaymentMethodOptionsCardThreeDSecureNetworkOptions option,
-                requestorChallengeIndicator: string option,
-                transactionId: string option,
-                version: Confirm'PaymentMethodOptionsCardThreeDSecureVersion option
-            ) : Confirm'PaymentMethodOptionsCardThreeDSecure
-            =
-            {
-              AresTransStatus = aresTransStatus
-              Cryptogram = cryptogram
-              ElectronicCommerceIndicator = electronicCommerceIndicator
-              NetworkOptions = networkOptions
-              RequestorChallengeIndicator = requestorChallengeIndicator
-              TransactionId = transactionId
-              Version = version
-            }
-
     type Confirm'PaymentMethodOptionsCard =
         {
             /// Configuration options for setting up an eMandate for cards issued in India.
@@ -7744,24 +5292,6 @@ module SetupIntentsConfirm =
                 Network = network
                 RequestThreeDSecure = requestThreeDSecure
                 ThreeDSecure = threeDSecure
-            }
-
-    module Confirm'PaymentMethodOptionsCard =
-        let create
-            (
-                mandateOptions: Confirm'PaymentMethodOptionsCardMandateOptions option,
-                moto: bool option,
-                network: Confirm'PaymentMethodOptionsCardNetwork option,
-                requestThreeDSecure: Confirm'PaymentMethodOptionsCardRequestThreeDSecure option,
-                threeDSecure: Confirm'PaymentMethodOptionsCardThreeDSecure option
-            ) : Confirm'PaymentMethodOptionsCard
-            =
-            {
-              MandateOptions = mandateOptions
-              Moto = moto
-              Network = network
-              RequestThreeDSecure = requestThreeDSecure
-              ThreeDSecure = threeDSecure
             }
 
     type Confirm'PaymentMethodOptionsKlarnaOnDemandPurchaseInterval =
@@ -7797,24 +5327,6 @@ module SetupIntentsConfirm =
                 MinimumAmount = minimumAmount
                 PurchaseInterval = purchaseInterval
                 PurchaseIntervalCount = purchaseIntervalCount
-            }
-
-    module Confirm'PaymentMethodOptionsKlarnaOnDemand =
-        let create
-            (
-                averageAmount: int option,
-                maximumAmount: int option,
-                minimumAmount: int option,
-                purchaseInterval: Confirm'PaymentMethodOptionsKlarnaOnDemandPurchaseInterval option,
-                purchaseIntervalCount: int option
-            ) : Confirm'PaymentMethodOptionsKlarnaOnDemand
-            =
-            {
-              AverageAmount = averageAmount
-              MaximumAmount = maximumAmount
-              MinimumAmount = minimumAmount
-              PurchaseInterval = purchaseInterval
-              PurchaseIntervalCount = purchaseIntervalCount
             }
 
     type Confirm'PaymentMethodOptionsKlarnaPreferredLocale =
@@ -7888,18 +5400,6 @@ module SetupIntentsConfirm =
                 Date = date
             }
 
-    module Confirm'PaymentMethodOptionsKlarnaSubscriptionsNextBilling =
-        let create
-            (
-                amount: int option,
-                date: string option
-            ) : Confirm'PaymentMethodOptionsKlarnaSubscriptionsNextBilling
-            =
-            {
-              Amount = amount
-              Date = date
-            }
-
     type Confirm'PaymentMethodOptionsKlarnaSubscriptions =
         {
             /// Unit of time between subscription charges.
@@ -7929,24 +5429,6 @@ module SetupIntentsConfirm =
                 Reference = reference
             }
 
-    module Confirm'PaymentMethodOptionsKlarnaSubscriptions =
-        let create
-            (
-                interval: Confirm'PaymentMethodOptionsKlarnaSubscriptionsInterval option,
-                intervalCount: int option,
-                name: string option,
-                nextBilling: Confirm'PaymentMethodOptionsKlarnaSubscriptionsNextBilling option,
-                reference: string option
-            ) : Confirm'PaymentMethodOptionsKlarnaSubscriptions
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
-              Name = name
-              NextBilling = nextBilling
-              Reference = reference
-            }
-
     type Confirm'PaymentMethodOptionsKlarna =
         {
             /// The currency of the SetupIntent. Three letter ISO currency code.
@@ -7972,22 +5454,6 @@ module SetupIntentsConfirm =
                 Subscriptions = subscriptions
             }
 
-    module Confirm'PaymentMethodOptionsKlarna =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                onDemand: Confirm'PaymentMethodOptionsKlarnaOnDemand option,
-                preferredLocale: Confirm'PaymentMethodOptionsKlarnaPreferredLocale option,
-                subscriptions: Choice<Confirm'PaymentMethodOptionsKlarnaSubscriptions list,string> option
-            ) : Confirm'PaymentMethodOptionsKlarna
-            =
-            {
-              Currency = currency
-              OnDemand = onDemand
-              PreferredLocale = preferredLocale
-              Subscriptions = subscriptions
-            }
-
     type Confirm'PaymentMethodOptionsLink =
         {
             /// [Deprecated] This is a legacy parameter that no longer has any function.
@@ -8001,16 +5467,6 @@ module SetupIntentsConfirm =
                 PersistentToken = persistentToken
             }
 
-    module Confirm'PaymentMethodOptionsLink =
-        let create
-            (
-                persistentToken: string option
-            ) : Confirm'PaymentMethodOptionsLink
-            =
-            {
-              PersistentToken = persistentToken
-            }
-
     type Confirm'PaymentMethodOptionsPaypal =
         {
             /// The PayPal Billing Agreement ID (BAID). This is an ID generated by PayPal which represents the mandate between the merchant and the customer.
@@ -8022,16 +5478,6 @@ module SetupIntentsConfirm =
         static member New(?billingAgreementId: string) =
             {
                 BillingAgreementId = billingAgreementId
-            }
-
-    module Confirm'PaymentMethodOptionsPaypal =
-        let create
-            (
-                billingAgreementId: string option
-            ) : Confirm'PaymentMethodOptionsPaypal
-            =
-            {
-              BillingAgreementId = billingAgreementId
             }
 
     type Confirm'PaymentMethodOptionsPaytoMandateOptionsAmountType =
@@ -8098,28 +5544,6 @@ module SetupIntentsConfirm =
                 StartDate = startDate
             }
 
-    module Confirm'PaymentMethodOptionsPaytoMandateOptions =
-        let create
-            (
-                amount: Choice<int,string> option,
-                amountType: Confirm'PaymentMethodOptionsPaytoMandateOptionsAmountType option,
-                endDate: Choice<string,string> option,
-                paymentSchedule: Confirm'PaymentMethodOptionsPaytoMandateOptionsPaymentSchedule option,
-                paymentsPerPeriod: Choice<int,string> option,
-                purpose: Confirm'PaymentMethodOptionsPaytoMandateOptionsPurpose option,
-                startDate: Choice<string,string> option
-            ) : Confirm'PaymentMethodOptionsPaytoMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              PaymentsPerPeriod = paymentsPerPeriod
-              Purpose = purpose
-              StartDate = startDate
-            }
-
     type Confirm'PaymentMethodOptionsPayto =
         {
             /// Additional fields for Mandate creation.
@@ -8131,16 +5555,6 @@ module SetupIntentsConfirm =
         static member New(?mandateOptions: Confirm'PaymentMethodOptionsPaytoMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Confirm'PaymentMethodOptionsPayto =
-        let create
-            (
-                mandateOptions: Confirm'PaymentMethodOptionsPaytoMandateOptions option
-            ) : Confirm'PaymentMethodOptionsPayto
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Confirm'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof =
@@ -8199,30 +5613,6 @@ module SetupIntentsConfirm =
                 StartDate = startDate
             }
 
-    module Confirm'PaymentMethodOptionsPixMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountIncludesIof: Confirm'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof option,
-                amountType: Confirm'PaymentMethodOptionsPixMandateOptionsAmountType option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                endDate: string option,
-                paymentSchedule: Confirm'PaymentMethodOptionsPixMandateOptionsPaymentSchedule option,
-                reference: string option,
-                startDate: string option
-            ) : Confirm'PaymentMethodOptionsPixMandateOptions
-            =
-            {
-              Amount = amount
-              AmountIncludesIof = amountIncludesIof
-              AmountType = amountType
-              Currency = currency
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              Reference = reference
-              StartDate = startDate
-            }
-
     type Confirm'PaymentMethodOptionsPix =
         {
             /// Additional fields for mandate creation.
@@ -8234,16 +5624,6 @@ module SetupIntentsConfirm =
         static member New(?mandateOptions: Confirm'PaymentMethodOptionsPixMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Confirm'PaymentMethodOptionsPix =
-        let create
-            (
-                mandateOptions: Confirm'PaymentMethodOptionsPixMandateOptions option
-            ) : Confirm'PaymentMethodOptionsPix
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Confirm'PaymentMethodOptionsSepaDebitMandateOptions =
@@ -8259,16 +5639,6 @@ module SetupIntentsConfirm =
                 ReferencePrefix = referencePrefix
             }
 
-    module Confirm'PaymentMethodOptionsSepaDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Confirm'PaymentMethodOptionsSepaDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
-            }
-
     type Confirm'PaymentMethodOptionsSepaDebit =
         {
             /// Additional fields for Mandate creation
@@ -8280,16 +5650,6 @@ module SetupIntentsConfirm =
         static member New(?mandateOptions: Confirm'PaymentMethodOptionsSepaDebitMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Confirm'PaymentMethodOptionsSepaDebit =
-        let create
-            (
-                mandateOptions: Confirm'PaymentMethodOptionsSepaDebitMandateOptions option
-            ) : Confirm'PaymentMethodOptionsSepaDebit
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Confirm'PaymentMethodOptionsUpiMandateOptionsAmountType =
@@ -8321,22 +5681,6 @@ module SetupIntentsConfirm =
                 EndDate = endDate
             }
 
-    module Confirm'PaymentMethodOptionsUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Confirm'PaymentMethodOptionsUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Confirm'PaymentMethodOptionsUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Confirm'PaymentMethodOptionsUpiSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -8358,18 +5702,6 @@ module SetupIntentsConfirm =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Confirm'PaymentMethodOptionsUpi =
-        let create
-            (
-                mandateOptions: Confirm'PaymentMethodOptionsUpiMandateOptions option,
-                setupFutureUsage: Confirm'PaymentMethodOptionsUpiSetupFutureUsage option
-            ) : Confirm'PaymentMethodOptionsUpi
-            =
-            {
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories =
         | Checking
         | Savings
@@ -8386,16 +5718,6 @@ module SetupIntentsConfirm =
         static member New(?accountSubcategories: Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories list) =
             {
                 AccountSubcategories = accountSubcategories
-            }
-
-    module Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters =
-        let create
-            (
-                accountSubcategories: Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsFiltersAccountSubcategories list option
-            ) : Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters
-            =
-            {
-              AccountSubcategories = accountSubcategories
             }
 
     type Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions =
@@ -8434,22 +5756,6 @@ module SetupIntentsConfirm =
                 ReturnUrl = returnUrl
             }
 
-    module Confirm'PaymentMethodOptionsUsBankAccountFinancialConnections =
-        let create
-            (
-                filters: Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsFilters option,
-                permissions: Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions list option,
-                prefetch: Confirm'PaymentMethodOptionsUsBankAccountFinancialConnectionsPrefetch list option,
-                returnUrl: string option
-            ) : Confirm'PaymentMethodOptionsUsBankAccountFinancialConnections
-            =
-            {
-              Filters = filters
-              Permissions = permissions
-              Prefetch = prefetch
-              ReturnUrl = returnUrl
-            }
-
     type Confirm'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod = | Paper
 
     type Confirm'PaymentMethodOptionsUsBankAccountMandateOptions =
@@ -8463,16 +5769,6 @@ module SetupIntentsConfirm =
         static member New(?collectionMethod: Confirm'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod) =
             {
                 CollectionMethod = collectionMethod
-            }
-
-    module Confirm'PaymentMethodOptionsUsBankAccountMandateOptions =
-        let create
-            (
-                collectionMethod: Confirm'PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod option
-            ) : Confirm'PaymentMethodOptionsUsBankAccountMandateOptions
-            =
-            {
-              CollectionMethod = collectionMethod
             }
 
     type Confirm'PaymentMethodOptionsUsBankAccountNetworksRequested =
@@ -8490,16 +5786,6 @@ module SetupIntentsConfirm =
         static member New(?requested: Confirm'PaymentMethodOptionsUsBankAccountNetworksRequested list) =
             {
                 Requested = requested
-            }
-
-    module Confirm'PaymentMethodOptionsUsBankAccountNetworks =
-        let create
-            (
-                requested: Confirm'PaymentMethodOptionsUsBankAccountNetworksRequested list option
-            ) : Confirm'PaymentMethodOptionsUsBankAccountNetworks
-            =
-            {
-              Requested = requested
             }
 
     type Confirm'PaymentMethodOptionsUsBankAccountVerificationMethod =
@@ -8530,22 +5816,6 @@ module SetupIntentsConfirm =
                 MandateOptions = mandateOptions
                 Networks = networks
                 VerificationMethod = verificationMethod
-            }
-
-    module Confirm'PaymentMethodOptionsUsBankAccount =
-        let create
-            (
-                financialConnections: Confirm'PaymentMethodOptionsUsBankAccountFinancialConnections option,
-                mandateOptions: Confirm'PaymentMethodOptionsUsBankAccountMandateOptions option,
-                networks: Confirm'PaymentMethodOptionsUsBankAccountNetworks option,
-                verificationMethod: Confirm'PaymentMethodOptionsUsBankAccountVerificationMethod option
-            ) : Confirm'PaymentMethodOptionsUsBankAccount
-            =
-            {
-              FinancialConnections = financialConnections
-              MandateOptions = mandateOptions
-              Networks = networks
-              VerificationMethod = verificationMethod
             }
 
     type Confirm'PaymentMethodOptions =
@@ -8609,40 +5879,6 @@ module SetupIntentsConfirm =
                 UsBankAccount = usBankAccount
             }
 
-    module Confirm'PaymentMethodOptions =
-        let create
-            (
-                acssDebit: Confirm'PaymentMethodOptionsAcssDebit option,
-                amazonPay: string option,
-                bacsDebit: Confirm'PaymentMethodOptionsBacsDebit option,
-                card: Confirm'PaymentMethodOptionsCard option,
-                cardPresent: string option,
-                klarna: Confirm'PaymentMethodOptionsKlarna option,
-                link: Confirm'PaymentMethodOptionsLink option,
-                paypal: Confirm'PaymentMethodOptionsPaypal option,
-                payto: Confirm'PaymentMethodOptionsPayto option,
-                pix: Confirm'PaymentMethodOptionsPix option,
-                sepaDebit: Confirm'PaymentMethodOptionsSepaDebit option,
-                upi: Confirm'PaymentMethodOptionsUpi option,
-                usBankAccount: Confirm'PaymentMethodOptionsUsBankAccount option
-            ) : Confirm'PaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              AmazonPay = amazonPay
-              BacsDebit = bacsDebit
-              Card = card
-              CardPresent = cardPresent
-              Klarna = klarna
-              Link = link
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              SepaDebit = sepaDebit
-              Upi = upi
-              UsBankAccount = usBankAccount
-            }
-
     type ConfirmOptions =
         {
             [<Config.Path>]
@@ -8690,24 +5926,6 @@ module SetupIntentsConfirm =
                 UseStripeSdk = useStripeSdk
             }
 
-    module ConfirmOptions =
-        let create
-            (
-                intent: string
-            ) : ConfirmOptions
-            =
-            {
-              Intent = intent
-              ConfirmationToken = None
-              Expand = None
-              MandateData = None
-              PaymentMethod = None
-              PaymentMethodData = None
-              PaymentMethodOptions = None
-              ReturnUrl = None
-              UseStripeSdk = None
-            }
-
     ///<p>Confirm that your customer intends to set up the current or
     ///provided payment method. For example, you would confirm a SetupIntent
     ///when a customer hits the “Save” button on a payment method management
@@ -8748,19 +5966,6 @@ module SetupIntentsVerifyMicrodeposits =
                 Amounts = amounts
                 DescriptorCode = descriptorCode
                 Expand = expand
-            }
-
-    module VerifyMicrodepositsOptions =
-        let create
-            (
-                intent: string
-            ) : VerifyMicrodepositsOptions
-            =
-            {
-              Intent = intent
-              Amounts = None
-              DescriptorCode = None
-              Expand = None
             }
 
     ///<p>Verifies microdeposits on a SetupIntent object.</p>

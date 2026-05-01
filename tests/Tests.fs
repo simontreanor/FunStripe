@@ -9,6 +9,7 @@ open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 open Stripe.Price
 open Stripe.Product
+open StripeRequest.BillingPortal
 open StripeRequest.Customers
 open StripeRequest.Payment
 open System
@@ -779,6 +780,28 @@ module Tests =
             let qs = Customers.ListOptions.New(email = "hello world+test@foo.com") |> querySerialise
             Assert.That(qs.Contains "%40", Is.True, "@ should be encoded")
             Assert.That(qs.Contains "%20", Is.True, "space should be encoded")
+
+        [<Test>]
+        member _.``bool option true produces lowercase true query parameter``() =
+            let qs = BillingPortalConfigurations.ListOptions.New(active = true) |> querySerialise
+            Assert.That(qs, Is.EqualTo "?active=true")
+
+        [<Test>]
+        member _.``bool option false produces lowercase false query parameter``() =
+            let qs = BillingPortalConfigurations.ListOptions.New(active = false) |> querySerialise
+            Assert.That(qs, Is.EqualTo "?active=false")
+
+        [<Test>]
+        member _.``bool option None is absent from query string``() =
+            let qs = BillingPortalConfigurations.ListOptions.New() |> querySerialise
+            Assert.That(qs.Contains "active", Is.False)
+
+        [<Test>]
+        member _.``multiple bool options combine correctly``() =
+            let qs = BillingPortalConfigurations.ListOptions.New(active = true, isDefault = false) |> querySerialise
+            Assert.That(qs.StartsWith "?", Is.True)
+            Assert.That(qs.Contains "active=true", Is.True)
+            Assert.That(qs.Contains "is_default=false", Is.True)
 
     // =========================================================================
     // C. Settings header — RestApi.createHeader v2 additions

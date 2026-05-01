@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Climate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ClimateOrders =
 
     type ListOptions =
@@ -33,22 +33,6 @@ module ClimateOrders =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'Beneficiary =
         {
             /// Publicly displayable name for the end beneficiary of carbon removal.
@@ -60,16 +44,6 @@ module ClimateOrders =
         static member New(?publicName: string) =
             {
                 PublicName = publicName
-            }
-
-    module Create'Beneficiary =
-        let create
-            (
-                publicName: string option
-            ) : Create'Beneficiary
-            =
-            {
-              PublicName = publicName
             }
 
     type CreateOptions =
@@ -109,22 +83,6 @@ module ClimateOrders =
                 MetricTons = metricTons
             }
 
-    module CreateOptions =
-        let create
-            (
-                product: string
-            ) : CreateOptions
-            =
-            {
-              Product = product
-              Amount = None
-              Beneficiary = None
-              Currency = None
-              Expand = None
-              Metadata = None
-              MetricTons = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -142,17 +100,6 @@ module ClimateOrders =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                order: string
-            ) : RetrieveOptions
-            =
-            {
-              Order = order
-              Expand = None
-            }
-
     type Update'BeneficiaryBeneficiaryParams =
         {
             /// Publicly displayable name for the end beneficiary of carbon removal.
@@ -164,16 +111,6 @@ module ClimateOrders =
         static member New(?publicName: Choice<string,string>) =
             {
                 PublicName = publicName
-            }
-
-    module Update'BeneficiaryBeneficiaryParams =
-        let create
-            (
-                publicName: Choice<string,string> option
-            ) : Update'BeneficiaryBeneficiaryParams
-            =
-            {
-              PublicName = publicName
             }
 
     type UpdateOptions =
@@ -199,19 +136,6 @@ module ClimateOrders =
                 Beneficiary = beneficiary
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                order: string
-            ) : UpdateOptions
-            =
-            {
-              Order = order
-              Beneficiary = None
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Lists all Climate order objects. The orders are returned sorted by creation date, with the
@@ -257,17 +181,6 @@ module ClimateOrdersCancel =
                 Expand = expand
             }
 
-    module CancelOptions =
-        let create
-            (
-                order: string
-            ) : CancelOptions
-            =
-            {
-              Order = order
-              Expand = None
-            }
-
     ///<p>Cancels a Climate order. You can cancel an order within 24 hours of creation. Stripe refunds the
     ///reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> for user-triggered cancellations. Frontier
     ///might cancel reservations if suppliers fail to deliver. If Frontier cancels the reservation, Stripe
@@ -303,22 +216,6 @@ module ClimateProducts =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -333,17 +230,6 @@ module ClimateProducts =
             {
                 Product = product
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                product: string
-            ) : RetrieveOptions
-            =
-            {
-              Product = product
-              Expand = None
             }
 
     ///<p>Lists all available Climate product objects.</p>
@@ -385,22 +271,6 @@ module ClimateSuppliers =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -415,17 +285,6 @@ module ClimateSuppliers =
             {
                 Supplier = supplier
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                supplier: string
-            ) : RetrieveOptions
-            =
-            {
-              Supplier = supplier
-              Expand = None
             }
 
     ///<p>Lists all available Climate supplier objects.</p>

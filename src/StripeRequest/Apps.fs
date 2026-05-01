@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Apps
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module AppsSecrets =
 
     type ListOptions =
@@ -37,20 +37,6 @@ module AppsSecrets =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                scope: Map<string, string>
-            ) : ListOptions
-            =
-            {
-              Scope = scope
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type Create'ScopeType =
         | Account
         | User
@@ -70,18 +56,6 @@ module AppsSecrets =
             {
                 Type = type'
                 User = user
-            }
-
-    module Create'Scope =
-        let create
-            (
-                type': Create'ScopeType option,
-                user: string option
-            ) : Create'Scope
-            =
-            {
-              Type = type'
-              User = user
             }
 
     type CreateOptions =
@@ -111,22 +85,6 @@ module AppsSecrets =
                 Scope = scope
                 Expand = expand
                 ExpiresAt = expiresAt
-            }
-
-    module CreateOptions =
-        let create
-            (
-                name: string,
-                payload: string,
-                scope: Create'Scope
-            ) : CreateOptions
-            =
-            {
-              Name = name
-              Payload = payload
-              Scope = scope
-              Expand = None
-              ExpiresAt = None
             }
 
     ///<p>List all secrets stored on the given scope.</p>
@@ -163,18 +121,6 @@ module AppsSecretsDelete =
                 User = user
             }
 
-    module DeleteWhere'Scope =
-        let create
-            (
-                type': DeleteWhere'ScopeType option,
-                user: string option
-            ) : DeleteWhere'Scope
-            =
-            {
-              Type = type'
-              User = user
-            }
-
     type DeleteWhereOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -194,19 +140,6 @@ module AppsSecretsDelete =
                 Name = name
                 Scope = scope
                 Expand = expand
-            }
-
-    module DeleteWhereOptions =
-        let create
-            (
-                name: string,
-                scope: DeleteWhere'Scope
-            ) : DeleteWhereOptions
-            =
-            {
-              Name = name
-              Scope = scope
-              Expand = None
             }
 
     ///<p>Deletes a secret from the secret store by name and scope.</p>
@@ -235,19 +168,6 @@ module AppsSecretsFind =
                 Name = name
                 Scope = scope
                 Expand = expand
-            }
-
-    module FindOptions =
-        let create
-            (
-                name: string,
-                scope: Map<string, string>
-            ) : FindOptions
-            =
-            {
-              Name = name
-              Scope = scope
-              Expand = None
             }
 
     ///<p>Finds a secret in the secret store by name and scope.</p>

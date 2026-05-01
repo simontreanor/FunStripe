@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Event
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Events =
 
     type ListOptions =
@@ -49,30 +49,6 @@ module Events =
                 Types = types
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                deliverySuccess: bool option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                type': string option,
-                types: string list option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              DeliverySuccess = deliverySuccess
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Type = type'
-              Types = types
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -87,17 +63,6 @@ module Events =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="https://docs.stripe.com/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header).</p>

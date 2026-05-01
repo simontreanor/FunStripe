@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Refunds =
 
     type ListOptions =
@@ -43,28 +43,6 @@ module Refunds =
                 Limit = limit
                 PaymentIntent = paymentIntent
                 StartingAfter = startingAfter
-            }
-
-    module ListOptions =
-        let create
-            (
-                charge: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                paymentIntent: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Charge = charge
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              PaymentIntent = paymentIntent
-              StartingAfter = startingAfter
             }
 
     type Create'Origin = | CustomerBalance
@@ -130,38 +108,6 @@ module Refunds =
                 ReverseTransfer = reverseTransfer
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int option,
-                charge: string option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customer: string option,
-                expand: string list option,
-                instructionsEmail: string option,
-                metadata: Map<string, string> option,
-                origin: Create'Origin option,
-                paymentIntent: string option,
-                reason: Create'Reason option,
-                refundApplicationFee: bool option,
-                reverseTransfer: bool option
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Charge = charge
-              Currency = currency
-              Customer = customer
-              Expand = expand
-              InstructionsEmail = instructionsEmail
-              Metadata = metadata
-              Origin = origin
-              PaymentIntent = paymentIntent
-              Reason = reason
-              RefundApplicationFee = refundApplicationFee
-              ReverseTransfer = reverseTransfer
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -176,17 +122,6 @@ module Refunds =
             {
                 Refund = refund
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                refund: string
-            ) : RetrieveOptions
-            =
-            {
-              Refund = refund
-              Expand = None
             }
 
     type UpdateOptions =
@@ -207,18 +142,6 @@ module Refunds =
                 Refund = refund
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                refund: string
-            ) : UpdateOptions
-            =
-            {
-              Refund = refund
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of all refunds you created. We return the refunds in sorted order, with the most recent refunds appearing first. The 10 most recent refunds are always available by default on the Charge object.</p>
@@ -267,17 +190,6 @@ module RefundsCancel =
             {
                 Refund = refund
                 Expand = expand
-            }
-
-    module CancelOptions =
-        let create
-            (
-                refund: string
-            ) : CancelOptions
-            =
-            {
-              Refund = refund
-              Expand = None
             }
 
     ///<p>Cancels a refund with a status of <code>requires_action</code>.</p>

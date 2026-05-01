@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Invoices =
 
     type ListOptions =
@@ -60,36 +60,6 @@ module Invoices =
                 Subscription = subscription
             }
 
-    module ListOptions =
-        let create
-            (
-                collectionMethod: string option,
-                created: int option,
-                customer: string option,
-                customerAccount: string option,
-                dueDate: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option,
-                subscription: string option
-            ) : ListOptions
-            =
-            {
-              CollectionMethod = collectionMethod
-              Created = created
-              Customer = customer
-              CustomerAccount = customerAccount
-              DueDate = dueDate
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
-              Subscription = subscription
-            }
-
     type Create'AutomaticTaxLiabilityType =
         | Account
         | Self
@@ -111,18 +81,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Create'AutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Create'AutomaticTaxLiabilityType option
-            ) : Create'AutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'AutomaticTax =
         {
             /// Whether Stripe automatically computes tax on this invoice. Note that incompatible invoice items (invoice items with manually specified [tax rates](https://docs.stripe.com/api/tax_rates), negative amounts, or `tax_behavior=unspecified`) cannot be added to automatic tax invoices.
@@ -138,18 +96,6 @@ module Invoices =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Create'AutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Create'AutomaticTaxLiability option
-            ) : Create'AutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Create'CollectionMethod =
@@ -173,18 +119,6 @@ module Invoices =
                 Value = value
             }
 
-    module Create'CustomFields =
-        let create
-            (
-                name: string option,
-                value: string option
-            ) : Create'CustomFields
-            =
-            {
-              Name = name
-              Value = value
-            }
-
     type Create'Discounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -206,20 +140,6 @@ module Invoices =
                 PromotionCode = promotionCode
             }
 
-    module Create'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'FromInvoiceAction = | Revision
 
     type Create'FromInvoice =
@@ -237,18 +157,6 @@ module Invoices =
             {
                 Action = action
                 Invoice = invoice
-            }
-
-    module Create'FromInvoice =
-        let create
-            (
-                action: Create'FromInvoiceAction option,
-                invoice: string option
-            ) : Create'FromInvoice
-            =
-            {
-              Action = action
-              Invoice = invoice
             }
 
     type Create'IssuerType =
@@ -272,18 +180,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Create'Issuer =
-        let create
-            (
-                account: string option,
-                type': Create'IssuerType option
-            ) : Create'Issuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType =
         | Business
         | Personal
@@ -300,16 +196,6 @@ module Invoices =
         static member New(?transactionType: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType) =
             {
                 TransactionType = transactionType
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                transactionType: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType option
-            ) : Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              TransactionType = transactionType
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod =
@@ -336,18 +222,6 @@ module Invoices =
                 VerificationMethod = verificationMethod
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions option,
-                verificationMethod: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
-              VerificationMethod = verificationMethod
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage =
         | De
         | En
@@ -366,16 +240,6 @@ module Invoices =
         static member New(?preferredLanguage: Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions =
-        let create
-            (
-                preferredLanguage: Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage option
-            ) : Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions
-            =
-            {
-              PreferredLanguage = preferredLanguage
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanInterval =
@@ -410,20 +274,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlan =
-        let create
-            (
-                count: int option,
-                interval: Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanInterval option,
-                type': Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanType option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlan
-            =
-            {
-              Count = count
-              Interval = interval
-              Type = type'
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments =
         {
             /// Setting to true enables installments for this invoice.
@@ -441,18 +291,6 @@ module Invoices =
             {
                 Enabled = enabled
                 Plan = plan
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments =
-        let create
-            (
-                enabled: bool option,
-                plan: Choice<Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlan,string> option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments
-            =
-            {
-              Enabled = enabled
-              Plan = plan
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsRequestThreeDSecure =
@@ -479,18 +317,6 @@ module Invoices =
                 RequestThreeDSecure = requestThreeDSecure
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions =
-        let create
-            (
-                installments: Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments option,
-                requestThreeDSecure: Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsRequestThreeDSecure option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions
-            =
-            {
-              Installments = installments
-              RequestThreeDSecure = requestThreeDSecure
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
         {
             /// The desired country code of the bank account information. Permitted values include: `DE`, `FR`, `IE`, or `NL`.
@@ -502,16 +328,6 @@ module Invoices =
         static member New(?country: IsoTypes.IsoCountryCode) =
             {
                 Country = country
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer
-            =
-            {
-              Country = country
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
@@ -532,18 +348,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
-        let create
-            (
-                euBankTransfer: Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer option,
-                type': string option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer
-            =
-            {
-              EuBankTransfer = euBankTransfer
-              Type = type'
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
         {
             /// Configuration for the bank transfer funding type, if the `funding_type` is set to `bank_transfer`.
@@ -560,18 +364,6 @@ module Invoices =
             {
                 BankTransfer = bankTransfer
                 FundingType = fundingType
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
-        let create
-            (
-                bankTransfer: Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer option,
-                fundingType: string option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions
-            =
-            {
-              BankTransfer = bankTransfer
-              FundingType = fundingType
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose =
@@ -604,18 +396,6 @@ module Invoices =
                 Purpose = purpose
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                purpose: Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose option
-            ) : Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              Purpose = purpose
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
         {
             /// Additional fields for Mandate creation.
@@ -627,16 +407,6 @@ module Invoices =
         static member New(?mandateOptions: Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions option
-            ) : Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptionsAmountIncludesIof =
@@ -659,18 +429,6 @@ module Invoices =
             {
                 AmountIncludesIof = amountIncludesIof
                 ExpiresAfterSeconds = expiresAfterSeconds
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions =
-        let create
-            (
-                amountIncludesIof: Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptionsAmountIncludesIof option,
-                expiresAfterSeconds: int option
-            ) : Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions
-            =
-            {
-              AmountIncludesIof = amountIncludesIof
-              ExpiresAfterSeconds = expiresAfterSeconds
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType =
@@ -703,22 +461,6 @@ module Invoices =
                 EndDate = endDate
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
         {
             /// Configuration options for setting up an eMandate
@@ -730,16 +472,6 @@ module Invoices =
         static member New(?mandateOptions: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories
@@ -759,16 +491,6 @@ module Invoices =
         static member New(?accountSubcategories: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list) =
             {
                 AccountSubcategories = accountSubcategories
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters =
-        let create
-            (
-                accountSubcategories: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters
-            =
-            {
-              AccountSubcategories = accountSubcategories
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions =
@@ -806,20 +528,6 @@ module Invoices =
                 Prefetch = prefetch
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections =
-        let create
-            (
-                filters: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters option,
-                permissions: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions list option,
-                prefetch: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPrefetch list option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections
-            =
-            {
-              Filters = filters
-              Permissions = permissions
-              Prefetch = prefetch
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod =
         | Automatic
         | Instant
@@ -842,18 +550,6 @@ module Invoices =
             {
                 FinancialConnections = financialConnections
                 VerificationMethod = verificationMethod
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions =
-        let create
-            (
-                financialConnections: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections option,
-                verificationMethod: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions
-            =
-            {
-              FinancialConnections = financialConnections
-              VerificationMethod = verificationMethod
             }
 
     type Create'PaymentSettingsPaymentMethodOptions =
@@ -906,34 +602,6 @@ module Invoices =
                 SepaDebit = sepaDebit
                 Upi = upi
                 UsBankAccount = usBankAccount
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptions =
-        let create
-            (
-                acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string> option,
-                bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option,
-                card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string> option,
-                customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string> option,
-                konbini: Choice<string,string> option,
-                payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string> option,
-                pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions,string> option,
-                sepaDebit: Choice<string,string> option,
-                upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string> option,
-                usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string> option
-            ) : Create'PaymentSettingsPaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              Bancontact = bancontact
-              Card = card
-              CustomerBalance = customerBalance
-              Konbini = konbini
-              Payto = payto
-              Pix = pix
-              SepaDebit = sepaDebit
-              Upi = upi
-              UsBankAccount = usBankAccount
             }
 
     type Create'PaymentSettingsPaymentMethodTypes =
@@ -1003,20 +671,6 @@ module Invoices =
                 PaymentMethodTypes = paymentMethodTypes
             }
 
-    module Create'PaymentSettings =
-        let create
-            (
-                defaultMandate: Choice<string,string> option,
-                paymentMethodOptions: Create'PaymentSettingsPaymentMethodOptions option,
-                paymentMethodTypes: Choice<Create'PaymentSettingsPaymentMethodTypes list,string> option
-            ) : Create'PaymentSettings
-            =
-            {
-              DefaultMandate = defaultMandate
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-            }
-
     type Create'PendingInvoiceItemsBehavior =
         | Exclude
         | Include
@@ -1045,16 +699,6 @@ module Invoices =
                 PageSize = pageSize
             }
 
-    module Create'RenderingPdf =
-        let create
-            (
-                pageSize: Create'RenderingPdfPageSize option
-            ) : Create'RenderingPdf
-            =
-            {
-              PageSize = pageSize
-            }
-
     type Create'Rendering =
         {
             /// How line-item prices and amounts will be displayed with respect to tax on invoice PDFs. One of `exclude_tax` or `include_inclusive_tax`. `include_inclusive_tax` will include inclusive tax (and exclude exclusive tax) in invoice PDF amounts. `exclude_tax` will exclude all tax (inclusive and exclusive alike) from invoice PDF amounts.
@@ -1078,22 +722,6 @@ module Invoices =
                 Pdf = pdf
                 Template = template
                 TemplateVersion = templateVersion
-            }
-
-    module Create'Rendering =
-        let create
-            (
-                amountTaxDisplay: Create'RenderingAmountTaxDisplay option,
-                pdf: Create'RenderingPdf option,
-                template: string option,
-                templateVersion: Choice<int,string> option
-            ) : Create'Rendering
-            =
-            {
-              AmountTaxDisplay = amountTaxDisplay
-              Pdf = pdf
-              Template = template
-              TemplateVersion = templateVersion
             }
 
     type Create'ShippingCostShippingRateDataDeliveryEstimateMaximumUnit =
@@ -1120,18 +748,6 @@ module Invoices =
                 Value = value
             }
 
-    module Create'ShippingCostShippingRateDataDeliveryEstimateMaximum =
-        let create
-            (
-                unit: Create'ShippingCostShippingRateDataDeliveryEstimateMaximumUnit option,
-                value: int option
-            ) : Create'ShippingCostShippingRateDataDeliveryEstimateMaximum
-            =
-            {
-              Unit = unit
-              Value = value
-            }
-
     type Create'ShippingCostShippingRateDataDeliveryEstimateMinimumUnit =
         | BusinessDay
         | Day
@@ -1156,18 +772,6 @@ module Invoices =
                 Value = value
             }
 
-    module Create'ShippingCostShippingRateDataDeliveryEstimateMinimum =
-        let create
-            (
-                unit: Create'ShippingCostShippingRateDataDeliveryEstimateMinimumUnit option,
-                value: int option
-            ) : Create'ShippingCostShippingRateDataDeliveryEstimateMinimum
-            =
-            {
-              Unit = unit
-              Value = value
-            }
-
     type Create'ShippingCostShippingRateDataDeliveryEstimate =
         {
             /// The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -1183,18 +787,6 @@ module Invoices =
             {
                 Maximum = maximum
                 Minimum = minimum
-            }
-
-    module Create'ShippingCostShippingRateDataDeliveryEstimate =
-        let create
-            (
-                maximum: Create'ShippingCostShippingRateDataDeliveryEstimateMaximum option,
-                minimum: Create'ShippingCostShippingRateDataDeliveryEstimateMinimum option
-            ) : Create'ShippingCostShippingRateDataDeliveryEstimate
-            =
-            {
-              Maximum = maximum
-              Minimum = minimum
             }
 
     type Create'ShippingCostShippingRateDataFixedAmount =
@@ -1216,20 +808,6 @@ module Invoices =
                 Amount = amount
                 Currency = currency
                 CurrencyOptions = currencyOptions
-            }
-
-    module Create'ShippingCostShippingRateDataFixedAmount =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                currencyOptions: Map<string, string> option
-            ) : Create'ShippingCostShippingRateDataFixedAmount
-            =
-            {
-              Amount = amount
-              Currency = currency
-              CurrencyOptions = currencyOptions
             }
 
     type Create'ShippingCostShippingRateDataTaxBehavior =
@@ -1276,28 +854,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Create'ShippingCostShippingRateData =
-        let create
-            (
-                deliveryEstimate: Create'ShippingCostShippingRateDataDeliveryEstimate option,
-                displayName: string option,
-                fixedAmount: Create'ShippingCostShippingRateDataFixedAmount option,
-                metadata: Map<string, string> option,
-                taxBehavior: Create'ShippingCostShippingRateDataTaxBehavior option,
-                taxCode: string option,
-                type': Create'ShippingCostShippingRateDataType option
-            ) : Create'ShippingCostShippingRateData
-            =
-            {
-              DeliveryEstimate = deliveryEstimate
-              DisplayName = displayName
-              FixedAmount = fixedAmount
-              Metadata = metadata
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              Type = type'
-            }
-
     type Create'ShippingCost =
         {
             /// The ID of the shipping rate to use for this order.
@@ -1313,18 +869,6 @@ module Invoices =
             {
                 ShippingRate = shippingRate
                 ShippingRateData = shippingRateData
-            }
-
-    module Create'ShippingCost =
-        let create
-            (
-                shippingRate: string option,
-                shippingRateData: Create'ShippingCostShippingRateData option
-            ) : Create'ShippingCost
-            =
-            {
-              ShippingRate = shippingRate
-              ShippingRateData = shippingRateData
             }
 
     type Create'ShippingDetailsAddress =
@@ -1360,26 +904,6 @@ module Invoices =
                 State = state
             }
 
-    module Create'ShippingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'ShippingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'ShippingDetails =
         {
             /// Shipping address
@@ -1401,20 +925,6 @@ module Invoices =
                 Phone = phone
             }
 
-    module Create'ShippingDetails =
-        let create
-            (
-                address: Create'ShippingDetailsAddress option,
-                name: string option,
-                phone: Choice<string,string> option
-            ) : Create'ShippingDetails
-            =
-            {
-              Address = address
-              Name = name
-              Phone = phone
-            }
-
     type Create'TransferData =
         {
             /// The amount that will be transferred automatically when the invoice is paid. If no amount is set, the full amount is transferred.
@@ -1430,18 +940,6 @@ module Invoices =
             {
                 Amount = amount
                 Destination = destination
-            }
-
-    module Create'TransferData =
-        let create
-            (
-                amount: int option,
-                destination: string option
-            ) : Create'TransferData
-            =
-            {
-              Amount = amount
-              Destination = destination
             }
 
     type CreateOptions =
@@ -1585,80 +1083,6 @@ module Invoices =
                 TransferData = transferData
             }
 
-    module CreateOptions =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                applicationFeeAmount: int option,
-                autoAdvance: bool option,
-                automaticTax: Create'AutomaticTax option,
-                automaticallyFinalizesAt: DateTime option,
-                collectionMethod: Create'CollectionMethod option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customFields: Choice<Create'CustomFields list,string> option,
-                customer: string option,
-                customerAccount: string option,
-                daysUntilDue: int option,
-                defaultPaymentMethod: string option,
-                defaultSource: string option,
-                defaultTaxRates: string list option,
-                description: string option,
-                discounts: Choice<Create'Discounts list,string> option,
-                dueDate: DateTime option,
-                effectiveAt: DateTime option,
-                expand: string list option,
-                footer: string option,
-                fromInvoice: Create'FromInvoice option,
-                issuer: Create'Issuer option,
-                metadata: Map<string, string> option,
-                number: string option,
-                onBehalfOf: string option,
-                paymentSettings: Create'PaymentSettings option,
-                pendingInvoiceItemsBehavior: Create'PendingInvoiceItemsBehavior option,
-                rendering: Create'Rendering option,
-                shippingCost: Create'ShippingCost option,
-                shippingDetails: Create'ShippingDetails option,
-                statementDescriptor: string option,
-                subscription: string option,
-                transferData: Create'TransferData option
-            ) : CreateOptions
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              ApplicationFeeAmount = applicationFeeAmount
-              AutoAdvance = autoAdvance
-              AutomaticTax = automaticTax
-              AutomaticallyFinalizesAt = automaticallyFinalizesAt
-              CollectionMethod = collectionMethod
-              Currency = currency
-              CustomFields = customFields
-              Customer = customer
-              CustomerAccount = customerAccount
-              DaysUntilDue = daysUntilDue
-              DefaultPaymentMethod = defaultPaymentMethod
-              DefaultSource = defaultSource
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              DueDate = dueDate
-              EffectiveAt = effectiveAt
-              Expand = expand
-              Footer = footer
-              FromInvoice = fromInvoice
-              Issuer = issuer
-              Metadata = metadata
-              Number = number
-              OnBehalfOf = onBehalfOf
-              PaymentSettings = paymentSettings
-              PendingInvoiceItemsBehavior = pendingInvoiceItemsBehavior
-              Rendering = rendering
-              ShippingCost = shippingCost
-              ShippingDetails = shippingDetails
-              StatementDescriptor = statementDescriptor
-              Subscription = subscription
-              TransferData = transferData
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Invoice: string }
@@ -1667,16 +1091,6 @@ module Invoices =
         static member New(invoice: string) =
             {
                 Invoice = invoice
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                invoice: string
-            ) : DeleteOptions
-            =
-            {
-              Invoice = invoice
             }
 
     type RetrieveOptions =
@@ -1693,17 +1107,6 @@ module Invoices =
             {
                 Invoice = invoice
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                invoice: string
-            ) : RetrieveOptions
-            =
-            {
-              Invoice = invoice
-              Expand = None
             }
 
     type Update'AutomaticTaxLiabilityType =
@@ -1727,18 +1130,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Update'AutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Update'AutomaticTaxLiabilityType option
-            ) : Update'AutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'AutomaticTax =
         {
             /// Whether Stripe automatically computes tax on this invoice. Note that incompatible invoice items (invoice items with manually specified [tax rates](https://docs.stripe.com/api/tax_rates), negative amounts, or `tax_behavior=unspecified`) cannot be added to automatic tax invoices.
@@ -1754,18 +1145,6 @@ module Invoices =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Update'AutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Update'AutomaticTaxLiability option
-            ) : Update'AutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Update'CollectionMethod =
@@ -1789,18 +1168,6 @@ module Invoices =
                 Value = value
             }
 
-    module Update'CustomFields =
-        let create
-            (
-                name: string option,
-                value: string option
-            ) : Update'CustomFields
-            =
-            {
-              Name = name
-              Value = value
-            }
-
     type Update'Discounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -1820,20 +1187,6 @@ module Invoices =
                 Coupon = coupon
                 Discount = discount
                 PromotionCode = promotionCode
-            }
-
-    module Update'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
             }
 
     type Update'IssuerType =
@@ -1857,18 +1210,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Update'Issuer =
-        let create
-            (
-                account: string option,
-                type': Update'IssuerType option
-            ) : Update'Issuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType =
         | Business
         | Personal
@@ -1885,16 +1226,6 @@ module Invoices =
         static member New(?transactionType: Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType) =
             {
                 TransactionType = transactionType
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                transactionType: Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType option
-            ) : Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              TransactionType = transactionType
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod =
@@ -1921,18 +1252,6 @@ module Invoices =
                 VerificationMethod = verificationMethod
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions option,
-                verificationMethod: Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
-              VerificationMethod = verificationMethod
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage =
         | De
         | En
@@ -1951,16 +1270,6 @@ module Invoices =
         static member New(?preferredLanguage: Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions =
-        let create
-            (
-                preferredLanguage: Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage option
-            ) : Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions
-            =
-            {
-              PreferredLanguage = preferredLanguage
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanInterval =
@@ -1995,20 +1304,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlan =
-        let create
-            (
-                count: int option,
-                interval: Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanInterval option,
-                type': Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanType option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlan
-            =
-            {
-              Count = count
-              Interval = interval
-              Type = type'
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments =
         {
             /// Setting to true enables installments for this invoice.
@@ -2026,18 +1321,6 @@ module Invoices =
             {
                 Enabled = enabled
                 Plan = plan
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments =
-        let create
-            (
-                enabled: bool option,
-                plan: Choice<Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlan,string> option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments
-            =
-            {
-              Enabled = enabled
-              Plan = plan
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsRequestThreeDSecure =
@@ -2064,18 +1347,6 @@ module Invoices =
                 RequestThreeDSecure = requestThreeDSecure
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions =
-        let create
-            (
-                installments: Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallments option,
-                requestThreeDSecure: Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsRequestThreeDSecure option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions
-            =
-            {
-              Installments = installments
-              RequestThreeDSecure = requestThreeDSecure
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
         {
             /// The desired country code of the bank account information. Permitted values include: `DE`, `FR`, `IE`, or `NL`.
@@ -2087,16 +1358,6 @@ module Invoices =
         static member New(?country: IsoTypes.IsoCountryCode) =
             {
                 Country = country
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer
-            =
-            {
-              Country = country
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
@@ -2117,18 +1378,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
-        let create
-            (
-                euBankTransfer: Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer option,
-                type': string option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer
-            =
-            {
-              EuBankTransfer = euBankTransfer
-              Type = type'
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
         {
             /// Configuration for the bank transfer funding type, if the `funding_type` is set to `bank_transfer`.
@@ -2145,18 +1394,6 @@ module Invoices =
             {
                 BankTransfer = bankTransfer
                 FundingType = fundingType
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
-        let create
-            (
-                bankTransfer: Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer option,
-                fundingType: string option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions
-            =
-            {
-              BankTransfer = bankTransfer
-              FundingType = fundingType
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose =
@@ -2189,18 +1426,6 @@ module Invoices =
                 Purpose = purpose
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                purpose: Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose option
-            ) : Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              Purpose = purpose
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
         {
             /// Additional fields for Mandate creation.
@@ -2212,16 +1437,6 @@ module Invoices =
         static member New(?mandateOptions: Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions option
-            ) : Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptionsAmountIncludesIof =
@@ -2244,18 +1459,6 @@ module Invoices =
             {
                 AmountIncludesIof = amountIncludesIof
                 ExpiresAfterSeconds = expiresAfterSeconds
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions =
-        let create
-            (
-                amountIncludesIof: Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptionsAmountIncludesIof option,
-                expiresAfterSeconds: int option
-            ) : Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions
-            =
-            {
-              AmountIncludesIof = amountIncludesIof
-              ExpiresAfterSeconds = expiresAfterSeconds
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType =
@@ -2288,22 +1491,6 @@ module Invoices =
                 EndDate = endDate
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
         {
             /// Configuration options for setting up an eMandate
@@ -2315,16 +1502,6 @@ module Invoices =
         static member New(?mandateOptions: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories
@@ -2344,16 +1521,6 @@ module Invoices =
         static member New(?accountSubcategories: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list) =
             {
                 AccountSubcategories = accountSubcategories
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters =
-        let create
-            (
-                accountSubcategories: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters
-            =
-            {
-              AccountSubcategories = accountSubcategories
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions =
@@ -2391,20 +1558,6 @@ module Invoices =
                 Prefetch = prefetch
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections =
-        let create
-            (
-                filters: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters option,
-                permissions: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions list option,
-                prefetch: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPrefetch list option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections
-            =
-            {
-              Filters = filters
-              Permissions = permissions
-              Prefetch = prefetch
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod =
         | Automatic
         | Instant
@@ -2427,18 +1580,6 @@ module Invoices =
             {
                 FinancialConnections = financialConnections
                 VerificationMethod = verificationMethod
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions =
-        let create
-            (
-                financialConnections: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections option,
-                verificationMethod: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions
-            =
-            {
-              FinancialConnections = financialConnections
-              VerificationMethod = verificationMethod
             }
 
     type Update'PaymentSettingsPaymentMethodOptions =
@@ -2491,34 +1632,6 @@ module Invoices =
                 SepaDebit = sepaDebit
                 Upi = upi
                 UsBankAccount = usBankAccount
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptions =
-        let create
-            (
-                acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string> option,
-                bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option,
-                card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string> option,
-                customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string> option,
-                konbini: Choice<string,string> option,
-                payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string> option,
-                pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions,string> option,
-                sepaDebit: Choice<string,string> option,
-                upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string> option,
-                usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string> option
-            ) : Update'PaymentSettingsPaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              Bancontact = bancontact
-              Card = card
-              CustomerBalance = customerBalance
-              Konbini = konbini
-              Payto = payto
-              Pix = pix
-              SepaDebit = sepaDebit
-              Upi = upi
-              UsBankAccount = usBankAccount
             }
 
     type Update'PaymentSettingsPaymentMethodTypes =
@@ -2588,20 +1701,6 @@ module Invoices =
                 PaymentMethodTypes = paymentMethodTypes
             }
 
-    module Update'PaymentSettings =
-        let create
-            (
-                defaultMandate: Choice<string,string> option,
-                paymentMethodOptions: Update'PaymentSettingsPaymentMethodOptions option,
-                paymentMethodTypes: Choice<Update'PaymentSettingsPaymentMethodTypes list,string> option
-            ) : Update'PaymentSettings
-            =
-            {
-              DefaultMandate = defaultMandate
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-            }
-
     type Update'RenderingAmountTaxDisplay =
         | ExcludeTax
         | IncludeInclusiveTax
@@ -2624,16 +1723,6 @@ module Invoices =
         static member New(?pageSize: Update'RenderingPdfPageSize) =
             {
                 PageSize = pageSize
-            }
-
-    module Update'RenderingPdf =
-        let create
-            (
-                pageSize: Update'RenderingPdfPageSize option
-            ) : Update'RenderingPdf
-            =
-            {
-              PageSize = pageSize
             }
 
     type Update'Rendering =
@@ -2661,22 +1750,6 @@ module Invoices =
                 TemplateVersion = templateVersion
             }
 
-    module Update'Rendering =
-        let create
-            (
-                amountTaxDisplay: Update'RenderingAmountTaxDisplay option,
-                pdf: Update'RenderingPdf option,
-                template: string option,
-                templateVersion: Choice<int,string> option
-            ) : Update'Rendering
-            =
-            {
-              AmountTaxDisplay = amountTaxDisplay
-              Pdf = pdf
-              Template = template
-              TemplateVersion = templateVersion
-            }
-
     type Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMaximumUnit =
         | BusinessDay
         | Day
@@ -2699,18 +1772,6 @@ module Invoices =
             {
                 Unit = unit
                 Value = value
-            }
-
-    module Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMaximum =
-        let create
-            (
-                unit: Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMaximumUnit option,
-                value: int option
-            ) : Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMaximum
-            =
-            {
-              Unit = unit
-              Value = value
             }
 
     type Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMinimumUnit =
@@ -2737,18 +1798,6 @@ module Invoices =
                 Value = value
             }
 
-    module Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMinimum =
-        let create
-            (
-                unit: Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMinimumUnit option,
-                value: int option
-            ) : Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMinimum
-            =
-            {
-              Unit = unit
-              Value = value
-            }
-
     type Update'ShippingCostShippingCostShippingRateDataDeliveryEstimate =
         {
             /// The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -2764,18 +1813,6 @@ module Invoices =
             {
                 Maximum = maximum
                 Minimum = minimum
-            }
-
-    module Update'ShippingCostShippingCostShippingRateDataDeliveryEstimate =
-        let create
-            (
-                maximum: Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMaximum option,
-                minimum: Update'ShippingCostShippingCostShippingRateDataDeliveryEstimateMinimum option
-            ) : Update'ShippingCostShippingCostShippingRateDataDeliveryEstimate
-            =
-            {
-              Maximum = maximum
-              Minimum = minimum
             }
 
     type Update'ShippingCostShippingCostShippingRateDataFixedAmount =
@@ -2797,20 +1834,6 @@ module Invoices =
                 Amount = amount
                 Currency = currency
                 CurrencyOptions = currencyOptions
-            }
-
-    module Update'ShippingCostShippingCostShippingRateDataFixedAmount =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                currencyOptions: Map<string, string> option
-            ) : Update'ShippingCostShippingCostShippingRateDataFixedAmount
-            =
-            {
-              Amount = amount
-              Currency = currency
-              CurrencyOptions = currencyOptions
             }
 
     type Update'ShippingCostShippingCostShippingRateDataTaxBehavior =
@@ -2857,28 +1880,6 @@ module Invoices =
                 Type = type'
             }
 
-    module Update'ShippingCostShippingCostShippingRateData =
-        let create
-            (
-                deliveryEstimate: Update'ShippingCostShippingCostShippingRateDataDeliveryEstimate option,
-                displayName: string option,
-                fixedAmount: Update'ShippingCostShippingCostShippingRateDataFixedAmount option,
-                metadata: Map<string, string> option,
-                taxBehavior: Update'ShippingCostShippingCostShippingRateDataTaxBehavior option,
-                taxCode: string option,
-                type': Update'ShippingCostShippingCostShippingRateDataType option
-            ) : Update'ShippingCostShippingCostShippingRateData
-            =
-            {
-              DeliveryEstimate = deliveryEstimate
-              DisplayName = displayName
-              FixedAmount = fixedAmount
-              Metadata = metadata
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              Type = type'
-            }
-
     type Update'ShippingCostShippingCost =
         {
             /// The ID of the shipping rate to use for this order.
@@ -2894,18 +1895,6 @@ module Invoices =
             {
                 ShippingRate = shippingRate
                 ShippingRateData = shippingRateData
-            }
-
-    module Update'ShippingCostShippingCost =
-        let create
-            (
-                shippingRate: string option,
-                shippingRateData: Update'ShippingCostShippingCostShippingRateData option
-            ) : Update'ShippingCostShippingCost
-            =
-            {
-              ShippingRate = shippingRate
-              ShippingRateData = shippingRateData
             }
 
     type Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddressAddress =
@@ -2941,26 +1930,6 @@ module Invoices =
                 State = state
             }
 
-    module Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddressAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddressAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddress =
         {
             /// Shipping address
@@ -2982,20 +1951,6 @@ module Invoices =
                 Phone = phone
             }
 
-    module Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddress =
-        let create
-            (
-                address: Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddressAddress option,
-                name: string option,
-                phone: Choice<string,string> option
-            ) : Update'ShippingDetailsRecipientShippingWithOptionalFieldsAddress
-            =
-            {
-              Address = address
-              Name = name
-              Phone = phone
-            }
-
     type Update'TransferDataTransferDataSpecs =
         {
             /// The amount that will be transferred automatically when the invoice is paid. If no amount is set, the full amount is transferred.
@@ -3011,18 +1966,6 @@ module Invoices =
             {
                 Amount = amount
                 Destination = destination
-            }
-
-    module Update'TransferDataTransferDataSpecs =
-        let create
-            (
-                amount: int option,
-                destination: string option
-            ) : Update'TransferDataTransferDataSpecs
-            =
-            {
-              Amount = amount
-              Destination = destination
             }
 
     type UpdateOptions =
@@ -3145,43 +2088,6 @@ module Invoices =
                 TransferData = transferData
             }
 
-    module UpdateOptions =
-        let create
-            (
-                invoice: string
-            ) : UpdateOptions
-            =
-            {
-              Invoice = invoice
-              AccountTaxIds = None
-              ApplicationFeeAmount = None
-              AutoAdvance = None
-              AutomaticTax = None
-              AutomaticallyFinalizesAt = None
-              CollectionMethod = None
-              CustomFields = None
-              DaysUntilDue = None
-              DefaultPaymentMethod = None
-              DefaultSource = None
-              DefaultTaxRates = None
-              Description = None
-              Discounts = None
-              DueDate = None
-              EffectiveAt = None
-              Expand = None
-              Footer = None
-              Issuer = None
-              Metadata = None
-              Number = None
-              OnBehalfOf = None
-              PaymentSettings = None
-              Rendering = None
-              ShippingCost = None
-              ShippingDetails = None
-              StatementDescriptor = None
-              TransferData = None
-            }
-
     ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("due_date", options.DueDate |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
@@ -3236,18 +2142,6 @@ module InvoicesCreatePreview =
                 Type = type'
             }
 
-    module CreatePreview'AutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': CreatePreview'AutomaticTaxLiabilityType option
-            ) : CreatePreview'AutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type CreatePreview'AutomaticTax =
         {
             /// Whether Stripe automatically computes tax on this invoice. Note that incompatible invoice items (invoice items with manually specified [tax rates](https://docs.stripe.com/api/tax_rates), negative amounts, or `tax_behavior=unspecified`) cannot be added to automatic tax invoices.
@@ -3263,18 +2157,6 @@ module InvoicesCreatePreview =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module CreatePreview'AutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: CreatePreview'AutomaticTaxLiability option
-            ) : CreatePreview'AutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type CreatePreview'CustomerDetailsAddressOptionalFieldsAddress =
@@ -3310,26 +2192,6 @@ module InvoicesCreatePreview =
                 State = state
             }
 
-    module CreatePreview'CustomerDetailsAddressOptionalFieldsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : CreatePreview'CustomerDetailsAddressOptionalFieldsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type CreatePreview'CustomerDetailsShippingCustomerShippingAddress =
         {
             /// City, district, suburb, town, or village.
@@ -3363,26 +2225,6 @@ module InvoicesCreatePreview =
                 State = state
             }
 
-    module CreatePreview'CustomerDetailsShippingCustomerShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : CreatePreview'CustomerDetailsShippingCustomerShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type CreatePreview'CustomerDetailsShippingCustomerShipping =
         {
             /// Customer shipping address.
@@ -3404,20 +2246,6 @@ module InvoicesCreatePreview =
                 Phone = phone
             }
 
-    module CreatePreview'CustomerDetailsShippingCustomerShipping =
-        let create
-            (
-                address: CreatePreview'CustomerDetailsShippingCustomerShippingAddress option,
-                name: string option,
-                phone: string option
-            ) : CreatePreview'CustomerDetailsShippingCustomerShipping
-            =
-            {
-              Address = address
-              Name = name
-              Phone = phone
-            }
-
     type CreatePreview'CustomerDetailsTax =
         {
             /// A recent IP address of the customer used for tax reporting and tax location inference. Stripe recommends updating the IP address when a new PaymentMethod is attached or the address field on the customer is updated. We recommend against updating this field more frequently since it could result in unexpected tax location/reporting outcomes.
@@ -3429,16 +2257,6 @@ module InvoicesCreatePreview =
         static member New(?ipAddress: Choice<string,string>) =
             {
                 IpAddress = ipAddress
-            }
-
-    module CreatePreview'CustomerDetailsTax =
-        let create
-            (
-                ipAddress: Choice<string,string> option
-            ) : CreatePreview'CustomerDetailsTax
-            =
-            {
-              IpAddress = ipAddress
             }
 
     type CreatePreview'CustomerDetailsTaxExempt =
@@ -3581,18 +2399,6 @@ module InvoicesCreatePreview =
                 Value = value
             }
 
-    module CreatePreview'CustomerDetailsTaxIds =
-        let create
-            (
-                type': CreatePreview'CustomerDetailsTaxIdsType option,
-                value: string option
-            ) : CreatePreview'CustomerDetailsTaxIds
-            =
-            {
-              Type = type'
-              Value = value
-            }
-
     type CreatePreview'CustomerDetails =
         {
             /// The customer's address. Learn about [country-specific requirements for calculating tax](/invoicing/taxes?dashboard-or-api=dashboard#set-up-customer).
@@ -3622,24 +2428,6 @@ module InvoicesCreatePreview =
                 TaxIds = taxIds
             }
 
-    module CreatePreview'CustomerDetails =
-        let create
-            (
-                address: Choice<CreatePreview'CustomerDetailsAddressOptionalFieldsAddress,string> option,
-                shipping: Choice<CreatePreview'CustomerDetailsShippingCustomerShipping,string> option,
-                tax: CreatePreview'CustomerDetailsTax option,
-                taxExempt: CreatePreview'CustomerDetailsTaxExempt option,
-                taxIds: CreatePreview'CustomerDetailsTaxIds list option
-            ) : CreatePreview'CustomerDetails
-            =
-            {
-              Address = address
-              Shipping = shipping
-              Tax = tax
-              TaxExempt = taxExempt
-              TaxIds = taxIds
-            }
-
     type CreatePreview'Discounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -3659,20 +2447,6 @@ module InvoicesCreatePreview =
                 Coupon = coupon
                 Discount = discount
                 PromotionCode = promotionCode
-            }
-
-    module CreatePreview'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : CreatePreview'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
             }
 
     type CreatePreview'InvoiceItemsDiscounts =
@@ -3696,20 +2470,6 @@ module InvoicesCreatePreview =
                 PromotionCode = promotionCode
             }
 
-    module CreatePreview'InvoiceItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : CreatePreview'InvoiceItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type CreatePreview'InvoiceItemsPeriod =
         {
             /// The end of the period, which must be greater than or equal to the start. This value is inclusive.
@@ -3725,18 +2485,6 @@ module InvoicesCreatePreview =
             {
                 End = end'
                 Start = start
-            }
-
-    module CreatePreview'InvoiceItemsPeriod =
-        let create
-            (
-                end': DateTime option,
-                start: DateTime option
-            ) : CreatePreview'InvoiceItemsPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type CreatePreview'InvoiceItemsPriceDataTaxBehavior =
@@ -3771,24 +2519,6 @@ module InvoicesCreatePreview =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module CreatePreview'InvoiceItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: CreatePreview'InvoiceItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : CreatePreview'InvoiceItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type CreatePreview'InvoiceItemsTaxBehavior =
@@ -3873,48 +2603,6 @@ module InvoicesCreatePreview =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module CreatePreview'InvoiceItems =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                description: string option,
-                discountable: bool option,
-                discounts: Choice<CreatePreview'InvoiceItemsDiscounts list,string> option,
-                invoiceitem: string option,
-                metadata: Map<string, string> option,
-                period: CreatePreview'InvoiceItemsPeriod option,
-                price: string option,
-                priceData: CreatePreview'InvoiceItemsPriceData option,
-                quantity: int option,
-                quantityDecimal: string option,
-                taxBehavior: CreatePreview'InvoiceItemsTaxBehavior option,
-                taxCode: Choice<string,string> option,
-                taxRates: Choice<string list,string> option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : CreatePreview'InvoiceItems
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Description = description
-              Discountable = discountable
-              Discounts = discounts
-              Invoiceitem = invoiceitem
-              Metadata = metadata
-              Period = period
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              QuantityDecimal = quantityDecimal
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              TaxRates = taxRates
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type CreatePreview'IssuerType =
         | Account
         | Self
@@ -3934,18 +2622,6 @@ module InvoicesCreatePreview =
             {
                 Account = account
                 Type = type'
-            }
-
-    module CreatePreview'Issuer =
-        let create
-            (
-                account: string option,
-                type': CreatePreview'IssuerType option
-            ) : CreatePreview'Issuer
-            =
-            {
-              Account = account
-              Type = type'
             }
 
     type CreatePreview'PreviewMode =
@@ -3969,16 +2645,6 @@ module InvoicesCreatePreview =
                 ProrationDiscounts = prorationDiscounts
             }
 
-    module CreatePreview'ScheduleDetailsBillingModeFlexible =
-        let create
-            (
-                prorationDiscounts: CreatePreview'ScheduleDetailsBillingModeFlexibleProrationDiscounts option
-            ) : CreatePreview'ScheduleDetailsBillingModeFlexible
-            =
-            {
-              ProrationDiscounts = prorationDiscounts
-            }
-
     type CreatePreview'ScheduleDetailsBillingModeType =
         | Classic
         | Flexible
@@ -3998,18 +2664,6 @@ module InvoicesCreatePreview =
             {
                 Flexible = flexible
                 Type = type'
-            }
-
-    module CreatePreview'ScheduleDetailsBillingMode =
-        let create
-            (
-                flexible: CreatePreview'ScheduleDetailsBillingModeFlexible option,
-                type': CreatePreview'ScheduleDetailsBillingModeType option
-            ) : CreatePreview'ScheduleDetailsBillingMode
-            =
-            {
-              Flexible = flexible
-              Type = type'
             }
 
     type CreatePreview'ScheduleDetailsEndBehavior =
@@ -4037,20 +2691,6 @@ module InvoicesCreatePreview =
                 PromotionCode = promotionCode
             }
 
-    module CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodEndType =
         | MinItemPeriodEnd
         | PhaseEnd
@@ -4071,18 +2711,6 @@ module InvoicesCreatePreview =
             {
                 Timestamp = timestamp
                 Type = type'
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodEnd =
-        let create
-            (
-                timestamp: DateTime option,
-                type': CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodEndType option
-            ) : CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodEnd
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
             }
 
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodStartType =
@@ -4107,18 +2735,6 @@ module InvoicesCreatePreview =
                 Type = type'
             }
 
-    module CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodStart =
-        let create
-            (
-                timestamp: DateTime option,
-                type': CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodStartType option
-            ) : CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodStart
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
-            }
-
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriod =
         {
             /// End of the invoice item period.
@@ -4134,18 +2750,6 @@ module InvoicesCreatePreview =
             {
                 End = end'
                 Start = start
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriod =
-        let create
-            (
-                end': CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodEnd option,
-                start: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriodStart option
-            ) : CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPriceDataTaxBehavior =
@@ -4180,24 +2784,6 @@ module InvoicesCreatePreview =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItems =
@@ -4237,28 +2823,6 @@ module InvoicesCreatePreview =
                 TaxRates = taxRates
             }
 
-    module CreatePreview'ScheduleDetailsPhasesAddInvoiceItems =
-        let create
-            (
-                discounts: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsDiscounts list option,
-                metadata: Map<string, string> option,
-                period: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriod option,
-                price: string option,
-                priceData: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : CreatePreview'ScheduleDetailsPhasesAddInvoiceItems
-            =
-            {
-              Discounts = discounts
-              Metadata = metadata
-              Period = period
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type CreatePreview'ScheduleDetailsPhasesAutomaticTaxLiabilityType =
         | Account
         | Self
@@ -4280,18 +2844,6 @@ module InvoicesCreatePreview =
                 Type = type'
             }
 
-    module CreatePreview'ScheduleDetailsPhasesAutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': CreatePreview'ScheduleDetailsPhasesAutomaticTaxLiabilityType option
-            ) : CreatePreview'ScheduleDetailsPhasesAutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type CreatePreview'ScheduleDetailsPhasesAutomaticTax =
         {
             /// Enabled automatic tax calculation which will automatically compute tax rates on all invoices generated by the subscription.
@@ -4307,18 +2859,6 @@ module InvoicesCreatePreview =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesAutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: CreatePreview'ScheduleDetailsPhasesAutomaticTaxLiability option
-            ) : CreatePreview'ScheduleDetailsPhasesAutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type CreatePreview'ScheduleDetailsPhasesBillingCycleAnchor =
@@ -4340,18 +2880,6 @@ module InvoicesCreatePreview =
             {
                 AmountGte = amountGte
                 ResetBillingCycleAnchor = resetBillingCycleAnchor
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesBillingThresholdsBillingThresholds =
-        let create
-            (
-                amountGte: int option,
-                resetBillingCycleAnchor: bool option
-            ) : CreatePreview'ScheduleDetailsPhasesBillingThresholdsBillingThresholds
-            =
-            {
-              AmountGte = amountGte
-              ResetBillingCycleAnchor = resetBillingCycleAnchor
             }
 
     type CreatePreview'ScheduleDetailsPhasesCollectionMethod =
@@ -4379,20 +2907,6 @@ module InvoicesCreatePreview =
                 PromotionCode = promotionCode
             }
 
-    module CreatePreview'ScheduleDetailsPhasesDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : CreatePreview'ScheduleDetailsPhasesDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type CreatePreview'ScheduleDetailsPhasesDurationInterval =
         | Day
         | Month
@@ -4414,18 +2928,6 @@ module InvoicesCreatePreview =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesDuration =
-        let create
-            (
-                interval: CreatePreview'ScheduleDetailsPhasesDurationInterval option,
-                intervalCount: int option
-            ) : CreatePreview'ScheduleDetailsPhasesDuration
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type CreatePreview'ScheduleDetailsPhasesEndDate = | Now
@@ -4451,18 +2953,6 @@ module InvoicesCreatePreview =
                 Type = type'
             }
 
-    module CreatePreview'ScheduleDetailsPhasesInvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': CreatePreview'ScheduleDetailsPhasesInvoiceSettingsIssuerType option
-            ) : CreatePreview'ScheduleDetailsPhasesInvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type CreatePreview'ScheduleDetailsPhasesInvoiceSettings =
         {
             /// The account tax IDs associated with this phase of the subscription schedule. Will be set on invoices generated by this phase of the subscription schedule.
@@ -4484,20 +2974,6 @@ module InvoicesCreatePreview =
                 Issuer = issuer
             }
 
-    module CreatePreview'ScheduleDetailsPhasesInvoiceSettings =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                daysUntilDue: int option,
-                issuer: CreatePreview'ScheduleDetailsPhasesInvoiceSettingsIssuer option
-            ) : CreatePreview'ScheduleDetailsPhasesInvoiceSettings
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              DaysUntilDue = daysUntilDue
-              Issuer = issuer
-            }
-
     type CreatePreview'ScheduleDetailsPhasesItemsBillingThresholdsItemBillingThresholds =
         {
             /// Number of units that meets the billing threshold to advance the subscription to a new billing period (e.g., it takes 10 $5 units to meet a $50 [monetary threshold](https://docs.stripe.com/api/subscriptions/update#update_subscription-billing_thresholds-amount_gte))
@@ -4509,16 +2985,6 @@ module InvoicesCreatePreview =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesItemsBillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : CreatePreview'ScheduleDetailsPhasesItemsBillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type CreatePreview'ScheduleDetailsPhasesItemsDiscounts =
@@ -4542,20 +3008,6 @@ module InvoicesCreatePreview =
                 PromotionCode = promotionCode
             }
 
-    module CreatePreview'ScheduleDetailsPhasesItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : CreatePreview'ScheduleDetailsPhasesItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type CreatePreview'ScheduleDetailsPhasesItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -4577,18 +3029,6 @@ module InvoicesCreatePreview =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesItemsPriceDataRecurring =
-        let create
-            (
-                interval: CreatePreview'ScheduleDetailsPhasesItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : CreatePreview'ScheduleDetailsPhasesItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type CreatePreview'ScheduleDetailsPhasesItemsPriceDataTaxBehavior =
@@ -4627,26 +3067,6 @@ module InvoicesCreatePreview =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: CreatePreview'ScheduleDetailsPhasesItemsPriceDataRecurring option,
-                taxBehavior: CreatePreview'ScheduleDetailsPhasesItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : CreatePreview'ScheduleDetailsPhasesItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type CreatePreview'ScheduleDetailsPhasesItems =
@@ -4691,30 +3111,6 @@ module InvoicesCreatePreview =
                 TaxRates = taxRates
             }
 
-    module CreatePreview'ScheduleDetailsPhasesItems =
-        let create
-            (
-                billingThresholds: Choice<CreatePreview'ScheduleDetailsPhasesItemsBillingThresholdsItemBillingThresholds,string> option,
-                discounts: Choice<CreatePreview'ScheduleDetailsPhasesItemsDiscounts list,string> option,
-                metadata: Map<string, string> option,
-                plan: string option,
-                price: string option,
-                priceData: CreatePreview'ScheduleDetailsPhasesItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : CreatePreview'ScheduleDetailsPhasesItems
-            =
-            {
-              BillingThresholds = billingThresholds
-              Discounts = discounts
-              Metadata = metadata
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type CreatePreview'ScheduleDetailsPhasesProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
@@ -4737,18 +3133,6 @@ module InvoicesCreatePreview =
             {
                 AmountPercent = amountPercent
                 Destination = destination
-            }
-
-    module CreatePreview'ScheduleDetailsPhasesTransferData =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : CreatePreview'ScheduleDetailsPhasesTransferData
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
             }
 
     type CreatePreview'ScheduleDetailsPhasesTrialEnd = | Now
@@ -4850,58 +3234,6 @@ module InvoicesCreatePreview =
                 TrialEnd = trialEnd
             }
 
-    module CreatePreview'ScheduleDetailsPhases =
-        let create
-            (
-                addInvoiceItems: CreatePreview'ScheduleDetailsPhasesAddInvoiceItems list option,
-                applicationFeePercent: decimal option,
-                automaticTax: CreatePreview'ScheduleDetailsPhasesAutomaticTax option,
-                billingCycleAnchor: CreatePreview'ScheduleDetailsPhasesBillingCycleAnchor option,
-                billingThresholds: Choice<CreatePreview'ScheduleDetailsPhasesBillingThresholdsBillingThresholds,string> option,
-                collectionMethod: CreatePreview'ScheduleDetailsPhasesCollectionMethod option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                defaultPaymentMethod: string option,
-                defaultTaxRates: Choice<string list,string> option,
-                description: Choice<string,string> option,
-                discounts: Choice<CreatePreview'ScheduleDetailsPhasesDiscounts list,string> option,
-                duration: CreatePreview'ScheduleDetailsPhasesDuration option,
-                endDate: Choice<DateTime,CreatePreview'ScheduleDetailsPhasesEndDate> option,
-                invoiceSettings: CreatePreview'ScheduleDetailsPhasesInvoiceSettings option,
-                items: CreatePreview'ScheduleDetailsPhasesItems list option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option,
-                prorationBehavior: CreatePreview'ScheduleDetailsPhasesProrationBehavior option,
-                startDate: Choice<DateTime,CreatePreview'ScheduleDetailsPhasesStartDate> option,
-                transferData: CreatePreview'ScheduleDetailsPhasesTransferData option,
-                trial: bool option,
-                trialEnd: Choice<DateTime,CreatePreview'ScheduleDetailsPhasesTrialEnd> option
-            ) : CreatePreview'ScheduleDetailsPhases
-            =
-            {
-              AddInvoiceItems = addInvoiceItems
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BillingCycleAnchor = billingCycleAnchor
-              BillingThresholds = billingThresholds
-              CollectionMethod = collectionMethod
-              Currency = currency
-              DefaultPaymentMethod = defaultPaymentMethod
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              Duration = duration
-              EndDate = endDate
-              InvoiceSettings = invoiceSettings
-              Items = items
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              ProrationBehavior = prorationBehavior
-              StartDate = startDate
-              TransferData = transferData
-              Trial = trial
-              TrialEnd = trialEnd
-            }
-
     type CreatePreview'ScheduleDetailsProrationBehavior =
         | AlwaysInvoice
         | CreateProrations
@@ -4932,22 +3264,6 @@ module InvoicesCreatePreview =
                 ProrationBehavior = prorationBehavior
             }
 
-    module CreatePreview'ScheduleDetails =
-        let create
-            (
-                billingMode: CreatePreview'ScheduleDetailsBillingMode option,
-                endBehavior: CreatePreview'ScheduleDetailsEndBehavior option,
-                phases: CreatePreview'ScheduleDetailsPhases list option,
-                prorationBehavior: CreatePreview'ScheduleDetailsProrationBehavior option
-            ) : CreatePreview'ScheduleDetails
-            =
-            {
-              BillingMode = billingMode
-              EndBehavior = endBehavior
-              Phases = phases
-              ProrationBehavior = prorationBehavior
-            }
-
     type CreatePreview'SubscriptionDetailsBillingCycleAnchor =
         | Now
         | Unchanged
@@ -4967,16 +3283,6 @@ module InvoicesCreatePreview =
         static member New(?prorationDiscounts: CreatePreview'SubscriptionDetailsBillingModeFlexibleProrationDiscounts) =
             {
                 ProrationDiscounts = prorationDiscounts
-            }
-
-    module CreatePreview'SubscriptionDetailsBillingModeFlexible =
-        let create
-            (
-                prorationDiscounts: CreatePreview'SubscriptionDetailsBillingModeFlexibleProrationDiscounts option
-            ) : CreatePreview'SubscriptionDetailsBillingModeFlexible
-            =
-            {
-              ProrationDiscounts = prorationDiscounts
             }
 
     type CreatePreview'SubscriptionDetailsBillingModeType =
@@ -5000,18 +3306,6 @@ module InvoicesCreatePreview =
                 Type = type'
             }
 
-    module CreatePreview'SubscriptionDetailsBillingMode =
-        let create
-            (
-                flexible: CreatePreview'SubscriptionDetailsBillingModeFlexible option,
-                type': CreatePreview'SubscriptionDetailsBillingModeType option
-            ) : CreatePreview'SubscriptionDetailsBillingMode
-            =
-            {
-              Flexible = flexible
-              Type = type'
-            }
-
     type CreatePreview'SubscriptionDetailsCancelAt =
         | MaxPeriodEnd
         | MinPeriodEnd
@@ -5027,16 +3321,6 @@ module InvoicesCreatePreview =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module CreatePreview'SubscriptionDetailsItemsBillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : CreatePreview'SubscriptionDetailsItemsBillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type CreatePreview'SubscriptionDetailsItemsDiscounts =
@@ -5060,20 +3344,6 @@ module InvoicesCreatePreview =
                 PromotionCode = promotionCode
             }
 
-    module CreatePreview'SubscriptionDetailsItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : CreatePreview'SubscriptionDetailsItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type CreatePreview'SubscriptionDetailsItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -5095,18 +3365,6 @@ module InvoicesCreatePreview =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module CreatePreview'SubscriptionDetailsItemsPriceDataRecurring =
-        let create
-            (
-                interval: CreatePreview'SubscriptionDetailsItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : CreatePreview'SubscriptionDetailsItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type CreatePreview'SubscriptionDetailsItemsPriceDataTaxBehavior =
@@ -5145,26 +3403,6 @@ module InvoicesCreatePreview =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module CreatePreview'SubscriptionDetailsItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: CreatePreview'SubscriptionDetailsItemsPriceDataRecurring option,
-                taxBehavior: CreatePreview'SubscriptionDetailsItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : CreatePreview'SubscriptionDetailsItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type CreatePreview'SubscriptionDetailsItems =
@@ -5219,36 +3457,6 @@ module InvoicesCreatePreview =
                 PriceData = priceData
                 Quantity = quantity
                 TaxRates = taxRates
-            }
-
-    module CreatePreview'SubscriptionDetailsItems =
-        let create
-            (
-                billingThresholds: Choice<CreatePreview'SubscriptionDetailsItemsBillingThresholdsItemBillingThresholds,string> option,
-                clearUsage: bool option,
-                deleted: bool option,
-                discounts: Choice<CreatePreview'SubscriptionDetailsItemsDiscounts list,string> option,
-                id: string option,
-                metadata: Map<string, string> option,
-                plan: string option,
-                price: string option,
-                priceData: CreatePreview'SubscriptionDetailsItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : CreatePreview'SubscriptionDetailsItems
-            =
-            {
-              BillingThresholds = billingThresholds
-              ClearUsage = clearUsage
-              Deleted = deleted
-              Discounts = discounts
-              Id = id
-              Metadata = metadata
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
             }
 
     type CreatePreview'SubscriptionDetailsProrationBehavior =
@@ -5315,38 +3523,6 @@ module InvoicesCreatePreview =
                 ResumeAt = resumeAt
                 StartDate = startDate
                 TrialEnd = trialEnd
-            }
-
-    module CreatePreview'SubscriptionDetails =
-        let create
-            (
-                billingCycleAnchor: Choice<CreatePreview'SubscriptionDetailsBillingCycleAnchor,DateTime> option,
-                billingMode: CreatePreview'SubscriptionDetailsBillingMode option,
-                cancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt> option,
-                cancelAtPeriodEnd: bool option,
-                cancelNow: bool option,
-                defaultTaxRates: Choice<string list,string> option,
-                items: CreatePreview'SubscriptionDetailsItems list option,
-                prorationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior option,
-                prorationDate: DateTime option,
-                resumeAt: CreatePreview'SubscriptionDetailsResumeAt option,
-                startDate: DateTime option,
-                trialEnd: Choice<CreatePreview'SubscriptionDetailsTrialEnd,DateTime> option
-            ) : CreatePreview'SubscriptionDetails
-            =
-            {
-              BillingCycleAnchor = billingCycleAnchor
-              BillingMode = billingMode
-              CancelAt = cancelAt
-              CancelAtPeriodEnd = cancelAtPeriodEnd
-              CancelNow = cancelNow
-              DefaultTaxRates = defaultTaxRates
-              Items = items
-              ProrationBehavior = prorationBehavior
-              ProrationDate = prorationDate
-              ResumeAt = resumeAt
-              StartDate = startDate
-              TrialEnd = trialEnd
             }
 
     type CreatePreviewOptions =
@@ -5418,44 +3594,6 @@ module InvoicesCreatePreview =
                 SubscriptionDetails = subscriptionDetails
             }
 
-    module CreatePreviewOptions =
-        let create
-            (
-                automaticTax: CreatePreview'AutomaticTax option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customer: string option,
-                customerAccount: string option,
-                customerDetails: CreatePreview'CustomerDetails option,
-                discounts: Choice<CreatePreview'Discounts list,string> option,
-                expand: string list option,
-                invoiceItems: CreatePreview'InvoiceItems list option,
-                issuer: CreatePreview'Issuer option,
-                onBehalfOf: Choice<string,string> option,
-                previewMode: CreatePreview'PreviewMode option,
-                schedule: string option,
-                scheduleDetails: CreatePreview'ScheduleDetails option,
-                subscription: string option,
-                subscriptionDetails: CreatePreview'SubscriptionDetails option
-            ) : CreatePreviewOptions
-            =
-            {
-              AutomaticTax = automaticTax
-              Currency = currency
-              Customer = customer
-              CustomerAccount = customerAccount
-              CustomerDetails = customerDetails
-              Discounts = discounts
-              Expand = expand
-              InvoiceItems = invoiceItems
-              Issuer = issuer
-              OnBehalfOf = onBehalfOf
-              PreviewMode = previewMode
-              Schedule = schedule
-              ScheduleDetails = scheduleDetails
-              Subscription = subscription
-              SubscriptionDetails = subscriptionDetails
-            }
-
     ///<p>At any time, you can preview the upcoming invoice for a subscription or subscription schedule. This will show you all the charges that are pending, including subscription renewal charges, invoice item charges, etc. It will also show you any discounts that are applicable to the invoice.</p>
     ///<p>You can also preview the effects of creating or updating a subscription or subscription schedule, including a preview of any prorations that will take place. To ensure that the actual proration is calculated exactly the same as the previewed proration, you should pass the <code>subscription_details.proration_date</code> parameter when doing the actual subscription update.</p>
     ///<p>The recommended way to get only the prorations being previewed on the invoice is to consider line items where <code>parent.subscription_item_details.proration</code> is <code>true</code>.</p>
@@ -5492,19 +3630,6 @@ module InvoicesSearch =
                 Page = page
             }
 
-    module SearchOptions =
-        let create
-            (
-                query: string
-            ) : SearchOptions
-            =
-            {
-              Query = query
-              Expand = None
-              Limit = None
-              Page = None
-            }
-
     ///<p>Search for invoices you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
     ///Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
     ///conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
@@ -5537,20 +3662,6 @@ module InvoicesAddLines =
                 PromotionCode = promotionCode
             }
 
-    module AddLines'LinesDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : AddLines'LinesDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type AddLines'LinesPeriod =
         {
             /// The end of the period, which must be greater than or equal to the start. This value is inclusive.
@@ -5566,18 +3677,6 @@ module InvoicesAddLines =
             {
                 End = end'
                 Start = start
-            }
-
-    module AddLines'LinesPeriod =
-        let create
-            (
-                end': DateTime option,
-                start: DateTime option
-            ) : AddLines'LinesPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type AddLines'LinesPriceDataProductData =
@@ -5611,26 +3710,6 @@ module InvoicesAddLines =
                 Name = name
                 TaxCode = taxCode
                 UnitLabel = unitLabel
-            }
-
-    module AddLines'LinesPriceDataProductData =
-        let create
-            (
-                description: string option,
-                images: string list option,
-                metadata: Map<string, string> option,
-                name: string option,
-                taxCode: string option,
-                unitLabel: string option
-            ) : AddLines'LinesPriceDataProductData
-            =
-            {
-              Description = description
-              Images = images
-              Metadata = metadata
-              Name = name
-              TaxCode = taxCode
-              UnitLabel = unitLabel
             }
 
     type AddLines'LinesPriceDataTaxBehavior =
@@ -5671,26 +3750,6 @@ module InvoicesAddLines =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module AddLines'LinesPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                productData: AddLines'LinesPriceDataProductData option,
-                taxBehavior: AddLines'LinesPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : AddLines'LinesPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              ProductData = productData
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type AddLines'LinesPricing =
         {
             /// The ID of the price object.
@@ -5702,16 +3761,6 @@ module InvoicesAddLines =
         static member New(?price: string) =
             {
                 Price = price
-            }
-
-    module AddLines'LinesPricing =
-        let create
-            (
-                price: string option
-            ) : AddLines'LinesPricing
-            =
-            {
-              Price = price
             }
 
     type AddLines'LinesTaxAmountsTaxRateDataJurisdictionLevel =
@@ -5783,32 +3832,6 @@ module InvoicesAddLines =
                 TaxType = taxType
             }
 
-    module AddLines'LinesTaxAmountsTaxRateData =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option,
-                description: string option,
-                displayName: string option,
-                inclusive: bool option,
-                jurisdiction: string option,
-                jurisdictionLevel: AddLines'LinesTaxAmountsTaxRateDataJurisdictionLevel option,
-                percentage: decimal option,
-                state: string option,
-                taxType: AddLines'LinesTaxAmountsTaxRateDataTaxType option
-            ) : AddLines'LinesTaxAmountsTaxRateData
-            =
-            {
-              Country = country
-              Description = description
-              DisplayName = displayName
-              Inclusive = inclusive
-              Jurisdiction = jurisdiction
-              JurisdictionLevel = jurisdictionLevel
-              Percentage = percentage
-              State = state
-              TaxType = taxType
-            }
-
     type AddLines'LinesTaxAmountsTaxabilityReason =
         | CustomerExempt
         | NotCollecting
@@ -5850,22 +3873,6 @@ module InvoicesAddLines =
                 TaxRateData = taxRateData
                 TaxabilityReason = taxabilityReason
                 TaxableAmount = taxableAmount
-            }
-
-    module AddLines'LinesTaxAmounts =
-        let create
-            (
-                amount: int option,
-                taxRateData: AddLines'LinesTaxAmountsTaxRateData option,
-                taxabilityReason: AddLines'LinesTaxAmountsTaxabilityReason option,
-                taxableAmount: int option
-            ) : AddLines'LinesTaxAmounts
-            =
-            {
-              Amount = amount
-              TaxRateData = taxRateData
-              TaxabilityReason = taxabilityReason
-              TaxableAmount = taxableAmount
             }
 
     type AddLines'Lines =
@@ -5929,40 +3936,6 @@ module InvoicesAddLines =
                 TaxRates = taxRates
             }
 
-    module AddLines'Lines =
-        let create
-            (
-                amount: int option,
-                description: string option,
-                discountable: bool option,
-                discounts: Choice<AddLines'LinesDiscounts list,string> option,
-                invoiceItem: string option,
-                metadata: Map<string, string> option,
-                period: AddLines'LinesPeriod option,
-                priceData: AddLines'LinesPriceData option,
-                pricing: AddLines'LinesPricing option,
-                quantity: int option,
-                quantityDecimal: string option,
-                taxAmounts: Choice<AddLines'LinesTaxAmounts list,string> option,
-                taxRates: Choice<string list,string> option
-            ) : AddLines'Lines
-            =
-            {
-              Amount = amount
-              Description = description
-              Discountable = discountable
-              Discounts = discounts
-              InvoiceItem = invoiceItem
-              Metadata = metadata
-              Period = period
-              PriceData = priceData
-              Pricing = pricing
-              Quantity = quantity
-              QuantityDecimal = quantityDecimal
-              TaxAmounts = taxAmounts
-              TaxRates = taxRates
-            }
-
     type AddLinesOptions =
         {
             [<Config.Path>]
@@ -5985,20 +3958,6 @@ module InvoicesAddLines =
                 Lines = lines
                 Expand = expand
                 InvoiceMetadata = invoiceMetadata
-            }
-
-    module AddLinesOptions =
-        let create
-            (
-                invoice: string,
-                lines: AddLines'Lines list
-            ) : AddLinesOptions
-            =
-            {
-              Invoice = invoice
-              Lines = lines
-              Expand = None
-              InvoiceMetadata = None
             }
 
     ///<p>Adds multiple line items to an invoice. This is only possible when an invoice is still a draft.</p>
@@ -6032,19 +3991,6 @@ module InvoicesAttachPayment =
                 PaymentRecord = paymentRecord
             }
 
-    module AttachPaymentOptions =
-        let create
-            (
-                invoice: string
-            ) : AttachPaymentOptions
-            =
-            {
-              Invoice = invoice
-              Expand = None
-              PaymentIntent = None
-              PaymentRecord = None
-            }
-
     ///<p>Attaches a PaymentIntent or an Out of Band Payment to the invoice, adding it to the list of <code>payments</code>.</p>
     ///<p>For the PaymentIntent, when the PaymentIntent’s status changes to <code>succeeded</code>, the payment is credited
     ///to the invoice, increasing its <code>amount_paid</code>. When the invoice is fully paid, the
@@ -6076,18 +4022,6 @@ module InvoicesFinalize =
                 Invoice = invoice
                 AutoAdvance = autoAdvance
                 Expand = expand
-            }
-
-    module FinalizeInvoiceOptions =
-        let create
-            (
-                invoice: string
-            ) : FinalizeInvoiceOptions
-            =
-            {
-              Invoice = invoice
-              AutoAdvance = None
-              Expand = None
             }
 
     ///<p>Stripe automatically finalizes drafts before sending and attempting payment on invoices. However, if you’d like to finalize a draft invoice manually, you can do so using this method.</p>
@@ -6125,20 +4059,6 @@ module InvoicesLines =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                invoice: string
-            ) : ListOptions
-            =
-            {
-              Invoice = invoice
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type Update'Discounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -6160,20 +4080,6 @@ module InvoicesLines =
                 PromotionCode = promotionCode
             }
 
-    module Update'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'Period =
         {
             /// The end of the period, which must be greater than or equal to the start. This value is inclusive.
@@ -6189,18 +4095,6 @@ module InvoicesLines =
             {
                 End = end'
                 Start = start
-            }
-
-    module Update'Period =
-        let create
-            (
-                end': DateTime option,
-                start: DateTime option
-            ) : Update'Period
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type Update'PriceDataProductData =
@@ -6234,26 +4128,6 @@ module InvoicesLines =
                 Name = name
                 TaxCode = taxCode
                 UnitLabel = unitLabel
-            }
-
-    module Update'PriceDataProductData =
-        let create
-            (
-                description: string option,
-                images: string list option,
-                metadata: Map<string, string> option,
-                name: string option,
-                taxCode: string option,
-                unitLabel: string option
-            ) : Update'PriceDataProductData
-            =
-            {
-              Description = description
-              Images = images
-              Metadata = metadata
-              Name = name
-              TaxCode = taxCode
-              UnitLabel = unitLabel
             }
 
     type Update'PriceDataTaxBehavior =
@@ -6294,26 +4168,6 @@ module InvoicesLines =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module Update'PriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                productData: Update'PriceDataProductData option,
-                taxBehavior: Update'PriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'PriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              ProductData = productData
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type Update'Pricing =
         {
             /// The ID of the price object.
@@ -6325,16 +4179,6 @@ module InvoicesLines =
         static member New(?price: string) =
             {
                 Price = price
-            }
-
-    module Update'Pricing =
-        let create
-            (
-                price: string option
-            ) : Update'Pricing
-            =
-            {
-              Price = price
             }
 
     type Update'TaxAmountsTaxRateDataJurisdictionLevel =
@@ -6406,32 +4250,6 @@ module InvoicesLines =
                 TaxType = taxType
             }
 
-    module Update'TaxAmountsTaxRateData =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option,
-                description: string option,
-                displayName: string option,
-                inclusive: bool option,
-                jurisdiction: string option,
-                jurisdictionLevel: Update'TaxAmountsTaxRateDataJurisdictionLevel option,
-                percentage: decimal option,
-                state: string option,
-                taxType: Update'TaxAmountsTaxRateDataTaxType option
-            ) : Update'TaxAmountsTaxRateData
-            =
-            {
-              Country = country
-              Description = description
-              DisplayName = displayName
-              Inclusive = inclusive
-              Jurisdiction = jurisdiction
-              JurisdictionLevel = jurisdictionLevel
-              Percentage = percentage
-              State = state
-              TaxType = taxType
-            }
-
     type Update'TaxAmountsTaxabilityReason =
         | CustomerExempt
         | NotCollecting
@@ -6473,22 +4291,6 @@ module InvoicesLines =
                 TaxRateData = taxRateData
                 TaxabilityReason = taxabilityReason
                 TaxableAmount = taxableAmount
-            }
-
-    module Update'TaxAmounts =
-        let create
-            (
-                amount: int option,
-                taxRateData: Update'TaxAmountsTaxRateData option,
-                taxabilityReason: Update'TaxAmountsTaxabilityReason option,
-                taxableAmount: int option
-            ) : Update'TaxAmounts
-            =
-            {
-              Amount = amount
-              TaxRateData = taxRateData
-              TaxabilityReason = taxabilityReason
-              TaxableAmount = taxableAmount
             }
 
     type UpdateOptions =
@@ -6560,31 +4362,6 @@ module InvoicesLines =
                 TaxRates = taxRates
             }
 
-    module UpdateOptions =
-        let create
-            (
-                invoice: string,
-                lineItemId: string
-            ) : UpdateOptions
-            =
-            {
-              Invoice = invoice
-              LineItemId = lineItemId
-              Amount = None
-              Description = None
-              Discountable = None
-              Discounts = None
-              Expand = None
-              Metadata = None
-              Period = None
-              PriceData = None
-              Pricing = None
-              Quantity = None
-              QuantityDecimal = None
-              TaxAmounts = None
-              TaxRates = None
-            }
-
     ///<p>When retrieving an invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -6615,17 +4392,6 @@ module InvoicesMarkUncollectible =
             {
                 Invoice = invoice
                 Expand = expand
-            }
-
-    module MarkUncollectibleOptions =
-        let create
-            (
-                invoice: string
-            ) : MarkUncollectibleOptions
-            =
-            {
-              Invoice = invoice
-              Expand = None
             }
 
     ///<p>Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes.</p>
@@ -6676,23 +4442,6 @@ module InvoicesPay =
                 Source = source
             }
 
-    module PayOptions =
-        let create
-            (
-                invoice: string
-            ) : PayOptions
-            =
-            {
-              Invoice = invoice
-              Expand = None
-              Forgive = None
-              Mandate = None
-              OffSession = None
-              PaidOutOfBand = None
-              PaymentMethod = None
-              Source = None
-            }
-
     ///<p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
     let Pay settings (options: PayOptions) =
         $"/v1/invoices/{options.Invoice}/pay"
@@ -6721,18 +4470,6 @@ module InvoicesRemoveLines =
                 Id = id
             }
 
-    module RemoveLines'Lines =
-        let create
-            (
-                behavior: RemoveLines'LinesBehavior option,
-                id: string option
-            ) : RemoveLines'Lines
-            =
-            {
-              Behavior = behavior
-              Id = id
-            }
-
     type RemoveLinesOptions =
         {
             [<Config.Path>]
@@ -6757,20 +4494,6 @@ module InvoicesRemoveLines =
                 InvoiceMetadata = invoiceMetadata
             }
 
-    module RemoveLinesOptions =
-        let create
-            (
-                invoice: string,
-                lines: RemoveLines'Lines list
-            ) : RemoveLinesOptions
-            =
-            {
-              Invoice = invoice
-              Lines = lines
-              Expand = None
-              InvoiceMetadata = None
-            }
-
     ///<p>Removes multiple line items from an invoice. This is only possible when an invoice is still a draft.</p>
     let RemoveLines settings (options: RemoveLinesOptions) =
         $"/v1/invoices/{options.Invoice}/remove_lines"
@@ -6792,17 +4515,6 @@ module InvoicesSend =
             {
                 Invoice = invoice
                 Expand = expand
-            }
-
-    module SendInvoiceOptions =
-        let create
-            (
-                invoice: string
-            ) : SendInvoiceOptions
-            =
-            {
-              Invoice = invoice
-              Expand = None
             }
 
     ///<p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.</p>
@@ -6834,20 +4546,6 @@ module InvoicesUpdateLines =
                 PromotionCode = promotionCode
             }
 
-    module UpdateLines'LinesDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : UpdateLines'LinesDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type UpdateLines'LinesPeriod =
         {
             /// The end of the period, which must be greater than or equal to the start. This value is inclusive.
@@ -6863,18 +4561,6 @@ module InvoicesUpdateLines =
             {
                 End = end'
                 Start = start
-            }
-
-    module UpdateLines'LinesPeriod =
-        let create
-            (
-                end': DateTime option,
-                start: DateTime option
-            ) : UpdateLines'LinesPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type UpdateLines'LinesPriceDataProductData =
@@ -6908,26 +4594,6 @@ module InvoicesUpdateLines =
                 Name = name
                 TaxCode = taxCode
                 UnitLabel = unitLabel
-            }
-
-    module UpdateLines'LinesPriceDataProductData =
-        let create
-            (
-                description: string option,
-                images: string list option,
-                metadata: Map<string, string> option,
-                name: string option,
-                taxCode: string option,
-                unitLabel: string option
-            ) : UpdateLines'LinesPriceDataProductData
-            =
-            {
-              Description = description
-              Images = images
-              Metadata = metadata
-              Name = name
-              TaxCode = taxCode
-              UnitLabel = unitLabel
             }
 
     type UpdateLines'LinesPriceDataTaxBehavior =
@@ -6968,26 +4634,6 @@ module InvoicesUpdateLines =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module UpdateLines'LinesPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                productData: UpdateLines'LinesPriceDataProductData option,
-                taxBehavior: UpdateLines'LinesPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : UpdateLines'LinesPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              ProductData = productData
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type UpdateLines'LinesPricing =
         {
             /// The ID of the price object.
@@ -6999,16 +4645,6 @@ module InvoicesUpdateLines =
         static member New(?price: string) =
             {
                 Price = price
-            }
-
-    module UpdateLines'LinesPricing =
-        let create
-            (
-                price: string option
-            ) : UpdateLines'LinesPricing
-            =
-            {
-              Price = price
             }
 
     type UpdateLines'LinesTaxAmountsTaxRateDataJurisdictionLevel =
@@ -7080,32 +4716,6 @@ module InvoicesUpdateLines =
                 TaxType = taxType
             }
 
-    module UpdateLines'LinesTaxAmountsTaxRateData =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option,
-                description: string option,
-                displayName: string option,
-                inclusive: bool option,
-                jurisdiction: string option,
-                jurisdictionLevel: UpdateLines'LinesTaxAmountsTaxRateDataJurisdictionLevel option,
-                percentage: decimal option,
-                state: string option,
-                taxType: UpdateLines'LinesTaxAmountsTaxRateDataTaxType option
-            ) : UpdateLines'LinesTaxAmountsTaxRateData
-            =
-            {
-              Country = country
-              Description = description
-              DisplayName = displayName
-              Inclusive = inclusive
-              Jurisdiction = jurisdiction
-              JurisdictionLevel = jurisdictionLevel
-              Percentage = percentage
-              State = state
-              TaxType = taxType
-            }
-
     type UpdateLines'LinesTaxAmountsTaxabilityReason =
         | CustomerExempt
         | NotCollecting
@@ -7147,22 +4757,6 @@ module InvoicesUpdateLines =
                 TaxRateData = taxRateData
                 TaxabilityReason = taxabilityReason
                 TaxableAmount = taxableAmount
-            }
-
-    module UpdateLines'LinesTaxAmounts =
-        let create
-            (
-                amount: int option,
-                taxRateData: UpdateLines'LinesTaxAmountsTaxRateData option,
-                taxabilityReason: UpdateLines'LinesTaxAmountsTaxabilityReason option,
-                taxableAmount: int option
-            ) : UpdateLines'LinesTaxAmounts
-            =
-            {
-              Amount = amount
-              TaxRateData = taxRateData
-              TaxabilityReason = taxabilityReason
-              TaxableAmount = taxableAmount
             }
 
     type UpdateLines'Lines =
@@ -7226,40 +4820,6 @@ module InvoicesUpdateLines =
                 TaxRates = taxRates
             }
 
-    module UpdateLines'Lines =
-        let create
-            (
-                amount: int option,
-                description: string option,
-                discountable: bool option,
-                discounts: Choice<UpdateLines'LinesDiscounts list,string> option,
-                id: string option,
-                metadata: Map<string, string> option,
-                period: UpdateLines'LinesPeriod option,
-                priceData: UpdateLines'LinesPriceData option,
-                pricing: UpdateLines'LinesPricing option,
-                quantity: int option,
-                quantityDecimal: string option,
-                taxAmounts: Choice<UpdateLines'LinesTaxAmounts list,string> option,
-                taxRates: Choice<string list,string> option
-            ) : UpdateLines'Lines
-            =
-            {
-              Amount = amount
-              Description = description
-              Discountable = discountable
-              Discounts = discounts
-              Id = id
-              Metadata = metadata
-              Period = period
-              PriceData = priceData
-              Pricing = pricing
-              Quantity = quantity
-              QuantityDecimal = quantityDecimal
-              TaxAmounts = taxAmounts
-              TaxRates = taxRates
-            }
-
     type UpdateLinesOptions =
         {
             [<Config.Path>]
@@ -7284,20 +4844,6 @@ module InvoicesUpdateLines =
                 InvoiceMetadata = invoiceMetadata
             }
 
-    module UpdateLinesOptions =
-        let create
-            (
-                invoice: string,
-                lines: UpdateLines'Lines list
-            ) : UpdateLinesOptions
-            =
-            {
-              Invoice = invoice
-              Lines = lines
-              Expand = None
-              InvoiceMetadata = None
-            }
-
     ///<p>Updates multiple line items on an invoice. This is only possible when an invoice is still a draft.</p>
     let UpdateLines settings (options: UpdateLinesOptions) =
         $"/v1/invoices/{options.Invoice}/update_lines"
@@ -7319,17 +4865,6 @@ module InvoicesVoid =
             {
                 Invoice = invoice
                 Expand = expand
-            }
-
-    module VoidInvoiceOptions =
-        let create
-            (
-                invoice: string
-            ) : VoidInvoiceOptions
-            =
-            {
-              Invoice = invoice
-              Expand = None
             }
 
     ///<p>Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is similar to <a href="/api/invoices/delete">deletion</a>, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found.</p>

@@ -7,7 +7,7 @@ open Stripe.LoginLink
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Accounts =
 
     type ListOptions =
@@ -39,24 +39,6 @@ module Accounts =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'BusinessProfileAnnualRevenue =
         {
             /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
@@ -76,20 +58,6 @@ module Accounts =
                 Amount = amount
                 Currency = currency
                 FiscalYearEnd = fiscalYearEnd
-            }
-
-    module Create'BusinessProfileAnnualRevenue =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                fiscalYearEnd: string option
-            ) : Create'BusinessProfileAnnualRevenue
-            =
-            {
-              Amount = amount
-              Currency = currency
-              FiscalYearEnd = fiscalYearEnd
             }
 
     type Create'BusinessProfileMinorityOwnedBusinessDesignation =
@@ -114,18 +82,6 @@ module Accounts =
             {
                 Amount = amount
                 Currency = currency
-            }
-
-    module Create'BusinessProfileMonthlyEstimatedRevenue =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option
-            ) : Create'BusinessProfileMonthlyEstimatedRevenue
-            =
-            {
-              Amount = amount
-              Currency = currency
             }
 
     type Create'BusinessProfileSupportAddress =
@@ -159,26 +115,6 @@ module Accounts =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'BusinessProfileSupportAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'BusinessProfileSupportAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'BusinessProfile =
@@ -238,38 +174,6 @@ module Accounts =
                 Url = url
             }
 
-    module Create'BusinessProfile =
-        let create
-            (
-                annualRevenue: Create'BusinessProfileAnnualRevenue option,
-                estimatedWorkerCount: int option,
-                mcc: string option,
-                minorityOwnedBusinessDesignation: Create'BusinessProfileMinorityOwnedBusinessDesignation list option,
-                monthlyEstimatedRevenue: Create'BusinessProfileMonthlyEstimatedRevenue option,
-                name: string option,
-                productDescription: string option,
-                supportAddress: Create'BusinessProfileSupportAddress option,
-                supportEmail: string option,
-                supportPhone: string option,
-                supportUrl: Choice<string,string> option,
-                url: string option
-            ) : Create'BusinessProfile
-            =
-            {
-              AnnualRevenue = annualRevenue
-              EstimatedWorkerCount = estimatedWorkerCount
-              Mcc = mcc
-              MinorityOwnedBusinessDesignation = minorityOwnedBusinessDesignation
-              MonthlyEstimatedRevenue = monthlyEstimatedRevenue
-              Name = name
-              ProductDescription = productDescription
-              SupportAddress = supportAddress
-              SupportEmail = supportEmail
-              SupportPhone = supportPhone
-              SupportUrl = supportUrl
-              Url = url
-            }
-
     type Create'BusinessType =
         | Company
         | GovernmentEntity
@@ -289,16 +193,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesAcssDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesAcssDebitPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesAffirmPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -310,16 +204,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesAffirmPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesAffirmPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesAfterpayClearpayPayments =
@@ -335,16 +219,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesAfterpayClearpayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesAfterpayClearpayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesAlmaPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -356,16 +230,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesAlmaPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesAlmaPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesAmazonPayPayments =
@@ -381,16 +245,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesAmazonPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesAmazonPayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesAppDistribution =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -402,16 +256,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesAppDistribution =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesAppDistribution
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesAuBecsDebitPayments =
@@ -427,16 +271,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesAuBecsDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesAuBecsDebitPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesBacsDebitPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -448,16 +282,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesBacsDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesBacsDebitPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesBancontactPayments =
@@ -473,16 +297,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesBancontactPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesBancontactPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesBankTransferPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -494,16 +308,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesBankTransferPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesBilliePayments =
@@ -519,16 +323,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesBilliePayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesBilliePayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesBlikPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -540,16 +334,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesBlikPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesBlikPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesBoletoPayments =
@@ -565,16 +349,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesBoletoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesBoletoPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesCardIssuing =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -586,16 +360,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesCardIssuing =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesCardIssuing
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesCardPayments =
@@ -611,16 +375,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesCardPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesCardPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesCartesBancairesPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -632,16 +386,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesCartesBancairesPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesCartesBancairesPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesCashappPayments =
@@ -657,16 +401,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesCashappPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesCashappPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesCryptoPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -678,16 +412,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesCryptoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesCryptoPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesEpsPayments =
@@ -703,16 +427,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesEpsPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesEpsPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesFpxPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -724,16 +438,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesFpxPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesFpxPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesGbBankTransferPayments =
@@ -749,16 +453,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesGbBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesGbBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesGiropayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -770,16 +464,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesGiropayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesGiropayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesGrabpayPayments =
@@ -795,16 +479,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesGrabpayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesGrabpayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesIdealPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -816,16 +490,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesIdealPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesIdealPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesIndiaInternationalPayments =
@@ -841,16 +505,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesIndiaInternationalPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesIndiaInternationalPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesJcbPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -862,16 +516,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesJcbPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesJcbPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesJpBankTransferPayments =
@@ -887,16 +531,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesJpBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesJpBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesKakaoPayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -908,16 +542,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesKakaoPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesKakaoPayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesKlarnaPayments =
@@ -933,16 +557,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesKlarnaPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesKlarnaPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesKonbiniPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -954,16 +568,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesKonbiniPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesKonbiniPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesKrCardPayments =
@@ -979,16 +583,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesKrCardPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesKrCardPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesLegacyPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1000,16 +594,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesLegacyPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesLegacyPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesLinkPayments =
@@ -1025,16 +609,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesLinkPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesLinkPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesMbWayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1046,16 +620,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesMbWayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesMbWayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesMobilepayPayments =
@@ -1071,16 +635,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesMobilepayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesMobilepayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesMultibancoPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1092,16 +646,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesMultibancoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesMultibancoPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesMxBankTransferPayments =
@@ -1117,16 +661,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesMxBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesMxBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesNaverPayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1138,16 +672,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesNaverPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesNaverPayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesNzBankAccountBecsDebitPayments =
@@ -1163,16 +687,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesNzBankAccountBecsDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesNzBankAccountBecsDebitPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesOxxoPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1184,16 +698,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesOxxoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesOxxoPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesP24Payments =
@@ -1209,16 +713,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesP24Payments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesP24Payments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesPayByBankPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1230,16 +724,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesPayByBankPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesPayByBankPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesPaycoPayments =
@@ -1255,16 +739,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesPaycoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesPaycoPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesPaynowPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1276,16 +750,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesPaynowPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesPaynowPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesPaytoPayments =
@@ -1301,16 +765,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesPaytoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesPaytoPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesPixPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1322,16 +776,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesPixPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesPixPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesPromptpayPayments =
@@ -1347,16 +791,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesPromptpayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesPromptpayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesRevolutPayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1368,16 +802,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesRevolutPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesRevolutPayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesSamsungPayPayments =
@@ -1393,16 +817,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesSamsungPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesSamsungPayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesSatispayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1414,16 +828,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesSatispayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesSatispayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesSepaBankTransferPayments =
@@ -1439,16 +843,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesSepaBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesSepaBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesSepaDebitPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1460,16 +854,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesSepaDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesSepaDebitPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesSofortPayments =
@@ -1485,16 +869,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesSofortPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesSofortPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesSunbitPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1506,16 +880,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesSunbitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesSunbitPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesSwishPayments =
@@ -1531,16 +895,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesSwishPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesSwishPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesTaxReportingUs1099K =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1552,16 +906,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesTaxReportingUs1099K =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesTaxReportingUs1099K
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesTaxReportingUs1099Misc =
@@ -1577,16 +921,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesTaxReportingUs1099Misc =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesTaxReportingUs1099Misc
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesTransfers =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1598,16 +932,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesTransfers =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesTransfers
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesTreasury =
@@ -1623,16 +947,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesTreasury =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesTreasury
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesTwintPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1644,16 +958,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesTwintPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesTwintPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesUpiPayments =
@@ -1669,16 +973,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesUpiPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesUpiPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesUsBankAccountAchPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1690,16 +984,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesUsBankAccountAchPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesUsBankAccountAchPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'CapabilitiesUsBankTransferPayments =
@@ -1715,16 +999,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Create'CapabilitiesUsBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesUsBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Create'CapabilitiesZipPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1736,16 +1010,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'CapabilitiesZipPayments =
-        let create
-            (
-                requested: bool option
-            ) : Create'CapabilitiesZipPayments
-            =
-            {
-              Requested = requested
             }
 
     type Create'Capabilities =
@@ -2013,142 +1277,6 @@ module Accounts =
                 ZipPayments = zipPayments
             }
 
-    module Create'Capabilities =
-        let create
-            (
-                acssDebitPayments: Create'CapabilitiesAcssDebitPayments option,
-                affirmPayments: Create'CapabilitiesAffirmPayments option,
-                afterpayClearpayPayments: Create'CapabilitiesAfterpayClearpayPayments option,
-                almaPayments: Create'CapabilitiesAlmaPayments option,
-                amazonPayPayments: Create'CapabilitiesAmazonPayPayments option,
-                appDistribution: Create'CapabilitiesAppDistribution option,
-                auBecsDebitPayments: Create'CapabilitiesAuBecsDebitPayments option,
-                bacsDebitPayments: Create'CapabilitiesBacsDebitPayments option,
-                bancontactPayments: Create'CapabilitiesBancontactPayments option,
-                bankTransferPayments: Create'CapabilitiesBankTransferPayments option,
-                billiePayments: Create'CapabilitiesBilliePayments option,
-                blikPayments: Create'CapabilitiesBlikPayments option,
-                boletoPayments: Create'CapabilitiesBoletoPayments option,
-                cardIssuing: Create'CapabilitiesCardIssuing option,
-                cardPayments: Create'CapabilitiesCardPayments option,
-                cartesBancairesPayments: Create'CapabilitiesCartesBancairesPayments option,
-                cashappPayments: Create'CapabilitiesCashappPayments option,
-                cryptoPayments: Create'CapabilitiesCryptoPayments option,
-                epsPayments: Create'CapabilitiesEpsPayments option,
-                fpxPayments: Create'CapabilitiesFpxPayments option,
-                gbBankTransferPayments: Create'CapabilitiesGbBankTransferPayments option,
-                giropayPayments: Create'CapabilitiesGiropayPayments option,
-                grabpayPayments: Create'CapabilitiesGrabpayPayments option,
-                idealPayments: Create'CapabilitiesIdealPayments option,
-                indiaInternationalPayments: Create'CapabilitiesIndiaInternationalPayments option,
-                jcbPayments: Create'CapabilitiesJcbPayments option,
-                jpBankTransferPayments: Create'CapabilitiesJpBankTransferPayments option,
-                kakaoPayPayments: Create'CapabilitiesKakaoPayPayments option,
-                klarnaPayments: Create'CapabilitiesKlarnaPayments option,
-                konbiniPayments: Create'CapabilitiesKonbiniPayments option,
-                krCardPayments: Create'CapabilitiesKrCardPayments option,
-                legacyPayments: Create'CapabilitiesLegacyPayments option,
-                linkPayments: Create'CapabilitiesLinkPayments option,
-                mbWayPayments: Create'CapabilitiesMbWayPayments option,
-                mobilepayPayments: Create'CapabilitiesMobilepayPayments option,
-                multibancoPayments: Create'CapabilitiesMultibancoPayments option,
-                mxBankTransferPayments: Create'CapabilitiesMxBankTransferPayments option,
-                naverPayPayments: Create'CapabilitiesNaverPayPayments option,
-                nzBankAccountBecsDebitPayments: Create'CapabilitiesNzBankAccountBecsDebitPayments option,
-                oxxoPayments: Create'CapabilitiesOxxoPayments option,
-                p24Payments: Create'CapabilitiesP24Payments option,
-                payByBankPayments: Create'CapabilitiesPayByBankPayments option,
-                paycoPayments: Create'CapabilitiesPaycoPayments option,
-                paynowPayments: Create'CapabilitiesPaynowPayments option,
-                paytoPayments: Create'CapabilitiesPaytoPayments option,
-                pixPayments: Create'CapabilitiesPixPayments option,
-                promptpayPayments: Create'CapabilitiesPromptpayPayments option,
-                revolutPayPayments: Create'CapabilitiesRevolutPayPayments option,
-                samsungPayPayments: Create'CapabilitiesSamsungPayPayments option,
-                satispayPayments: Create'CapabilitiesSatispayPayments option,
-                sepaBankTransferPayments: Create'CapabilitiesSepaBankTransferPayments option,
-                sepaDebitPayments: Create'CapabilitiesSepaDebitPayments option,
-                sofortPayments: Create'CapabilitiesSofortPayments option,
-                sunbitPayments: Create'CapabilitiesSunbitPayments option,
-                swishPayments: Create'CapabilitiesSwishPayments option,
-                taxReportingUs1099K: Create'CapabilitiesTaxReportingUs1099K option,
-                taxReportingUs1099Misc: Create'CapabilitiesTaxReportingUs1099Misc option,
-                transfers: Create'CapabilitiesTransfers option,
-                treasury: Create'CapabilitiesTreasury option,
-                twintPayments: Create'CapabilitiesTwintPayments option,
-                upiPayments: Create'CapabilitiesUpiPayments option,
-                usBankAccountAchPayments: Create'CapabilitiesUsBankAccountAchPayments option,
-                usBankTransferPayments: Create'CapabilitiesUsBankTransferPayments option,
-                zipPayments: Create'CapabilitiesZipPayments option
-            ) : Create'Capabilities
-            =
-            {
-              AcssDebitPayments = acssDebitPayments
-              AffirmPayments = affirmPayments
-              AfterpayClearpayPayments = afterpayClearpayPayments
-              AlmaPayments = almaPayments
-              AmazonPayPayments = amazonPayPayments
-              AppDistribution = appDistribution
-              AuBecsDebitPayments = auBecsDebitPayments
-              BacsDebitPayments = bacsDebitPayments
-              BancontactPayments = bancontactPayments
-              BankTransferPayments = bankTransferPayments
-              BilliePayments = billiePayments
-              BlikPayments = blikPayments
-              BoletoPayments = boletoPayments
-              CardIssuing = cardIssuing
-              CardPayments = cardPayments
-              CartesBancairesPayments = cartesBancairesPayments
-              CashappPayments = cashappPayments
-              CryptoPayments = cryptoPayments
-              EpsPayments = epsPayments
-              FpxPayments = fpxPayments
-              GbBankTransferPayments = gbBankTransferPayments
-              GiropayPayments = giropayPayments
-              GrabpayPayments = grabpayPayments
-              IdealPayments = idealPayments
-              IndiaInternationalPayments = indiaInternationalPayments
-              JcbPayments = jcbPayments
-              JpBankTransferPayments = jpBankTransferPayments
-              KakaoPayPayments = kakaoPayPayments
-              KlarnaPayments = klarnaPayments
-              KonbiniPayments = konbiniPayments
-              KrCardPayments = krCardPayments
-              LegacyPayments = legacyPayments
-              LinkPayments = linkPayments
-              MbWayPayments = mbWayPayments
-              MobilepayPayments = mobilepayPayments
-              MultibancoPayments = multibancoPayments
-              MxBankTransferPayments = mxBankTransferPayments
-              NaverPayPayments = naverPayPayments
-              NzBankAccountBecsDebitPayments = nzBankAccountBecsDebitPayments
-              OxxoPayments = oxxoPayments
-              P24Payments = p24Payments
-              PayByBankPayments = payByBankPayments
-              PaycoPayments = paycoPayments
-              PaynowPayments = paynowPayments
-              PaytoPayments = paytoPayments
-              PixPayments = pixPayments
-              PromptpayPayments = promptpayPayments
-              RevolutPayPayments = revolutPayPayments
-              SamsungPayPayments = samsungPayPayments
-              SatispayPayments = satispayPayments
-              SepaBankTransferPayments = sepaBankTransferPayments
-              SepaDebitPayments = sepaDebitPayments
-              SofortPayments = sofortPayments
-              SunbitPayments = sunbitPayments
-              SwishPayments = swishPayments
-              TaxReportingUs1099K = taxReportingUs1099K
-              TaxReportingUs1099Misc = taxReportingUs1099Misc
-              Transfers = transfers
-              Treasury = treasury
-              TwintPayments = twintPayments
-              UpiPayments = upiPayments
-              UsBankAccountAchPayments = usBankAccountAchPayments
-              UsBankTransferPayments = usBankTransferPayments
-              ZipPayments = zipPayments
-            }
-
     type Create'CompanyAddress =
         {
             /// City, district, suburb, town, or village.
@@ -2180,26 +1308,6 @@ module Accounts =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'CompanyAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'CompanyAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'CompanyAddressKana =
@@ -2239,28 +1347,6 @@ module Accounts =
                 Town = town
             }
 
-    module Create'CompanyAddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'CompanyAddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'CompanyAddressKanji =
         {
             /// City or ward.
@@ -2298,28 +1384,6 @@ module Accounts =
                 Town = town
             }
 
-    module Create'CompanyAddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'CompanyAddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'CompanyDirectorshipDeclaration =
         {
             /// The Unix timestamp marking when the directorship declaration attestation was made.
@@ -2341,20 +1405,6 @@ module Accounts =
                 UserAgent = userAgent
             }
 
-    module Create'CompanyDirectorshipDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Create'CompanyDirectorshipDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Create'CompanyOwnershipDeclaration =
         {
             /// The Unix timestamp marking when the beneficial owner attestation was made.
@@ -2374,20 +1424,6 @@ module Accounts =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Create'CompanyOwnershipDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Create'CompanyOwnershipDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Create'CompanyOwnershipExemptionReason =
@@ -2415,20 +1451,6 @@ module Accounts =
                 Year = year
             }
 
-    module Create'CompanyRegistrationDateRegistrationDateSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'CompanyRegistrationDateRegistrationDateSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Create'CompanyRepresentativeDeclaration =
         {
             /// The Unix timestamp marking when the representative declaration attestation was made.
@@ -2448,20 +1470,6 @@ module Accounts =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Create'CompanyRepresentativeDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Create'CompanyRepresentativeDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Create'CompanyStructure =
@@ -2506,18 +1514,6 @@ module Accounts =
                 Front = front
             }
 
-    module Create'CompanyVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'CompanyVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Create'CompanyVerification =
         {
             /// A document verifying the business.
@@ -2529,16 +1525,6 @@ module Accounts =
         static member New(?document: Create'CompanyVerificationDocument) =
             {
                 Document = document
-            }
-
-    module Create'CompanyVerification =
-        let create
-            (
-                document: Create'CompanyVerificationDocument option
-            ) : Create'CompanyVerification
-            =
-            {
-              Document = document
             }
 
     type Create'Company =
@@ -2642,60 +1628,6 @@ module Accounts =
                 Verification = verification
             }
 
-    module Create'Company =
-        let create
-            (
-                address: Create'CompanyAddress option,
-                addressKana: Create'CompanyAddressKana option,
-                addressKanji: Create'CompanyAddressKanji option,
-                directorsProvided: bool option,
-                directorshipDeclaration: Create'CompanyDirectorshipDeclaration option,
-                executivesProvided: bool option,
-                exportLicenseId: string option,
-                exportPurposeCode: string option,
-                name: string option,
-                nameKana: string option,
-                nameKanji: string option,
-                ownersProvided: bool option,
-                ownershipDeclaration: Create'CompanyOwnershipDeclaration option,
-                ownershipExemptionReason: Create'CompanyOwnershipExemptionReason option,
-                phone: string option,
-                registrationDate: Choice<Create'CompanyRegistrationDateRegistrationDateSpecs,string> option,
-                registrationNumber: string option,
-                representativeDeclaration: Create'CompanyRepresentativeDeclaration option,
-                structure: Create'CompanyStructure option,
-                taxId: string option,
-                taxIdRegistrar: string option,
-                vatId: string option,
-                verification: Create'CompanyVerification option
-            ) : Create'Company
-            =
-            {
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              DirectorsProvided = directorsProvided
-              DirectorshipDeclaration = directorshipDeclaration
-              ExecutivesProvided = executivesProvided
-              ExportLicenseId = exportLicenseId
-              ExportPurposeCode = exportPurposeCode
-              Name = name
-              NameKana = nameKana
-              NameKanji = nameKanji
-              OwnersProvided = ownersProvided
-              OwnershipDeclaration = ownershipDeclaration
-              OwnershipExemptionReason = ownershipExemptionReason
-              Phone = phone
-              RegistrationDate = registrationDate
-              RegistrationNumber = registrationNumber
-              RepresentativeDeclaration = representativeDeclaration
-              Structure = structure
-              TaxId = taxId
-              TaxIdRegistrar = taxIdRegistrar
-              VatId = vatId
-              Verification = verification
-            }
-
     type Create'ControllerFeesPayer =
         | Account
         | Application
@@ -2713,16 +1645,6 @@ module Accounts =
                 Payer = payer
             }
 
-    module Create'ControllerFees =
-        let create
-            (
-                payer: Create'ControllerFeesPayer option
-            ) : Create'ControllerFees
-            =
-            {
-              Payer = payer
-            }
-
     type Create'ControllerLossesPayments =
         | Application
         | Stripe
@@ -2738,16 +1660,6 @@ module Accounts =
         static member New(?payments: Create'ControllerLossesPayments) =
             {
                 Payments = payments
-            }
-
-    module Create'ControllerLosses =
-        let create
-            (
-                payments: Create'ControllerLossesPayments option
-            ) : Create'ControllerLosses
-            =
-            {
-              Payments = payments
             }
 
     type Create'ControllerRequirementCollection =
@@ -2770,16 +1682,6 @@ module Accounts =
         static member New(?type': Create'ControllerStripeDashboardType) =
             {
                 Type = type'
-            }
-
-    module Create'ControllerStripeDashboard =
-        let create
-            (
-                type': Create'ControllerStripeDashboardType option
-            ) : Create'ControllerStripeDashboard
-            =
-            {
-              Type = type'
             }
 
     type Create'Controller =
@@ -2807,22 +1709,6 @@ module Accounts =
                 StripeDashboard = stripeDashboard
             }
 
-    module Create'Controller =
-        let create
-            (
-                fees: Create'ControllerFees option,
-                losses: Create'ControllerLosses option,
-                requirementCollection: Create'ControllerRequirementCollection option,
-                stripeDashboard: Create'ControllerStripeDashboard option
-            ) : Create'Controller
-            =
-            {
-              Fees = fees
-              Losses = losses
-              RequirementCollection = requirementCollection
-              StripeDashboard = stripeDashboard
-            }
-
     type Create'DocumentsBankAccountOwnershipVerification =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -2834,16 +1720,6 @@ module Accounts =
         static member New(?files: string list) =
             {
                 Files = files
-            }
-
-    module Create'DocumentsBankAccountOwnershipVerification =
-        let create
-            (
-                files: string list option
-            ) : Create'DocumentsBankAccountOwnershipVerification
-            =
-            {
-              Files = files
             }
 
     type Create'DocumentsCompanyLicense =
@@ -2859,16 +1735,6 @@ module Accounts =
                 Files = files
             }
 
-    module Create'DocumentsCompanyLicense =
-        let create
-            (
-                files: string list option
-            ) : Create'DocumentsCompanyLicense
-            =
-            {
-              Files = files
-            }
-
     type Create'DocumentsCompanyMemorandumOfAssociation =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -2880,16 +1746,6 @@ module Accounts =
         static member New(?files: string list) =
             {
                 Files = files
-            }
-
-    module Create'DocumentsCompanyMemorandumOfAssociation =
-        let create
-            (
-                files: string list option
-            ) : Create'DocumentsCompanyMemorandumOfAssociation
-            =
-            {
-              Files = files
             }
 
     type Create'DocumentsCompanyMinisterialDecree =
@@ -2905,16 +1761,6 @@ module Accounts =
                 Files = files
             }
 
-    module Create'DocumentsCompanyMinisterialDecree =
-        let create
-            (
-                files: string list option
-            ) : Create'DocumentsCompanyMinisterialDecree
-            =
-            {
-              Files = files
-            }
-
     type Create'DocumentsCompanyRegistrationVerification =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -2926,16 +1772,6 @@ module Accounts =
         static member New(?files: string list) =
             {
                 Files = files
-            }
-
-    module Create'DocumentsCompanyRegistrationVerification =
-        let create
-            (
-                files: string list option
-            ) : Create'DocumentsCompanyRegistrationVerification
-            =
-            {
-              Files = files
             }
 
     type Create'DocumentsCompanyTaxIdVerification =
@@ -2951,16 +1787,6 @@ module Accounts =
                 Files = files
             }
 
-    module Create'DocumentsCompanyTaxIdVerification =
-        let create
-            (
-                files: string list option
-            ) : Create'DocumentsCompanyTaxIdVerification
-            =
-            {
-              Files = files
-            }
-
     type Create'DocumentsProofOfAddress =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -2974,16 +1800,6 @@ module Accounts =
                 Files = files
             }
 
-    module Create'DocumentsProofOfAddress =
-        let create
-            (
-                files: string list option
-            ) : Create'DocumentsProofOfAddress
-            =
-            {
-              Files = files
-            }
-
     type Create'DocumentsProofOfRegistrationSigner =
         {
             /// The token of the person signing the document, if applicable.
@@ -2995,16 +1811,6 @@ module Accounts =
         static member New(?person: string) =
             {
                 Person = person
-            }
-
-    module Create'DocumentsProofOfRegistrationSigner =
-        let create
-            (
-                person: string option
-            ) : Create'DocumentsProofOfRegistrationSigner
-            =
-            {
-              Person = person
             }
 
     type Create'DocumentsProofOfRegistration =
@@ -3024,18 +1830,6 @@ module Accounts =
                 Signer = signer
             }
 
-    module Create'DocumentsProofOfRegistration =
-        let create
-            (
-                files: string list option,
-                signer: Create'DocumentsProofOfRegistrationSigner option
-            ) : Create'DocumentsProofOfRegistration
-            =
-            {
-              Files = files
-              Signer = signer
-            }
-
     type Create'DocumentsProofOfUltimateBeneficialOwnershipSigner =
         {
             /// The token of the person signing the document, if applicable.
@@ -3047,16 +1841,6 @@ module Accounts =
         static member New(?person: string) =
             {
                 Person = person
-            }
-
-    module Create'DocumentsProofOfUltimateBeneficialOwnershipSigner =
-        let create
-            (
-                person: string option
-            ) : Create'DocumentsProofOfUltimateBeneficialOwnershipSigner
-            =
-            {
-              Person = person
             }
 
     type Create'DocumentsProofOfUltimateBeneficialOwnership =
@@ -3074,18 +1858,6 @@ module Accounts =
             {
                 Files = files
                 Signer = signer
-            }
-
-    module Create'DocumentsProofOfUltimateBeneficialOwnership =
-        let create
-            (
-                files: string list option,
-                signer: Create'DocumentsProofOfUltimateBeneficialOwnershipSigner option
-            ) : Create'DocumentsProofOfUltimateBeneficialOwnership
-            =
-            {
-              Files = files
-              Signer = signer
             }
 
     type Create'Documents =
@@ -3133,32 +1905,6 @@ module Accounts =
                 ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
             }
 
-    module Create'Documents =
-        let create
-            (
-                bankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification option,
-                companyLicense: Create'DocumentsCompanyLicense option,
-                companyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation option,
-                companyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree option,
-                companyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification option,
-                companyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification option,
-                proofOfAddress: Create'DocumentsProofOfAddress option,
-                proofOfRegistration: Create'DocumentsProofOfRegistration option,
-                proofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership option
-            ) : Create'Documents
-            =
-            {
-              BankAccountOwnershipVerification = bankAccountOwnershipVerification
-              CompanyLicense = companyLicense
-              CompanyMemorandumOfAssociation = companyMemorandumOfAssociation
-              CompanyMinisterialDecree = companyMinisterialDecree
-              CompanyRegistrationVerification = companyRegistrationVerification
-              CompanyTaxIdVerification = companyTaxIdVerification
-              ProofOfAddress = proofOfAddress
-              ProofOfRegistration = proofOfRegistration
-              ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
-            }
-
     type Create'Groups =
         {
             /// The group the account is in to determine their payments pricing, and null if the account is on customized pricing. [See the Platform pricing tool documentation](https://docs.stripe.com/connect/platform-pricing-tools) for details.
@@ -3170,16 +1916,6 @@ module Accounts =
         static member New(?paymentsPricing: Choice<string,string>) =
             {
                 PaymentsPricing = paymentsPricing
-            }
-
-    module Create'Groups =
-        let create
-            (
-                paymentsPricing: Choice<string,string> option
-            ) : Create'Groups
-            =
-            {
-              PaymentsPricing = paymentsPricing
             }
 
     type Create'IndividualAddress =
@@ -3213,26 +1949,6 @@ module Accounts =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'IndividualAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'IndividualAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'IndividualAddressKana =
@@ -3272,28 +1988,6 @@ module Accounts =
                 Town = town
             }
 
-    module Create'IndividualAddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'IndividualAddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'IndividualAddressKanji =
         {
             /// City or ward.
@@ -3331,28 +2025,6 @@ module Accounts =
                 Town = town
             }
 
-    module Create'IndividualAddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'IndividualAddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'IndividualDobDateOfBirthSpecs =
         {
             /// The day of birth, between 1 and 31.
@@ -3372,20 +2044,6 @@ module Accounts =
                 Day = day
                 Month = month
                 Year = year
-            }
-
-    module Create'IndividualDobDateOfBirthSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'IndividualDobDateOfBirthSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
             }
 
     type Create'IndividualPoliticalExposure =
@@ -3425,26 +2083,6 @@ module Accounts =
                 State = state
             }
 
-    module Create'IndividualRegisteredAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'IndividualRegisteredAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'IndividualRelationship =
         {
             /// Whether the person is a director of the account's legal entity. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
@@ -3474,24 +2112,6 @@ module Accounts =
                 Title = title
             }
 
-    module Create'IndividualRelationship =
-        let create
-            (
-                director: bool option,
-                executive: bool option,
-                owner: bool option,
-                percentOwnership: Choice<decimal,string> option,
-                title: string option
-            ) : Create'IndividualRelationship
-            =
-            {
-              Director = director
-              Executive = executive
-              Owner = owner
-              PercentOwnership = percentOwnership
-              Title = title
-            }
-
     type Create'IndividualVerificationAdditionalDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`. The uploaded file needs to be a color image (smaller than 8,000px by 8,000px), in JPG, PNG, or PDF format, and less than 10 MB in size.
@@ -3507,18 +2127,6 @@ module Accounts =
             {
                 Back = back
                 Front = front
-            }
-
-    module Create'IndividualVerificationAdditionalDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'IndividualVerificationAdditionalDocument
-            =
-            {
-              Back = back
-              Front = front
             }
 
     type Create'IndividualVerificationDocument =
@@ -3538,18 +2146,6 @@ module Accounts =
                 Front = front
             }
 
-    module Create'IndividualVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'IndividualVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Create'IndividualVerification =
         {
             /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
@@ -3565,18 +2161,6 @@ module Accounts =
             {
                 AdditionalDocument = additionalDocument
                 Document = document
-            }
-
-    module Create'IndividualVerification =
-        let create
-            (
-                additionalDocument: Create'IndividualVerificationAdditionalDocument option,
-                document: Create'IndividualVerificationDocument option
-            ) : Create'IndividualVerification
-            =
-            {
-              AdditionalDocument = additionalDocument
-              Document = document
             }
 
     type Create'Individual =
@@ -3680,60 +2264,6 @@ module Accounts =
                 Verification = verification
             }
 
-    module Create'Individual =
-        let create
-            (
-                address: Create'IndividualAddress option,
-                addressKana: Create'IndividualAddressKana option,
-                addressKanji: Create'IndividualAddressKanji option,
-                dob: Choice<Create'IndividualDobDateOfBirthSpecs,string> option,
-                email: string option,
-                firstName: string option,
-                firstNameKana: string option,
-                firstNameKanji: string option,
-                fullNameAliases: Choice<string list,string> option,
-                gender: string option,
-                idNumber: string option,
-                idNumberSecondary: string option,
-                lastName: string option,
-                lastNameKana: string option,
-                lastNameKanji: string option,
-                maidenName: string option,
-                metadata: Map<string, string> option,
-                phone: string option,
-                politicalExposure: Create'IndividualPoliticalExposure option,
-                registeredAddress: Create'IndividualRegisteredAddress option,
-                relationship: Create'IndividualRelationship option,
-                ssnLast4: string option,
-                verification: Create'IndividualVerification option
-            ) : Create'Individual
-            =
-            {
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              Dob = dob
-              Email = email
-              FirstName = firstName
-              FirstNameKana = firstNameKana
-              FirstNameKanji = firstNameKanji
-              FullNameAliases = fullNameAliases
-              Gender = gender
-              IdNumber = idNumber
-              IdNumberSecondary = idNumberSecondary
-              LastName = lastName
-              LastNameKana = lastNameKana
-              LastNameKanji = lastNameKanji
-              MaidenName = maidenName
-              Metadata = metadata
-              Phone = phone
-              PoliticalExposure = politicalExposure
-              RegisteredAddress = registeredAddress
-              Relationship = relationship
-              SsnLast4 = ssnLast4
-              Verification = verification
-            }
-
     type Create'SettingsBacsDebitPayments =
         {
             /// The Bacs Direct Debit Display Name for this account. For payments made with Bacs Direct Debit, this name appears on the mandate as the statement descriptor. Mobile banking apps display it as the name of the business. To use custom branding, set the Bacs Direct Debit Display Name during or right after creation. Custom branding incurs an additional monthly fee for the platform. If you don't set the display name before requesting Bacs capability, it's automatically set as "Stripe" and the account is onboarded to Stripe branding, which is free.
@@ -3745,16 +2275,6 @@ module Accounts =
         static member New(?displayName: string) =
             {
                 DisplayName = displayName
-            }
-
-    module Create'SettingsBacsDebitPayments =
-        let create
-            (
-                displayName: string option
-            ) : Create'SettingsBacsDebitPayments
-            =
-            {
-              DisplayName = displayName
             }
 
     type Create'SettingsBranding =
@@ -3782,22 +2302,6 @@ module Accounts =
                 SecondaryColor = secondaryColor
             }
 
-    module Create'SettingsBranding =
-        let create
-            (
-                icon: string option,
-                logo: string option,
-                primaryColor: string option,
-                secondaryColor: string option
-            ) : Create'SettingsBranding
-            =
-            {
-              Icon = icon
-              Logo = logo
-              PrimaryColor = primaryColor
-              SecondaryColor = secondaryColor
-            }
-
     type Create'SettingsCardIssuingTosAcceptance =
         {
             /// The Unix timestamp marking when the account representative accepted the service agreement.
@@ -3819,20 +2323,6 @@ module Accounts =
                 UserAgent = userAgent
             }
 
-    module Create'SettingsCardIssuingTosAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Create'SettingsCardIssuingTosAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Create'SettingsCardIssuing =
         {
             /// Details on the account's acceptance of the [Stripe Issuing Terms and Disclosures](/issuing/connect/tos_acceptance).
@@ -3844,16 +2334,6 @@ module Accounts =
         static member New(?tosAcceptance: Create'SettingsCardIssuingTosAcceptance) =
             {
                 TosAcceptance = tosAcceptance
-            }
-
-    module Create'SettingsCardIssuing =
-        let create
-            (
-                tosAcceptance: Create'SettingsCardIssuingTosAcceptance option
-            ) : Create'SettingsCardIssuing
-            =
-            {
-              TosAcceptance = tosAcceptance
             }
 
     type Create'SettingsCardPaymentsDeclineOn =
@@ -3871,18 +2351,6 @@ module Accounts =
             {
                 AvsFailure = avsFailure
                 CvcFailure = cvcFailure
-            }
-
-    module Create'SettingsCardPaymentsDeclineOn =
-        let create
-            (
-                avsFailure: bool option,
-                cvcFailure: bool option
-            ) : Create'SettingsCardPaymentsDeclineOn
-            =
-            {
-              AvsFailure = avsFailure
-              CvcFailure = cvcFailure
             }
 
     type Create'SettingsCardPayments =
@@ -3910,22 +2378,6 @@ module Accounts =
                 StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
             }
 
-    module Create'SettingsCardPayments =
-        let create
-            (
-                declineOn: Create'SettingsCardPaymentsDeclineOn option,
-                statementDescriptorPrefix: string option,
-                statementDescriptorPrefixKana: Choice<string,string> option,
-                statementDescriptorPrefixKanji: Choice<string,string> option
-            ) : Create'SettingsCardPayments
-            =
-            {
-              DeclineOn = declineOn
-              StatementDescriptorPrefix = statementDescriptorPrefix
-              StatementDescriptorPrefixKana = statementDescriptorPrefixKana
-              StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
-            }
-
     type Create'SettingsInvoicesHostedPaymentMethodSave =
         | Always
         | Never
@@ -3942,16 +2394,6 @@ module Accounts =
         static member New(?hostedPaymentMethodSave: Create'SettingsInvoicesHostedPaymentMethodSave) =
             {
                 HostedPaymentMethodSave = hostedPaymentMethodSave
-            }
-
-    module Create'SettingsInvoices =
-        let create
-            (
-                hostedPaymentMethodSave: Create'SettingsInvoicesHostedPaymentMethodSave option
-            ) : Create'SettingsInvoices
-            =
-            {
-              HostedPaymentMethodSave = hostedPaymentMethodSave
             }
 
     type Create'SettingsPayments =
@@ -3973,20 +2415,6 @@ module Accounts =
                 StatementDescriptor = statementDescriptor
                 StatementDescriptorKana = statementDescriptorKana
                 StatementDescriptorKanji = statementDescriptorKanji
-            }
-
-    module Create'SettingsPayments =
-        let create
-            (
-                statementDescriptor: string option,
-                statementDescriptorKana: string option,
-                statementDescriptorKanji: string option
-            ) : Create'SettingsPayments
-            =
-            {
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorKana = statementDescriptorKana
-              StatementDescriptorKanji = statementDescriptorKanji
             }
 
     type Create'SettingsPayoutsScheduleDelayDays = | Minimum
@@ -4046,26 +2474,6 @@ module Accounts =
                 WeeklyPayoutDays = weeklyPayoutDays
             }
 
-    module Create'SettingsPayoutsSchedule =
-        let create
-            (
-                delayDays: Choice<Create'SettingsPayoutsScheduleDelayDays,int> option,
-                interval: Create'SettingsPayoutsScheduleInterval option,
-                monthlyAnchor: int option,
-                monthlyPayoutDays: int list option,
-                weeklyAnchor: Create'SettingsPayoutsScheduleWeeklyAnchor option,
-                weeklyPayoutDays: Create'SettingsPayoutsScheduleWeeklyPayoutDays list option
-            ) : Create'SettingsPayoutsSchedule
-            =
-            {
-              DelayDays = delayDays
-              Interval = interval
-              MonthlyAnchor = monthlyAnchor
-              MonthlyPayoutDays = monthlyPayoutDays
-              WeeklyAnchor = weeklyAnchor
-              WeeklyPayoutDays = weeklyPayoutDays
-            }
-
     type Create'SettingsPayouts =
         {
             /// A Boolean indicating whether Stripe should try to reclaim negative balances from an attached bank account. For details, see [Understanding Connect Account Balances](/connect/account-balances).
@@ -4085,20 +2493,6 @@ module Accounts =
                 DebitNegativeBalances = debitNegativeBalances
                 Schedule = schedule
                 StatementDescriptor = statementDescriptor
-            }
-
-    module Create'SettingsPayouts =
-        let create
-            (
-                debitNegativeBalances: bool option,
-                schedule: Create'SettingsPayoutsSchedule option,
-                statementDescriptor: string option
-            ) : Create'SettingsPayouts
-            =
-            {
-              DebitNegativeBalances = debitNegativeBalances
-              Schedule = schedule
-              StatementDescriptor = statementDescriptor
             }
 
     type Create'SettingsTreasuryTosAcceptance =
@@ -4122,20 +2516,6 @@ module Accounts =
                 UserAgent = userAgent
             }
 
-    module Create'SettingsTreasuryTosAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Create'SettingsTreasuryTosAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Create'SettingsTreasury =
         {
             /// Details on the account's acceptance of the Stripe Treasury Services Agreement.
@@ -4147,16 +2527,6 @@ module Accounts =
         static member New(?tosAcceptance: Create'SettingsTreasuryTosAcceptance) =
             {
                 TosAcceptance = tosAcceptance
-            }
-
-    module Create'SettingsTreasury =
-        let create
-            (
-                tosAcceptance: Create'SettingsTreasuryTosAcceptance option
-            ) : Create'SettingsTreasury
-            =
-            {
-              TosAcceptance = tosAcceptance
             }
 
     type Create'Settings =
@@ -4200,30 +2570,6 @@ module Accounts =
                 Treasury = treasury
             }
 
-    module Create'Settings =
-        let create
-            (
-                bacsDebitPayments: Create'SettingsBacsDebitPayments option,
-                branding: Create'SettingsBranding option,
-                cardIssuing: Create'SettingsCardIssuing option,
-                cardPayments: Create'SettingsCardPayments option,
-                invoices: Create'SettingsInvoices option,
-                payments: Create'SettingsPayments option,
-                payouts: Create'SettingsPayouts option,
-                treasury: Create'SettingsTreasury option
-            ) : Create'Settings
-            =
-            {
-              BacsDebitPayments = bacsDebitPayments
-              Branding = branding
-              CardIssuing = cardIssuing
-              CardPayments = cardPayments
-              Invoices = invoices
-              Payments = payments
-              Payouts = payouts
-              Treasury = treasury
-            }
-
     type Create'TosAcceptance =
         {
             /// The Unix timestamp marking when the account representative accepted their service agreement.
@@ -4247,22 +2593,6 @@ module Accounts =
                 Ip = ip
                 ServiceAgreement = serviceAgreement
                 UserAgent = userAgent
-            }
-
-    module Create'TosAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                serviceAgreement: string option,
-                userAgent: string option
-            ) : Create'TosAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              ServiceAgreement = serviceAgreement
-              UserAgent = userAgent
             }
 
     type Create'Type =
@@ -4357,50 +2687,6 @@ module Accounts =
                 Type = type'
             }
 
-    module CreateOptions =
-        let create
-            (
-                accountToken: string option,
-                businessProfile: Create'BusinessProfile option,
-                businessType: Create'BusinessType option,
-                capabilities: Create'Capabilities option,
-                company: Create'Company option,
-                controller: Create'Controller option,
-                country: IsoTypes.IsoCountryCode option,
-                defaultCurrency: IsoTypes.IsoCurrencyCode option,
-                documents: Create'Documents option,
-                email: string option,
-                expand: string list option,
-                externalAccount: string option,
-                groups: Create'Groups option,
-                individual: Create'Individual option,
-                metadata: Map<string, string> option,
-                settings: Create'Settings option,
-                tosAcceptance: Create'TosAcceptance option,
-                type': Create'Type option
-            ) : CreateOptions
-            =
-            {
-              AccountToken = accountToken
-              BusinessProfile = businessProfile
-              BusinessType = businessType
-              Capabilities = capabilities
-              Company = company
-              Controller = controller
-              Country = country
-              DefaultCurrency = defaultCurrency
-              Documents = documents
-              Email = email
-              Expand = expand
-              ExternalAccount = externalAccount
-              Groups = groups
-              Individual = individual
-              Metadata = metadata
-              Settings = settings
-              TosAcceptance = tosAcceptance
-              Type = type'
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Account: string }
@@ -4409,16 +2695,6 @@ module Accounts =
         static member New(account: string) =
             {
                 Account = account
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                account: string
-            ) : DeleteOptions
-            =
-            {
-              Account = account
             }
 
     type RetrieveOptions =
@@ -4435,17 +2711,6 @@ module Accounts =
             {
                 Account = account
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                account: string
-            ) : RetrieveOptions
-            =
-            {
-              Account = account
-              Expand = None
             }
 
     type Update'BusinessProfileAnnualRevenue =
@@ -4467,20 +2732,6 @@ module Accounts =
                 Amount = amount
                 Currency = currency
                 FiscalYearEnd = fiscalYearEnd
-            }
-
-    module Update'BusinessProfileAnnualRevenue =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                fiscalYearEnd: string option
-            ) : Update'BusinessProfileAnnualRevenue
-            =
-            {
-              Amount = amount
-              Currency = currency
-              FiscalYearEnd = fiscalYearEnd
             }
 
     type Update'BusinessProfileMinorityOwnedBusinessDesignation =
@@ -4505,18 +2756,6 @@ module Accounts =
             {
                 Amount = amount
                 Currency = currency
-            }
-
-    module Update'BusinessProfileMonthlyEstimatedRevenue =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option
-            ) : Update'BusinessProfileMonthlyEstimatedRevenue
-            =
-            {
-              Amount = amount
-              Currency = currency
             }
 
     type Update'BusinessProfileSupportAddress =
@@ -4550,26 +2789,6 @@ module Accounts =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'BusinessProfileSupportAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'BusinessProfileSupportAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'BusinessProfile =
@@ -4629,38 +2848,6 @@ module Accounts =
                 Url = url
             }
 
-    module Update'BusinessProfile =
-        let create
-            (
-                annualRevenue: Update'BusinessProfileAnnualRevenue option,
-                estimatedWorkerCount: int option,
-                mcc: string option,
-                minorityOwnedBusinessDesignation: Update'BusinessProfileMinorityOwnedBusinessDesignation list option,
-                monthlyEstimatedRevenue: Update'BusinessProfileMonthlyEstimatedRevenue option,
-                name: string option,
-                productDescription: string option,
-                supportAddress: Update'BusinessProfileSupportAddress option,
-                supportEmail: string option,
-                supportPhone: string option,
-                supportUrl: Choice<string,string> option,
-                url: string option
-            ) : Update'BusinessProfile
-            =
-            {
-              AnnualRevenue = annualRevenue
-              EstimatedWorkerCount = estimatedWorkerCount
-              Mcc = mcc
-              MinorityOwnedBusinessDesignation = minorityOwnedBusinessDesignation
-              MonthlyEstimatedRevenue = monthlyEstimatedRevenue
-              Name = name
-              ProductDescription = productDescription
-              SupportAddress = supportAddress
-              SupportEmail = supportEmail
-              SupportPhone = supportPhone
-              SupportUrl = supportUrl
-              Url = url
-            }
-
     type Update'BusinessType =
         | Company
         | GovernmentEntity
@@ -4680,16 +2867,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesAcssDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesAcssDebitPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesAffirmPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4701,16 +2878,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesAffirmPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesAffirmPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesAfterpayClearpayPayments =
@@ -4726,16 +2893,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesAfterpayClearpayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesAfterpayClearpayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesAlmaPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4747,16 +2904,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesAlmaPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesAlmaPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesAmazonPayPayments =
@@ -4772,16 +2919,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesAmazonPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesAmazonPayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesAppDistribution =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4793,16 +2930,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesAppDistribution =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesAppDistribution
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesAuBecsDebitPayments =
@@ -4818,16 +2945,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesAuBecsDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesAuBecsDebitPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesBacsDebitPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4839,16 +2956,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesBacsDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesBacsDebitPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesBancontactPayments =
@@ -4864,16 +2971,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesBancontactPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesBancontactPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesBankTransferPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4885,16 +2982,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesBankTransferPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesBilliePayments =
@@ -4910,16 +2997,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesBilliePayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesBilliePayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesBlikPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4931,16 +3008,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesBlikPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesBlikPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesBoletoPayments =
@@ -4956,16 +3023,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesBoletoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesBoletoPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesCardIssuing =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4977,16 +3034,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesCardIssuing =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesCardIssuing
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesCardPayments =
@@ -5002,16 +3049,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesCardPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesCardPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesCartesBancairesPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5023,16 +3060,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesCartesBancairesPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesCartesBancairesPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesCashappPayments =
@@ -5048,16 +3075,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesCashappPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesCashappPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesCryptoPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5069,16 +3086,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesCryptoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesCryptoPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesEpsPayments =
@@ -5094,16 +3101,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesEpsPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesEpsPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesFpxPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5115,16 +3112,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesFpxPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesFpxPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesGbBankTransferPayments =
@@ -5140,16 +3127,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesGbBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesGbBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesGiropayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5161,16 +3138,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesGiropayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesGiropayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesGrabpayPayments =
@@ -5186,16 +3153,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesGrabpayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesGrabpayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesIdealPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5207,16 +3164,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesIdealPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesIdealPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesIndiaInternationalPayments =
@@ -5232,16 +3179,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesIndiaInternationalPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesIndiaInternationalPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesJcbPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5253,16 +3190,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesJcbPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesJcbPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesJpBankTransferPayments =
@@ -5278,16 +3205,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesJpBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesJpBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesKakaoPayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5299,16 +3216,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesKakaoPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesKakaoPayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesKlarnaPayments =
@@ -5324,16 +3231,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesKlarnaPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesKlarnaPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesKonbiniPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5345,16 +3242,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesKonbiniPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesKonbiniPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesKrCardPayments =
@@ -5370,16 +3257,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesKrCardPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesKrCardPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesLegacyPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5391,16 +3268,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesLegacyPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesLegacyPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesLinkPayments =
@@ -5416,16 +3283,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesLinkPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesLinkPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesMbWayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5437,16 +3294,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesMbWayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesMbWayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesMobilepayPayments =
@@ -5462,16 +3309,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesMobilepayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesMobilepayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesMultibancoPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5483,16 +3320,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesMultibancoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesMultibancoPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesMxBankTransferPayments =
@@ -5508,16 +3335,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesMxBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesMxBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesNaverPayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5529,16 +3346,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesNaverPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesNaverPayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesNzBankAccountBecsDebitPayments =
@@ -5554,16 +3361,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesNzBankAccountBecsDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesNzBankAccountBecsDebitPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesOxxoPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5575,16 +3372,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesOxxoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesOxxoPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesP24Payments =
@@ -5600,16 +3387,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesP24Payments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesP24Payments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesPayByBankPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5621,16 +3398,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesPayByBankPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesPayByBankPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesPaycoPayments =
@@ -5646,16 +3413,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesPaycoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesPaycoPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesPaynowPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5667,16 +3424,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesPaynowPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesPaynowPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesPaytoPayments =
@@ -5692,16 +3439,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesPaytoPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesPaytoPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesPixPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5713,16 +3450,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesPixPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesPixPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesPromptpayPayments =
@@ -5738,16 +3465,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesPromptpayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesPromptpayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesRevolutPayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5759,16 +3476,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesRevolutPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesRevolutPayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesSamsungPayPayments =
@@ -5784,16 +3491,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesSamsungPayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesSamsungPayPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesSatispayPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5805,16 +3502,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesSatispayPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesSatispayPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesSepaBankTransferPayments =
@@ -5830,16 +3517,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesSepaBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesSepaBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesSepaDebitPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5851,16 +3528,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesSepaDebitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesSepaDebitPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesSofortPayments =
@@ -5876,16 +3543,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesSofortPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesSofortPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesSunbitPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5897,16 +3554,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesSunbitPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesSunbitPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesSwishPayments =
@@ -5922,16 +3569,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesSwishPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesSwishPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesTaxReportingUs1099K =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5943,16 +3580,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesTaxReportingUs1099K =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesTaxReportingUs1099K
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesTaxReportingUs1099Misc =
@@ -5968,16 +3595,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesTaxReportingUs1099Misc =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesTaxReportingUs1099Misc
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesTransfers =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -5989,16 +3606,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesTransfers =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesTransfers
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesTreasury =
@@ -6014,16 +3621,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesTreasury =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesTreasury
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesTwintPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -6035,16 +3632,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesTwintPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesTwintPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesUpiPayments =
@@ -6060,16 +3647,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesUpiPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesUpiPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesUsBankAccountAchPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -6081,16 +3658,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesUsBankAccountAchPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesUsBankAccountAchPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'CapabilitiesUsBankTransferPayments =
@@ -6106,16 +3673,6 @@ module Accounts =
                 Requested = requested
             }
 
-    module Update'CapabilitiesUsBankTransferPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesUsBankTransferPayments
-            =
-            {
-              Requested = requested
-            }
-
     type Update'CapabilitiesZipPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -6127,16 +3684,6 @@ module Accounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'CapabilitiesZipPayments =
-        let create
-            (
-                requested: bool option
-            ) : Update'CapabilitiesZipPayments
-            =
-            {
-              Requested = requested
             }
 
     type Update'Capabilities =
@@ -6404,142 +3951,6 @@ module Accounts =
                 ZipPayments = zipPayments
             }
 
-    module Update'Capabilities =
-        let create
-            (
-                acssDebitPayments: Update'CapabilitiesAcssDebitPayments option,
-                affirmPayments: Update'CapabilitiesAffirmPayments option,
-                afterpayClearpayPayments: Update'CapabilitiesAfterpayClearpayPayments option,
-                almaPayments: Update'CapabilitiesAlmaPayments option,
-                amazonPayPayments: Update'CapabilitiesAmazonPayPayments option,
-                appDistribution: Update'CapabilitiesAppDistribution option,
-                auBecsDebitPayments: Update'CapabilitiesAuBecsDebitPayments option,
-                bacsDebitPayments: Update'CapabilitiesBacsDebitPayments option,
-                bancontactPayments: Update'CapabilitiesBancontactPayments option,
-                bankTransferPayments: Update'CapabilitiesBankTransferPayments option,
-                billiePayments: Update'CapabilitiesBilliePayments option,
-                blikPayments: Update'CapabilitiesBlikPayments option,
-                boletoPayments: Update'CapabilitiesBoletoPayments option,
-                cardIssuing: Update'CapabilitiesCardIssuing option,
-                cardPayments: Update'CapabilitiesCardPayments option,
-                cartesBancairesPayments: Update'CapabilitiesCartesBancairesPayments option,
-                cashappPayments: Update'CapabilitiesCashappPayments option,
-                cryptoPayments: Update'CapabilitiesCryptoPayments option,
-                epsPayments: Update'CapabilitiesEpsPayments option,
-                fpxPayments: Update'CapabilitiesFpxPayments option,
-                gbBankTransferPayments: Update'CapabilitiesGbBankTransferPayments option,
-                giropayPayments: Update'CapabilitiesGiropayPayments option,
-                grabpayPayments: Update'CapabilitiesGrabpayPayments option,
-                idealPayments: Update'CapabilitiesIdealPayments option,
-                indiaInternationalPayments: Update'CapabilitiesIndiaInternationalPayments option,
-                jcbPayments: Update'CapabilitiesJcbPayments option,
-                jpBankTransferPayments: Update'CapabilitiesJpBankTransferPayments option,
-                kakaoPayPayments: Update'CapabilitiesKakaoPayPayments option,
-                klarnaPayments: Update'CapabilitiesKlarnaPayments option,
-                konbiniPayments: Update'CapabilitiesKonbiniPayments option,
-                krCardPayments: Update'CapabilitiesKrCardPayments option,
-                legacyPayments: Update'CapabilitiesLegacyPayments option,
-                linkPayments: Update'CapabilitiesLinkPayments option,
-                mbWayPayments: Update'CapabilitiesMbWayPayments option,
-                mobilepayPayments: Update'CapabilitiesMobilepayPayments option,
-                multibancoPayments: Update'CapabilitiesMultibancoPayments option,
-                mxBankTransferPayments: Update'CapabilitiesMxBankTransferPayments option,
-                naverPayPayments: Update'CapabilitiesNaverPayPayments option,
-                nzBankAccountBecsDebitPayments: Update'CapabilitiesNzBankAccountBecsDebitPayments option,
-                oxxoPayments: Update'CapabilitiesOxxoPayments option,
-                p24Payments: Update'CapabilitiesP24Payments option,
-                payByBankPayments: Update'CapabilitiesPayByBankPayments option,
-                paycoPayments: Update'CapabilitiesPaycoPayments option,
-                paynowPayments: Update'CapabilitiesPaynowPayments option,
-                paytoPayments: Update'CapabilitiesPaytoPayments option,
-                pixPayments: Update'CapabilitiesPixPayments option,
-                promptpayPayments: Update'CapabilitiesPromptpayPayments option,
-                revolutPayPayments: Update'CapabilitiesRevolutPayPayments option,
-                samsungPayPayments: Update'CapabilitiesSamsungPayPayments option,
-                satispayPayments: Update'CapabilitiesSatispayPayments option,
-                sepaBankTransferPayments: Update'CapabilitiesSepaBankTransferPayments option,
-                sepaDebitPayments: Update'CapabilitiesSepaDebitPayments option,
-                sofortPayments: Update'CapabilitiesSofortPayments option,
-                sunbitPayments: Update'CapabilitiesSunbitPayments option,
-                swishPayments: Update'CapabilitiesSwishPayments option,
-                taxReportingUs1099K: Update'CapabilitiesTaxReportingUs1099K option,
-                taxReportingUs1099Misc: Update'CapabilitiesTaxReportingUs1099Misc option,
-                transfers: Update'CapabilitiesTransfers option,
-                treasury: Update'CapabilitiesTreasury option,
-                twintPayments: Update'CapabilitiesTwintPayments option,
-                upiPayments: Update'CapabilitiesUpiPayments option,
-                usBankAccountAchPayments: Update'CapabilitiesUsBankAccountAchPayments option,
-                usBankTransferPayments: Update'CapabilitiesUsBankTransferPayments option,
-                zipPayments: Update'CapabilitiesZipPayments option
-            ) : Update'Capabilities
-            =
-            {
-              AcssDebitPayments = acssDebitPayments
-              AffirmPayments = affirmPayments
-              AfterpayClearpayPayments = afterpayClearpayPayments
-              AlmaPayments = almaPayments
-              AmazonPayPayments = amazonPayPayments
-              AppDistribution = appDistribution
-              AuBecsDebitPayments = auBecsDebitPayments
-              BacsDebitPayments = bacsDebitPayments
-              BancontactPayments = bancontactPayments
-              BankTransferPayments = bankTransferPayments
-              BilliePayments = billiePayments
-              BlikPayments = blikPayments
-              BoletoPayments = boletoPayments
-              CardIssuing = cardIssuing
-              CardPayments = cardPayments
-              CartesBancairesPayments = cartesBancairesPayments
-              CashappPayments = cashappPayments
-              CryptoPayments = cryptoPayments
-              EpsPayments = epsPayments
-              FpxPayments = fpxPayments
-              GbBankTransferPayments = gbBankTransferPayments
-              GiropayPayments = giropayPayments
-              GrabpayPayments = grabpayPayments
-              IdealPayments = idealPayments
-              IndiaInternationalPayments = indiaInternationalPayments
-              JcbPayments = jcbPayments
-              JpBankTransferPayments = jpBankTransferPayments
-              KakaoPayPayments = kakaoPayPayments
-              KlarnaPayments = klarnaPayments
-              KonbiniPayments = konbiniPayments
-              KrCardPayments = krCardPayments
-              LegacyPayments = legacyPayments
-              LinkPayments = linkPayments
-              MbWayPayments = mbWayPayments
-              MobilepayPayments = mobilepayPayments
-              MultibancoPayments = multibancoPayments
-              MxBankTransferPayments = mxBankTransferPayments
-              NaverPayPayments = naverPayPayments
-              NzBankAccountBecsDebitPayments = nzBankAccountBecsDebitPayments
-              OxxoPayments = oxxoPayments
-              P24Payments = p24Payments
-              PayByBankPayments = payByBankPayments
-              PaycoPayments = paycoPayments
-              PaynowPayments = paynowPayments
-              PaytoPayments = paytoPayments
-              PixPayments = pixPayments
-              PromptpayPayments = promptpayPayments
-              RevolutPayPayments = revolutPayPayments
-              SamsungPayPayments = samsungPayPayments
-              SatispayPayments = satispayPayments
-              SepaBankTransferPayments = sepaBankTransferPayments
-              SepaDebitPayments = sepaDebitPayments
-              SofortPayments = sofortPayments
-              SunbitPayments = sunbitPayments
-              SwishPayments = swishPayments
-              TaxReportingUs1099K = taxReportingUs1099K
-              TaxReportingUs1099Misc = taxReportingUs1099Misc
-              Transfers = transfers
-              Treasury = treasury
-              TwintPayments = twintPayments
-              UpiPayments = upiPayments
-              UsBankAccountAchPayments = usBankAccountAchPayments
-              UsBankTransferPayments = usBankTransferPayments
-              ZipPayments = zipPayments
-            }
-
     type Update'CompanyAddress =
         {
             /// City, district, suburb, town, or village.
@@ -6571,26 +3982,6 @@ module Accounts =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'CompanyAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'CompanyAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'CompanyAddressKana =
@@ -6630,28 +4021,6 @@ module Accounts =
                 Town = town
             }
 
-    module Update'CompanyAddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'CompanyAddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Update'CompanyAddressKanji =
         {
             /// City or ward.
@@ -6689,28 +4058,6 @@ module Accounts =
                 Town = town
             }
 
-    module Update'CompanyAddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'CompanyAddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Update'CompanyDirectorshipDeclaration =
         {
             /// The Unix timestamp marking when the directorship declaration attestation was made.
@@ -6732,20 +4079,6 @@ module Accounts =
                 UserAgent = userAgent
             }
 
-    module Update'CompanyDirectorshipDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Update'CompanyDirectorshipDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Update'CompanyOwnershipDeclaration =
         {
             /// The Unix timestamp marking when the beneficial owner attestation was made.
@@ -6765,20 +4098,6 @@ module Accounts =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Update'CompanyOwnershipDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Update'CompanyOwnershipDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Update'CompanyOwnershipExemptionReason =
@@ -6806,20 +4125,6 @@ module Accounts =
                 Year = year
             }
 
-    module Update'CompanyRegistrationDateRegistrationDateSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Update'CompanyRegistrationDateRegistrationDateSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Update'CompanyRepresentativeDeclaration =
         {
             /// The Unix timestamp marking when the representative declaration attestation was made.
@@ -6839,20 +4144,6 @@ module Accounts =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Update'CompanyRepresentativeDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Update'CompanyRepresentativeDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Update'CompanyStructure =
@@ -6897,18 +4188,6 @@ module Accounts =
                 Front = front
             }
 
-    module Update'CompanyVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Update'CompanyVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Update'CompanyVerification =
         {
             /// A document verifying the business.
@@ -6920,16 +4199,6 @@ module Accounts =
         static member New(?document: Update'CompanyVerificationDocument) =
             {
                 Document = document
-            }
-
-    module Update'CompanyVerification =
-        let create
-            (
-                document: Update'CompanyVerificationDocument option
-            ) : Update'CompanyVerification
-            =
-            {
-              Document = document
             }
 
     type Update'Company =
@@ -7032,60 +4301,6 @@ module Accounts =
                 Verification = verification
             }
 
-    module Update'Company =
-        let create
-            (
-                address: Update'CompanyAddress option,
-                addressKana: Update'CompanyAddressKana option,
-                addressKanji: Update'CompanyAddressKanji option,
-                directorsProvided: bool option,
-                directorshipDeclaration: Update'CompanyDirectorshipDeclaration option,
-                executivesProvided: bool option,
-                exportLicenseId: string option,
-                exportPurposeCode: string option,
-                name: string option,
-                nameKana: string option,
-                nameKanji: string option,
-                ownersProvided: bool option,
-                ownershipDeclaration: Update'CompanyOwnershipDeclaration option,
-                ownershipExemptionReason: Update'CompanyOwnershipExemptionReason option,
-                phone: string option,
-                registrationDate: Choice<Update'CompanyRegistrationDateRegistrationDateSpecs,string> option,
-                registrationNumber: string option,
-                representativeDeclaration: Update'CompanyRepresentativeDeclaration option,
-                structure: Update'CompanyStructure option,
-                taxId: string option,
-                taxIdRegistrar: string option,
-                vatId: string option,
-                verification: Update'CompanyVerification option
-            ) : Update'Company
-            =
-            {
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              DirectorsProvided = directorsProvided
-              DirectorshipDeclaration = directorshipDeclaration
-              ExecutivesProvided = executivesProvided
-              ExportLicenseId = exportLicenseId
-              ExportPurposeCode = exportPurposeCode
-              Name = name
-              NameKana = nameKana
-              NameKanji = nameKanji
-              OwnersProvided = ownersProvided
-              OwnershipDeclaration = ownershipDeclaration
-              OwnershipExemptionReason = ownershipExemptionReason
-              Phone = phone
-              RegistrationDate = registrationDate
-              RegistrationNumber = registrationNumber
-              RepresentativeDeclaration = representativeDeclaration
-              Structure = structure
-              TaxId = taxId
-              TaxIdRegistrar = taxIdRegistrar
-              VatId = vatId
-              Verification = verification
-            }
-
     type Update'DocumentsBankAccountOwnershipVerification =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -7097,16 +4312,6 @@ module Accounts =
         static member New(?files: string list) =
             {
                 Files = files
-            }
-
-    module Update'DocumentsBankAccountOwnershipVerification =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsBankAccountOwnershipVerification
-            =
-            {
-              Files = files
             }
 
     type Update'DocumentsCompanyLicense =
@@ -7122,16 +4327,6 @@ module Accounts =
                 Files = files
             }
 
-    module Update'DocumentsCompanyLicense =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsCompanyLicense
-            =
-            {
-              Files = files
-            }
-
     type Update'DocumentsCompanyMemorandumOfAssociation =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -7143,16 +4338,6 @@ module Accounts =
         static member New(?files: string list) =
             {
                 Files = files
-            }
-
-    module Update'DocumentsCompanyMemorandumOfAssociation =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsCompanyMemorandumOfAssociation
-            =
-            {
-              Files = files
             }
 
     type Update'DocumentsCompanyMinisterialDecree =
@@ -7168,16 +4353,6 @@ module Accounts =
                 Files = files
             }
 
-    module Update'DocumentsCompanyMinisterialDecree =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsCompanyMinisterialDecree
-            =
-            {
-              Files = files
-            }
-
     type Update'DocumentsCompanyRegistrationVerification =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -7189,16 +4364,6 @@ module Accounts =
         static member New(?files: string list) =
             {
                 Files = files
-            }
-
-    module Update'DocumentsCompanyRegistrationVerification =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsCompanyRegistrationVerification
-            =
-            {
-              Files = files
             }
 
     type Update'DocumentsCompanyTaxIdVerification =
@@ -7214,16 +4379,6 @@ module Accounts =
                 Files = files
             }
 
-    module Update'DocumentsCompanyTaxIdVerification =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsCompanyTaxIdVerification
-            =
-            {
-              Files = files
-            }
-
     type Update'DocumentsProofOfAddress =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -7237,16 +4392,6 @@ module Accounts =
                 Files = files
             }
 
-    module Update'DocumentsProofOfAddress =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsProofOfAddress
-            =
-            {
-              Files = files
-            }
-
     type Update'DocumentsProofOfRegistrationSigner =
         {
             /// The token of the person signing the document, if applicable.
@@ -7258,16 +4403,6 @@ module Accounts =
         static member New(?person: string) =
             {
                 Person = person
-            }
-
-    module Update'DocumentsProofOfRegistrationSigner =
-        let create
-            (
-                person: string option
-            ) : Update'DocumentsProofOfRegistrationSigner
-            =
-            {
-              Person = person
             }
 
     type Update'DocumentsProofOfRegistration =
@@ -7287,18 +4422,6 @@ module Accounts =
                 Signer = signer
             }
 
-    module Update'DocumentsProofOfRegistration =
-        let create
-            (
-                files: string list option,
-                signer: Update'DocumentsProofOfRegistrationSigner option
-            ) : Update'DocumentsProofOfRegistration
-            =
-            {
-              Files = files
-              Signer = signer
-            }
-
     type Update'DocumentsProofOfUltimateBeneficialOwnershipSigner =
         {
             /// The token of the person signing the document, if applicable.
@@ -7310,16 +4433,6 @@ module Accounts =
         static member New(?person: string) =
             {
                 Person = person
-            }
-
-    module Update'DocumentsProofOfUltimateBeneficialOwnershipSigner =
-        let create
-            (
-                person: string option
-            ) : Update'DocumentsProofOfUltimateBeneficialOwnershipSigner
-            =
-            {
-              Person = person
             }
 
     type Update'DocumentsProofOfUltimateBeneficialOwnership =
@@ -7337,18 +4450,6 @@ module Accounts =
             {
                 Files = files
                 Signer = signer
-            }
-
-    module Update'DocumentsProofOfUltimateBeneficialOwnership =
-        let create
-            (
-                files: string list option,
-                signer: Update'DocumentsProofOfUltimateBeneficialOwnershipSigner option
-            ) : Update'DocumentsProofOfUltimateBeneficialOwnership
-            =
-            {
-              Files = files
-              Signer = signer
             }
 
     type Update'Documents =
@@ -7396,32 +4497,6 @@ module Accounts =
                 ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
             }
 
-    module Update'Documents =
-        let create
-            (
-                bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification option,
-                companyLicense: Update'DocumentsCompanyLicense option,
-                companyMemorandumOfAssociation: Update'DocumentsCompanyMemorandumOfAssociation option,
-                companyMinisterialDecree: Update'DocumentsCompanyMinisterialDecree option,
-                companyRegistrationVerification: Update'DocumentsCompanyRegistrationVerification option,
-                companyTaxIdVerification: Update'DocumentsCompanyTaxIdVerification option,
-                proofOfAddress: Update'DocumentsProofOfAddress option,
-                proofOfRegistration: Update'DocumentsProofOfRegistration option,
-                proofOfUltimateBeneficialOwnership: Update'DocumentsProofOfUltimateBeneficialOwnership option
-            ) : Update'Documents
-            =
-            {
-              BankAccountOwnershipVerification = bankAccountOwnershipVerification
-              CompanyLicense = companyLicense
-              CompanyMemorandumOfAssociation = companyMemorandumOfAssociation
-              CompanyMinisterialDecree = companyMinisterialDecree
-              CompanyRegistrationVerification = companyRegistrationVerification
-              CompanyTaxIdVerification = companyTaxIdVerification
-              ProofOfAddress = proofOfAddress
-              ProofOfRegistration = proofOfRegistration
-              ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
-            }
-
     type Update'Groups =
         {
             /// The group the account is in to determine their payments pricing, and null if the account is on customized pricing. [See the Platform pricing tool documentation](https://docs.stripe.com/connect/platform-pricing-tools) for details.
@@ -7433,16 +4508,6 @@ module Accounts =
         static member New(?paymentsPricing: Choice<string,string>) =
             {
                 PaymentsPricing = paymentsPricing
-            }
-
-    module Update'Groups =
-        let create
-            (
-                paymentsPricing: Choice<string,string> option
-            ) : Update'Groups
-            =
-            {
-              PaymentsPricing = paymentsPricing
             }
 
     type Update'IndividualAddress =
@@ -7476,26 +4541,6 @@ module Accounts =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'IndividualAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'IndividualAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'IndividualAddressKana =
@@ -7535,28 +4580,6 @@ module Accounts =
                 Town = town
             }
 
-    module Update'IndividualAddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'IndividualAddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Update'IndividualAddressKanji =
         {
             /// City or ward.
@@ -7594,28 +4617,6 @@ module Accounts =
                 Town = town
             }
 
-    module Update'IndividualAddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'IndividualAddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Update'IndividualDobDateOfBirthSpecs =
         {
             /// The day of birth, between 1 and 31.
@@ -7635,20 +4636,6 @@ module Accounts =
                 Day = day
                 Month = month
                 Year = year
-            }
-
-    module Update'IndividualDobDateOfBirthSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Update'IndividualDobDateOfBirthSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
             }
 
     type Update'IndividualPoliticalExposure =
@@ -7688,26 +4675,6 @@ module Accounts =
                 State = state
             }
 
-    module Update'IndividualRegisteredAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'IndividualRegisteredAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'IndividualRelationship =
         {
             /// Whether the person is a director of the account's legal entity. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
@@ -7737,24 +4704,6 @@ module Accounts =
                 Title = title
             }
 
-    module Update'IndividualRelationship =
-        let create
-            (
-                director: bool option,
-                executive: bool option,
-                owner: bool option,
-                percentOwnership: Choice<decimal,string> option,
-                title: string option
-            ) : Update'IndividualRelationship
-            =
-            {
-              Director = director
-              Executive = executive
-              Owner = owner
-              PercentOwnership = percentOwnership
-              Title = title
-            }
-
     type Update'IndividualVerificationAdditionalDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`. The uploaded file needs to be a color image (smaller than 8,000px by 8,000px), in JPG, PNG, or PDF format, and less than 10 MB in size.
@@ -7770,18 +4719,6 @@ module Accounts =
             {
                 Back = back
                 Front = front
-            }
-
-    module Update'IndividualVerificationAdditionalDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Update'IndividualVerificationAdditionalDocument
-            =
-            {
-              Back = back
-              Front = front
             }
 
     type Update'IndividualVerificationDocument =
@@ -7801,18 +4738,6 @@ module Accounts =
                 Front = front
             }
 
-    module Update'IndividualVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Update'IndividualVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Update'IndividualVerification =
         {
             /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
@@ -7828,18 +4753,6 @@ module Accounts =
             {
                 AdditionalDocument = additionalDocument
                 Document = document
-            }
-
-    module Update'IndividualVerification =
-        let create
-            (
-                additionalDocument: Update'IndividualVerificationAdditionalDocument option,
-                document: Update'IndividualVerificationDocument option
-            ) : Update'IndividualVerification
-            =
-            {
-              AdditionalDocument = additionalDocument
-              Document = document
             }
 
     type Update'Individual =
@@ -7943,60 +4856,6 @@ module Accounts =
                 Verification = verification
             }
 
-    module Update'Individual =
-        let create
-            (
-                address: Update'IndividualAddress option,
-                addressKana: Update'IndividualAddressKana option,
-                addressKanji: Update'IndividualAddressKanji option,
-                dob: Choice<Update'IndividualDobDateOfBirthSpecs,string> option,
-                email: string option,
-                firstName: string option,
-                firstNameKana: string option,
-                firstNameKanji: string option,
-                fullNameAliases: Choice<string list,string> option,
-                gender: string option,
-                idNumber: string option,
-                idNumberSecondary: string option,
-                lastName: string option,
-                lastNameKana: string option,
-                lastNameKanji: string option,
-                maidenName: string option,
-                metadata: Map<string, string> option,
-                phone: string option,
-                politicalExposure: Update'IndividualPoliticalExposure option,
-                registeredAddress: Update'IndividualRegisteredAddress option,
-                relationship: Update'IndividualRelationship option,
-                ssnLast4: string option,
-                verification: Update'IndividualVerification option
-            ) : Update'Individual
-            =
-            {
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              Dob = dob
-              Email = email
-              FirstName = firstName
-              FirstNameKana = firstNameKana
-              FirstNameKanji = firstNameKanji
-              FullNameAliases = fullNameAliases
-              Gender = gender
-              IdNumber = idNumber
-              IdNumberSecondary = idNumberSecondary
-              LastName = lastName
-              LastNameKana = lastNameKana
-              LastNameKanji = lastNameKanji
-              MaidenName = maidenName
-              Metadata = metadata
-              Phone = phone
-              PoliticalExposure = politicalExposure
-              RegisteredAddress = registeredAddress
-              Relationship = relationship
-              SsnLast4 = ssnLast4
-              Verification = verification
-            }
-
     type Update'SettingsBacsDebitPayments =
         {
             /// The Bacs Direct Debit Display Name for this account. For payments made with Bacs Direct Debit, this name appears on the mandate as the statement descriptor. Mobile banking apps display it as the name of the business. To use custom branding, set the Bacs Direct Debit Display Name during or right after creation. Custom branding incurs an additional monthly fee for the platform. If you don't set the display name before requesting Bacs capability, it's automatically set as "Stripe" and the account is onboarded to Stripe branding, which is free.
@@ -8008,16 +4867,6 @@ module Accounts =
         static member New(?displayName: string) =
             {
                 DisplayName = displayName
-            }
-
-    module Update'SettingsBacsDebitPayments =
-        let create
-            (
-                displayName: string option
-            ) : Update'SettingsBacsDebitPayments
-            =
-            {
-              DisplayName = displayName
             }
 
     type Update'SettingsBranding =
@@ -8045,22 +4894,6 @@ module Accounts =
                 SecondaryColor = secondaryColor
             }
 
-    module Update'SettingsBranding =
-        let create
-            (
-                icon: string option,
-                logo: string option,
-                primaryColor: string option,
-                secondaryColor: string option
-            ) : Update'SettingsBranding
-            =
-            {
-              Icon = icon
-              Logo = logo
-              PrimaryColor = primaryColor
-              SecondaryColor = secondaryColor
-            }
-
     type Update'SettingsCardIssuingTosAcceptance =
         {
             /// The Unix timestamp marking when the account representative accepted the service agreement.
@@ -8082,20 +4915,6 @@ module Accounts =
                 UserAgent = userAgent
             }
 
-    module Update'SettingsCardIssuingTosAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Update'SettingsCardIssuingTosAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Update'SettingsCardIssuing =
         {
             /// Details on the account's acceptance of the [Stripe Issuing Terms and Disclosures](/issuing/connect/tos_acceptance).
@@ -8107,16 +4926,6 @@ module Accounts =
         static member New(?tosAcceptance: Update'SettingsCardIssuingTosAcceptance) =
             {
                 TosAcceptance = tosAcceptance
-            }
-
-    module Update'SettingsCardIssuing =
-        let create
-            (
-                tosAcceptance: Update'SettingsCardIssuingTosAcceptance option
-            ) : Update'SettingsCardIssuing
-            =
-            {
-              TosAcceptance = tosAcceptance
             }
 
     type Update'SettingsCardPaymentsDeclineOn =
@@ -8134,18 +4943,6 @@ module Accounts =
             {
                 AvsFailure = avsFailure
                 CvcFailure = cvcFailure
-            }
-
-    module Update'SettingsCardPaymentsDeclineOn =
-        let create
-            (
-                avsFailure: bool option,
-                cvcFailure: bool option
-            ) : Update'SettingsCardPaymentsDeclineOn
-            =
-            {
-              AvsFailure = avsFailure
-              CvcFailure = cvcFailure
             }
 
     type Update'SettingsCardPayments =
@@ -8173,22 +4970,6 @@ module Accounts =
                 StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
             }
 
-    module Update'SettingsCardPayments =
-        let create
-            (
-                declineOn: Update'SettingsCardPaymentsDeclineOn option,
-                statementDescriptorPrefix: string option,
-                statementDescriptorPrefixKana: Choice<string,string> option,
-                statementDescriptorPrefixKanji: Choice<string,string> option
-            ) : Update'SettingsCardPayments
-            =
-            {
-              DeclineOn = declineOn
-              StatementDescriptorPrefix = statementDescriptorPrefix
-              StatementDescriptorPrefixKana = statementDescriptorPrefixKana
-              StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
-            }
-
     type Update'SettingsInvoicesHostedPaymentMethodSave =
         | Always
         | Never
@@ -8211,18 +4992,6 @@ module Accounts =
                 HostedPaymentMethodSave = hostedPaymentMethodSave
             }
 
-    module Update'SettingsInvoices =
-        let create
-            (
-                defaultAccountTaxIds: Choice<string list,string> option,
-                hostedPaymentMethodSave: Update'SettingsInvoicesHostedPaymentMethodSave option
-            ) : Update'SettingsInvoices
-            =
-            {
-              DefaultAccountTaxIds = defaultAccountTaxIds
-              HostedPaymentMethodSave = hostedPaymentMethodSave
-            }
-
     type Update'SettingsPayments =
         {
             /// The default text that appears on statements for non-card charges outside of Japan. For card charges, if you don't set a `statement_descriptor_prefix`, this text is also used as the statement descriptor prefix. In that case, if concatenating the statement descriptor suffix causes the combined statement descriptor to exceed 22 characters, we truncate the `statement_descriptor` text to limit the full descriptor to 22 characters. For more information about statement descriptors and their requirements, see the [account settings documentation](https://docs.stripe.com/get-started/account/statement-descriptors).
@@ -8242,20 +5011,6 @@ module Accounts =
                 StatementDescriptor = statementDescriptor
                 StatementDescriptorKana = statementDescriptorKana
                 StatementDescriptorKanji = statementDescriptorKanji
-            }
-
-    module Update'SettingsPayments =
-        let create
-            (
-                statementDescriptor: string option,
-                statementDescriptorKana: string option,
-                statementDescriptorKanji: string option
-            ) : Update'SettingsPayments
-            =
-            {
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorKana = statementDescriptorKana
-              StatementDescriptorKanji = statementDescriptorKanji
             }
 
     type Update'SettingsPayoutsScheduleDelayDays = | Minimum
@@ -8315,26 +5070,6 @@ module Accounts =
                 WeeklyPayoutDays = weeklyPayoutDays
             }
 
-    module Update'SettingsPayoutsSchedule =
-        let create
-            (
-                delayDays: Choice<Update'SettingsPayoutsScheduleDelayDays,int> option,
-                interval: Update'SettingsPayoutsScheduleInterval option,
-                monthlyAnchor: int option,
-                monthlyPayoutDays: int list option,
-                weeklyAnchor: Update'SettingsPayoutsScheduleWeeklyAnchor option,
-                weeklyPayoutDays: Update'SettingsPayoutsScheduleWeeklyPayoutDays list option
-            ) : Update'SettingsPayoutsSchedule
-            =
-            {
-              DelayDays = delayDays
-              Interval = interval
-              MonthlyAnchor = monthlyAnchor
-              MonthlyPayoutDays = monthlyPayoutDays
-              WeeklyAnchor = weeklyAnchor
-              WeeklyPayoutDays = weeklyPayoutDays
-            }
-
     type Update'SettingsPayouts =
         {
             /// A Boolean indicating whether Stripe should try to reclaim negative balances from an attached bank account. For details, see [Understanding Connect Account Balances](/connect/account-balances).
@@ -8354,20 +5089,6 @@ module Accounts =
                 DebitNegativeBalances = debitNegativeBalances
                 Schedule = schedule
                 StatementDescriptor = statementDescriptor
-            }
-
-    module Update'SettingsPayouts =
-        let create
-            (
-                debitNegativeBalances: bool option,
-                schedule: Update'SettingsPayoutsSchedule option,
-                statementDescriptor: string option
-            ) : Update'SettingsPayouts
-            =
-            {
-              DebitNegativeBalances = debitNegativeBalances
-              Schedule = schedule
-              StatementDescriptor = statementDescriptor
             }
 
     type Update'SettingsTreasuryTosAcceptance =
@@ -8391,20 +5112,6 @@ module Accounts =
                 UserAgent = userAgent
             }
 
-    module Update'SettingsTreasuryTosAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Update'SettingsTreasuryTosAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Update'SettingsTreasury =
         {
             /// Details on the account's acceptance of the Stripe Treasury Services Agreement.
@@ -8416,16 +5123,6 @@ module Accounts =
         static member New(?tosAcceptance: Update'SettingsTreasuryTosAcceptance) =
             {
                 TosAcceptance = tosAcceptance
-            }
-
-    module Update'SettingsTreasury =
-        let create
-            (
-                tosAcceptance: Update'SettingsTreasuryTosAcceptance option
-            ) : Update'SettingsTreasury
-            =
-            {
-              TosAcceptance = tosAcceptance
             }
 
     type Update'Settings =
@@ -8469,30 +5166,6 @@ module Accounts =
                 Treasury = treasury
             }
 
-    module Update'Settings =
-        let create
-            (
-                bacsDebitPayments: Update'SettingsBacsDebitPayments option,
-                branding: Update'SettingsBranding option,
-                cardIssuing: Update'SettingsCardIssuing option,
-                cardPayments: Update'SettingsCardPayments option,
-                invoices: Update'SettingsInvoices option,
-                payments: Update'SettingsPayments option,
-                payouts: Update'SettingsPayouts option,
-                treasury: Update'SettingsTreasury option
-            ) : Update'Settings
-            =
-            {
-              BacsDebitPayments = bacsDebitPayments
-              Branding = branding
-              CardIssuing = cardIssuing
-              CardPayments = cardPayments
-              Invoices = invoices
-              Payments = payments
-              Payouts = payouts
-              Treasury = treasury
-            }
-
     type Update'TosAcceptance =
         {
             /// The Unix timestamp marking when the account representative accepted their service agreement.
@@ -8516,22 +5189,6 @@ module Accounts =
                 Ip = ip
                 ServiceAgreement = serviceAgreement
                 UserAgent = userAgent
-            }
-
-    module Update'TosAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                serviceAgreement: string option,
-                userAgent: string option
-            ) : Update'TosAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              ServiceAgreement = serviceAgreement
-              UserAgent = userAgent
             }
 
     type UpdateOptions =
@@ -8612,31 +5269,6 @@ module Accounts =
                 TosAcceptance = tosAcceptance
             }
 
-    module UpdateOptions =
-        let create
-            (
-                account: string
-            ) : UpdateOptions
-            =
-            {
-              Account = account
-              AccountToken = None
-              BusinessProfile = None
-              BusinessType = None
-              Capabilities = None
-              Company = None
-              DefaultCurrency = None
-              Documents = None
-              Email = None
-              Expand = None
-              ExternalAccount = None
-              Groups = None
-              Individual = None
-              Metadata = None
-              Settings = None
-              TosAcceptance = None
-            }
-
     ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -8698,17 +5330,6 @@ module AccountsCapabilities =
                 Expand = expand
             }
 
-    module CapabilitiesOptions =
-        let create
-            (
-                account: string
-            ) : CapabilitiesOptions
-            =
-            {
-              Account = account
-              Expand = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -8726,19 +5347,6 @@ module AccountsCapabilities =
                 Account = account
                 Capability = capability
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                account: string,
-                capability: string
-            ) : RetrieveOptions
-            =
-            {
-              Account = account
-              Capability = capability
-              Expand = None
             }
 
     type UpdateOptions =
@@ -8763,20 +5371,6 @@ module AccountsCapabilities =
                 Capability = capability
                 Expand = expand
                 Requested = requested
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                account: string,
-                capability: string
-            ) : UpdateOptions
-            =
-            {
-              Account = account
-              Capability = capability
-              Expand = None
-              Requested = None
             }
 
     ///<p>Returns a list of capabilities associated with the account. The capabilities are returned sorted by creation date, with the most recent capability appearing first.</p>
@@ -8830,21 +5424,6 @@ module AccountsExternalAccounts =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                account: string
-            ) : ListOptions
-            =
-            {
-              Account = account
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              Object = None
-              StartingAfter = None
-            }
-
     type CreateOptions =
         {
             [<Config.Path>]
@@ -8873,21 +5452,6 @@ module AccountsExternalAccounts =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                account: string,
-                externalAccount: string
-            ) : CreateOptions
-            =
-            {
-              Account = account
-              ExternalAccount = externalAccount
-              DefaultForCurrency = None
-              Expand = None
-              Metadata = None
-            }
-
     type DeleteOptions =
         {
             [<Config.Path>]
@@ -8902,18 +5466,6 @@ module AccountsExternalAccounts =
             {
                 Account = account
                 Id = id
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                account: string,
-                id: string
-            ) : DeleteOptions
-            =
-            {
-              Account = account
-              Id = id
             }
 
     type RetrieveOptions =
@@ -8934,19 +5486,6 @@ module AccountsExternalAccounts =
                 Account = account
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                account: string,
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Account = account
-              Id = id
-              Expand = None
             }
 
     type Update'AccountHolderType =
@@ -8972,16 +5511,6 @@ module AccountsExternalAccounts =
                 Files = files
             }
 
-    module Update'DocumentsBankAccountOwnershipVerification =
-        let create
-            (
-                files: string list option
-            ) : Update'DocumentsBankAccountOwnershipVerification
-            =
-            {
-              Files = files
-            }
-
     type Update'Documents =
         {
             /// One or more documents that support the [Bank account ownership verification](https://support.stripe.com/questions/bank-account-ownership-verification) requirement. Must be a document associated with the bank account that displays the last 4 digits of the account number, either a statement or a check.
@@ -8993,16 +5522,6 @@ module AccountsExternalAccounts =
         static member New(?bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification) =
             {
                 BankAccountOwnershipVerification = bankAccountOwnershipVerification
-            }
-
-    module Update'Documents =
-        let create
-            (
-                bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification option
-            ) : Update'Documents
-            =
-            {
-              BankAccountOwnershipVerification = bankAccountOwnershipVerification
             }
 
     type UpdateOptions =
@@ -9084,34 +5603,6 @@ module AccountsExternalAccounts =
                 Name = name
             }
 
-    module UpdateOptions =
-        let create
-            (
-                account: string,
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Account = account
-              Id = id
-              AccountHolderName = None
-              AccountHolderType = None
-              AccountType = None
-              AddressCity = None
-              AddressCountry = None
-              AddressLine1 = None
-              AddressLine2 = None
-              AddressState = None
-              AddressZip = None
-              DefaultForCurrency = None
-              Documents = None
-              ExpMonth = None
-              ExpYear = None
-              Expand = None
-              Metadata = None
-              Name = None
-            }
-
     ///<p>List external accounts for an account.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("object", options.Object |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -9162,17 +5653,6 @@ module AccountsLoginLinks =
                 Expand = expand
             }
 
-    module CreateOptions =
-        let create
-            (
-                account: string
-            ) : CreateOptions
-            =
-            {
-              Account = account
-              Expand = None
-            }
-
     ///<p>Creates a login link for a connected account to access the Express Dashboard.</p>
     ///<p><strong>You can only create login links for accounts that use the <a href="/connect/express-dashboard">Express Dashboard</a> and are connected to your platform</strong>.</p>
     let Create settings (options: CreateOptions) =
@@ -9213,21 +5693,6 @@ module AccountsPersons =
                 StartingAfter = startingAfter
             }
 
-    module PersonsOptions =
-        let create
-            (
-                account: string
-            ) : PersonsOptions
-            =
-            {
-              Account = account
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              Relationship = None
-              StartingAfter = None
-            }
-
     type Create'AdditionalTosAcceptancesAccount =
         {
             /// The Unix timestamp marking when the account representative accepted the service agreement.
@@ -9249,20 +5714,6 @@ module AccountsPersons =
                 UserAgent = userAgent
             }
 
-    module Create'AdditionalTosAcceptancesAccount =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Create'AdditionalTosAcceptancesAccount
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Create'AdditionalTosAcceptances =
         {
             /// Details on the legal guardian's acceptance of the main Stripe service agreement.
@@ -9274,16 +5725,6 @@ module AccountsPersons =
         static member New(?account: Create'AdditionalTosAcceptancesAccount) =
             {
                 Account = account
-            }
-
-    module Create'AdditionalTosAcceptances =
-        let create
-            (
-                account: Create'AdditionalTosAcceptancesAccount option
-            ) : Create'AdditionalTosAcceptances
-            =
-            {
-              Account = account
             }
 
     type Create'Address =
@@ -9317,26 +5758,6 @@ module AccountsPersons =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'Address =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'Address
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'AddressKana =
@@ -9376,28 +5797,6 @@ module AccountsPersons =
                 Town = town
             }
 
-    module Create'AddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'AddressKanji =
         {
             /// City or ward.
@@ -9435,28 +5834,6 @@ module AccountsPersons =
                 Town = town
             }
 
-    module Create'AddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'DobDateOfBirthSpecs =
         {
             /// The day of birth, between 1 and 31.
@@ -9478,20 +5855,6 @@ module AccountsPersons =
                 Year = year
             }
 
-    module Create'DobDateOfBirthSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'DobDateOfBirthSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Create'DocumentsCompanyAuthorization =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -9503,16 +5866,6 @@ module AccountsPersons =
         static member New(?files: Choice<string,string> list) =
             {
                 Files = files
-            }
-
-    module Create'DocumentsCompanyAuthorization =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Create'DocumentsCompanyAuthorization
-            =
-            {
-              Files = files
             }
 
     type Create'DocumentsPassport =
@@ -9528,16 +5881,6 @@ module AccountsPersons =
                 Files = files
             }
 
-    module Create'DocumentsPassport =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Create'DocumentsPassport
-            =
-            {
-              Files = files
-            }
-
     type Create'DocumentsVisa =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -9549,16 +5892,6 @@ module AccountsPersons =
         static member New(?files: Choice<string,string> list) =
             {
                 Files = files
-            }
-
-    module Create'DocumentsVisa =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Create'DocumentsVisa
-            =
-            {
-              Files = files
             }
 
     type Create'Documents =
@@ -9580,20 +5913,6 @@ module AccountsPersons =
                 CompanyAuthorization = companyAuthorization
                 Passport = passport
                 Visa = visa
-            }
-
-    module Create'Documents =
-        let create
-            (
-                companyAuthorization: Create'DocumentsCompanyAuthorization option,
-                passport: Create'DocumentsPassport option,
-                visa: Create'DocumentsVisa option
-            ) : Create'Documents
-            =
-            {
-              CompanyAuthorization = companyAuthorization
-              Passport = passport
-              Visa = visa
             }
 
     type Create'PoliticalExposure =
@@ -9631,26 +5950,6 @@ module AccountsPersons =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'RegisteredAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'RegisteredAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'Relationship =
@@ -9694,30 +5993,6 @@ module AccountsPersons =
                 Title = title
             }
 
-    module Create'Relationship =
-        let create
-            (
-                authorizer: bool option,
-                director: bool option,
-                executive: bool option,
-                legalGuardian: bool option,
-                owner: bool option,
-                percentOwnership: Choice<decimal,string> option,
-                representative: bool option,
-                title: string option
-            ) : Create'Relationship
-            =
-            {
-              Authorizer = authorizer
-              Director = director
-              Executive = executive
-              LegalGuardian = legalGuardian
-              Owner = owner
-              PercentOwnership = percentOwnership
-              Representative = representative
-              Title = title
-            }
-
     type Create'UsCfpbDataEthnicityDetailsEthnicity =
         | Cuban
         | HispanicOrLatino
@@ -9742,18 +6017,6 @@ module AccountsPersons =
             {
                 Ethnicity = ethnicity
                 EthnicityOther = ethnicityOther
-            }
-
-    module Create'UsCfpbDataEthnicityDetails =
-        let create
-            (
-                ethnicity: Create'UsCfpbDataEthnicityDetailsEthnicity list option,
-                ethnicityOther: string option
-            ) : Create'UsCfpbDataEthnicityDetails
-            =
-            {
-              Ethnicity = ethnicity
-              EthnicityOther = ethnicityOther
             }
 
     type Create'UsCfpbDataRaceDetailsRace =
@@ -9799,18 +6062,6 @@ module AccountsPersons =
                 RaceOther = raceOther
             }
 
-    module Create'UsCfpbDataRaceDetails =
-        let create
-            (
-                race: Create'UsCfpbDataRaceDetailsRace list option,
-                raceOther: string option
-            ) : Create'UsCfpbDataRaceDetails
-            =
-            {
-              Race = race
-              RaceOther = raceOther
-            }
-
     type Create'UsCfpbData =
         {
             /// The persons ethnicity details
@@ -9832,20 +6083,6 @@ module AccountsPersons =
                 SelfIdentifiedGender = selfIdentifiedGender
             }
 
-    module Create'UsCfpbData =
-        let create
-            (
-                ethnicityDetails: Create'UsCfpbDataEthnicityDetails option,
-                raceDetails: Create'UsCfpbDataRaceDetails option,
-                selfIdentifiedGender: string option
-            ) : Create'UsCfpbData
-            =
-            {
-              EthnicityDetails = ethnicityDetails
-              RaceDetails = raceDetails
-              SelfIdentifiedGender = selfIdentifiedGender
-            }
-
     type Create'VerificationAdditionalDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`. The uploaded file needs to be a color image (smaller than 8,000px by 8,000px), in JPG, PNG, or PDF format, and less than 10 MB in size.
@@ -9861,18 +6098,6 @@ module AccountsPersons =
             {
                 Back = back
                 Front = front
-            }
-
-    module Create'VerificationAdditionalDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'VerificationAdditionalDocument
-            =
-            {
-              Back = back
-              Front = front
             }
 
     type Create'VerificationDocument =
@@ -9892,18 +6117,6 @@ module AccountsPersons =
                 Front = front
             }
 
-    module Create'VerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'VerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Create'Verification =
         {
             /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
@@ -9919,18 +6132,6 @@ module AccountsPersons =
             {
                 AdditionalDocument = additionalDocument
                 Document = document
-            }
-
-    module Create'Verification =
-        let create
-            (
-                additionalDocument: Create'VerificationAdditionalDocument option,
-                document: Create'VerificationDocument option
-            ) : Create'Verification
-            =
-            {
-              AdditionalDocument = additionalDocument
-              Document = document
             }
 
     type CreateOptions =
@@ -10061,45 +6262,6 @@ module AccountsPersons =
                 Verification = verification
             }
 
-    module CreateOptions =
-        let create
-            (
-                account: string
-            ) : CreateOptions
-            =
-            {
-              Account = account
-              AdditionalTosAcceptances = None
-              Address = None
-              AddressKana = None
-              AddressKanji = None
-              Dob = None
-              Documents = None
-              Email = None
-              Expand = None
-              FirstName = None
-              FirstNameKana = None
-              FirstNameKanji = None
-              FullNameAliases = None
-              Gender = None
-              IdNumber = None
-              IdNumberSecondary = None
-              LastName = None
-              LastNameKana = None
-              LastNameKanji = None
-              MaidenName = None
-              Metadata = None
-              Nationality = None
-              PersonToken = None
-              Phone = None
-              PoliticalExposure = None
-              RegisteredAddress = None
-              Relationship = None
-              SsnLast4 = None
-              UsCfpbData = None
-              Verification = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Account: string
@@ -10111,18 +6273,6 @@ module AccountsPersons =
             {
                 Account = account
                 Person = person
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                account: string,
-                person: string
-            ) : DeleteOptions
-            =
-            {
-              Account = account
-              Person = person
             }
 
     type RetrieveOptions =
@@ -10142,19 +6292,6 @@ module AccountsPersons =
                 Account = account
                 Person = person
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                account: string,
-                person: string
-            ) : RetrieveOptions
-            =
-            {
-              Account = account
-              Person = person
-              Expand = None
             }
 
     type Update'AdditionalTosAcceptancesAccount =
@@ -10178,20 +6315,6 @@ module AccountsPersons =
                 UserAgent = userAgent
             }
 
-    module Update'AdditionalTosAcceptancesAccount =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Update'AdditionalTosAcceptancesAccount
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Update'AdditionalTosAcceptances =
         {
             /// Details on the legal guardian's acceptance of the main Stripe service agreement.
@@ -10203,16 +6326,6 @@ module AccountsPersons =
         static member New(?account: Update'AdditionalTosAcceptancesAccount) =
             {
                 Account = account
-            }
-
-    module Update'AdditionalTosAcceptances =
-        let create
-            (
-                account: Update'AdditionalTosAcceptancesAccount option
-            ) : Update'AdditionalTosAcceptances
-            =
-            {
-              Account = account
             }
 
     type Update'Address =
@@ -10246,26 +6359,6 @@ module AccountsPersons =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'Address =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'Address
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'AddressKana =
@@ -10305,28 +6398,6 @@ module AccountsPersons =
                 Town = town
             }
 
-    module Update'AddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'AddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Update'AddressKanji =
         {
             /// City or ward.
@@ -10364,28 +6435,6 @@ module AccountsPersons =
                 Town = town
             }
 
-    module Update'AddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Update'AddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Update'DobDateOfBirthSpecs =
         {
             /// The day of birth, between 1 and 31.
@@ -10407,20 +6456,6 @@ module AccountsPersons =
                 Year = year
             }
 
-    module Update'DobDateOfBirthSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Update'DobDateOfBirthSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Update'DocumentsCompanyAuthorization =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -10432,16 +6467,6 @@ module AccountsPersons =
         static member New(?files: Choice<string,string> list) =
             {
                 Files = files
-            }
-
-    module Update'DocumentsCompanyAuthorization =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Update'DocumentsCompanyAuthorization
-            =
-            {
-              Files = files
             }
 
     type Update'DocumentsPassport =
@@ -10457,16 +6482,6 @@ module AccountsPersons =
                 Files = files
             }
 
-    module Update'DocumentsPassport =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Update'DocumentsPassport
-            =
-            {
-              Files = files
-            }
-
     type Update'DocumentsVisa =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -10478,16 +6493,6 @@ module AccountsPersons =
         static member New(?files: Choice<string,string> list) =
             {
                 Files = files
-            }
-
-    module Update'DocumentsVisa =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Update'DocumentsVisa
-            =
-            {
-              Files = files
             }
 
     type Update'Documents =
@@ -10509,20 +6514,6 @@ module AccountsPersons =
                 CompanyAuthorization = companyAuthorization
                 Passport = passport
                 Visa = visa
-            }
-
-    module Update'Documents =
-        let create
-            (
-                companyAuthorization: Update'DocumentsCompanyAuthorization option,
-                passport: Update'DocumentsPassport option,
-                visa: Update'DocumentsVisa option
-            ) : Update'Documents
-            =
-            {
-              CompanyAuthorization = companyAuthorization
-              Passport = passport
-              Visa = visa
             }
 
     type Update'PoliticalExposure =
@@ -10560,26 +6551,6 @@ module AccountsPersons =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Update'RegisteredAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'RegisteredAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Update'Relationship =
@@ -10623,30 +6594,6 @@ module AccountsPersons =
                 Title = title
             }
 
-    module Update'Relationship =
-        let create
-            (
-                authorizer: bool option,
-                director: bool option,
-                executive: bool option,
-                legalGuardian: bool option,
-                owner: bool option,
-                percentOwnership: Choice<decimal,string> option,
-                representative: bool option,
-                title: string option
-            ) : Update'Relationship
-            =
-            {
-              Authorizer = authorizer
-              Director = director
-              Executive = executive
-              LegalGuardian = legalGuardian
-              Owner = owner
-              PercentOwnership = percentOwnership
-              Representative = representative
-              Title = title
-            }
-
     type Update'UsCfpbDataEthnicityDetailsEthnicity =
         | Cuban
         | HispanicOrLatino
@@ -10671,18 +6618,6 @@ module AccountsPersons =
             {
                 Ethnicity = ethnicity
                 EthnicityOther = ethnicityOther
-            }
-
-    module Update'UsCfpbDataEthnicityDetails =
-        let create
-            (
-                ethnicity: Update'UsCfpbDataEthnicityDetailsEthnicity list option,
-                ethnicityOther: string option
-            ) : Update'UsCfpbDataEthnicityDetails
-            =
-            {
-              Ethnicity = ethnicity
-              EthnicityOther = ethnicityOther
             }
 
     type Update'UsCfpbDataRaceDetailsRace =
@@ -10728,18 +6663,6 @@ module AccountsPersons =
                 RaceOther = raceOther
             }
 
-    module Update'UsCfpbDataRaceDetails =
-        let create
-            (
-                race: Update'UsCfpbDataRaceDetailsRace list option,
-                raceOther: string option
-            ) : Update'UsCfpbDataRaceDetails
-            =
-            {
-              Race = race
-              RaceOther = raceOther
-            }
-
     type Update'UsCfpbData =
         {
             /// The persons ethnicity details
@@ -10761,20 +6684,6 @@ module AccountsPersons =
                 SelfIdentifiedGender = selfIdentifiedGender
             }
 
-    module Update'UsCfpbData =
-        let create
-            (
-                ethnicityDetails: Update'UsCfpbDataEthnicityDetails option,
-                raceDetails: Update'UsCfpbDataRaceDetails option,
-                selfIdentifiedGender: string option
-            ) : Update'UsCfpbData
-            =
-            {
-              EthnicityDetails = ethnicityDetails
-              RaceDetails = raceDetails
-              SelfIdentifiedGender = selfIdentifiedGender
-            }
-
     type Update'VerificationAdditionalDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`. The uploaded file needs to be a color image (smaller than 8,000px by 8,000px), in JPG, PNG, or PDF format, and less than 10 MB in size.
@@ -10790,18 +6699,6 @@ module AccountsPersons =
             {
                 Back = back
                 Front = front
-            }
-
-    module Update'VerificationAdditionalDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Update'VerificationAdditionalDocument
-            =
-            {
-              Back = back
-              Front = front
             }
 
     type Update'VerificationDocument =
@@ -10821,18 +6718,6 @@ module AccountsPersons =
                 Front = front
             }
 
-    module Update'VerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Update'VerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Update'Verification =
         {
             /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
@@ -10848,18 +6733,6 @@ module AccountsPersons =
             {
                 AdditionalDocument = additionalDocument
                 Document = document
-            }
-
-    module Update'Verification =
-        let create
-            (
-                additionalDocument: Update'VerificationAdditionalDocument option,
-                document: Update'VerificationDocument option
-            ) : Update'Verification
-            =
-            {
-              AdditionalDocument = additionalDocument
-              Document = document
             }
 
     type UpdateOptions =
@@ -10993,47 +6866,6 @@ module AccountsPersons =
                 Verification = verification
             }
 
-    module UpdateOptions =
-        let create
-            (
-                account: string,
-                person: string
-            ) : UpdateOptions
-            =
-            {
-              Account = account
-              Person = person
-              AdditionalTosAcceptances = None
-              Address = None
-              AddressKana = None
-              AddressKanji = None
-              Dob = None
-              Documents = None
-              Email = None
-              Expand = None
-              FirstName = None
-              FirstNameKana = None
-              FirstNameKanji = None
-              FullNameAliases = None
-              Gender = None
-              IdNumber = None
-              IdNumberSecondary = None
-              LastName = None
-              LastNameKana = None
-              LastNameKanji = None
-              MaidenName = None
-              Metadata = None
-              Nationality = None
-              PersonToken = None
-              Phone = None
-              PoliticalExposure = None
-              RegisteredAddress = None
-              Relationship = None
-              SsnLast4 = None
-              UsCfpbData = None
-              Verification = None
-            }
-
     ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
     let Persons settings (options: PersonsOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("relationship", options.Relationship |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -11081,19 +6913,6 @@ module AccountsReject =
                 Account = account
                 Reason = reason
                 Expand = expand
-            }
-
-    module RejectOptions =
-        let create
-            (
-                account: string,
-                reason: string
-            ) : RejectOptions
-            =
-            {
-              Account = account
-              Reason = reason
-              Expand = None
             }
 
     ///<p>With <a href="/connect">Connect</a>, you can reject accounts that you have flagged as suspicious.</p>

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Tokens =
 
     type Create'AccountBusinessType =
@@ -47,26 +47,6 @@ module Tokens =
                 State = state
             }
 
-    module Create'AccountCompanyAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'AccountCompanyAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'AccountCompanyAddressKana =
         {
             /// City or ward.
@@ -102,28 +82,6 @@ module Tokens =
                 PostalCode = postalCode
                 State = state
                 Town = town
-            }
-
-    module Create'AccountCompanyAddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AccountCompanyAddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
             }
 
     type Create'AccountCompanyAddressKanji =
@@ -163,28 +121,6 @@ module Tokens =
                 Town = town
             }
 
-    module Create'AccountCompanyAddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AccountCompanyAddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'AccountCompanyDirectorshipDeclaration =
         {
             /// The Unix timestamp marking when the directorship declaration attestation was made.
@@ -206,20 +142,6 @@ module Tokens =
                 UserAgent = userAgent
             }
 
-    module Create'AccountCompanyDirectorshipDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Create'AccountCompanyDirectorshipDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Create'AccountCompanyOwnershipDeclaration =
         {
             /// The Unix timestamp marking when the beneficial owner attestation was made.
@@ -239,20 +161,6 @@ module Tokens =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Create'AccountCompanyOwnershipDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Create'AccountCompanyOwnershipDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Create'AccountCompanyOwnershipExemptionReason =
@@ -280,20 +188,6 @@ module Tokens =
                 Year = year
             }
 
-    module Create'AccountCompanyRegistrationDateRegistrationDateSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'AccountCompanyRegistrationDateRegistrationDateSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Create'AccountCompanyRepresentativeDeclaration =
         {
             /// The Unix timestamp marking when the representative declaration attestation was made.
@@ -313,20 +207,6 @@ module Tokens =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Create'AccountCompanyRepresentativeDeclaration =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Create'AccountCompanyRepresentativeDeclaration
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Create'AccountCompanyStructure =
@@ -371,18 +251,6 @@ module Tokens =
                 Front = front
             }
 
-    module Create'AccountCompanyVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'AccountCompanyVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Create'AccountCompanyVerification =
         {
             /// A document verifying the business.
@@ -394,16 +262,6 @@ module Tokens =
         static member New(?document: Create'AccountCompanyVerificationDocument) =
             {
                 Document = document
-            }
-
-    module Create'AccountCompanyVerification =
-        let create
-            (
-                document: Create'AccountCompanyVerificationDocument option
-            ) : Create'AccountCompanyVerification
-            =
-            {
-              Document = document
             }
 
     type Create'AccountCompany =
@@ -511,62 +369,6 @@ module Tokens =
                 Verification = verification
             }
 
-    module Create'AccountCompany =
-        let create
-            (
-                address: Create'AccountCompanyAddress option,
-                addressKana: Create'AccountCompanyAddressKana option,
-                addressKanji: Create'AccountCompanyAddressKanji option,
-                directorsProvided: bool option,
-                directorshipDeclaration: Create'AccountCompanyDirectorshipDeclaration option,
-                executivesProvided: bool option,
-                exportLicenseId: string option,
-                exportPurposeCode: string option,
-                name: string option,
-                nameKana: string option,
-                nameKanji: string option,
-                ownersProvided: bool option,
-                ownershipDeclaration: Create'AccountCompanyOwnershipDeclaration option,
-                ownershipDeclarationShownAndSigned: bool option,
-                ownershipExemptionReason: Create'AccountCompanyOwnershipExemptionReason option,
-                phone: string option,
-                registrationDate: Choice<Create'AccountCompanyRegistrationDateRegistrationDateSpecs,string> option,
-                registrationNumber: string option,
-                representativeDeclaration: Create'AccountCompanyRepresentativeDeclaration option,
-                structure: Create'AccountCompanyStructure option,
-                taxId: string option,
-                taxIdRegistrar: string option,
-                vatId: string option,
-                verification: Create'AccountCompanyVerification option
-            ) : Create'AccountCompany
-            =
-            {
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              DirectorsProvided = directorsProvided
-              DirectorshipDeclaration = directorshipDeclaration
-              ExecutivesProvided = executivesProvided
-              ExportLicenseId = exportLicenseId
-              ExportPurposeCode = exportPurposeCode
-              Name = name
-              NameKana = nameKana
-              NameKanji = nameKanji
-              OwnersProvided = ownersProvided
-              OwnershipDeclaration = ownershipDeclaration
-              OwnershipDeclarationShownAndSigned = ownershipDeclarationShownAndSigned
-              OwnershipExemptionReason = ownershipExemptionReason
-              Phone = phone
-              RegistrationDate = registrationDate
-              RegistrationNumber = registrationNumber
-              RepresentativeDeclaration = representativeDeclaration
-              Structure = structure
-              TaxId = taxId
-              TaxIdRegistrar = taxIdRegistrar
-              VatId = vatId
-              Verification = verification
-            }
-
     type Create'AccountIndividualAddress =
         {
             /// City, district, suburb, town, or village.
@@ -598,26 +400,6 @@ module Tokens =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'AccountIndividualAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'AccountIndividualAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'AccountIndividualAddressKana =
@@ -657,28 +439,6 @@ module Tokens =
                 Town = town
             }
 
-    module Create'AccountIndividualAddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AccountIndividualAddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'AccountIndividualAddressKanji =
         {
             /// City or ward.
@@ -716,28 +476,6 @@ module Tokens =
                 Town = town
             }
 
-    module Create'AccountIndividualAddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'AccountIndividualAddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'AccountIndividualDobDateOfBirthSpecs =
         {
             /// The day of birth, between 1 and 31.
@@ -757,20 +495,6 @@ module Tokens =
                 Day = day
                 Month = month
                 Year = year
-            }
-
-    module Create'AccountIndividualDobDateOfBirthSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'AccountIndividualDobDateOfBirthSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
             }
 
     type Create'AccountIndividualPoliticalExposure =
@@ -810,26 +534,6 @@ module Tokens =
                 State = state
             }
 
-    module Create'AccountIndividualRegisteredAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'AccountIndividualRegisteredAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'AccountIndividualRelationship =
         {
             /// Whether the person is a director of the account's legal entity. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations.
@@ -859,24 +563,6 @@ module Tokens =
                 Title = title
             }
 
-    module Create'AccountIndividualRelationship =
-        let create
-            (
-                director: bool option,
-                executive: bool option,
-                owner: bool option,
-                percentOwnership: Choice<decimal,string> option,
-                title: string option
-            ) : Create'AccountIndividualRelationship
-            =
-            {
-              Director = director
-              Executive = executive
-              Owner = owner
-              PercentOwnership = percentOwnership
-              Title = title
-            }
-
     type Create'AccountIndividualVerificationAdditionalDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`. The uploaded file needs to be a color image (smaller than 8,000px by 8,000px), in JPG, PNG, or PDF format, and less than 10 MB in size.
@@ -892,18 +578,6 @@ module Tokens =
             {
                 Back = back
                 Front = front
-            }
-
-    module Create'AccountIndividualVerificationAdditionalDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'AccountIndividualVerificationAdditionalDocument
-            =
-            {
-              Back = back
-              Front = front
             }
 
     type Create'AccountIndividualVerificationDocument =
@@ -923,18 +597,6 @@ module Tokens =
                 Front = front
             }
 
-    module Create'AccountIndividualVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'AccountIndividualVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Create'AccountIndividualVerification =
         {
             /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
@@ -950,18 +612,6 @@ module Tokens =
             {
                 AdditionalDocument = additionalDocument
                 Document = document
-            }
-
-    module Create'AccountIndividualVerification =
-        let create
-            (
-                additionalDocument: Create'AccountIndividualVerificationAdditionalDocument option,
-                document: Create'AccountIndividualVerificationDocument option
-            ) : Create'AccountIndividualVerification
-            =
-            {
-              AdditionalDocument = additionalDocument
-              Document = document
             }
 
     type Create'AccountIndividual =
@@ -1065,60 +715,6 @@ module Tokens =
                 Verification = verification
             }
 
-    module Create'AccountIndividual =
-        let create
-            (
-                address: Create'AccountIndividualAddress option,
-                addressKana: Create'AccountIndividualAddressKana option,
-                addressKanji: Create'AccountIndividualAddressKanji option,
-                dob: Choice<Create'AccountIndividualDobDateOfBirthSpecs,string> option,
-                email: string option,
-                firstName: string option,
-                firstNameKana: string option,
-                firstNameKanji: string option,
-                fullNameAliases: Choice<string list,string> option,
-                gender: string option,
-                idNumber: string option,
-                idNumberSecondary: string option,
-                lastName: string option,
-                lastNameKana: string option,
-                lastNameKanji: string option,
-                maidenName: string option,
-                metadata: Map<string, string> option,
-                phone: string option,
-                politicalExposure: Create'AccountIndividualPoliticalExposure option,
-                registeredAddress: Create'AccountIndividualRegisteredAddress option,
-                relationship: Create'AccountIndividualRelationship option,
-                ssnLast4: string option,
-                verification: Create'AccountIndividualVerification option
-            ) : Create'AccountIndividual
-            =
-            {
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              Dob = dob
-              Email = email
-              FirstName = firstName
-              FirstNameKana = firstNameKana
-              FirstNameKanji = firstNameKanji
-              FullNameAliases = fullNameAliases
-              Gender = gender
-              IdNumber = idNumber
-              IdNumberSecondary = idNumberSecondary
-              LastName = lastName
-              LastNameKana = lastNameKana
-              LastNameKanji = lastNameKanji
-              MaidenName = maidenName
-              Metadata = metadata
-              Phone = phone
-              PoliticalExposure = politicalExposure
-              RegisteredAddress = registeredAddress
-              Relationship = relationship
-              SsnLast4 = ssnLast4
-              Verification = verification
-            }
-
     type Create'Account =
         {
             /// The business type.
@@ -1142,22 +738,6 @@ module Tokens =
                 Company = company
                 Individual = individual
                 TosShownAndAccepted = tosShownAndAccepted
-            }
-
-    module Create'Account =
-        let create
-            (
-                businessType: Create'AccountBusinessType option,
-                company: Create'AccountCompany option,
-                individual: Create'AccountIndividual option,
-                tosShownAndAccepted: bool option
-            ) : Create'Account
-            =
-            {
-              BusinessType = businessType
-              Company = company
-              Individual = individual
-              TosShownAndAccepted = tosShownAndAccepted
             }
 
     type Create'BankAccountAccountHolderType =
@@ -1211,30 +791,6 @@ module Tokens =
                 RoutingNumber = routingNumber
             }
 
-    module Create'BankAccount =
-        let create
-            (
-                accountHolderName: string option,
-                accountHolderType: Create'BankAccountAccountHolderType option,
-                accountNumber: string option,
-                accountType: Create'BankAccountAccountType option,
-                country: IsoTypes.IsoCountryCode option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                paymentMethod: string option,
-                routingNumber: string option
-            ) : Create'BankAccount
-            =
-            {
-              AccountHolderName = accountHolderName
-              AccountHolderType = accountHolderType
-              AccountNumber = accountNumber
-              AccountType = accountType
-              Country = country
-              Currency = currency
-              PaymentMethod = paymentMethod
-              RoutingNumber = routingNumber
-            }
-
     type Create'CardCreditCardSpecsNetworksPreferred =
         | CartesBancaires
         | Mastercard
@@ -1251,16 +807,6 @@ module Tokens =
         static member New(?preferred: Create'CardCreditCardSpecsNetworksPreferred) =
             {
                 Preferred = preferred
-            }
-
-    module Create'CardCreditCardSpecsNetworks =
-        let create
-            (
-                preferred: Create'CardCreditCardSpecsNetworksPreferred option
-            ) : Create'CardCreditCardSpecsNetworks
-            =
-            {
-              Preferred = preferred
             }
 
     type Create'CardCreditCardSpecs =
@@ -1324,40 +870,6 @@ module Tokens =
                 Number = number
             }
 
-    module Create'CardCreditCardSpecs =
-        let create
-            (
-                addressCity: string option,
-                addressCountry: IsoTypes.IsoCountryCode option,
-                addressLine1: string option,
-                addressLine2: string option,
-                addressState: string option,
-                addressZip: string option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                cvc: string option,
-                expMonth: string option,
-                expYear: string option,
-                name: string option,
-                networks: Create'CardCreditCardSpecsNetworks option,
-                number: string option
-            ) : Create'CardCreditCardSpecs
-            =
-            {
-              AddressCity = addressCity
-              AddressCountry = addressCountry
-              AddressLine1 = addressLine1
-              AddressLine2 = addressLine2
-              AddressState = addressState
-              AddressZip = addressZip
-              Currency = currency
-              Cvc = cvc
-              ExpMonth = expMonth
-              ExpYear = expYear
-              Name = name
-              Networks = networks
-              Number = number
-            }
-
     type Create'CvcUpdate =
         {
             /// The CVC value, in string form.
@@ -1369,16 +881,6 @@ module Tokens =
         static member New(?cvc: string) =
             {
                 Cvc = cvc
-            }
-
-    module Create'CvcUpdate =
-        let create
-            (
-                cvc: string option
-            ) : Create'CvcUpdate
-            =
-            {
-              Cvc = cvc
             }
 
     type Create'PersonAdditionalTosAcceptancesAccount =
@@ -1402,20 +904,6 @@ module Tokens =
                 UserAgent = userAgent
             }
 
-    module Create'PersonAdditionalTosAcceptancesAccount =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: Choice<string,string> option
-            ) : Create'PersonAdditionalTosAcceptancesAccount
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
-            }
-
     type Create'PersonAdditionalTosAcceptances =
         {
             /// Details on the legal guardian's acceptance of the main Stripe service agreement.
@@ -1427,16 +915,6 @@ module Tokens =
         static member New(?account: Create'PersonAdditionalTosAcceptancesAccount) =
             {
                 Account = account
-            }
-
-    module Create'PersonAdditionalTosAcceptances =
-        let create
-            (
-                account: Create'PersonAdditionalTosAcceptancesAccount option
-            ) : Create'PersonAdditionalTosAcceptances
-            =
-            {
-              Account = account
             }
 
     type Create'PersonAddress =
@@ -1470,26 +948,6 @@ module Tokens =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'PersonAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'PersonAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'PersonAddressKana =
@@ -1529,28 +987,6 @@ module Tokens =
                 Town = town
             }
 
-    module Create'PersonAddressKana =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'PersonAddressKana
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'PersonAddressKanji =
         {
             /// City or ward.
@@ -1588,28 +1024,6 @@ module Tokens =
                 Town = town
             }
 
-    module Create'PersonAddressKanji =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option,
-                town: string option
-            ) : Create'PersonAddressKanji
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-              Town = town
-            }
-
     type Create'PersonDobDateOfBirthSpecs =
         {
             /// The day of birth, between 1 and 31.
@@ -1631,20 +1045,6 @@ module Tokens =
                 Year = year
             }
 
-    module Create'PersonDobDateOfBirthSpecs =
-        let create
-            (
-                day: int option,
-                month: int option,
-                year: int option
-            ) : Create'PersonDobDateOfBirthSpecs
-            =
-            {
-              Day = day
-              Month = month
-              Year = year
-            }
-
     type Create'PersonDocumentsCompanyAuthorization =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -1656,16 +1056,6 @@ module Tokens =
         static member New(?files: Choice<string,string> list) =
             {
                 Files = files
-            }
-
-    module Create'PersonDocumentsCompanyAuthorization =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Create'PersonDocumentsCompanyAuthorization
-            =
-            {
-              Files = files
             }
 
     type Create'PersonDocumentsPassport =
@@ -1681,16 +1071,6 @@ module Tokens =
                 Files = files
             }
 
-    module Create'PersonDocumentsPassport =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Create'PersonDocumentsPassport
-            =
-            {
-              Files = files
-            }
-
     type Create'PersonDocumentsVisa =
         {
             /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
@@ -1702,16 +1082,6 @@ module Tokens =
         static member New(?files: Choice<string,string> list) =
             {
                 Files = files
-            }
-
-    module Create'PersonDocumentsVisa =
-        let create
-            (
-                files: Choice<string,string> list option
-            ) : Create'PersonDocumentsVisa
-            =
-            {
-              Files = files
             }
 
     type Create'PersonDocuments =
@@ -1733,20 +1103,6 @@ module Tokens =
                 CompanyAuthorization = companyAuthorization
                 Passport = passport
                 Visa = visa
-            }
-
-    module Create'PersonDocuments =
-        let create
-            (
-                companyAuthorization: Create'PersonDocumentsCompanyAuthorization option,
-                passport: Create'PersonDocumentsPassport option,
-                visa: Create'PersonDocumentsVisa option
-            ) : Create'PersonDocuments
-            =
-            {
-              CompanyAuthorization = companyAuthorization
-              Passport = passport
-              Visa = visa
             }
 
     type Create'PersonPoliticalExposure =
@@ -1784,26 +1140,6 @@ module Tokens =
                 Line2 = line2
                 PostalCode = postalCode
                 State = state
-            }
-
-    module Create'PersonRegisteredAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'PersonRegisteredAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
             }
 
     type Create'PersonRelationship =
@@ -1847,30 +1183,6 @@ module Tokens =
                 Title = title
             }
 
-    module Create'PersonRelationship =
-        let create
-            (
-                authorizer: bool option,
-                director: bool option,
-                executive: bool option,
-                legalGuardian: bool option,
-                owner: bool option,
-                percentOwnership: Choice<decimal,string> option,
-                representative: bool option,
-                title: string option
-            ) : Create'PersonRelationship
-            =
-            {
-              Authorizer = authorizer
-              Director = director
-              Executive = executive
-              LegalGuardian = legalGuardian
-              Owner = owner
-              PercentOwnership = percentOwnership
-              Representative = representative
-              Title = title
-            }
-
     type Create'PersonUsCfpbDataEthnicityDetailsEthnicity =
         | Cuban
         | HispanicOrLatino
@@ -1895,18 +1207,6 @@ module Tokens =
             {
                 Ethnicity = ethnicity
                 EthnicityOther = ethnicityOther
-            }
-
-    module Create'PersonUsCfpbDataEthnicityDetails =
-        let create
-            (
-                ethnicity: Create'PersonUsCfpbDataEthnicityDetailsEthnicity list option,
-                ethnicityOther: string option
-            ) : Create'PersonUsCfpbDataEthnicityDetails
-            =
-            {
-              Ethnicity = ethnicity
-              EthnicityOther = ethnicityOther
             }
 
     type Create'PersonUsCfpbDataRaceDetailsRace =
@@ -1952,18 +1252,6 @@ module Tokens =
                 RaceOther = raceOther
             }
 
-    module Create'PersonUsCfpbDataRaceDetails =
-        let create
-            (
-                race: Create'PersonUsCfpbDataRaceDetailsRace list option,
-                raceOther: string option
-            ) : Create'PersonUsCfpbDataRaceDetails
-            =
-            {
-              Race = race
-              RaceOther = raceOther
-            }
-
     type Create'PersonUsCfpbData =
         {
             /// The persons ethnicity details
@@ -1985,20 +1273,6 @@ module Tokens =
                 SelfIdentifiedGender = selfIdentifiedGender
             }
 
-    module Create'PersonUsCfpbData =
-        let create
-            (
-                ethnicityDetails: Create'PersonUsCfpbDataEthnicityDetails option,
-                raceDetails: Create'PersonUsCfpbDataRaceDetails option,
-                selfIdentifiedGender: string option
-            ) : Create'PersonUsCfpbData
-            =
-            {
-              EthnicityDetails = ethnicityDetails
-              RaceDetails = raceDetails
-              SelfIdentifiedGender = selfIdentifiedGender
-            }
-
     type Create'PersonVerificationAdditionalDocument =
         {
             /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`. The uploaded file needs to be a color image (smaller than 8,000px by 8,000px), in JPG, PNG, or PDF format, and less than 10 MB in size.
@@ -2014,18 +1288,6 @@ module Tokens =
             {
                 Back = back
                 Front = front
-            }
-
-    module Create'PersonVerificationAdditionalDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'PersonVerificationAdditionalDocument
-            =
-            {
-              Back = back
-              Front = front
             }
 
     type Create'PersonVerificationDocument =
@@ -2045,18 +1307,6 @@ module Tokens =
                 Front = front
             }
 
-    module Create'PersonVerificationDocument =
-        let create
-            (
-                back: string option,
-                front: string option
-            ) : Create'PersonVerificationDocument
-            =
-            {
-              Back = back
-              Front = front
-            }
-
     type Create'PersonVerification =
         {
             /// A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.
@@ -2072,18 +1322,6 @@ module Tokens =
             {
                 AdditionalDocument = additionalDocument
                 Document = document
-            }
-
-    module Create'PersonVerification =
-        let create
-            (
-                additionalDocument: Create'PersonVerificationAdditionalDocument option,
-                document: Create'PersonVerificationDocument option
-            ) : Create'PersonVerification
-            =
-            {
-              AdditionalDocument = additionalDocument
-              Document = document
             }
 
     type Create'Person =
@@ -2203,68 +1441,6 @@ module Tokens =
                 Verification = verification
             }
 
-    module Create'Person =
-        let create
-            (
-                additionalTosAcceptances: Create'PersonAdditionalTosAcceptances option,
-                address: Create'PersonAddress option,
-                addressKana: Create'PersonAddressKana option,
-                addressKanji: Create'PersonAddressKanji option,
-                dob: Choice<Create'PersonDobDateOfBirthSpecs,string> option,
-                documents: Create'PersonDocuments option,
-                email: string option,
-                firstName: string option,
-                firstNameKana: string option,
-                firstNameKanji: string option,
-                fullNameAliases: Choice<string list,string> option,
-                gender: string option,
-                idNumber: string option,
-                idNumberSecondary: string option,
-                lastName: string option,
-                lastNameKana: string option,
-                lastNameKanji: string option,
-                maidenName: string option,
-                metadata: Map<string, string> option,
-                nationality: string option,
-                phone: string option,
-                politicalExposure: Create'PersonPoliticalExposure option,
-                registeredAddress: Create'PersonRegisteredAddress option,
-                relationship: Create'PersonRelationship option,
-                ssnLast4: string option,
-                usCfpbData: Create'PersonUsCfpbData option,
-                verification: Create'PersonVerification option
-            ) : Create'Person
-            =
-            {
-              AdditionalTosAcceptances = additionalTosAcceptances
-              Address = address
-              AddressKana = addressKana
-              AddressKanji = addressKanji
-              Dob = dob
-              Documents = documents
-              Email = email
-              FirstName = firstName
-              FirstNameKana = firstNameKana
-              FirstNameKanji = firstNameKanji
-              FullNameAliases = fullNameAliases
-              Gender = gender
-              IdNumber = idNumber
-              IdNumberSecondary = idNumberSecondary
-              LastName = lastName
-              LastNameKana = lastNameKana
-              LastNameKanji = lastNameKanji
-              MaidenName = maidenName
-              Metadata = metadata
-              Nationality = nationality
-              Phone = phone
-              PoliticalExposure = politicalExposure
-              RegisteredAddress = registeredAddress
-              Relationship = relationship
-              SsnLast4 = ssnLast4
-              UsCfpbData = usCfpbData
-              Verification = verification
-            }
-
     type Create'Pii =
         {
             /// The `id_number` for the PII, in string form.
@@ -2276,16 +1452,6 @@ module Tokens =
         static member New(?idNumber: string) =
             {
                 IdNumber = idNumber
-            }
-
-    module Create'Pii =
-        let create
-            (
-                idNumber: string option
-            ) : Create'Pii
-            =
-            {
-              IdNumber = idNumber
             }
 
     type CreateOptions =
@@ -2329,30 +1495,6 @@ module Tokens =
                 Pii = pii
             }
 
-    module CreateOptions =
-        let create
-            (
-                account: Create'Account option,
-                bankAccount: Create'BankAccount option,
-                card: Choice<Create'CardCreditCardSpecs,string> option,
-                customer: string option,
-                cvcUpdate: Create'CvcUpdate option,
-                expand: string list option,
-                person: Create'Person option,
-                pii: Create'Pii option
-            ) : CreateOptions
-            =
-            {
-              Account = account
-              BankAccount = bankAccount
-              Card = card
-              Customer = customer
-              CvcUpdate = cvcUpdate
-              Expand = expand
-              Person = person
-              Pii = pii
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2367,17 +1509,6 @@ module Tokens =
             {
                 Token = token
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                token: string
-            ) : RetrieveOptions
-            =
-            {
-              Token = token
-              Expand = None
             }
 
     ///<p>Creates a single-use token that represents a bank account’s details.

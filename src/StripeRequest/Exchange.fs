@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ExchangeRate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ExchangeRates =
 
     type ListOptions =
@@ -33,22 +33,6 @@ module ExchangeRates =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -63,17 +47,6 @@ module ExchangeRates =
             {
                 RateId = rateId
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                rateId: string
-            ) : RetrieveOptions
-            =
-            {
-              RateId = rateId
-              Expand = None
             }
 
     ///<p>[Deprecated] The <code>ExchangeRate</code> APIs are deprecated. Please use the <a href="https://docs.stripe.com/payments/currencies/localize-prices/fx-quotes-api">FX Quotes API</a> instead.</p>

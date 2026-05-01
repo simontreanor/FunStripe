@@ -6,7 +6,7 @@ open Stripe.Balance
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Balance =
 
     type RetrieveOptions =
@@ -20,16 +20,6 @@ module Balance =
         static member New(?expand: string list) =
             {
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                expand: string list option
-            ) : RetrieveOptions
-            =
-            {
-              Expand = expand
             }
 
     ///<p>Retrieves the current account balance, based on the authentication that was used to make the request.
@@ -86,32 +76,6 @@ module BalanceTransactions =
                 Type = type'
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                payout: string option,
-                source: string option,
-                startingAfter: string option,
-                type': string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Currency = currency
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Payout = payout
-              Source = source
-              StartingAfter = startingAfter
-              Type = type'
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -126,17 +90,6 @@ module BalanceTransactions =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.</p>

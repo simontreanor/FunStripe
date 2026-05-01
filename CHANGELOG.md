@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [2.0.3] - 2026-05-01
+
+### Fixed
+- `bool option` query parameters (e.g. `BillingPortalConfigurations.ListOptions.Active`) were silently dropped from query strings; `formatQueryString` now handles `bool option` and `bool`, serialising as lowercase `true`/`false`
+
+### Removed
+- Redundant `module XxxOptions = let create(...)` tupled-parameter constructors from all generated `src/StripeRequest/*.fs` files; the idiomatic `static member New(...)` augmentations remain the sole public construction API
+
+### Changed
+- `[<GeneratedCode("FunStripe", ...)>]` version updated from `"1.0.0"` to `"2.0.3"` in all generated files
+
+## [2.0.2] - 2026-05-01
+
+### Fixed
+- Removed obsolete `ModelBuilder` and `RequestBuilder` calls from `FunStripe.Generator` that referenced deleted monolithic generator code
+
+## [2.0.1] - 2026-05-01
+
+### Fixed
+- Removed stale `ModelBuilder.fs` / `RequestBuilder.fs` project references from `FunStripe.Generator.fsproj` that pointed to deleted files
+
 ## [2.0.0] - 2026-05-01
 
 ### Branch / package strategy

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.File
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Files =
 
     type ListOptions =
@@ -41,26 +41,6 @@ module Files =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                purpose: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Purpose = purpose
-              StartingAfter = startingAfter
-            }
-
     type Create'FileLinkData =
         {
             /// Set this to `true` to create a file link for the newly created file. Creating a link is only possible when the file's `purpose` is one of the following: `business_icon`, `business_logo`, `customer_signature`, `dispute_evidence`, `issuing_regulatory_reporting`, `pci_document`, `tax_document_user_upload`, `terminal_android_apk`, or `terminal_reader_splashscreen`.
@@ -80,20 +60,6 @@ module Files =
                 Create = create
                 ExpiresAt = expiresAt
                 Metadata = metadata
-            }
-
-    module Create'FileLinkData =
-        let create
-            (
-                create: bool option,
-                expiresAt: DateTime option,
-                metadata: Map<string, string> option
-            ) : Create'FileLinkData
-            =
-            {
-              Create = create
-              ExpiresAt = expiresAt
-              Metadata = metadata
             }
 
     type Create'Purpose =
@@ -138,20 +104,6 @@ module Files =
                 FileLinkData = fileLinkData
             }
 
-    module CreateOptions =
-        let create
-            (
-                file: string,
-                purpose: Create'Purpose
-            ) : CreateOptions
-            =
-            {
-              File = file
-              Purpose = purpose
-              Expand = None
-              FileLinkData = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -166,17 +118,6 @@ module Files =
             {
                 File = file
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                file: string
-            ) : RetrieveOptions
-            =
-            {
-              File = file
-              Expand = None
             }
 
     ///<p>Returns a list of the files that your account has access to. Stripe sorts and returns the files by their creation dates, placing the most recently created files at the top.</p>

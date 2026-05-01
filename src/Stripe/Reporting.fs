@@ -12,7 +12,7 @@ open Stripe.File
 /// for those Report Type IDs, along with required and optional parameters.
 /// Note that certain report types can only be run based on your live-mode data (not test-mode
 /// data), and will error when queried without a [live-mode API key](https://docs.stripe.com/keys#test-live-modes).
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type ReportingReportType =
     {
         /// Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.

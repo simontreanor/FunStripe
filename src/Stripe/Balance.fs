@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type BalanceAmountBySourceType =
     {
         /// Amount coming from [legacy US ACH payments](https://docs.stripe.com/ach-deprecated).

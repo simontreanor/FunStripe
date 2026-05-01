@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Subscriptions =
 
     type ListOptions =
@@ -77,44 +77,6 @@ module Subscriptions =
                 TestClock = testClock
             }
 
-    module ListOptions =
-        let create
-            (
-                automaticTax: Map<string, string> option,
-                collectionMethod: string option,
-                created: int option,
-                currentPeriodEnd: int option,
-                currentPeriodStart: int option,
-                customer: string option,
-                customerAccount: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                plan: string option,
-                price: string option,
-                startingAfter: string option,
-                status: string option,
-                testClock: string option
-            ) : ListOptions
-            =
-            {
-              AutomaticTax = automaticTax
-              CollectionMethod = collectionMethod
-              Created = created
-              CurrentPeriodEnd = currentPeriodEnd
-              CurrentPeriodStart = currentPeriodStart
-              Customer = customer
-              CustomerAccount = customerAccount
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              Plan = plan
-              Price = price
-              StartingAfter = startingAfter
-              Status = status
-              TestClock = testClock
-            }
-
     type Create'AddInvoiceItemsDiscounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -136,20 +98,6 @@ module Subscriptions =
                 PromotionCode = promotionCode
             }
 
-    module Create'AddInvoiceItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'AddInvoiceItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'AddInvoiceItemsPeriodEndType =
         | MinItemPeriodEnd
         | Timestamp
@@ -169,18 +117,6 @@ module Subscriptions =
             {
                 Timestamp = timestamp
                 Type = type'
-            }
-
-    module Create'AddInvoiceItemsPeriodEnd =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Create'AddInvoiceItemsPeriodEndType option
-            ) : Create'AddInvoiceItemsPeriodEnd
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
             }
 
     type Create'AddInvoiceItemsPeriodStartType =
@@ -205,18 +141,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Create'AddInvoiceItemsPeriodStart =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Create'AddInvoiceItemsPeriodStartType option
-            ) : Create'AddInvoiceItemsPeriodStart
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
-            }
-
     type Create'AddInvoiceItemsPeriod =
         {
             /// End of the invoice item period.
@@ -232,18 +156,6 @@ module Subscriptions =
             {
                 End = end'
                 Start = start
-            }
-
-    module Create'AddInvoiceItemsPeriod =
-        let create
-            (
-                end': Create'AddInvoiceItemsPeriodEnd option,
-                start: Create'AddInvoiceItemsPeriodStart option
-            ) : Create'AddInvoiceItemsPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type Create'AddInvoiceItemsPriceDataTaxBehavior =
@@ -278,24 +190,6 @@ module Subscriptions =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Create'AddInvoiceItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: Create'AddInvoiceItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'AddInvoiceItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Create'AddInvoiceItems =
@@ -335,28 +229,6 @@ module Subscriptions =
                 TaxRates = taxRates
             }
 
-    module Create'AddInvoiceItems =
-        let create
-            (
-                discounts: Create'AddInvoiceItemsDiscounts list option,
-                metadata: Map<string, string> option,
-                period: Create'AddInvoiceItemsPeriod option,
-                price: string option,
-                priceData: Create'AddInvoiceItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Create'AddInvoiceItems
-            =
-            {
-              Discounts = discounts
-              Metadata = metadata
-              Period = period
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Create'AutomaticTaxLiabilityType =
         | Account
         | Self
@@ -378,18 +250,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Create'AutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Create'AutomaticTaxLiabilityType option
-            ) : Create'AutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'AutomaticTax =
         {
             /// Enabled automatic tax calculation which will automatically compute tax rates on all invoices generated by the subscription.
@@ -405,18 +265,6 @@ module Subscriptions =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Create'AutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Create'AutomaticTaxLiability option
-            ) : Create'AutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Create'BillingCycleAnchorConfig =
@@ -448,24 +296,6 @@ module Subscriptions =
                 Second = second
             }
 
-    module Create'BillingCycleAnchorConfig =
-        let create
-            (
-                dayOfMonth: int option,
-                hour: int option,
-                minute: int option,
-                month: int option,
-                second: int option
-            ) : Create'BillingCycleAnchorConfig
-            =
-            {
-              DayOfMonth = dayOfMonth
-              Hour = hour
-              Minute = minute
-              Month = month
-              Second = second
-            }
-
     type Create'BillingModeFlexibleProrationDiscounts =
         | Included
         | Itemized
@@ -481,16 +311,6 @@ module Subscriptions =
         static member New(?prorationDiscounts: Create'BillingModeFlexibleProrationDiscounts) =
             {
                 ProrationDiscounts = prorationDiscounts
-            }
-
-    module Create'BillingModeFlexible =
-        let create
-            (
-                prorationDiscounts: Create'BillingModeFlexibleProrationDiscounts option
-            ) : Create'BillingModeFlexible
-            =
-            {
-              ProrationDiscounts = prorationDiscounts
             }
 
     type Create'BillingModeType =
@@ -514,18 +334,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Create'BillingMode =
-        let create
-            (
-                flexible: Create'BillingModeFlexible option,
-                type': Create'BillingModeType option
-            ) : Create'BillingMode
-            =
-            {
-              Flexible = flexible
-              Type = type'
-            }
-
     type Create'BillingThresholdsBillingThresholds =
         {
             /// Monetary threshold that triggers the subscription to advance to a new billing period
@@ -541,18 +349,6 @@ module Subscriptions =
             {
                 AmountGte = amountGte
                 ResetBillingCycleAnchor = resetBillingCycleAnchor
-            }
-
-    module Create'BillingThresholdsBillingThresholds =
-        let create
-            (
-                amountGte: int option,
-                resetBillingCycleAnchor: bool option
-            ) : Create'BillingThresholdsBillingThresholds
-            =
-            {
-              AmountGte = amountGte
-              ResetBillingCycleAnchor = resetBillingCycleAnchor
             }
 
     type Create'CancelAt =
@@ -584,20 +380,6 @@ module Subscriptions =
                 PromotionCode = promotionCode
             }
 
-    module Create'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'InvoiceSettingsIssuerType =
         | Account
         | Self
@@ -619,18 +401,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Create'InvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': Create'InvoiceSettingsIssuerType option
-            ) : Create'InvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'InvoiceSettings =
         {
             /// The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.
@@ -648,18 +418,6 @@ module Subscriptions =
                 Issuer = issuer
             }
 
-    module Create'InvoiceSettings =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                issuer: Create'InvoiceSettingsIssuer option
-            ) : Create'InvoiceSettings
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              Issuer = issuer
-            }
-
     type Create'ItemsBillingThresholdsItemBillingThresholds =
         {
             /// Number of units that meets the billing threshold to advance the subscription to a new billing period (e.g., it takes 10 $5 units to meet a $50 [monetary threshold](https://docs.stripe.com/api/subscriptions/update#update_subscription-billing_thresholds-amount_gte))
@@ -671,16 +429,6 @@ module Subscriptions =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module Create'ItemsBillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : Create'ItemsBillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type Create'ItemsDiscounts =
@@ -704,20 +452,6 @@ module Subscriptions =
                 PromotionCode = promotionCode
             }
 
-    module Create'ItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Create'ItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Create'ItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -739,18 +473,6 @@ module Subscriptions =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Create'ItemsPriceDataRecurring =
-        let create
-            (
-                interval: Create'ItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Create'ItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Create'ItemsPriceDataTaxBehavior =
@@ -789,26 +511,6 @@ module Subscriptions =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Create'ItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: Create'ItemsPriceDataRecurring option,
-                taxBehavior: Create'ItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'ItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Create'Items =
@@ -852,30 +554,6 @@ module Subscriptions =
                 TaxRates = taxRates
             }
 
-    module Create'Items =
-        let create
-            (
-                billingThresholds: Choice<Create'ItemsBillingThresholdsItemBillingThresholds,string> option,
-                discounts: Choice<Create'ItemsDiscounts list,string> option,
-                metadata: Map<string, string> option,
-                plan: string option,
-                price: string option,
-                priceData: Create'ItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Create'Items
-            =
-            {
-              BillingThresholds = billingThresholds
-              Discounts = discounts
-              Metadata = metadata
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Create'PaymentBehavior =
         | AllowIncomplete
         | DefaultIncomplete
@@ -898,16 +576,6 @@ module Subscriptions =
         static member New(?transactionType: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType) =
             {
                 TransactionType = transactionType
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                transactionType: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType option
-            ) : Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              TransactionType = transactionType
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod =
@@ -934,18 +602,6 @@ module Subscriptions =
                 VerificationMethod = verificationMethod
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions option,
-                verificationMethod: Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
-              VerificationMethod = verificationMethod
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage =
         | De
         | En
@@ -964,16 +620,6 @@ module Subscriptions =
         static member New(?preferredLanguage: Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions =
-        let create
-            (
-                preferredLanguage: Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage option
-            ) : Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions
-            =
-            {
-              PreferredLanguage = preferredLanguage
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptionsAmountType =
@@ -1000,20 +646,6 @@ module Subscriptions =
                 Amount = amount
                 AmountType = amountType
                 Description = description
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptionsAmountType option,
-                description: string option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsNetwork =
@@ -1059,20 +691,6 @@ module Subscriptions =
                 RequestThreeDSecure = requestThreeDSecure
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptions option,
-                network: Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsNetwork option,
-                requestThreeDSecure: Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsRequestThreeDSecure option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
-              Network = network
-              RequestThreeDSecure = requestThreeDSecure
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
         {
             /// The desired country code of the bank account information. Permitted values include: `DE`, `FR`, `IE`, or `NL`.
@@ -1084,16 +702,6 @@ module Subscriptions =
         static member New(?country: IsoTypes.IsoCountryCode) =
             {
                 Country = country
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer
-            =
-            {
-              Country = country
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
@@ -1114,18 +722,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
-        let create
-            (
-                euBankTransfer: Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer option,
-                type': string option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer
-            =
-            {
-              EuBankTransfer = euBankTransfer
-              Type = type'
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
         {
             /// Configuration for the bank transfer funding type, if the `funding_type` is set to `bank_transfer`.
@@ -1142,18 +738,6 @@ module Subscriptions =
             {
                 BankTransfer = bankTransfer
                 FundingType = fundingType
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
-        let create
-            (
-                bankTransfer: Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer option,
-                fundingType: string option
-            ) : Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions
-            =
-            {
-              BankTransfer = bankTransfer
-              FundingType = fundingType
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose =
@@ -1186,18 +770,6 @@ module Subscriptions =
                 Purpose = purpose
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                purpose: Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose option
-            ) : Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              Purpose = purpose
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
         {
             /// Additional fields for Mandate creation.
@@ -1209,16 +781,6 @@ module Subscriptions =
         static member New(?mandateOptions: Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions option
-            ) : Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptionsAmountIncludesIof =
@@ -1259,22 +821,6 @@ module Subscriptions =
                 PaymentSchedule = paymentSchedule
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountIncludesIof: Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptionsAmountIncludesIof option,
-                endDate: string option,
-                paymentSchedule: Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptionsPaymentSchedule option
-            ) : Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountIncludesIof = amountIncludesIof
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions =
         {
             /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
@@ -1291,18 +837,6 @@ module Subscriptions =
             {
                 ExpiresAfterSeconds = expiresAfterSeconds
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions =
-        let create
-            (
-                expiresAfterSeconds: int option,
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptions option
-            ) : Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions
-            =
-            {
-              ExpiresAfterSeconds = expiresAfterSeconds
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType =
@@ -1335,22 +869,6 @@ module Subscriptions =
                 EndDate = endDate
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
         {
             /// Configuration options for setting up an eMandate
@@ -1362,16 +880,6 @@ module Subscriptions =
         static member New(?mandateOptions: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories
@@ -1391,16 +899,6 @@ module Subscriptions =
         static member New(?accountSubcategories: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list) =
             {
                 AccountSubcategories = accountSubcategories
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters =
-        let create
-            (
-                accountSubcategories: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters
-            =
-            {
-              AccountSubcategories = accountSubcategories
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions =
@@ -1438,20 +936,6 @@ module Subscriptions =
                 Prefetch = prefetch
             }
 
-    module Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections =
-        let create
-            (
-                filters: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters option,
-                permissions: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions list option,
-                prefetch: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPrefetch list option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections
-            =
-            {
-              Filters = filters
-              Permissions = permissions
-              Prefetch = prefetch
-            }
-
     type Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod =
         | Automatic
         | Instant
@@ -1474,18 +958,6 @@ module Subscriptions =
             {
                 FinancialConnections = financialConnections
                 VerificationMethod = verificationMethod
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions =
-        let create
-            (
-                financialConnections: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections option,
-                verificationMethod: Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions
-            =
-            {
-              FinancialConnections = financialConnections
-              VerificationMethod = verificationMethod
             }
 
     type Create'PaymentSettingsPaymentMethodOptions =
@@ -1538,34 +1010,6 @@ module Subscriptions =
                 SepaDebit = sepaDebit
                 Upi = upi
                 UsBankAccount = usBankAccount
-            }
-
-    module Create'PaymentSettingsPaymentMethodOptions =
-        let create
-            (
-                acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string> option,
-                bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option,
-                card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string> option,
-                customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string> option,
-                konbini: Choice<string,string> option,
-                payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string> option,
-                pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string> option,
-                sepaDebit: Choice<string,string> option,
-                upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string> option,
-                usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string> option
-            ) : Create'PaymentSettingsPaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              Bancontact = bancontact
-              Card = card
-              CustomerBalance = customerBalance
-              Konbini = konbini
-              Payto = payto
-              Pix = pix
-              SepaDebit = sepaDebit
-              Upi = upi
-              UsBankAccount = usBankAccount
             }
 
     type Create'PaymentSettingsPaymentMethodTypes =
@@ -1639,20 +1083,6 @@ module Subscriptions =
                 SaveDefaultPaymentMethod = saveDefaultPaymentMethod
             }
 
-    module Create'PaymentSettings =
-        let create
-            (
-                paymentMethodOptions: Create'PaymentSettingsPaymentMethodOptions option,
-                paymentMethodTypes: Choice<Create'PaymentSettingsPaymentMethodTypes list,string> option,
-                saveDefaultPaymentMethod: Create'PaymentSettingsSaveDefaultPaymentMethod option
-            ) : Create'PaymentSettings
-            =
-            {
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-              SaveDefaultPaymentMethod = saveDefaultPaymentMethod
-            }
-
     type Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval =
         | Day
         | Month
@@ -1674,18 +1104,6 @@ module Subscriptions =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams =
-        let create
-            (
-                interval: Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval option,
-                intervalCount: int option
-            ) : Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Create'ProrationBehavior =
@@ -1710,18 +1128,6 @@ module Subscriptions =
                 Destination = destination
             }
 
-    module Create'TransferData =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : Create'TransferData
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
-            }
-
     type Create'TrialEnd = | Now
 
     type Create'TrialSettingsEndBehaviorMissingPaymentMethod =
@@ -1742,16 +1148,6 @@ module Subscriptions =
                 MissingPaymentMethod = missingPaymentMethod
             }
 
-    module Create'TrialSettingsEndBehavior =
-        let create
-            (
-                missingPaymentMethod: Create'TrialSettingsEndBehaviorMissingPaymentMethod option
-            ) : Create'TrialSettingsEndBehavior
-            =
-            {
-              MissingPaymentMethod = missingPaymentMethod
-            }
-
     type Create'TrialSettings =
         {
             /// Defines how the subscription should behave when the user's free trial ends.
@@ -1763,16 +1159,6 @@ module Subscriptions =
         static member New(?endBehavior: Create'TrialSettingsEndBehavior) =
             {
                 EndBehavior = endBehavior
-            }
-
-    module Create'TrialSettings =
-        let create
-            (
-                endBehavior: Create'TrialSettingsEndBehavior option
-            ) : Create'TrialSettings
-            =
-            {
-              EndBehavior = endBehavior
             }
 
     type CreateOptions =
@@ -1930,84 +1316,6 @@ module Subscriptions =
                 TrialSettings = trialSettings
             }
 
-    module CreateOptions =
-        let create
-            (
-                addInvoiceItems: Create'AddInvoiceItems list option,
-                applicationFeePercent: Choice<decimal,string> option,
-                automaticTax: Create'AutomaticTax option,
-                backdateStartDate: DateTime option,
-                billingCycleAnchor: DateTime option,
-                billingCycleAnchorConfig: Create'BillingCycleAnchorConfig option,
-                billingMode: Create'BillingMode option,
-                billingThresholds: Choice<Create'BillingThresholdsBillingThresholds,string> option,
-                cancelAt: Choice<DateTime,Create'CancelAt> option,
-                cancelAtPeriodEnd: bool option,
-                collectionMethod: Create'CollectionMethod option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customer: string option,
-                customerAccount: string option,
-                daysUntilDue: int option,
-                defaultPaymentMethod: string option,
-                defaultSource: string option,
-                defaultTaxRates: Choice<string list,string> option,
-                description: string option,
-                discounts: Choice<Create'Discounts list,string> option,
-                expand: string list option,
-                invoiceSettings: Create'InvoiceSettings option,
-                items: Create'Items list option,
-                metadata: Map<string, string> option,
-                offSession: bool option,
-                onBehalfOf: Choice<string,string> option,
-                paymentBehavior: Create'PaymentBehavior option,
-                paymentSettings: Create'PaymentSettings option,
-                pendingInvoiceItemInterval: Choice<Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string> option,
-                prorationBehavior: Create'ProrationBehavior option,
-                transferData: Create'TransferData option,
-                trialEnd: Choice<Create'TrialEnd,DateTime> option,
-                trialFromPlan: bool option,
-                trialPeriodDays: int option,
-                trialSettings: Create'TrialSettings option
-            ) : CreateOptions
-            =
-            {
-              AddInvoiceItems = addInvoiceItems
-              ApplicationFeePercent = applicationFeePercent
-              AutomaticTax = automaticTax
-              BackdateStartDate = backdateStartDate
-              BillingCycleAnchor = billingCycleAnchor
-              BillingCycleAnchorConfig = billingCycleAnchorConfig
-              BillingMode = billingMode
-              BillingThresholds = billingThresholds
-              CancelAt = cancelAt
-              CancelAtPeriodEnd = cancelAtPeriodEnd
-              CollectionMethod = collectionMethod
-              Currency = currency
-              Customer = customer
-              CustomerAccount = customerAccount
-              DaysUntilDue = daysUntilDue
-              DefaultPaymentMethod = defaultPaymentMethod
-              DefaultSource = defaultSource
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              Discounts = discounts
-              Expand = expand
-              InvoiceSettings = invoiceSettings
-              Items = items
-              Metadata = metadata
-              OffSession = offSession
-              OnBehalfOf = onBehalfOf
-              PaymentBehavior = paymentBehavior
-              PaymentSettings = paymentSettings
-              PendingInvoiceItemInterval = pendingInvoiceItemInterval
-              ProrationBehavior = prorationBehavior
-              TransferData = transferData
-              TrialEnd = trialEnd
-              TrialFromPlan = trialFromPlan
-              TrialPeriodDays = trialPeriodDays
-              TrialSettings = trialSettings
-            }
-
     type Cancel'CancellationDetailsFeedback =
         | CustomerService
         | LowQuality
@@ -2033,18 +1341,6 @@ module Subscriptions =
             {
                 Comment = comment
                 Feedback = feedback
-            }
-
-    module Cancel'CancellationDetails =
-        let create
-            (
-                comment: Choice<string,string> option,
-                feedback: Cancel'CancellationDetailsFeedback option
-            ) : Cancel'CancellationDetails
-            =
-            {
-              Comment = comment
-              Feedback = feedback
             }
 
     type CancelOptions =
@@ -2075,20 +1371,6 @@ module Subscriptions =
                 Prorate = prorate
             }
 
-    module CancelOptions =
-        let create
-            (
-                subscriptionExposedId: string
-            ) : CancelOptions
-            =
-            {
-              SubscriptionExposedId = subscriptionExposedId
-              CancellationDetails = None
-              Expand = None
-              InvoiceNow = None
-              Prorate = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2103,17 +1385,6 @@ module Subscriptions =
             {
                 SubscriptionExposedId = subscriptionExposedId
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                subscriptionExposedId: string
-            ) : RetrieveOptions
-            =
-            {
-              SubscriptionExposedId = subscriptionExposedId
-              Expand = None
             }
 
     type Update'AddInvoiceItemsDiscounts =
@@ -2137,20 +1408,6 @@ module Subscriptions =
                 PromotionCode = promotionCode
             }
 
-    module Update'AddInvoiceItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'AddInvoiceItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'AddInvoiceItemsPeriodEndType =
         | MinItemPeriodEnd
         | Timestamp
@@ -2170,18 +1427,6 @@ module Subscriptions =
             {
                 Timestamp = timestamp
                 Type = type'
-            }
-
-    module Update'AddInvoiceItemsPeriodEnd =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Update'AddInvoiceItemsPeriodEndType option
-            ) : Update'AddInvoiceItemsPeriodEnd
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
             }
 
     type Update'AddInvoiceItemsPeriodStartType =
@@ -2206,18 +1451,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Update'AddInvoiceItemsPeriodStart =
-        let create
-            (
-                timestamp: DateTime option,
-                type': Update'AddInvoiceItemsPeriodStartType option
-            ) : Update'AddInvoiceItemsPeriodStart
-            =
-            {
-              Timestamp = timestamp
-              Type = type'
-            }
-
     type Update'AddInvoiceItemsPeriod =
         {
             /// End of the invoice item period.
@@ -2233,18 +1466,6 @@ module Subscriptions =
             {
                 End = end'
                 Start = start
-            }
-
-    module Update'AddInvoiceItemsPeriod =
-        let create
-            (
-                end': Update'AddInvoiceItemsPeriodEnd option,
-                start: Update'AddInvoiceItemsPeriodStart option
-            ) : Update'AddInvoiceItemsPeriod
-            =
-            {
-              End = end'
-              Start = start
             }
 
     type Update'AddInvoiceItemsPriceDataTaxBehavior =
@@ -2279,24 +1500,6 @@ module Subscriptions =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Update'AddInvoiceItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                taxBehavior: Update'AddInvoiceItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'AddInvoiceItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Update'AddInvoiceItems =
@@ -2336,28 +1539,6 @@ module Subscriptions =
                 TaxRates = taxRates
             }
 
-    module Update'AddInvoiceItems =
-        let create
-            (
-                discounts: Update'AddInvoiceItemsDiscounts list option,
-                metadata: Map<string, string> option,
-                period: Update'AddInvoiceItemsPeriod option,
-                price: string option,
-                priceData: Update'AddInvoiceItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Update'AddInvoiceItems
-            =
-            {
-              Discounts = discounts
-              Metadata = metadata
-              Period = period
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Update'AutomaticTaxLiabilityType =
         | Account
         | Self
@@ -2379,18 +1560,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Update'AutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Update'AutomaticTaxLiabilityType option
-            ) : Update'AutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'AutomaticTax =
         {
             /// Enabled automatic tax calculation which will automatically compute tax rates on all invoices generated by the subscription.
@@ -2406,18 +1575,6 @@ module Subscriptions =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Update'AutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Update'AutomaticTaxLiability option
-            ) : Update'AutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Update'BillingCycleAnchor =
@@ -2439,18 +1596,6 @@ module Subscriptions =
             {
                 AmountGte = amountGte
                 ResetBillingCycleAnchor = resetBillingCycleAnchor
-            }
-
-    module Update'BillingThresholdsBillingThresholds =
-        let create
-            (
-                amountGte: int option,
-                resetBillingCycleAnchor: bool option
-            ) : Update'BillingThresholdsBillingThresholds
-            =
-            {
-              AmountGte = amountGte
-              ResetBillingCycleAnchor = resetBillingCycleAnchor
             }
 
     type Update'CancelAt =
@@ -2484,18 +1629,6 @@ module Subscriptions =
                 Feedback = feedback
             }
 
-    module Update'CancellationDetails =
-        let create
-            (
-                comment: Choice<string,string> option,
-                feedback: Update'CancellationDetailsFeedback option
-            ) : Update'CancellationDetails
-            =
-            {
-              Comment = comment
-              Feedback = feedback
-            }
-
     type Update'CollectionMethod =
         | ChargeAutomatically
         | SendInvoice
@@ -2521,20 +1654,6 @@ module Subscriptions =
                 PromotionCode = promotionCode
             }
 
-    module Update'Discounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'Discounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'InvoiceSettingsIssuerType =
         | Account
         | Self
@@ -2556,18 +1675,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Update'InvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': Update'InvoiceSettingsIssuerType option
-            ) : Update'InvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Update'InvoiceSettings =
         {
             /// The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.
@@ -2585,18 +1692,6 @@ module Subscriptions =
                 Issuer = issuer
             }
 
-    module Update'InvoiceSettings =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                issuer: Update'InvoiceSettingsIssuer option
-            ) : Update'InvoiceSettings
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              Issuer = issuer
-            }
-
     type Update'ItemsBillingThresholdsItemBillingThresholds =
         {
             /// Number of units that meets the billing threshold to advance the subscription to a new billing period (e.g., it takes 10 $5 units to meet a $50 [monetary threshold](https://docs.stripe.com/api/subscriptions/update#update_subscription-billing_thresholds-amount_gte))
@@ -2608,16 +1703,6 @@ module Subscriptions =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
-            }
-
-    module Update'ItemsBillingThresholdsItemBillingThresholds =
-        let create
-            (
-                usageGte: int option
-            ) : Update'ItemsBillingThresholdsItemBillingThresholds
-            =
-            {
-              UsageGte = usageGte
             }
 
     type Update'ItemsDiscounts =
@@ -2641,20 +1726,6 @@ module Subscriptions =
                 PromotionCode = promotionCode
             }
 
-    module Update'ItemsDiscounts =
-        let create
-            (
-                coupon: string option,
-                discount: string option,
-                promotionCode: string option
-            ) : Update'ItemsDiscounts
-            =
-            {
-              Coupon = coupon
-              Discount = discount
-              PromotionCode = promotionCode
-            }
-
     type Update'ItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -2676,18 +1747,6 @@ module Subscriptions =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Update'ItemsPriceDataRecurring =
-        let create
-            (
-                interval: Update'ItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Update'ItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Update'ItemsPriceDataTaxBehavior =
@@ -2726,26 +1785,6 @@ module Subscriptions =
                 TaxBehavior = taxBehavior
                 UnitAmount = unitAmount
                 UnitAmountDecimal = unitAmountDecimal
-            }
-
-    module Update'ItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                recurring: Update'ItemsPriceDataRecurring option,
-                taxBehavior: Update'ItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'ItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
             }
 
     type Update'Items =
@@ -2801,36 +1840,6 @@ module Subscriptions =
                 TaxRates = taxRates
             }
 
-    module Update'Items =
-        let create
-            (
-                billingThresholds: Choice<Update'ItemsBillingThresholdsItemBillingThresholds,string> option,
-                clearUsage: bool option,
-                deleted: bool option,
-                discounts: Choice<Update'ItemsDiscounts list,string> option,
-                id: string option,
-                metadata: Map<string, string> option,
-                plan: string option,
-                price: string option,
-                priceData: Update'ItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Update'Items
-            =
-            {
-              BillingThresholds = billingThresholds
-              ClearUsage = clearUsage
-              Deleted = deleted
-              Discounts = discounts
-              Id = id
-              Metadata = metadata
-              Plan = plan
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Update'PauseCollectionPauseCollectionBehavior =
         | KeepAsDraft
         | MarkUncollectible
@@ -2851,18 +1860,6 @@ module Subscriptions =
             {
                 Behavior = behavior
                 ResumesAt = resumesAt
-            }
-
-    module Update'PauseCollectionPauseCollection =
-        let create
-            (
-                behavior: Update'PauseCollectionPauseCollectionBehavior option,
-                resumesAt: DateTime option
-            ) : Update'PauseCollectionPauseCollection
-            =
-            {
-              Behavior = behavior
-              ResumesAt = resumesAt
             }
 
     type Update'PaymentBehavior =
@@ -2889,16 +1886,6 @@ module Subscriptions =
                 TransactionType = transactionType
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                transactionType: Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptionsTransactionType option
-            ) : Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              TransactionType = transactionType
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod =
         | Automatic
         | Instant
@@ -2923,18 +1910,6 @@ module Subscriptions =
                 VerificationMethod = verificationMethod
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsMandateOptions option,
-                verificationMethod: Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
-              VerificationMethod = verificationMethod
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage =
         | De
         | En
@@ -2953,16 +1928,6 @@ module Subscriptions =
         static member New(?preferredLanguage: Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions =
-        let create
-            (
-                preferredLanguage: Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage option
-            ) : Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions
-            =
-            {
-              PreferredLanguage = preferredLanguage
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptionsAmountType =
@@ -2989,20 +1954,6 @@ module Subscriptions =
                 Amount = amount
                 AmountType = amountType
                 Description = description
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptionsAmountType option,
-                description: string option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsNetwork =
@@ -3048,20 +1999,6 @@ module Subscriptions =
                 RequestThreeDSecure = requestThreeDSecure
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptions option,
-                network: Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsNetwork option,
-                requestThreeDSecure: Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsRequestThreeDSecure option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
-              Network = network
-              RequestThreeDSecure = requestThreeDSecure
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
         {
             /// The desired country code of the bank account information. Permitted values include: `DE`, `FR`, `IE`, or `NL`.
@@ -3073,16 +2010,6 @@ module Subscriptions =
         static member New(?country: IsoTypes.IsoCountryCode) =
             {
                 Country = country
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer
-            =
-            {
-              Country = country
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
@@ -3103,18 +2030,6 @@ module Subscriptions =
                 Type = type'
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer =
-        let create
-            (
-                euBankTransfer: Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransferEuBankTransfer option,
-                type': string option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer
-            =
-            {
-              EuBankTransfer = euBankTransfer
-              Type = type'
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
         {
             /// Configuration for the bank transfer funding type, if the `funding_type` is set to `bank_transfer`.
@@ -3131,18 +2046,6 @@ module Subscriptions =
             {
                 BankTransfer = bankTransfer
                 FundingType = fundingType
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions =
-        let create
-            (
-                bankTransfer: Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptionsBankTransfer option,
-                fundingType: string option
-            ) : Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions
-            =
-            {
-              BankTransfer = bankTransfer
-              FundingType = fundingType
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose =
@@ -3175,18 +2078,6 @@ module Subscriptions =
                 Purpose = purpose
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                purpose: Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptionsPurpose option
-            ) : Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              Purpose = purpose
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
         {
             /// Additional fields for Mandate creation.
@@ -3198,16 +2089,6 @@ module Subscriptions =
         static member New(?mandateOptions: Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptionsMandateOptions option
-            ) : Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptionsAmountIncludesIof =
@@ -3248,22 +2129,6 @@ module Subscriptions =
                 PaymentSchedule = paymentSchedule
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountIncludesIof: Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptionsAmountIncludesIof option,
-                endDate: string option,
-                paymentSchedule: Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptionsPaymentSchedule option
-            ) : Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountIncludesIof = amountIncludesIof
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions =
         {
             /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
@@ -3280,18 +2145,6 @@ module Subscriptions =
             {
                 ExpiresAfterSeconds = expiresAfterSeconds
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions =
-        let create
-            (
-                expiresAfterSeconds: int option,
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptionsMandateOptions option
-            ) : Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions
-            =
-            {
-              ExpiresAfterSeconds = expiresAfterSeconds
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType =
@@ -3324,22 +2177,6 @@ module Subscriptions =
                 EndDate = endDate
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
         {
             /// Configuration options for setting up an eMandate
@@ -3351,16 +2188,6 @@ module Subscriptions =
         static member New(?mandateOptions: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
-        let create
-            (
-                mandateOptions: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions
-            =
-            {
-              MandateOptions = mandateOptions
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories
@@ -3380,16 +2207,6 @@ module Subscriptions =
         static member New(?accountSubcategories: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list) =
             {
                 AccountSubcategories = accountSubcategories
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters =
-        let create
-            (
-                accountSubcategories: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFiltersAccountSubcategories list option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters
-            =
-            {
-              AccountSubcategories = accountSubcategories
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions =
@@ -3427,20 +2244,6 @@ module Subscriptions =
                 Prefetch = prefetch
             }
 
-    module Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections =
-        let create
-            (
-                filters: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsFilters option,
-                permissions: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPermissions list option,
-                prefetch: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnectionsPrefetch list option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections
-            =
-            {
-              Filters = filters
-              Permissions = permissions
-              Prefetch = prefetch
-            }
-
     type Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod =
         | Automatic
         | Instant
@@ -3463,18 +2266,6 @@ module Subscriptions =
             {
                 FinancialConnections = financialConnections
                 VerificationMethod = verificationMethod
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions =
-        let create
-            (
-                financialConnections: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsFinancialConnections option,
-                verificationMethod: Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptionsVerificationMethod option
-            ) : Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions
-            =
-            {
-              FinancialConnections = financialConnections
-              VerificationMethod = verificationMethod
             }
 
     type Update'PaymentSettingsPaymentMethodOptions =
@@ -3527,34 +2318,6 @@ module Subscriptions =
                 SepaDebit = sepaDebit
                 Upi = upi
                 UsBankAccount = usBankAccount
-            }
-
-    module Update'PaymentSettingsPaymentMethodOptions =
-        let create
-            (
-                acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string> option,
-                bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option,
-                card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string> option,
-                customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string> option,
-                konbini: Choice<string,string> option,
-                payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string> option,
-                pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string> option,
-                sepaDebit: Choice<string,string> option,
-                upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string> option,
-                usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string> option
-            ) : Update'PaymentSettingsPaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              Bancontact = bancontact
-              Card = card
-              CustomerBalance = customerBalance
-              Konbini = konbini
-              Payto = payto
-              Pix = pix
-              SepaDebit = sepaDebit
-              Upi = upi
-              UsBankAccount = usBankAccount
             }
 
     type Update'PaymentSettingsPaymentMethodTypes =
@@ -3628,20 +2391,6 @@ module Subscriptions =
                 SaveDefaultPaymentMethod = saveDefaultPaymentMethod
             }
 
-    module Update'PaymentSettings =
-        let create
-            (
-                paymentMethodOptions: Update'PaymentSettingsPaymentMethodOptions option,
-                paymentMethodTypes: Choice<Update'PaymentSettingsPaymentMethodTypes list,string> option,
-                saveDefaultPaymentMethod: Update'PaymentSettingsSaveDefaultPaymentMethod option
-            ) : Update'PaymentSettings
-            =
-            {
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-              SaveDefaultPaymentMethod = saveDefaultPaymentMethod
-            }
-
     type Update'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval =
         | Day
         | Month
@@ -3663,18 +2412,6 @@ module Subscriptions =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Update'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams =
-        let create
-            (
-                interval: Update'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParamsInterval option,
-                intervalCount: int option
-            ) : Update'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Update'ProrationBehavior =
@@ -3699,18 +2436,6 @@ module Subscriptions =
                 Destination = destination
             }
 
-    module Update'TransferDataTransferDataSpecs =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : Update'TransferDataTransferDataSpecs
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
-            }
-
     type Update'TrialEnd = | Now
 
     type Update'TrialSettingsEndBehaviorMissingPaymentMethod =
@@ -3731,16 +2456,6 @@ module Subscriptions =
                 MissingPaymentMethod = missingPaymentMethod
             }
 
-    module Update'TrialSettingsEndBehavior =
-        let create
-            (
-                missingPaymentMethod: Update'TrialSettingsEndBehaviorMissingPaymentMethod option
-            ) : Update'TrialSettingsEndBehavior
-            =
-            {
-              MissingPaymentMethod = missingPaymentMethod
-            }
-
     type Update'TrialSettings =
         {
             /// Defines how the subscription should behave when the user's free trial ends.
@@ -3752,16 +2467,6 @@ module Subscriptions =
         static member New(?endBehavior: Update'TrialSettingsEndBehavior) =
             {
                 EndBehavior = endBehavior
-            }
-
-    module Update'TrialSettings =
-        let create
-            (
-                endBehavior: Update'TrialSettingsEndBehavior option
-            ) : Update'TrialSettings
-            =
-            {
-              EndBehavior = endBehavior
             }
 
     type UpdateOptions =
@@ -3904,47 +2609,6 @@ module Subscriptions =
                 TrialSettings = trialSettings
             }
 
-    module UpdateOptions =
-        let create
-            (
-                subscriptionExposedId: string
-            ) : UpdateOptions
-            =
-            {
-              SubscriptionExposedId = subscriptionExposedId
-              AddInvoiceItems = None
-              ApplicationFeePercent = None
-              AutomaticTax = None
-              BillingCycleAnchor = None
-              BillingThresholds = None
-              CancelAt = None
-              CancelAtPeriodEnd = None
-              CancellationDetails = None
-              CollectionMethod = None
-              DaysUntilDue = None
-              DefaultPaymentMethod = None
-              DefaultSource = None
-              DefaultTaxRates = None
-              Description = None
-              Discounts = None
-              Expand = None
-              InvoiceSettings = None
-              Items = None
-              Metadata = None
-              OffSession = None
-              OnBehalfOf = None
-              PauseCollection = None
-              PaymentBehavior = None
-              PaymentSettings = None
-              PendingInvoiceItemInterval = None
-              ProrationBehavior = None
-              ProrationDate = None
-              TransferData = None
-              TrialEnd = None
-              TrialFromPlan = None
-              TrialSettings = None
-            }
-
     ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
     let List settings (options: ListOptions) =
         let qs = [("automatic_tax", options.AutomaticTax |> box); ("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("current_period_end", options.CurrentPeriodEnd |> box); ("current_period_start", options.CurrentPeriodStart |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("plan", options.Plan |> box); ("price", options.Price |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("test_clock", options.TestClock |> box)] |> Map.ofList
@@ -4018,19 +2682,6 @@ module SubscriptionsSearch =
                 Page = page
             }
 
-    module SearchOptions =
-        let create
-            (
-                query: string
-            ) : SearchOptions
-            =
-            {
-              Query = query
-              Expand = None
-              Limit = None
-              Page = None
-            }
-
     ///<p>Search for subscriptions you’ve previously created using Stripe’s <a href="/docs/search#search-query-language">Search Query Language</a>.
     ///Don’t use search in read-after-write flows where strict consistency is necessary. Under normal operating
     ///conditions, data is searchable in less than a minute. Occasionally, propagation of new or updated data can be up
@@ -4050,16 +2701,6 @@ module SubscriptionsDiscount =
         static member New(subscriptionExposedId: string) =
             {
                 SubscriptionExposedId = subscriptionExposedId
-            }
-
-    module DeleteDiscountOptions =
-        let create
-            (
-                subscriptionExposedId: string
-            ) : DeleteDiscountOptions
-            =
-            {
-              SubscriptionExposedId = subscriptionExposedId
             }
 
     ///<p>Removes the currently applied discount on a subscription.</p>
@@ -4086,16 +2727,6 @@ module SubscriptionsMigrate =
                 ProrationDiscounts = prorationDiscounts
             }
 
-    module Migrate'BillingModeFlexible =
-        let create
-            (
-                prorationDiscounts: Migrate'BillingModeFlexibleProrationDiscounts option
-            ) : Migrate'BillingModeFlexible
-            =
-            {
-              ProrationDiscounts = prorationDiscounts
-            }
-
     type Migrate'BillingModeType = | Flexible
 
     type Migrate'BillingMode =
@@ -4113,18 +2744,6 @@ module SubscriptionsMigrate =
             {
                 Flexible = flexible
                 Type = type'
-            }
-
-    module Migrate'BillingMode =
-        let create
-            (
-                flexible: Migrate'BillingModeFlexible option,
-                type': Migrate'BillingModeType option
-            ) : Migrate'BillingMode
-            =
-            {
-              Flexible = flexible
-              Type = type'
             }
 
     type MigrateOptions =
@@ -4145,19 +2764,6 @@ module SubscriptionsMigrate =
                 BillingMode = billingMode
                 Subscription = subscription
                 Expand = expand
-            }
-
-    module MigrateOptions =
-        let create
-            (
-                billingMode: Migrate'BillingMode,
-                subscription: string
-            ) : MigrateOptions
-            =
-            {
-              BillingMode = billingMode
-              Subscription = subscription
-              Expand = None
             }
 
     ///<p>Upgrade the billing_mode of an existing subscription.</p>
@@ -4202,20 +2808,6 @@ module SubscriptionsResume =
                 Expand = expand
                 ProrationBehavior = prorationBehavior
                 ProrationDate = prorationDate
-            }
-
-    module ResumeOptions =
-        let create
-            (
-                subscription: string
-            ) : ResumeOptions
-            =
-            {
-              Subscription = subscription
-              BillingCycleAnchor = None
-              Expand = None
-              ProrationBehavior = None
-              ProrationDate = None
             }
 
     ///<p>Initiates resumption of a paused subscription, optionally resetting the billing cycle anchor and creating prorations. If no resumption invoice is generated, the subscription becomes <code>active</code> immediately. If a resumption invoice is generated, the subscription remains <code>paused</code> until the invoice is paid or marked uncollectible. If the invoice isn’t paid by the expiration date, it is voided and the subscription remains <code>paused</code>. You can only resume subscriptions with <code>collection_method</code> set to <code>charge_automatically</code>. <code>send_invoice</code> subscriptions are not supported.</p>

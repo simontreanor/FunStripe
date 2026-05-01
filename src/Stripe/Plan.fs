@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Product
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type PlanBillingScheme =
     | PerUnit
     | Tiered

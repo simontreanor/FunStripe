@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Entitlements
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module EntitlementsActiveEntitlements =
 
     type ListOptions =
@@ -37,20 +37,6 @@ module EntitlementsActiveEntitlements =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                customer: string
-            ) : ListOptions
-            =
-            {
-              Customer = customer
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -66,17 +52,6 @@ module EntitlementsActiveEntitlements =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Retrieve a list of active entitlements for a customer</p>
@@ -126,26 +101,6 @@ module EntitlementsFeatures =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                archived: bool option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                lookupKey: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Archived = archived
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              LookupKey = lookupKey
-              StartingAfter = startingAfter
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -171,20 +126,6 @@ module EntitlementsFeatures =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                lookupKey: string,
-                name: string
-            ) : CreateOptions
-            =
-            {
-              LookupKey = lookupKey
-              Name = name
-              Expand = None
-              Metadata = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -200,17 +141,6 @@ module EntitlementsFeatures =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     type UpdateOptions =
@@ -239,20 +169,6 @@ module EntitlementsFeatures =
                 Expand = expand
                 Metadata = metadata
                 Name = name
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                id: string
-            ) : UpdateOptions
-            =
-            {
-              Id = id
-              Active = None
-              Expand = None
-              Metadata = None
-              Name = None
             }
 
     ///<p>Retrieve a list of features</p>

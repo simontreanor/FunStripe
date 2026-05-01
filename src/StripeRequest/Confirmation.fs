@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ConfirmationToken
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module ConfirmationTokens =
 
     type RetrieveOptions =
@@ -22,17 +22,6 @@ module ConfirmationTokens =
             {
                 ConfirmationToken = confirmationToken
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                confirmationToken: string
-            ) : RetrieveOptions
-            =
-            {
-              ConfirmationToken = confirmationToken
-              Expand = None
             }
 
     ///<p>Retrieves an existing ConfirmationToken object</p>

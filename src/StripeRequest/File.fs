@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.FileLink
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module FileLinks =
 
     type ListOptions =
@@ -45,28 +45,6 @@ module FileLinks =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                expired: bool option,
-                file: string option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Expired = expired
-              File = file
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -92,19 +70,6 @@ module FileLinks =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                file: string
-            ) : CreateOptions
-            =
-            {
-              File = file
-              Expand = None
-              ExpiresAt = None
-              Metadata = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -119,17 +84,6 @@ module FileLinks =
             {
                 Link = link
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                link: string
-            ) : RetrieveOptions
-            =
-            {
-              Link = link
-              Expand = None
             }
 
     type Update'ExpiresAt = | Now
@@ -156,19 +110,6 @@ module FileLinks =
                 Expand = expand
                 ExpiresAt = expiresAt
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                link: string
-            ) : UpdateOptions
-            =
-            {
-              Link = link
-              Expand = None
-              ExpiresAt = None
-              Metadata = None
             }
 
     ///<p>Returns a list of file links.</p>

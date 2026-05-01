@@ -6,7 +6,7 @@ open Stripe.Transfer
 open Stripe.TransferReversal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Transfers =
 
     type ListOptions =
@@ -44,28 +44,6 @@ module Transfers =
                 Limit = limit
                 StartingAfter = startingAfter
                 TransferGroup = transferGroup
-            }
-
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                destination: string option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                transferGroup: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Destination = destination
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              TransferGroup = transferGroup
             }
 
     type Create'SourceType =
@@ -118,25 +96,6 @@ module Transfers =
                 TransferGroup = transferGroup
             }
 
-    module CreateOptions =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode,
-                destination: string
-            ) : CreateOptions
-            =
-            {
-              Currency = currency
-              Destination = destination
-              Amount = None
-              Description = None
-              Expand = None
-              Metadata = None
-              SourceTransaction = None
-              SourceType = None
-              TransferGroup = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -151,17 +110,6 @@ module Transfers =
             {
                 Transfer = transfer
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                transfer: string
-            ) : RetrieveOptions
-            =
-            {
-              Transfer = transfer
-              Expand = None
             }
 
     type UpdateOptions =
@@ -186,19 +134,6 @@ module Transfers =
                 Description = description
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                transfer: string
-            ) : UpdateOptions
-            =
-            {
-              Transfer = transfer
-              Description = None
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
@@ -254,20 +189,6 @@ module TransfersReversals =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                id: string
-            ) : ListOptions
-            =
-            {
-              Id = id
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     type CreateOptions =
         {
             [<Config.Path>]
@@ -300,21 +221,6 @@ module TransfersReversals =
                 RefundApplicationFee = refundApplicationFee
             }
 
-    module CreateOptions =
-        let create
-            (
-                id: string
-            ) : CreateOptions
-            =
-            {
-              Id = id
-              Amount = None
-              Description = None
-              Expand = None
-              Metadata = None
-              RefundApplicationFee = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -332,19 +238,6 @@ module TransfersReversals =
                 Id = id
                 Transfer = transfer
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string,
-                transfer: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Transfer = transfer
-              Expand = None
             }
 
     type UpdateOptions =
@@ -368,20 +261,6 @@ module TransfersReversals =
                 Transfer = transfer
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                id: string,
-                transfer: string
-            ) : UpdateOptions
-            =
-            {
-              Id = id
-              Transfer = transfer
-              Expand = None
-              Metadata = None
             }
 
     ///<p>You can see a list of the reversals belonging to a specific transfer. Note that the 10 most recent reversals are always available by default on the transfer object. If you need more than those 10, you can use this API method and the <code>limit</code> and <code>starting_after</code> parameters to page through additional reversals.</p>

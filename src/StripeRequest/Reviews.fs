@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Review
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Reviews =
 
     type ListOptions =
@@ -37,24 +37,6 @@ module Reviews =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -69,17 +51,6 @@ module Reviews =
             {
                 Review = review
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                review: string
-            ) : RetrieveOptions
-            =
-            {
-              Review = review
-              Expand = None
             }
 
     ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -110,17 +81,6 @@ module ReviewsApprove =
             {
                 Review = review
                 Expand = expand
-            }
-
-    module ApproveOptions =
-        let create
-            (
-                review: string
-            ) : ApproveOptions
-            =
-            {
-              Review = review
-              Expand = None
             }
 
     ///<p>Approves a <code>Review</code> object, closing it and removing it from the list of reviews.</p>

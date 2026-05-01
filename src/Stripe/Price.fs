@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Product
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type CustomUnitAmount =
     {
         /// The maximum unit amount the customer can specify for this item.

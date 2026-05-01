@@ -6,7 +6,7 @@ open Stripe.Checkout
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module CheckoutSessions =
 
     type ListOptions =
@@ -66,38 +66,6 @@ module CheckoutSessions =
                 Subscription = subscription
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                customer: string option,
-                customerAccount: string option,
-                customerDetails: Map<string, string> option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                paymentIntent: string option,
-                paymentLink: string option,
-                startingAfter: string option,
-                status: string option,
-                subscription: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              Customer = customer
-              CustomerAccount = customerAccount
-              CustomerDetails = customerDetails
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              PaymentIntent = paymentIntent
-              PaymentLink = paymentLink
-              StartingAfter = startingAfter
-              Status = status
-              Subscription = subscription
-            }
-
     type Create'AdaptivePricing =
         {
             /// If set to `true`, Adaptive Pricing is available on [eligible sessions](https://docs.stripe.com/payments/currencies/localize-prices/adaptive-pricing?payment-ui=stripe-hosted#restrictions). Defaults to your [dashboard setting](https://dashboard.stripe.com/settings/adaptive-pricing).
@@ -109,16 +77,6 @@ module CheckoutSessions =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'AdaptivePricing =
-        let create
-            (
-                enabled: bool option
-            ) : Create'AdaptivePricing
-            =
-            {
-              Enabled = enabled
             }
 
     type Create'AfterExpirationRecovery =
@@ -140,18 +98,6 @@ module CheckoutSessions =
                 Enabled = enabled
             }
 
-    module Create'AfterExpirationRecovery =
-        let create
-            (
-                allowPromotionCodes: bool option,
-                enabled: bool option
-            ) : Create'AfterExpirationRecovery
-            =
-            {
-              AllowPromotionCodes = allowPromotionCodes
-              Enabled = enabled
-            }
-
     type Create'AfterExpiration =
         {
             /// Configure a Checkout Session that can be used to recover an expired session.
@@ -163,16 +109,6 @@ module CheckoutSessions =
         static member New(?recovery: Create'AfterExpirationRecovery) =
             {
                 Recovery = recovery
-            }
-
-    module Create'AfterExpiration =
-        let create
-            (
-                recovery: Create'AfterExpirationRecovery option
-            ) : Create'AfterExpiration
-            =
-            {
-              Recovery = recovery
             }
 
     type Create'AutomaticTaxLiabilityType =
@@ -196,18 +132,6 @@ module CheckoutSessions =
                 Type = type'
             }
 
-    module Create'AutomaticTaxLiability =
-        let create
-            (
-                account: string option,
-                type': Create'AutomaticTaxLiabilityType option
-            ) : Create'AutomaticTaxLiability
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'AutomaticTax =
         {
             /// Set to `true` to [calculate tax automatically](https://docs.stripe.com/tax) using the customer's location.
@@ -224,18 +148,6 @@ module CheckoutSessions =
             {
                 Enabled = enabled
                 Liability = liability
-            }
-
-    module Create'AutomaticTax =
-        let create
-            (
-                enabled: bool option,
-                liability: Create'AutomaticTaxLiability option
-            ) : Create'AutomaticTax
-            =
-            {
-              Enabled = enabled
-              Liability = liability
             }
 
     type Create'BillingAddressCollection =
@@ -300,20 +212,6 @@ module CheckoutSessions =
                 Url = url
             }
 
-    module Create'BrandingSettingsIcon =
-        let create
-            (
-                file: string option,
-                type': Create'BrandingSettingsIconType option,
-                url: string option
-            ) : Create'BrandingSettingsIcon
-            =
-            {
-              File = file
-              Type = type'
-              Url = url
-            }
-
     type Create'BrandingSettingsLogoType =
         | File
         | Url
@@ -337,20 +235,6 @@ module CheckoutSessions =
                 File = file
                 Type = type'
                 Url = url
-            }
-
-    module Create'BrandingSettingsLogo =
-        let create
-            (
-                file: string option,
-                type': Create'BrandingSettingsLogoType option,
-                url: string option
-            ) : Create'BrandingSettingsLogo
-            =
-            {
-              File = file
-              Type = type'
-              Url = url
             }
 
     type Create'BrandingSettings =
@@ -390,28 +274,6 @@ module CheckoutSessions =
                 Logo = logo
             }
 
-    module Create'BrandingSettings =
-        let create
-            (
-                backgroundColor: Choice<string,string> option,
-                borderStyle: Create'BrandingSettingsBorderStyle option,
-                buttonColor: Choice<string,string> option,
-                displayName: string option,
-                fontFamily: Create'BrandingSettingsFontFamily option,
-                icon: Create'BrandingSettingsIcon option,
-                logo: Create'BrandingSettingsLogo option
-            ) : Create'BrandingSettings
-            =
-            {
-              BackgroundColor = backgroundColor
-              BorderStyle = borderStyle
-              ButtonColor = buttonColor
-              DisplayName = displayName
-              FontFamily = fontFamily
-              Icon = icon
-              Logo = logo
-            }
-
     type Create'ConsentCollectionPaymentMethodReuseAgreementPosition =
         | Auto
         | Hidden
@@ -428,16 +290,6 @@ module CheckoutSessions =
         static member New(?position: Create'ConsentCollectionPaymentMethodReuseAgreementPosition) =
             {
                 Position = position
-            }
-
-    module Create'ConsentCollectionPaymentMethodReuseAgreement =
-        let create
-            (
-                position: Create'ConsentCollectionPaymentMethodReuseAgreementPosition option
-            ) : Create'ConsentCollectionPaymentMethodReuseAgreement
-            =
-            {
-              Position = position
             }
 
     type Create'ConsentCollectionPromotions =
@@ -472,20 +324,6 @@ module CheckoutSessions =
                 TermsOfService = termsOfService
             }
 
-    module Create'ConsentCollection =
-        let create
-            (
-                paymentMethodReuseAgreement: Create'ConsentCollectionPaymentMethodReuseAgreement option,
-                promotions: Create'ConsentCollectionPromotions option,
-                termsOfService: Create'ConsentCollectionTermsOfService option
-            ) : Create'ConsentCollection
-            =
-            {
-              PaymentMethodReuseAgreement = paymentMethodReuseAgreement
-              Promotions = promotions
-              TermsOfService = termsOfService
-            }
-
     type Create'CustomFieldsDropdownOptions =
         {
             /// The label for the option, displayed to the customer. Up to 100 characters.
@@ -501,18 +339,6 @@ module CheckoutSessions =
             {
                 Label = label
                 Value = value
-            }
-
-    module Create'CustomFieldsDropdownOptions =
-        let create
-            (
-                label: string option,
-                value: string option
-            ) : Create'CustomFieldsDropdownOptions
-            =
-            {
-              Label = label
-              Value = value
             }
 
     type Create'CustomFieldsDropdown =
@@ -532,18 +358,6 @@ module CheckoutSessions =
                 Options = options
             }
 
-    module Create'CustomFieldsDropdown =
-        let create
-            (
-                defaultValue: string option,
-                options: Create'CustomFieldsDropdownOptions list option
-            ) : Create'CustomFieldsDropdown
-            =
-            {
-              DefaultValue = defaultValue
-              Options = options
-            }
-
     type Create'CustomFieldsLabelType = | Custom
 
     type Create'CustomFieldsLabel =
@@ -561,18 +375,6 @@ module CheckoutSessions =
             {
                 Custom = custom
                 Type = type'
-            }
-
-    module Create'CustomFieldsLabel =
-        let create
-            (
-                custom: string option,
-                type': Create'CustomFieldsLabelType option
-            ) : Create'CustomFieldsLabel
-            =
-            {
-              Custom = custom
-              Type = type'
             }
 
     type Create'CustomFieldsNumeric =
@@ -596,20 +398,6 @@ module CheckoutSessions =
                 MinimumLength = minimumLength
             }
 
-    module Create'CustomFieldsNumeric =
-        let create
-            (
-                defaultValue: string option,
-                maximumLength: int option,
-                minimumLength: int option
-            ) : Create'CustomFieldsNumeric
-            =
-            {
-              DefaultValue = defaultValue
-              MaximumLength = maximumLength
-              MinimumLength = minimumLength
-            }
-
     type Create'CustomFieldsText =
         {
             /// The value that pre-fills the field on the payment page.
@@ -629,20 +417,6 @@ module CheckoutSessions =
                 DefaultValue = defaultValue
                 MaximumLength = maximumLength
                 MinimumLength = minimumLength
-            }
-
-    module Create'CustomFieldsText =
-        let create
-            (
-                defaultValue: string option,
-                maximumLength: int option,
-                minimumLength: int option
-            ) : Create'CustomFieldsText
-            =
-            {
-              DefaultValue = defaultValue
-              MaximumLength = maximumLength
-              MinimumLength = minimumLength
             }
 
     type Create'CustomFieldsType =
@@ -687,28 +461,6 @@ module CheckoutSessions =
                 Type = type'
             }
 
-    module Create'CustomFields =
-        let create
-            (
-                dropdown: Create'CustomFieldsDropdown option,
-                key: string option,
-                label: Create'CustomFieldsLabel option,
-                numeric: Create'CustomFieldsNumeric option,
-                optional: bool option,
-                text: Create'CustomFieldsText option,
-                type': Create'CustomFieldsType option
-            ) : Create'CustomFields
-            =
-            {
-              Dropdown = dropdown
-              Key = key
-              Label = label
-              Numeric = numeric
-              Optional = optional
-              Text = text
-              Type = type'
-            }
-
     type Create'CustomTextAfterSubmitCustomTextPosition =
         {
             /// Text can be up to 1200 characters in length.
@@ -720,16 +472,6 @@ module CheckoutSessions =
         static member New(?message: string) =
             {
                 Message = message
-            }
-
-    module Create'CustomTextAfterSubmitCustomTextPosition =
-        let create
-            (
-                message: string option
-            ) : Create'CustomTextAfterSubmitCustomTextPosition
-            =
-            {
-              Message = message
             }
 
     type Create'CustomTextShippingAddressCustomTextPosition =
@@ -745,16 +487,6 @@ module CheckoutSessions =
                 Message = message
             }
 
-    module Create'CustomTextShippingAddressCustomTextPosition =
-        let create
-            (
-                message: string option
-            ) : Create'CustomTextShippingAddressCustomTextPosition
-            =
-            {
-              Message = message
-            }
-
     type Create'CustomTextSubmitCustomTextPosition =
         {
             /// Text can be up to 1200 characters in length.
@@ -768,16 +500,6 @@ module CheckoutSessions =
                 Message = message
             }
 
-    module Create'CustomTextSubmitCustomTextPosition =
-        let create
-            (
-                message: string option
-            ) : Create'CustomTextSubmitCustomTextPosition
-            =
-            {
-              Message = message
-            }
-
     type Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition =
         {
             /// Text can be up to 1200 characters in length.
@@ -789,16 +511,6 @@ module CheckoutSessions =
         static member New(?message: string) =
             {
                 Message = message
-            }
-
-    module Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition =
-        let create
-            (
-                message: string option
-            ) : Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition
-            =
-            {
-              Message = message
             }
 
     type Create'CustomText =
@@ -824,22 +536,6 @@ module CheckoutSessions =
                 ShippingAddress = shippingAddress
                 Submit = submit
                 TermsOfServiceAcceptance = termsOfServiceAcceptance
-            }
-
-    module Create'CustomText =
-        let create
-            (
-                afterSubmit: Choice<Create'CustomTextAfterSubmitCustomTextPosition,string> option,
-                shippingAddress: Choice<Create'CustomTextShippingAddressCustomTextPosition,string> option,
-                submit: Choice<Create'CustomTextSubmitCustomTextPosition,string> option,
-                termsOfServiceAcceptance: Choice<Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition,string> option
-            ) : Create'CustomText
-            =
-            {
-              AfterSubmit = afterSubmit
-              ShippingAddress = shippingAddress
-              Submit = submit
-              TermsOfServiceAcceptance = termsOfServiceAcceptance
             }
 
     type Create'CustomerCreation =
@@ -881,20 +577,6 @@ module CheckoutSessions =
                 Shipping = shipping
             }
 
-    module Create'CustomerUpdate =
-        let create
-            (
-                address: Create'CustomerUpdateAddress option,
-                name: Create'CustomerUpdateName option,
-                shipping: Create'CustomerUpdateShipping option
-            ) : Create'CustomerUpdate
-            =
-            {
-              Address = address
-              Name = name
-              Shipping = shipping
-            }
-
     type Create'Discounts =
         {
             /// The ID of the coupon to apply to this Session.
@@ -910,18 +592,6 @@ module CheckoutSessions =
             {
                 Coupon = coupon
                 PromotionCode = promotionCode
-            }
-
-    module Create'Discounts =
-        let create
-            (
-                coupon: string option,
-                promotionCode: string option
-            ) : Create'Discounts
-            =
-            {
-              Coupon = coupon
-              PromotionCode = promotionCode
             }
 
     type Create'ExcludedPaymentMethodTypes =
@@ -994,18 +664,6 @@ module CheckoutSessions =
                 Value = value
             }
 
-    module Create'InvoiceCreationInvoiceDataCustomFields =
-        let create
-            (
-                name: string option,
-                value: string option
-            ) : Create'InvoiceCreationInvoiceDataCustomFields
-            =
-            {
-              Name = name
-              Value = value
-            }
-
     type Create'InvoiceCreationInvoiceDataIssuerType =
         | Account
         | Self
@@ -1025,18 +683,6 @@ module CheckoutSessions =
             {
                 Account = account
                 Type = type'
-            }
-
-    module Create'InvoiceCreationInvoiceDataIssuer =
-        let create
-            (
-                account: string option,
-                type': Create'InvoiceCreationInvoiceDataIssuerType option
-            ) : Create'InvoiceCreationInvoiceDataIssuer
-            =
-            {
-              Account = account
-              Type = type'
             }
 
     type Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptionsAmountTaxDisplay =
@@ -1059,18 +705,6 @@ module CheckoutSessions =
             {
                 AmountTaxDisplay = amountTaxDisplay
                 Template = template
-            }
-
-    module Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptions =
-        let create
-            (
-                amountTaxDisplay: Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptionsAmountTaxDisplay option,
-                template: string option
-            ) : Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptions
-            =
-            {
-              AmountTaxDisplay = amountTaxDisplay
-              Template = template
             }
 
     type Create'InvoiceCreationInvoiceData =
@@ -1111,28 +745,6 @@ module CheckoutSessions =
                 RenderingOptions = renderingOptions
             }
 
-    module Create'InvoiceCreationInvoiceData =
-        let create
-            (
-                accountTaxIds: Choice<string list,string> option,
-                customFields: Choice<Create'InvoiceCreationInvoiceDataCustomFields list,string> option,
-                description: string option,
-                footer: string option,
-                issuer: Create'InvoiceCreationInvoiceDataIssuer option,
-                metadata: Map<string, string> option,
-                renderingOptions: Choice<Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptions,string> option
-            ) : Create'InvoiceCreationInvoiceData
-            =
-            {
-              AccountTaxIds = accountTaxIds
-              CustomFields = customFields
-              Description = description
-              Footer = footer
-              Issuer = issuer
-              Metadata = metadata
-              RenderingOptions = renderingOptions
-            }
-
     type Create'InvoiceCreation =
         {
             /// Set to `true` to enable invoice creation.
@@ -1148,18 +760,6 @@ module CheckoutSessions =
             {
                 Enabled = enabled
                 InvoiceData = invoiceData
-            }
-
-    module Create'InvoiceCreation =
-        let create
-            (
-                enabled: bool option,
-                invoiceData: Create'InvoiceCreationInvoiceData option
-            ) : Create'InvoiceCreation
-            =
-            {
-              Enabled = enabled
-              InvoiceData = invoiceData
             }
 
     type Create'LineItemsAdjustableQuantity =
@@ -1181,20 +781,6 @@ module CheckoutSessions =
                 Enabled = enabled
                 Maximum = maximum
                 Minimum = minimum
-            }
-
-    module Create'LineItemsAdjustableQuantity =
-        let create
-            (
-                enabled: bool option,
-                maximum: int option,
-                minimum: int option
-            ) : Create'LineItemsAdjustableQuantity
-            =
-            {
-              Enabled = enabled
-              Maximum = maximum
-              Minimum = minimum
             }
 
     type Create'LineItemsPriceDataProductData =
@@ -1230,26 +816,6 @@ module CheckoutSessions =
                 UnitLabel = unitLabel
             }
 
-    module Create'LineItemsPriceDataProductData =
-        let create
-            (
-                description: string option,
-                images: string list option,
-                metadata: Map<string, string> option,
-                name: string option,
-                taxCode: string option,
-                unitLabel: string option
-            ) : Create'LineItemsPriceDataProductData
-            =
-            {
-              Description = description
-              Images = images
-              Metadata = metadata
-              Name = name
-              TaxCode = taxCode
-              UnitLabel = unitLabel
-            }
-
     type Create'LineItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -1271,18 +837,6 @@ module CheckoutSessions =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Create'LineItemsPriceDataRecurring =
-        let create
-            (
-                interval: Create'LineItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Create'LineItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Create'LineItemsPriceDataTaxBehavior =
@@ -1327,28 +881,6 @@ module CheckoutSessions =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module Create'LineItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                productData: Create'LineItemsPriceDataProductData option,
-                recurring: Create'LineItemsPriceDataRecurring option,
-                taxBehavior: Create'LineItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Create'LineItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              ProductData = productData
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type Create'LineItems =
         {
             /// When set, provides configuration for this item’s quantity to be adjusted by the customer during Checkout.
@@ -1384,28 +916,6 @@ module CheckoutSessions =
                 PriceData = priceData
                 Quantity = quantity
                 TaxRates = taxRates
-            }
-
-    module Create'LineItems =
-        let create
-            (
-                adjustableQuantity: Create'LineItemsAdjustableQuantity option,
-                dynamicTaxRates: string list option,
-                metadata: Map<string, string> option,
-                price: string option,
-                priceData: Create'LineItemsPriceData option,
-                quantity: int option,
-                taxRates: string list option
-            ) : Create'LineItems
-            =
-            {
-              AdjustableQuantity = adjustableQuantity
-              DynamicTaxRates = dynamicTaxRates
-              Metadata = metadata
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
             }
 
     type Create'Locale =
@@ -1464,16 +974,6 @@ module CheckoutSessions =
                 Enabled = enabled
             }
 
-    module Create'ManagedPayments =
-        let create
-            (
-                enabled: bool option
-            ) : Create'ManagedPayments
-            =
-            {
-              Enabled = enabled
-            }
-
     type Create'Mode =
         | Payment
         | Setup
@@ -1496,18 +996,6 @@ module CheckoutSessions =
                 Optional = optional
             }
 
-    module Create'NameCollectionBusiness =
-        let create
-            (
-                enabled: bool option,
-                optional: bool option
-            ) : Create'NameCollectionBusiness
-            =
-            {
-              Enabled = enabled
-              Optional = optional
-            }
-
     type Create'NameCollectionIndividual =
         {
             /// Enable individual name collection on the Checkout Session. Defaults to `false`.
@@ -1525,18 +1013,6 @@ module CheckoutSessions =
                 Optional = optional
             }
 
-    module Create'NameCollectionIndividual =
-        let create
-            (
-                enabled: bool option,
-                optional: bool option
-            ) : Create'NameCollectionIndividual
-            =
-            {
-              Enabled = enabled
-              Optional = optional
-            }
-
     type Create'NameCollection =
         {
             /// Controls settings applied for collecting the customer's business name on the session.
@@ -1552,18 +1028,6 @@ module CheckoutSessions =
             {
                 Business = business
                 Individual = individual
-            }
-
-    module Create'NameCollection =
-        let create
-            (
-                business: Create'NameCollectionBusiness option,
-                individual: Create'NameCollectionIndividual option
-            ) : Create'NameCollection
-            =
-            {
-              Business = business
-              Individual = individual
             }
 
     type Create'OptionalItemsAdjustableQuantity =
@@ -1587,20 +1051,6 @@ module CheckoutSessions =
                 Minimum = minimum
             }
 
-    module Create'OptionalItemsAdjustableQuantity =
-        let create
-            (
-                enabled: bool option,
-                maximum: int option,
-                minimum: int option
-            ) : Create'OptionalItemsAdjustableQuantity
-            =
-            {
-              Enabled = enabled
-              Maximum = maximum
-              Minimum = minimum
-            }
-
     type Create'OptionalItems =
         {
             /// When set, provides configuration for the customer to adjust the quantity of the line item created when a customer chooses to add this optional item to their order.
@@ -1620,20 +1070,6 @@ module CheckoutSessions =
                 AdjustableQuantity = adjustableQuantity
                 Price = price
                 Quantity = quantity
-            }
-
-    module Create'OptionalItems =
-        let create
-            (
-                adjustableQuantity: Create'OptionalItemsAdjustableQuantity option,
-                price: string option,
-                quantity: int option
-            ) : Create'OptionalItems
-            =
-            {
-              AdjustableQuantity = adjustableQuantity
-              Price = price
-              Quantity = quantity
             }
 
     type Create'OriginContext =
@@ -1682,26 +1118,6 @@ module CheckoutSessions =
                 State = state
             }
 
-    module Create'PaymentIntentDataShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'PaymentIntentDataShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'PaymentIntentDataShipping =
         {
             /// Shipping address.
@@ -1731,24 +1147,6 @@ module CheckoutSessions =
                 TrackingNumber = trackingNumber
             }
 
-    module Create'PaymentIntentDataShipping =
-        let create
-            (
-                address: Create'PaymentIntentDataShippingAddress option,
-                carrier: string option,
-                name: string option,
-                phone: string option,
-                trackingNumber: string option
-            ) : Create'PaymentIntentDataShipping
-            =
-            {
-              Address = address
-              Carrier = carrier
-              Name = name
-              Phone = phone
-              TrackingNumber = trackingNumber
-            }
-
     type Create'PaymentIntentDataTransferData =
         {
             /// The amount that will be transferred automatically when a charge succeeds.
@@ -1767,18 +1165,6 @@ module CheckoutSessions =
             {
                 Amount = amount
                 Destination = destination
-            }
-
-    module Create'PaymentIntentDataTransferData =
-        let create
-            (
-                amount: int option,
-                destination: string option
-            ) : Create'PaymentIntentDataTransferData
-            =
-            {
-              Amount = amount
-              Destination = destination
             }
 
     type Create'PaymentIntentData =
@@ -1856,38 +1242,6 @@ module CheckoutSessions =
                 TransferGroup = transferGroup
             }
 
-    module Create'PaymentIntentData =
-        let create
-            (
-                applicationFeeAmount: int option,
-                captureMethod: Create'PaymentIntentDataCaptureMethod option,
-                description: string option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option,
-                receiptEmail: string option,
-                setupFutureUsage: Create'PaymentIntentDataSetupFutureUsage option,
-                shipping: Create'PaymentIntentDataShipping option,
-                statementDescriptor: string option,
-                statementDescriptorSuffix: string option,
-                transferData: Create'PaymentIntentDataTransferData option,
-                transferGroup: string option
-            ) : Create'PaymentIntentData
-            =
-            {
-              ApplicationFeeAmount = applicationFeeAmount
-              CaptureMethod = captureMethod
-              Description = description
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              ReceiptEmail = receiptEmail
-              SetupFutureUsage = setupFutureUsage
-              Shipping = shipping
-              StatementDescriptor = statementDescriptor
-              StatementDescriptorSuffix = statementDescriptorSuffix
-              TransferData = transferData
-              TransferGroup = transferGroup
-            }
-
     type Create'PaymentMethodCollection =
         | Always
         | IfRequired
@@ -1908,16 +1262,6 @@ module CheckoutSessions =
         static member New(?allowRedisplay: Create'PaymentMethodDataAllowRedisplay) =
             {
                 AllowRedisplay = allowRedisplay
-            }
-
-    module Create'PaymentMethodData =
-        let create
-            (
-                allowRedisplay: Create'PaymentMethodDataAllowRedisplay option
-            ) : Create'PaymentMethodData
-            =
-            {
-              AllowRedisplay = allowRedisplay
             }
 
     type Create'PaymentMethodOptionsAcssDebitCurrency =
@@ -1968,24 +1312,6 @@ module CheckoutSessions =
                 TransactionType = transactionType
             }
 
-    module Create'PaymentMethodOptionsAcssDebitMandateOptions =
-        let create
-            (
-                customMandateUrl: Choice<string,string> option,
-                defaultFor: Create'PaymentMethodOptionsAcssDebitMandateOptionsDefaultFor list option,
-                intervalDescription: string option,
-                paymentSchedule: Create'PaymentMethodOptionsAcssDebitMandateOptionsPaymentSchedule option,
-                transactionType: Create'PaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
-            ) : Create'PaymentMethodOptionsAcssDebitMandateOptions
-            =
-            {
-              CustomMandateUrl = customMandateUrl
-              DefaultFor = defaultFor
-              IntervalDescription = intervalDescription
-              PaymentSchedule = paymentSchedule
-              TransactionType = transactionType
-            }
-
     type Create'PaymentMethodOptionsAcssDebitSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -2028,24 +1354,6 @@ module CheckoutSessions =
                 VerificationMethod = verificationMethod
             }
 
-    module Create'PaymentMethodOptionsAcssDebit =
-        let create
-            (
-                currency: Create'PaymentMethodOptionsAcssDebitCurrency option,
-                mandateOptions: Create'PaymentMethodOptionsAcssDebitMandateOptions option,
-                setupFutureUsage: Create'PaymentMethodOptionsAcssDebitSetupFutureUsage option,
-                targetDate: string option,
-                verificationMethod: Create'PaymentMethodOptionsAcssDebitVerificationMethod option
-            ) : Create'PaymentMethodOptionsAcssDebit
-            =
-            {
-              Currency = currency
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
-              TargetDate = targetDate
-              VerificationMethod = verificationMethod
-            }
-
     type Create'PaymentMethodOptionsAffirmCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsAffirmSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -2068,18 +1376,6 @@ module CheckoutSessions =
             {
                 CaptureMethod = captureMethod
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsAffirm =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsAffirmCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsAffirmSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsAffirm
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsAfterpayClearpayCaptureMethod = | Manual
@@ -2106,18 +1402,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsAfterpayClearpay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsAfterpayClearpayCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsAfterpayClearpaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsAfterpayClearpay
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsAlipaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsAlipay =
@@ -2136,16 +1420,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsAlipay =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsAlipaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsAlipay
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsAlmaCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsAlma =
@@ -2159,16 +1433,6 @@ module CheckoutSessions =
         static member New(?captureMethod: Create'PaymentMethodOptionsAlmaCaptureMethod) =
             {
                 CaptureMethod = captureMethod
-            }
-
-    module Create'PaymentMethodOptionsAlma =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsAlmaCaptureMethod option
-            ) : Create'PaymentMethodOptionsAlma
-            =
-            {
-              CaptureMethod = captureMethod
             }
 
     type Create'PaymentMethodOptionsAmazonPayCaptureMethod = | Manual
@@ -2197,18 +1461,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsAmazonPay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsAmazonPayCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsAmazonPaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsAmazonPay
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsAuBecsDebitSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsAuBecsDebit =
@@ -2231,18 +1483,6 @@ module CheckoutSessions =
                 TargetDate = targetDate
             }
 
-    module Create'PaymentMethodOptionsAuBecsDebit =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsAuBecsDebitSetupFutureUsage option,
-                targetDate: string option
-            ) : Create'PaymentMethodOptionsAuBecsDebit
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-              TargetDate = targetDate
-            }
-
     type Create'PaymentMethodOptionsBacsDebitMandateOptions =
         {
             /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'DDIC' or 'STRIPE'.
@@ -2254,16 +1494,6 @@ module CheckoutSessions =
         static member New(?referencePrefix: Choice<string,string>) =
             {
                 ReferencePrefix = referencePrefix
-            }
-
-    module Create'PaymentMethodOptionsBacsDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Create'PaymentMethodOptionsBacsDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
             }
 
     type Create'PaymentMethodOptionsBacsDebitSetupFutureUsage =
@@ -2295,20 +1525,6 @@ module CheckoutSessions =
                 TargetDate = targetDate
             }
 
-    module Create'PaymentMethodOptionsBacsDebit =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsBacsDebitMandateOptions option,
-                setupFutureUsage: Create'PaymentMethodOptionsBacsDebitSetupFutureUsage option,
-                targetDate: string option
-            ) : Create'PaymentMethodOptionsBacsDebit
-            =
-            {
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
-              TargetDate = targetDate
-            }
-
     type Create'PaymentMethodOptionsBancontactSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsBancontact =
@@ -2327,16 +1543,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsBancontact =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsBancontactSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsBancontact
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsBillieCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsBillie =
@@ -2350,16 +1556,6 @@ module CheckoutSessions =
         static member New(?captureMethod: Create'PaymentMethodOptionsBillieCaptureMethod) =
             {
                 CaptureMethod = captureMethod
-            }
-
-    module Create'PaymentMethodOptionsBillie =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsBillieCaptureMethod option
-            ) : Create'PaymentMethodOptionsBillie
-            =
-            {
-              CaptureMethod = captureMethod
             }
 
     type Create'PaymentMethodOptionsBoletoSetupFutureUsage =
@@ -2387,18 +1583,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsBoleto =
-        let create
-            (
-                expiresAfterDays: int option,
-                setupFutureUsage: Create'PaymentMethodOptionsBoletoSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsBoleto
-            =
-            {
-              ExpiresAfterDays = expiresAfterDays
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsCardCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsCardInstallments =
@@ -2413,16 +1597,6 @@ module CheckoutSessions =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'PaymentMethodOptionsCardInstallments =
-        let create
-            (
-                enabled: bool option
-            ) : Create'PaymentMethodOptionsCardInstallments
-            =
-            {
-              Enabled = enabled
             }
 
     type Create'PaymentMethodOptionsCardRequestExtendedAuthorization =
@@ -2463,16 +1637,6 @@ module CheckoutSessions =
         static member New(?brandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list) =
             {
                 BrandsBlocked = brandsBlocked
-            }
-
-    module Create'PaymentMethodOptionsCardRestrictions =
-        let create
-            (
-                brandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list option
-            ) : Create'PaymentMethodOptionsCardRestrictions
-            =
-            {
-              BrandsBlocked = brandsBlocked
             }
 
     type Create'PaymentMethodOptionsCardSetupFutureUsage =
@@ -2535,36 +1699,6 @@ module CheckoutSessions =
                 StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
             }
 
-    module Create'PaymentMethodOptionsCard =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsCardCaptureMethod option,
-                installments: Create'PaymentMethodOptionsCardInstallments option,
-                requestExtendedAuthorization: Create'PaymentMethodOptionsCardRequestExtendedAuthorization option,
-                requestIncrementalAuthorization: Create'PaymentMethodOptionsCardRequestIncrementalAuthorization option,
-                requestMulticapture: Create'PaymentMethodOptionsCardRequestMulticapture option,
-                requestOvercapture: Create'PaymentMethodOptionsCardRequestOvercapture option,
-                requestThreeDSecure: Create'PaymentMethodOptionsCardRequestThreeDSecure option,
-                restrictions: Create'PaymentMethodOptionsCardRestrictions option,
-                setupFutureUsage: Create'PaymentMethodOptionsCardSetupFutureUsage option,
-                statementDescriptorSuffixKana: string option,
-                statementDescriptorSuffixKanji: string option
-            ) : Create'PaymentMethodOptionsCard
-            =
-            {
-              CaptureMethod = captureMethod
-              Installments = installments
-              RequestExtendedAuthorization = requestExtendedAuthorization
-              RequestIncrementalAuthorization = requestIncrementalAuthorization
-              RequestMulticapture = requestMulticapture
-              RequestOvercapture = requestOvercapture
-              RequestThreeDSecure = requestThreeDSecure
-              Restrictions = restrictions
-              SetupFutureUsage = setupFutureUsage
-              StatementDescriptorSuffixKana = statementDescriptorSuffixKana
-              StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
-            }
-
     type Create'PaymentMethodOptionsCashappCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsCashappSetupFutureUsage =
@@ -2592,18 +1726,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsCashapp =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsCashappCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsCashappSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsCashapp
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsCryptoSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsCrypto =
@@ -2622,16 +1744,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsCrypto =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsCryptoSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsCrypto
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer =
         {
             /// The desired country code of the bank account information. Permitted values include: `DE`, `FR`, `IE`, or `NL`.
@@ -2643,16 +1755,6 @@ module CheckoutSessions =
         static member New(?country: IsoTypes.IsoCountryCode) =
             {
                 Country = country
-            }
-
-    module Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer =
-        let create
-            (
-                country: IsoTypes.IsoCountryCode option
-            ) : Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer
-            =
-            {
-              Country = country
             }
 
     type Create'PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes =
@@ -2693,20 +1795,6 @@ module CheckoutSessions =
                 Type = type'
             }
 
-    module Create'PaymentMethodOptionsCustomerBalanceBankTransfer =
-        let create
-            (
-                euBankTransfer: Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer option,
-                requestedAddressTypes: Create'PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes list option,
-                type': Create'PaymentMethodOptionsCustomerBalanceBankTransferType option
-            ) : Create'PaymentMethodOptionsCustomerBalanceBankTransfer
-            =
-            {
-              EuBankTransfer = euBankTransfer
-              RequestedAddressTypes = requestedAddressTypes
-              Type = type'
-            }
-
     type Create'PaymentMethodOptionsCustomerBalanceFundingType = | BankTransfer
 
     type Create'PaymentMethodOptionsCustomerBalanceSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -2735,20 +1823,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsCustomerBalance =
-        let create
-            (
-                bankTransfer: Create'PaymentMethodOptionsCustomerBalanceBankTransfer option,
-                fundingType: Create'PaymentMethodOptionsCustomerBalanceFundingType option,
-                setupFutureUsage: Create'PaymentMethodOptionsCustomerBalanceSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsCustomerBalance
-            =
-            {
-              BankTransfer = bankTransfer
-              FundingType = fundingType
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsDemoPaySetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -2769,16 +1843,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsDemoPay =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsDemoPaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsDemoPay
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsEpsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsEps =
@@ -2795,16 +1859,6 @@ module CheckoutSessions =
         static member New(?setupFutureUsage: Create'PaymentMethodOptionsEpsSetupFutureUsage) =
             {
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsEps =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsEpsSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsEps
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsFpxSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -2825,16 +1879,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsFpx =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsFpxSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsFpx
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsGiropaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsGiropay =
@@ -2851,16 +1895,6 @@ module CheckoutSessions =
         static member New(?setupFutureUsage: Create'PaymentMethodOptionsGiropaySetupFutureUsage) =
             {
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsGiropay =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsGiropaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsGiropay
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsGrabpaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -2881,16 +1915,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsGrabpay =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsGrabpaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsGrabpay
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsIdealSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsIdeal =
@@ -2907,16 +1931,6 @@ module CheckoutSessions =
         static member New(?setupFutureUsage: Create'PaymentMethodOptionsIdealSetupFutureUsage) =
             {
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsIdeal =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsIdealSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsIdeal
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsKakaoPayCaptureMethod = | Manual
@@ -2945,18 +1959,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsKakaoPay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsKakaoPayCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsKakaoPaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsKakaoPay
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsKlarnaCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsKlarnaSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -2982,18 +1984,6 @@ module CheckoutSessions =
             {
                 Amount = amount
                 Date = date
-            }
-
-    module Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling =
-        let create
-            (
-                amount: int option,
-                date: string option
-            ) : Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling
-            =
-            {
-              Amount = amount
-              Date = date
             }
 
     type Create'PaymentMethodOptionsKlarnaSubscriptions =
@@ -3025,24 +2015,6 @@ module CheckoutSessions =
                 Reference = reference
             }
 
-    module Create'PaymentMethodOptionsKlarnaSubscriptions =
-        let create
-            (
-                interval: Create'PaymentMethodOptionsKlarnaSubscriptionsInterval option,
-                intervalCount: int option,
-                name: string option,
-                nextBilling: Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling option,
-                reference: string option
-            ) : Create'PaymentMethodOptionsKlarnaSubscriptions
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
-              Name = name
-              NextBilling = nextBilling
-              Reference = reference
-            }
-
     type Create'PaymentMethodOptionsKlarna =
         {
             /// Controls when the funds will be captured from the customer's account.
@@ -3067,20 +2039,6 @@ module CheckoutSessions =
                 Subscriptions = subscriptions
             }
 
-    module Create'PaymentMethodOptionsKlarna =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsKlarnaCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsKlarnaSetupFutureUsage option,
-                subscriptions: Choice<Create'PaymentMethodOptionsKlarnaSubscriptions list,string> option
-            ) : Create'PaymentMethodOptionsKlarna
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-              Subscriptions = subscriptions
-            }
-
     type Create'PaymentMethodOptionsKonbiniSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsKonbini =
@@ -3101,18 +2059,6 @@ module CheckoutSessions =
             {
                 ExpiresAfterDays = expiresAfterDays
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsKonbini =
-        let create
-            (
-                expiresAfterDays: int option,
-                setupFutureUsage: Create'PaymentMethodOptionsKonbiniSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsKonbini
-            =
-            {
-              ExpiresAfterDays = expiresAfterDays
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsKrCardCaptureMethod = | Manual
@@ -3141,18 +2087,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsKrCard =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsKrCardCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsKrCardSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsKrCard
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsLinkCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsLinkSetupFutureUsage =
@@ -3179,18 +2113,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsLink =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsLinkCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsLinkSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsLink
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsMobilepayCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsMobilepaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -3215,18 +2137,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsMobilepay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsMobilepayCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsMobilepaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsMobilepay
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsMultibancoSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsMultibanco =
@@ -3243,16 +2153,6 @@ module CheckoutSessions =
         static member New(?setupFutureUsage: Create'PaymentMethodOptionsMultibancoSetupFutureUsage) =
             {
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsMultibanco =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsMultibancoSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsMultibanco
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsNaverPayCaptureMethod = | Manual
@@ -3281,18 +2181,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsNaverPay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsNaverPayCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsNaverPaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsNaverPay
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsOxxoSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsOxxo =
@@ -3313,18 +2201,6 @@ module CheckoutSessions =
             {
                 ExpiresAfterDays = expiresAfterDays
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsOxxo =
-        let create
-            (
-                expiresAfterDays: int option,
-                setupFutureUsage: Create'PaymentMethodOptionsOxxoSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsOxxo
-            =
-            {
-              ExpiresAfterDays = expiresAfterDays
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsP24SetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -3349,18 +2225,6 @@ module CheckoutSessions =
                 TosShownAndAccepted = tosShownAndAccepted
             }
 
-    module Create'PaymentMethodOptionsP24 =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsP24SetupFutureUsage option,
-                tosShownAndAccepted: bool option
-            ) : Create'PaymentMethodOptionsP24
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-              TosShownAndAccepted = tosShownAndAccepted
-            }
-
     type Create'PaymentMethodOptionsPaycoCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsPayco =
@@ -3374,16 +2238,6 @@ module CheckoutSessions =
         static member New(?captureMethod: Create'PaymentMethodOptionsPaycoCaptureMethod) =
             {
                 CaptureMethod = captureMethod
-            }
-
-    module Create'PaymentMethodOptionsPayco =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsPaycoCaptureMethod option
-            ) : Create'PaymentMethodOptionsPayco
-            =
-            {
-              CaptureMethod = captureMethod
             }
 
     type Create'PaymentMethodOptionsPaynowSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -3402,16 +2256,6 @@ module CheckoutSessions =
         static member New(?setupFutureUsage: Create'PaymentMethodOptionsPaynowSetupFutureUsage) =
             {
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsPaynow =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsPaynowSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsPaynow
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsPaypalCaptureMethod = | Manual
@@ -3474,24 +2318,6 @@ module CheckoutSessions =
                 Reference = reference
                 RiskCorrelationId = riskCorrelationId
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsPaypal =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsPaypalCaptureMethod option,
-                preferredLocale: Create'PaymentMethodOptionsPaypalPreferredLocale option,
-                reference: string option,
-                riskCorrelationId: string option,
-                setupFutureUsage: Create'PaymentMethodOptionsPaypalSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsPaypal
-            =
-            {
-              CaptureMethod = captureMethod
-              PreferredLocale = preferredLocale
-              Reference = reference
-              RiskCorrelationId = riskCorrelationId
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsPaytoMandateOptionsAmountType =
@@ -3558,28 +2384,6 @@ module CheckoutSessions =
                 StartDate = startDate
             }
 
-    module Create'PaymentMethodOptionsPaytoMandateOptions =
-        let create
-            (
-                amount: Choice<int,string> option,
-                amountType: Create'PaymentMethodOptionsPaytoMandateOptionsAmountType option,
-                endDate: Choice<string,string> option,
-                paymentSchedule: Create'PaymentMethodOptionsPaytoMandateOptionsPaymentSchedule option,
-                paymentsPerPeriod: Choice<int,string> option,
-                purpose: Create'PaymentMethodOptionsPaytoMandateOptionsPurpose option,
-                startDate: Choice<string,string> option
-            ) : Create'PaymentMethodOptionsPaytoMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              PaymentsPerPeriod = paymentsPerPeriod
-              Purpose = purpose
-              StartDate = startDate
-            }
-
     type Create'PaymentMethodOptionsPaytoSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -3602,18 +2406,6 @@ module CheckoutSessions =
             {
                 MandateOptions = mandateOptions
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsPayto =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsPaytoMandateOptions option,
-                setupFutureUsage: Create'PaymentMethodOptionsPaytoSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsPayto
-            =
-            {
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsPixAmountIncludesIof =
@@ -3676,30 +2468,6 @@ module CheckoutSessions =
                 StartDate = startDate
             }
 
-    module Create'PaymentMethodOptionsPixMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountIncludesIof: Create'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof option,
-                amountType: Create'PaymentMethodOptionsPixMandateOptionsAmountType option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                endDate: string option,
-                paymentSchedule: Create'PaymentMethodOptionsPixMandateOptionsPaymentSchedule option,
-                reference: string option,
-                startDate: string option
-            ) : Create'PaymentMethodOptionsPixMandateOptions
-            =
-            {
-              Amount = amount
-              AmountIncludesIof = amountIncludesIof
-              AmountType = amountType
-              Currency = currency
-              EndDate = endDate
-              PaymentSchedule = paymentSchedule
-              Reference = reference
-              StartDate = startDate
-            }
-
     type Create'PaymentMethodOptionsPixSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -3732,22 +2500,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsPix =
-        let create
-            (
-                amountIncludesIof: Create'PaymentMethodOptionsPixAmountIncludesIof option,
-                expiresAfterSeconds: int option,
-                mandateOptions: Create'PaymentMethodOptionsPixMandateOptions option,
-                setupFutureUsage: Create'PaymentMethodOptionsPixSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsPix
-            =
-            {
-              AmountIncludesIof = amountIncludesIof
-              ExpiresAfterSeconds = expiresAfterSeconds
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsRevolutPayCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsRevolutPaySetupFutureUsage =
@@ -3774,18 +2526,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsRevolutPay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsRevolutPayCaptureMethod option,
-                setupFutureUsage: Create'PaymentMethodOptionsRevolutPaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsRevolutPay
-            =
-            {
-              CaptureMethod = captureMethod
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsSamsungPayCaptureMethod = | Manual
 
     type Create'PaymentMethodOptionsSamsungPay =
@@ -3799,16 +2539,6 @@ module CheckoutSessions =
         static member New(?captureMethod: Create'PaymentMethodOptionsSamsungPayCaptureMethod) =
             {
                 CaptureMethod = captureMethod
-            }
-
-    module Create'PaymentMethodOptionsSamsungPay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsSamsungPayCaptureMethod option
-            ) : Create'PaymentMethodOptionsSamsungPay
-            =
-            {
-              CaptureMethod = captureMethod
             }
 
     type Create'PaymentMethodOptionsSatispayCaptureMethod = | Manual
@@ -3826,16 +2556,6 @@ module CheckoutSessions =
                 CaptureMethod = captureMethod
             }
 
-    module Create'PaymentMethodOptionsSatispay =
-        let create
-            (
-                captureMethod: Create'PaymentMethodOptionsSatispayCaptureMethod option
-            ) : Create'PaymentMethodOptionsSatispay
-            =
-            {
-              CaptureMethod = captureMethod
-            }
-
     type Create'PaymentMethodOptionsSepaDebitMandateOptions =
         {
             /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'STRIPE'.
@@ -3847,16 +2567,6 @@ module CheckoutSessions =
         static member New(?referencePrefix: Choice<string,string>) =
             {
                 ReferencePrefix = referencePrefix
-            }
-
-    module Create'PaymentMethodOptionsSepaDebitMandateOptions =
-        let create
-            (
-                referencePrefix: Choice<string,string> option
-            ) : Create'PaymentMethodOptionsSepaDebitMandateOptions
-            =
-            {
-              ReferencePrefix = referencePrefix
             }
 
     type Create'PaymentMethodOptionsSepaDebitSetupFutureUsage =
@@ -3888,20 +2598,6 @@ module CheckoutSessions =
                 TargetDate = targetDate
             }
 
-    module Create'PaymentMethodOptionsSepaDebit =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsSepaDebitMandateOptions option,
-                setupFutureUsage: Create'PaymentMethodOptionsSepaDebitSetupFutureUsage option,
-                targetDate: string option
-            ) : Create'PaymentMethodOptionsSepaDebit
-            =
-            {
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
-              TargetDate = targetDate
-            }
-
     type Create'PaymentMethodOptionsSofortSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
     type Create'PaymentMethodOptionsSofort =
@@ -3920,16 +2616,6 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
-    module Create'PaymentMethodOptionsSofort =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsSofortSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsSofort
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
-            }
-
     type Create'PaymentMethodOptionsSwish =
         {
             /// The order reference that will be displayed to customers in the Swish application. Defaults to the `id` of the Payment Intent.
@@ -3941,16 +2627,6 @@ module CheckoutSessions =
         static member New(?reference: string) =
             {
                 Reference = reference
-            }
-
-    module Create'PaymentMethodOptionsSwish =
-        let create
-            (
-                reference: string option
-            ) : Create'PaymentMethodOptionsSwish
-            =
-            {
-              Reference = reference
             }
 
     type Create'PaymentMethodOptionsTwintSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -3969,16 +2645,6 @@ module CheckoutSessions =
         static member New(?setupFutureUsage: Create'PaymentMethodOptionsTwintSetupFutureUsage) =
             {
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsTwint =
-        let create
-            (
-                setupFutureUsage: Create'PaymentMethodOptionsTwintSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsTwint
-            =
-            {
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsUpiMandateOptionsAmountType =
@@ -4010,22 +2676,6 @@ module CheckoutSessions =
                 EndDate = endDate
             }
 
-    module Create'PaymentMethodOptionsUpiMandateOptions =
-        let create
-            (
-                amount: int option,
-                amountType: Create'PaymentMethodOptionsUpiMandateOptionsAmountType option,
-                description: string option,
-                endDate: DateTime option
-            ) : Create'PaymentMethodOptionsUpiMandateOptions
-            =
-            {
-              Amount = amount
-              AmountType = amountType
-              Description = description
-              EndDate = endDate
-            }
-
     type Create'PaymentMethodOptionsUpiSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
@@ -4045,18 +2695,6 @@ module CheckoutSessions =
             {
                 MandateOptions = mandateOptions
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsUpi =
-        let create
-            (
-                mandateOptions: Create'PaymentMethodOptionsUpiMandateOptions option,
-                setupFutureUsage: Create'PaymentMethodOptionsUpiSetupFutureUsage option
-            ) : Create'PaymentMethodOptionsUpi
-            =
-            {
-              MandateOptions = mandateOptions
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions =
@@ -4085,18 +2723,6 @@ module CheckoutSessions =
             {
                 Permissions = permissions
                 Prefetch = prefetch
-            }
-
-    module Create'PaymentMethodOptionsUsBankAccountFinancialConnections =
-        let create
-            (
-                permissions: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions list option,
-                prefetch: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPrefetch list option
-            ) : Create'PaymentMethodOptionsUsBankAccountFinancialConnections
-            =
-            {
-              Permissions = permissions
-              Prefetch = prefetch
             }
 
     type Create'PaymentMethodOptionsUsBankAccountSetupFutureUsage =
@@ -4136,22 +2762,6 @@ module CheckoutSessions =
                 VerificationMethod = verificationMethod
             }
 
-    module Create'PaymentMethodOptionsUsBankAccount =
-        let create
-            (
-                financialConnections: Create'PaymentMethodOptionsUsBankAccountFinancialConnections option,
-                setupFutureUsage: Create'PaymentMethodOptionsUsBankAccountSetupFutureUsage option,
-                targetDate: string option,
-                verificationMethod: Create'PaymentMethodOptionsUsBankAccountVerificationMethod option
-            ) : Create'PaymentMethodOptionsUsBankAccount
-            =
-            {
-              FinancialConnections = financialConnections
-              SetupFutureUsage = setupFutureUsage
-              TargetDate = targetDate
-              VerificationMethod = verificationMethod
-            }
-
     type Create'PaymentMethodOptionsWechatPayClient =
         | Android
         | Ios
@@ -4181,20 +2791,6 @@ module CheckoutSessions =
                 AppId = appId
                 Client = client
                 SetupFutureUsage = setupFutureUsage
-            }
-
-    module Create'PaymentMethodOptionsWechatPay =
-        let create
-            (
-                appId: string option,
-                client: Create'PaymentMethodOptionsWechatPayClient option,
-                setupFutureUsage: Create'PaymentMethodOptionsWechatPaySetupFutureUsage option
-            ) : Create'PaymentMethodOptionsWechatPay
-            =
-            {
-              AppId = appId
-              Client = client
-              SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptions =
@@ -4394,108 +2990,6 @@ module CheckoutSessions =
                 WechatPay = wechatPay
             }
 
-    module Create'PaymentMethodOptions =
-        let create
-            (
-                acssDebit: Create'PaymentMethodOptionsAcssDebit option,
-                affirm: Create'PaymentMethodOptionsAffirm option,
-                afterpayClearpay: Create'PaymentMethodOptionsAfterpayClearpay option,
-                alipay: Create'PaymentMethodOptionsAlipay option,
-                alma: Create'PaymentMethodOptionsAlma option,
-                amazonPay: Create'PaymentMethodOptionsAmazonPay option,
-                auBecsDebit: Create'PaymentMethodOptionsAuBecsDebit option,
-                bacsDebit: Create'PaymentMethodOptionsBacsDebit option,
-                bancontact: Create'PaymentMethodOptionsBancontact option,
-                billie: Create'PaymentMethodOptionsBillie option,
-                boleto: Create'PaymentMethodOptionsBoleto option,
-                card: Create'PaymentMethodOptionsCard option,
-                cashapp: Create'PaymentMethodOptionsCashapp option,
-                crypto: Create'PaymentMethodOptionsCrypto option,
-                customerBalance: Create'PaymentMethodOptionsCustomerBalance option,
-                demoPay: Create'PaymentMethodOptionsDemoPay option,
-                eps: Create'PaymentMethodOptionsEps option,
-                fpx: Create'PaymentMethodOptionsFpx option,
-                giropay: Create'PaymentMethodOptionsGiropay option,
-                grabpay: Create'PaymentMethodOptionsGrabpay option,
-                ideal: Create'PaymentMethodOptionsIdeal option,
-                kakaoPay: Create'PaymentMethodOptionsKakaoPay option,
-                klarna: Create'PaymentMethodOptionsKlarna option,
-                konbini: Create'PaymentMethodOptionsKonbini option,
-                krCard: Create'PaymentMethodOptionsKrCard option,
-                link: Create'PaymentMethodOptionsLink option,
-                mobilepay: Create'PaymentMethodOptionsMobilepay option,
-                multibanco: Create'PaymentMethodOptionsMultibanco option,
-                naverPay: Create'PaymentMethodOptionsNaverPay option,
-                oxxo: Create'PaymentMethodOptionsOxxo option,
-                p24: Create'PaymentMethodOptionsP24 option,
-                payByBank: string option,
-                payco: Create'PaymentMethodOptionsPayco option,
-                paynow: Create'PaymentMethodOptionsPaynow option,
-                paypal: Create'PaymentMethodOptionsPaypal option,
-                payto: Create'PaymentMethodOptionsPayto option,
-                pix: Create'PaymentMethodOptionsPix option,
-                revolutPay: Create'PaymentMethodOptionsRevolutPay option,
-                samsungPay: Create'PaymentMethodOptionsSamsungPay option,
-                satispay: Create'PaymentMethodOptionsSatispay option,
-                sepaDebit: Create'PaymentMethodOptionsSepaDebit option,
-                sofort: Create'PaymentMethodOptionsSofort option,
-                swish: Create'PaymentMethodOptionsSwish option,
-                twint: Create'PaymentMethodOptionsTwint option,
-                upi: Create'PaymentMethodOptionsUpi option,
-                usBankAccount: Create'PaymentMethodOptionsUsBankAccount option,
-                wechatPay: Create'PaymentMethodOptionsWechatPay option
-            ) : Create'PaymentMethodOptions
-            =
-            {
-              AcssDebit = acssDebit
-              Affirm = affirm
-              AfterpayClearpay = afterpayClearpay
-              Alipay = alipay
-              Alma = alma
-              AmazonPay = amazonPay
-              AuBecsDebit = auBecsDebit
-              BacsDebit = bacsDebit
-              Bancontact = bancontact
-              Billie = billie
-              Boleto = boleto
-              Card = card
-              Cashapp = cashapp
-              Crypto = crypto
-              CustomerBalance = customerBalance
-              DemoPay = demoPay
-              Eps = eps
-              Fpx = fpx
-              Giropay = giropay
-              Grabpay = grabpay
-              Ideal = ideal
-              KakaoPay = kakaoPay
-              Klarna = klarna
-              Konbini = konbini
-              KrCard = krCard
-              Link = link
-              Mobilepay = mobilepay
-              Multibanco = multibanco
-              NaverPay = naverPay
-              Oxxo = oxxo
-              P24 = p24
-              PayByBank = payByBank
-              Payco = payco
-              Paynow = paynow
-              Paypal = paypal
-              Payto = payto
-              Pix = pix
-              RevolutPay = revolutPay
-              SamsungPay = samsungPay
-              Satispay = satispay
-              SepaDebit = sepaDebit
-              Sofort = sofort
-              Swish = swish
-              Twint = twint
-              Upi = upi
-              UsBankAccount = usBankAccount
-              WechatPay = wechatPay
-            }
-
     type Create'PaymentMethodTypes =
         | AcssDebit
         | Affirm
@@ -4569,16 +3063,6 @@ module CheckoutSessions =
                 UpdateShippingDetails = updateShippingDetails
             }
 
-    module Create'Permissions =
-        let create
-            (
-                updateShippingDetails: Create'PermissionsUpdateShippingDetails option
-            ) : Create'Permissions
-            =
-            {
-              UpdateShippingDetails = updateShippingDetails
-            }
-
     type Create'PhoneNumberCollection =
         {
             /// Set to `true` to enable phone number collection.
@@ -4591,16 +3075,6 @@ module CheckoutSessions =
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
-            }
-
-    module Create'PhoneNumberCollection =
-        let create
-            (
-                enabled: bool option
-            ) : Create'PhoneNumberCollection
-            =
-            {
-              Enabled = enabled
             }
 
     type Create'RedirectOnCompletion =
@@ -4642,20 +3116,6 @@ module CheckoutSessions =
                 PaymentMethodSave = paymentMethodSave
             }
 
-    module Create'SavedPaymentMethodOptions =
-        let create
-            (
-                allowRedisplayFilters: Create'SavedPaymentMethodOptionsAllowRedisplayFilters list option,
-                paymentMethodRemove: Create'SavedPaymentMethodOptionsPaymentMethodRemove option,
-                paymentMethodSave: Create'SavedPaymentMethodOptionsPaymentMethodSave option
-            ) : Create'SavedPaymentMethodOptions
-            =
-            {
-              AllowRedisplayFilters = allowRedisplayFilters
-              PaymentMethodRemove = paymentMethodRemove
-              PaymentMethodSave = paymentMethodSave
-            }
-
     type Create'SetupIntentData =
         {
             /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -4675,20 +3135,6 @@ module CheckoutSessions =
                 Description = description
                 Metadata = metadata
                 OnBehalfOf = onBehalfOf
-            }
-
-    module Create'SetupIntentData =
-        let create
-            (
-                description: string option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option
-            ) : Create'SetupIntentData
-            =
-            {
-              Description = description
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
             }
 
     type Create'ShippingAddressCollectionAllowedCountries =
@@ -4945,16 +3391,6 @@ module CheckoutSessions =
                 AllowedCountries = allowedCountries
             }
 
-    module Create'ShippingAddressCollection =
-        let create
-            (
-                allowedCountries: Create'ShippingAddressCollectionAllowedCountries list option
-            ) : Create'ShippingAddressCollection
-            =
-            {
-              AllowedCountries = allowedCountries
-            }
-
     type Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximumUnit =
         | BusinessDay
         | Day
@@ -4977,18 +3413,6 @@ module CheckoutSessions =
             {
                 Unit = unit
                 Value = value
-            }
-
-    module Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximum =
-        let create
-            (
-                unit: Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximumUnit option,
-                value: int option
-            ) : Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximum
-            =
-            {
-              Unit = unit
-              Value = value
             }
 
     type Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimumUnit =
@@ -5015,18 +3439,6 @@ module CheckoutSessions =
                 Value = value
             }
 
-    module Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimum =
-        let create
-            (
-                unit: Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimumUnit option,
-                value: int option
-            ) : Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimum
-            =
-            {
-              Unit = unit
-              Value = value
-            }
-
     type Create'ShippingOptionsShippingRateDataDeliveryEstimate =
         {
             /// The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -5042,18 +3454,6 @@ module CheckoutSessions =
             {
                 Maximum = maximum
                 Minimum = minimum
-            }
-
-    module Create'ShippingOptionsShippingRateDataDeliveryEstimate =
-        let create
-            (
-                maximum: Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximum option,
-                minimum: Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimum option
-            ) : Create'ShippingOptionsShippingRateDataDeliveryEstimate
-            =
-            {
-              Maximum = maximum
-              Minimum = minimum
             }
 
     type Create'ShippingOptionsShippingRateDataFixedAmount =
@@ -5075,20 +3475,6 @@ module CheckoutSessions =
                 Amount = amount
                 Currency = currency
                 CurrencyOptions = currencyOptions
-            }
-
-    module Create'ShippingOptionsShippingRateDataFixedAmount =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                currencyOptions: Map<string, string> option
-            ) : Create'ShippingOptionsShippingRateDataFixedAmount
-            =
-            {
-              Amount = amount
-              Currency = currency
-              CurrencyOptions = currencyOptions
             }
 
     type Create'ShippingOptionsShippingRateDataTaxBehavior =
@@ -5135,28 +3521,6 @@ module CheckoutSessions =
                 Type = type'
             }
 
-    module Create'ShippingOptionsShippingRateData =
-        let create
-            (
-                deliveryEstimate: Create'ShippingOptionsShippingRateDataDeliveryEstimate option,
-                displayName: string option,
-                fixedAmount: Create'ShippingOptionsShippingRateDataFixedAmount option,
-                metadata: Map<string, string> option,
-                taxBehavior: Create'ShippingOptionsShippingRateDataTaxBehavior option,
-                taxCode: string option,
-                type': Create'ShippingOptionsShippingRateDataType option
-            ) : Create'ShippingOptionsShippingRateData
-            =
-            {
-              DeliveryEstimate = deliveryEstimate
-              DisplayName = displayName
-              FixedAmount = fixedAmount
-              Metadata = metadata
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              Type = type'
-            }
-
     type Create'ShippingOptions =
         {
             /// The ID of the Shipping Rate to use for this shipping option.
@@ -5172,18 +3536,6 @@ module CheckoutSessions =
             {
                 ShippingRate = shippingRate
                 ShippingRateData = shippingRateData
-            }
-
-    module Create'ShippingOptions =
-        let create
-            (
-                shippingRate: string option,
-                shippingRateData: Create'ShippingOptionsShippingRateData option
-            ) : Create'ShippingOptions
-            =
-            {
-              ShippingRate = shippingRate
-              ShippingRateData = shippingRateData
             }
 
     type Create'SubmitType =
@@ -5210,16 +3562,6 @@ module CheckoutSessions =
                 ProrationDiscounts = prorationDiscounts
             }
 
-    module Create'SubscriptionDataBillingModeFlexible =
-        let create
-            (
-                prorationDiscounts: Create'SubscriptionDataBillingModeFlexibleProrationDiscounts option
-            ) : Create'SubscriptionDataBillingModeFlexible
-            =
-            {
-              ProrationDiscounts = prorationDiscounts
-            }
-
     type Create'SubscriptionDataBillingModeType =
         | Classic
         | Flexible
@@ -5239,18 +3581,6 @@ module CheckoutSessions =
             {
                 Flexible = flexible
                 Type = type'
-            }
-
-    module Create'SubscriptionDataBillingMode =
-        let create
-            (
-                flexible: Create'SubscriptionDataBillingModeFlexible option,
-                type': Create'SubscriptionDataBillingModeType option
-            ) : Create'SubscriptionDataBillingMode
-            =
-            {
-              Flexible = flexible
-              Type = type'
             }
 
     type Create'SubscriptionDataInvoiceSettingsIssuerType =
@@ -5274,18 +3604,6 @@ module CheckoutSessions =
                 Type = type'
             }
 
-    module Create'SubscriptionDataInvoiceSettingsIssuer =
-        let create
-            (
-                account: string option,
-                type': Create'SubscriptionDataInvoiceSettingsIssuerType option
-            ) : Create'SubscriptionDataInvoiceSettingsIssuer
-            =
-            {
-              Account = account
-              Type = type'
-            }
-
     type Create'SubscriptionDataInvoiceSettings =
         {
             /// The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.
@@ -5297,16 +3615,6 @@ module CheckoutSessions =
         static member New(?issuer: Create'SubscriptionDataInvoiceSettingsIssuer) =
             {
                 Issuer = issuer
-            }
-
-    module Create'SubscriptionDataInvoiceSettings =
-        let create
-            (
-                issuer: Create'SubscriptionDataInvoiceSettingsIssuer option
-            ) : Create'SubscriptionDataInvoiceSettings
-            =
-            {
-              Issuer = issuer
             }
 
     type Create'SubscriptionDataPendingInvoiceItemIntervalInterval =
@@ -5332,18 +3640,6 @@ module CheckoutSessions =
                 IntervalCount = intervalCount
             }
 
-    module Create'SubscriptionDataPendingInvoiceItemInterval =
-        let create
-            (
-                interval: Create'SubscriptionDataPendingInvoiceItemIntervalInterval option,
-                intervalCount: int option
-            ) : Create'SubscriptionDataPendingInvoiceItemInterval
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
-            }
-
     type Create'SubscriptionDataProrationBehavior =
         | CreateProrations
         | [<JsonPropertyName("none")>] None'
@@ -5365,18 +3661,6 @@ module CheckoutSessions =
                 Destination = destination
             }
 
-    module Create'SubscriptionDataTransferData =
-        let create
-            (
-                amountPercent: decimal option,
-                destination: string option
-            ) : Create'SubscriptionDataTransferData
-            =
-            {
-              AmountPercent = amountPercent
-              Destination = destination
-            }
-
     type Create'SubscriptionDataTrialSettingsEndBehaviorMissingPaymentMethod =
         | Cancel
         | CreateInvoice
@@ -5395,16 +3679,6 @@ module CheckoutSessions =
                 MissingPaymentMethod = missingPaymentMethod
             }
 
-    module Create'SubscriptionDataTrialSettingsEndBehavior =
-        let create
-            (
-                missingPaymentMethod: Create'SubscriptionDataTrialSettingsEndBehaviorMissingPaymentMethod option
-            ) : Create'SubscriptionDataTrialSettingsEndBehavior
-            =
-            {
-              MissingPaymentMethod = missingPaymentMethod
-            }
-
     type Create'SubscriptionDataTrialSettings =
         {
             /// Defines how the subscription should behave when the user's free trial ends.
@@ -5416,16 +3690,6 @@ module CheckoutSessions =
         static member New(?endBehavior: Create'SubscriptionDataTrialSettingsEndBehavior) =
             {
                 EndBehavior = endBehavior
-            }
-
-    module Create'SubscriptionDataTrialSettings =
-        let create
-            (
-                endBehavior: Create'SubscriptionDataTrialSettingsEndBehavior option
-            ) : Create'SubscriptionDataTrialSettings
-            =
-            {
-              EndBehavior = endBehavior
             }
 
     type Create'SubscriptionData =
@@ -5497,42 +3761,6 @@ module CheckoutSessions =
                 TrialSettings = trialSettings
             }
 
-    module Create'SubscriptionData =
-        let create
-            (
-                applicationFeePercent: decimal option,
-                billingCycleAnchor: DateTime option,
-                billingMode: Create'SubscriptionDataBillingMode option,
-                defaultTaxRates: string list option,
-                description: string option,
-                invoiceSettings: Create'SubscriptionDataInvoiceSettings option,
-                metadata: Map<string, string> option,
-                onBehalfOf: string option,
-                pendingInvoiceItemInterval: Create'SubscriptionDataPendingInvoiceItemInterval option,
-                prorationBehavior: Create'SubscriptionDataProrationBehavior option,
-                transferData: Create'SubscriptionDataTransferData option,
-                trialEnd: DateTime option,
-                trialPeriodDays: int option,
-                trialSettings: Create'SubscriptionDataTrialSettings option
-            ) : Create'SubscriptionData
-            =
-            {
-              ApplicationFeePercent = applicationFeePercent
-              BillingCycleAnchor = billingCycleAnchor
-              BillingMode = billingMode
-              DefaultTaxRates = defaultTaxRates
-              Description = description
-              InvoiceSettings = invoiceSettings
-              Metadata = metadata
-              OnBehalfOf = onBehalfOf
-              PendingInvoiceItemInterval = pendingInvoiceItemInterval
-              ProrationBehavior = prorationBehavior
-              TransferData = transferData
-              TrialEnd = trialEnd
-              TrialPeriodDays = trialPeriodDays
-              TrialSettings = trialSettings
-            }
-
     type Create'TaxIdCollectionRequired =
         | IfSupported
         | Never
@@ -5552,18 +3780,6 @@ module CheckoutSessions =
             {
                 Enabled = enabled
                 Required = required
-            }
-
-    module Create'TaxIdCollection =
-        let create
-            (
-                enabled: bool option,
-                required: Create'TaxIdCollectionRequired option
-            ) : Create'TaxIdCollection
-            =
-            {
-              Enabled = enabled
-              Required = required
             }
 
     type Create'UiMode =
@@ -5589,16 +3805,6 @@ module CheckoutSessions =
                 Display = display
             }
 
-    module Create'WalletOptionsLink =
-        let create
-            (
-                display: Create'WalletOptionsLinkDisplay option
-            ) : Create'WalletOptionsLink
-            =
-            {
-              Display = display
-            }
-
     type Create'WalletOptions =
         {
             /// contains details about the Link wallet options.
@@ -5610,16 +3816,6 @@ module CheckoutSessions =
         static member New(?link: Create'WalletOptionsLink) =
             {
                 Link = link
-            }
-
-    module Create'WalletOptions =
-        let create
-            (
-                link: Create'WalletOptionsLink option
-            ) : Create'WalletOptions
-            =
-            {
-              Link = link
             }
 
     type CreateOptions =
@@ -5885,116 +4081,6 @@ module CheckoutSessions =
                 WalletOptions = walletOptions
             }
 
-    module CreateOptions =
-        let create
-            (
-                adaptivePricing: Create'AdaptivePricing option,
-                afterExpiration: Create'AfterExpiration option,
-                allowPromotionCodes: bool option,
-                automaticTax: Create'AutomaticTax option,
-                billingAddressCollection: Create'BillingAddressCollection option,
-                brandingSettings: Create'BrandingSettings option,
-                cancelUrl: string option,
-                clientReferenceId: string option,
-                consentCollection: Create'ConsentCollection option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customFields: Create'CustomFields list option,
-                customText: Create'CustomText option,
-                customer: string option,
-                customerAccount: string option,
-                customerCreation: Create'CustomerCreation option,
-                customerEmail: string option,
-                customerUpdate: Create'CustomerUpdate option,
-                discounts: Create'Discounts list option,
-                excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list option,
-                expand: string list option,
-                expiresAt: DateTime option,
-                integrationIdentifier: string option,
-                invoiceCreation: Create'InvoiceCreation option,
-                lineItems: Create'LineItems list option,
-                locale: Create'Locale option,
-                managedPayments: Create'ManagedPayments option,
-                metadata: Map<string, string> option,
-                mode: Create'Mode option,
-                nameCollection: Create'NameCollection option,
-                optionalItems: Create'OptionalItems list option,
-                originContext: Create'OriginContext option,
-                paymentIntentData: Create'PaymentIntentData option,
-                paymentMethodCollection: Create'PaymentMethodCollection option,
-                paymentMethodConfiguration: string option,
-                paymentMethodData: Create'PaymentMethodData option,
-                paymentMethodOptions: Create'PaymentMethodOptions option,
-                paymentMethodTypes: Create'PaymentMethodTypes list option,
-                permissions: Create'Permissions option,
-                phoneNumberCollection: Create'PhoneNumberCollection option,
-                redirectOnCompletion: Create'RedirectOnCompletion option,
-                returnUrl: string option,
-                savedPaymentMethodOptions: Create'SavedPaymentMethodOptions option,
-                setupIntentData: Create'SetupIntentData option,
-                shippingAddressCollection: Create'ShippingAddressCollection option,
-                shippingOptions: Create'ShippingOptions list option,
-                submitType: Create'SubmitType option,
-                subscriptionData: Create'SubscriptionData option,
-                successUrl: string option,
-                taxIdCollection: Create'TaxIdCollection option,
-                uiMode: Create'UiMode option,
-                walletOptions: Create'WalletOptions option
-            ) : CreateOptions
-            =
-            {
-              AdaptivePricing = adaptivePricing
-              AfterExpiration = afterExpiration
-              AllowPromotionCodes = allowPromotionCodes
-              AutomaticTax = automaticTax
-              BillingAddressCollection = billingAddressCollection
-              BrandingSettings = brandingSettings
-              CancelUrl = cancelUrl
-              ClientReferenceId = clientReferenceId
-              ConsentCollection = consentCollection
-              Currency = currency
-              CustomFields = customFields
-              CustomText = customText
-              Customer = customer
-              CustomerAccount = customerAccount
-              CustomerCreation = customerCreation
-              CustomerEmail = customerEmail
-              CustomerUpdate = customerUpdate
-              Discounts = discounts
-              ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
-              Expand = expand
-              ExpiresAt = expiresAt
-              IntegrationIdentifier = integrationIdentifier
-              InvoiceCreation = invoiceCreation
-              LineItems = lineItems
-              Locale = locale
-              ManagedPayments = managedPayments
-              Metadata = metadata
-              Mode = mode
-              NameCollection = nameCollection
-              OptionalItems = optionalItems
-              OriginContext = originContext
-              PaymentIntentData = paymentIntentData
-              PaymentMethodCollection = paymentMethodCollection
-              PaymentMethodConfiguration = paymentMethodConfiguration
-              PaymentMethodData = paymentMethodData
-              PaymentMethodOptions = paymentMethodOptions
-              PaymentMethodTypes = paymentMethodTypes
-              Permissions = permissions
-              PhoneNumberCollection = phoneNumberCollection
-              RedirectOnCompletion = redirectOnCompletion
-              ReturnUrl = returnUrl
-              SavedPaymentMethodOptions = savedPaymentMethodOptions
-              SetupIntentData = setupIntentData
-              ShippingAddressCollection = shippingAddressCollection
-              ShippingOptions = shippingOptions
-              SubmitType = submitType
-              SubscriptionData = subscriptionData
-              SuccessUrl = successUrl
-              TaxIdCollection = taxIdCollection
-              UiMode = uiMode
-              WalletOptions = walletOptions
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -6009,17 +4095,6 @@ module CheckoutSessions =
             {
                 Session = session
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                session: string
-            ) : RetrieveOptions
-            =
-            {
-              Session = session
-              Expand = None
             }
 
     type Update'CollectedInformationShippingDetailsAddress =
@@ -6055,26 +4130,6 @@ module CheckoutSessions =
                 State = state
             }
 
-    module Update'CollectedInformationShippingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'CollectedInformationShippingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'CollectedInformationShippingDetails =
         {
             /// The address of the customer
@@ -6092,18 +4147,6 @@ module CheckoutSessions =
                 Name = name
             }
 
-    module Update'CollectedInformationShippingDetails =
-        let create
-            (
-                address: Update'CollectedInformationShippingDetailsAddress option,
-                name: string option
-            ) : Update'CollectedInformationShippingDetails
-            =
-            {
-              Address = address
-              Name = name
-            }
-
     type Update'CollectedInformation =
         {
             /// The shipping details to apply to this Session.
@@ -6115,16 +4158,6 @@ module CheckoutSessions =
         static member New(?shippingDetails: Update'CollectedInformationShippingDetails) =
             {
                 ShippingDetails = shippingDetails
-            }
-
-    module Update'CollectedInformation =
-        let create
-            (
-                shippingDetails: Update'CollectedInformationShippingDetails option
-            ) : Update'CollectedInformation
-            =
-            {
-              ShippingDetails = shippingDetails
             }
 
     type Update'LineItemsAdjustableQuantity =
@@ -6146,20 +4179,6 @@ module CheckoutSessions =
                 Enabled = enabled
                 Maximum = maximum
                 Minimum = minimum
-            }
-
-    module Update'LineItemsAdjustableQuantity =
-        let create
-            (
-                enabled: bool option,
-                maximum: int option,
-                minimum: int option
-            ) : Update'LineItemsAdjustableQuantity
-            =
-            {
-              Enabled = enabled
-              Maximum = maximum
-              Minimum = minimum
             }
 
     type Update'LineItemsPriceDataProductData =
@@ -6195,26 +4214,6 @@ module CheckoutSessions =
                 UnitLabel = unitLabel
             }
 
-    module Update'LineItemsPriceDataProductData =
-        let create
-            (
-                description: string option,
-                images: string list option,
-                metadata: Map<string, string> option,
-                name: string option,
-                taxCode: string option,
-                unitLabel: string option
-            ) : Update'LineItemsPriceDataProductData
-            =
-            {
-              Description = description
-              Images = images
-              Metadata = metadata
-              Name = name
-              TaxCode = taxCode
-              UnitLabel = unitLabel
-            }
-
     type Update'LineItemsPriceDataRecurringInterval =
         | Day
         | Month
@@ -6236,18 +4235,6 @@ module CheckoutSessions =
             {
                 Interval = interval
                 IntervalCount = intervalCount
-            }
-
-    module Update'LineItemsPriceDataRecurring =
-        let create
-            (
-                interval: Update'LineItemsPriceDataRecurringInterval option,
-                intervalCount: int option
-            ) : Update'LineItemsPriceDataRecurring
-            =
-            {
-              Interval = interval
-              IntervalCount = intervalCount
             }
 
     type Update'LineItemsPriceDataTaxBehavior =
@@ -6292,28 +4279,6 @@ module CheckoutSessions =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    module Update'LineItemsPriceData =
-        let create
-            (
-                currency: IsoTypes.IsoCurrencyCode option,
-                product: string option,
-                productData: Update'LineItemsPriceDataProductData option,
-                recurring: Update'LineItemsPriceDataRecurring option,
-                taxBehavior: Update'LineItemsPriceDataTaxBehavior option,
-                unitAmount: int option,
-                unitAmountDecimal: string option
-            ) : Update'LineItemsPriceData
-            =
-            {
-              Currency = currency
-              Product = product
-              ProductData = productData
-              Recurring = recurring
-              TaxBehavior = taxBehavior
-              UnitAmount = unitAmount
-              UnitAmountDecimal = unitAmountDecimal
-            }
-
     type Update'LineItems =
         {
             /// When set, provides configuration for this item’s quantity to be adjusted by the customer during Checkout.
@@ -6351,28 +4316,6 @@ module CheckoutSessions =
                 TaxRates = taxRates
             }
 
-    module Update'LineItems =
-        let create
-            (
-                adjustableQuantity: Update'LineItemsAdjustableQuantity option,
-                id: string option,
-                metadata: Map<string, string> option,
-                price: string option,
-                priceData: Update'LineItemsPriceData option,
-                quantity: int option,
-                taxRates: Choice<string list,string> option
-            ) : Update'LineItems
-            =
-            {
-              AdjustableQuantity = adjustableQuantity
-              Id = id
-              Metadata = metadata
-              Price = price
-              PriceData = priceData
-              Quantity = quantity
-              TaxRates = taxRates
-            }
-
     type Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximumUnit =
         | BusinessDay
         | Day
@@ -6395,18 +4338,6 @@ module CheckoutSessions =
             {
                 Unit = unit
                 Value = value
-            }
-
-    module Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximum =
-        let create
-            (
-                unit: Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximumUnit option,
-                value: int option
-            ) : Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximum
-            =
-            {
-              Unit = unit
-              Value = value
             }
 
     type Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimumUnit =
@@ -6433,18 +4364,6 @@ module CheckoutSessions =
                 Value = value
             }
 
-    module Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimum =
-        let create
-            (
-                unit: Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimumUnit option,
-                value: int option
-            ) : Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimum
-            =
-            {
-              Unit = unit
-              Value = value
-            }
-
     type Update'ShippingOptionsShippingRateDataDeliveryEstimate =
         {
             /// The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -6460,18 +4379,6 @@ module CheckoutSessions =
             {
                 Maximum = maximum
                 Minimum = minimum
-            }
-
-    module Update'ShippingOptionsShippingRateDataDeliveryEstimate =
-        let create
-            (
-                maximum: Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximum option,
-                minimum: Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimum option
-            ) : Update'ShippingOptionsShippingRateDataDeliveryEstimate
-            =
-            {
-              Maximum = maximum
-              Minimum = minimum
             }
 
     type Update'ShippingOptionsShippingRateDataFixedAmount =
@@ -6493,20 +4400,6 @@ module CheckoutSessions =
                 Amount = amount
                 Currency = currency
                 CurrencyOptions = currencyOptions
-            }
-
-    module Update'ShippingOptionsShippingRateDataFixedAmount =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                currencyOptions: Map<string, string> option
-            ) : Update'ShippingOptionsShippingRateDataFixedAmount
-            =
-            {
-              Amount = amount
-              Currency = currency
-              CurrencyOptions = currencyOptions
             }
 
     type Update'ShippingOptionsShippingRateDataTaxBehavior =
@@ -6553,28 +4446,6 @@ module CheckoutSessions =
                 Type = type'
             }
 
-    module Update'ShippingOptionsShippingRateData =
-        let create
-            (
-                deliveryEstimate: Update'ShippingOptionsShippingRateDataDeliveryEstimate option,
-                displayName: string option,
-                fixedAmount: Update'ShippingOptionsShippingRateDataFixedAmount option,
-                metadata: Map<string, string> option,
-                taxBehavior: Update'ShippingOptionsShippingRateDataTaxBehavior option,
-                taxCode: string option,
-                type': Update'ShippingOptionsShippingRateDataType option
-            ) : Update'ShippingOptionsShippingRateData
-            =
-            {
-              DeliveryEstimate = deliveryEstimate
-              DisplayName = displayName
-              FixedAmount = fixedAmount
-              Metadata = metadata
-              TaxBehavior = taxBehavior
-              TaxCode = taxCode
-              Type = type'
-            }
-
     type Update'ShippingOptions =
         {
             /// The ID of the Shipping Rate to use for this shipping option.
@@ -6590,18 +4461,6 @@ module CheckoutSessions =
             {
                 ShippingRate = shippingRate
                 ShippingRateData = shippingRateData
-            }
-
-    module Update'ShippingOptions =
-        let create
-            (
-                shippingRate: string option,
-                shippingRateData: Update'ShippingOptionsShippingRateData option
-            ) : Update'ShippingOptions
-            =
-            {
-              ShippingRate = shippingRate
-              ShippingRateData = shippingRateData
             }
 
     type UpdateOptions =
@@ -6640,21 +4499,6 @@ module CheckoutSessions =
                 LineItems = lineItems
                 Metadata = metadata
                 ShippingOptions = shippingOptions
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                session: string
-            ) : UpdateOptions
-            =
-            {
-              Session = session
-              CollectedInformation = None
-              Expand = None
-              LineItems = None
-              Metadata = None
-              ShippingOptions = None
             }
 
     ///<p>Returns a list of Checkout Sessions.</p>
@@ -6698,17 +4542,6 @@ module CheckoutSessionsExpire =
                 Expand = expand
             }
 
-    module ExpireOptions =
-        let create
-            (
-                session: string
-            ) : ExpireOptions
-            =
-            {
-              Session = session
-              Expand = None
-            }
-
     ///<p>A Checkout Session can be expired when it is in one of these statuses: <code>open</code> </p>
     ///<p>After it expires, a customer can’t complete a Checkout Session and customers loading the Checkout Session see a message saying the Checkout Session is expired.</p>
     let Expire settings (options: ExpireOptions) =
@@ -6743,20 +4576,6 @@ module CheckoutSessionsLineItems =
                 Expand = expand
                 Limit = limit
                 StartingAfter = startingAfter
-            }
-
-    module ListLineItemsOptions =
-        let create
-            (
-                session: string
-            ) : ListLineItemsOptions
-            =
-            {
-              Session = session
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
             }
 
     ///<p>When retrieving a Checkout Session, there is an includable <strong>line_items</strong> property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>

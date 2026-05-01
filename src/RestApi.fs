@@ -95,10 +95,14 @@ module RestApi =
                         |> String.concat ";"
                         |> fun s -> $"{encodedKey}[]={s}"
                     )
+                | :? Option<bool> as o ->
+                    o |> Option.map(fun b -> $"{encodedKey}={urlEncode (b |> string |> fun s -> s.ToLowerInvariant())}")
                 | :? Option<int> as o ->
                     o |> Option.map(fun i -> $"{encodedKey}={urlEncode (i |> string)}")
                 | :? Option<string> as o ->
                     o |> Option.map(fun s -> $"{encodedKey}={urlEncode s}")
+                | :? bool as b ->
+                    $"{encodedKey}={urlEncode (b |> string |> fun s -> s.ToLowerInvariant())}" |> Some
                 | :? List<string> as ss ->
                     ss
                     |> List.map urlEncode

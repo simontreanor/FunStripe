@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.WebhookEndpoint
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module WebhookEndpoints =
 
     type ListOptions =
@@ -31,22 +31,6 @@ module WebhookEndpoints =
                 Expand = expand
                 Limit = limit
                 StartingAfter = startingAfter
-            }
-
-    module ListOptions =
-        let create
-            (
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
             }
 
     type Create'ApiVersion =
@@ -468,23 +452,6 @@ module WebhookEndpoints =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                enabledEvents: Create'EnabledEvents list,
-                url: string
-            ) : CreateOptions
-            =
-            {
-              EnabledEvents = enabledEvents
-              Url = url
-              ApiVersion = None
-              Connect = None
-              Description = None
-              Expand = None
-              Metadata = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           WebhookEndpoint: string }
@@ -493,16 +460,6 @@ module WebhookEndpoints =
         static member New(webhookEndpoint: string) =
             {
                 WebhookEndpoint = webhookEndpoint
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                webhookEndpoint: string
-            ) : DeleteOptions
-            =
-            {
-              WebhookEndpoint = webhookEndpoint
             }
 
     type RetrieveOptions =
@@ -519,17 +476,6 @@ module WebhookEndpoints =
             {
                 WebhookEndpoint = webhookEndpoint
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                webhookEndpoint: string
-            ) : RetrieveOptions
-            =
-            {
-              WebhookEndpoint = webhookEndpoint
-              Expand = None
             }
 
     type Update'EnabledEvents =
@@ -823,22 +769,6 @@ module WebhookEndpoints =
                 Expand = expand
                 Metadata = metadata
                 Url = url
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                webhookEndpoint: string
-            ) : UpdateOptions
-            =
-            {
-              WebhookEndpoint = webhookEndpoint
-              Description = None
-              Disabled = None
-              EnabledEvents = None
-              Expand = None
-              Metadata = None
-              Url = None
             }
 
     ///<p>Returns a list of your webhook endpoints.</p>

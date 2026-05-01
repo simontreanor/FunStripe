@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Identity
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module IdentityVerificationReports =
 
     type ListOptions =
@@ -49,30 +49,6 @@ module IdentityVerificationReports =
                 VerificationSession = verificationSession
             }
 
-    module ListOptions =
-        let create
-            (
-                clientReferenceId: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                type': string option,
-                verificationSession: string option
-            ) : ListOptions
-            =
-            {
-              ClientReferenceId = clientReferenceId
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Type = type'
-              VerificationSession = verificationSession
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -87,17 +63,6 @@ module IdentityVerificationReports =
             {
                 Report = report
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                report: string
-            ) : RetrieveOptions
-            =
-            {
-              Report = report
-              Expand = None
             }
 
     ///<p>List all verification reports.</p>
@@ -159,32 +124,6 @@ module IdentityVerificationSessions =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                clientReferenceId: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                relatedCustomer: string option,
-                relatedCustomerAccount: string option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              ClientReferenceId = clientReferenceId
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              RelatedCustomer = relatedCustomer
-              RelatedCustomerAccount = relatedCustomerAccount
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type Create'OptionsDocumentDocumentOptionsAllowedTypes =
         | DrivingLicense
         | IdCard
@@ -215,22 +154,6 @@ module IdentityVerificationSessions =
                 RequireMatchingSelfie = requireMatchingSelfie
             }
 
-    module Create'OptionsDocumentDocumentOptions =
-        let create
-            (
-                allowedTypes: Create'OptionsDocumentDocumentOptionsAllowedTypes list option,
-                requireIdNumber: bool option,
-                requireLiveCapture: bool option,
-                requireMatchingSelfie: bool option
-            ) : Create'OptionsDocumentDocumentOptions
-            =
-            {
-              AllowedTypes = allowedTypes
-              RequireIdNumber = requireIdNumber
-              RequireLiveCapture = requireLiveCapture
-              RequireMatchingSelfie = requireMatchingSelfie
-            }
-
     type Create'Options =
         {
             /// Options that apply to the [document check](https://docs.stripe.com/identity/verification-checks?type=document).
@@ -242,16 +165,6 @@ module IdentityVerificationSessions =
         static member New(?document: Choice<Create'OptionsDocumentDocumentOptions,string>) =
             {
                 Document = document
-            }
-
-    module Create'Options =
-        let create
-            (
-                document: Choice<Create'OptionsDocumentDocumentOptions,string> option
-            ) : Create'Options
-            =
-            {
-              Document = document
             }
 
     type Create'ProvidedDetails =
@@ -271,18 +184,6 @@ module IdentityVerificationSessions =
                 Phone = phone
             }
 
-    module Create'ProvidedDetails =
-        let create
-            (
-                email: string option,
-                phone: string option
-            ) : Create'ProvidedDetails
-            =
-            {
-              Email = email
-              Phone = phone
-            }
-
     type Create'RelatedPerson =
         {
             /// A token representing a connected account. If provided, the person parameter is also required and must be associated with the account.
@@ -298,18 +199,6 @@ module IdentityVerificationSessions =
             {
                 Account = account
                 Person = person
-            }
-
-    module Create'RelatedPerson =
-        let create
-            (
-                account: string option,
-                person: string option
-            ) : Create'RelatedPerson
-            =
-            {
-              Account = account
-              Person = person
             }
 
     type Create'Type =
@@ -369,36 +258,6 @@ module IdentityVerificationSessions =
                 VerificationFlow = verificationFlow
             }
 
-    module CreateOptions =
-        let create
-            (
-                clientReferenceId: string option,
-                expand: string list option,
-                metadata: Map<string, string> option,
-                options: Create'Options option,
-                providedDetails: Create'ProvidedDetails option,
-                relatedCustomer: string option,
-                relatedCustomerAccount: string option,
-                relatedPerson: Create'RelatedPerson option,
-                returnUrl: string option,
-                type': Create'Type option,
-                verificationFlow: string option
-            ) : CreateOptions
-            =
-            {
-              ClientReferenceId = clientReferenceId
-              Expand = expand
-              Metadata = metadata
-              Options = options
-              ProvidedDetails = providedDetails
-              RelatedCustomer = relatedCustomer
-              RelatedCustomerAccount = relatedCustomerAccount
-              RelatedPerson = relatedPerson
-              ReturnUrl = returnUrl
-              Type = type'
-              VerificationFlow = verificationFlow
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -413,17 +272,6 @@ module IdentityVerificationSessions =
             {
                 Session = session
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                session: string
-            ) : RetrieveOptions
-            =
-            {
-              Session = session
-              Expand = None
             }
 
     type Update'OptionsDocumentDocumentOptionsAllowedTypes =
@@ -456,22 +304,6 @@ module IdentityVerificationSessions =
                 RequireMatchingSelfie = requireMatchingSelfie
             }
 
-    module Update'OptionsDocumentDocumentOptions =
-        let create
-            (
-                allowedTypes: Update'OptionsDocumentDocumentOptionsAllowedTypes list option,
-                requireIdNumber: bool option,
-                requireLiveCapture: bool option,
-                requireMatchingSelfie: bool option
-            ) : Update'OptionsDocumentDocumentOptions
-            =
-            {
-              AllowedTypes = allowedTypes
-              RequireIdNumber = requireIdNumber
-              RequireLiveCapture = requireLiveCapture
-              RequireMatchingSelfie = requireMatchingSelfie
-            }
-
     type Update'Options =
         {
             /// Options that apply to the [document check](https://docs.stripe.com/identity/verification-checks?type=document).
@@ -483,16 +315,6 @@ module IdentityVerificationSessions =
         static member New(?document: Choice<Update'OptionsDocumentDocumentOptions,string>) =
             {
                 Document = document
-            }
-
-    module Update'Options =
-        let create
-            (
-                document: Choice<Update'OptionsDocumentDocumentOptions,string> option
-            ) : Update'Options
-            =
-            {
-              Document = document
             }
 
     type Update'ProvidedDetails =
@@ -510,18 +332,6 @@ module IdentityVerificationSessions =
             {
                 Email = email
                 Phone = phone
-            }
-
-    module Update'ProvidedDetails =
-        let create
-            (
-                email: string option,
-                phone: string option
-            ) : Update'ProvidedDetails
-            =
-            {
-              Email = email
-              Phone = phone
             }
 
     type Update'Type =
@@ -558,21 +368,6 @@ module IdentityVerificationSessions =
                 Options = options
                 ProvidedDetails = providedDetails
                 Type = type'
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                session: string
-            ) : UpdateOptions
-            =
-            {
-              Session = session
-              Expand = None
-              Metadata = None
-              Options = None
-              ProvidedDetails = None
-              Type = None
             }
 
     ///<p>Returns a list of VerificationSessions</p>
@@ -622,17 +417,6 @@ module IdentityVerificationSessionsCancel =
                 Expand = expand
             }
 
-    module CancelOptions =
-        let create
-            (
-                session: string
-            ) : CancelOptions
-            =
-            {
-              Session = session
-              Expand = None
-            }
-
     ///<p>A VerificationSession object can be canceled when it is in <code>requires_input</code> <a href="/docs/identity/how-sessions-work">status</a>.</p>
     ///<p>Once canceled, future submission attempts are disabled. This cannot be undone. <a href="/docs/identity/verification-sessions#cancel">Learn more</a>.</p>
     let Cancel settings (options: CancelOptions) =
@@ -655,17 +439,6 @@ module IdentityVerificationSessionsRedact =
             {
                 Session = session
                 Expand = expand
-            }
-
-    module RedactOptions =
-        let create
-            (
-                session: string
-            ) : RedactOptions
-            =
-            {
-              Session = session
-              Expand = None
             }
 
     ///<p>Redact a VerificationSession to remove all collected information from Stripe. This will redact

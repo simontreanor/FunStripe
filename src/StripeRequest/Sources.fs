@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SourceTransaction
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Sources =
 
     type Create'Flow =
@@ -28,16 +28,6 @@ module Sources =
                 ContactEmail = contactEmail
             }
 
-    module Create'MandateAcceptanceOffline =
-        let create
-            (
-                contactEmail: string option
-            ) : Create'MandateAcceptanceOffline
-            =
-            {
-              ContactEmail = contactEmail
-            }
-
     type Create'MandateAcceptanceOnline =
         {
             /// The Unix timestamp (in seconds) when the mandate was accepted or refused by the customer.
@@ -57,20 +47,6 @@ module Sources =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Create'MandateAcceptanceOnline =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Create'MandateAcceptanceOnline
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Create'MandateAcceptanceStatus =
@@ -120,28 +96,6 @@ module Sources =
                 UserAgent = userAgent
             }
 
-    module Create'MandateAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                offline: Create'MandateAcceptanceOffline option,
-                online: Create'MandateAcceptanceOnline option,
-                status: Create'MandateAcceptanceStatus option,
-                type': Create'MandateAcceptanceType option,
-                userAgent: string option
-            ) : Create'MandateAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              Offline = offline
-              Online = online
-              Status = status
-              Type = type'
-              UserAgent = userAgent
-            }
-
     type Create'MandateInterval =
         | OneTime
         | Scheduled
@@ -183,24 +137,6 @@ module Sources =
                 NotificationMethod = notificationMethod
             }
 
-    module Create'Mandate =
-        let create
-            (
-                acceptance: Create'MandateAcceptance option,
-                amount: Choice<int,string> option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                interval: Create'MandateInterval option,
-                notificationMethod: Create'MandateNotificationMethod option
-            ) : Create'Mandate
-            =
-            {
-              Acceptance = acceptance
-              Amount = amount
-              Currency = currency
-              Interval = interval
-              NotificationMethod = notificationMethod
-            }
-
     type Create'OwnerAddress =
         {
             /// City, district, suburb, town, or village.
@@ -234,26 +170,6 @@ module Sources =
                 State = state
             }
 
-    module Create'OwnerAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'OwnerAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'Owner =
         {
             /// Owner's address.
@@ -279,22 +195,6 @@ module Sources =
                 Phone = phone
             }
 
-    module Create'Owner =
-        let create
-            (
-                address: Create'OwnerAddress option,
-                email: string option,
-                name: string option,
-                phone: string option
-            ) : Create'Owner
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
-            }
-
     type Create'ReceiverRefundAttributesMethod =
         | Email
         | Manual
@@ -313,16 +213,6 @@ module Sources =
                 RefundAttributesMethod = refundAttributesMethod
             }
 
-    module Create'Receiver =
-        let create
-            (
-                refundAttributesMethod: Create'ReceiverRefundAttributesMethod option
-            ) : Create'Receiver
-            =
-            {
-              RefundAttributesMethod = refundAttributesMethod
-            }
-
     type Create'Redirect =
         {
             /// The URL you provide to redirect the customer back to you after they authenticated their payment. It can use your application URI scheme in the context of a mobile application.
@@ -334,16 +224,6 @@ module Sources =
         static member New(?returnUrl: string) =
             {
                 ReturnUrl = returnUrl
-            }
-
-    module Create'Redirect =
-        let create
-            (
-                returnUrl: string option
-            ) : Create'Redirect
-            =
-            {
-              ReturnUrl = returnUrl
             }
 
     type Create'SourceOrderItemsType =
@@ -381,26 +261,6 @@ module Sources =
                 Type = type'
             }
 
-    module Create'SourceOrderItems =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                description: string option,
-                parent: string option,
-                quantity: int option,
-                type': Create'SourceOrderItemsType option
-            ) : Create'SourceOrderItems
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Description = description
-              Parent = parent
-              Quantity = quantity
-              Type = type'
-            }
-
     type Create'SourceOrderShippingAddress =
         {
             /// City, district, suburb, town, or village.
@@ -434,26 +294,6 @@ module Sources =
                 State = state
             }
 
-    module Create'SourceOrderShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'SourceOrderShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'SourceOrderShipping =
         {
             /// Shipping address.
@@ -483,24 +323,6 @@ module Sources =
                 TrackingNumber = trackingNumber
             }
 
-    module Create'SourceOrderShipping =
-        let create
-            (
-                address: Create'SourceOrderShippingAddress option,
-                carrier: string option,
-                name: string option,
-                phone: string option,
-                trackingNumber: string option
-            ) : Create'SourceOrderShipping
-            =
-            {
-              Address = address
-              Carrier = carrier
-              Name = name
-              Phone = phone
-              TrackingNumber = trackingNumber
-            }
-
     type Create'SourceOrder =
         {
             /// List of items constituting the order.
@@ -516,18 +338,6 @@ module Sources =
             {
                 Items = items
                 Shipping = shipping
-            }
-
-    module Create'SourceOrder =
-        let create
-            (
-                items: Create'SourceOrderItems list option,
-                shipping: Create'SourceOrderShipping option
-            ) : Create'SourceOrder
-            =
-            {
-              Items = items
-              Shipping = shipping
             }
 
     type Create'Usage =
@@ -605,46 +415,6 @@ module Sources =
                 Usage = usage
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                customer: string option,
-                expand: string list option,
-                flow: Create'Flow option,
-                mandate: Create'Mandate option,
-                metadata: Map<string, string> option,
-                originalSource: string option,
-                owner: Create'Owner option,
-                receiver: Create'Receiver option,
-                redirect: Create'Redirect option,
-                sourceOrder: Create'SourceOrder option,
-                statementDescriptor: string option,
-                token: string option,
-                type': string option,
-                usage: Create'Usage option
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Customer = customer
-              Expand = expand
-              Flow = flow
-              Mandate = mandate
-              Metadata = metadata
-              OriginalSource = originalSource
-              Owner = owner
-              Receiver = receiver
-              Redirect = redirect
-              SourceOrder = sourceOrder
-              StatementDescriptor = statementDescriptor
-              Token = token
-              Type = type'
-              Usage = usage
-            }
-
     type RetrieveOptions =
         {
             /// The client secret of the source. Required if a publishable key is used to retrieve the source.
@@ -665,18 +435,6 @@ module Sources =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                source: string
-            ) : RetrieveOptions
-            =
-            {
-              Source = source
-              ClientSecret = None
-              Expand = None
-            }
-
     type Update'MandateAcceptanceOffline =
         {
             /// An email to contact you with if a copy of the mandate is requested, required if `type` is `offline`.
@@ -688,16 +446,6 @@ module Sources =
         static member New(?contactEmail: string) =
             {
                 ContactEmail = contactEmail
-            }
-
-    module Update'MandateAcceptanceOffline =
-        let create
-            (
-                contactEmail: string option
-            ) : Update'MandateAcceptanceOffline
-            =
-            {
-              ContactEmail = contactEmail
             }
 
     type Update'MandateAcceptanceOnline =
@@ -719,20 +467,6 @@ module Sources =
                 Date = date
                 Ip = ip
                 UserAgent = userAgent
-            }
-
-    module Update'MandateAcceptanceOnline =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                userAgent: string option
-            ) : Update'MandateAcceptanceOnline
-            =
-            {
-              Date = date
-              Ip = ip
-              UserAgent = userAgent
             }
 
     type Update'MandateAcceptanceStatus =
@@ -782,28 +516,6 @@ module Sources =
                 UserAgent = userAgent
             }
 
-    module Update'MandateAcceptance =
-        let create
-            (
-                date: DateTime option,
-                ip: string option,
-                offline: Update'MandateAcceptanceOffline option,
-                online: Update'MandateAcceptanceOnline option,
-                status: Update'MandateAcceptanceStatus option,
-                type': Update'MandateAcceptanceType option,
-                userAgent: string option
-            ) : Update'MandateAcceptance
-            =
-            {
-              Date = date
-              Ip = ip
-              Offline = offline
-              Online = online
-              Status = status
-              Type = type'
-              UserAgent = userAgent
-            }
-
     type Update'MandateInterval =
         | OneTime
         | Scheduled
@@ -845,24 +557,6 @@ module Sources =
                 NotificationMethod = notificationMethod
             }
 
-    module Update'Mandate =
-        let create
-            (
-                acceptance: Update'MandateAcceptance option,
-                amount: Choice<int,string> option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                interval: Update'MandateInterval option,
-                notificationMethod: Update'MandateNotificationMethod option
-            ) : Update'Mandate
-            =
-            {
-              Acceptance = acceptance
-              Amount = amount
-              Currency = currency
-              Interval = interval
-              NotificationMethod = notificationMethod
-            }
-
     type Update'OwnerAddress =
         {
             /// City, district, suburb, town, or village.
@@ -896,26 +590,6 @@ module Sources =
                 State = state
             }
 
-    module Update'OwnerAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'OwnerAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'Owner =
         {
             /// Owner's address.
@@ -939,22 +613,6 @@ module Sources =
                 Email = email
                 Name = name
                 Phone = phone
-            }
-
-    module Update'Owner =
-        let create
-            (
-                address: Update'OwnerAddress option,
-                email: string option,
-                name: string option,
-                phone: string option
-            ) : Update'Owner
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
             }
 
     type Update'SourceOrderItemsType =
@@ -992,26 +650,6 @@ module Sources =
                 Type = type'
             }
 
-    module Update'SourceOrderItems =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                description: string option,
-                parent: string option,
-                quantity: int option,
-                type': Update'SourceOrderItemsType option
-            ) : Update'SourceOrderItems
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Description = description
-              Parent = parent
-              Quantity = quantity
-              Type = type'
-            }
-
     type Update'SourceOrderShippingAddress =
         {
             /// City, district, suburb, town, or village.
@@ -1045,26 +683,6 @@ module Sources =
                 State = state
             }
 
-    module Update'SourceOrderShippingAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Update'SourceOrderShippingAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Update'SourceOrderShipping =
         {
             /// Shipping address.
@@ -1094,24 +712,6 @@ module Sources =
                 TrackingNumber = trackingNumber
             }
 
-    module Update'SourceOrderShipping =
-        let create
-            (
-                address: Update'SourceOrderShippingAddress option,
-                carrier: string option,
-                name: string option,
-                phone: string option,
-                trackingNumber: string option
-            ) : Update'SourceOrderShipping
-            =
-            {
-              Address = address
-              Carrier = carrier
-              Name = name
-              Phone = phone
-              TrackingNumber = trackingNumber
-            }
-
     type Update'SourceOrder =
         {
             /// List of items constituting the order.
@@ -1127,18 +727,6 @@ module Sources =
             {
                 Items = items
                 Shipping = shipping
-            }
-
-    module Update'SourceOrder =
-        let create
-            (
-                items: Update'SourceOrderItems list option,
-                shipping: Update'SourceOrderShipping option
-            ) : Update'SourceOrder
-            =
-            {
-              Items = items
-              Shipping = shipping
             }
 
     type UpdateOptions =
@@ -1175,22 +763,6 @@ module Sources =
                 Metadata = metadata
                 Owner = owner
                 SourceOrder = sourceOrder
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                source: string
-            ) : UpdateOptions
-            =
-            {
-              Source = source
-              Amount = None
-              Expand = None
-              Mandate = None
-              Metadata = None
-              Owner = None
-              SourceOrder = None
             }
 
     ///<p>Creates a new source object.</p>
@@ -1240,20 +812,6 @@ module SourcesSourceTransactions =
                 StartingAfter = startingAfter
             }
 
-    module SourceTransactionsOptions =
-        let create
-            (
-                source: string
-            ) : SourceTransactionsOptions
-            =
-            {
-              Source = source
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-            }
-
     ///<p>List source transactions for a given source.</p>
     let SourceTransactions settings (options: SourceTransactionsOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -1280,19 +838,6 @@ module SourcesVerify =
                 Source = source
                 Values = values
                 Expand = expand
-            }
-
-    module VerifyOptions =
-        let create
-            (
-                source: string,
-                values: string list
-            ) : VerifyOptions
-            =
-            {
-              Source = source
-              Values = values
-              Expand = None
             }
 
     ///<p>Verify a given source.</p>

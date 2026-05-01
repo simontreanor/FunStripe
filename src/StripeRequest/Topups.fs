@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module Topups =
 
     type ListOptions =
@@ -43,28 +43,6 @@ module Topups =
                 Limit = limit
                 StartingAfter = startingAfter
                 Status = status
-            }
-
-    module ListOptions =
-        let create
-            (
-                amount: int option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              Amount = amount
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
             }
 
     type CreateOptions =
@@ -108,24 +86,6 @@ module Topups =
                 TransferGroup = transferGroup
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Description = None
-              Expand = None
-              Metadata = None
-              Source = None
-              StatementDescriptor = None
-              TransferGroup = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -140,17 +100,6 @@ module Topups =
             {
                 Topup = topup
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                topup: string
-            ) : RetrieveOptions
-            =
-            {
-              Topup = topup
-              Expand = None
             }
 
     type UpdateOptions =
@@ -175,19 +124,6 @@ module Topups =
                 Description = description
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                topup: string
-            ) : UpdateOptions
-            =
-            {
-              Topup = topup
-              Description = None
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Returns a list of top-ups.</p>
@@ -228,17 +164,6 @@ module TopupsCancel =
             {
                 Topup = topup
                 Expand = expand
-            }
-
-    module CancelOptions =
-        let create
-            (
-                topup: string
-            ) : CancelOptions
-            =
-            {
-              Topup = topup
-              Expand = None
             }
 
     ///<p>Cancels a top-up. Only pending top-ups can be canceled.</p>

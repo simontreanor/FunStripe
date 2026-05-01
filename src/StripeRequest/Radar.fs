@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Radar
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module RadarEarlyFraudWarnings =
 
     type ListOptions =
@@ -45,28 +45,6 @@ module RadarEarlyFraudWarnings =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                charge: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                paymentIntent: string option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Charge = charge
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              PaymentIntent = paymentIntent
-              StartingAfter = startingAfter
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -81,17 +59,6 @@ module RadarEarlyFraudWarnings =
             {
                 EarlyFraudWarning = earlyFraudWarning
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                earlyFraudWarning: string
-            ) : RetrieveOptions
-            =
-            {
-              EarlyFraudWarning = earlyFraudWarning
-              Expand = None
             }
 
     ///<p>Returns a list of early fraud warnings.</p>
@@ -120,16 +87,6 @@ module RadarPaymentEvaluations =
         static member New(?radarSession: string) =
             {
                 RadarSession = radarSession
-            }
-
-    module Create'ClientDeviceMetadataDetails =
-        let create
-            (
-                radarSession: string option
-            ) : Create'ClientDeviceMetadataDetails
-            =
-            {
-              RadarSession = radarSession
             }
 
     type Create'CustomerDetails =
@@ -161,24 +118,6 @@ module RadarPaymentEvaluations =
                 Phone = phone
             }
 
-    module Create'CustomerDetails =
-        let create
-            (
-                customer: string option,
-                customerAccount: string option,
-                email: string option,
-                name: string option,
-                phone: string option
-            ) : Create'CustomerDetails
-            =
-            {
-              Customer = customer
-              CustomerAccount = customerAccount
-              Email = email
-              Name = name
-              Phone = phone
-            }
-
     type Create'PaymentDetailsMoneyMovementDetailsCardCustomerPresence =
         | OffSession
         | OnSession
@@ -206,18 +145,6 @@ module RadarPaymentEvaluations =
                 PaymentType = paymentType
             }
 
-    module Create'PaymentDetailsMoneyMovementDetailsCard =
-        let create
-            (
-                customerPresence: Create'PaymentDetailsMoneyMovementDetailsCardCustomerPresence option,
-                paymentType: Create'PaymentDetailsMoneyMovementDetailsCardPaymentType option
-            ) : Create'PaymentDetailsMoneyMovementDetailsCard
-            =
-            {
-              CustomerPresence = customerPresence
-              PaymentType = paymentType
-            }
-
     type Create'PaymentDetailsMoneyMovementDetailsMoneyMovementType = | Card
 
     type Create'PaymentDetailsMoneyMovementDetails =
@@ -235,18 +162,6 @@ module RadarPaymentEvaluations =
             {
                 Card = card
                 MoneyMovementType = moneyMovementType
-            }
-
-    module Create'PaymentDetailsMoneyMovementDetails =
-        let create
-            (
-                card: Create'PaymentDetailsMoneyMovementDetailsCard option,
-                moneyMovementType: Create'PaymentDetailsMoneyMovementDetailsMoneyMovementType option
-            ) : Create'PaymentDetailsMoneyMovementDetails
-            =
-            {
-              Card = card
-              MoneyMovementType = moneyMovementType
             }
 
     type Create'PaymentDetailsPaymentMethodDetailsBillingDetailsAddress =
@@ -282,26 +197,6 @@ module RadarPaymentEvaluations =
                 State = state
             }
 
-    module Create'PaymentDetailsPaymentMethodDetailsBillingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'PaymentDetailsPaymentMethodDetailsBillingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'PaymentDetailsPaymentMethodDetailsBillingDetails =
         {
             /// Billing address.
@@ -327,22 +222,6 @@ module RadarPaymentEvaluations =
                 Phone = phone
             }
 
-    module Create'PaymentDetailsPaymentMethodDetailsBillingDetails =
-        let create
-            (
-                address: Create'PaymentDetailsPaymentMethodDetailsBillingDetailsAddress option,
-                email: string option,
-                name: string option,
-                phone: string option
-            ) : Create'PaymentDetailsPaymentMethodDetailsBillingDetails
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
-            }
-
     type Create'PaymentDetailsPaymentMethodDetails =
         {
             /// Billing information associated with the payment evaluation.
@@ -358,18 +237,6 @@ module RadarPaymentEvaluations =
             {
                 BillingDetails = billingDetails
                 PaymentMethod = paymentMethod
-            }
-
-    module Create'PaymentDetailsPaymentMethodDetails =
-        let create
-            (
-                billingDetails: Create'PaymentDetailsPaymentMethodDetailsBillingDetails option,
-                paymentMethod: string option
-            ) : Create'PaymentDetailsPaymentMethodDetails
-            =
-            {
-              BillingDetails = billingDetails
-              PaymentMethod = paymentMethod
             }
 
     type Create'PaymentDetailsShippingDetailsAddress =
@@ -405,26 +272,6 @@ module RadarPaymentEvaluations =
                 State = state
             }
 
-    module Create'PaymentDetailsShippingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'PaymentDetailsShippingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'PaymentDetailsShippingDetails =
         {
             /// Shipping address.
@@ -444,20 +291,6 @@ module RadarPaymentEvaluations =
                 Address = address
                 Name = name
                 Phone = phone
-            }
-
-    module Create'PaymentDetailsShippingDetails =
-        let create
-            (
-                address: Create'PaymentDetailsShippingDetailsAddress option,
-                name: string option,
-                phone: string option
-            ) : Create'PaymentDetailsShippingDetails
-            =
-            {
-              Address = address
-              Name = name
-              Phone = phone
             }
 
     type Create'PaymentDetails =
@@ -497,28 +330,6 @@ module RadarPaymentEvaluations =
                 StatementDescriptor = statementDescriptor
             }
 
-    module Create'PaymentDetails =
-        let create
-            (
-                amount: int option,
-                currency: IsoTypes.IsoCurrencyCode option,
-                description: string option,
-                moneyMovementDetails: Create'PaymentDetailsMoneyMovementDetails option,
-                paymentMethodDetails: Create'PaymentDetailsPaymentMethodDetails option,
-                shippingDetails: Create'PaymentDetailsShippingDetails option,
-                statementDescriptor: string option
-            ) : Create'PaymentDetails
-            =
-            {
-              Amount = amount
-              Currency = currency
-              Description = description
-              MoneyMovementDetails = moneyMovementDetails
-              PaymentMethodDetails = paymentMethodDetails
-              ShippingDetails = shippingDetails
-              StatementDescriptor = statementDescriptor
-            }
-
     type CreateOptions =
         {
             /// Details about the Client Device Metadata to associate with the payment evaluation.
@@ -546,21 +357,6 @@ module RadarPaymentEvaluations =
                 ClientDeviceMetadataDetails = clientDeviceMetadataDetails
                 Expand = expand
                 Metadata = metadata
-            }
-
-    module CreateOptions =
-        let create
-            (
-                customerDetails: Create'CustomerDetails,
-                paymentDetails: Create'PaymentDetails
-            ) : CreateOptions
-            =
-            {
-              CustomerDetails = customerDetails
-              PaymentDetails = paymentDetails
-              ClientDeviceMetadataDetails = None
-              Expand = None
-              Metadata = None
             }
 
     ///<p>Request a Radar API fraud risk score from Stripe for a payment before sending it for external processor authorization.</p>
@@ -607,22 +403,6 @@ module RadarValueListItems =
                 Value = value
             }
 
-    module ListOptions =
-        let create
-            (
-                valueList: string
-            ) : ListOptions
-            =
-            {
-              ValueList = valueList
-              Created = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              Value = None
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -644,19 +424,6 @@ module RadarValueListItems =
                 Expand = expand
             }
 
-    module CreateOptions =
-        let create
-            (
-                value: string,
-                valueList: string
-            ) : CreateOptions
-            =
-            {
-              Value = value
-              ValueList = valueList
-              Expand = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           Item: string }
@@ -665,16 +432,6 @@ module RadarValueListItems =
         static member New(item: string) =
             {
                 Item = item
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                item: string
-            ) : DeleteOptions
-            =
-            {
-              Item = item
             }
 
     type RetrieveOptions =
@@ -691,17 +448,6 @@ module RadarValueListItems =
             {
                 Item = item
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                item: string
-            ) : RetrieveOptions
-            =
-            {
-              Item = item
-              Expand = None
             }
 
     ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
@@ -765,28 +511,6 @@ module RadarValueLists =
                 StartingAfter = startingAfter
             }
 
-    module ListOptions =
-        let create
-            (
-                alias: string option,
-                contains: string option,
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option
-            ) : ListOptions
-            =
-            {
-              Alias = alias
-              Contains = contains
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-            }
-
     type Create'ItemType =
         | Account
         | CardBin
@@ -830,21 +554,6 @@ module RadarValueLists =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                alias: string,
-                name: string
-            ) : CreateOptions
-            =
-            {
-              Alias = alias
-              Name = name
-              Expand = None
-              ItemType = None
-              Metadata = None
-            }
-
     type DeleteOptions =
         { [<Config.Path>]
           ValueList: string }
@@ -853,16 +562,6 @@ module RadarValueLists =
         static member New(valueList: string) =
             {
                 ValueList = valueList
-            }
-
-    module DeleteOptions =
-        let create
-            (
-                valueList: string
-            ) : DeleteOptions
-            =
-            {
-              ValueList = valueList
             }
 
     type RetrieveOptions =
@@ -879,17 +578,6 @@ module RadarValueLists =
             {
                 ValueList = valueList
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                valueList: string
-            ) : RetrieveOptions
-            =
-            {
-              ValueList = valueList
-              Expand = None
             }
 
     type UpdateOptions =
@@ -918,20 +606,6 @@ module RadarValueLists =
                 Expand = expand
                 Metadata = metadata
                 Name = name
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                valueList: string
-            ) : UpdateOptions
-            =
-            {
-              ValueList = valueList
-              Alias = None
-              Expand = None
-              Metadata = None
-              Name = None
             }
 
     ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>

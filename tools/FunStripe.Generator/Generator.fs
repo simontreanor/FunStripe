@@ -15,7 +15,7 @@ let private parseArgs (argv: string array) =
 [<EntryPoint>]
 let main argv =
     let specPath, outputDir, version = parseArgs argv
-    let version' = version |> Option.defaultValue "2.0.0"
+    let version' = version |> Option.defaultValue "2.0.3"
     // Default output dir is the src/ folder relative to this source file's compile-time location
     let outputDir' =
         outputDir

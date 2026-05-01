@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 module TreasuryCreditReversals =
 
     type ListOptions =
@@ -45,22 +45,6 @@ module TreasuryCreditReversals =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              ReceivedCredit = None
-              StartingAfter = None
-              Status = None
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -82,18 +66,6 @@ module TreasuryCreditReversals =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                receivedCredit: string
-            ) : CreateOptions
-            =
-            {
-              ReceivedCredit = receivedCredit
-              Expand = None
-              Metadata = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -108,17 +80,6 @@ module TreasuryCreditReversals =
             {
                 CreditReversal = creditReversal
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                creditReversal: string
-            ) : RetrieveOptions
-            =
-            {
-              CreditReversal = creditReversal
-              Expand = None
             }
 
     ///<p>Returns a list of CreditReversals.</p>
@@ -181,23 +142,6 @@ module TreasuryDebitReversals =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              ReceivedDebit = None
-              Resolution = None
-              StartingAfter = None
-              Status = None
-            }
-
     type CreateOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -219,18 +163,6 @@ module TreasuryDebitReversals =
                 Metadata = metadata
             }
 
-    module CreateOptions =
-        let create
-            (
-                receivedDebit: string
-            ) : CreateOptions
-            =
-            {
-              ReceivedDebit = receivedDebit
-              Expand = None
-              Metadata = None
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -245,17 +177,6 @@ module TreasuryDebitReversals =
             {
                 DebitReversal = debitReversal
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                debitReversal: string
-            ) : RetrieveOptions
-            =
-            {
-              DebitReversal = debitReversal
-              Expand = None
             }
 
     ///<p>Returns a list of DebitReversals.</p>
@@ -310,26 +231,6 @@ module TreasuryFinancialAccounts =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                created: int option,
-                endingBefore: string option,
-                expand: string list option,
-                limit: int option,
-                startingAfter: string option,
-                status: string option
-            ) : ListOptions
-            =
-            {
-              Created = created
-              EndingBefore = endingBefore
-              Expand = expand
-              Limit = limit
-              StartingAfter = startingAfter
-              Status = status
-            }
-
     type Create'FeaturesCardIssuing =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -341,16 +242,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'FeaturesCardIssuing =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesCardIssuing
-            =
-            {
-              Requested = requested
             }
 
     type Create'FeaturesDepositInsurance =
@@ -366,16 +257,6 @@ module TreasuryFinancialAccounts =
                 Requested = requested
             }
 
-    module Create'FeaturesDepositInsurance =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesDepositInsurance
-            =
-            {
-              Requested = requested
-            }
-
     type Create'FeaturesFinancialAddressesAba =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -387,16 +268,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'FeaturesFinancialAddressesAba =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesFinancialAddressesAba
-            =
-            {
-              Requested = requested
             }
 
     type Create'FeaturesFinancialAddresses =
@@ -412,16 +283,6 @@ module TreasuryFinancialAccounts =
                 Aba = aba
             }
 
-    module Create'FeaturesFinancialAddresses =
-        let create
-            (
-                aba: Create'FeaturesFinancialAddressesAba option
-            ) : Create'FeaturesFinancialAddresses
-            =
-            {
-              Aba = aba
-            }
-
     type Create'FeaturesInboundTransfersAch =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -433,16 +294,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'FeaturesInboundTransfersAch =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesInboundTransfersAch
-            =
-            {
-              Requested = requested
             }
 
     type Create'FeaturesInboundTransfers =
@@ -458,16 +309,6 @@ module TreasuryFinancialAccounts =
                 Ach = ach
             }
 
-    module Create'FeaturesInboundTransfers =
-        let create
-            (
-                ach: Create'FeaturesInboundTransfersAch option
-            ) : Create'FeaturesInboundTransfers
-            =
-            {
-              Ach = ach
-            }
-
     type Create'FeaturesIntraStripeFlows =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -479,16 +320,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'FeaturesIntraStripeFlows =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesIntraStripeFlows
-            =
-            {
-              Requested = requested
             }
 
     type Create'FeaturesOutboundPaymentsAch =
@@ -504,16 +335,6 @@ module TreasuryFinancialAccounts =
                 Requested = requested
             }
 
-    module Create'FeaturesOutboundPaymentsAch =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesOutboundPaymentsAch
-            =
-            {
-              Requested = requested
-            }
-
     type Create'FeaturesOutboundPaymentsUsDomesticWire =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -525,16 +346,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'FeaturesOutboundPaymentsUsDomesticWire =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesOutboundPaymentsUsDomesticWire
-            =
-            {
-              Requested = requested
             }
 
     type Create'FeaturesOutboundPayments =
@@ -554,18 +365,6 @@ module TreasuryFinancialAccounts =
                 UsDomesticWire = usDomesticWire
             }
 
-    module Create'FeaturesOutboundPayments =
-        let create
-            (
-                ach: Create'FeaturesOutboundPaymentsAch option,
-                usDomesticWire: Create'FeaturesOutboundPaymentsUsDomesticWire option
-            ) : Create'FeaturesOutboundPayments
-            =
-            {
-              Ach = ach
-              UsDomesticWire = usDomesticWire
-            }
-
     type Create'FeaturesOutboundTransfersAch =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -579,16 +378,6 @@ module TreasuryFinancialAccounts =
                 Requested = requested
             }
 
-    module Create'FeaturesOutboundTransfersAch =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesOutboundTransfersAch
-            =
-            {
-              Requested = requested
-            }
-
     type Create'FeaturesOutboundTransfersUsDomesticWire =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -600,16 +389,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Create'FeaturesOutboundTransfersUsDomesticWire =
-        let create
-            (
-                requested: bool option
-            ) : Create'FeaturesOutboundTransfersUsDomesticWire
-            =
-            {
-              Requested = requested
             }
 
     type Create'FeaturesOutboundTransfers =
@@ -627,18 +406,6 @@ module TreasuryFinancialAccounts =
             {
                 Ach = ach
                 UsDomesticWire = usDomesticWire
-            }
-
-    module Create'FeaturesOutboundTransfers =
-        let create
-            (
-                ach: Create'FeaturesOutboundTransfersAch option,
-                usDomesticWire: Create'FeaturesOutboundTransfersUsDomesticWire option
-            ) : Create'FeaturesOutboundTransfers
-            =
-            {
-              Ach = ach
-              UsDomesticWire = usDomesticWire
             }
 
     type Create'Features =
@@ -678,28 +445,6 @@ module TreasuryFinancialAccounts =
                 OutboundTransfers = outboundTransfers
             }
 
-    module Create'Features =
-        let create
-            (
-                cardIssuing: Create'FeaturesCardIssuing option,
-                depositInsurance: Create'FeaturesDepositInsurance option,
-                financialAddresses: Create'FeaturesFinancialAddresses option,
-                inboundTransfers: Create'FeaturesInboundTransfers option,
-                intraStripeFlows: Create'FeaturesIntraStripeFlows option,
-                outboundPayments: Create'FeaturesOutboundPayments option,
-                outboundTransfers: Create'FeaturesOutboundTransfers option
-            ) : Create'Features
-            =
-            {
-              CardIssuing = cardIssuing
-              DepositInsurance = depositInsurance
-              FinancialAddresses = financialAddresses
-              InboundTransfers = inboundTransfers
-              IntraStripeFlows = intraStripeFlows
-              OutboundPayments = outboundPayments
-              OutboundTransfers = outboundTransfers
-            }
-
     type Create'PlatformRestrictionsInboundFlows =
         | Restricted
         | Unrestricted
@@ -723,18 +468,6 @@ module TreasuryFinancialAccounts =
             {
                 InboundFlows = inboundFlows
                 OutboundFlows = outboundFlows
-            }
-
-    module Create'PlatformRestrictions =
-        let create
-            (
-                inboundFlows: Create'PlatformRestrictionsInboundFlows option,
-                outboundFlows: Create'PlatformRestrictionsOutboundFlows option
-            ) : Create'PlatformRestrictions
-            =
-            {
-              InboundFlows = inboundFlows
-              OutboundFlows = outboundFlows
             }
 
     type CreateOptions =
@@ -770,21 +503,6 @@ module TreasuryFinancialAccounts =
                 PlatformRestrictions = platformRestrictions
             }
 
-    module CreateOptions =
-        let create
-            (
-                supportedCurrencies: string list
-            ) : CreateOptions
-            =
-            {
-              SupportedCurrencies = supportedCurrencies
-              Expand = None
-              Features = None
-              Metadata = None
-              Nickname = None
-              PlatformRestrictions = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -801,17 +519,6 @@ module TreasuryFinancialAccounts =
                 Expand = expand
             }
 
-    module RetrieveOptions =
-        let create
-            (
-                financialAccount: string
-            ) : RetrieveOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              Expand = None
-            }
-
     type Update'FeaturesCardIssuing =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -823,16 +530,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'FeaturesCardIssuing =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesCardIssuing
-            =
-            {
-              Requested = requested
             }
 
     type Update'FeaturesDepositInsurance =
@@ -848,16 +545,6 @@ module TreasuryFinancialAccounts =
                 Requested = requested
             }
 
-    module Update'FeaturesDepositInsurance =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesDepositInsurance
-            =
-            {
-              Requested = requested
-            }
-
     type Update'FeaturesFinancialAddressesAba =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -869,16 +556,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'FeaturesFinancialAddressesAba =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesFinancialAddressesAba
-            =
-            {
-              Requested = requested
             }
 
     type Update'FeaturesFinancialAddresses =
@@ -894,16 +571,6 @@ module TreasuryFinancialAccounts =
                 Aba = aba
             }
 
-    module Update'FeaturesFinancialAddresses =
-        let create
-            (
-                aba: Update'FeaturesFinancialAddressesAba option
-            ) : Update'FeaturesFinancialAddresses
-            =
-            {
-              Aba = aba
-            }
-
     type Update'FeaturesInboundTransfersAch =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -915,16 +582,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'FeaturesInboundTransfersAch =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesInboundTransfersAch
-            =
-            {
-              Requested = requested
             }
 
     type Update'FeaturesInboundTransfers =
@@ -940,16 +597,6 @@ module TreasuryFinancialAccounts =
                 Ach = ach
             }
 
-    module Update'FeaturesInboundTransfers =
-        let create
-            (
-                ach: Update'FeaturesInboundTransfersAch option
-            ) : Update'FeaturesInboundTransfers
-            =
-            {
-              Ach = ach
-            }
-
     type Update'FeaturesIntraStripeFlows =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -961,16 +608,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'FeaturesIntraStripeFlows =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesIntraStripeFlows
-            =
-            {
-              Requested = requested
             }
 
     type Update'FeaturesOutboundPaymentsAch =
@@ -986,16 +623,6 @@ module TreasuryFinancialAccounts =
                 Requested = requested
             }
 
-    module Update'FeaturesOutboundPaymentsAch =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesOutboundPaymentsAch
-            =
-            {
-              Requested = requested
-            }
-
     type Update'FeaturesOutboundPaymentsUsDomesticWire =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1007,16 +634,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'FeaturesOutboundPaymentsUsDomesticWire =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesOutboundPaymentsUsDomesticWire
-            =
-            {
-              Requested = requested
             }
 
     type Update'FeaturesOutboundPayments =
@@ -1036,18 +653,6 @@ module TreasuryFinancialAccounts =
                 UsDomesticWire = usDomesticWire
             }
 
-    module Update'FeaturesOutboundPayments =
-        let create
-            (
-                ach: Update'FeaturesOutboundPaymentsAch option,
-                usDomesticWire: Update'FeaturesOutboundPaymentsUsDomesticWire option
-            ) : Update'FeaturesOutboundPayments
-            =
-            {
-              Ach = ach
-              UsDomesticWire = usDomesticWire
-            }
-
     type Update'FeaturesOutboundTransfersAch =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1061,16 +666,6 @@ module TreasuryFinancialAccounts =
                 Requested = requested
             }
 
-    module Update'FeaturesOutboundTransfersAch =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesOutboundTransfersAch
-            =
-            {
-              Requested = requested
-            }
-
     type Update'FeaturesOutboundTransfersUsDomesticWire =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1082,16 +677,6 @@ module TreasuryFinancialAccounts =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module Update'FeaturesOutboundTransfersUsDomesticWire =
-        let create
-            (
-                requested: bool option
-            ) : Update'FeaturesOutboundTransfersUsDomesticWire
-            =
-            {
-              Requested = requested
             }
 
     type Update'FeaturesOutboundTransfers =
@@ -1109,18 +694,6 @@ module TreasuryFinancialAccounts =
             {
                 Ach = ach
                 UsDomesticWire = usDomesticWire
-            }
-
-    module Update'FeaturesOutboundTransfers =
-        let create
-            (
-                ach: Update'FeaturesOutboundTransfersAch option,
-                usDomesticWire: Update'FeaturesOutboundTransfersUsDomesticWire option
-            ) : Update'FeaturesOutboundTransfers
-            =
-            {
-              Ach = ach
-              UsDomesticWire = usDomesticWire
             }
 
     type Update'Features =
@@ -1160,28 +733,6 @@ module TreasuryFinancialAccounts =
                 OutboundTransfers = outboundTransfers
             }
 
-    module Update'Features =
-        let create
-            (
-                cardIssuing: Update'FeaturesCardIssuing option,
-                depositInsurance: Update'FeaturesDepositInsurance option,
-                financialAddresses: Update'FeaturesFinancialAddresses option,
-                inboundTransfers: Update'FeaturesInboundTransfers option,
-                intraStripeFlows: Update'FeaturesIntraStripeFlows option,
-                outboundPayments: Update'FeaturesOutboundPayments option,
-                outboundTransfers: Update'FeaturesOutboundTransfers option
-            ) : Update'Features
-            =
-            {
-              CardIssuing = cardIssuing
-              DepositInsurance = depositInsurance
-              FinancialAddresses = financialAddresses
-              InboundTransfers = inboundTransfers
-              IntraStripeFlows = intraStripeFlows
-              OutboundPayments = outboundPayments
-              OutboundTransfers = outboundTransfers
-            }
-
     type Update'ForwardingSettingsType =
         | FinancialAccount
         | PaymentMethod
@@ -1207,20 +758,6 @@ module TreasuryFinancialAccounts =
                 Type = type'
             }
 
-    module Update'ForwardingSettings =
-        let create
-            (
-                financialAccount: string option,
-                paymentMethod: string option,
-                type': Update'ForwardingSettingsType option
-            ) : Update'ForwardingSettings
-            =
-            {
-              FinancialAccount = financialAccount
-              PaymentMethod = paymentMethod
-              Type = type'
-            }
-
     type Update'PlatformRestrictionsInboundFlows =
         | Restricted
         | Unrestricted
@@ -1244,18 +781,6 @@ module TreasuryFinancialAccounts =
             {
                 InboundFlows = inboundFlows
                 OutboundFlows = outboundFlows
-            }
-
-    module Update'PlatformRestrictions =
-        let create
-            (
-                inboundFlows: Update'PlatformRestrictionsInboundFlows option,
-                outboundFlows: Update'PlatformRestrictionsOutboundFlows option
-            ) : Update'PlatformRestrictions
-            =
-            {
-              InboundFlows = inboundFlows
-              OutboundFlows = outboundFlows
             }
 
     type UpdateOptions =
@@ -1292,22 +817,6 @@ module TreasuryFinancialAccounts =
                 Metadata = metadata
                 Nickname = nickname
                 PlatformRestrictions = platformRestrictions
-            }
-
-    module UpdateOptions =
-        let create
-            (
-                financialAccount: string
-            ) : UpdateOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              Expand = None
-              Features = None
-              ForwardingSettings = None
-              Metadata = None
-              Nickname = None
-              PlatformRestrictions = None
             }
 
     ///<p>Returns a list of FinancialAccounts.</p>
@@ -1359,20 +868,6 @@ module TreasuryFinancialAccountsClose =
                 Type = type'
             }
 
-    module Close'ForwardingSettings =
-        let create
-            (
-                financialAccount: string option,
-                paymentMethod: string option,
-                type': Close'ForwardingSettingsType option
-            ) : Close'ForwardingSettings
-            =
-            {
-              FinancialAccount = financialAccount
-              PaymentMethod = paymentMethod
-              Type = type'
-            }
-
     type CloseOptions =
         {
             [<Config.Path>]
@@ -1391,18 +886,6 @@ module TreasuryFinancialAccountsClose =
                 FinancialAccount = financialAccount
                 Expand = expand
                 ForwardingSettings = forwardingSettings
-            }
-
-    module CloseOptions =
-        let create
-            (
-                financialAccount: string
-            ) : CloseOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              Expand = None
-              ForwardingSettings = None
             }
 
     ///<p>Closes a FinancialAccount. A FinancialAccount can only be closed if it has a zero balance, has no pending InboundTransfers, and has canceled all attached Issuing cards.</p>
@@ -1428,17 +911,6 @@ module TreasuryFinancialAccountsFeatures =
                 Expand = expand
             }
 
-    module RetrieveFeaturesOptions =
-        let create
-            (
-                financialAccount: string
-            ) : RetrieveFeaturesOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              Expand = None
-            }
-
     type UpdateFeatures'CardIssuing =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1450,16 +922,6 @@ module TreasuryFinancialAccountsFeatures =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module UpdateFeatures'CardIssuing =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'CardIssuing
-            =
-            {
-              Requested = requested
             }
 
     type UpdateFeatures'DepositInsurance =
@@ -1475,16 +937,6 @@ module TreasuryFinancialAccountsFeatures =
                 Requested = requested
             }
 
-    module UpdateFeatures'DepositInsurance =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'DepositInsurance
-            =
-            {
-              Requested = requested
-            }
-
     type UpdateFeatures'FinancialAddressesAba =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1496,16 +948,6 @@ module TreasuryFinancialAccountsFeatures =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module UpdateFeatures'FinancialAddressesAba =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'FinancialAddressesAba
-            =
-            {
-              Requested = requested
             }
 
     type UpdateFeatures'FinancialAddresses =
@@ -1521,16 +963,6 @@ module TreasuryFinancialAccountsFeatures =
                 Aba = aba
             }
 
-    module UpdateFeatures'FinancialAddresses =
-        let create
-            (
-                aba: UpdateFeatures'FinancialAddressesAba option
-            ) : UpdateFeatures'FinancialAddresses
-            =
-            {
-              Aba = aba
-            }
-
     type UpdateFeatures'InboundTransfersAch =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1542,16 +974,6 @@ module TreasuryFinancialAccountsFeatures =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module UpdateFeatures'InboundTransfersAch =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'InboundTransfersAch
-            =
-            {
-              Requested = requested
             }
 
     type UpdateFeatures'InboundTransfers =
@@ -1567,16 +989,6 @@ module TreasuryFinancialAccountsFeatures =
                 Ach = ach
             }
 
-    module UpdateFeatures'InboundTransfers =
-        let create
-            (
-                ach: UpdateFeatures'InboundTransfersAch option
-            ) : UpdateFeatures'InboundTransfers
-            =
-            {
-              Ach = ach
-            }
-
     type UpdateFeatures'IntraStripeFlows =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1588,16 +1000,6 @@ module TreasuryFinancialAccountsFeatures =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module UpdateFeatures'IntraStripeFlows =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'IntraStripeFlows
-            =
-            {
-              Requested = requested
             }
 
     type UpdateFeatures'OutboundPaymentsAch =
@@ -1613,16 +1015,6 @@ module TreasuryFinancialAccountsFeatures =
                 Requested = requested
             }
 
-    module UpdateFeatures'OutboundPaymentsAch =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'OutboundPaymentsAch
-            =
-            {
-              Requested = requested
-            }
-
     type UpdateFeatures'OutboundPaymentsUsDomesticWire =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1634,16 +1026,6 @@ module TreasuryFinancialAccountsFeatures =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module UpdateFeatures'OutboundPaymentsUsDomesticWire =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'OutboundPaymentsUsDomesticWire
-            =
-            {
-              Requested = requested
             }
 
     type UpdateFeatures'OutboundPayments =
@@ -1663,18 +1045,6 @@ module TreasuryFinancialAccountsFeatures =
                 UsDomesticWire = usDomesticWire
             }
 
-    module UpdateFeatures'OutboundPayments =
-        let create
-            (
-                ach: UpdateFeatures'OutboundPaymentsAch option,
-                usDomesticWire: UpdateFeatures'OutboundPaymentsUsDomesticWire option
-            ) : UpdateFeatures'OutboundPayments
-            =
-            {
-              Ach = ach
-              UsDomesticWire = usDomesticWire
-            }
-
     type UpdateFeatures'OutboundTransfersAch =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1688,16 +1058,6 @@ module TreasuryFinancialAccountsFeatures =
                 Requested = requested
             }
 
-    module UpdateFeatures'OutboundTransfersAch =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'OutboundTransfersAch
-            =
-            {
-              Requested = requested
-            }
-
     type UpdateFeatures'OutboundTransfersUsDomesticWire =
         {
             /// Whether the FinancialAccount should have the Feature.
@@ -1709,16 +1069,6 @@ module TreasuryFinancialAccountsFeatures =
         static member New(?requested: bool) =
             {
                 Requested = requested
-            }
-
-    module UpdateFeatures'OutboundTransfersUsDomesticWire =
-        let create
-            (
-                requested: bool option
-            ) : UpdateFeatures'OutboundTransfersUsDomesticWire
-            =
-            {
-              Requested = requested
             }
 
     type UpdateFeatures'OutboundTransfers =
@@ -1736,18 +1086,6 @@ module TreasuryFinancialAccountsFeatures =
             {
                 Ach = ach
                 UsDomesticWire = usDomesticWire
-            }
-
-    module UpdateFeatures'OutboundTransfers =
-        let create
-            (
-                ach: UpdateFeatures'OutboundTransfersAch option,
-                usDomesticWire: UpdateFeatures'OutboundTransfersUsDomesticWire option
-            ) : UpdateFeatures'OutboundTransfers
-            =
-            {
-              Ach = ach
-              UsDomesticWire = usDomesticWire
             }
 
     type UpdateFeaturesOptions =
@@ -1792,24 +1130,6 @@ module TreasuryFinancialAccountsFeatures =
                 IntraStripeFlows = intraStripeFlows
                 OutboundPayments = outboundPayments
                 OutboundTransfers = outboundTransfers
-            }
-
-    module UpdateFeaturesOptions =
-        let create
-            (
-                financialAccount: string
-            ) : UpdateFeaturesOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              CardIssuing = None
-              DepositInsurance = None
-              Expand = None
-              FinancialAddresses = None
-              InboundTransfers = None
-              IntraStripeFlows = None
-              OutboundPayments = None
-              OutboundTransfers = None
             }
 
     ///<p>Retrieves Features information associated with the FinancialAccount.</p>
@@ -1858,21 +1178,6 @@ module TreasuryInboundTransfers =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              Status = None
-            }
-
     type CreateOptions =
         {
             /// Amount (in cents) to be transferred.
@@ -1914,26 +1219,6 @@ module TreasuryInboundTransfers =
                 StatementDescriptor = statementDescriptor
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                financialAccount: string,
-                originPaymentMethod: string
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              FinancialAccount = financialAccount
-              OriginPaymentMethod = originPaymentMethod
-              Description = None
-              Expand = None
-              Metadata = None
-              StatementDescriptor = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -1948,17 +1233,6 @@ module TreasuryInboundTransfers =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Returns a list of InboundTransfers sent from the specified FinancialAccount.</p>
@@ -1994,17 +1268,6 @@ module TreasuryInboundTransfersCancel =
             {
                 InboundTransfer = inboundTransfer
                 Expand = expand
-            }
-
-    module CancelOptions =
-        let create
-            (
-                inboundTransfer: string
-            ) : CancelOptions
-            =
-            {
-              InboundTransfer = inboundTransfer
-              Expand = None
             }
 
     ///<p>Cancels an InboundTransfer.</p>
@@ -2055,23 +1318,6 @@ module TreasuryOutboundPayments =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              Created = None
-              Customer = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              Status = None
-            }
-
     type Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
         {
             /// City, district, suburb, town, or village.
@@ -2105,26 +1351,6 @@ module TreasuryOutboundPayments =
                 State = state
             }
 
-    module Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
-        let create
-            (
-                city: string option,
-                country: IsoTypes.IsoCountryCode option,
-                line1: string option,
-                line2: string option,
-                postalCode: string option,
-                state: string option
-            ) : Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress
-            =
-            {
-              City = city
-              Country = country
-              Line1 = line1
-              Line2 = line2
-              PostalCode = postalCode
-              State = state
-            }
-
     type Create'DestinationPaymentMethodDataBillingDetails =
         {
             /// Billing address.
@@ -2148,22 +1374,6 @@ module TreasuryOutboundPayments =
                 Email = email
                 Name = name
                 Phone = phone
-            }
-
-    module Create'DestinationPaymentMethodDataBillingDetails =
-        let create
-            (
-                address: Choice<Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress,string> option,
-                email: Choice<string,string> option,
-                name: Choice<string,string> option,
-                phone: Choice<string,string> option
-            ) : Create'DestinationPaymentMethodDataBillingDetails
-            =
-            {
-              Address = address
-              Email = email
-              Name = name
-              Phone = phone
             }
 
     type Create'DestinationPaymentMethodDataType =
@@ -2207,24 +1417,6 @@ module TreasuryOutboundPayments =
                 RoutingNumber = routingNumber
             }
 
-    module Create'DestinationPaymentMethodDataUsBankAccount =
-        let create
-            (
-                accountHolderType: Create'DestinationPaymentMethodDataUsBankAccountAccountHolderType option,
-                accountNumber: string option,
-                accountType: Create'DestinationPaymentMethodDataUsBankAccountAccountType option,
-                financialConnectionsAccount: string option,
-                routingNumber: string option
-            ) : Create'DestinationPaymentMethodDataUsBankAccount
-            =
-            {
-              AccountHolderType = accountHolderType
-              AccountNumber = accountNumber
-              AccountType = accountType
-              FinancialConnectionsAccount = financialConnectionsAccount
-              RoutingNumber = routingNumber
-            }
-
     type Create'DestinationPaymentMethodData =
         {
             /// Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
@@ -2254,24 +1446,6 @@ module TreasuryOutboundPayments =
                 UsBankAccount = usBankAccount
             }
 
-    module Create'DestinationPaymentMethodData =
-        let create
-            (
-                billingDetails: Create'DestinationPaymentMethodDataBillingDetails option,
-                financialAccount: string option,
-                metadata: Map<string, string> option,
-                type': Create'DestinationPaymentMethodDataType option,
-                usBankAccount: Create'DestinationPaymentMethodDataUsBankAccount option
-            ) : Create'DestinationPaymentMethodData
-            =
-            {
-              BillingDetails = billingDetails
-              FinancialAccount = financialAccount
-              Metadata = metadata
-              Type = type'
-              UsBankAccount = usBankAccount
-            }
-
     type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork =
         | Ach
         | UsDomesticWire
@@ -2289,16 +1463,6 @@ module TreasuryOutboundPayments =
                 Network = network
             }
 
-    module Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions =
-        let create
-            (
-                network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork option
-            ) : Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions
-            =
-            {
-              Network = network
-            }
-
     type Create'DestinationPaymentMethodOptions =
         {
             /// Optional fields for `us_bank_account`.
@@ -2310,16 +1474,6 @@ module TreasuryOutboundPayments =
         static member New(?usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string>) =
             {
                 UsBankAccount = usBankAccount
-            }
-
-    module Create'DestinationPaymentMethodOptions =
-        let create
-            (
-                usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string> option
-            ) : Create'DestinationPaymentMethodOptions
-            =
-            {
-              UsBankAccount = usBankAccount
             }
 
     type Create'EndUserDetails =
@@ -2337,18 +1491,6 @@ module TreasuryOutboundPayments =
             {
                 IpAddress = ipAddress
                 Present = present
-            }
-
-    module Create'EndUserDetails =
-        let create
-            (
-                ipAddress: string option,
-                present: bool option
-            ) : Create'EndUserDetails
-            =
-            {
-              IpAddress = ipAddress
-              Present = present
             }
 
     type CreateOptions =
@@ -2408,29 +1550,6 @@ module TreasuryOutboundPayments =
                 StatementDescriptor = statementDescriptor
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                financialAccount: string
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              FinancialAccount = financialAccount
-              Customer = None
-              Description = None
-              DestinationPaymentMethod = None
-              DestinationPaymentMethodData = None
-              DestinationPaymentMethodOptions = None
-              EndUserDetails = None
-              Expand = None
-              Metadata = None
-              StatementDescriptor = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2445,17 +1564,6 @@ module TreasuryOutboundPayments =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Returns a list of OutboundPayments sent from the specified FinancialAccount.</p>
@@ -2491,17 +1599,6 @@ module TreasuryOutboundPaymentsCancel =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module CancelOptions =
-        let create
-            (
-                id: string
-            ) : CancelOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Cancel an OutboundPayment.</p>
@@ -2544,21 +1641,6 @@ module TreasuryOutboundTransfers =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              Status = None
-            }
-
     type Create'DestinationPaymentMethodDataType = | FinancialAccount
 
     type Create'DestinationPaymentMethodData =
@@ -2578,18 +1660,6 @@ module TreasuryOutboundTransfers =
                 Type = type'
             }
 
-    module Create'DestinationPaymentMethodData =
-        let create
-            (
-                financialAccount: string option,
-                type': Create'DestinationPaymentMethodDataType option
-            ) : Create'DestinationPaymentMethodData
-            =
-            {
-              FinancialAccount = financialAccount
-              Type = type'
-            }
-
     type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork =
         | Ach
         | UsDomesticWire
@@ -2607,16 +1677,6 @@ module TreasuryOutboundTransfers =
                 Network = network
             }
 
-    module Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions =
-        let create
-            (
-                network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork option
-            ) : Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions
-            =
-            {
-              Network = network
-            }
-
     type Create'DestinationPaymentMethodOptions =
         {
             /// Optional fields for `us_bank_account`.
@@ -2628,16 +1688,6 @@ module TreasuryOutboundTransfers =
         static member New(?usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string>) =
             {
                 UsBankAccount = usBankAccount
-            }
-
-    module Create'DestinationPaymentMethodOptions =
-        let create
-            (
-                usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string> option
-            ) : Create'DestinationPaymentMethodOptions
-            =
-            {
-              UsBankAccount = usBankAccount
             }
 
     type CreateOptions =
@@ -2689,27 +1739,6 @@ module TreasuryOutboundTransfers =
                 StatementDescriptor = statementDescriptor
             }
 
-    module CreateOptions =
-        let create
-            (
-                amount: int,
-                currency: IsoTypes.IsoCurrencyCode,
-                financialAccount: string
-            ) : CreateOptions
-            =
-            {
-              Amount = amount
-              Currency = currency
-              FinancialAccount = financialAccount
-              Description = None
-              DestinationPaymentMethod = None
-              DestinationPaymentMethodData = None
-              DestinationPaymentMethodOptions = None
-              Expand = None
-              Metadata = None
-              StatementDescriptor = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2724,17 +1753,6 @@ module TreasuryOutboundTransfers =
             {
                 OutboundTransfer = outboundTransfer
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                outboundTransfer: string
-            ) : RetrieveOptions
-            =
-            {
-              OutboundTransfer = outboundTransfer
-              Expand = None
             }
 
     ///<p>Returns a list of OutboundTransfers sent from the specified FinancialAccount.</p>
@@ -2770,17 +1788,6 @@ module TreasuryOutboundTransfersCancel =
             {
                 OutboundTransfer = outboundTransfer
                 Expand = expand
-            }
-
-    module CancelOptions =
-        let create
-            (
-                outboundTransfer: string
-            ) : CancelOptions
-            =
-            {
-              OutboundTransfer = outboundTransfer
-              Expand = None
             }
 
     ///<p>An OutboundTransfer can be canceled if the funds have not yet been paid out.</p>
@@ -2827,22 +1834,6 @@ module TreasuryReceivedCredits =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              LinkedFlows = None
-              StartingAfter = None
-              Status = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2857,17 +1848,6 @@ module TreasuryReceivedCredits =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Returns a list of ReceivedCredits.</p>
@@ -2917,21 +1897,6 @@ module TreasuryReceivedDebits =
                 Status = status
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              StartingAfter = None
-              Status = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2946,17 +1911,6 @@ module TreasuryReceivedDebits =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Returns a list of ReceivedDebits.</p>
@@ -3017,24 +1971,6 @@ module TreasuryTransactionEntries =
                 Transaction = transaction
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              Created = None
-              EffectiveAt = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              OrderBy = None
-              StartingAfter = None
-              Transaction = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -3049,17 +1985,6 @@ module TreasuryTransactionEntries =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Retrieves a list of TransactionEntry objects.</p>
@@ -3121,24 +2046,6 @@ module TreasuryTransactions =
                 StatusTransitions = statusTransitions
             }
 
-    module ListOptions =
-        let create
-            (
-                financialAccount: string
-            ) : ListOptions
-            =
-            {
-              FinancialAccount = financialAccount
-              Created = None
-              EndingBefore = None
-              Expand = None
-              Limit = None
-              OrderBy = None
-              StartingAfter = None
-              Status = None
-              StatusTransitions = None
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -3153,17 +2060,6 @@ module TreasuryTransactions =
             {
                 Id = id
                 Expand = expand
-            }
-
-    module RetrieveOptions =
-        let create
-            (
-                id: string
-            ) : RetrieveOptions
-            =
-            {
-              Id = id
-              Expand = None
             }
 
     ///<p>Retrieves a list of Transaction objects.</p>
