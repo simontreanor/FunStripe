@@ -8,7 +8,7 @@ This guide covers the breaking changes and how to update.
 
 | Concern | v1 (`FunStripe` / `FunStripeLite`) | v2 (`FunStripe.Core` / `FunStripe.Core.Fable`) |
 |---------|-------------------------------------|------------------------------------------------|
-| NuGet package | `FunStripe`, `FunStripeLite` | `FunStripe.Core`, `FunStripe.Core.Fable` |
+| NuGet package | `FunStripe` (full, with generators), `FunStripeLite` (generated files only, smaller) | `FunStripe.Core`, `FunStripe.Core.Fable` (Fable/Node.js) |
 | Response models | Single `StripeModel` module (~50k lines) | Per-domain `Stripe.{Domain}` namespaces |
 | Request options | `StripeRequest.{Group}` modules in monolithic files | `StripeRequest.{Domain}` per-domain files |
 | ID types | `string` everywhere | Phantom-typed `StripeId<'phantom>` |
@@ -24,10 +24,16 @@ This guide covers the breaking changes and how to update.
 + <PackageReference Include="FunStripe.Core" Version="2.*" />
 ```
 
-For Fable/Node.js projects:
+If you were using `FunStripeLite` (the generator-free, smaller-footprint variant of `FunStripe`):
 
 ```diff
 - <PackageReference Include="FunStripeLite" Version="1.*" />
++ <PackageReference Include="FunStripe.Core" Version="2.*" />
+```
+
+For Fable/Node.js projects (v2 introduces Fable support that v1 did not have):
+
+```diff
 + <PackageReference Include="FunStripe.Core.Fable" Version="2.*" />
 ```
 
