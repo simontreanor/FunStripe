@@ -227,7 +227,7 @@ By cloning the source repository, you can regenerate the modular files using the
 dotnet run --project tools/FunStripe.Generator -- \
   --spec spec/stripe-openapi-2026-04-22.dahlia.json \
   --output src \
-  --version 1.0.0
+  --version 2.0.0
 ```
 
 All three arguments are optional and default to the values shown above. The generator emits:

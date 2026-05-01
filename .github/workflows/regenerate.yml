@@ -10,7 +10,7 @@ on:
       version:
         description: 'Version string embedded in generated code'
         required: false
-        default: '1.0.0'
+        default: '2.0.0'
 
 permissions:
   contents: write
